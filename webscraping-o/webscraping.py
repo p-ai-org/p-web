@@ -12,38 +12,38 @@ a_file = open("C:/Users/Alan/Desktop/p-web/websitelist.txt")
 file_contents = a_file.read()
 contents_split = file_contents.splitlines()
 
-updatelist = [];
-title = [];
+updatelist = []
+title = []
 for w in contents_split:
-    updatelist.append("https://www." + w);
+    updatelist.append("https://www." + w)
     title.append(w.split('.')[0])
-print(updatelist);
-print(title);
+print(updatelist)
+print(title)
 
-k = 0;
+k = 0
 
 for w in updatelist:   
-    print(w);
+    print(w)
     #grab the soup output for each website
     try: # need to open with try
         r = requests.get(w)
         soup = BeautifulSoup(r.content, features="lxml")
     except:
         #display faulty websites
-        #print(w);
-        k = k + 1;
+        #print(w)
+        k = k + 1
         continue
     
     #check where we are in program
-    print(k);
+    print(k)
     #make it more readable
-    html = soup.prettify();
+    html = soup.prettify()
     
     #write html data into folder
-    path = "C:/Users/Alan/Desktop/p-web/htmlfiles/" + title[k] + ".txt";
+    path = "C:/Users/Alan/Desktop/p-web/htmlfiles/" + title[k] + ".txt"
     
     #iterate name variable
-    k = k + 1;
+    k = k + 1
     
     #output into file
     with open(path,"w") as out:
