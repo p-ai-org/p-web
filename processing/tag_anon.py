@@ -1,8 +1,7 @@
 '''
 Created on March 2 2021
 
-First Commit Progress:
-So far, this just removes all the tags (class, style, src etc.); Still in progress
+Still working on content_removed; others are done
 '''
 
 from bs4 import BeautifulSoup
@@ -16,32 +15,43 @@ org_file_name = os.path.basename(__target_file__)
 with open(os.path.join(__location__,__target_file__), 'r', encoding="ISO-8859-1") as f:
     try:
         target_html = f.read() 
-    except:
-        print("Error in reading file")
+    except Exception as e:
+        print('During file reading, this error occurred:', e)
 
 soup = BeautifulSoup(target_html, 'html.parser')
 
 def tag_removed(soup):
     '''
-    remove inline html tags
+    change inline html text content so that it says 'ANON_TEXT' (incl. class names, type, style attributes etc.)
     '''
     for tag in soup.findAll(True):
-        tag.attrs = None
+        tag.attrs = tag.attrs.fromkeys(tag.attrs,'ANON_TEXT')
     return soup
 
 def script_removed(soup):
     '''
-    function to remove embedded javascript
+    empties script tags; ie. remove embedded javascript while still keeping the <script> 
     '''
+    for tag in soup.findAll('script'):
+        tag.clear()
+    return soup
 
+def content_removed(soup):
+    '''
+    anonymize text content
+    '''
+    for tag in soup.findAll('True'):
+        tag.string = "None"
+    return soup
 
 
 soup = tag_removed(soup)
+soup = script_removed(soup)
 
 with open(os.path.join(__location__, f"./modified_{org_file_name}"), 'wb') as f_out:
     try: 
         f_out.write(soup.prettify("utf-8"))
-    except:
-        print("Error in writing file")
+    except Exception as e:
+        print('During file writing, this error occurred:', e)
 
 
