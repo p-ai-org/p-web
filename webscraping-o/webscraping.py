@@ -7,7 +7,7 @@ Created on Tue Mar  2 12:44:50 2021
 from bs4 import BeautifulSoup
 import requests
 
-
+#change this path to where the website list is saved
 a_file = open("C:/Users/Alan/Desktop/p-web/websitelist.txt")
 file_contents = a_file.read()
 contents_split = file_contents.splitlines()
