@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 import requests
 
 #change this path to where the website list is saved
-a_file = open("C:/Users/Alan/Desktop/p-web/websitelist.txt")
+a_file = open("./websitelist.txt")
 file_contents = a_file.read()
 contents_split = file_contents.splitlines()
 
@@ -40,7 +40,7 @@ for w in updatelist:
     html = soup.prettify()
     
     #write html data into folder
-    path = "C:/Users/Alan/Desktop/p-web/htmlfiles/" + title[k] + ".txt"
+    path = "./htmlfiles/" + title[k] + ".txt"
     
     #iterate name variable
     k = k + 1
