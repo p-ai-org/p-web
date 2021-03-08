@@ -13,158 +13,158 @@
   <base href="https://www.liveleak.com/"/>
   <!-- Quantcast Choice. Consent Manager Tag v2.0 (for TCF 2.0) -->
   <script async="true" type="text/javascript">
-   (function() {
-  var host = 'liveleak.com';
-  var element = document.createElement('script');
-  var firstScript = document.getElementsByTagName('script')[0];
-  var url = 'https://quantcast.mgr.consensu.org'
-    .concat('/choice/', 'c4yHLoeBnD3eE', '/', host, '/choice.js')
-  var uspTries = 0;
-  var uspTriesLimit = 3;
-  element.async = true;
-  element.type = 'text/javascript';
-  element.src = url;
-
-  firstScript.parentNode.insertBefore(element, firstScript);
-
-  function makeStub() {
-    var TCF_LOCATOR_NAME = '__tcfapiLocator';
-    var queue = [];
-    var win = window;
-    var cmpFrame;
-
-    function addFrame() {
-      var doc = win.document;
-      var otherCMP = !!(win.frames[TCF_LOCATOR_NAME]);
-
-      if (!otherCMP) {
-        if (doc.body) {
-          var iframe = doc.createElement('iframe');
-
-          iframe.style.cssText = 'display:none';
-          iframe.name = TCF_LOCATOR_NAME;
-          doc.body.appendChild(iframe);
-        } else {
-          setTimeout(addFrame, 5);
-        }
-      }
-      return !otherCMP;
-    }
-
-    function tcfAPIHandler() {
-      var gdprApplies;
-      var args = arguments;
-
-      if (!args.length) {
-        return queue;
-      } else if (args[0] === 'setGdprApplies') {
-        if (
-          args.length > 3 &&
-          args[2] === 2 &&
-          typeof args[3] === 'boolean'
-        ) {
-          gdprApplies = args[3];
-          if (typeof args[2] === 'function') {
-            args[2]('set', true);
-          }
-        }
-      } else if (args[0] === 'ping') {
-        var retr = {
-          gdprApplies: gdprApplies,
-          cmpLoaded: false,
-          cmpStatus: 'stub'
-        };
-
-        if (typeof args[2] === 'function') {
-          args[2](retr);
-        }
-      } else {
-        queue.push(args);
-      }
-    }
-
-    function postMessageEventHandler(event) {
-      var msgIsString = typeof event.data === 'string';
-      var json = {};
-
-      try {
-        if (msgIsString) {
-          json = JSON.parse(event.data);
-        } else {
-          json = event.data;
-        }
-      } catch (ignore) {}
-
-      var payload = json.__tcfapiCall;
-
-      if (payload) {
-        window.__tcfapi(
-          payload.command,
-          payload.version,
-          function(retValue, success) {
-            var returnMsg = {
-              __tcfapiReturn: {
-                returnValue: retValue,
-                success: success,
-                callId: payload.callId
-              }
-            };
-            if (msgIsString) {
-              returnMsg = JSON.stringify(returnMsg);
-            }
-            event.source.postMessage(returnMsg, '*');
-          },
-          payload.parameter
-        );
-      }
-    }
-
-    while (win) {
-      try {
-        if (win.frames[TCF_LOCATOR_NAME]) {
-          cmpFrame = win;
-          break;
-        }
-      } catch (ignore) {}
-
-      if (win === window.top) {
-        break;
-      }
-      win = win.parent;
-    }
-    if (!cmpFrame) {
-      addFrame();
-      win.__tcfapi = tcfAPIHandler;
-      win.addEventListener('message', postMessageEventHandler, false);
-    }
-  };
-
-  makeStub();
-
-  var uspStubFunction = function() {
-    var arg = arguments;
-    if (typeof window.__uspapi !== uspStubFunction) {
-      setTimeout(function() {
-        if (typeof window.__uspapi !== 'undefined') {
-          window.__uspapi.apply(window.__uspapi, arg);
-        }
-      }, 500);
-    }
-  };
-
-  var checkIfUspIsReady = function() {
-    uspTries++;
-    if (window.__uspapi === uspStubFunction && uspTries < uspTriesLimit) {
-      console.warn('USP is not accessible');
-    } else {
-      clearInterval(uspInterval);
-    }
-  };
-
-  if (typeof window.__uspapi === 'undefined') {
-    window.__uspapi = uspStubFunction;
-    var uspInterval = setInterval(checkIfUspIsReady, 6000);
-  }
+   (function() {
+  var host = 'liveleak.com';
+  var element = document.createElement('script');
+  var firstScript = document.getElementsByTagName('script')[0];
+  var url = 'https://quantcast.mgr.consensu.org'
+    .concat('/choice/', 'c4yHLoeBnD3eE', '/', host, '/choice.js')
+  var uspTries = 0;
+  var uspTriesLimit = 3;
+  element.async = true;
+  element.type = 'text/javascript';
+  element.src = url;
+
+  firstScript.parentNode.insertBefore(element, firstScript);
+
+  function makeStub() {
+    var TCF_LOCATOR_NAME = '__tcfapiLocator';
+    var queue = [];
+    var win = window;
+    var cmpFrame;
+
+    function addFrame() {
+      var doc = win.document;
+      var otherCMP = !!(win.frames[TCF_LOCATOR_NAME]);
+
+      if (!otherCMP) {
+        if (doc.body) {
+          var iframe = doc.createElement('iframe');
+
+          iframe.style.cssText = 'display:none';
+          iframe.name = TCF_LOCATOR_NAME;
+          doc.body.appendChild(iframe);
+        } else {
+          setTimeout(addFrame, 5);
+        }
+      }
+      return !otherCMP;
+    }
+
+    function tcfAPIHandler() {
+      var gdprApplies;
+      var args = arguments;
+
+      if (!args.length) {
+        return queue;
+      } else if (args[0] === 'setGdprApplies') {
+        if (
+          args.length > 3 &&
+          args[2] === 2 &&
+          typeof args[3] === 'boolean'
+        ) {
+          gdprApplies = args[3];
+          if (typeof args[2] === 'function') {
+            args[2]('set', true);
+          }
+        }
+      } else if (args[0] === 'ping') {
+        var retr = {
+          gdprApplies: gdprApplies,
+          cmpLoaded: false,
+          cmpStatus: 'stub'
+        };
+
+        if (typeof args[2] === 'function') {
+          args[2](retr);
+        }
+      } else {
+        queue.push(args);
+      }
+    }
+
+    function postMessageEventHandler(event) {
+      var msgIsString = typeof event.data === 'string';
+      var json = {};
+
+      try {
+        if (msgIsString) {
+          json = JSON.parse(event.data);
+        } else {
+          json = event.data;
+        }
+      } catch (ignore) {}
+
+      var payload = json.__tcfapiCall;
+
+      if (payload) {
+        window.__tcfapi(
+          payload.command,
+          payload.version,
+          function(retValue, success) {
+            var returnMsg = {
+              __tcfapiReturn: {
+                returnValue: retValue,
+                success: success,
+                callId: payload.callId
+              }
+            };
+            if (msgIsString) {
+              returnMsg = JSON.stringify(returnMsg);
+            }
+            event.source.postMessage(returnMsg, '*');
+          },
+          payload.parameter
+        );
+      }
+    }
+
+    while (win) {
+      try {
+        if (win.frames[TCF_LOCATOR_NAME]) {
+          cmpFrame = win;
+          break;
+        }
+      } catch (ignore) {}
+
+      if (win === window.top) {
+        break;
+      }
+      win = win.parent;
+    }
+    if (!cmpFrame) {
+      addFrame();
+      win.__tcfapi = tcfAPIHandler;
+      win.addEventListener('message', postMessageEventHandler, false);
+    }
+  };
+
+  makeStub();
+
+  var uspStubFunction = function() {
+    var arg = arguments;
+    if (typeof window.__uspapi !== uspStubFunction) {
+      setTimeout(function() {
+        if (typeof window.__uspapi !== 'undefined') {
+          window.__uspapi.apply(window.__uspapi, arg);
+        }
+      }, 500);
+    }
+  };
+
+  var checkIfUspIsReady = function() {
+    uspTries++;
+    if (window.__uspapi === uspStubFunction && uspTries < uspTriesLimit) {
+      console.warn('USP is not accessible');
+    } else {
+      clearInterval(uspInterval);
+    }
+  };
+
+  if (typeof window.__uspapi === 'undefined') {
+    window.__uspapi = uspStubFunction;
+    var uspInterval = setInterval(checkIfUspIsReady, 6000);
+  }
 })();
   </script>
   <!-- End Quantcast Choice. Consent Manager Tag v2.0 (for TCF 2.0) -->
@@ -207,120 +207,120 @@
   <script async="" src="https://securepubads.g.doubleclick.net/tag/js/gpt.js">
   </script>
   <script>
-   window.googletag = window.googletag || {cmd: []};
-					  googletag.cmd.push(function() {
-					    googletag.defineSlot('/1838131/top_right_ad_unit', [[300, 250], [300, 600]], 'div-gpt-ad-1601538651185-0').addService(googletag.pubads());
-					    googletag.pubads().enableSingleRequest();
-					    googletag.pubads().collapseEmptyDivs();
-					    googletag.pubads().disableInitialLoad();
-					    googletag.enableServices();
+   window.googletag = window.googletag || {cmd: []};
+					  googletag.cmd.push(function() {
+					    googletag.defineSlot('/1838131/top_right_ad_unit', [[300, 250], [300, 600]], 'div-gpt-ad-1601538651185-0').addService(googletag.pubads());
+					    googletag.pubads().enableSingleRequest();
+					    googletag.pubads().collapseEmptyDivs();
+					    googletag.pubads().disableInitialLoad();
+					    googletag.enableServices();
 					  });
   </script>
   <script>
-   $(document).ready(function() {
-
-$.prettyLoader();
-
-refresh_rate_things('');
-
-window.onbeforeunload = function() {
-   var initiate_prompt = 0;
-    if (typeof window.uploaders != 'undefined')
-   {
-      window.uploaders.forEach(function(item,index)
-     {
-     //alert(item.state);
-       if(item.state == 2)
-       {
-            initiate_prompt = 1;
-       }
-     });
-  }
-
-  if(initiate_prompt)return 'are you sure you want to leave this page?';
-};
-
-});
-
-jQuery(document).ready(function() {
-  $("time.timeago").timeago();
-});
-
-$(document).on('click', '[data-toggle="lightbox"]', function(event) {
-    event.preventDefault();
-    $(this).ekkoLightbox(
-    {
-      onShown: function() {
-	        var lightbox = this;
-	        $(document).on('closeLightbox', function () {
-	            lightbox.close();
-	        });
-      }
-    });
-});
-
-
-$(document).ready(function(){
-
-	$('.slider').click(function(){
-			if($("#check_box_onoff").prop('checked') == true){
-				$('.check_btn_text').removeClass('onbutton');
-				$('.check_btn_text').addClass('offbutton');
-				$('.check_btn_text').text('Off');
-			}
-			else{
-				$('.check_btn_text').removeClass('offbutton');
-				$('.check_btn_text').addClass('onbutton');
-				$('.check_btn_text').text('On');
-			}
-		});
+   $(document).ready(function() {
+
+$.prettyLoader();
+
+refresh_rate_things('');
+
+window.onbeforeunload = function() {
+   var initiate_prompt = 0;
+    if (typeof window.uploaders != 'undefined')
+   {
+      window.uploaders.forEach(function(item,index)
+     {
+     //alert(item.state);
+       if(item.state == 2)
+       {
+            initiate_prompt = 1;
+       }
+     });
+  }
+
+  if(initiate_prompt)return 'are you sure you want to leave this page?';
+};
+
+});
+
+jQuery(document).ready(function() {
+  $("time.timeago").timeago();
+});
+
+$(document).on('click', '[data-toggle="lightbox"]', function(event) {
+    event.preventDefault();
+    $(this).ekkoLightbox(
+    {
+      onShown: function() {
+	        var lightbox = this;
+	        $(document).on('closeLightbox', function () {
+	            lightbox.close();
+	        });
+      }
+    });
+});
+
+
+$(document).ready(function(){
+
+	$('.slider').click(function(){
+			if($("#check_box_onoff").prop('checked') == true){
+				$('.check_btn_text').removeClass('onbutton');
+				$('.check_btn_text').addClass('offbutton');
+				$('.check_btn_text').text('Off');
+			}
+			else{
+				$('.check_btn_text').removeClass('offbutton');
+				$('.check_btn_text').addClass('onbutton');
+				$('.check_btn_text').text('On');
+			}
+		});
 	});
   </script>
   <script>
-   $(document).ready(function(){
-    $(".guest_button_con").click(function(){
-        $(".liveleak_guest_dropdown").toggle();
-    });
-
-	$(".search_icon").click(function(){
-        $(".Search_box_outer").toggle();
-    });
-
-	$(".mobile_search_icon").click(function(){
-        $(".mobile_show").toggle();
-    });
-
+   $(document).ready(function(){
+    $(".guest_button_con").click(function(){
+        $(".liveleak_guest_dropdown").toggle();
+    });
+
+	$(".search_icon").click(function(){
+        $(".Search_box_outer").toggle();
+    });
+
+	$(".mobile_search_icon").click(function(){
+        $(".mobile_show").toggle();
+    });
+
 });
   </script>
   <style>
-   .msg { margin:4px !important; border:none !important; background-color:#f0f0f0 !important; }
-
-.nav_main_outer a { color:#fff !important; }
-
-.guest_button_con a {color: #ccc !important;}
-
-.content_main_outer { background-color:#88070B; padding: 0 0 30px !important;}
-.content_main_inner { background-color:#fff; padding:10px !important; }
-
-a {color: #333 !important}
-
-h3 a { font-size:14px; font-family:Verdana,Arial,sans-serif; font-weight:bold; color:#88070B !important; }
-
-.featured_text_con {color:#000 !important;}
-
-.step_outer { color: #333 !important;}
-
-p { font-size:14px !important; color:#000 !important; }
-
-.subnav_inner li a {color: #c2c2c2 !important}
-
-.nav_main li:last-child a {background: #8e2a2a !important;}
-
-@media only screen and (max-width: 766px) { .nav_main li a{color:#333 !important;} }
-
-@media only screen and (min-width: 767px)
- { .nav_main_outer {background-color: #88070B !important;} }
-
+   .msg { margin:4px !important; border:none !important; background-color:#f0f0f0 !important; }
+
+.nav_main_outer a { color:#fff !important; }
+
+.guest_button_con a {color: #ccc !important;}
+
+.content_main_outer { background-color:#88070B; padding: 0 0 30px !important;}
+.content_main_inner { background-color:#fff; padding:10px !important; }
+
+a {color: #333 !important}
+
+h3 a { font-size:14px; font-family:Verdana,Arial,sans-serif; font-weight:bold; color:#88070B !important; }
+
+.featured_text_con {color:#000 !important;}
+
+.step_outer { color: #333 !important;}
+
+p { font-size:14px !important; color:#000 !important; }
+
+.subnav_inner li a {color: #c2c2c2 !important}
+
+.nav_main li:last-child a {background: #8e2a2a !important;}
+
+@media only screen and (max-width: 766px) { .nav_main li a{color:#333 !important;} }
+
+@media only screen and (min-width: 767px)
+ { .nav_main_outer {background-color: #88070B !important;} }
+
 .view_comments_button a {color:#FFF !important;}
   </style>
  </head>
@@ -391,7 +391,7 @@ p { font-size:14px !important; color:#000 !important; }
           <a class="mobile_display_none" href="javascript://">
            <i aria-hidden="true" class="fa fa-user-circle">
            </i>
-           &amp;nbsp
+           &amp;nbsp
 Guest
            <i class="fa fa-angle-down">
            </i>
@@ -586,10 +586,10 @@ Guest
      <div class="row">
       <div class="col-xs-12 pad_none content_main_inner">
        <script type="text/javascript">
-        <!--
-	e9 = new Object();
-    e9.size = "970x250,728x90";
-    e9.noAd = 1;
+        <!--
+	e9 = new Object();
+    e9.size = "970x250,728x90";
+    e9.noAd = 1;
 //-->
        </script>
        <script src="//tags.expo9.exponential.com/tags/Liveleakcom/ROS/tags.js" type="text/javascript">
@@ -608,57 +608,57 @@ Guest
          </div>
          <div id="top_tab_contents">
           <script>
-           var animationDuration = 2500;
-var timeWhenLastUpdate;
-var timeFromLastUpdate;
-var frameNumber = 1;
-var animationRequest;
-
- function load_images(thumbnail_url,totalFrames)
- {
-	if(totalFrames>15)totalFrames = 15;
-	 
-	for (var i = 1; i < totalFrames + 1; i++)
-	{
-       thumbnail_url = thumbnail_url.replace(/_[0-9]+_thumb/g, '_'+i+'_thumb');
-	   $('body').append('<div id="preload-image-'+i+'" style="background-image: url(\''+thumbnail_url+'\');"></div>');
-	   
-    } 
-	 
- }
-		  
- function step(startTime,thumbnail_url,id,totalFrames) {
-	 
-  if(totalFrames>15)totalFrames = 15;
-  
-  var timePerFrame = animationDuration / totalFrames;
-	 
-  if (!timeWhenLastUpdate) timeWhenLastUpdate = startTime;
-
-  timeFromLastUpdate = startTime - timeWhenLastUpdate;
-     
-  thumbnail_url = thumbnail_url.replace(/_[0-9]+_thumb/g, '_'+frameNumber+'_thumb');
-
-  if (timeFromLastUpdate > timePerFrame) {
-    $('#'+id).attr('src', thumbnail_url);
-    timeWhenLastUpdate = startTime;
-
-    if (frameNumber >= totalFrames) {
-      frameNumber = 1;
-    } else {
-       frameNumber = frameNumber + 1;
-    }        
-  }
-
-  animationRequest = requestAnimationFrame(function(startTime){step(startTime,thumbnail_url,id,totalFrames)});
+           var animationDuration = 2500;
+var timeWhenLastUpdate;
+var timeFromLastUpdate;
+var frameNumber = 1;
+var animationRequest;
+
+ function load_images(thumbnail_url,totalFrames)
+ {
+	if(totalFrames>15)totalFrames = 15;
+	 
+	for (var i = 1; i < totalFrames + 1; i++)
+	{
+       thumbnail_url = thumbnail_url.replace(/_[0-9]+_thumb/g, '_'+i+'_thumb');
+	   $('body').append('<div id="preload-image-'+i+'" style="background-image: url(\''+thumbnail_url+'\');"></div>');
+	   
+    } 
+	 
+ }
+		  
+ function step(startTime,thumbnail_url,id,totalFrames) {
+	 
+  if(totalFrames>15)totalFrames = 15;
+  
+  var timePerFrame = animationDuration / totalFrames;
+	 
+  if (!timeWhenLastUpdate) timeWhenLastUpdate = startTime;
+
+  timeFromLastUpdate = startTime - timeWhenLastUpdate;
+     
+  thumbnail_url = thumbnail_url.replace(/_[0-9]+_thumb/g, '_'+frameNumber+'_thumb');
+
+  if (timeFromLastUpdate > timePerFrame) {
+    $('#'+id).attr('src', thumbnail_url);
+    timeWhenLastUpdate = startTime;
+
+    if (frameNumber >= totalFrames) {
+      frameNumber = 1;
+    } else {
+       frameNumber = frameNumber + 1;
+    }        
+  }
+
+  animationRequest = requestAnimationFrame(function(startTime){step(startTime,thumbnail_url,id,totalFrames)});
 }
           </script>
           <!--THREAD LIST START-->
           <div class="col-xs-12 pad_none featured_item_main_outer">
-           <div class="col-xs-12 pad_none featured_items_outer" onmouseout="cancelAnimationFrame(animationRequest);" onmouseover="load_images('https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603d3b9aaaa98_14_thumb.jpg',131); step(0,'https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603d3b9aaaa98_14_thumb.jpg','thumbnail_uhw2D_1614625817',131);" style="border:1px #CCCCCC solid">
-            <a href="https://www.liveleak.com/view?t=uhw2D_1614625817">
+           <div class="col-xs-12 pad_none featured_items_outer" style="border:1px #CCCCCC solid">
+            <a href="https://www.liveleak.com/view?t=CV8Ew_1614950041">
              <div class="col-sm-3 col-md-3 col-xs-5 pad_none featured_items_pic">
-              <img alt="Herd Avoid Landslide " id="thumbnail_uhw2D_1614625817" src="https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603d3b9aaaa98_14_thumb.jpg"/>
+              <img alt="Helicopter crashes after engine failure" id="thumbnail_CV8Ew_1614950041" src="https://cdn3.liveleak.com/2021/Mar/5/LiveLeak-dot-com-60422e64e908f_thumb.jpg"/>
               <div class="pg_text">
                GA
               </div>
@@ -666,43 +666,43 @@ var animationRequest;
             </a>
             <div class="col-sm-9 col-md-9 col-xs-7 pad_none featured_items_right" style="height: 100px; overflow:hidden;">
              <h3>
-              <span class="hidden-xs" name="rate_thing_container[uhw2D_1614625817]">
+              <span class="hidden-xs" name="rate_thing_container[CV8Ew_1614950041]">
                <samp class="arrow_top">
                 <i aria-hidden="true" class="fa fa-angle-up rate_thing uprate">
                 </i>
                </samp>
                <samp class="text_center_con thing_score">
-                42
+                539
                </samp>
                <samp class="arrow_bottom">
                 <i aria-hidden="true" class="fa fa-angle-down rate_thing downrate">
                 </i>
                </samp>
               </span>
-              <a href="https://www.liveleak.com/view?t=uhw2D_1614625817" title="Herd Avoid Landslide ">
-               Herd Avoid Landslide
+              <a href="https://www.liveleak.com/view?t=CV8Ew_1614950041" title="Helicopter crashes after engine failure">
+               Helicopter crashes after engine failure
               </a>
              </h3>
              <p>
-              Mostly saved
+              Oops... pilot has some explaining to do
              </p>
              <div class="col-xs-12 pad_none featured_text_con">
               By:
-              <a href="https://www.liveleak.com/c/2415elcapitan">
-               2415elcapitan
+              <a href="https://www.liveleak.com/c/planestrainsautomobiles">
+               planestrainsautomobiles
               </a>
-              (18292.90) | Leaked: one day ago in:
-              <a href="https://www.liveleak.com/c/2415elcapitan">
-               2415elcapitan
+              (9752.94) | Leaked: 2 days ago in:
+              <a href="https://www.liveleak.com/c/planestrainsautomobiles">
+               planestrainsautomobiles
               </a>
-              | Views: 38037
+              | Views: 84479
              </div>
             </div>
            </div>
-           <div class="col-xs-12 pad_none featured_items_outer" onmouseout="cancelAnimationFrame(animationRequest);" onmouseover="load_images('https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603ca95f21eb3_4_thumb.jpg',45); step(0,'https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603ca95f21eb3_4_thumb.jpg','thumbnail_999Lp_1614588124',45);" style="border:1px #CCCCCC solid">
-            <a href="https://www.liveleak.com/view?t=999Lp_1614588124">
+           <div class="col-xs-12 pad_none featured_items_outer" onmouseout="cancelAnimationFrame(animationRequest);" onmouseover="load_images('https://cdn3.liveleak.com/2021/Mar/6/LiveLeak-dot-com-60437fa67b3b5_4_thumb.jpg',76); step(0,'https://cdn3.liveleak.com/2021/Mar/6/LiveLeak-dot-com-60437fa67b3b5_4_thumb.jpg','thumbnail_uxJXx_1615036395',76);" style="border:1px #CCCCCC solid">
+            <a href="https://www.liveleak.com/view?t=uxJXx_1615036395">
              <div class="col-sm-3 col-md-3 col-xs-5 pad_none featured_items_pic">
-              <img alt="Rocks crash down mountain into houses, killing one resident in southern China" id="thumbnail_999Lp_1614588124" src="https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603ca95f21eb3_4_thumb.jpg"/>
+              <img alt="Frozen dear Face in ice Kazakhstan" id="thumbnail_uxJXx_1615036395" src="https://cdn3.liveleak.com/2021/Mar/6/LiveLeak-dot-com-60437fa67b3b5_4_thumb.jpg"/>
               <div class="pg_text">
                GA
               </div>
@@ -710,44 +710,43 @@ var animationRequest;
             </a>
             <div class="col-sm-9 col-md-9 col-xs-7 pad_none featured_items_right" style="height: 100px; overflow:hidden;">
              <h3>
-              <span class="hidden-xs" name="rate_thing_container[999Lp_1614588124]">
+              <span class="hidden-xs" name="rate_thing_container[uxJXx_1615036395]">
                <samp class="arrow_top">
                 <i aria-hidden="true" class="fa fa-angle-up rate_thing uprate">
                 </i>
                </samp>
                <samp class="text_center_con thing_score">
-                65
+                263
                </samp>
                <samp class="arrow_bottom">
                 <i aria-hidden="true" class="fa fa-angle-down rate_thing downrate">
                 </i>
                </samp>
               </span>
-              <a href="https://www.liveleak.com/view?t=999Lp_1614588124" title="Rocks crash down mountain into houses, killing one resident in southern China">
-               Rocks crash down mountain into houses, kill..
+              <a href="https://www.liveleak.com/view?t=uxJXx_1615036395" title="Frozen dear Face in ice Kazakhstan">
+               Frozen dear Face in ice Kazakhstan
               </a>
              </h3>
              <p>
-              Rocks crashed down a mountain killing one person after hitting several..
              </p>
              <div class="col-xs-12 pad_none featured_text_con">
               By:
-              <a href="https://www.liveleak.com/c/NewsFlare">
-               NewsFlare
+              <a href="https://www.liveleak.com/c/DEADM4N">
+               DEADM4N
               </a>
-              (110082.00) | Leaked: one day ago in:
-              <a href="https://www.liveleak.com/c/NewsFlare">
-               NewsFlare
+              (61.10) | Leaked: one day ago in:
+              <a href="https://www.liveleak.com/c/DEADM4N">
+               DEADM4N
               </a>
-              | Views: 91456 | 
+              | Views: 70848 | 
 Location:
              </div>
             </div>
            </div>
-           <div class="col-xs-12 pad_none featured_items_outer" onmouseout="cancelAnimationFrame(animationRequest);" onmouseover="load_images('https://cdn3.liveleak.com/2021/Feb/27/LiveLeak-dot-com-603a9fe2581a8_3_thumb.jpg',33); step(0,'https://cdn3.liveleak.com/2021/Feb/27/LiveLeak-dot-com-603a9fe2581a8_3_thumb.jpg','thumbnail_9uOFs_1614454752',33);" style="border:1px #CCCCCC solid">
-            <a href="https://www.liveleak.com/view?t=9uOFs_1614454752">
+           <div class="col-xs-12 pad_none featured_items_outer" onmouseout="cancelAnimationFrame(animationRequest);" onmouseover="load_images('https://cdn3.liveleak.com/2021/Mar/4/LiveLeak-dot-com-604162efe0b0e_16_thumb.jpg',37); step(0,'https://cdn3.liveleak.com/2021/Mar/4/LiveLeak-dot-com-604162efe0b0e_16_thumb.jpg','thumbnail_FgxZ_1614897922',37);" style="border:1px #CCCCCC solid">
+            <a href="https://www.liveleak.com/view?t=FgxZ_1614897922">
              <div class="col-sm-3 col-md-3 col-xs-5 pad_none featured_items_pic">
-              <img alt="Miracles Happen? " id="thumbnail_9uOFs_1614454752" src="https://cdn3.liveleak.com/2021/Feb/27/LiveLeak-dot-com-603a9fe2581a8_3_thumb.jpg"/>
+              <img alt="*BIG GIRL* vs *SMALL BIKE*" id="thumbnail_FgxZ_1614897922" src="https://cdn3.liveleak.com/2021/Mar/4/LiveLeak-dot-com-604162efe0b0e_16_thumb.jpg"/>
               <div class="pg_text">
                PG
               </div>
@@ -755,36 +754,36 @@ Location:
             </a>
             <div class="col-sm-9 col-md-9 col-xs-7 pad_none featured_items_right" style="height: 100px; overflow:hidden;">
              <h3>
-              <span class="hidden-xs" name="rate_thing_container[9uOFs_1614454752]">
+              <span class="hidden-xs" name="rate_thing_container[FgxZ_1614897922]">
                <samp class="arrow_top">
                 <i aria-hidden="true" class="fa fa-angle-up rate_thing uprate">
                 </i>
                </samp>
                <samp class="text_center_con thing_score">
-                25
+                650
                </samp>
                <samp class="arrow_bottom">
                 <i aria-hidden="true" class="fa fa-angle-down rate_thing downrate">
                 </i>
                </samp>
               </span>
-              <a href="https://www.liveleak.com/view?t=9uOFs_1614454752" title="Miracles Happen? ">
-               Miracles Happen?
+              <a href="https://www.liveleak.com/view?t=FgxZ_1614897922" title="*BIG GIRL* vs *SMALL BIKE*">
+               *BIG GIRL* vs *SMALL BIKE*
               </a>
              </h3>
              <p>
-              Mom and kids are all safe
+              What could go wrong?
              </p>
              <div class="col-xs-12 pad_none featured_text_con">
               By:
-              <a href="https://www.liveleak.com/c/2415elcapitan">
-               2415elcapitan
+              <a href="https://www.liveleak.com/c/funkdelux121">
+               funkdelux121
               </a>
-              (18292.90) | Leaked: 3 days ago in:
-              <a href="https://www.liveleak.com/c/2415elcapitan">
-               2415elcapitan
+              (10748.10) | Leaked: 3 days ago in:
+              <a href="https://www.liveleak.com/c/funkdelux121">
+               funkdelux121
               </a>
-              | Views: 83887
+              | Views: 181807
              </div>
             </div>
            </div>
@@ -796,49 +795,49 @@ Location:
         <!--TABINATION END-->
         <!--FEATURED ITEMS START-->
         <script>
-         var animationDuration = 2500;
-var timeWhenLastUpdate;
-var timeFromLastUpdate;
-var frameNumber = 1;
-var animationRequest;
-
- function load_images(thumbnail_url,totalFrames)
- {
-	if(totalFrames>15)totalFrames = 15;
-	 
-	for (var i = 1; i < totalFrames + 1; i++)
-	{
-       thumbnail_url = thumbnail_url.replace(/_[0-9]+_thumb/g, '_'+i+'_thumb');
-	   $('body').append('<div id="preload-image-'+i+'" style="background-image: url(\''+thumbnail_url+'\');"></div>');
-	   
-    } 
-	 
- }
-		  
- function step(startTime,thumbnail_url,id,totalFrames) {
-	 
-  if(totalFrames>15)totalFrames = 15;
-  
-  var timePerFrame = animationDuration / totalFrames;
-	 
-  if (!timeWhenLastUpdate) timeWhenLastUpdate = startTime;
-
-  timeFromLastUpdate = startTime - timeWhenLastUpdate;
-     
-  thumbnail_url = thumbnail_url.replace(/_[0-9]+_thumb/g, '_'+frameNumber+'_thumb');
-
-  if (timeFromLastUpdate > timePerFrame) {
-    $('#'+id).attr('src', thumbnail_url);
-    timeWhenLastUpdate = startTime;
-
-    if (frameNumber >= totalFrames) {
-      frameNumber = 1;
-    } else {
-       frameNumber = frameNumber + 1;
-    }        
-  }
-
-  animationRequest = requestAnimationFrame(function(startTime){step(startTime,thumbnail_url,id,totalFrames)});
+         var animationDuration = 2500;
+var timeWhenLastUpdate;
+var timeFromLastUpdate;
+var frameNumber = 1;
+var animationRequest;
+
+ function load_images(thumbnail_url,totalFrames)
+ {
+	if(totalFrames>15)totalFrames = 15;
+	 
+	for (var i = 1; i < totalFrames + 1; i++)
+	{
+       thumbnail_url = thumbnail_url.replace(/_[0-9]+_thumb/g, '_'+i+'_thumb');
+	   $('body').append('<div id="preload-image-'+i+'" style="background-image: url(\''+thumbnail_url+'\');"></div>');
+	   
+    } 
+	 
+ }
+		  
+ function step(startTime,thumbnail_url,id,totalFrames) {
+	 
+  if(totalFrames>15)totalFrames = 15;
+  
+  var timePerFrame = animationDuration / totalFrames;
+	 
+  if (!timeWhenLastUpdate) timeWhenLastUpdate = startTime;
+
+  timeFromLastUpdate = startTime - timeWhenLastUpdate;
+     
+  thumbnail_url = thumbnail_url.replace(/_[0-9]+_thumb/g, '_'+frameNumber+'_thumb');
+
+  if (timeFromLastUpdate > timePerFrame) {
+    $('#'+id).attr('src', thumbnail_url);
+    timeWhenLastUpdate = startTime;
+
+    if (frameNumber >= totalFrames) {
+      frameNumber = 1;
+    } else {
+       frameNumber = frameNumber + 1;
+    }        
+  }
+
+  animationRequest = requestAnimationFrame(function(startTime){step(startTime,thumbnail_url,id,totalFrames)});
 }
         </script>
         <!--THREAD LIST START-->
@@ -848,10 +847,10 @@ var animationRequest;
            Featured
           </h2>
          </div>
-         <div class="col-xs-12 pad_none featured_items_outer" onmouseout="cancelAnimationFrame(animationRequest);" onmouseover="load_images('https://cdn3.liveleak.com/2021/Mar/2/LiveLeak-dot-com-603e693590fc2_4_thumb.jpg',32); step(0,'https://cdn3.liveleak.com/2021/Mar/2/LiveLeak-dot-com-603e693590fc2_4_thumb.jpg','thumbnail_aFQNb_1614702945',32);">
-          <a href="https://www.liveleak.com/view?t=aFQNb_1614702945">
+         <div class="col-xs-12 pad_none featured_items_outer" onmouseout="cancelAnimationFrame(animationRequest);" onmouseover="load_images('https://cdn3.liveleak.com/2021/Mar/7/LiveLeak-dot-com-604578bf3eabb_4_thumb.jpg',39); step(0,'https://cdn3.liveleak.com/2021/Mar/7/LiveLeak-dot-com-604578bf3eabb_4_thumb.jpg','thumbnail_kNJQL_1615165832',39);">
+          <a href="https://www.liveleak.com/view?t=kNJQL_1615165832">
            <div class="col-sm-3 col-md-3 col-xs-5 pad_none featured_items_pic">
-            <img alt="Moroccans save three from certain death" id="thumbnail_aFQNb_1614702945" src="https://cdn3.liveleak.com/2021/Mar/2/LiveLeak-dot-com-603e693590fc2_4_thumb.jpg"/>
+            <img alt="Political Props: COVID Mask Burning Parents Drag the Kids Into the Mix" id="thumbnail_kNJQL_1615165832" src="https://cdn3.liveleak.com/2021/Mar/7/LiveLeak-dot-com-604578bf3eabb_4_thumb.jpg"/>
             <div class="pg_text">
              GA
             </div>
@@ -859,400 +858,44 @@ var animationRequest;
           </a>
           <div class="col-sm-9 col-md-9 col-xs-7 pad_none featured_items_right" style="height: 100px; overflow:hidden;">
            <h3>
-            <span class="hidden-xs" name="rate_thing_container[aFQNb_1614702945]">
+            <span class="hidden-xs" name="rate_thing_container[kNJQL_1615165832]">
              <samp class="arrow_top">
               <i aria-hidden="true" class="fa fa-angle-up rate_thing uprate">
               </i>
              </samp>
              <samp class="text_center_con thing_score">
-              40
+              16
              </samp>
              <samp class="arrow_bottom">
               <i aria-hidden="true" class="fa fa-angle-down rate_thing downrate">
               </i>
              </samp>
             </span>
-            <a href="https://www.liveleak.com/view?t=aFQNb_1614702945" title="Moroccans save three from certain death">
-             Moroccans save three from certain death
+            <a href="https://www.liveleak.com/view?t=kNJQL_1615165832" title="Political Props: COVID Mask Burning Parents Drag the Kids Into the Mix">
+             Political Props: COVID Mask Burning Parents..
             </a>
            </h3>
            <p>
-            Flooding on Monday in Tetouan, Morocco
+            Boise, ID -- Parents in Idaho brought their children to the state's Ca..
            </p>
            <div class="col-xs-12 pad_none featured_text_con">
             By:
-            <a href="https://www.liveleak.com/c/UKnowImRight">
-             UKnowImRight
+            <a href="https://www.liveleak.com/c/Low_UFO">
+             Low UFO
             </a>
-            (6916.50) | Leaked: 8 hours ago in:
-            <a href="https://www.liveleak.com/c/UKnowImRight">
-             UKnowImRight
+            (5509.50) | Leaked: 6 hours ago in:
+            <a href="https://www.liveleak.com/c/Low_UFO">
+             Low UFO
             </a>
-            | Views: 13300 | 
+            | Views: 1643 | 
 Location:
            </div>
           </div>
          </div>
-         <div class="col-xs-12 pad_none featured_items_outer" onmouseout="cancelAnimationFrame(animationRequest);" onmouseover="load_images('https://cdn3.liveleak.com/2021/Mar/2/LiveLeak-dot-com-603e49f5df24a_5_thumb.jpg',34); step(0,'https://cdn3.liveleak.com/2021/Mar/2/LiveLeak-dot-com-603e49f5df24a_5_thumb.jpg','thumbnail_97hXC_1614694863',34);">
-          <a href="https://www.liveleak.com/view?t=97hXC_1614694863">
+         <div class="col-xs-12 pad_none featured_items_outer" onmouseout="cancelAnimationFrame(animationRequest);" onmouseover="load_images('https://cdn3.liveleak.com/2021/Mar/7/LiveLeak-dot-com-60457bfb9562e_19_thumb.jpg',42); step(0,'https://cdn3.liveleak.com/2021/Mar/7/LiveLeak-dot-com-60457bfb9562e_19_thumb.jpg','thumbnail_98rki_1615166463',42);">
+          <a href="https://www.liveleak.com/view?t=98rki_1615166463">
            <div class="col-sm-3 col-md-3 col-xs-5 pad_none featured_items_pic">
-            <img alt="Giant wasp nest almost 2 metres long found in abandoned workshop in southern China" id="thumbnail_97hXC_1614694863" src="https://cdn3.liveleak.com/2021/Mar/2/LiveLeak-dot-com-603e49f5df24a_5_thumb.jpg"/>
-            <div class="pg_text">
-             GA
-            </div>
-           </div>
-          </a>
-          <div class="col-sm-9 col-md-9 col-xs-7 pad_none featured_items_right" style="height: 100px; overflow:hidden;">
-           <h3>
-            <span class="hidden-xs" name="rate_thing_container[97hXC_1614694863]">
-             <samp class="arrow_top">
-              <i aria-hidden="true" class="fa fa-angle-up rate_thing uprate">
-              </i>
-             </samp>
-             <samp class="text_center_con thing_score">
-              20
-             </samp>
-             <samp class="arrow_bottom">
-              <i aria-hidden="true" class="fa fa-angle-down rate_thing downrate">
-              </i>
-             </samp>
-            </span>
-            <a href="https://www.liveleak.com/view?t=97hXC_1614694863" title="Giant wasp nest almost 2 metres long found in abandoned workshop in southern China">
-             Giant wasp nest almost 2 metres long found ..
-            </a>
-           </h3>
-           <p>
-            A 1.7-metre-long wasp nest was spotted in an abandoned workshop in sou..
-           </p>
-           <div class="col-xs-12 pad_none featured_text_con">
-            By:
-            <a href="https://www.liveleak.com/c/NewsFlare">
-             NewsFlare
-            </a>
-            (110082.00) | Leaked: 10 hours ago in:
-            <a href="https://www.liveleak.com/c/NewsFlare">
-             NewsFlare
-            </a>
-            | Views: 17238 | 
-Location:
-           </div>
-          </div>
-         </div>
-         <div class="col-xs-12 pad_none featured_items_outer" onmouseout="cancelAnimationFrame(animationRequest);" onmouseover="load_images('https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603da5a9ecab7_26_thumb.jpg',36); step(0,'https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603da5a9ecab7_26_thumb.jpg','thumbnail_sm3yQ_1614652054',36);">
-          <a href="https://www.liveleak.com/view?t=sm3yQ_1614652054">
-           <div class="col-sm-3 col-md-3 col-xs-5 pad_none featured_items_pic">
-            <img alt="It’s a frog eat bird world out there" id="thumbnail_sm3yQ_1614652054" src="https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603da5a9ecab7_26_thumb.jpg"/>
-            <div class="pg_text">
-             GA
-            </div>
-           </div>
-          </a>
-          <div class="col-sm-9 col-md-9 col-xs-7 pad_none featured_items_right" style="height: 100px; overflow:hidden;">
-           <h3>
-            <span class="hidden-xs" name="rate_thing_container[sm3yQ_1614652054]">
-             <samp class="arrow_top">
-              <i aria-hidden="true" class="fa fa-angle-up rate_thing uprate">
-              </i>
-             </samp>
-             <samp class="text_center_con thing_score">
-              85
-             </samp>
-             <samp class="arrow_bottom">
-              <i aria-hidden="true" class="fa fa-angle-down rate_thing downrate">
-              </i>
-             </samp>
-            </span>
-            <a href="https://www.liveleak.com/view?t=sm3yQ_1614652054" title="It’s a frog eat bird world out there">
-             It’s a frog eat bird world out there
-            </a>
-           </h3>
-           <p>
-            An unusual event.
-           </p>
-           <div class="col-xs-12 pad_none featured_text_con">
-            By:
-            <a href="https://www.liveleak.com/c/UKnowImRight">
-             UKnowImRight
-            </a>
-            (6916.50) | Leaked: 22 hours ago in:
-            <a href="https://www.liveleak.com/c/UKnowImRight">
-             UKnowImRight
-            </a>
-            | Views: 37233
-           </div>
-          </div>
-         </div>
-         <div class="col-xs-12 pad_none featured_items_outer" onmouseout="cancelAnimationFrame(animationRequest);" onmouseover="load_images('https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603d8a7b03db5_4_thumb.jpg',15); step(0,'https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603d8a7b03db5_4_thumb.jpg','thumbnail_k5PFL_1614645878',15);">
-          <a href="https://www.liveleak.com/view?t=k5PFL_1614645878">
-           <div class="col-sm-3 col-md-3 col-xs-5 pad_none featured_items_pic">
-            <img alt="Wish sorting facility?" id="thumbnail_k5PFL_1614645878" src="https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603d8a7b03db5_4_thumb.jpg"/>
-            <div class="pg_text">
-             GA
-            </div>
-           </div>
-          </a>
-          <div class="col-sm-9 col-md-9 col-xs-7 pad_none featured_items_right" style="height: 100px; overflow:hidden;">
-           <h3>
-            <span class="hidden-xs" name="rate_thing_container[k5PFL_1614645878]">
-             <samp class="arrow_top">
-              <i aria-hidden="true" class="fa fa-angle-up rate_thing uprate">
-              </i>
-             </samp>
-             <samp class="text_center_con thing_score">
-              75
-             </samp>
-             <samp class="arrow_bottom">
-              <i aria-hidden="true" class="fa fa-angle-down rate_thing downrate">
-              </i>
-             </samp>
-            </span>
-            <a href="https://www.liveleak.com/view?t=k5PFL_1614645878" title="Wish sorting facility?">
-             Wish sorting facility?
-            </a>
-           </h3>
-           <p>
-           </p>
-           <div class="col-xs-12 pad_none featured_text_con">
-            By:
-            <a href="https://www.liveleak.com/c/UKnowImRight">
-             UKnowImRight
-            </a>
-            (6916.50) | Leaked: one day ago in:
-            <a href="https://www.liveleak.com/c/UKnowImRight">
-             UKnowImRight
-            </a>
-            | Views: 23498
-           </div>
-          </div>
-         </div>
-         <div class="col-xs-12 pad_none featured_items_outer" onmouseout="cancelAnimationFrame(animationRequest);" onmouseover="load_images('https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603da6f6dedce_68_thumb.jpg',68); step(0,'https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603da6f6dedce_68_thumb.jpg','thumbnail_kChbz_1614653195',68);">
-          <a href="https://www.liveleak.com/view?t=kChbz_1614653195">
-           <div class="col-sm-3 col-md-3 col-xs-5 pad_none featured_items_pic">
-            <img alt="Sneaky Perfect Crimes " id="thumbnail_kChbz_1614653195" src="https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603da6f6dedce_68_thumb.jpg"/>
-            <div class="pg_text">
-             GA
-            </div>
-           </div>
-          </a>
-          <div class="col-sm-9 col-md-9 col-xs-7 pad_none featured_items_right" style="height: 100px; overflow:hidden;">
-           <h3>
-            <span class="hidden-xs" name="rate_thing_container[kChbz_1614653195]">
-             <samp class="arrow_top">
-              <i aria-hidden="true" class="fa fa-angle-up rate_thing uprate">
-              </i>
-             </samp>
-             <samp class="text_center_con thing_score">
-              32
-             </samp>
-             <samp class="arrow_bottom">
-              <i aria-hidden="true" class="fa fa-angle-down rate_thing downrate">
-              </i>
-             </samp>
-            </span>
-            <a href="https://www.liveleak.com/view?t=kChbz_1614653195" title="Sneaky Perfect Crimes ">
-             Sneaky Perfect Crimes
-            </a>
-           </h3>
-           <p>
-            Almost perfect, camera was on
-           </p>
-           <div class="col-xs-12 pad_none featured_text_con">
-            By:
-            <a href="https://www.liveleak.com/c/2415elcapitan">
-             2415elcapitan
-            </a>
-            (18292.90) | Leaked: 22 hours ago in:
-            <a href="https://www.liveleak.com/c/2415elcapitan">
-             2415elcapitan
-            </a>
-            | Views: 34163
-           </div>
-          </div>
-         </div>
-         <div class="col-xs-12 pad_none featured_items_outer" onmouseout="cancelAnimationFrame(animationRequest);" onmouseover="load_images('https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603d1a8fd3b00_8_thumb.jpg',113); step(0,'https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603d1a8fd3b00_8_thumb.jpg','thumbnail_7liw_1614616923',113);">
-          <a href="https://www.liveleak.com/view?t=7liw_1614616923">
-           <div class="col-sm-3 col-md-3 col-xs-5 pad_none featured_items_pic">
-            <img alt="Quick-thinking driver avoids out-of-control pickup truck hurtling towards her" id="thumbnail_7liw_1614616923" src="https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603d1a8fd3b00_8_thumb.jpg"/>
-            <div class="pg_text">
-             GA
-            </div>
-           </div>
-          </a>
-          <div class="col-sm-9 col-md-9 col-xs-7 pad_none featured_items_right" style="height: 100px; overflow:hidden;">
-           <h3>
-            <span class="hidden-xs" name="rate_thing_container[7liw_1614616923]">
-             <samp class="arrow_top">
-              <i aria-hidden="true" class="fa fa-angle-up rate_thing uprate">
-              </i>
-             </samp>
-             <samp class="text_center_con thing_score">
-              102
-             </samp>
-             <samp class="arrow_bottom">
-              <i aria-hidden="true" class="fa fa-angle-down rate_thing downrate">
-              </i>
-             </samp>
-            </span>
-            <a href="https://www.liveleak.com/view?t=7liw_1614616923" title="Quick-thinking driver avoids out-of-control pickup truck hurtling towards her">
-             Quick-thinking driver avoids out-of-control..
-            </a>
-           </h3>
-           <p>
-            A quick-thinking driver accelerated onto a central island to dodge a s..
-           </p>
-           <div class="col-xs-12 pad_none featured_text_con">
-            By:
-            <a href="https://www.liveleak.com/c/NewsFlare">
-             NewsFlare
-            </a>
-            (110082.00) | Leaked: one day ago in:
-            <a href="https://www.liveleak.com/c/NewsFlare">
-             NewsFlare
-            </a>
-            | Views: 17267 | 
-Location:
-           </div>
-          </div>
-         </div>
-         <div class="col-xs-12 pad_none featured_items_outer" onmouseout="cancelAnimationFrame(animationRequest);" onmouseover="load_images('https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603d1a462c084_5_thumb.jpg',22); step(0,'https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603d1a462c084_5_thumb.jpg','thumbnail_98VJ8_1614616923',22);">
-          <a href="https://www.liveleak.com/view?t=98VJ8_1614616923">
-           <div class="col-sm-3 col-md-3 col-xs-5 pad_none featured_items_pic">
-            <img alt="Squirrel tries to eat off a bird feeder but hilariously gets stuck spinning in circles" id="thumbnail_98VJ8_1614616923" src="https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603d1a462c084_5_thumb.jpg"/>
-            <div class="pg_text">
-             GA
-            </div>
-           </div>
-          </a>
-          <div class="col-sm-9 col-md-9 col-xs-7 pad_none featured_items_right" style="height: 100px; overflow:hidden;">
-           <h3>
-            <span class="hidden-xs" name="rate_thing_container[98VJ8_1614616923]">
-             <samp class="arrow_top">
-              <i aria-hidden="true" class="fa fa-angle-up rate_thing uprate">
-              </i>
-             </samp>
-             <samp class="text_center_con thing_score">
-              -20
-             </samp>
-             <samp class="arrow_bottom">
-              <i aria-hidden="true" class="fa fa-angle-down rate_thing downrate">
-              </i>
-             </samp>
-            </span>
-            <a href="https://www.liveleak.com/view?t=98VJ8_1614616923" title="Squirrel tries to eat off a bird feeder but hilariously gets stuck spinning in circles">
-             Squirrel tries to eat off a bird feeder but..
-            </a>
-           </h3>
-           <p>
-            While trying to eat off a bird feeder, this cheeky squirrel in Haddonf..
-           </p>
-           <div class="col-xs-12 pad_none featured_text_con">
-            By:
-            <a href="https://www.liveleak.com/c/NewsFlare">
-             NewsFlare
-            </a>
-            (110082.00) | Leaked: one day ago in:
-            <a href="https://www.liveleak.com/c/NewsFlare">
-             NewsFlare
-            </a>
-            | Views: 20429 | 
-Location:
-           </div>
-          </div>
-         </div>
-         <div class="col-xs-12 pad_none featured_items_outer" onmouseout="cancelAnimationFrame(animationRequest);" onmouseover="load_images('https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603cdc8f3f34d_4_thumb.jpg',173); step(0,'https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603cdc8f3f34d_4_thumb.jpg','thumbnail_9qWSr_1614601262',173);">
-          <a href="https://www.liveleak.com/view?t=9qWSr_1614601262">
-           <div class="col-sm-3 col-md-3 col-xs-5 pad_none featured_items_pic">
-            <img alt="Vietnam motorcyclist builds 300kg 'Beast' covered with accessories" id="thumbnail_9qWSr_1614601262" src="https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603cdc8f3f34d_4_thumb.jpg"/>
-            <div class="pg_text">
-             GA
-            </div>
-           </div>
-          </a>
-          <div class="col-sm-9 col-md-9 col-xs-7 pad_none featured_items_right" style="height: 100px; overflow:hidden;">
-           <h3>
-            <span class="hidden-xs" name="rate_thing_container[9qWSr_1614601262]">
-             <samp class="arrow_top">
-              <i aria-hidden="true" class="fa fa-angle-up rate_thing uprate">
-              </i>
-             </samp>
-             <samp class="text_center_con thing_score">
-              55
-             </samp>
-             <samp class="arrow_bottom">
-              <i aria-hidden="true" class="fa fa-angle-down rate_thing downrate">
-              </i>
-             </samp>
-            </span>
-            <a href="https://www.liveleak.com/view?t=9qWSr_1614601262" title="Vietnam motorcyclist builds 300kg 'Beast' covered with accessories">
-             Vietnam motorcyclist builds 300kg 'Beast' c..
-            </a>
-           </h3>
-           <p>
-            A motorcyclist in Ho Chi Minh City built his own custom ride, dubbed &amp;..
-           </p>
-           <div class="col-xs-12 pad_none featured_text_con">
-            By:
-            <a href="https://www.liveleak.com/c/NewsFlare">
-             NewsFlare
-            </a>
-            (110082.00) | Leaked: one day ago in:
-            <a href="https://www.liveleak.com/c/NewsFlare">
-             NewsFlare
-            </a>
-            | Views: 20336 | 
-Location:
-           </div>
-          </div>
-         </div>
-         <div class="col-xs-12 pad_none featured_items_outer" onmouseout="cancelAnimationFrame(animationRequest);" onmouseover="load_images('https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603cc560d712b_6_thumb.jpg',183); step(0,'https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603cc560d712b_6_thumb.jpg','thumbnail_awUpH_1614595322',183);">
-          <a href="https://www.liveleak.com/view?t=awUpH_1614595322">
-           <div class="col-sm-3 col-md-3 col-xs-5 pad_none featured_items_pic">
-            <img alt="Deadly cobra injured by bird snare gets help in eastern India" id="thumbnail_awUpH_1614595322" src="https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603cc560d712b_6_thumb.jpg"/>
-            <div class="pg_text">
-             GA
-            </div>
-           </div>
-          </a>
-          <div class="col-sm-9 col-md-9 col-xs-7 pad_none featured_items_right" style="height: 100px; overflow:hidden;">
-           <h3>
-            <span class="hidden-xs" name="rate_thing_container[awUpH_1614595322]">
-             <samp class="arrow_top">
-              <i aria-hidden="true" class="fa fa-angle-up rate_thing uprate">
-              </i>
-             </samp>
-             <samp class="text_center_con thing_score">
-              -27
-             </samp>
-             <samp class="arrow_bottom">
-              <i aria-hidden="true" class="fa fa-angle-down rate_thing downrate">
-              </i>
-             </samp>
-            </span>
-            <a href="https://www.liveleak.com/view?t=awUpH_1614595322" title="Deadly cobra injured by bird snare gets help in eastern India">
-             Deadly cobra injured by bird snare gets hel..
-            </a>
-           </h3>
-           <p>
-            A five-foot-long monocled cobra got trapped in a snare meant for trapp..
-           </p>
-           <div class="col-xs-12 pad_none featured_text_con">
-            By:
-            <a href="https://www.liveleak.com/c/NewsFlare">
-             NewsFlare
-            </a>
-            (110082.00) | Leaked: one day ago in:
-            <a href="https://www.liveleak.com/c/NewsFlare">
-             NewsFlare
-            </a>
-            | Views: 17670 | 
-Location:
-           </div>
-          </div>
-         </div>
-         <div class="col-xs-12 pad_none featured_items_outer" onmouseout="cancelAnimationFrame(animationRequest);" onmouseover="load_images('https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603d79b02c946_8_thumb.jpg',13); step(0,'https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603d79b02c946_8_thumb.jpg','thumbnail_9Y2Qu_1614641371',13);">
-          <a href="https://www.liveleak.com/view?t=9Y2Qu_1614641371">
-           <div class="col-sm-3 col-md-3 col-xs-5 pad_none featured_items_pic">
-            <img alt="Spintastic" id="thumbnail_9Y2Qu_1614641371" src="https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603d79b02c946_8_thumb.jpg"/>
+            <img alt="Anorexia: How The World Views Her vs How She Views Herself" id="thumbnail_98rki_1615166463" src="https://cdn3.liveleak.com/2021/Mar/7/LiveLeak-dot-com-60457bfb9562e_19_thumb.jpg"/>
             <div class="pg_text">
              PG
             </div>
@@ -1260,43 +903,269 @@ Location:
           </a>
           <div class="col-sm-9 col-md-9 col-xs-7 pad_none featured_items_right" style="height: 100px; overflow:hidden;">
            <h3>
-            <span class="hidden-xs" name="rate_thing_container[9Y2Qu_1614641371]">
+            <span class="hidden-xs" name="rate_thing_container[98rki_1615166463]">
              <samp class="arrow_top">
               <i aria-hidden="true" class="fa fa-angle-up rate_thing uprate">
               </i>
              </samp>
              <samp class="text_center_con thing_score">
-              109
+              58
              </samp>
              <samp class="arrow_bottom">
               <i aria-hidden="true" class="fa fa-angle-down rate_thing downrate">
               </i>
              </samp>
             </span>
-            <a href="https://www.liveleak.com/view?t=9Y2Qu_1614641371" title="Spintastic">
-             Spintastic
+            <a href="https://www.liveleak.com/view?t=98rki_1615166463" title="Anorexia: How The World Views Her vs How She Views Herself">
+             Anorexia: How The World Views Her vs How Sh..
             </a>
            </h3>
            <p>
-            Fun at the fair.
+            Anorexia, while classified as an eating disorder, it is actually menta..
            </p>
            <div class="col-xs-12 pad_none featured_text_con">
             By:
-            <a href="https://www.liveleak.com/c/UKnowImRight">
-             UKnowImRight
+            <a href="https://www.liveleak.com/c/Low_UFO">
+             Low UFO
             </a>
-            (6916.50) | Leaked: one day ago in:
-            <a href="https://www.liveleak.com/c/UKnowImRight">
-             UKnowImRight
+            (5509.50) | Leaked: 6 hours ago in:
+            <a href="https://www.liveleak.com/c/Low_UFO">
+             Low UFO
             </a>
-            | Views: 42968
+            | Views: 3472 | 
+Location:
            </div>
           </div>
          </div>
-         <div class="col-xs-12 pad_none featured_items_outer" onmouseout="cancelAnimationFrame(animationRequest);" onmouseover="load_images('https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603d867007acc_3_thumb.jpg',11); step(0,'https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603d867007acc_3_thumb.jpg','thumbnail_khikp_1614644907',11);">
-          <a href="https://www.liveleak.com/view?t=khikp_1614644907">
+         <div class="col-xs-12 pad_none featured_items_outer">
+          <a href="https://www.liveleak.com/view?t=uvFq5_1615165580">
            <div class="col-sm-3 col-md-3 col-xs-5 pad_none featured_items_pic">
-            <img alt="I’d call that close" id="thumbnail_khikp_1614644907" src="https://cdn3.liveleak.com/2021/Mar/1/LiveLeak-dot-com-603d867007acc_3_thumb.jpg"/>
+            <img alt="Passenger Assaults Air France Cabin Crew On A flight to New Delhi" id="thumbnail_uvFq5_1615165580" src="https://cdn3.liveleak.com/2021/Mar/7/LiveLeak-dot-com-6045770a2e48e_thumb.jpg"/>
+            <div class="pg_text">
+             PG
+            </div>
+           </div>
+          </a>
+          <div class="col-sm-9 col-md-9 col-xs-7 pad_none featured_items_right" style="height: 100px; overflow:hidden;">
+           <h3>
+            <span class="hidden-xs" name="rate_thing_container[uvFq5_1615165580]">
+             <samp class="arrow_top">
+              <i aria-hidden="true" class="fa fa-angle-up rate_thing uprate">
+              </i>
+             </samp>
+             <samp class="text_center_con thing_score">
+              18
+             </samp>
+             <samp class="arrow_bottom">
+              <i aria-hidden="true" class="fa fa-angle-down rate_thing downrate">
+              </i>
+             </samp>
+            </span>
+            <a href="https://www.liveleak.com/view?t=uvFq5_1615165580" title="Passenger Assaults Air France Cabin Crew On A flight to New Delhi">
+             Passenger Assaults Air France Cabin Crew On..
+            </a>
+           </h3>
+           <p>
+            An Air France flight en route from Paris to New Delhi made an emergenc..
+           </p>
+           <div class="col-xs-12 pad_none featured_text_con">
+            By:
+            <a href="https://www.liveleak.com/c/martinmax96">
+             martinmax96
+            </a>
+            (4701.90) | Leaked: 6 hours ago in:
+            <a href="https://www.liveleak.com/c/martinmax96">
+             A Trashy Man On Tacky Furniture
+            </a>
+            | Views: 2697 | 
+Location:
+           </div>
+          </div>
+         </div>
+         <div class="col-xs-12 pad_none featured_items_outer" onmouseout="cancelAnimationFrame(animationRequest);" onmouseover="load_images('https://cdn3.liveleak.com/2021/Mar/7/LiveLeak-dot-com-604565afda7a3_4_thumb.jpg',42); step(0,'https://cdn3.liveleak.com/2021/Mar/7/LiveLeak-dot-com-604565afda7a3_4_thumb.jpg','thumbnail_9DA9W_1615160731',42);">
+          <a href="https://www.liveleak.com/view?t=9DA9W_1615160731">
+           <div class="col-sm-3 col-md-3 col-xs-5 pad_none featured_items_pic">
+            <img alt="You Ain't Robbing Me! " id="thumbnail_9DA9W_1615160731" src="https://cdn3.liveleak.com/2021/Mar/7/LiveLeak-dot-com-604565afda7a3_4_thumb.jpg"/>
+            <div class="pg_text">
+             PG
+            </div>
+           </div>
+          </a>
+          <div class="col-sm-9 col-md-9 col-xs-7 pad_none featured_items_right" style="height: 100px; overflow:hidden;">
+           <h3>
+            <span class="hidden-xs" name="rate_thing_container[9DA9W_1615160731]">
+             <samp class="arrow_top">
+              <i aria-hidden="true" class="fa fa-angle-up rate_thing uprate">
+              </i>
+             </samp>
+             <samp class="text_center_con thing_score">
+              18
+             </samp>
+             <samp class="arrow_bottom">
+              <i aria-hidden="true" class="fa fa-angle-down rate_thing downrate">
+              </i>
+             </samp>
+            </span>
+            <a href="https://www.liveleak.com/view?t=9DA9W_1615160731" title="You Ain't Robbing Me! ">
+             You Ain't Robbing Me!
+            </a>
+           </h3>
+           <p>
+            Thief gets a beating
+           </p>
+           <div class="col-xs-12 pad_none featured_text_con">
+            By:
+            <a href="https://www.liveleak.com/c/2415elcapitan">
+             2415elcapitan
+            </a>
+            (18411.70) | Leaked: 8 hours ago in:
+            <a href="https://www.liveleak.com/c/2415elcapitan">
+             2415elcapitan
+            </a>
+            | Views: 3689
+           </div>
+          </div>
+         </div>
+         <div class="col-xs-12 pad_none featured_items_outer">
+          <a href="https://www.liveleak.com/view?t=awWGE_1615151738">
+           <div class="col-sm-3 col-md-3 col-xs-5 pad_none featured_items_pic">
+            <img alt="Bath &amp; Body Blows Scottsdale Arizona fight breaks out between staff and customer" id="thumbnail_awWGE_1615151738" src="https://cdn3.liveleak.com/2021/Mar/7/LiveLeak-dot-com-6045425ad2cb7_thumb.jpg"/>
+            <div class="pg_text">
+             PG
+            </div>
+           </div>
+          </a>
+          <div class="col-sm-9 col-md-9 col-xs-7 pad_none featured_items_right" style="height: 100px; overflow:hidden;">
+           <h3>
+            <span class="hidden-xs" name="rate_thing_container[awWGE_1615151738]">
+             <samp class="arrow_top">
+              <i aria-hidden="true" class="fa fa-angle-up rate_thing uprate">
+              </i>
+             </samp>
+             <samp class="text_center_con thing_score">
+              39
+             </samp>
+             <samp class="arrow_bottom">
+              <i aria-hidden="true" class="fa fa-angle-down rate_thing downrate">
+              </i>
+             </samp>
+            </span>
+            <a href="https://www.liveleak.com/view?t=awWGE_1615151738" title="Bath &amp; Body Blows Scottsdale Arizona fight breaks out between staff and customer">
+             Bath &amp; Body Blows Scottsdale Arizona fi..
+            </a>
+           </h3>
+           <p>
+            Customers and employees rumble in a Bath &amp; Body Works store locate..
+           </p>
+           <div class="col-xs-12 pad_none featured_text_con">
+            By:
+            <a href="https://www.liveleak.com/c/Charlie_Company">
+             Charlie Company
+            </a>
+            (988.70) | Leaked: 10 hours ago in:
+            <a href="https://www.liveleak.com/c/Charlie_Company">
+             Charlie Company
+            </a>
+            | Views: 4402
+           </div>
+          </div>
+         </div>
+         <div class="col-xs-12 pad_none featured_items_outer" onmouseout="cancelAnimationFrame(animationRequest);" onmouseover="load_images('https://cdn3.liveleak.com/2021/Mar/7/LiveLeak-dot-com-6045455f248b3_5_thumb.jpg',70); step(0,'https://cdn3.liveleak.com/2021/Mar/7/LiveLeak-dot-com-6045455f248b3_5_thumb.jpg','thumbnail_kctOQ_1615152677',70);">
+          <a href="https://www.liveleak.com/view?t=kctOQ_1615152677">
+           <div class="col-sm-3 col-md-3 col-xs-5 pad_none featured_items_pic">
+            <img alt="Train Was Too Fast!" id="thumbnail_kctOQ_1615152677" src="https://cdn3.liveleak.com/2021/Mar/7/LiveLeak-dot-com-6045455f248b3_5_thumb.jpg"/>
+            <div class="pg_text">
+             PG
+            </div>
+           </div>
+          </a>
+          <div class="col-sm-9 col-md-9 col-xs-7 pad_none featured_items_right" style="height: 100px; overflow:hidden;">
+           <h3>
+            <span class="hidden-xs" name="rate_thing_container[kctOQ_1615152677]">
+             <samp class="arrow_top">
+              <i aria-hidden="true" class="fa fa-angle-up rate_thing uprate">
+              </i>
+             </samp>
+             <samp class="text_center_con thing_score">
+              9
+             </samp>
+             <samp class="arrow_bottom">
+              <i aria-hidden="true" class="fa fa-angle-down rate_thing downrate">
+              </i>
+             </samp>
+            </span>
+            <a href="https://www.liveleak.com/view?t=kctOQ_1615152677" title="Train Was Too Fast!">
+             Train Was Too Fast!
+            </a>
+           </h3>
+           <p>
+            Train collision with a car killed 8-month-old baby. resent at the scen..
+           </p>
+           <div class="col-xs-12 pad_none featured_text_con">
+            By:
+            <a href="https://www.liveleak.com/c/2415elcapitan">
+             2415elcapitan
+            </a>
+            (18411.70) | Leaked: 10 hours ago in:
+            <a href="https://www.liveleak.com/c/2415elcapitan">
+             2415elcapitan
+            </a>
+            | Views: 3410
+           </div>
+          </div>
+         </div>
+         <div class="col-xs-12 pad_none featured_items_outer">
+          <a href="https://www.liveleak.com/view?t=9MFZt_1615143497">
+           <div class="col-sm-3 col-md-3 col-xs-5 pad_none featured_items_pic">
+            <img alt="'Russian, Syrian missile strikes target militants smuggling oil to Turkey'" id="thumbnail_9MFZt_1615143497" src="https://cdn3.liveleak.com/2021/Mar/7/LiveLeak-dot-com-604522463eb56_thumb.jpg"/>
+            <div class="pg_text">
+             PG
+            </div>
+           </div>
+          </a>
+          <div class="col-sm-9 col-md-9 col-xs-7 pad_none featured_items_right" style="height: 100px; overflow:hidden;">
+           <h3>
+            <span class="hidden-xs" name="rate_thing_container[9MFZt_1615143497]">
+             <samp class="arrow_top">
+              <i aria-hidden="true" class="fa fa-angle-up rate_thing uprate">
+              </i>
+             </samp>
+             <samp class="text_center_con thing_score">
+              12
+             </samp>
+             <samp class="arrow_bottom">
+              <i aria-hidden="true" class="fa fa-angle-down rate_thing downrate">
+              </i>
+             </samp>
+            </span>
+            <a href="https://www.liveleak.com/view?t=9MFZt_1615143497" title="'Russian, Syrian missile strikes target militants smuggling oil to Turkey'">
+             'Russian, Syrian missile strikes target mil..
+            </a>
+           </h3>
+           <p>
+            Russian and Syrian military forces have launched a barrage of missiles..
+           </p>
+           <div class="col-xs-12 pad_none featured_text_con">
+            By:
+            <a href="https://www.liveleak.com/c/PressTV">
+             PressTV
+            </a>
+            (24285.60)
+            <i class="fa fa-star" style="color:#ff0000;" title="Premium user">
+            </i>
+            | Leaked: 13 hours ago in:
+            <a href="https://www.liveleak.com/c/PressTV">
+             PressTV
+            </a>
+            | Views: 2790 | 
+Location:
+           </div>
+          </div>
+         </div>
+         <div class="col-xs-12 pad_none featured_items_outer">
+          <a href="https://www.liveleak.com/view?t=CatJe_1615123641">
+           <div class="col-sm-3 col-md-3 col-xs-5 pad_none featured_items_pic">
+            <img alt="A missing biker" id="thumbnail_CatJe_1615123641" src="https://cdn3.liveleak.com/2021/Mar/7/LiveLeak-dot-com-6044d4621ea35_thumb.jpg"/>
             <div class="pg_text">
              GA
             </div>
@@ -1304,36 +1173,170 @@ Location:
           </a>
           <div class="col-sm-9 col-md-9 col-xs-7 pad_none featured_items_right" style="height: 100px; overflow:hidden;">
            <h3>
-            <span class="hidden-xs" name="rate_thing_container[khikp_1614644907]">
+            <span class="hidden-xs" name="rate_thing_container[CatJe_1615123641]">
              <samp class="arrow_top">
               <i aria-hidden="true" class="fa fa-angle-up rate_thing uprate">
               </i>
              </samp>
              <samp class="text_center_con thing_score">
-              37
+              93
              </samp>
              <samp class="arrow_bottom">
               <i aria-hidden="true" class="fa fa-angle-down rate_thing downrate">
               </i>
              </samp>
             </span>
-            <a href="https://www.liveleak.com/view?t=khikp_1614644907" title="I’d call that close">
-             I’d call that close
+            <a href="https://www.liveleak.com/view?t=CatJe_1615123641" title="A missing biker">
+             A missing biker
             </a>
            </h3>
            <p>
-            Very close.
+            Strange.
            </p>
            <div class="col-xs-12 pad_none featured_text_con">
             By:
             <a href="https://www.liveleak.com/c/UKnowImRight">
              UKnowImRight
             </a>
-            (6916.50) | Leaked: one day ago in:
+            (6970.70) | Leaked: 18 hours ago in:
             <a href="https://www.liveleak.com/c/UKnowImRight">
              UKnowImRight
             </a>
-            | Views: 23468
+            | Views: 24057
+           </div>
+          </div>
+         </div>
+         <div class="col-xs-12 pad_none featured_items_outer" onmouseout="cancelAnimationFrame(animationRequest);" onmouseover="load_images('https://cdn3.liveleak.com/2021/Mar/7/LiveLeak-dot-com-604510fd74a96_7_thumb.jpg',129); step(0,'https://cdn3.liveleak.com/2021/Mar/7/LiveLeak-dot-com-604510fd74a96_7_thumb.jpg','thumbnail_Aqhw_1615138922',129);">
+          <a href="https://www.liveleak.com/view?t=Aqhw_1615138922">
+           <div class="col-sm-3 col-md-3 col-xs-5 pad_none featured_items_pic">
+            <img alt="Crews battle fierce boat fire at port in Indonesia" id="thumbnail_Aqhw_1615138922" src="https://cdn3.liveleak.com/2021/Mar/7/LiveLeak-dot-com-604510fd74a96_7_thumb.jpg"/>
+            <div class="pg_text">
+             GA
+            </div>
+           </div>
+          </a>
+          <div class="col-sm-9 col-md-9 col-xs-7 pad_none featured_items_right" style="height: 100px; overflow:hidden;">
+           <h3>
+            <span class="hidden-xs" name="rate_thing_container[Aqhw_1615138922]">
+             <samp class="arrow_top">
+              <i aria-hidden="true" class="fa fa-angle-up rate_thing uprate">
+              </i>
+             </samp>
+             <samp class="text_center_con thing_score">
+              -14
+             </samp>
+             <samp class="arrow_bottom">
+              <i aria-hidden="true" class="fa fa-angle-down rate_thing downrate">
+              </i>
+             </samp>
+            </span>
+            <a href="https://www.liveleak.com/view?t=Aqhw_1615138922" title="Crews battle fierce boat fire at port in Indonesia">
+             Crews battle fierce boat fire at port in In..
+            </a>
+           </h3>
+           <p>
+            Crews battled a fire on a passenger boat on Sunday evening (March 7) o..
+           </p>
+           <div class="col-xs-12 pad_none featured_text_con">
+            By:
+            <a href="https://www.liveleak.com/c/NewsFlare">
+             NewsFlare
+            </a>
+            (110664.00) | Leaked: 14 hours ago in:
+            <a href="https://www.liveleak.com/c/NewsFlare">
+             NewsFlare
+            </a>
+            | Views: 16617 | 
+Location:
+           </div>
+          </div>
+         </div>
+         <div class="col-xs-12 pad_none featured_items_outer">
+          <a href="https://www.liveleak.com/view?t=sIszk_1615118859">
+           <div class="col-sm-3 col-md-3 col-xs-5 pad_none featured_items_pic">
+            <img alt="A little too far" id="thumbnail_sIszk_1615118859" src="https://cdn3.liveleak.com/2021/Mar/7/LiveLeak-dot-com-6044c1f519d9d_thumb.jpg"/>
+            <div class="pg_text">
+             GA
+            </div>
+           </div>
+          </a>
+          <div class="col-sm-9 col-md-9 col-xs-7 pad_none featured_items_right" style="height: 100px; overflow:hidden;">
+           <h3>
+            <span class="hidden-xs" name="rate_thing_container[sIszk_1615118859]">
+             <samp class="arrow_top">
+              <i aria-hidden="true" class="fa fa-angle-up rate_thing uprate">
+              </i>
+             </samp>
+             <samp class="text_center_con thing_score">
+              54
+             </samp>
+             <samp class="arrow_bottom">
+              <i aria-hidden="true" class="fa fa-angle-down rate_thing downrate">
+              </i>
+             </samp>
+            </span>
+            <a href="https://www.liveleak.com/view?t=sIszk_1615118859" title="A little too far">
+             A little too far
+            </a>
+           </h3>
+           <p>
+            A parking accident.
+           </p>
+           <div class="col-xs-12 pad_none featured_text_con">
+            By:
+            <a href="https://www.liveleak.com/c/UKnowImRight">
+             UKnowImRight
+            </a>
+            (6970.70) | Leaked: 19 hours ago in:
+            <a href="https://www.liveleak.com/c/UKnowImRight">
+             UKnowImRight
+            </a>
+            | Views: 22293
+           </div>
+          </div>
+         </div>
+         <div class="col-xs-12 pad_none featured_items_outer" onmouseout="cancelAnimationFrame(animationRequest);" onmouseover="load_images('https://cdn3.liveleak.com/2021/Mar/7/LiveLeak-dot-com-60449e78318ef_25_thumb.jpg',28); step(0,'https://cdn3.liveleak.com/2021/Mar/7/LiveLeak-dot-com-60449e78318ef_25_thumb.jpg','thumbnail_uLpPR_1615109783',28);">
+          <a href="https://www.liveleak.com/view?t=uLpPR_1615109783">
+           <div class="col-sm-3 col-md-3 col-xs-5 pad_none featured_items_pic">
+            <img alt="a quiet block party" id="thumbnail_uLpPR_1615109783" src="https://cdn3.liveleak.com/2021/Mar/7/LiveLeak-dot-com-60449e78318ef_25_thumb.jpg"/>
+            <div class="pg_text">
+             PG
+            </div>
+           </div>
+          </a>
+          <div class="col-sm-9 col-md-9 col-xs-7 pad_none featured_items_right" style="height: 100px; overflow:hidden;">
+           <h3>
+            <span class="hidden-xs" name="rate_thing_container[uLpPR_1615109783]">
+             <samp class="arrow_top">
+              <i aria-hidden="true" class="fa fa-angle-up rate_thing uprate">
+              </i>
+             </samp>
+             <samp class="text_center_con thing_score">
+              79
+             </samp>
+             <samp class="arrow_bottom">
+              <i aria-hidden="true" class="fa fa-angle-down rate_thing downrate">
+              </i>
+             </samp>
+            </span>
+            <a href="https://www.liveleak.com/view?t=uLpPR_1615109783" title="a quiet block party">
+             a quiet block party
+            </a>
+           </h3>
+           <p>
+            Come with us
+           </p>
+           <div class="col-xs-12 pad_none featured_text_con">
+            By:
+            <a href="https://www.liveleak.com/c/SpeakItaly">
+             SpeakItaly
+            </a>
+            (3808.30) | Leaked: 22 hours ago in:
+            <a href="https://www.liveleak.com/c/SpeakItaly">
+             SpeakItaly
+            </a>
+            | Views: 20639 | 
+Location:
            </div>
           </div>
          </div>
@@ -1392,14 +1395,14 @@ Location:
         <!--PAGINATION END-->
         <!--FEATURED ITEMS END-->
         <script type="text/javascript">
-         window.top.infolinks_pid = 3192948  ;
-
-			var _icesc = top.document.createElement('script');
-
-			_icesc.type = 'text/javascript';
-
-			_icesc.src = '//resources.infolinks.com/js/infolinks_main.js';
-
+         window.top.infolinks_pid = 3192948  ;
+
+			var _icesc = top.document.createElement('script');
+
+			_icesc.type = 'text/javascript';
+
+			_icesc.src = '//resources.infolinks.com/js/infolinks_main.js';
+
 			window.top.document.body.appendChild(_icesc);
         </script>
        </div>
@@ -1414,10 +1417,10 @@ Location:
         <div class="col-xs-12 pad_none" style="padding: 5px !important; margin-bottom:10px !important; border: 1px solid #cccccc">
          <center>
           <script type="text/javascript">
-           <!--
-				e9 = new Object();
-			    e9.size = "300x250,250x250,200x200,300x600,120x600,160x600";
-			    e9.noAd = 1;
+           <!--
+				e9 = new Object();
+			    e9.size = "300x250,250x250,200x200,300x600,120x600,160x600";
+			    e9.noAd = 1;
 			//-->
           </script>
           <script src="//tags.expo9.exponential.com/tags/Liveleakcom/ROS/tags.js" type="text/javascript">
@@ -1517,17 +1520,17 @@ Location:
   <script src="https://cdn3.liveleak.com/ll3/js/index.js" type="text/javascript">
   </script>
   <script type="text/javascript">
-   var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-315839-4']);
-  _gaq.push(['_setDomainName', 'liveleak.com']);
-
-    _gaq.push(['_setCustomVar',3,'content_rating','',3]);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+   var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-315839-4']);
+  _gaq.push(['_setDomainName', 'liveleak.com']);
+
+    _gaq.push(['_setCustomVar',3,'content_rating','',3]);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
   </script>
   <!-- End Google analytics -->
@@ -1535,20 +1538,20 @@ Location:
   </script>
   <!-- Quantcast Tag -->
   <script type="text/javascript">
-   var _qevents = _qevents || [];
-
-(function() {
-var elem = document.createElement('script');
-elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";
-elem.async = true;
-elem.type = "text/javascript";
-var scpt = document.getElementsByTagName('script')[0];
-scpt.parentNode.insertBefore(elem, scpt);
-})();
-
-_qevents.push({
-qacct:"p-c4yHLoeBnD3eE",
-uid:"__INSERT_EMAIL_HERE__"
+   var _qevents = _qevents || [];
+
+(function() {
+var elem = document.createElement('script');
+elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";
+elem.async = true;
+elem.type = "text/javascript";
+var scpt = document.getElementsByTagName('script')[0];
+scpt.parentNode.insertBefore(elem, scpt);
+})();
+
+_qevents.push({
+qacct:"p-c4yHLoeBnD3eE",
+uid:"__INSERT_EMAIL_HERE__"
 });
   </script>
   <noscript>
