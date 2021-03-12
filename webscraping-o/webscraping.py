@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 import requests
 import time
 import datetime
+from urllib.parse import urljoin
 
 a_file = open("./websitelist.txt")
 file_contents = a_file.read()
@@ -40,18 +41,38 @@ for w in updatelist:
     #make it more readable
     html = soup.prettify()
     
-    #write html data into folder
-    path = "./htmlfiles/" + title[k] + ".txt"
-    
     #iterate name variable
     k = k + 1
     
-    #output into file
+    #write html data into folder
+    path = "./htmlfiles/" + title[k] + ".txt"
+    
+    #output html into file
     with open(path,"w") as out:
         for i in range(0, len(html)):
             try:
                 out.write(html[i])
             except Exception:
                 1+1
-    
+
+    # get the CSS files
+    css_files = []
+
+    for css in soup.find_all("link"):
+        if css.attrs.get("href"):
+            # if the link tag has the 'href' attribute
+            css_url = urljoin(w, css.attrs.get("href"))
+            css_files.append(css_url)   
+
+    #write css data into folder
+    for i in range(len(css_files)):
+        c = css_files[i]
+        path = "./cssfiles/" + title[k] + str(i) + ".txt"
+        #output css into file
+        with open(path,"w") as out:
+            for i in range(0, len(c)):
+                try:
+                    out.write(c[i])
+                except Exception:
+                    1+1
     
