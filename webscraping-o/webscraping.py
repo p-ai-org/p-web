@@ -6,8 +6,6 @@ Created on Tue Mar  2 12:44:50 2021
 """
 from bs4 import BeautifulSoup
 import requests
-import time
-import datetime
 from urllib.parse import urljoin
 
 a_file = open("./websitelist.txt")
@@ -19,10 +17,10 @@ title = []
 for w in contents_split:
     # updatelist.append("https://www." + w + ".com") 
     updatelist.append("https://www." + w)
+    # updatelist.append(w);
     title.append(w.split('.')[0])
 print(updatelist)
 print(title)
-
 
 for k in range(len(updatelist)): 
     w = updatelist[k]
@@ -52,28 +50,49 @@ for k in range(len(updatelist)):
             except Exception:
                 1+1
 
+     
+    #GRABBING CSS FILES
+           
+    #array for css_files stylesheet url array
+    css_files = [];
+        
     # get the CSS files and put it into an array
-    css_files = []
-
     for css in soup.find_all("link", rel = "stylesheet"):
         if css.attrs.get("href"):
             # if the link tag has the 'href' attribute
             css_url = urljoin(w, css.attrs.get("href"))
             css_files.append(css_url)
-
-    #write css data into folder
-    path = "./cssfiles/" + title[k] + ".txt"
-    with open(path, "w") as out:
-        #write each css link
-        for i in range(len(css_files)):
-            c = css_files[i]
-            #output css into file
-            for i in range(len(c)):
+    
+    #running css path variable
+    csspathiter = 0;
+    #grab the raw css from each url stored in css_files
+    for cssurl in css_files:
+        csspath = "./cssfiles/" + title[k] + "-" + str(csspathiter) + ".txt";
+        csspathiter = csspathiter + 1;
+        
+        # try to open the cssurl from css_files
+        try: # need to open with try
+            css_r = requests.get(cssurl,timeout=3)
+            soup = BeautifulSoup(css_r.content, features="lxml")
+        except:
+            continue
+        
+        #get the text data from the css file (stored in p tag)
+        css_data = "";
+        for para_tag in soup.find_all('p'):
+            css_data = para_tag.decode_contents();
+        
+        #save the css data into a text file
+        with open(csspath,"w") as out:
+            for i in range(len(css_data)):
                 try:
-                    out.write(c[i])
+                    out.write(css_data[i])
                 except Exception:
                     1+1
-            try:
-                out.write("\n")
-            except Exception:
-                1+1
+                    
+        print(csspath);
+    
+        
+        
+
+
