@@ -23,8 +23,9 @@ for w in contents_split:
 print(updatelist)
 print(title)
 
-k = 0
-for w in updatelist: 
+
+for k in range(len(updatelist)): 
+    w = updatelist[k]
     print(w)
     #grab the soup output for each website
     try: # need to open with try
@@ -33,7 +34,6 @@ for w in updatelist:
     except:
         #display faulty websites
         #print(w);
-        k = k + 1
         continue
     
     #check where we are in program
@@ -41,38 +41,39 @@ for w in updatelist:
     #make it more readable
     html = soup.prettify()
     
-    #iterate name variable
-    k = k + 1
-    
     #write html data into folder
     path = "./htmlfiles/" + title[k] + ".txt"
     
     #output html into file
     with open(path,"w") as out:
-        for i in range(0, len(html)):
+        for i in range(len(html)):
             try:
                 out.write(html[i])
             except Exception:
                 1+1
 
-    # get the CSS files
+    # get the CSS files and put it into an array
     css_files = []
 
-    for css in soup.find_all("link"):
+    for css in soup.find_all("link", rel = "stylesheet"):
         if css.attrs.get("href"):
             # if the link tag has the 'href' attribute
             css_url = urljoin(w, css.attrs.get("href"))
-            css_files.append(css_url)   
+            css_files.append(css_url)
 
     #write css data into folder
-    for i in range(len(css_files)):
-        c = css_files[i]
-        path = "./cssfiles/" + title[k] + str(i) + ".txt"
-        #output css into file
-        with open(path,"w") as out:
-            for i in range(0, len(c)):
+    path = "./cssfiles/" + title[k] + ".txt"
+    with open(path, "w") as out:
+        #write each css link
+        for i in range(len(css_files)):
+            c = css_files[i]
+            #output css into file
+            for i in range(len(c)):
                 try:
                     out.write(c[i])
                 except Exception:
                     1+1
-    
+            try:
+                out.write("\n")
+            except Exception:
+                1+1
