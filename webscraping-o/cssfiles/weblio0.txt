@@ -1,1 +1,0 @@
-https://lenta.ru/
