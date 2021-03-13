@@ -1,11 +1,12 @@
 '''
 Created on March 2 2021
 
-Still working on content_removed; others are done
+author: Aaron
 '''
 
 from bs4 import BeautifulSoup
 import os
+import re #only for match the names
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 __target_file__ = '../webscraping-o/htmlfiles/2ch.txt' #relative to the tag_anon.py 
@@ -32,7 +33,6 @@ def tag_removed(soup):
     '''
 
     for tag in soup.findAll(True):
-        # tag.attrs = tag.attrs.fromkeys(tag.attrs,"")
         tag.attrs = _tag_removed_helper(tag.attrs)
     return soup
 
@@ -64,7 +64,10 @@ def _tag_removed_helper(attrs):
         else:
             attrs[attr_type] = ""
 
-    return attrs
+    # to replace data- attributes which are custom to each file
+    new_attrs = {re.sub('data-([^\s]+)', 'data-', key): attrs[key] for key in attrs}
+
+    return new_attrs
 
 def script_removed(soup):
     '''
@@ -78,13 +81,36 @@ def content_removed(soup):
     '''
     anonymize text content
     '''
-    for tag in soup.findAll('True'):
-        tag.string = "None"
+    for tags in soup.find_all(string=True):
+        tags.extract()
+
+    #? should enable this?
+    for br in soup.findAll('br'):
+        br.extract()
+
+
+
+
+    #this method does not work with multiple string segments on same level
+
+    # def is_the_only_string_within_a_tag(s):
+    #     return (s == s.parent.string)
+
+    # for tags in soup.find_all(string=is_the_only_string_within_a_tag):
+    #     for i in range(len(tags.parent.contents)):
+    #         # tags.parent.contents[i] = "Text_" + str(text_counter)
+    #         # text_counter += 1
+    #         print(tags.parent.contents[i]);
+    
+    # print(text_counter);
+
+
     return soup
 
 
 soup = tag_removed(soup)
 soup = script_removed(soup)
+soup = content_removed(soup)
 
 with open(os.path.join(__location__, f"./modified_{org_file_name}"), 'wb') as f_out:
     try: 
