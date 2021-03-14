@@ -2,6 +2,7 @@
 Created on March 13 2021
 
 author: Aaron
+Notes: Performance on processing the 1K+ in the webscraping took under 3-5 minutes
 '''
 
 from bs4 import BeautifulSoup
@@ -9,8 +10,6 @@ from html_processed import tag_removed, script_removed, content_removed
 
 import os
 
-
-# org_file_name = os.path.basename(__target_file__)
 
 def perFile(sourceFile, destLoc, basename):
 
@@ -46,13 +45,12 @@ def allFile():
 
     for file in os.scandir(sourceLoc):
         sourceFile = os.path.join(sourceLoc, file.name);
-        # perFile(sourceFile, destLoc, file.name)
+        perFile(sourceFile, destLoc, file.name)
     os.scandir().close()
 
 
-# allFile();
+allFile();
 
-perFile('/Users/aaronxie/Documents/CodingProjects/p-web/webscraping-o/htmlfiles/2ch.txt', os.path.realpath(os.path.join(os.path.dirname(__file__), 'mod_htmlfiles')), '2ch.txt')
 
 
 

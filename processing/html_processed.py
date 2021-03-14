@@ -29,41 +29,11 @@ def tag_removed(soup, cur_classes, class_counter, id_counter):
                 id_counter += 1
             else:
                 tag.attrs[attr_type] = ""
-        # to replace data- attributes which are custom to each file
+        # to replace data- attributes with just data-
         new_attrs = {re.sub('data-([^\s]+)', 'data-', key): tag.attrs[key] for key in tag.attrs}
         tag.attrs = new_attrs
 
     return soup
-
-
-
-# def _tag_removed_helper(attrs, cur_classes, class_counter, id_counter):
-#     '''
-#     Class need to check if already assigned a number, then replace with that
-#     Id can only be used once in html, so just a simple counter to give names
-#     '''
-  
-#     for attr_type, attr_values in tag.attrs.items():
-#         if attr_type == 'class':
-#             for i, class_name in enumerate(attr_values):
-#                 if class_name in cur_classes:
-#                     attr_values[i] = cur_classes[class_name]
-#                 else:
-#                     new_class_name = 'Class_' + str(class_counter)
-#                     attr_values[i] = new_class_name
-#                     cur_classes[class_name] = new_class_name
-#                     class_counter += 1
-#         elif attr_type == "id":
-#             new_id_name = 'Id_' + str(id_counter)
-#             attrs[attr_type] = new_id_name
-#             id_counter += 1
-#         else:
-#             attrs[attr_type] = ""
-
-#     # to replace data- attributes which are custom to each file
-#     new_attrs = {re.sub('data-([^\s]+)', 'data-', key): attrs[key] for key in attrs}
-
-#     return new_attrs
 
 
 def script_removed(soup):
