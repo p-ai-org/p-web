@@ -54,7 +54,7 @@ for k in range(len(updatelist)):
     #GRABBING CSS FILES
            
     #array for css_files stylesheet url array
-    css_files = [];
+    css_files = []
         
     # get the CSS files and put it into an array
     for css in soup.find_all("link", rel = "stylesheet"):
@@ -64,11 +64,11 @@ for k in range(len(updatelist)):
             css_files.append(css_url)
     
     #running css path variable
-    csspathiter = 0;
+    csspathiter = 0
     #grab the raw css from each url stored in css_files
     for cssurl in css_files:
-        csspath = "./cssfiles/" + title[k] + "-" + str(csspathiter) + ".txt";
-        csspathiter = csspathiter + 1;
+        csspath = "./cssfiles/" + title[k] + "-" + str(csspathiter) + ".txt"
+        csspathiter = csspathiter + 1
         
         # try to open the cssurl from css_files
         try: # need to open with try
@@ -78,9 +78,9 @@ for k in range(len(updatelist)):
             continue
         
         #get the text data from the css file (stored in p tag)
-        css_data = "";
+        css_data = ""
         for para_tag in soup.find_all('p'):
-            css_data = para_tag.decode_contents();
+            css_data = para_tag.decode_contents()
         
         #save the css data into a text file
         with open(csspath,"w") as out:
@@ -90,7 +90,7 @@ for k in range(len(updatelist)):
                 except Exception:
                     1+1
                     
-        print(csspath);
+        print(csspath)
     
         
         
