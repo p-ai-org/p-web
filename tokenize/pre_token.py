@@ -18,6 +18,7 @@ print(result)
 '''
 import spacy
 from spacy.symbols import ORTH
+#need to run python -m spacy download en_core_web_trf on first install
 
 nlp = spacy.load("en_core_web_trf")
 
