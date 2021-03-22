@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta content="text/html;charset=utf-8" http-equiv="Content-type"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <link href="http://c.ourdoings.net/b2/bootstrap-2.0.3/css/bootstrap.min.css.gz" rel="stylesheet"/>
+  <style>
+   @media (min-width: 768px) {
+      body {
+        background: white url(http://c.ourdoings.net/style/default/images/bg.png) repeat-x top;
+      }
+      img { max-width: none; }
+
+#minmax {display: none;}
+
+.container-fluid aside {
+	background: white;
+	padding: 0.5em 1.5em 0.5em 1.5em;
+	border-radius: 6px;
+	float: left;
+	margin: 0px;
+	min-height: 400px;
+	}
+
+#content {
+	background: white;
+	padding: 0.5em 1.5em 0.5em 1.5em;
+	border-radius: 6px;
+	float: right;
+	margin: 0px;
+	}
+#content.moving {
+	float: left;
+}
+
+#content article {
+	padding:0 0 8px 46px;
+	margin:0 0 1.5em 0;
+	background:url(http://c.ourdoings.net/style/default/images/entry-divide.gif) no-repeat bottom center;
+	}
+}
+
+#content article {
+	padding:0 0 8px 46px;
+	margin:0 0 1.5em 0;
+	background:url(http://c.ourdoings.net/style/default/images/entry-divide.gif) no-repeat bottom center;
+	}
+
+#content article time {
+	margin: 0 0 0 -50px;
+	clear:left;
+	width:35px;
+	height:37px;
+	float:left;
+	text-align:center;
+	font-weight: bold;
+	padding: 2px 0 0 0;
+	border: 2px solid #666666;
+	border-radius: 3px;
+	}
+
+#content article time a {
+	display: block;
+	text-decoration:none;
+	color: #666666;
+	font-size:18px;
+	line-height:14px;
+	}
+#content article time a .month {
+	text-transform:uppercase;
+	font-size:12px;
+	}
+#content img.thumbright,
+#content a img.thumbright {
+	padding:4px;
+	float:right;
+	margin:0 0 10px 10px;
+	background:#fff;
+	border:1px solid #c5c9ca;
+	}
+#content img.thumbleft,
+#content a img.thumbleft {
+	padding:4px;
+	float:left;
+	margin:0 10px 10px 0;
+	background:#fff;
+	border:1px solid #c5c9ca;
+	}
+div.order {
+	margin: 1em 0 0.5em 0;
+}
+div.order img {
+	padding:4px;
+	margin:0 0 4px 0;
+	border:1px solid #c5c9ca;
+}
+.order span {
+	padding-right:28px;
+	background:url(http://c.ourdoings.net/style/default/images/order-arrow.jpg) no-repeat center right;
+	}
+
+@media (max-width: 767px) {
+.navbar {
+    margin-left: -20px;
+    margin-right: -20px;
+    white-space: nowrap;
+  }
+  .navbar img.brand {
+    display: none;
+  }
+  article img {
+    height: auto;
+  }
+
+#content article {
+	padding-left: 0;
+	}
+
+#content article time {
+	margin: 80px 2px 2px 2px;
+	clear:both;
+	width:auto;
+	height:auto;
+	float:none;
+	text-align:center;
+	font-weight: bold;
+	padding: 1px 3px 3px 3px;
+	border: 2px solid #666666;
+	border-radius: 3px;
+	}
+
+#content article time a {
+	display: inline;
+	text-decoration:none;
+	font-size:12px;
+	}
+#content article time a .month {
+	text-transform:none;
+	}
+}
+html {
+    -webkit-text-size-adjust: none; /* Prevent font scaling in landscape */
+}
+article p { max-width: 35em; }
+
+img.thumb {
+	padding:4px;
+	margin:0 4px 8px 0;
+	border:1px solid #c5c9ca;
+}
+
+img.thumbtop {
+	vertical-align:top;
+	margin:0 4px 8px 0;
+	border:1px solid #c5c9ca;
+}
+
+a.more {
+   white-space: nowrap;
+}
+a.context {
+   white-space: nowrap;
+}
+a {
+	color:#0386a8;
+	}
+a:visited {
+	color:#025e7e;
+	}
+  </style>
+  <!--[if lt IE 9]>
+      <script src="http://c.ourdoings.net/js/html5.js.gz"></script>
+      <script src="http://c.ourdoings.net/js/storage.js.gz"></script>
+    <![endif]-->
+  <link href="http://www.google.com/profiles/ourdoings" rel="me" type="text/html"/>
+  <title>
+   OurDoings - Easier, faster photo sharing
+  </title>
+  <meta content="Easier, faster photo sharing
+" name="description"/>
+  <link href="main.xml?date=pub" id="news" rel="alternate" title="OurDoings - Easier, faster photo sharing
+" type="application/rss+xml"/>
+  <style type="text/css">
+   <!--#content article { min-height: 180px; }		#content article#organization {			background:url(http://c.ourdoings.net/style/default/images/icon-organization.gif) no-repeat 35px 5px;			border-bottom:1px solid #D8EFF5;			overflow:auto;			padding-left:185px;			}		#content article#email {			background:url(http://c.ourdoings.net/style/default/images/icon-email.gif) no-repeat 35px 5px;			overflow:auto;			padding-left:185px;			}		#content article#upload {			background:url(http://c.ourdoings.net/style/default/images/icon-upload.gif) no-repeat 35px 5px;			border-bottom:1px solid #D8EFF5;			overflow:auto;			padding-left:185px;			}		#content article h4 {			margin-top:12px;			}		.btn-seeit {			margin:18px 6px 18px 4px;			}		.btn-getit {			margin:18px 0;			}		a .btn-seeit,		a .btn-getit {			border:0;			}		.contact {			text-align:right;			margin:24px 6px 0 0;			}                @media(max-width: 767px) {                  aside.span3 { width: 100% !important; }		  #content article#organization {			background:none;			padding-left:0;			}		  #content article#email {			background:none;			padding-left:0;			}		  #content article#upload {			background:none;			padding-left:0;			}		  #content article h4 {			margin-bottom:6px;			}                }		.contact a {			padding:0 0 4px 30px;			line-height:44px;			background:url(http://c.ourdoings.net/style/default/images/icon-contact.gif) no-repeat left center;			}	   a.actionbutton{ background: url(http://c.ourdoings.net/style/default/images/red408.png) no-repeat top left;background-position: left -110px;display: block;float: left;padding-left: 14px;text-decoration: none;font-weight: bold;color:#1E300D;}a:visited.btn,a:active.btn{ color: white!important;}a.actionbutton span{ background: url(http://c.ourdoings.net/style/default/images/red408.png) no-repeat top right;display: block;padding: 0px 19px 60px 6px;line-height:56px;}a:hover.actionbutton{ background: url(http://c.ourdoings.net/style/default/images/red408.png) no-repeat;background-position: 0 -336px;color:#FFFFE1!important;}a:hover.actionbutton span{ background: url(http://c.ourdoings.net/style/default/images/red408.png) no-repeat top right;background-position: right -226px;}.actioncontainer{ overflow: hidden;}.clear{clear:both}	-->
+  </style>
+  <script>
+   window.ourdoings_waiting=true;
+function delayclick(elt) {
+  if (window.ourdoings_waiting) {
+    window.ourdoings_pending = elt;
+    return false;
+  }
+  return true;
+}
+  </script>
+ </head>
+ <body>
+  <div class="navbar navbar-fixed-top" style="position: static;margin-bottom: 6px;">
+   <div class="navbar-inner">
+    <a href="http://ourdoings.com/" id="hideshow" onclick="return delayclick(this);">
+     <img alt="OurDoings" src="http://c.ourdoings.net/style/default/images/o64square2.png" style="width: 30px; height: 30px; float: left; margin: 4px 1.75% 6px 2px;"/>
+    </a>
+    <div class="container-fluid">
+     <a class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse">
+      <span class="icon-bar">
+      </span>
+      <span class="icon-bar">
+      </span>
+      <span class="icon-bar">
+      </span>
+     </a>
+     <a class="brand" href="./">
+      ourdoings.com
+     </a>
+     <nav class="nav-collapse">
+      <ul class="nav">
+       <li>
+        <a href="index.html">
+         Blog
+        </a>
+       </li>
+       <li>
+        <a href="reg.html" rel="nofollow">
+         Register
+        </a>
+       </li>
+       <li>
+        <a href="person.html" rel="nofollow">
+         My Account
+        </a>
+       </li>
+      </ul>
+     </nav>
+    </div>
+   </div>
+  </div>
+  <div class="container-fluid">
+   <aside class="span3" id="sidebar">
+    <h3>
+     Reviews
+    </h3>
+    <p>
+     <i>
+      "in a league of its own"
+      <span style="white-space: nowrap">
+       -
+       <a href="http://www.louisgray.com/live/2009/01/our-doings-you-upload-moment-they.html">
+        Mike Fruchter
+       </a>
+      </span>
+     </i>
+    </p>
+    <p>
+     <i>
+      "Amazingly sweet solution. It cuts the steps involved in publishing photos to the very bone. I strongly suggest giving OurDoings a shot and this upload method a try."
+      <span style="white-space: nowrap">
+       -
+       <a href="http://pgunupudi.blogspot.com/2009/09/dropbox-support-for-ourdoings-photo.html">
+        Pavan Gunupudi
+       </a>
+      </span>
+     </i>
+    </p>
+    <p>
+     Follow OurDoings creator
+     <a href="//twitter.com/brlewis">
+      @brlewis
+     </a>
+     on Twitter.  Read the
+     <a href="index.html">
+      OurDoings blog
+     </a>
+     .
+    </p>
+    <p class="contact">
+     <a href="mailto:ourdoings@ourdoings.com">
+      Contact us
+     </a>
+    </p>
+   </aside>
+   <script>
+    if (sessionStorage.getItem('hidenav')) {
+  document.getElementById('sidebar').style.display = 'none';
+}
+   </script>
+   <section class="span8" id="content">
+    <h2 style="text-align: center">
+     Easier, faster photo sharing
+    </h2>
+    <ul class="nav nav-tabs">
+     <li class="active">
+      <a data-toggle="tab" href="#intro">
+       Intro
+      </a>
+     </li>
+     <li>
+      <a data-toggle="tab" href="#upload">
+       Upload
+      </a>
+     </li>
+     <li>
+      <a data-toggle="tab" href="#organization">
+       Browse
+      </a>
+     </li>
+     <li>
+      <a data-toggle="tab" href="#email">
+       Share
+      </a>
+     </li>
+    </ul>
+    <div class="tab-content">
+     <div class="tab-pane active" id="intro">
+      <p>
+       <iframe allowfullscreen="" frameborder="0" height="360" src="//www.youtube.com/embed/vTEW1n26nio" style="max-width: 100%" width="640">
+       </iframe>
+      </p>
+      <p style="max-width: 640px">
+       We've restyled our site, but this video still describes our easier, faster experience.  See also the
+       <a href="//www.youtube.com/watch?v=7r93TDJeZyI">
+        Hassle-Free Photo Upload
+       </a>
+       video.
+      </p>
+     </div>
+     <article class="tab-pane" id="upload">
+      <h4>
+       Photo uploading that's easy on you
+      </h4>
+      <p>
+       Automatically grouped by date taken. Duplicates detected.
+       <strong>
+        Desktop:
+       </strong>
+       Export to OurDoings from
+       <em>
+        any
+       </em>
+       photo management software (via Dropbox), use our button with the Picasa photo organizer, use the XP Web Publishing Wizard, or make a zip archive to post via web.
+       <strong>
+        Mobile:
+       </strong>
+       Post by email, or apps: Instagram, Pixelpipe, Dropbox or hellotxt.
+      </p>
+     </article>
+     <article class="tab-pane" id="organization">
+      <h4>
+       Photo browsing that's easy on the eyes
+      </h4>
+      <p>
+       Web page for each month
+       <strong>
+        attractively groups photos
+       </strong>
+       by date.  Add headlines/text to be even more blog-like.  Archive works intuitively, by when you did something, not when you posted about it.  To keep the month page
+       <strong>
+        easy to browse
+       </strong>
+       , days with too many photos show the first few or selected few with a "more photos" link that leads to a page just for that day.
+       <strong>
+        Maps for geocoded photos
+       </strong>
+       .  Easy integration with Disqus and other services.  Custom styling.
+       <strong>
+        Finger-swipe slide show on iPad/iPhone/etc.
+       </strong>
+      </p>
+     </article>
+     <article class="tab-pane" id="email">
+      <h4>
+       Photo sharing that's easy on your friends
+      </h4>
+      <p>
+       <strong>
+        Email updates
+       </strong>
+       feature puts thumbnails/text right in the message (no clicking) and helps you send only new entries.
+       <strong>
+        One-click Facebook export
+       </strong>
+       creates an album for this month automatically.
+       <strong>
+        Mobile version
+       </strong>
+       optimized for in-person sharing on smart phones.  RSS feeds work with background switchers, many
+       <strong>
+        wireless digital photo frames
+       </strong>
+       , and other services like Google Reader and Flipboard.
+      </p>
+     </article>
+    </div>
+    <p style="text-align: center">
+     <a class="btn btn-success" href="reg.html">
+      Start Now — It's Free
+     </a>
+    </p>
+    <nav class="pager">
+    </nav>
+   </section>
+   <script>
+    if (sessionStorage.getItem('hidenav')) {
+  document.getElementById('content').className='span11';
+}
+   </script>
+  </div>
+  <!-- .row-fluid -->
+  <!-- .container-fluid -->
+  <script src="http://c.ourdoings.net/js/LABjs-2.0.3/LAB.min.js.gz">
+  </script>
+  <script>
+   function isEventSupported(eventName) {
+      var el = document.createElement('div');
+      eventName = 'on' + eventName;
+      var isSupported = (eventName in el);
+      if (!isSupported) {
+        el.setAttribute(eventName, 'return;');
+        isSupported = typeof el[eventName] == 'function';
+      }
+      el = null;
+      return isSupported;
+    }
+    touchdevice = isEventSupported('touchstart') || isEventSupported('gesturestart');
+    photoswipe_flavor = touchdevice ? "photoswipe" : "photoswipe.jquery";
+$LAB
+    .script("http://c.ourdoings.net/js/jquery-1.7.2.min.js.gz").wait()
+    .script("http://c.ourdoings.net/js/ps/3.0.4ourdoings2/lib/klass.min.js.gz").wait()
+    .script("http://c.ourdoings.net/js/ps/3.0.4ourdoings2/code."+photoswipe_flavor+"-3.0.4ourdoings2.min.js.gz")
+.wait(function () {
+
+})
+    .script("http://c.ourdoings.net/b2/bootstrap-2.0.3/js/bootstrap.min.js.gz")
+    .wait(function () {
+      if(window.location.hash.length > 1) {
+        $(document).ready(function(){
+          $('a[href="' + window.location.hash + '"]').click();
+        });
+      }
+      $(function() {
+      ourdoings_speed='fast';
+      function ourdoings_minmax(e) {
+      e.preventDefault();
+      if (sessionStorage.getItem('hidenav')) {
+        sessionStorage.removeItem('hidenav');
+        $('#content').addClass('span8');
+        $('#content').removeClass('span11');
+        $('#content').addClass('moving');
+        $('aside').show(ourdoings_speed, function () 
+          {
+            $('#content').removeClass('moving');
+          }
+        );
+        $('.breadcrumb').show(ourdoings_speed);
+      } else {
+	sessionStorage.setItem('hidenav', '1');
+        $('.breadcrumb').hide(ourdoings_speed);
+        $('#content').addClass('moving');
+        $('aside').hide(ourdoings_speed, function () 
+          {
+            $('#content').addClass('span11');
+            $('#content').removeClass('span8');
+            $('#content').removeClass('moving');
+  	  }
+	);
+      }
+  return false;
+  }
+        $('img.thumb').tooltip();
+	$('#hideshow').click(ourdoings_minmax);
+        window.ourdoings_waiting=false;
+        if (window.ourdoings_pending) {
+          $(window.ourdoings_pending).click();
+        }
+      });
+    });
+  </script>
+  <script type="text/javascript">
+   var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+   try{
+var pageTracker = _gat._getTracker("UA-8631240-1");
+pageTracker._trackPageview();
+} catch(err) {}
+  </script>
+  <!--[if lt IE 9]>
+ <script src="http://c.ourdoings.net/js/css3-mediaqueries.js"></script>
+<![endif]-->
+ </body>
+</html>

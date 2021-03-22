@@ -10,14 +10,14 @@
   <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <title>
-   Intuit®: Powering Prosperity
+   IntuitÂ®: Powering Prosperity
   </title>
   <!-- This site is optimized with the Yoast SEO Premium plugin v9.2.1 - https://yoast.com/wordpress/plugins/seo/ -->
   <meta content="See how Intuit products can work for you by joining the over 50 million people already using TurboTax, QuickBooks and Mint to power their prosperity." name="description"/>
   <link href="https://www.intuit.com/" rel="canonical"/>
   <meta content="en_US" property="og:locale"/>
   <meta content="article" property="og:type"/>
-  <meta content="Intuit®: Powering Prosperity" property="og:title"/>
+  <meta content="IntuitÂ®: Powering Prosperity" property="og:title"/>
   <meta content="See how Intuit products can work for you by joining the over 50 million people already using TurboTax, QuickBooks and Mint to power their prosperity." property="og:description"/>
   <meta content="https://www.intuit.com/" property="og:url"/>
   <meta content="Intuit" property="og:site_name"/>
@@ -27,7 +27,7 @@
   <meta content="399" property="og:image:height"/>
   <meta content="summary_large_image" name="twitter:card"/>
   <meta content="Join the 50+ million people already using TurboTax, QuickBooks and Mint to power their prosperity." name="twitter:description"/>
-  <meta content="Intuit®: Powering Prosperity" name="twitter:title"/>
+  <meta content="IntuitÂ®: Powering Prosperity" name="twitter:title"/>
   <meta content="https://quickbooks.intuit.com/cas/dam/IMAGE/A81OBMP2T/icom-logo-ecosystem-lockup-4line-twitter.jpg" name="twitter:image"/>
   <!-- / Yoast SEO Premium plugin. -->
   <link href="/wp-content/plugins/vc_intuit_com/asset/common.css" id="intuit-com-common-css-css" media="all" rel="stylesheet" type="text/css"/>
@@ -103,215 +103,354 @@
   <!-- Tracking 2.0 start -->
   <script id="webAnalyticsConfig">
    (function () {
-            var constants = window.intuit.tracking.ecs.webAnalytics.constants;
-            // TODO: These country codes list will be injected dynamically later.
-            var countryCodes = ["br", "za", "mx", "my", "sg", "fr"];
+    try {
+      var constants = window.intuit.tracking.ecs.webAnalytics.constants;
+      var countryCodes = ["ca", "fr-ca", "in"];
+      /***************************
+       ***  Helper Functions ***
+       ***************************/
+      /**
+       * Get any Cookie value
+       * @param {string} CookieName to get the value
+       * @returns {string} Cookie value
+       */
+      var _getCookieValue = function _getCookieValue(name) {
+        if (!name) {
+          return null;
+        }
+        var matches = document.cookie.match(new RegExp("(?:^|; )".concat(name.replace(/([.$?*|{}()[\]\\/+^])/g,
+          '\\$1'), "=([^;]*)")));
+        return matches ? matches[1] : null;
+      };
+      /**
+       * Sets Cookie with name, value and options provided
+       * @param {String} name Cookie Name
+       * @param {String} value Cookie Value
+       * @param {Object} options Options Object
+       */
+      var _setCookie = function _setCookie(name, value) {
+        var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+        var cookieOptions = Object.assign({}, {
+          path: '/'
+        }, options);
+        if (options.expires && cookieOptions.expires.toUTCString) {
+          cookieOptions.expires = cookieOptions.expires.toUTCString();
+        }
+        var updatedCookie = "".concat(name, "=").concat(value);
+        Object.keys(cookieOptions).forEach(function (optionKey) {
+          updatedCookie += "; ".concat(optionKey);
+          var optionValue = cookieOptions[optionKey];
+          if (optionValue !== true) {
+            updatedCookie += "=".concat(optionValue);
+          }
+        });
+        document.cookie = updatedCookie;
+      };
+      /**
+       * queryParams - function to parse queryString
+       * @param {string} pv_searchString 
+       */
+      var queryParamsValue = function(key) {
+        var value = null;
+        if (key && window.location) {
+          var uriQueryString = window.location.search;
+          var match = uriQueryString.match(new RegExp(`[?&]${key}=([^&]+)(&|$)`, 'i'));
+          if (match && match[1]) {
+            value = decodeURIComponent(match[1].replace(/\+/gi, ' '));
+          }
+          return value;
+        }
+      }
 
-            /**
-             * Trucate domain name and elimnate slashes for 1st level of the URL path
-             * Ex: URL = https://quickbooks.intuit.com/online/how-it-works/
-             * screen = online/how-it-works
-             * scopeArea = online
-             * page_geography = us (default for all pages except for "br","za","mx" pages)
-             * @param {String} pathname
-             * @returns {Object} returns screen,scopeArea and page_geography.
-             */
-            var fetchSiteContentProperties = function (pathname) {
-                var obj = {screen: 'homepage', scopeArea: 'homepage', pageGeography: 'us'};
-                var pathnameArr = pathname.replace(/\/+$/, '').split('/');
-                if (pathnameArr && pathnameArr.length > 1) {
-                    // Checks whether the country code is present in the URL
-                    if (countryCodes.indexOf(pathnameArr[1]) != -1) {
-                        // If the first level of URL path is present in the given list of country codes then pass the same first level of URL path
-                        obj.pageGeography = pathnameArr[1];
-                        if (pathnameArr.length > 2) {
-                            // If the first level of URL path is  present in the given list of country codes then pass the next level of URL path
-                            obj.scopeArea = pathnameArr[2];
-                            // If the first level of URL path is  present in the given list of country codes then pass the remaining full URL path
-                            obj.screen = pathnameArr.splice(2).join('/');
-                        }
-                    } else {
-                        // If the first level of URL path is not present in the given list of country codes then pass the same first level of URL path
-                        obj.scopeArea = pathnameArr[1];
-                        // If the first level of URL path is not present in the given list of country codes then pass the same full URL path
-                        obj.screen = pathnameArr.splice(1).join('/');
-                    }
-                }
-
-                return obj;
+      var internalCampaigns;
+      var scid = queryParamsValue('scid');
+      var xcid = queryParamsValue('xcid');
+      internalCampaigns = scid ? scid : xcid ? xcid : null;
+      var fetchSiteContentProperties = function (pathname) {
+        var obj = {
+          screen: 'homepage',
+          scopeArea: 'icom', // Default to icom - other values to check are careers, blog and partners per wiki
+          pageGeography: 'us'
+        };
+        var pathnameArr = pathname.replace(/\/+$/, '').split('/');
+        if (pathnameArr && pathnameArr.length > 1) {
+          // Checks whether the country code is present in the URL
+          if (countryCodes.indexOf(pathnameArr[1]) != -1) {
+            // If the first level of URL path is present in the given list of 
+            // country codes then pass the same first level of URL path
+            obj.pageGeography = pathnameArr[1];
+            if (pathnameArr.length > 2) {
+              // If the first level of URL path is  present in the given list of
+              // country codes then pass the next level of URL path
+              if (pathnameArr[2] == 'careers' || pathnameArr[2] == 'blog' || pathnameArr[2] == 'partners') {
+                obj.scopeArea = pathnameArr[2];
+              }
+              // If the first level of URL path is  present in the given list of 
+              // country codes then pass the remaining full URL path
+              obj.screen = pathnameArr.splice(2).join('/');
             }
-             /**
-              * Get any Cookie value
-              * @param {string} CookieName to get the value
-              * @returns {string} Cookie value
-              */
-              var _getCookieValue = function _getCookieValue(name) {
-                if (!name) {
-                 return null;
-                }
-
-              var matches = document.cookie.match(new RegExp("(?:^|; )".concat(name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1'), "=([^;]*)")));
-                return matches ? matches[1] : null;
-                };
-              /**
-               * Sets Cookie with name, value and options provided
-               * @param {String} name Cookie Name
-               * @param {String} value Cookie Value
-               * @param {Object} options Options Object
-               */
-              var _setCookie = function _setCookie(name, value) {
-              var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-              var cookieOptions = Object.assign({}, {
-                path: '/'
-                }, options);
-               if (options.expires && cookieOptions.expires.toUTCString) {
-                 cookieOptions.expires = cookieOptions.expires.toUTCString();
-                }
-              var updatedCookie = "".concat(name, "=").concat(value);
-              Object.keys(cookieOptions).forEach(function (optionKey) {
-                updatedCookie += "; ".concat(optionKey);
-                var optionValue = cookieOptions[optionKey];
-
-                if (optionValue !== true) {
-                  updatedCookie += "=".concat(optionValue);
-                }
-               });
-               document.cookie = updatedCookie;
-             };
-
-            //pathname = /online/how-it-works/
-            var pathname = window.location.pathname;
-            var siteContentProperties = fetchSiteContentProperties(pathname);
-            var screen = siteContentProperties.screen;
-            var scopeArea = siteContentProperties.scopeArea;
-            var pageGeography = siteContentProperties.pageGeography;
-            var pageHierarchyExtended = (constants.org.SBSEG ? constants.org.SBSEG : '') +
-                '|' + (constants.purpose.MKTG ? constants.purpose.MKTG : '') +
-                '|' + (constants.scope.QB ? constants.scope.QB : '') +
-                '|' + (scopeArea ? scopeArea : '') +
-                '|' + (pageGeography ? pageGeography : '') +
-                '|' + (screen ? screen : '');
-
-            window.intuit.tracking.ecs.webAnalytics.initConfig = {
-                org: constants.org.SBSEG,
-                purpose: constants.purpose.MKTG,
-                scope: constants.scope.QB,
-                ecs_version: "3.3.0"
-            };
-            var pagePayload = {
-                "scope_area": scopeArea,
-                "screen": screen,
-                "page_geography": pageGeography,
-                "page_hierarchy_extended": pageHierarchyExtended,
-                "action": constants.uiAction.VIEWED,
-                "object": "screen",
-                "ui_action": constants.uiAction.VIEWED,
-                "ui_object": "screen",
-            };
-
-            var dataLayer = window.mktg_datalayer;
-            if (dataLayer && dataLayer.properties) {
-                var dataLayerProperties = dataLayer.properties;
-                pagePayload.content_industry = dataLayerProperties.content_industry;
-                pagePayload.content_audience = dataLayerProperties.content_audience;
-                pagePayload.content_job = dataLayerProperties.content_job;
-                pagePayload.page_category_parameter = dataLayerProperties.content_category;
+          } else if (pathnameArr[1] == 'careers' || pathnameArr[1] == 'blog' || pathnameArr[1] == 'partners') {
+            // If the first level of URL path is not present in the given list of 
+            // country codes then pass the same first level of URL path
+            obj.scopeArea = pathnameArr[1];
+            // If the first level of URL path is not present in the given list of
+            // country codes then pass the same full URL path
+            obj.screen = pathnameArr.splice(1).join('/');
+          } else {
+            // Default to using icom as scope_area if not one of the above paths
+            // If the first level of URL path is not present in the given list of
+            // country codes then pass the same full URL path
+            obj.screen = pathnameArr.splice(1).join('/');
+          }
+        }
+        return obj;
+      }
+      //pathname = /online/how-it-works/
+      var pathname = window.location.pathname;
+      var siteContentProperties = fetchSiteContentProperties(pathname);
+      var screen = siteContentProperties.screen;
+      var scopeArea = siteContentProperties.scopeArea;
+      var pageGeography = siteContentProperties.pageGeography;
+      var pageHierarchyExtended = (constants.org.CMO ? constants.org.CMO : '') +
+        '|' + (constants.purpose.MKTG ? constants.purpose.MKTG : '') +
+        '|' + (constants.scope.CORP ? constants.scope.CORP : '') +
+        '|' + (scopeArea ? scopeArea : '') +
+        '|' + (pageGeography ? pageGeography : '') +
+        '|' + (screen ? screen : '');
+      window.intuit.tracking.ecs.webAnalytics.initConfig = {
+        org: constants.org.CMO,
+        purpose: constants.purpose.MKTG,
+        scope: constants.scope.CORP,
+        ecs_version: "4.0"
+      };
+      /* 
+    Sets a cookie for page_hierarchy_extended property and will pass onto 
+    the next page call payload as a page_hierarchy_extended_previous property 
+    */
+      var page_hierarchy_extended_previous = '';
+      var existingPageCookie = _getCookieValue('pageProperties');
+      if (!existingPageCookie) {
+        _setCookie('pageProperties', "$$$$$".concat(pageHierarchyExtended), {
+          domain: 'intuit.com'
+        });
+      } else {
+        page_hierarchy_extended_previous = existingPageCookie.split('$')[5];
+        _setCookie('pageProperties', "".concat(existingPageCookie.split('$').slice(0, -1).join('$'), "$").concat(
+          pageHierarchyExtended), {
+          domain: 'intuit.com'
+        });
+      }
+      /**
+       * Evol addon
+       */
+      var siteSection = (constants.org.CMO ? constants.org.CMO : '') +
+        '|' + (constants.purpose.MKTG ? constants.purpose.MKTG : '') +
+        '|' + (constants.scope.CORP ? constants.scope.CORP : '')
+      var pagePayload = {
+        "url": window.location.href,
+        "scope_area": scopeArea,
+        "screen": screen,
+        "page_geography": pageGeography,
+        "page_hierarchy_extended": pageHierarchyExtended,
+        "page_name_parameter": pageHierarchyExtended,
+        "action": 'viewed',
+        "object": "screen",
+        "ui_action": 'viewed',
+        "ui_object": "screen",
+        "site_section": siteSection,
+        "page_hierarchy_extended_previous": page_hierarchy_extended_previous
+      };
+      var dataLayer = window.mktg_datalayer;
+      if (dataLayer && dataLayer.properties) {
+        var dataLayerProperties = dataLayer.properties;
+        pagePayload.content_industry = dataLayerProperties.content_industry;
+        pagePayload.content_audience = dataLayerProperties.content_audience;
+        pagePayload.content_job = dataLayerProperties.content_job;
+        pagePayload.page_category_parameter = dataLayerProperties.content_category;
+      }
+      // Custom Properties
+      if (internalCampaigns) pagePayload.internal_campaigns = internalCampaigns
+      window.intuit.tracking.ecs.webAnalytics.setApplicationTrackingContext('OICMS', '1.0', pagePayload.scope_area,
+        pagePayload.screen);
+      /***************************
+       * Eloqua Form Tracking
+       ***************************/
+      // Lead Category Storage Patch
+      var pathList = ['/careers/programs/intuit-again/','/careers/talent-community/','/careers/programs/tech-women-at-intuit/'];
+      if (pathList.indexOf(pathname) > -1) {
+        try {
+          var subBtn = document.querySelector('button[type="Submit"]');
+          subBtn.onclick = storeJobCat;
+          function storeJobCat(e) {
+            var selectedJobCat = '';
+            var select;
+            var links = document.querySelectorAll('select[name="tech_experience"], select[name="dropdownMenu"]');
+            for (var i = 0, max = links.length; i < max; i++) {
+              select = links[i].value;
             }
-            window.intuit.tracking.ecs.webAnalytics.setApplicationTrackingContext('OICMS','1.0',pagePayload.scope_area,pagePayload.screen);
-            window.intuit.tracking.ecs.webAnalytics.trackPage(pagePayload);
-
-            /**
-             * Traverses up the DOM path looking for HTML elements with attributes provided.
-             * If any targetAttribute is found the particular element is returned.
-             * @param {Object} startElement Element where traversing starts.
-             * @param {number} levelsToTraverse Max levels to traverse up after which traversing aborts.
-             * @param {Array} targetAttributes Array of attributes to look for.
-             * @returns {Object} Returns object if targetAttributes are matched else returns null.
-             */
-            var traverseUp = function (startElement, levelsToTraverse, targetAttributes) {
-                if (!startElement || (levelsToTraverse <= 0) || startElement.nodeName === 'BODY') {
-                    return null;
+            if (select) {
+              select = select.toLowerCase().replace(/\-/g, '').replace(/\s/g, '-');
+              if (select.indexOf('software') > -1) {
+                select = 'software-engineering';
+              }
+              if (select.indexOf('student') > -1) {
+                select = 'students-and-grads';
+              }
+              selectedJobCat = select;
+            }
+            sessionStorage.setItem('car_jobcat', selectedJobCat);
+          }
+        } catch (err) {}
+      }
+      // Lead Form Submit Page - Adobe Events
+      if (pathname === '/careers/form-complete/') {
+        var leadCat = '',
+          prevPage = '',
+          refDom = '',
+          addEvent = [];
+        // Check if referrer is redirect from Eloqua, if not bail
+        refDom = document.referrer;
+        if (refDom.indexOf('t.eloqua.com') > -1) {
+          addEvent.push('event30');
+          prevPage = page_hierarchy_extended_previous || '';
+          if (prevPage.indexOf('software-engineering') > -1) {
+            leadCat = 'software-engineering';
+            addEvent.push('event41');
+          }
+          if (prevPage.indexOf('data-science') > -1) {
+            leadCat = 'data-science';
+            addEvent.push('event34');
+          }
+          if (prevPage.indexOf('students-and-grads') > -1) {
+            leadCat = 'students-and-grads';
+            addEvent.push('event39');
+          }
+          if (prevPage.indexOf('live-experts') > -1) {
+            leadCat = 'live-experts';
+          }
+          // Check session storage to see if lead cat is stored from women in tech page
+          if (leadCat == '') {
+            var sessionCat = sessionStorage.getItem('car_jobcat');
+            if (sessionCat !== null) {
+              leadCat = sessionCat;
+              if (leadCat == 'software-engineering') {
+                addEvent.push('event41');
+              }
+              if (leadCat == 'data-science') {
+                addEvent.push('event34');
+              }
+              if (leadCat == 'students-and-grads') {
+                addEvent.push('event39');
+              }
+              sessionStorage.removeItem('car_jobcat');
+            }
+          }
+        }
+        if (leadCat) pagePayload.lead_category = leadCat;
+        if (addEvent && addEvent.length > 0) {
+          pagePayload.options = {
+            integrations: {
+              'Adobe Analytics': {
+                events: addEvent
+              }
+            }
+          }
+        }
+      } // End Eloqua Lead Form Tracking
+      window.intuit.tracking.ecs.webAnalytics.trackPage(pagePayload);
+      /**
+       * Traverses up the DOM path looking for HTML elements with attributes provided.
+       * If any targetAttribute is found the particular element is returned.
+       * @param {Object} startElement Element where traversing starts.
+       * @param {number} levelsToTraverse Max levels to traverse up after which traversing aborts.
+       * @param {Array} targetAttributes Array of attributes to look for.
+       * @returns {Object} Returns object if targetAttributes are matched else returns null.
+       */
+      var traverseUp = function (startElement, levelsToTraverse, targetAttributes) {
+        if (!startElement || (levelsToTraverse <= 0) || startElement.nodeName === 'BODY') {
+          return null;
+        }
+        if (startElement.dataset && Object.keys(startElement.dataset).length > 0) {
+          for (let i = 0; i < targetAttributes.length; i++) {
+            if (startElement.dataset[targetAttributes[i]]) {
+              return startElement;
+            }
+          }
+        }
+        return traverseUp(startElement.parentNode, levelsToTraverse - 1, targetAttributes);
+      };
+      /**
+       * Tracks events via Track Star Api.
+       * @param event Event triggered.
+       */
+      var trackEvent = function (event) {
+        var eventElement = traverseUp(event.target, 5, ['object', 'waLink']);
+        if (eventElement && eventElement.dataset) {
+          var customProps = {},
+            trackProps = {},
+            dataSet = eventElement.dataset;
+          // <a href="" data-object="product" data-object-detail="QB Live" data-action="product selected" data-ui-object="tab" data-ui-object-detail="Partner with a live bookkeeper" data-ui-action="clicked" data-ui-access-point="hero" data-custom-properties="key1|value1,key2|value2">
+          // customProps = {key1: value1, key2:value2} deriverd from values in <a href=""...data-custom-properties="key1|value1,key2|value2">
+          if (dataSet.customProperties) {
+            var customPropPipeArray = dataSet.customProperties.split(",");
+            customPropPipeArray.forEach(function (customPropElement) {
+              if (customPropElement) {
+                var customPropArray = customPropElement.split("|");
+                if (customPropArray.length == 2) {
+                  customProps[customPropArray[0]] = customPropArray[1];
                 }
-
-                if (startElement.dataset && Object.keys(startElement.dataset).length > 0) {
-                    for (let i = 0; i < targetAttributes.length; i++) {
-                        if (startElement.dataset[targetAttributes[i]]) {
-                            return startElement;
-                        }
-                    }
-                }
-
-                return traverseUp(startElement.parentNode, levelsToTraverse - 1, targetAttributes);
-            };
-
-            /**
-             * Tracks events via Track Star Api.
-             * @param event Event triggered.
-             */
-            var trackEvent = function (event) {
-                var eventElement = traverseUp(event.target, 5, ['object', 'waLink']);
-                if (eventElement && eventElement.dataset) {
-                    var customProps = {}, trackProps = {}, dataSet = eventElement.dataset;
-                    // <a href="" data-object="product" data-object-detail="QB Live" data-action="product selected" data-ui-object="tab" data-ui-object-detail="Partner with a live bookkeeper" data-ui-action="clicked" data-ui-access-point="hero" data-custom-properties="key1|value1,key2|value2">
-                    // customProps = {key1: value1, key2:value2} deriverd from values in <a href=""...data-custom-properties="key1|value1,key2|value2">
-                    if (dataSet.customProperties) {
-                        var customPropPipeArray = dataSet.customProperties.split(",");
-                        customPropPipeArray.forEach(function (customPropElement) {
-                            if (customPropElement) {
-                                var customPropArray = customPropElement.split("|");
-                                if (customPropArray.length == 2) {
-                                    customProps[customPropArray[0]] = customPropArray[1];
-                                }
-                            }
-                        });
-                    }
-                    // <a href=""... data-wa-link="toggle_fiftyper-diy"...>
-                    // customProps {...customProps, "data-wa-link": "toogle_fiftyper-diy"}
-                    if (dataSet.waLink) customProps["data-wa-link"] = dataSet.waLink;
-                    // if <a href="" data-wa-link="..."> only have data-wa-link, 5 fields are tracked.
-                    // else, more fields are tracked.
-                    trackProps = (dataSet.waLink && !dataSet.object) ? {
-                        "scope_area": scopeArea,
-                        "screen": screen,
-                        "page_geography": pageGeography,
-                        "page_hierarchy_extended": pageHierarchyExtended,
-                        "object": "walink",
-                        "action": constants.uiAction.INTERACTED,
-                        "ui_object": "walink",
-                        "ui_action": constants.uiAction.INTERACTED,
-                        "custom_properties": customProps
-                    } : {
-                        "scope_area": scopeArea,
-                        "screen": screen,
-                        "page_geography": pageGeography,
-                        "page_hierarchy_extended": pageHierarchyExtended,
-                        "object": dataSet.object,
-                        "object_detail": dataSet.objectDetail,
-                        "action": dataSet.action,
-                        "ui_object": dataSet.uiObject,
-                        "ui_object_detail": dataSet.uiObjectDetail,
-                        "ui_action": dataSet.uiAction,
-                        "ui_access_point": dataSet.uiAccessPoint,
-                        "custom_properties": customProps
-                    };
-
-                    // track API from track-star => track(trackProps, eventProps)
-                    // eventProps = {"targetElement": eventElement, "clickEvent": event}
-                    // - eventElement: Anchor element object
-                    // - event: MouseEvent from clicking
-                    intuit.tracking.ecs.webAnalytics.track(trackProps, {
-                        "targetElement": eventElement,
-                        "clickEvent": event
-                    });
-                }
-            };
-
-            <!-- Attaching tracking click listeners to html elements instead of document in order to account for clicks originated from child elements -->
-            <!-- Events originated from child elements are bubbled to the html elements which have event listeners and tracked -->
-            window.addEventListener('DOMContentLoaded', function (event) {
-                document.addEventListener("click", trackEvent);
+              }
             });
-        })();
+          }
+          if (dataSet.waLink) customProps["data-wa-link"] = dataSet.waLink;
+          /**
+           * Evo Link Tracking addon
+           */
+          if (dataSet.waLink) {
+            var userAction = dataSet.waLink + ' [' + pageHierarchyExtended + ']';
+          }
+          if (eventElement.href) {
+            var linkHref = eventElement.href;
+            var linkDomain = linkHref.split('/')[2];
+          }
+          trackProps = {
+            "url": window.location.href,
+            "scope_area": scopeArea,
+            "screen": screen,
+            "page_geography": pageGeography,
+            "page_hierarchy_extended": pageHierarchyExtended,
+            "page_name_parameter": pageHierarchyExtended,
+            "object": dataSet.object ? dataSet.object : "content",
+            "object_detail": dataSet.objectDetail ? dataSet.objectDetail : null,
+            "action": dataSet.action ? dataSet.action : "engaged",
+            "ui_object": dataSet.uiObject ? dataSet.uiObject : "link",
+            "ui_object_detail": dataSet.uiObjectDetail ? dataSet.uiObjectDetail : null,
+            "ui_action": dataSet.uiAction ? dataSet.uiAction : "clicked",
+            "ui_access_point": dataSet.uiAccessPoint ? dataSet.uiAccessPoint : null,
+            "custom_properties": customProps,
+            // new properties
+            "site_section": siteSection,
+            "link_href": linkHref ? linkHref : null,
+            "link_href_domain": linkDomain ? linkDomain : null,
+            "icom_user_action": userAction ? userAction : null,
+          };
+          // track API from track-star => track(trackProps, eventProps)
+          // eventProps = {"targetElement": eventElement, "clickEvent": event}
+          // - eventElement: Anchor element object
+          // - event: MouseEvent from clicking
+          intuit.tracking.ecs.webAnalytics.track(trackProps, {
+            "targetElement": eventElement,
+            "clickEvent": event
+          });
+        }
+      };
+      window.addEventListener('DOMContentLoaded', function (event) {
+        document.addEventListener("click", trackEvent);
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  })();
   </script>
   <!-- Tracking 2.0 end -->
   <!----- PAGE PROPERTIES END -->
@@ -395,7 +534,7 @@
                 <span class="" data-component="icon" data-icon="ca">
                 </span>
                 <span class="name">
-                 Canada (Français)
+                 Canada (FranÃ§ais)
                 </span>
                </p>
               </a>
@@ -455,7 +594,7 @@
                 </a>
                </li>
                <li class="submenu-item">
-                <a aria-label="TurboTax" class="menu-item-link IntuitBrandClicktoTT " data-wa-link="hdr-corporate-nav-products:ttse_sbg" href="https://turbotax.intuit.com/?cid=seq_intuit_tt_click_nav" target="_blank">
+                <a aria-label="TurboTax" class="menu-item-link IntuitBrandClicktoTT" data-wa-link="hdr-corporate-nav-products:ttse_sbg" href="https://turbotax.intuit.com/?cid=seq_intuit_tt_click_nav" target="_blank">
                  TurboTax
                 </a>
                </li>
@@ -800,7 +939,7 @@
                   <span class="" data-component="icon" data-icon="ca">
                   </span>
                   <span class="name">
-                   Canada (Français)
+                   Canada (FranÃ§ais)
                   </span>
                  </p>
                 </a>
@@ -900,7 +1039,7 @@
            <div class="header-wrapper align-horizontal-left align-vertical-top bg-image" tabindex="0">
             <div class="responsive-image blurry fit-cover header-bg js-background" data-component="responsive-image" data-default="https://www.intuit.com/oicms/i_com/uploads/2021/01/icom-hp-hero-3-mobile-devices-1.jpg" data-queries='[["(max-width: 1023px)", "https://www.intuit.com/oicms/i_com/uploads/2020/04/icom-homepage-hero-all-devices-small.jpg"]]' style="background-position: center">
             </div>
-            <div class="container content js-left ">
+            <div class="container content js-left">
              <div class="row">
               <div class="col">
                <h1 class="h0 title hero-text-color-white hero-font-weight-bold hero-font-style-normal">
@@ -918,9 +1057,9 @@
              <div class="cta-area row">
               <div class="col">
                <div class="cta-item">
-                <a aria-label="File for $0 with TurboTax" class="button transparent-dark cta-item js-cta-item large IntuitBrandClicktoTT" data-component="global-button" data-wa-link="icom-homepage:giants-tt-cta-treat1" href="https://turbotax.intuit.com/personal-taxes/online/?cid=seq_intuit_tt_click_giants" target="_blank">
+                <a aria-label="File with TurboTax" class="button transparent-dark cta-item js-cta-item large IntuitBrandClicktoTT" data-component="global-button" data-wa-link="icom-homepage:giants-tt-cta-treat1" href="https://turbotax.intuit.com/personal-taxes/online/?cid=seq_intuit_tt_click_giants" target="_blank">
                  <span class="label">
-                  File for $0 with TurboTax
+                  File with TurboTax
                  </span>
                 </a>
                </div>
@@ -938,7 +1077,7 @@
            <div class="header-wrapper align-horizontal-left align-vertical-center bg-image" tabindex="0">
             <div class="responsive-image blurry fit-cover header-bg js-background" data-component="responsive-image" data-default="https://www.intuit.com/oicms/i_com/uploads/2020/10/icom-cr-report-hero-desktop-3.jpg" data-queries='[["(max-width: 1023px)", "https://www.intuit.com/oicms/i_com/uploads/2020/10/icom-cr-report-hero-mobile-2.jpg"]]' style="background-position: center">
             </div>
-            <div class="container content js-left ">
+            <div class="container content js-left">
              <div class="row">
               <div class="col">
                <h1 class="h0 title hero-text-color-white hero-font-weight-bold hero-font-style-normal">
@@ -949,14 +1088,14 @@
              <div class="row sub-title-row">
               <div class="col">
                <h2 class="h4 sub-title hero-text-color-white hero-font-weight-medium hero-font-style-normal">
-                We’re proud to do our part and make an impact to support job creation and job readiness, climate, and diversity and inclusion.
+                Weâ€™re proud to do our part and make an impact to support job creation and job readiness, climate, and diversity and inclusion.
                </h2>
               </div>
              </div>
              <div class="cta-area row">
               <div class="col">
                <div class="cta-item">
-                <a aria-label="Learn more about our impact" class="button blue cta-item js-cta-item large " data-component="global-button" data-wa-link="icom-homepage:hero-cr-report-cta-treat1" href="https://www.intuit.com/company/corporate-responsibility/report/ " target="_self">
+                <a aria-label="Learn more about our impact" class="button blue cta-item js-cta-item large" data-component="global-button" data-wa-link="icom-homepage:hero-cr-report-cta-treat1" href="https://www.intuit.com/company/corporate-responsibility/report/ " target="_self">
                  <span class="label">
                   Learn more about our impact
                  </span>
@@ -1020,9 +1159,9 @@
           </div>
          </div>
         </section>
-        <section class="c16-text-with-asset-block component-space " data-component="c16-text-with-asset-block" data-scroll-component="" id="turbotax" style="margin-top: -3rem">
+        <section class="c16-text-with-asset-block component-space" data-component="c16-text-with-asset-block" data-scroll-component="" id="turbotax" style="margin-top: -3rem">
          <div class="container">
-          <div class="row align-items-center ">
+          <div class="row align-items-center">
            <div class="col-12 col-sm-6">
             <div class="visual-resource">
              <img alt="TurboTax product demo gift on an illustrated tablet device" class="responsive-image blurry abs-fill" data-component="responsive-image" data-default="https://www.intuit.com/oicms/i_com/uploads/2020/10/icom-hp-textasset-turbotax-product-gif-2.gif" data-queries='[["(max-width: 1023px)", "https://www.intuit.com/oicms/i_com/uploads/2020/10/icom-hp-textasset-turbotax-product-gif-2.gif"]]'/>
@@ -1030,7 +1169,7 @@
            </div>
            <div class="intro col-12 col-sm-6 col-md-5 offset-md-1">
             <h2 class="h2 title style-font-normal style-font-bold style-color-black">
-             Let’s get your maximum refund, guaranteed on demand.
+             Letâ€™s get your maximum refund, guaranteed on demand.
             </h2>
             <h3 class="h3 title-subtitle style-font-normal style-font-normal style-color-black">
             </h3>
@@ -1044,10 +1183,10 @@
               <div class="link-wrapper">
                <a class="global-cta-link" data-component="global-cta-link" data-wa-link="icom-homepage:product-featured-turbotax-treat1" href="https://turbotax.intuit.com/?cid=seq_intuit_tt_click_prod_featured" target="_blank">
                 <span class="label">
-                 File for $0
+                 File with TurboTax
                 </span>
                 <span class="arrow arrow-right-shape">
-                 <span aria-label="File for $0" class="flat small IntuitBrandClicktoTT" data-component="icon" data-icon="arrow-right-shape">
+                 <span aria-label="File with TurboTax" class="flat small IntuitBrandClicktoTT" data-component="icon" data-icon="arrow-right-shape">
                  </span>
                 </span>
                </a>
@@ -1071,7 +1210,7 @@
           </div>
          </div>
         </section>
-        <section class="c16-text-with-asset-block component-space " data-component="c16-text-with-asset-block" data-scroll-component="" id="quickbooks">
+        <section class="c16-text-with-asset-block component-space" data-component="c16-text-with-asset-block" data-scroll-component="" id="quickbooks">
          <div class="container">
           <div class="row align-items-center reverse">
            <div class="col-12 col-sm-6">
@@ -1084,7 +1223,7 @@
               <div class="responsive-image blurry poster js-poster abs-fill" data-component="responsive-image" data-default="https://www.intuit.com/oicms/i_com/uploads/2020/10/icom-hp-textasset-quickbooks-product-1.jpg" data-queries='[["(max-width: 1023px)", "https://www.intuit.com/oicms/i_com/uploads/2020/10/icom-hp-textasset-quickbooks-product-1.jpg"]]'>
               </div>
               <a class="play-btn-area js-play-button" data-wa-link="icom-homepage:product-featured-quickbooks-video-treat1">
-               <button aria-label="play-button" class="flex-center play-btn " data-component="play-button" tabindex="0">
+               <button aria-label="play-button" class="flex-center play-btn" data-component="play-button" tabindex="0">
                 <span class="play-btn" data-component="icon" data-icon="play-arrow">
                 </span>
                </button>
@@ -1100,7 +1239,7 @@
             </h3>
             <div class="desc">
              <p>
-              The world’s largest workforce is working for themselves. And we’re working for them. Join over 4.3 million customers globally using QuickBooks.
+              The worldâ€™s largest workforce is working for themselves. And weâ€™re working for them. Join over 4.3 million customers globally using QuickBooks.
              </p>
             </div>
             <div class="cta-wrapper">
@@ -1135,9 +1274,9 @@
           </div>
          </div>
         </section>
-        <section class="c16-text-with-asset-block component-space " data-component="c16-text-with-asset-block" data-scroll-component="" id="mint">
+        <section class="c16-text-with-asset-block component-space" data-component="c16-text-with-asset-block" data-scroll-component="" id="mint">
          <div class="container">
-          <div class="row align-items-center ">
+          <div class="row align-items-center">
            <div class="col-12 col-sm-6">
             <div class="visual-resource">
              <img alt="Intuit Mint product screenshot on an illustrated mobile device" class="responsive-image blurry abs-fill" data-component="responsive-image" data-default="https://www.intuit.com/oicms/i_com/uploads/2021/01/icom-hp-textasset-mint-product.jpg" data-queries='[["(max-width: 1023px)", "https://www.intuit.com/oicms/i_com/uploads/2021/01/icom-hp-textasset-mint-product.jpg"]]'/>
@@ -1151,7 +1290,7 @@
             </h3>
             <div class="desc">
              <p>
-              Not sure where you stand financially? Mint’s got your back. We keep all your money at your fingertips so you know at a glance what’s happening with your budgets, bills, and spending.
+              Not sure where you stand financially? Mintâ€™s got your back. We keep all your money at your fingertips so you know at a glance whatâ€™s happening with your budgets, bills, and spending.
              </p>
             </div>
             <div class="cta-wrapper">
@@ -1179,7 +1318,7 @@
            <img alt="illustrated image of a woman holding a key to demonstrate securing privacy" class="responsive-image blurry fit-cover background js-background" data-component="responsive-image" data-default="https://www.intuit.com/oicms/i_com/uploads/2020/11/icom-legal-privacy-your-privacy-hero-desktop.jpg" data-queries='[["(max-width: 1023px)", "https://www.intuit.com/oicms/i_com/uploads/2020/11/icom-legal-privacy-your-privacy-hero-desktop.jpg"]]'/>
           </div>
           <div class="container">
-           <div class="row align-items-center ">
+           <div class="row align-items-center">
             <div class="col-11 offset-1 col-sm-11 offset-sm-1 col-md-6 offset-md-6 no-padding">
              <div class="slider-wrapper js-slider-wrapper">
               <ul class="slider js-slider">
@@ -1231,17 +1370,17 @@
           </h2>
          </div>
          <div class="row">
-          <div class="block js-block style-alignment-left ">
-           <div class="border-area ">
+          <div class="block js-block style-alignment-left">
+           <div class="border-area">
             <h3 class="block-title">
              <span class="large-image">
-              <img alt="Anna, a QuickBooks Live bookkeeper posing in front of the camera" class="responsive-image blurry " data-component="responsive-image" data-default="https://www.intuit.com/oicms/i_com/uploads/2020/11/icom-hp-innovation-qb-live-3.jpg" data-queries='[["(max-width: 1023px)", "https://www.intuit.com/oicms/i_com/uploads/2020/11/icom-hp-innovation-qb-live-3.jpg"]]'/>
+              <img alt="Anna, a QuickBooks Live bookkeeper posing in front of the camera" class="responsive-image blurry" data-component="responsive-image" data-default="https://www.intuit.com/oicms/i_com/uploads/2020/11/icom-hp-innovation-qb-live-3.jpg" data-queries='[["(max-width: 1023px)", "https://www.intuit.com/oicms/i_com/uploads/2020/11/icom-hp-innovation-qb-live-3.jpg"]]'/>
              </span>
             </h3>
             <h3 class="content-title">
              QuickBooks Live
             </h3>
-            <div class="content ">
+            <div class="content">
              Get access to bookkeeping experts to help with your business. Guaranteed accurate books.
             </div>
             <a class="cta-link font-x-small style-font-weight-bold style-font-normal" data-wa-link="icom-homepage:innovation-qb-live-cta-treat1" href="https://quickbooks.intuit.com/live/" target="_blank">
@@ -1249,17 +1388,17 @@
             </a>
            </div>
           </div>
-          <div class="block js-block style-alignment-left ">
-           <div class="border-area ">
+          <div class="block js-block style-alignment-left">
+           <div class="border-area">
             <h3 class="block-title">
              <span class="large-image">
-              <img alt="" class="responsive-image blurry " data-component="responsive-image" data-default="https://www.intuit.com/oicms/i_com/uploads/2020/11/icom-hp-innovation-mint-rocket.jpg" data-queries='[["(max-width: 1023px)", "https://www.intuit.com/oicms/i_com/uploads/2020/11/icom-hp-innovation-mint-rocket.jpg"]]'/>
+              <img alt="" class="responsive-image blurry" data-component="responsive-image" data-default="https://www.intuit.com/oicms/i_com/uploads/2020/11/icom-hp-innovation-mint-rocket.jpg" data-queries='[["(max-width: 1023px)", "https://www.intuit.com/oicms/i_com/uploads/2020/11/icom-hp-innovation-mint-rocket.jpg"]]'/>
              </span>
             </h3>
             <h3 class="content-title">
              Refinance your mortgage in the Mint app
             </h3>
-            <div class="content ">
+            <div class="content">
              Mint has partnered with RocketMortgage to make refinancing much easier for you.
             </div>
             <a class="cta-link font-x-small style-font-weight-bold style-font-normal" data-wa-link="icom-homepage:innovation-mint-rocketmortgage-cta-treat1" href="https://blog.mint.com/home-ownership/new-feature-alert-refinance-your-mortgage-with-rocket-mortgage-in-mint/" target="_blank">
@@ -1285,37 +1424,37 @@
          </div>
          <div class="row">
           <div class="block js-block style-alignment-left style-color-blue">
-           <div class="border-area ">
-            <h3 class="block-title style-font-weight-bold style-font-normal ">
+           <div class="border-area">
+            <h3 class="block-title style-font-weight-bold style-font-normal">
              <span class="subtitle-text">
               #1
              </span>
             </h3>
-            <div class="content ">
+            <div class="content">
              More consumers trust Intuit products for their tax prep, small business accounting, and personal financial management than any other brand.
             </div>
            </div>
           </div>
           <div class="block js-block style-alignment-left style-color-blue">
-           <div class="border-area ">
-            <h3 class="block-title style-font-weight-demi style-font-normal ">
+           <div class="border-area">
+            <h3 class="block-title style-font-weight-demi style-font-normal">
              <span class="subtitle-text">
               50M
              </span>
             </h3>
-            <div class="content ">
+            <div class="content">
              Join 50 million people already using TurboTax, QuickBooks and Mint to power their financial prosperity.
             </div>
            </div>
           </div>
           <div class="block js-block style-alignment-left style-color-blue">
-           <div class="border-area ">
-            <h3 class="block-title style-font-weight-demi style-font-normal ">
+           <div class="border-area">
+            <h3 class="block-title style-font-weight-demi style-font-normal">
              <span class="subtitle-text">
               24/7
              </span>
             </h3>
-            <div class="content ">
+            <div class="content">
              The combination of our professional staff, technology, and automated tools protects your data around the clock.
             </div>
            </div>
@@ -1371,7 +1510,7 @@
                 <div class="tags">
                 </div>
                 <p class="font-x-small description">
-                 Intuit’s 50x by 30 strategy focuses on sustainability initiatives and solutions outside of the company’s operations
+                 Intuitâ€™s 50x by 30 strategy focuses on sustainability initiatives and solutions outside of the companyâ€™s operations
                 </p>
                </div>
                <div class="bottom-buttons">
@@ -1443,7 +1582,7 @@
                 <div class="tags">
                 </div>
                 <p class="font-x-small description">
-                 It’s our mission to power prosperity around the world — and we’re committed to being there for our employees, customers, partners, and communities when they need us the most.
+                 Itâ€™s our mission to power prosperity around the world â€” and weâ€™re committed to being there for our employees, customers, partners, and communities when they need us the most.
                 </p>
                </div>
                <div class="bottom-buttons">
@@ -1558,7 +1697,7 @@
             </h2>
             <ul class="link-items js-accordion-body">
              <li class="link-item">
-              <a aria-label="TurboTax" class="link IntuitBrandClicktoTT " data-wa-link="ftr-global-tt" href="https://turbotax.intuit.com/?cid=seq_intuit_tt_click_ft" target="_blank">
+              <a aria-label="TurboTax" class="link IntuitBrandClicktoTT" data-wa-link="ftr-global-tt" href="https://turbotax.intuit.com/?cid=seq_intuit_tt_click_ft" target="_blank">
                <span>
                 TurboTax
                </span>
@@ -1740,7 +1879,7 @@
                     <span class="" data-component="icon" data-icon="ca">
                     </span>
                     <span class="name">
-                     Canada (Français)
+                     Canada (FranÃ§ais)
                     </span>
                    </p>
                   </a>
@@ -1856,10 +1995,10 @@
              <div class="row">
               <div class="col-sm-12 col-md-8 col-12 paragraph">
                <p>
-                © 2021 Intuit Inc. All rights reserved. Intuit, QuickBooks, QB, TurboTax, ProConnect, and Mint are registered trademarks of Intuit Inc. Terms and conditions, features, support, pricing, and service options subject to change without notice.
+                Â© 2021 Intuit Inc. All rights reserved. Intuit, QuickBooks, QB, TurboTax, ProConnect, and Mint are registered trademarks of Intuit Inc. Terms and conditions, features, support, pricing, and service options subject to change without notice.
                </p>
                <p>
-                Photographs © 2018 Jeremy Bitterman Photography
+                Photographs Â© 2018 Jeremy Bitterman Photography
                </p>
                <a aria-label="About cookies" class="link cookies" data-wa-link="icom-cookie-policy" href="https://security.intuit.com/index.php/intuit-cookie-policy/" id="icom-cookie-policy" target="_blank">
                 About cookies
@@ -1896,7 +2035,7 @@
                </ul>
                <div class="logo-TRUSTe">
                 <a aria-label="Truste Privacy Seal" class="link" data-wa-link="ftr-global-truste" href="http://privacy.truste.com/privacy-seal/validation?rid=7fc012b5-d53b-42d8-b980-c4f9091a97e1" target="_blank">
-                 <img alt="Truste Privacy Seal" src="https://www.intuit.com/oicms/i_com/uploads/2019/12/seal.png"/>
+                 <img alt="Truste Privacy Seal" src="https://privacy-policy.truste.com/privacy-seal/seal?rid=7fc012b5-d53b-42d8-b980-c4f9091a97e1"/>
                 </a>
                </div>
               </div>
@@ -1918,6 +2057,21 @@
          <div class="wpb_wrapper">
           <script type="text/javascript">
            window.addEventListener("click", function(e) {  try{    var privLink = 'icom-manage-cookies';    if(e.target.id == privLink){      e.preventDefault();      window.intuit_gdpr.showCookiePreference();    }  }catch(err){}});
+          </script>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="vc_row wpb_row vc_row-fluid">
+     <div class="wpb_column vc_column_container vc_col-sm-12">
+      <div class="vc_column-inner">
+       <div class="wpb_wrapper">
+        <div class="wpb_raw_code wpb_content_element wpb_raw_html">
+         <div class="wpb_wrapper">
+          <script type="text/javascript">
+           var x = document.getElementsByClassName("col-sm-12 col-md-8 col-12 paragraph")[0];  x.getElementsByTagName("P")[1].innerHTML = "<br>Photographs Â©2018 Jeremy Bittermann Photography<br><br>By accessing and using this page you agree to the Terms and Conditions.<br><br>";
           </script>
          </div>
         </div>
@@ -1952,258 +2106,258 @@
   <!-- Closing <div id="app"> -->
   <div style="display: none">
    <style>
-    /*GLOBAL CHANGE */
-h2.col-md-6 {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 80%;
-    flex: 0 0 100%;
-    max-width: 80%;
-}
-.global-cta-link .label {
-    display: block;
-    color: #0077c5;
-}
-/*PROMO BANNER CHANGE */
-@media (min-width: 769px){
-.b04-promo-banner.pro-connect:before {
-constructed stylesheet
-    background: linear-gradient(
-90deg
-,#99edff 0,#99edff 0%,rgba(153,237,255,.0) 0%,rgba(153,237,255,.0) 0%,rgba(153,237,255,.0) 0%,rgba(153,237,255,.0)) !Important;
-    background-image: linear-gradient(
-90deg
-, rgb(153, 237, 255) 0px, rgb(153, 237, 255) 0%, rgba(153, 237, 255, 0) 0%, rgba(153, 237, 255, 0) 0%, rgba(153, 237, 255, 0) 0%, rgba(153, 237, 255, 0)) !Important;
-    background-position-x: initial;
-    background-position-y: initial;
-    background-size: initial;
-    background-repeat-x: initial;
-    background-repeat-y: initial;
-    background-attachment: initial;
-    background-origin: initial;
-    background-clip: initial;
-    background-color: initial;
-}
-}
-/*HERO BANNER CHANGE */
-.c05-hero-block {
-    margin-top: -2px;
-}
-@media (max-width: 834px){
-#hero.c05-hero-block .title {
-    font-size: 3.5rem !important;
-    line-height: 4.3rem !important;
-}}
-#hero.c05-hero-block .title {
-    width: 64rem;
-    font-size: 60px;
-    line-height: 76px;
-    font-weight: normal;
-}
-@media (min-width: 1025px){
-.c05-hero-block .header-wrapper:before {
-    opacity: 0;
-}}
-@media (max-width:768px){
-.c05-hero-block {
-    overflow: visible;
-    position: relative;
-    height: 52rem;
-    margin-bottom: 2.5rem;
-}}
-@media (max-width: 480px){
-.c05-hero-block .title {
-    margin: 20px 0 20px;
-    max-width: 98%;
-}}
-@media (min-width: 481px) and (max-width: 834px){
-#hero.c05-hero-block .title {
-    width: 75%;
-}}
-@media (min-width: 481px){
-#hero.c05-hero-block .sub-title {
-    max-width: 35rem;
-    margin-bottom: 2rem;
-    width: 100%;
-}}
-[data-component=global-button].transparent-dark.large {
-    line-height: 2.1rem;
-    padding: 1.5rem 1.3rem;
-    background-color: transparent;
-    border: 1px solid #fff;
-    border-radius: 3px;
-}
-[data-component=global-button].transparent-dark:hover {
-    background-color: rgba(244, 245, 248, 0.25);
-}
-.c05-hero-block .header-wrapper::before {
-	opacity: 0;
-}
-.c05-hero-block .cta-item {
-    width: auto;
-}
-.vc_custom_1589588274071 {
-    margin-top: 0rem !important;
-}
-@media (max-width: 1024px){
-.c05-hero-block .pagination-button {
-    display: none;
-}}
-.c05-hero-block .content .sub-title-row {
-    flex-grow: 0;
-}
-.c05-hero-block .content {
-    justify-content: center;
-}
-[data-component="global-button"].blue.large {
-    padding: 1.5rem 1.3rem;
-}
-
-/* C16 component */
-.c16-text-with-asset-block {
-    opacity: 1 !important;
-}
-.c16-text-with-asset-block .desc {
-    margin-bottom: 20px !important;
-    line-height: 24px;
-}
-.c16-text-with-asset-block .title-subtitle.style-font-demi {
-    font-weight: normal;
-}
-.c16-text-with-asset-block .title-subtitle {
-    font-size: 3.4rem;
-    line-height: 4.4rem;
-}
-#aidassist.c16-text-with-asset-block .title {
-    display: none;
-}
-@media (min-width: 481px) and (max-width: 1024px){
-.c16-text-with-asset-block .intro {
-    padding-top: 0rem;
-    padding-bottom: 2rem;
-}
-.c16-text-with-asset-block .title-subtitle {
-    margin: 0rem 0 2rem;
-}
-}
-@media (max-width: 834px){
-.c16-text-with-asset-block .title-subtitle {
-    font-size: 2.8rem;
-    line-height: 3.6rem;
-}
-.c16-text-with-asset-block .visual-resource {
-    min-height: 27rem;
-}
-}
-@media (max-width: 480px){
-#aidassist.c16-text-with-asset-block .intro {
-    padding-bottom: 2.5rem;
-}
-.c16-text-with-asset-block .title-subtitle {
-    margin: 2rem 0 1.6rem;
-}    
-}
-
-/*AREAS WE HIRE H10 CHANGE */
-.h10-areas-that-we-hire .job-type-icon {
-    height: auto;
-    width: auto;
-    margin-right: 1.1rem;
-}
-
-/*TEXT BLOCK C15 CHANGE */
-.c15-text-block .block-title .large-image img {
-    height: auto;
-    width: 100%;
-}
-.c15-text-block a {
-    margin-top: 2rem;
-}
-.c15-text-block .border-area {
-    min-height: auto;
-}
-
-/*TEXT BLOCK C15 - STATS - GRADIENT TEXT*/
-.gradient .c15-text-block .subtitle-text {
-  background: rgb(5,83,147);
-  background: -moz-linear-gradient(90deg, rgba(5,83,147,1) 0%, rgba(0,119,197,1) 50%, rgba(0,193,191,1) 100%);
-  background: -webkit-linear-gradient(90deg, rgba(5,83,147,1) 0%, rgba(0,119,197,1) 50%, rgba(0,193,191,1) 100%);
-  background: linear-gradient(90deg, rgba(5,83,147,1) 0%, rgba(0,119,197,1) 50%, rgba(0,193,191,1) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#055393",endColorstr="#00c1bf",GradientType=1);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-size: 7.2rem;
-  line-height: 9.2rem;
-  font-family: AvenirNextforINTUIT,Helvetica,Arial;
-  font-weight: 400;
-  letter-spacing: -2px;
-}
-@media (max-width: 768px){
-.gradient .c15-text-block .subtitle-text {
-  font-size: 6rem;
-  line-height: 7.6rem;
-}}
-
-/*TECH STORIES C02 CHANGE */
-@media (min-width: 769px){
-.h2 {
-    font-size: 3.4rem;
-    line-height: 4.4rem;
-    font-family: AvenirNextforINTUIT-bold,Helvetica,Arial;
-}}
-@media (min-width: 769px){
-.h1 {
-    font-size: 3.4rem !important;
-    line-height: 4.4rem !important;
-}}
-.h1 {
-    font-size: 2.8rem;
-    line-height: 3.6rem;
-    font-family: AvenirNextforINTUIT-Bold,Helvetica,Arial;
-}
-
-/*INTUIT LIFE H04 (DATA & SECURITY) CHANGE */
-.h04-careers-intuit-life .bg .background {
-	object-fit: cover;
-}
-.h04-careers-intuit-life .follow-instagram .instagram-icon {
-    display: none;
-}
-.h04-careers-intuit-life .follow-instagram {
-    font-weight: bold;
-}
-.h04-careers-intuit-life .author {
-    font-size: 2.2rem;
-    font-family: AvenirNextforINTUIT-Bold,Helvetica,Arial;
-}
-.h04-careers-intuit-life .quote {
-    font-family: AvenirNextforINTUIT,Helvetica,Arial;
-    font-size: 2rem;
-    line-height: 2.8rem;
-}
-@media (min-width: 1199px){
-.h04-careers-intuit-life .slider-wrapper .slide {
-    padding: 11.2rem 6.4rem;
-}}
-@media (max-width: 435px){
-.h04-careers-intuit-life .quote {
-    font-family: AvenirNextforINTUIT,Helvetica,Arial;
-    font-size: 1.5rem;
-    line-height: 2.8rem;
-}
+    /*GLOBAL CHANGE */
+h2.col-md-6 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 80%;
+    flex: 0 0 100%;
+    max-width: 80%;
+}
+.global-cta-link .label {
+    display: block;
+    color: #0077c5;
+}
+/*PROMO BANNER CHANGE */
+@media (min-width: 769px){
+.b04-promo-banner.pro-connect:before {
+constructed stylesheet
+    background: linear-gradient(
+90deg
+,#99edff 0,#99edff 0%,rgba(153,237,255,.0) 0%,rgba(153,237,255,.0) 0%,rgba(153,237,255,.0) 0%,rgba(153,237,255,.0)) !Important;
+    background-image: linear-gradient(
+90deg
+, rgb(153, 237, 255) 0px, rgb(153, 237, 255) 0%, rgba(153, 237, 255, 0) 0%, rgba(153, 237, 255, 0) 0%, rgba(153, 237, 255, 0) 0%, rgba(153, 237, 255, 0)) !Important;
+    background-position-x: initial;
+    background-position-y: initial;
+    background-size: initial;
+    background-repeat-x: initial;
+    background-repeat-y: initial;
+    background-attachment: initial;
+    background-origin: initial;
+    background-clip: initial;
+    background-color: initial;
+}
+}
+/*HERO BANNER CHANGE */
+.c05-hero-block {
+    margin-top: -2px;
+}
+@media (max-width: 834px){
+#hero.c05-hero-block .title {
+    font-size: 3.5rem !important;
+    line-height: 4.3rem !important;
+}}
+#hero.c05-hero-block .title {
+    width: 64rem;
+    font-size: 60px;
+    line-height: 76px;
+    font-weight: normal;
+}
+@media (min-width: 1025px){
+.c05-hero-block .header-wrapper:before {
+    opacity: 0;
+}}
+@media (max-width:768px){
+.c05-hero-block {
+    overflow: visible;
+    position: relative;
+    height: 52rem;
+    margin-bottom: 2.5rem;
+}}
+@media (max-width: 480px){
+.c05-hero-block .title {
+    margin: 20px 0 20px;
+    max-width: 98%;
+}}
+@media (min-width: 481px) and (max-width: 834px){
+#hero.c05-hero-block .title {
+    width: 75%;
+}}
+@media (min-width: 481px){
+#hero.c05-hero-block .sub-title {
+    max-width: 35rem;
+    margin-bottom: 2rem;
+    width: 100%;
+}}
+[data-component=global-button].transparent-dark.large {
+    line-height: 2.1rem;
+    padding: 1.5rem 1.3rem;
+    background-color: transparent;
+    border: 1px solid #fff;
+    border-radius: 3px;
+}
+[data-component=global-button].transparent-dark:hover {
+    background-color: rgba(244, 245, 248, 0.25);
+}
+.c05-hero-block .header-wrapper::before {
+	opacity: 0;
+}
+.c05-hero-block .cta-item {
+    width: auto;
+}
+.vc_custom_1589588274071 {
+    margin-top: 0rem !important;
+}
+@media (max-width: 1024px){
+.c05-hero-block .pagination-button {
+    display: none;
+}}
+.c05-hero-block .content .sub-title-row {
+    flex-grow: 0;
+}
+.c05-hero-block .content {
+    justify-content: center;
+}
+[data-component="global-button"].blue.large {
+    padding: 1.5rem 1.3rem;
+}
+
+/* C16 component */
+.c16-text-with-asset-block {
+    opacity: 1 !important;
+}
+.c16-text-with-asset-block .desc {
+    margin-bottom: 20px !important;
+    line-height: 24px;
+}
+.c16-text-with-asset-block .title-subtitle.style-font-demi {
+    font-weight: normal;
+}
+.c16-text-with-asset-block .title-subtitle {
+    font-size: 3.4rem;
+    line-height: 4.4rem;
+}
+#aidassist.c16-text-with-asset-block .title {
+    display: none;
+}
+@media (min-width: 481px) and (max-width: 1024px){
+.c16-text-with-asset-block .intro {
+    padding-top: 0rem;
+    padding-bottom: 2rem;
+}
+.c16-text-with-asset-block .title-subtitle {
+    margin: 0rem 0 2rem;
+}
+}
+@media (max-width: 834px){
+.c16-text-with-asset-block .title-subtitle {
+    font-size: 2.8rem;
+    line-height: 3.6rem;
+}
+.c16-text-with-asset-block .visual-resource {
+    min-height: 27rem;
+}
+}
+@media (max-width: 480px){
+#aidassist.c16-text-with-asset-block .intro {
+    padding-bottom: 2.5rem;
+}
+.c16-text-with-asset-block .title-subtitle {
+    margin: 2rem 0 1.6rem;
+}    
+}
+
+/*AREAS WE HIRE H10 CHANGE */
+.h10-areas-that-we-hire .job-type-icon {
+    height: auto;
+    width: auto;
+    margin-right: 1.1rem;
+}
+
+/*TEXT BLOCK C15 CHANGE */
+.c15-text-block .block-title .large-image img {
+    height: auto;
+    width: 100%;
+}
+.c15-text-block a {
+    margin-top: 2rem;
+}
+.c15-text-block .border-area {
+    min-height: auto;
+}
+
+/*TEXT BLOCK C15 - STATS - GRADIENT TEXT*/
+.gradient .c15-text-block .subtitle-text {
+  background: rgb(5,83,147);
+  background: -moz-linear-gradient(90deg, rgba(5,83,147,1) 0%, rgba(0,119,197,1) 50%, rgba(0,193,191,1) 100%);
+  background: -webkit-linear-gradient(90deg, rgba(5,83,147,1) 0%, rgba(0,119,197,1) 50%, rgba(0,193,191,1) 100%);
+  background: linear-gradient(90deg, rgba(5,83,147,1) 0%, rgba(0,119,197,1) 50%, rgba(0,193,191,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#055393",endColorstr="#00c1bf",GradientType=1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 7.2rem;
+  line-height: 9.2rem;
+  font-family: AvenirNextforINTUIT,Helvetica,Arial;
+  font-weight: 400;
+  letter-spacing: -2px;
+}
+@media (max-width: 768px){
+.gradient .c15-text-block .subtitle-text {
+  font-size: 6rem;
+  line-height: 7.6rem;
+}}
+
+/*TECH STORIES C02 CHANGE */
+@media (min-width: 769px){
+.h2 {
+    font-size: 3.4rem;
+    line-height: 4.4rem;
+    font-family: AvenirNextforINTUIT-bold,Helvetica,Arial;
+}}
+@media (min-width: 769px){
+.h1 {
+    font-size: 3.4rem !important;
+    line-height: 4.4rem !important;
+}}
+.h1 {
+    font-size: 2.8rem;
+    line-height: 3.6rem;
+    font-family: AvenirNextforINTUIT-Bold,Helvetica,Arial;
+}
+
+/*INTUIT LIFE H04 (DATA & SECURITY) CHANGE */
+.h04-careers-intuit-life .bg .background {
+	object-fit: cover;
+}
+.h04-careers-intuit-life .follow-instagram .instagram-icon {
+    display: none;
+}
+.h04-careers-intuit-life .follow-instagram {
+    font-weight: bold;
+}
+.h04-careers-intuit-life .author {
+    font-size: 2.2rem;
+    font-family: AvenirNextforINTUIT-Bold,Helvetica,Arial;
+}
+.h04-careers-intuit-life .quote {
+    font-family: AvenirNextforINTUIT,Helvetica,Arial;
+    font-size: 2rem;
+    line-height: 2.8rem;
+}
+@media (min-width: 1199px){
+.h04-careers-intuit-life .slider-wrapper .slide {
+    padding: 11.2rem 6.4rem;
+}}
+@media (max-width: 435px){
+.h04-careers-intuit-life .quote {
+    font-family: AvenirNextforINTUIT,Helvetica,Arial;
+    font-size: 1.5rem;
+    line-height: 2.8rem;
+}
 }
    </style>
    <script>
-    // The function actually applying the offset
-function offsetAnchor() {
-    if(location.hash.length !== 0) {
-        window.scrollTo(window.scrollX, window.scrollY - 220);
-    }
-}
-// This will capture hash changes while on the page
-window.addEventListener("hashchange", offsetAnchor);
-// This is here so that when you enter the page with a hash,
-// it can provide the offset in that case too. Having a timeout
-// seems necessary to allow the browser to jump to the anchor first.
+    // The function actually applying the offset
+function offsetAnchor() {
+    if(location.hash.length !== 0) {
+        window.scrollTo(window.scrollX, window.scrollY - 220);
+    }
+}
+// This will capture hash changes while on the page
+window.addEventListener("hashchange", offsetAnchor);
+// This is here so that when you enter the page with a hash,
+// it can provide the offset in that case too. Having a timeout
+// seems necessary to allow the browser to jump to the anchor first.
 window.setTimeout(offsetAnchor, 1);
    </script>
    <script data-no-instant="" src="/wp-content/themes/platinum/resources/assets/dist/adrum.js" type="text/javascript">

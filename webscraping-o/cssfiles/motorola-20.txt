@@ -1,0 +1,1 @@
+.vtex-minicart-2-x-drawerStyles{height:100%}.vtex-minicart-2-x-popupStyles{max-height:600px}.vtex-minicart-2-x-minicartEmptyStateContainerDefault{width:340px}.vtex-minicart-2-x-minicartQuantityBadgeDefault{top:-.7rem;right:-.8rem}.vtex-minicart-2-x-popupBoxPosition{right:-40px;width:364px;top:100%}.vtex-minicart-2-x-popupArrowUp{right:7px}

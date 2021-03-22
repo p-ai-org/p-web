@@ -1,0 +1,636 @@
+/*
+	MARKUP
+
+	#mvpdpicker
+		div.header
+			div.help
+			div.close
+			div.title
+		div.steps
+		div.slates
+			div.slate.welcome
+				div.message.welcomemessage
+				button.welcomeloginbutton &gt; span
+			div.slate.remembered
+				div.message.rememberedmessage
+				div.footer.rememberedfooter
+					button.rememberedcancelbutton &gt; span
+					button.rememberedokbutton &gt; span
+			div.slate.pickbylogo
+				ul.mvpdsbylogo
+					li[data-mvpdid]
+						img.mvpdlogo
+				div.footer
+					button.viewallbutton &gt; span
+			div.slate.findbyname
+				div.searchheader
+					div.searchfield
+						input.mvpdsearch[type="text"]
+				div.searchpane
+					ul.mvpdsbyname
+						li[data-mvpdid]
+				div.footer.searchfooter
+					button.viewtopbutton &gt; span
+					button.dontseebutton &gt; span
+			div.slate.noprovider
+				div.message.noprovidermessage
+				button.okbutton.noproviderokbutton &gt; span
+			div.slate.darkprovider
+				div.message.darkprovidermessage
+				button.okbutton.darkproviderokbutton &gt; span
+			div.slate.signin
+				div.message.signinmessage
+				div.spinnerbox &gt; div.spinner
+				button.cancelbutton.signincancelbutton &gt; span
+			div.slate.error
+				div.message.errormessage
+				button.okbutton.errorokbutton &gt; span
+			div.slate.success
+				div.message.successmessage
+				button.watchnowbutton &gt; span
+*/
+
+/* The root element of the MVPD Picker -- all rules are scoped under this element to prevent conflicts. */
+#mvpdpicker {
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 800px;
+	height: 633px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	z-index: 2013;
+	box-shadow: 0 8px 8px;
+	color: black;
+}
+
+#mvpdpicker.hidden {
+	display: none;
+	top: -9999px !important;
+	left: -9999px !important;
+}
+
+#mvpdpicker.visible {
+	top: 0;
+	left: 0;
+}
+
+/* possible picker states */
+#mvpdpicker.state-mvpdlogo,
+#mvpdpicker.state-mvpdlist,
+#mvpdpicker.state-notfound,
+#mvpdpicker.state-signin,
+#mvpdpicker.state-error,
+#mvpdpicker.state-success,
+#mvpdpicker.state-remember,
+#mvpdpicker.state-dark,
+#mvpdpicker.state-welcome {
+}
+
+
+/* The darkened backdrop -- an iframe to block SWFs. */
+#mvpdPickerFrame {
+	display: none;
+	position: fixed;
+	margin: 0;
+	border: 0;
+	padding: 0;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #000;
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+	z-index: 2012;
+}
+
+#mvpdPickerFrame.hidden {
+	display: none;
+	top: -9999px;
+	left: -9999px;
+}
+
+#mvpdPickerFrame.visible {
+	display: block;
+	top: 0;
+	left: 0;
+}
+
+
+#mvpdpicker .header {
+	position: relative;
+	height: 50px;
+}
+
+#mvpdpicker .close {
+	display: block;
+	width: 37px;
+	height: 34px;
+	position: absolute;
+	top: 8px;
+	right: 4px;
+	border: 0;
+	padding: 0;
+	background: url('img/button_close.png') 0 0 no-repeat;
+	cursor: pointer;
+}
+
+#mvpdpicker .help {
+	display: block;
+	width: 64px;
+	height: 34px;
+	position: absolute;
+	top: 8px;
+	left: 4px;
+	border: 0;
+	padding: 0;
+	background: url('img/button_help.png') 0 0 no-repeat;
+	cursor: pointer;
+}
+
+
+#mvpdpicker .title {
+	display: block;
+	height: 50px;
+	margin: 0;
+	border: 0;
+	padding: 0;
+	background: url('img/title.png') center no-repeat;
+}
+
+#mvpdpicker .title &gt; span {
+	display: none;
+}
+
+
+#mvpdpicker a[href] {
+	color: #2c6cc3;
+	text-decoration: underline;
+	font: inherit;
+}
+
+#mvpdpicker a[href]:visited {
+	color: #36526d;
+}
+
+
+/* STEPS */
+
+#mvpdpicker .steps {
+	display: block;
+	width: 100%;
+	height: 126px;
+	margin: 0 auto;
+	border: 0;
+	padding: 0;
+	background: #fafafa url('img/steps_1.png') bottom center no-repeat;
+}
+
+/* Alter the "steps" background-image based on the state of the picker. */
+
+#mvpdpicker.state-dark .steps,
+#mvpdpicker.state-mvpdlogo .steps,
+#mvpdpicker.state-mvpdlist .steps,
+#mvpdpicker.state-notfound .steps {
+	background-image: url('img/steps_1.png');
+}
+
+#mvpdpicker.state-remember .steps,
+#mvpdpicker.state-signin .steps,
+#mvpdpicker.state-error  .steps {
+	background-image: url('img/steps_2.png');
+}
+
+#mvpdpicker.state-success .steps {
+	background-image: url('img/steps_3.png');
+}
+
+/* hide steps from welcome slate */
+#mvpdpicker.state-welcome .steps {
+	display: none;
+}
+
+
+/* SLATES */
+
+#mvpdpicker .slates {
+	height: 458px;
+	overflow: hidden;
+	font-size: 17px;
+	color: #41424e;
+	background: #fefefe url('img/slate_blank.png') top center no-repeat;
+}
+
+/* Alter the "slate area" background-image based on the state of the picker. */
+
+#mvpdpicker.state-remember .slates,
+#mvpdpicker.state-mvpdlogo .slates,
+#mvpdpicker.state-mvpdlist .slates {
+	background-image: url('img/slate_footer.png');
+}
+
+#mvpdpicker.state-notfound .slates {
+	background-image: url('img/slate_noprovider.png');
+}
+
+#mvpdpicker.state-signin .slates {
+	/*background-image: url('img/slate_signin.png');*/
+}
+
+#mvpdpicker.state-error .slates {
+	background-image: url('img/slate_error.png');
+}
+
+#mvpdpicker.state-success .slates {
+	background-image: url('img/slate_success.png');
+}
+
+/* hide steps from welcome slate, take up missing space */
+#mvpdpicker.state-welcome .slates {
+	background-image: url('img/slate_welcome.png');
+	height: 584px;
+}
+
+/* Show slate by state: By default, each slate is hidden; when the picker changes state, show the right slate. */
+
+#mvpdpicker.state-remember .remembered,
+#mvpdpicker.state-mvpdlogo .pickbylogo,
+#mvpdpicker.state-mvpdlist .findbyname,
+#mvpdpicker.state-notfound .noprovider,
+#mvpdpicker.state-dark .darkprovider,
+#mvpdpicker.state-signin .signin,
+#mvpdpicker.state-error .error,
+#mvpdpicker.state-success .success,
+#mvpdpicker.state-welcome .welcome {
+	display: block;
+}
+
+#mvpdpicker .slate {
+	display: none;
+	position: relative;
+	height: 458px;
+	text-align: center;
+}
+
+#mvpdpicker button {
+	cursor: pointer;
+	margin: 0;
+	border: 0;
+	padding: 0;
+}
+
+#mvpdpicker button &gt; span {
+	display: none;
+}
+
+#mvpdpicker .message {
+	text-align: center;
+}
+
+#mvpdpicker .footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 80px;
+	margin: 0;
+	border: 0;
+	padding: 0;
+	text-align: center;
+}
+
+
+
+/* SLATE: WELCOME */
+
+#mvpdpicker .welcome {
+	height: 584px;  /* taller, as the steps are removed */
+}
+
+#mvpdpicker .welcomemessage {
+	display: none;
+}
+
+#mvpdpicker .welcomeloginbutton {
+	width: 230px;
+	height: 51px;
+	position: relative;
+	top: 450px;
+	background: url('img/button_getstarted.png') center no-repeat;
+}
+
+
+/* SLATE: REMEMBERED PROVIDER */
+
+#mvpdpicker .remembered {
+	height: 418px;
+}
+
+#mvpdpicker .rememberedmessage {
+	height: 298px;
+	margin: 40px;
+	overflow: auto;
+}
+
+#mvpdpicker .rememberedmessage p {
+	margin: 40px 20px;
+}
+
+#mvpdpicker .rememberedmessage .rememberedprovider {
+	font-size: 32px;
+	font-weight: bold;
+}
+
+#mvpdpicker .rememberedcancelbutton {
+	width: 196px;
+	height: 52px;
+	margin: 14px 40px 0;
+	background: url('img/button_notmyprovider.png') center no-repeat;
+}
+
+#mvpdpicker .rememberedokbutton {
+	width: 196px;
+	height: 52px;
+	margin: 14px 40px 0;
+	background: url('img/button_continue.png') center no-repeat;
+}
+
+
+/* SLATE: SELECT MVPD BY LOGO */
+
+#mvpdpicker .pickbylogo {
+}
+
+#mvpdpicker .mvpdsbylogo {
+	list-style-type: none;
+	height: 356px;
+	margin: 2px 0 0;
+	border: 0;
+	padding: 20px 10px 0;
+	overflow: auto;
+	text-align: left;
+}
+
+#mvpdpicker .mvpdsbylogo li {
+	display: inline-block;
+	margin: 0;
+	border: 0;
+	padding: 0;
+	font-size: 0;
+	line-height: 0;
+}
+
+#mvpdpicker .mvpdlogo {
+	width: 237px;
+	height: 97px;
+	outline: none;
+	-webkit-transition: all 0.25s ease-in-out;
+	transition: all 0.25s ease-in-out;
+	margin: 0 7px 13px;
+	border: 0;
+	padding: 0;
+	cursor: pointer;
+}
+
+#mvpdpicker .mvpdlogo:active {
+	outline: 1px solid rgba(0, 0, 255, 0.5);
+	box-shadow: 0 0 1em rgba(0, 0, 255, 1);
+}
+
+#mvpdpicker .viewallbutton {
+	width: 338px;
+	height: 52px;
+	margin: 14px 40px 0;
+	background: url('img/button_viewall.png') center no-repeat;
+}
+
+
+/* SLATE: FIND MVPD BY NAME */
+
+#mvpdpicker .findbyname {
+	height: 445px;
+}
+
+#mvpdpicker .searchheader {
+	margin: 13px 1em 0;
+}
+
+#mvpdpicker .searchfield {
+	height: 40px;
+	margin: 0;
+	border: 1px solid #ccc;
+	box-shadow: inset 0 1px 2px #000;
+	background: #ececed url('img/search.png') 0.5em center no-repeat;
+	text-align: left;
+}
+
+#mvpdpicker .mvpdsearch {
+	background-color: #ececed;
+	outline: 0;
+	width: 90%;
+	height: 24px;
+	font-size: 18px;
+	color: #939393;
+	margin: 8px 0 0 30px;
+	border: 0;
+	padding: 0;
+	text-align: left;
+}
+
+#mvpdpicker .searchpane {
+	/*width: 738px;*/
+	height: 296px;
+	margin: 11px 1em 16px;
+	border: 1px solid #e5e5e5;
+	overflow-x: hidden;
+	overflow-y: auto;
+	background-color: white;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(95%, rgba(0, 0, 0, 0.00)), color-stop(97%, rgba(0, 0, 0, 0.01)), color-stop(98%, rgba(0, 0, 0, 0.05)), color-stop(99%, rgba(0, 0, 0, 0.1)), color-stop(100%, rgba(0, 0, 0, 0.2)));
+	background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.00) 95%, rgba(0, 0, 0, 0.01) 97%, rgba(0, 0, 0, 0.05) 98%, rgba(0, 0, 0, 0.1) 99%, rgba(0, 0, 0, 0.2) 100%);
+	background-image: linear-gradient(top, rgba(0, 0, 0, 0.00) 95%, rgba(0, 0, 0, 0.01) 97%, rgba(0, 0, 0, 0.05) 98%, rgba(0, 0, 0, 0.1) 99%, rgba(0, 0, 0, 0.2) 100%);
+	/*filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='#00000000', EndColorStr='#7f000000');*/
+
+	/*
+	For supporting browsers, ditch all the gradients and go with:
+	box-shadow: inset 0 -8px 4px -4px rgba(127,127,127, 0.3), inset 0 8px 4px -4px rgba(127,127,127, 0.3);
+	*/
+}
+
+#mvpdpicker .mvpdsbyname {
+	display: block;
+	list-style-type: none;
+	margin: 0;
+	border: 0;
+	padding: 0;
+	text-align: left;
+}
+
+#mvpdpicker .mvpdsbyname li {
+	cursor: pointer;
+	margin: 0;
+	color: #43444e;
+	border-bottom: 1px solid #e5e5e5;
+	padding-left: 12px;
+	height: 30px;
+	line-height: 30px;
+	font-size: 18px;
+	font-weight: bold;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+#mvpdpicker .mvpdsbyname li:hover {
+	color: #4ec0ff;
+}
+
+#mvpdpicker .viewtopbutton {
+	width: 338px;
+	height: 52px;
+	margin: 14px 20px 0 0;
+	background: url('img/button_viewtop.png') center no-repeat;
+}
+
+#mvpdpicker .dontseebutton {
+	width: 338px;
+	height: 52px;
+	margin: 14px 20px 0 0;
+	background: url('img/button_dontsee.png') center no-repeat;
+}
+
+
+#mvpdpicker .okbutton {
+	width: 76px;
+	height: 40px;
+	background: url('img/button_ok.png') center no-repeat;
+}
+
+#mvpdpicker .cancelbutton {
+	width: 88px;
+	height: 40px;
+	background: url('img/button_cancel.png') center no-repeat;
+}
+
+
+/* SLATE: PROVIDER NOT FOUND */
+
+#mvpdpicker .noprovider {
+}
+
+#mvpdpicker .noprovidermessage {
+	display: none;
+}
+
+#mvpdpicker .noproviderokbutton {
+	position: relative;
+	top: 283px;
+}
+
+
+/* SLATE: PROVIDER DARK */
+
+#mvpdpicker .darkprovider {
+	height: 418px;
+}
+
+#mvpdpicker .darkprovidermessage {
+	height: 283px;
+	margin: 40px;
+	overflow: auto;
+}
+
+#mvpdpicker .darkproviderokbutton {
+}
+
+
+/* SLATE: LOG IN TO PROVIDER */
+
+#mvpdpicker .signin {
+}
+
+#mvpdpicker .signinmessage {
+	position: relative;
+	top: 33px;
+}
+
+#mvpdpicker .spinnerbox {
+	margin-top: 100px;
+}
+
+@-webkit-keyframes mvpdspinner {
+	from {
+		-webkit-transform: rotate(360deg);
+	}
+	to {
+		-webkit-transform: rotate(0deg);
+	}
+}
+@keyframes mvpdspinner {
+	from {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+	to {
+		-webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+}
+
+#mvpdpicker .spinner {
+	display: inline-block;
+	width: 103px;
+	height: 103px;
+	background: url('img/spinner.png') center no-repeat;
+}
+
+#mvpdpicker.state-signin .spinner {
+	-webkit-animation: mvpdspinner 12s linear infinite;
+	animation: mvpdspinner 12s linear infinite;
+}
+
+#mvpdpicker .signincancelbutton {
+	margin-top: 130px;
+}
+
+
+/* SLATE: ERROR */
+
+#mvpdpicker .error {
+}
+
+#mvpdpicker .errormessage {
+	display: none;
+}
+
+/*
+#mvpdpicker .errormessage small {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	color: #999;
+	font-size: 12px;
+}
+*/
+
+#mvpdpicker .errorokbutton {
+	position: relative;
+	top: 283px;
+}
+
+
+/* SLATE: SUCCESSFUL LOGIN */
+
+#mvpdpicker .success {
+}
+
+#mvpdpicker .successmessage {
+	display: none;
+}
+
+#mvpdpicker .watchnowbutton {
+	width: 288px;
+	height: 64px;
+	position: relative;
+	top: 313px;
+	background: url('img/button_watchnow.png') center no-repeat;
+}

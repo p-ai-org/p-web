@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <title>
+   Fonts for Print, Products &amp; Screens | MyFonts
+  </title>
+  <script>
+   var MyFonts = {
+        tracking: {
+            'Country Code': '',
+            'Language Code': 'EN-US',
+            'Email Hash': '',
+            'Vendor User Id': '',
+            'Vendor Id': '',
+            'Customer Type': '',
+            'Offer Code': ''
+        },
+        renderer: {
+            'Domain': 'render.myfonts.net',
+            'backgroundColor': 'ffffff',
+            'foregroundColor': '000000',
+            'fontSize': 32
+        },
+        constants: {
+            'cdnURL': 'https://cdn.myfonts.net',
+            'cspURL': 'https://csp.myfonts.com',
+            'apicdnURL': 'https://apicdn.myfonts.net',
+            'topHatUrl': 'https://th-banner.myfonts.com'
+        },
+        jquerydeferred: function(method){if (window.$j) {method();} else {setTimeout(function() { MyFonts.jquerydeferred(method) }, 50);}}
+    };
+
+    //load csp in the head
+    var siteName = 'MyfontsSite';
+    var scr = document.createElement('SCRIPT');
+
+    scr.src = 'https://csp.myfonts.com/csp_config.js';
+
+    document.head.appendChild(scr);
+
+    MyFonts.FontPreview = {
+        renderer: MyFonts.renderer,
+        getSources: function($img) {
+            var img = $img.get(0);
+            var values = {};
+            var renderer = MyFonts.models && MyFonts.models.renderer && MyFonts.models.renderer.toJSON() || MyFonts.FontPreview.renderer;
+            var src = img.getAttribute('data-src'),
+                md5Patt = /\?id=([^&]*)/,
+                textPatt = /&rt=([^&]*)/,
+                widthPatt = /&w=([^&]*)/,
+                renderTypePatt = /&t=([^&]*)/,
+                fontSizePatt = /&rs=([^&]*)/;
+
+            if (src.match(md5Patt)) {
+                values.md5 = src.match(md5Patt)[1];
+            }
+
+            // Save for later is reset is used
+            values.originalText = src.match(textPatt)[1];
+
+            if (src.match(textPatt) && (!renderer.sampleStrings || renderer.sampleTextType === 'pangram.auto')) {
+                values.text = src.match(textPatt)[1];
+            } else if (renderer.sampleStrings.length > 0) {
+                var index = $img.closest('.search-result-item').index('.search-result-item') % renderer.sampleStrings.length;
+                values.text = renderer.sampleStrings[index];
+            }
+
+            if (src.match(widthPatt)) {
+                values.width = src.match(widthPatt)[1];
+            }
+
+            if (src.match(renderTypePatt)) {
+                values.renderType = src.match(renderTypePatt)[1];
+            }
+
+            if (src.match(fontSizePatt)) {
+                values.fontSize = src.match(fontSizePatt)[1];
+            }
+
+            if (renderer.sampleTextType === 'fontname') {
+                values.text = $img.closest('.search-result-item').find('h4').text();
+            }
+
+            var stringPrefix = 'https://' + (renderer.Domain) + '/fonts/font_rend.php?';
+            var paramObject = {
+                id: values.md5,
+                rs: renderer.fontSize || values.fontSize,
+                bg: renderer.backgroundColor,
+                fg: renderer.foregroundColor,
+                t: values.renderType || renderer.renderType,
+                w: $img.parent().width(),
+                rbe: renderer.fitToWidth ? 'fixed' : '', // rbe stands for 'render back end' (fit to width)
+                ft: renderer.openType,
+                sc: renderer.scaled,
+                rt: values.text
+            };
+
+            return {
+                srcset: stringPrefix + $j.param($j.extend({}, paramObject, { sc: 2 })) + ' 2x',
+                src: stringPrefix + $j.param(paramObject)
+            };
+        },
+        setRenderer: function() {
+            if (typeof (Storage) !== 'undefined' && localStorage.getItem('renderer')) {
+                MyFonts.FontPreview.renderer = JSON.parse(localStorage.getItem('renderer'));
+            }
+        },
+        render: function($img) {
+            var sources = MyFonts.FontPreview.getSources($img);
+            $img.attr('srcset', sources.srcset);
+            $img.attr('src', sources.src).one('load', function() {
+                $j(this).removeClass('spinner').removeAttr('style data-init-width data-init-height');
+            });
+        }
+    };
+
+    MyFonts.FontPreview.setRenderer();
+
+    var dataLayer = [MyFonts.tracking];
+  </script>
+  <script charset="UTF-8" src="https://optanon.blob.core.windows.net/consent/b213127b-85c2-44e4-bf76-b4ae131406d0-test.js" type="text/javascript">
+  </script>
+  <script type="text/javascript">
+   function OptanonWrapper() { } window.Optanon.LoadBanner();
+  </script>
+  <!-- Top Hat Banner -->
+  <script src="https://th-banner.myfonts.com/myfonts-tophat-banner.esm.js" type="module">
+  </script>
+  <script nomodule="" src="https://th-banner.myfonts.com/myfonts-tophat-banner.js">
+  </script>
+  <!-- Top Hat Banner -->
+  <!-- OneTrust Cookies Consent Notice end -->
+  <!-- Page-hiding snippet (recommended)  -->
+  <style>
+   .async-hide, .ab-test-hide { opacity: 0 !important}
+  </style>
+  <script>
+   (function(a,s,y,n,c,h,i,d,e){s.className+=' '+y;h.start=1*new Date;
+h.end=i=function(){s.className=s.className.replace(RegExp(' ?'+y),'')};
+(a[n]=a[n]||[]).hide=h;setTimeout(function(){i();h.end=null},c);h.timeout=c;
+})(window,document.documentElement,'async-hide','dataLayer',4000,
+{'GTM-5628STD':true});
+  </script>
+  <script>
+   (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-5628STD');
+  </script>
+  <!-- End Google Tag Manager -->
+  <meta charset="utf-8"/>
+  <meta content="Fonts for Print, Products &amp; Screens | MyFonts" property="og:title"/>
+  <meta content="https://www.myfonts.com" property="og:url"/>
+  <meta content="website" property="og:type"/>
+  <meta content="https://cdn.myfonts.net/s/images/MyFonts.png" property="og:image"/>
+  <meta content="Welcome to MyFonts, the #1 place to download great @font-face webfonts and desktop fonts: classics (Baskerville, Futura, Garamond) alongside hot new fonts (Coco Sharp, Vary,Bjorn)." property="og:description"/>
+  <meta content="summary" property="twitter:card"/>
+  <meta content="Fonts for Print, Products &amp; Screens | MyFonts" property="twitter:title"/>
+  <meta content="https://www.myfonts.com" property="twitter:url"/>
+  <meta content="https://cdn.myfonts.net/s/images/MyFonts.png" property="twitter:image"/>
+  <meta content="Welcome to MyFonts, the #1 place to download great @font-face webfonts and desktop fonts: classics (Baskerville, Futura, Garamond) alongside hot new fonts (Coco Sharp, Vary,Bjorn)." property="twitter:description"/>
+  <meta content="@MyFonts" property="twitter:site"/>
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+  <meta name="google" value="notranslate"/>
+  <meta content="Welcome to MyFonts, the #1 place to download great @font-face webfonts and desktop fonts: classics (Baskerville, Futura, Garamond) alongside hot new fonts (Coco Sharp, Vary,Bjorn)." name="description"/>
+  <link href="https://www.myfonts.com/" rel="canonical"/>
+  <!--[if lt IE 9]>
+    <script src="/s/js/html5shiv.js"></script>
+    <script src="/s/js/css3-mediaqueries.js" ></script>
+    <![endif]-->
+  <script type="text/javascript">
+   var logged_in = false;
+  </script>
+  <script src="https://cdn.myfonts.net/s/js/jquery/jquery.min.js" type="text/javascript">
+  </script>
+  <script type="text/javascript">
+   var $j = jQuery.noConflict();
+    
+
+    $j(document).ready(function() {
+        if (window.Optanon) {
+            window.Optanon.LoadBanner();
+        }
+      setTimeout( function (){$j(this).scrollTop(0);}, 400);
+
+    });
+  </script>
+  <script src="https://cdn.myfonts.net/s/jscache/live.e079eddcae4b93057b4dea775c5035bf.js" type="text/javascript">
+  </script>
+  <script src="https://cdn.myfonts.net/s/js/jquery/owl-carousel/owl.carousel.min.js" type="text/javascript">
+  </script>
+  <link href="https://cdn.myfonts.net/s/jscache/live.9f8e084697edaca2abfe53235ddce1f9.css" rel="stylesheet" type="text/css"/>
+  <link href="https://cdn.myfonts.net/s/js/jquery/owl-carousel/owl.carousel.css" rel="stylesheet" type="text/css"/>
+  <link href="https://cdn.myfonts.net/s/js/jquery/owl-carousel/owl.theme.css" rel="stylesheet" type="text/css"/>
+  <link href="https://static-webfonts.myfonts.com/static-font.css" rel="stylesheet" type="text/css"/>
+  <!--[if IE]>
+<link rel="stylesheet" type="text/css" href="https://cdn.myfonts.net/s/css/ie_bugfix.css" />
+<![endif]-->
+  <!-- .41.53 -->
+  <link href="/searchplugin.xml" rel="search" title="MyFonts Search" type="application/opensearchdescription+xml"/>
+  <link href="https://cdn.myfonts.net/s/images/icons/apple-touch-icon-144x144.png" rel="apple-touch-icon" sizes="144x144"/>
+  <link href="https://cdn.myfonts.net/s/images/icons/apple-touch-icon-114x114.png" rel="apple-touch-icon" sizes="114x114"/>
+  <link href="https://cdn.myfonts.net/s/images/icons/apple-touch-icon-72x72.png" rel="apple-touch-icon" sizes="72x72"/>
+  <link href="https://cdn.myfonts.net/s/images/icons/apple-touch-icon-57x57.png" rel="apple-touch-icon"/>
+  <!-- RSS -->
+ </head>
+ <body class="homepageBody" id="pagebody">
+  <div style="height: 120px; width: 100%;">
+   <tophat-banner>
+   </tophat-banner>
+  </div>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript>
+   <iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-5628STD" style="display:none;visibility:hidden" width="0">
+   </iframe>
+  </noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <a name="top_of_page">
+  </a>
+  <div class="newHeaderFooter includesCategories transition-fade transition-transform fluid" id="myfontsContainer">
+   <nav id="mobileNavMenu" style="display:none;">
+    <a href="/hotnewfonts/">
+     Hot New Fonts
+    </a>
+    <a href="/bestsellers/">
+     Best Sellers
+    </a>
+    <a href="/whatsnew/">
+     What’s New
+    </a>
+    <a href="/specials/">
+     Special Offers
+    </a>
+    <a href="/bundles/">
+     Bundles
+    </a>
+    <a href="/WhatTheFont/">
+     WhatTheFont
+    </a>
+    <span onclick="event.stopPropagation()">
+     Learn
+    </span>
+    <div class="mobileNavSubmenu">
+     <a href="/content/enterprise-solutions">
+      Enterprise Solutions
+     </a>
+     <a href="/content/creative-matters">
+      Creative Matters
+     </a>
+     <a href="/content/whats-your-font-style-quiz">
+      What’s Your Font Style? Quiz
+     </a>
+     <a href="/content/font-field-guide">
+      Font Field Guide
+     </a>
+    </div>
+   </nav>
+   <div class="headerWrapper">
+    <header class="robots-nocontent clearfix" id="myfontsHeader">
+     <nav id="headerNavMobile">
+      <button class="icon">
+      </button>
+     </nav>
+     <div id="headerContainer">
+      <div id="headerCart">
+      </div>
+      <div id="headerLogin">
+       <a href="https://www.myfonts.com/secure/login/" id="headerLoginLink">
+        <span id="headerLoginUsername">
+         <noscript>
+          My account
+         </noscript>
+        </span>
+        <span class="arrow arrow-hidden">
+        </span>
+       </a>
+       <!-- if user is subscribed to MLS -->
+       <!-- TODO: remove hide class in a.mls-nav if the logged in user has subscription-->
+       <a class="mls-nav hide" href="/browse/mls/" title="Browse the Monotype Library Subscription">
+        Browse the Monotype Library Subscription
+       </a>
+       <!-- /if -->
+       <iframe class="dropdownLoginFrame" frameborder="0" scrolling="no" src="//www.myfonts.com/widgets/dropdown_login/dropdown_login.php?https=1" style="display:none;">
+       </iframe>
+       <nav id="userMenu" style="display:none;">
+        <a data-qe-id="orders" href="/my/orders/">
+         Order history &amp; downloads
+        </a>
+        <a data-qe-id="webfontKitBuilder" href="/my/orders/kitbuild.html">
+         Webfont kit builder
+        </a>
+        <a data-qe-id="quotes" href="/my/quotes/">
+         Price quotes
+        </a>
+        <a data-qe-id="settings" href="/my/settings/">
+         Account settings
+        </a>
+        <a data-qe-id="subscriptions" href="/my/renewals/">
+         Subscriptions
+        </a>
+        <a data-qe-id="albums" href="/my/albums/">
+         Albums
+        </a>
+        <a class="userMenu__item--desktopHidden" data-qe-id="favorites" href="/my/favorites/">
+         Favorites
+        </a>
+        <a data-qe-id="tags" href="/my/tags/">
+         Tags
+        </a>
+        <a data-qe-id="wtf" href="/my/wtf/">
+         WhatTheFont forum posts
+        </a>
+        <a href="https://www.myfonts.com/secure/logout/" id="signOut">
+         Sign out
+        </a>
+       </nav>
+       <a class="favorites hidden" href="/my/favorites/">
+       </a>
+      </div>
+     </div>
+     <div id="headerLogotypeNew">
+      <a href="/">
+       <img alt="Myfonts" id="headerLogotypeNew__desktopLogo" src="https://www.myfonts.com/s/images/logo/MyFonts_Logo_C_RGB_by_Monotype.svg"/>
+       <img alt="Myfonts" id="headerLogotypeNew__mobileLogo" src="https://www.myfonts.com/s/images/logo/header_logo.svg"/>
+      </a>
+     </div>
+     <div class="searchBarWidget searchBoxComponent">
+      <form action="/search" id="searchBarWidgetForm" method="get" onsubmit="return handleSubmit(this);">
+       <div class="searchBarWidget_filter filter">
+        <span class="selected load-show">
+         All fonts
+        </span>
+        <div class="arrow-down">
+        </div>
+       </div>
+       <div class="searchBarWidget__query query">
+        <input autocomplete="off" name="q" placeholder="Search over 130,000 fonts…and counting!" size="15" type="text"/>
+        <ul class="auto_complete_results hidden">
+        </ul>
+       </div>
+       <button class="searchBarWidget__searchButton" id="searchButton" type="submit">
+        <span class="-search">
+         Search
+        </span>
+        <span class="-searchMobile">
+         GO
+        </span>
+       </button>
+      </form>
+     </div>
+     <nav id="headerNavMobileHomepage">
+      <a class="signIn" href="https://www.myfonts.com/secure/login/">
+       <button>
+        Sign in
+       </button>
+      </a>
+     </nav>
+    </header>
+    <nav class="navigationBar">
+     <div class="navigationBar__linkWrapper">
+      <a class="navigationBar__link" href="/hotnewfonts/">
+       Hot New Fonts
+      </a>
+      <a class="navigationBar__link" href="/bestsellers/">
+       Best Sellers
+      </a>
+      <a class="navigationBar__link" href="/whatsnew/">
+       What's New
+      </a>
+      <a class="navigationBar__link" href="/specials/">
+       Special Offers
+      </a>
+      <a class="navigationBar__link" href="/bundles/">
+       Bundles
+      </a>
+      <div class="navigationBar__menu">
+       <a class="navigationBar__link navigationBar__link--toggle navigationBar__link--disabled" href="/WhatTheFont/" id="WhatTheFont">
+        WhatTheFont
+       </a>
+       <nav class="navigationBar__submenu navigationBar__wtf_menu" id="WhatTheFontSubMenu">
+        <div class="navigationBar__submenu__linkWrapper">
+         <a class="navigationBar__link" href="/WhatTheFont/">
+          WhatTheFont
+         </a>
+         <a class="navigationBar__link" href="/WhatTheFont/forum/">
+          WhatTheFont Forum
+         </a>
+         <a class="navigationBar__link" href="/WhatTheFont/mobile/">
+          WhatTheFont Mobile
+         </a>
+        </div>
+       </nav>
+      </div>
+      <div class="navigationBar__menu">
+       <a class="navigationBar__link navigationBar__link--toggle navigationBar__link--disabled" href="#" id="Learn">
+        Learn
+       </a>
+       <nav class="navigationBar__submenu navigationBar__learn_menu" id="LearnSubMenu">
+        <div class="navigationBar__submenu__linkWrapper">
+         <a class="navigationBar__link" href="/content/enterprise-solutions">
+          Enterprise Solutions
+         </a>
+         <a class="navigationBar__link" href="/content/creative-matters">
+          Creative Matters
+         </a>
+         <a class="navigationBar__link" href="/content/whats-your-font-style-quiz">
+          What’s Your Font Style? Quiz
+         </a>
+         <a class="navigationBar__link" href="/content/font-field-guide">
+          Font Field Guide
+         </a>
+        </div>
+       </nav>
+      </div>
+     </div>
+    </nav>
+    <script type="text/javascript">
+     (function() {
+        var src = getRequireUrl("/modules/ui/navigation_bar/main-1615796681357");
+        document.write("\x3Cscript type='text/javascript' src='" + src + "'>\x3C/script>");
+    })();
+    </script>
+    <div class="headerWrapper__categoriesWrapper">
+     <div class="headerWrapper__categoriesWrapper__container">
+      <div class="homepageFontCategoriesWidget">
+       <div class="homepageFontCategoriesWidget__text">
+        <span class="homepageFontCategoriesWidget__textTitle">
+         Browse Fonts
+        </span>
+        <span>
+         by category
+        </span>
+       </div>
+       <div class="homepageFontCategoriesWidget__category">
+        <div class="homepageFontCategoriesWidget__category__first">
+         <div class="homepageFontCategoriesWidget__category__card">
+          <a href="/sans-serif-fonts">
+           <img alt="Set in Futura Next by Neufville" class="homepageFontCategoriesWidget__category__cardImage homepageFontCategoriesWidget__category__cardImage--category1" src="https://cdn.myfonts.net/s/images/categories/futura-next.png" title="Set in Futura Next by Neufville"/>
+          </a>
+         </div>
+         <div class="homepageFontCategoriesWidget__category__card">
+          <a href="/slab-serif-fonts">
+           <img alt="Set in Queulat Condensed by Latinotype" class="homepageFontCategoriesWidget__category__cardImage homepageFontCategoriesWidget__category__cardImage--category2" src="https://cdn.myfonts.net/s/images/categories/queulat-condensed.png" title="Set in Queulat Condensed by Latinotype"/>
+          </a>
+         </div>
+         <div class="homepageFontCategoriesWidget__category__card">
+          <a href="/serif-fonts">
+           <img alt="Set in Baskerville Display PT by ParaType" class="homepageFontCategoriesWidget__category__cardImage homepageFontCategoriesWidget__category__cardImage--category3" src="https://cdn.myfonts.net/s/images/categories/baskerville-display-pt.png" title="Set in Baskerville Display PT by ParaType"/>
+          </a>
+         </div>
+        </div>
+        <div class="homepageFontCategoriesWidget__category__second">
+         <div class="homepageFontCategoriesWidget__category__card">
+          <a href="/display-fonts">
+           <img alt="Set in Frontage Condensed by Juri Zaech" class="homepageFontCategoriesWidget__category__cardImage homepageFontCategoriesWidget__category__cardImage--category4" src="https://cdn.myfonts.net/s/images/categories/display.png" title="Set in Frontage Condensed by Juri Zaech"/>
+          </a>
+         </div>
+         <div class="homepageFontCategoriesWidget__category__card">
+          <a href="/handwritten-fonts">
+           <img alt="Set in Reliable by PizzaDude.dk" class="homepageFontCategoriesWidget__category__cardImage homepageFontCategoriesWidget__category__cardImage--category5" src="https://cdn.myfonts.net/s/images/categories/reliable.png" title="Set in Reliable by PizzaDude.dk"/>
+          </a>
+         </div>
+         <div class="homepageFontCategoriesWidget__category__card">
+          <a href="/script-fonts">
+           <img alt="Set in Kaleidos Rough by Mika Melvas" class="homepageFontCategoriesWidget__category__cardImage homepageFontCategoriesWidget__category__cardImage--category6" src="https://cdn.myfonts.net/s/images/categories/kaleidos-rough.png" title="Set in Kaleidos Rough by Mika Melvas"/>
+          </a>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="clearfix" id="myfontsBody">
+    <script type="text/javascript">
+     Behaviour.apply('header');
+    </script>
+    <div class="homepage">
+     <div class="homepage__mainBlock">
+      <div class="homepage__mainBlock__valuePropositionWrapper">
+       <div class="homepage__container">
+        <div class="homepage__mainBlock__valuePropositionWrapper__title">
+         <h1>
+          MyFonts offers the largest selection of professional fonts for any project.
+         </h1>
+        </div>
+        <div class="homepage__mainBlock__valuePropositionWrapper__subtitle">
+         <h2>
+          Over 130,000 available fonts, and counting.
+         </h2>
+        </div>
+       </div>
+      </div>
+      <div class="homepage__mainBlock__carouselWrapper">
+       <script>
+        var homepageFontCardsData = {"currencyFormat":{"currency_symbol":"$","thousand":",","decimal":".","precedes":"1","space":"0","rounding":false},"cards":[{"cardType":"font","cardReasonType":"newFont","cardReason":["2021-02-25 00:37:14"],"foundry":{"foundryID":3337,"foundryName":"Adam Jagosz","foundryURL":"\/foundry\/adam-jagosz\/"},"imageMain":"https:\/\/cdn.myfonts.net\/cdn-cgi\/image\/width=960,height=480,fit=contain,format=auto\/images\/pim\/10000\/txijVIJYHGOLf7maHfPUAEl8_25d3c8acd07917ff4f74a4ec66c31d07.png","fontData":{"familyID":214274,"familyName":"Slowglass","familyURL":"\/fonts\/adam-jagosz\/slowglass\/","styleCount":30,"minPrice":"30.00","maxPrice":"30.00","minSalePrice":"12.00","maxSalePrice":"12.00"}},{"cardType":"fontBundle","cardReasonType":"fontBundle","cardReason":["Bundle"],"imageMain":"https:\/\/cdn.myfonts.net\/s\/aw\/960x480\/671\/1\/343958.png","bundleName":"VVDS Sunshine Collection","bundle":{"bundleID":697367,"bundleName":"VVDS Sunshine Collection","bundleURL":"\/package\/697367\/","price":49,"styleCount":105,"minPrice":"7.00","maxPrice":"15.00","minSalePrice":"7.00","maxSalePrice":"15.00","displayFoundry":null},"foundry":{"foundryID":2340,"foundryName":"Vintage Voyage Design Supply","foundryURL":"\/foundry\/vintage-voyage-design-supply\/"}},{"cardType":"font","cardReasonType":"select","cardReason":["Expert's Choice"],"foundry":{"foundryID":3354,"foundryName":"Santi Rey","foundryURL":"\/foundry\/santi-rey\/"},"imageMain":"https:\/\/cdn.myfonts.net\/cdn-cgi\/image\/width=960,height=480,fit=contain,format=auto\/images\/pim\/10000\/JThKDLEc59nIRTZCKKYcBkqt_0ae9fded8b5965e34f80afa22b778dad.png","fontData":{"familyID":212890,"familyName":"Gazpacho","familyURL":"\/fonts\/santi-rey\/gazpacho\/","styleCount":14,"minPrice":"30.00","maxPrice":"30.00","minSalePrice":"30.00","maxSalePrice":"30.00"}},{"cardType":"font","cardReasonType":"newFont","cardReason":["2021-02-27 00:37:20"],"foundry":{"foundryID":826,"foundryName":"Eclectotype","foundryURL":"\/foundry\/Schizotype\/"},"imageMain":"https:\/\/cdn.myfonts.net\/cdn-cgi\/image\/width=960,height=480,fit=contain,format=auto\/images\/pim\/10000\/BZOJLm6nIWaDSvpoI5zdohRF_c5b31c055348379d4a5b15bac12b249f.png","fontData":{"familyID":214332,"familyName":"Yink","familyURL":"\/fonts\/schizotype\/yink\/","styleCount":1,"minPrice":"40.00","maxPrice":"40.00","minSalePrice":"20.00","maxSalePrice":"20.00"}},{"cardType":"fontBundle","cardReasonType":"fontBundle","cardReason":["Bundle"],"imageMain":"https:\/\/cdn.myfonts.net\/s\/aw\/960x480\/639\/1\/327526.png","bundleName":"Resistenza Tool Kit","bundle":{"bundleID":685135,"bundleName":"Resistenza Tool Kit","bundleURL":"\/package\/685135\/","price":259,"styleCount":80,"minPrice":"4.00","maxPrice":"39.00","minSalePrice":"4.00","maxSalePrice":"39.00","displayFoundry":null},"foundry":{"foundryID":1063,"foundryName":"Resistenza","foundryURL":"\/foundry\/Resistenza\/"}},{"cardType":"font","cardReasonType":"select","cardReason":["Expert's Choice"],"foundry":{"foundryID":2,"foundryName":"Monotype","foundryURL":"\/foundry\/Monotype_Imaging\/"},"imageMain":"https:\/\/cdn.myfonts.net\/cdn-cgi\/image\/width=960,height=480,fit=contain,format=auto\/images\/pim\/10000\/353672_887a9a3aabbfc4276bdc3bbd5ed4cc1f.png","fontData":{"familyID":208371,"familyName":"Macklin","familyURL":"\/fonts\/mti\/macklin\/","styleCount":58,"minPrice":"0.00","maxPrice":"149.00","minSalePrice":"0.00","maxSalePrice":"149.00"}},{"cardType":"font","cardReasonType":"newFont","cardReason":["2021-03-04 00:37:22"],"foundry":{"foundryID":1897,"foundryName":"ROHH","foundryURL":"\/foundry\/ROHH\/"},"imageMain":"https:\/\/cdn.myfonts.net\/cdn-cgi\/image\/width=960,height=480,fit=contain,format=auto\/images\/pim\/10000\/l2Tbr3gzmwOigNbgL9Y5y2ym_d9d4e4839eb68e87765bdc62ee828f93.png","fontData":{"familyID":214449,"familyName":"Kefir","familyURL":"\/fonts\/rohh\/kefir\/","styleCount":8,"minPrice":"39.00","maxPrice":"85.00","minSalePrice":"19.50","maxSalePrice":"42.50"}},{"cardType":"fontBundle","cardReasonType":"fontBundle","cardReason":["Bundle",0],"imageMain":"https:\/\/cdn.myfonts.net\/s\/aw\/960x480\/658\/1\/336932.png","bundleName":"Monotype Fresh Bundle","bundle":{"bundleID":680209,"bundleName":"Monotype Fresh Bundle","bundleURL":"\/package\/680209\/","price":199,"styleCount":50,"minPrice":"35.00","maxPrice":"69.00","minSalePrice":"35.00","maxSalePrice":"69.00","displayFoundry":null},"foundry":{"foundryID":2,"foundryName":"Monotype","foundryURL":"\/foundry\/Monotype_Imaging\/"}},{"cardType":"font","cardReasonType":"select","cardReason":["Expert's Choice"],"foundry":{"foundryID":840,"foundryName":"Fenotype","foundryURL":"\/foundry\/Fenotype\/"},"imageMain":"https:\/\/cdn.myfonts.net\/cdn-cgi\/image\/width=960,height=480,fit=contain,format=auto\/images\/pim\/10000\/425830_b2200ab8ac4763adf2f212f5638e3ea7.png","fontData":{"familyID":213179,"familyName":"Grand Cru","familyURL":"\/fonts\/fenotype\/grand-cru\/","styleCount":36,"minPrice":"0.00","maxPrice":"25.00","minSalePrice":"0.00","maxSalePrice":"10.00"}}],"mobileCards":[{"cardType":"font","cardReasonType":"newFont","cardReason":["2021-02-25 00:37:14"],"foundry":{"foundryID":3337,"foundryName":"Adam Jagosz","foundryURL":"\/foundry\/adam-jagosz\/"},"imageMain":"https:\/\/cdn.myfonts.net\/cdn-cgi\/image\/width=960,height=480,fit=contain,format=auto\/images\/pim\/10000\/txijVIJYHGOLf7maHfPUAEl8_25d3c8acd07917ff4f74a4ec66c31d07.png","fontData":{"familyID":214274,"familyName":"Slowglass","familyURL":"\/fonts\/adam-jagosz\/slowglass\/","styleCount":30,"minPrice":"30.00","maxPrice":"30.00","minSalePrice":"12.00","maxSalePrice":"12.00"}},{"cardType":"fontBundle","cardReasonType":"fontBundle","cardReason":["Bundle"],"imageMain":"https:\/\/cdn.myfonts.net\/s\/aw\/960x480\/671\/1\/343958.png","bundleName":"VVDS Sunshine Collection","bundle":{"bundleID":697367,"bundleName":"VVDS Sunshine Collection","bundleURL":"\/package\/697367\/","price":49,"styleCount":105,"minPrice":"7.00","maxPrice":"15.00","minSalePrice":"7.00","maxSalePrice":"15.00","displayFoundry":null},"foundry":{"foundryID":2340,"foundryName":"Vintage Voyage Design Supply","foundryURL":"\/foundry\/vintage-voyage-design-supply\/"}},{"cardType":"font","cardReasonType":"select","cardReason":["Expert's Choice"],"foundry":{"foundryID":3354,"foundryName":"Santi Rey","foundryURL":"\/foundry\/santi-rey\/"},"imageMain":"https:\/\/cdn.myfonts.net\/cdn-cgi\/image\/width=960,height=480,fit=contain,format=auto\/images\/pim\/10000\/JThKDLEc59nIRTZCKKYcBkqt_0ae9fded8b5965e34f80afa22b778dad.png","fontData":{"familyID":212890,"familyName":"Gazpacho","familyURL":"\/fonts\/santi-rey\/gazpacho\/","styleCount":14,"minPrice":"30.00","maxPrice":"30.00","minSalePrice":"30.00","maxSalePrice":"30.00"}}]};
+       </script>
+       <!-- Reference client-side album modules so its' js/css get included -->
+       <div class="homepageCarousel">
+        <div class="homepageCarousel__mobile fontCardsMobileContainer">
+        </div>
+        <div class="homepageCarousel__desktop homepageCarousel__desktop-hidden">
+         <div class="homepageCarousel__desktop__angleLeft">
+          <svg class="homepageCarousel__desktop__svgLeft" viewbox="0 0 50 80" xml:space="preserve">
+           <polyline fill="none" points="
+					45.63,75.8 0.375,38.087 45.63,0.375 " stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="6">
+           </polyline>
+          </svg>
+         </div>
+         <div class="homepageCarousel__desktop__angleRight">
+          <svg class="homepageCarousel__desktop__svgRight" viewbox="0 0 50 80" xml:space="preserve">
+           <polyline fill="none" points="
+					0.375,0.375 45.63,38.087 0.375,75.8 " stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="6">
+           </polyline>
+          </svg>
+         </div>
+         <div class="homepageCarousel__desktop__owlContainer fontCardsContainer">
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="homepage__specialOffersWrapper">
+      <div class="homepage__container">
+       <div class="specialOffers">
+        <div class="specialOffers__header">
+         <a href="/specials">
+          <h3 class="mf-ribbon">
+           Special Offers!
+          </h3>
+         </a>
+         <div class="specialOffers__headerTextContainer">
+          <span class="specialOffers__headerDescription">
+           These great deals are expiring soon, act now to save on these awesome fonts.
+          </span>
+          <a class="specialOffers__headerViewAll" href="/specials">
+           view all font deals &gt;
+          </a>
+         </div>
+        </div>
+        <div class="specialOffers__content">
+         <div class="specialOffers__contentCard">
+          <a href="/specials/92813/direct">
+           <img alt="Special offer on Artifex Hand CF" src="https://cdn.myfonts.net/s/aw/960x480/867/1/444271.png"/>
+          </a>
+         </div>
+         <div class="specialOffers__contentCard">
+          <a href="/specials/92906/direct">
+           <img alt="Special offer on Dreaming Outloud" src="https://cdn.myfonts.net/s/aw/960x480/875/1/448278.jpg"/>
+          </a>
+         </div>
+         <div class="specialOffers__contentCard">
+          <a href="/specials/92891/direct">
+           <img alt="Special offer on Hagia Signature" src="https://cdn.myfonts.net/s/aw/960x480/867/1/444362.jpg"/>
+          </a>
+         </div>
+         <div class="specialOffers__contentCard">
+          <a href="/specials/92878/direct">
+           <img alt="Special offer on The Pallace" src="https://cdn.myfonts.net/s/aw/960x480/867/1/444349.png"/>
+          </a>
+         </div>
+         <div class="specialOffers__contentCard">
+          <a href="/specials/92847/direct">
+           <img alt="Special offer on Jakarta" src="https://cdn.myfonts.net/s/aw/960x480/867/1/444305.jpg"/>
+          </a>
+         </div>
+         <div class="specialOffers__contentCard">
+          <a href="/specials/92881/direct">
+           <img alt="Special offer on Serenity Font Duo" src="https://cdn.myfonts.net/s/aw/960x480/875/1/448293.png"/>
+          </a>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="homepage__bottomBlock homepage__container">
+      <div class="homepage__bottomBlock__recentFontsWrapper">
+       <div class="homepage__bottomBlock__contentWrapper -solidBox -borderBox">
+        <div class="recentFontsWidget">
+         <h4 class="recentFontsWidget__title">
+          New Releases
+         </h4>
+         <div class="recentFontsWidget__card">
+          <a href="/fonts/kaer/aztec-initials/">
+           <img alt="Aztec Initials font page" class="recentFontsWidget__card__image" src="https://cdn.myfonts.net/cdn-cgi/image/width=960,height=480,fit=contain,format=auto/images/pim/10000/eNmlRWO6Nh4EU4o0ehgR1umr_f0bf8f653d30803a18499200fbbe5951.png"/>
+          </a>
+          <div class="recentFontsWidget__card__description">
+           <span class="recentFontsWidget__card__description__fontDetails">
+            <a href="/fonts/kaer/aztec-initials/">
+             Aztec Initials
+            </a>
+            by
+            <a href="/foundry/kaer/">
+             Kaer
+            </a>
+           </span>
+           <span class="recentFontsWidget__card__description__priceInfo">
+            2 fonts starting at
+            <span class="recentFontsWidget__card__description__price">
+             $19.00
+            </span>
+           </span>
+          </div>
+         </div>
+         <div class="recentFontsWidget__card">
+          <a href="/fonts/fontoura/skapa/">
+           <img alt="Skapa font page" class="recentFontsWidget__card__image" src="https://cdn.myfonts.net/cdn-cgi/image/width=960,height=480,fit=contain,format=auto/images/pim/10001/JyXinUkVLQw4YypB47Urogxi_6831b6acd0c0c5c806b857ec71fe9dd0.png"/>
+          </a>
+          <div class="recentFontsWidget__card__description">
+           <span class="recentFontsWidget__card__description__fontDetails">
+            <a href="/fonts/fontoura/skapa/">
+             Skapa
+            </a>
+            by
+            <a href="/foundry/fontoura/">
+             Fontoura
+            </a>
+           </span>
+           <span class="recentFontsWidget__card__description__priceInfo">
+            10 fonts starting at
+            <span class="recentFontsWidget__card__description__price">
+             $24.00
+            </span>
+           </span>
+          </div>
+         </div>
+         <div class="recentFontsWidget__card">
+          <a href="/fonts/adam-jagosz/slowglass/">
+           <img alt="Slowglass font page" class="recentFontsWidget__card__image" src="https://cdn.myfonts.net/cdn-cgi/image/width=960,height=480,fit=contain,format=auto/images/pim/10000/txijVIJYHGOLf7maHfPUAEl8_25d3c8acd07917ff4f74a4ec66c31d07.png"/>
+          </a>
+          <div class="recentFontsWidget__card__description">
+           <span class="recentFontsWidget__card__description__fontDetails">
+            <a href="/fonts/adam-jagosz/slowglass/">
+             Slowglass
+            </a>
+            by
+            <a href="/foundry/adam-jagosz/">
+             Adam Jagosz
+            </a>
+           </span>
+           <span class="recentFontsWidget__card__description__priceInfo">
+            30 fonts starting at
+            <span class="recentFontsWidget__card__description__price">
+             $30.00
+            </span>
+           </span>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="homepage__bottomBlock__staffPicksWrapper">
+       <div class="homepage__bottomBlock__contentWrapper -solidBox -borderBox">
+        <div class="staffPicks">
+         <h3 class="staffPicks__title mf-ribbon">
+          Staff Picks!
+         </h3>
+         <div class="staffPicks__fontContainer">
+          <a href="/fonts/struvictory-art/nordic-tale/">
+           <img alt="Nordic Tale Sample" class="staffPicks__fontContainer__sampleImage" src="https://render.myfonts.net/fonts/font_rend.php?id=0408c9e92f8069629b41af9c4b30749a&amp;rs=26&amp;bg=ffffff&amp;fg=000000&amp;rt=Nordic+Tale AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789&amp;sc=2&amp;t=o&amp;w=1024" title="Nordic Tale Sample"/>
+          </a>
+          <div class="staffPicks__fontContainer__fontDetails">
+           <span class="staffPicks__fontContainer__fontDetails__name">
+            <a href="/fonts/struvictory-art/nordic-tale/">
+             Nordic Tale
+            </a>
+            by
+            <a href="/foundry/struvictory-art/">
+             Struvictory.art
+            </a>
+           </span>
+           <span class="staffPicks__fontContainer__fontDetails__priceInfo">
+            <span>
+             3 fonts starting at
+             <span class="staffPicks__fontContainer__fontDetails__price">
+              $10.00
+             </span>
+            </span>
+           </span>
+          </div>
+         </div>
+         <div class="staffPicks__fontContainer">
+          <a href="/fonts/pizzadude/busy-day/">
+           <img alt="Busy Day Sample" class="staffPicks__fontContainer__sampleImage" src="https://render.myfonts.net/fonts/font_rend.php?id=672bc2b4852fa299718b4ced82dc80db&amp;rs=26&amp;bg=ffffff&amp;fg=000000&amp;rt=Busy+Day AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789&amp;sc=2&amp;t=o&amp;w=1024" title="Busy Day Sample"/>
+          </a>
+          <div class="staffPicks__fontContainer__fontDetails">
+           <span class="staffPicks__fontContainer__fontDetails__name">
+            <a href="/fonts/pizzadude/busy-day/">
+             Busy Day
+            </a>
+            by
+            <a href="/foundry/PizzaDude.dk/">
+             PizzaDude.dk
+            </a>
+           </span>
+           <span class="staffPicks__fontContainer__fontDetails__priceInfo">
+            <span>
+             3 fonts starting at
+             <span class="staffPicks__fontContainer__fontDetails__price">
+              $16.00
+             </span>
+            </span>
+           </span>
+          </div>
+         </div>
+         <div class="staffPicks__fontContainer">
+          <a href="/fonts/gilar-studio/goordy/">
+           <img alt="Goordy Sample" class="staffPicks__fontContainer__sampleImage" src="https://render.myfonts.net/fonts/font_rend.php?id=735f94dd95537f6e27a55a736cc9fcf9&amp;rs=26&amp;bg=ffffff&amp;fg=000000&amp;rt=Goordy AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789&amp;sc=2&amp;t=o&amp;w=1024" title="Goordy Sample"/>
+          </a>
+          <div class="staffPicks__fontContainer__fontDetails">
+           <span class="staffPicks__fontContainer__fontDetails__name">
+            <a href="/fonts/gilar-studio/goordy/">
+             Goordy
+            </a>
+            by
+            <a href="/foundry/gilar-studio/">
+             Gilar Studio
+            </a>
+           </span>
+           <span class="staffPicks__fontContainer__fontDetails__priceInfo">
+            <span>
+             4 fonts starting at
+             <span class="staffPicks__fontContainer__fontDetails__price">
+              $9.00
+             </span>
+            </span>
+           </span>
+          </div>
+         </div>
+         <div class="staffPicks__fontContainer">
+          <a href="/fonts/surotype/chedros/">
+           <img alt="Chedros Sample" class="staffPicks__fontContainer__sampleImage" src="https://render.myfonts.net/fonts/font_rend.php?id=34ff6205c3756ee827225f87c9412fd3&amp;rs=26&amp;bg=ffffff&amp;fg=000000&amp;rt=Chedros AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789&amp;sc=2&amp;t=o&amp;w=1024" title="Chedros Sample"/>
+          </a>
+          <div class="staffPicks__fontContainer__fontDetails">
+           <span class="staffPicks__fontContainer__fontDetails__name">
+            <a href="/fonts/surotype/chedros/">
+             Chedros
+            </a>
+            by
+            <a href="/foundry/Surotype/">
+             Surotype
+            </a>
+           </span>
+           <span class="staffPicks__fontContainer__fontDetails__priceInfo">
+            <span>
+             2 fonts starting at
+             <span class="staffPicks__fontContainer__fontDetails__price">
+              $15.00
+             </span>
+            </span>
+           </span>
+          </div>
+         </div>
+         <div class="staffPicks__fontContainer">
+          <a href="/fonts/allouse-studio/quarts-pachino/">
+           <img alt="Quarts Pachino Sample" class="staffPicks__fontContainer__sampleImage" src="https://render.myfonts.net/fonts/font_rend.php?id=91121e72ed7c1fef60cb857de5d73adb&amp;rs=26&amp;bg=ffffff&amp;fg=000000&amp;rt=Quarts+Pachino AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789&amp;sc=2&amp;t=o&amp;w=1024" title="Quarts Pachino Sample"/>
+          </a>
+          <div class="staffPicks__fontContainer__fontDetails">
+           <span class="staffPicks__fontContainer__fontDetails__name">
+            <a href="/fonts/allouse-studio/quarts-pachino/">
+             Quarts Pachino
+            </a>
+            by
+            <a href="/foundry/allouse-studio/">
+             Allouse Studio
+            </a>
+           </span>
+           <span class="staffPicks__fontContainer__fontDetails__priceInfo">
+            <span>
+             1 font starting at
+             <span class="staffPicks__fontContainer__fontDetails__price">
+              $11.20
+             </span>
+            </span>
+           </span>
+          </div>
+         </div>
+         <div class="staffPicks__fontContainer">
+          <a href="/fonts/letterhend/lamberds/">
+           <img alt="Lamberds Sample" class="staffPicks__fontContainer__sampleImage" src="https://render.myfonts.net/fonts/font_rend.php?id=d98abbc8bce9d59cc711403a2f6bb8f9&amp;rs=26&amp;bg=ffffff&amp;fg=000000&amp;rt=Lamberds AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789&amp;sc=2&amp;t=o&amp;w=1024" title="Lamberds Sample"/>
+          </a>
+          <div class="staffPicks__fontContainer__fontDetails">
+           <span class="staffPicks__fontContainer__fontDetails__name">
+            <a href="/fonts/letterhend/lamberds/">
+             Lamberds
+            </a>
+            by
+            <a href="/foundry/Letterhend/">
+             Letterhend
+            </a>
+           </span>
+           <span class="staffPicks__fontContainer__fontDetails__priceInfo">
+            <span>
+             1 font starting at
+             <span class="staffPicks__fontContainer__fontDetails__price">
+              $9.50
+             </span>
+            </span>
+           </span>
+          </div>
+         </div>
+         <div class="staffPicks__fontContainer">
+          <a href="/fonts/hiro-std/michella-songs/">
+           <img alt="Michella Songs Sample" class="staffPicks__fontContainer__sampleImage" src="https://render.myfonts.net/fonts/font_rend.php?id=9e53a86b115387ddedf53ebabb8e9200&amp;rs=26&amp;bg=ffffff&amp;fg=000000&amp;rt=Michella+Songs AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789&amp;sc=2&amp;t=o&amp;w=1024" title="Michella Songs Sample"/>
+          </a>
+          <div class="staffPicks__fontContainer__fontDetails">
+           <span class="staffPicks__fontContainer__fontDetails__name">
+            <a href="/fonts/hiro-std/michella-songs/">
+             Michella Songs
+            </a>
+            by
+            <a href="/foundry/hiro-std/">
+             HIRO.std
+            </a>
+           </span>
+           <span class="staffPicks__fontContainer__fontDetails__priceInfo">
+            <span>
+             1 font starting at
+             <span class="staffPicks__fontContainer__fontDetails__price">
+              $16.00
+             </span>
+            </span>
+           </span>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="homepage__bottomBlock__adsWrapper">
+       <div class="homepage__bottomBlock__adsWrapper__mosaicBox">
+       </div>
+      </div>
+     </div>
+    </div>
+    <script type="text/javascript">
+     (function() {
+        var src = getRequireUrl("/modules/ui/homepage/main-1615796681357");
+        document.write("\x3Cscript type='text/javascript' src='" + src + "'>\x3C/script>");
+    })();
+    </script>
+   </div>
+   <!-- end myfontsBody -->
+   <footer class="footer footer--new">
+    <div class="footer__container">
+     <div class="section__connect">
+      <span class="title">
+       Connect
+      </span>
+      <ul class="nav__list">
+       <li class="nav__list--txt icon-env">
+        <form action="/backbone/createsend/" class="js-cm-form" id="sub_newsleter_form" method="post" name="sub_newsleter_form">
+         <input aria-label="Email" autocomplete="Email" class="js-cm-email-input sc-dnqmqq fgqpHf" id="mf_news_email" maxlength="200" name="mf_news_email" placeholder="Subscribe to our newsletters ☛" required="" type="email"/>
+         <button class="btn-send" id="newsletter_submit" type="submit">
+         </button>
+        </form>
+       </li>
+       <li class="nav__list--txt">
+        <a class="link" href="https://meta.myfonts.com/" title="MyFonts Blog">
+         Check out our Blog
+        </a>
+       </li>
+       <li class="nav__list--txt icon-instagram">
+        <a class="link" href="https://www.instagram.com/myfonts/" title="Myfonts Instagram Account">
+         Follow us on Instagram
+        </a>
+       </li>
+       <li class="nav__list--txt icon-twitter">
+        <a class="link" href="https://twitter.com/MyFonts" title="Myfonts Twitter Account">
+         Follow us on Twitter
+        </a>
+       </li>
+       <li class="nav__list--txt icon-pintrest">
+        <a class="link" href="https://www.pinterest.com/myfonts/" title="Myfonts Pinterest Account">
+         Follow us on Pinterest
+        </a>
+       </li>
+       <li class="nav__list--txt icon-fb">
+        <a class="link" href="https://www.facebook.com/MyFonts/" title="Myfonts Facebook Account">
+         Like our Facebook page
+        </a>
+       </li>
+      </ul>
+     </div>
+     <div class="section__buy">
+      <span class="title">
+       We accept
+      </span>
+      <ul class="nav__list">
+       <li class="nav__list--txt visa">
+        Visa
+       </li>
+       <li class="nav__list--txt mastercard">
+        MasterCard
+       </li>
+       <li class="nav__list--txt amex">
+        American Express
+       </li>
+       <li class="nav__list--txt discover">
+        Discover
+       </li>
+       <li class="nav__list--txt paypal">
+        PayPal
+       </li>
+      </ul>
+     </div>
+     <div class="section__sell">
+      <span class="title">
+       Sell
+      </span>
+      <ul class="nav__list">
+       <li class="nav__list--txt">
+        <a class="link" href="https://foundrysupport.monotype.com/hc/en-us/articles/360028863311-Get-Started-on-MyFonts" title="Become a Foundry partner">
+         Become a Foundry partner
+        </a>
+       </li>
+       <li class="nav__list--txt">
+        <a class="link" href="https://signup.cj.com/member/signup/publisher/?cid=5153455" rel="noopener noreferrer" target="_blank" title="Join our affiliate program">
+         Become an Affiliate
+        </a>
+       </li>
+      </ul>
+     </div>
+     <div class="section__accord">
+      <input class="toggle" id="about-section" type="checkbox"/>
+      <label class="title" for="about-section">
+       About
+      </label>
+      <ul class="nav__list about-section">
+       <li class="nav__list--txt">
+        <a class="link" href="/legal/terms-and-conditions-of-business/" title="Myfonts Terms &amp; Conditions">
+         Terms &amp; Conditions
+        </a>
+       </li>
+       <li class="nav__list--txt">
+        <a class="link" href="/legal/terms-of-use/" title="Myfonts Terms of Use">
+         Terms of Use
+        </a>
+       </li>
+       <li class="nav__list--txt">
+        <a class="link" href="/legal/website-use-privacy-policy/" title="Myfonts Privacy Policy">
+         Privacy Policy
+        </a>
+       </li>
+       <li class="nav__list--txt">
+        <a class="link" href="/info/return-policy/" title="Myfonts Return Policy">
+         Return Policy
+        </a>
+       </li>
+       <li class="nav__list--txt">
+        <a class="link" href="/legal/" title="Myfonts Legal">
+         Legal
+        </a>
+       </li>
+      </ul>
+     </div>
+     <div class="section__accord">
+      <input class="toggle" id="help" type="checkbox"/>
+      <label class="title" for="help">
+       Help
+      </label>
+      <ul class="nav__list">
+       <li class="nav__list--txt">
+        <a class="link" href="/help/" title="Myfonts FAQ">
+         FAQ
+        </a>
+       </li>
+       <li class="nav__list--txt">
+        <a class="link" href="/contact/" title="Myfonts Contact">
+         Contact
+        </a>
+       </li>
+      </ul>
+     </div>
+    </div>
+    <div class="footer__copyright">
+     <p class="footer__copyright--text">
+      Copyright © 1999-2021  MyFonts Inc. All rights reserved.
+     </p>
+    </div>
+   </footer>
+  </div>
+  <script type="text/javascript">
+   (function() {
+			var src = getRequireUrl("/modules/ui/newsletter/main");
+			document.write("\x3Cscript type='text/javascript' src='" + src + "'>\x3C/script>");
+		})();
+  </script>
+  <!-- end of myfontsContainer -->
+  <script src="https://cdn.myfonts.net/s/js/customize_check.js" type="text/javascript">
+  </script>
+  <!--
+Runtime:     0.20288610458374 seconds 
+FS requests:     
+DB queries:  read-db-a.myfonts.com: 19
+             db.backend.myfonts.com: 4
+                       
+-->
+ </body>
+</html>

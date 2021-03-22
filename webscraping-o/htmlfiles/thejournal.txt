@@ -1,0 +1,4481 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html class="theme--thejournal active-publication-masthead" lang="en" style="" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://opengraphprotocol.org/schema/">
+ <head>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <title>
+   TheJournal.ie - Read, Share and Shape the News
+  </title>
+  <script src="//d2wy8f7a9ursnm.cloudfront.net/v7/bugsnag.min.js">
+  </script>
+  <script id="bugsnagConfig" type="application/json">
+   {"apiKey":"d8ea1607a1890612140d557a3e0159b8","releaseStage":"production","appVersion":"20210316153551"}
+  </script>
+  <script>
+   var bugsnagConfig = JSON.parse(document.getElementById("bugsnagConfig").innerHTML);
+    Bugsnag.start(bugsnagConfig);
+  </script>
+  <!-- OneTrust Cookies Consent Notice start -->
+  <script charset="UTF-8" data-domain-script="63cd008f-9d04-450b-80d1-e1bc919d732a" src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js" type="text/javascript">
+  </script>
+  <script type="text/javascript">
+   if (!String.prototype.startsWith) {
+            try {
+                Object.defineProperty(String.prototype, 'startsWith', {
+                    value: function (search, rawPos) {
+                        var pos = rawPos > 0 ? rawPos | 0 : 0;
+                        return this.substring(pos, pos + search.length) === search;
+                    }
+                });
+            } catch (e) {
+                String.prototype.startsWith = function (search, rawPos) {
+                    var pos = rawPos > 0 ? rawPos | 0 : 0;
+                    return this.substring(pos, pos + search.length) === search;
+                };
+            }
+        }
+
+        var CookieConsentListener = {};
+        var CookieConsentRepository = {};
+
+        (function()
+        {
+            function CookieConsent(functional, performance, targeting)
+            {
+                this.functional = functional;
+                this.performance = performance;
+                this.targeting = targeting;
+            }
+
+            /**
+             * @returns {CookieConsent}
+             */
+            CookieConsent.makeDefaultNoConsent = function()
+            {
+                var functional = false, performance = false, targeting = false;
+                return new CookieConsent(functional, performance, targeting);
+            };
+
+            /**
+             * @returns {CookieConsent}
+             */
+            CookieConsentRepository.fetch = function()
+            {
+                var rawConsentCookie = document.cookie
+                    .split('; ')
+                    .filter(function (row) {
+                        return row.startsWith('OptanonConsent');
+                    })[0];
+
+                if (rawConsentCookie === undefined) {
+                    return CookieConsent.makeDefaultNoConsent();
+                }
+
+                var consentCookie = new QueryString(rawConsentCookie.substring(15));
+
+                var consentGroups = consentCookie.get('groups');
+
+                if (!consentCookie.has('groups')) {
+                    return CookieConsent.makeDefaultNoConsent();
+                }
+
+                var consentByCategory = {};
+
+                consentGroups.split(",").forEach(function (category) {
+                    var parts = category.split(":");
+                    consentByCategory[parts[0]] = parts[1] === "1";
+                });
+
+                var functional = consentByCategory.C0003 === true;
+                var performance = consentByCategory.C0002 === true;
+                var targeting = consentByCategory.C0004 === true;
+
+                return new CookieConsent(functional, performance, targeting);
+            };
+
+            function QueryString(stringValue)
+            {
+                this.valuesByKey = {};
+
+                var keyValuePairs = stringValue.split("&");
+
+                for (var i = 0; i < keyValuePairs.length; i++) {
+                    var keyValuePair = keyValuePairs[i].split("=");
+                    var key = decodeURIComponent(keyValuePair[0]);
+                    var value = decodeURIComponent(keyValuePair[1]);
+                    this.valuesByKey[key] = value;
+                }
+            }
+
+            QueryString.prototype.get = function (key)
+            {
+                return this.valuesByKey[key];
+            }
+
+            QueryString.prototype.has = function (key)
+            {
+                return this.valuesByKey.hasOwnProperty(key);
+            }
+
+            CookieConsentListener = {
+                functional: [],
+                performance: [],
+                targeting: [],
+            };
+
+            CookieConsentListener.onFunctionalConsentChange = function(callback)
+            {
+                CookieConsentListener.functional.push(callback);
+            };
+
+            CookieConsentListener.onPerformanceConsentChange = function(callback)
+            {
+                CookieConsentListener.performance.push(callback);
+            };
+
+            CookieConsentListener.onTargetingConsentChange = function(callback)
+            {
+                CookieConsentListener.targeting.push(callback);
+            };
+
+            var previousConsent = CookieConsentRepository.fetch();
+
+            CookieConsentListener.triggerChange = function()
+            {
+                var consent = CookieConsentRepository.fetch();
+
+                var key;
+
+                if (previousConsent.functional !== consent.functional) {
+                    for (key in CookieConsentListener.functional) {
+                        CookieConsentListener.functional[key](consent.functional);
+                    }
+                }
+
+                if (previousConsent.performance !== consent.performance) {
+                    for (key in CookieConsentListener.performance) {
+                        CookieConsentListener.performance[key](consent.performance);
+                    }
+                }
+
+                if (previousConsent.targeting !== consent.targeting) {
+                    for (key in CookieConsentListener.targeting) {
+                        CookieConsentListener.targeting[key](consent.targeting);
+                    }
+                }
+
+                previousConsent = consent;
+            };
+        }());
+
+        function bootYoutubeIframes()
+        {
+            function consentYes()
+            {
+                var iframes = document.getElementsByClassName('youtube-player');
+                for (var i = 0; i < iframes.length; i++) {
+                    var src = iframes[i].getAttribute('data-src');
+                    iframes[i].setAttribute('src', src);
+                }
+            }
+
+            function consentNo()
+            {
+                var iframes = document.getElementsByClassName('youtube-player');
+                for (var i = 0; i < iframes.length; i++) {
+                    iframes[i].setAttribute('src', '');
+                }
+            }
+
+            var consent = CookieConsentRepository.fetch();
+            if (consent.targeting) {
+                consentYes();
+            }
+
+            CookieConsentListener.onTargetingConsentChange(function(hasTargetingConsent) {
+                if (hasTargetingConsent) {
+                    consentYes();
+                    return;
+                }
+                consentNo();
+            });
+        }
+
+        function bootVimeoIframes()
+        {
+            function consentYes()
+            {
+                var iframes = document.getElementsByClassName('vimeo-player');
+                for (var i = 0; i < iframes.length; i++) {
+                    var src = iframes[i].getAttribute('data-src');
+                    iframes[i].setAttribute('src', src);
+                }
+            }
+
+            function consentNo()
+            {
+                var iframes = document.getElementsByClassName('vimeo-player');
+                for (var i = 0; i < iframes.length; i++) {
+                    iframes[i].setAttribute('src', '');
+                }
+            }
+
+            var consent = CookieConsentRepository.fetch();
+            if (consent.functional) {
+                consentYes();
+            }
+
+            CookieConsentListener.onFunctionalConsentChange(function(hasFunctionalConsent) {
+                if (hasFunctionalConsent) {
+                    consentYes();
+                    return;
+                }
+                consentNo();
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function(){
+            bootYoutubeIframes();
+            bootVimeoIframes();
+        });
+
+        window.addEventListener("message", function (event) {
+            if (event.data === "openCookieConsentDialog") {
+                OneTrust.ToggleInfoDisplay();
+            }
+        }, false);
+
+        function OptanonWrapper()
+        {
+            OneTrust.OnConsentChanged(function (e) {
+                CookieConsentListener.triggerChange();
+            });
+        }
+  </script>
+  <link href="//b0.thejournal.ie/desktop/i/thejournal/favicon.ico" rel="icon" type="image/x-icon"/>
+  <link href="//b0.thejournal.ie/desktop/i/thejournal/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="//b0.thejournal.ie/desktop/i/thejournal/apple-touch-icon.png" rel="apple-touch-icon"/>
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i" rel="stylesheet"/>
+  <meta content="app-id=409359491" name="apple-itunes-app"/>
+  <script type="text/javascript">
+   document.documentElement.className+=' js';
+    var ajaxurl = '//www.thejournal.ie/ajax.php';
+    var stats_url = 'https://www.thejournal.ie/statsscript.php';
+    var current_url = 'www.thejournal.ie/';
+    var load_time = '2021-03-21 22:46:44';
+    var current_post_id = 0;
+    var current_post_permalink = '';
+    var stats_key = "281f8cc5bb6f40c93647c1e4896065d5";
+    var wp_logged_in = false;
+    var current_title = "";
+
+    window.jrnl_social_connected = false;
+
+    var _sf_startpt=(new Date()).getTime()
+
+    var app_cookie_domain = '.thejournal.ie';
+    var session_domain = "https://www.thejournal.ie";
+    var root_domain = "thejournal.ie";
+  </script>
+  <script type="text/javascript">
+   document.domain = "thejournal.ie";
+
+    window.on_front = false;
+                window.authenticator = '';
+    window.login_expires = 1774133204;
+    window.users_token = '';
+
+                window.fbAsyncInit = function() {
+                FB.init({appId: "116141121768215", status: true, cookie: true,
+                xfbml: true});
+                                        if(typeof sync_with_server != 'undefined')
+                        {
+                            sync_with_server();
+                        }
+                                    };
+            (function(d){
+                var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+                js = d.createElement('script'); js.id = id; js.async = true;
+                js.src = "//connect.facebook.net/en_US/all.js";
+                d.getElementsByTagName('head')[0].appendChild(js);
+            }(document));
+                window.email_permission = false;
+        window.share_permission = false;
+            var jrnl_social_window = null;
+        function jrnl_social_login(service, submit_comment, callback) {
+            var link = '';
+            if(service == 'twitter')
+            {
+                link = "https://www.thejournal.ie/utils/login/twitter/?";
+                if(submit_comment)
+                {
+                    link = link + "&comment=1";
+                }
+                else if(callback
+                    && callback.length > 0
+                )
+                {
+                    link = link + "?cb=" + callback;
+                }
+            }
+            else if(service == 'facebook')
+            {
+                // Facebook link is a bit messier - need to bounce through popup
+                link = "https://www.thejournal.ie/utils/login/facebook/?url=https%3A%2F%2Fwww.facebook.com%2Fdialog%2Foauth%3Fdisplay%3Dpopup%26client_id%3D116141121768215%26scope%3D" + get_fb_perm_string() + "%26redirect_uri%3Dhttps%3A%2F%2Fwww.thejournal.ie%2Futils%2Flogin%2Ffacebook%2F";
+                // Are we submitting after log-in?
+                if(submit_comment)
+                {
+                    link = link + "?comment=1";
+                }
+                else if(callback
+                    && callback.length > 0
+                )
+                {
+                    link = link + "?cb=" + callback;
+                }
+            }
+
+            if ( jrnl_social_window != null && !jrnl_social_window.closed )
+                jrnl_social_window.close();
+
+            jrnl_social_window = window.open(
+                link,
+                'jrnl_social_window',
+                'status,scrollbars,location,resizable,width=600,height=350'
+            )
+            jrnl_social_window.focus();
+
+            return false;
+        }
+  </script>
+  <link href="/feed/" rel="alternate" title="TheJournal.ie » Feed" type="application/rss+xml"/>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
+  </script>
+  <script>
+   window.jQuery || document.write('<script src="https://b0.thejournal.ie/desktop/js/jquery-1.7.2.min.js"><\/script>')
+  </script>
+  <!-- Start dmlpool Tag -->
+  <script src="//pool.journalmedia.ie/js/lscache.min.js" type="text/javascript">
+  </script>
+  <script>
+   var _pool = _pool || [];
+            (function(){
+                var s = document.createElement('script');
+                s.type = 'text/javascript';
+                s.async = true;
+                s.src = '//pool.journalmedia.ie/js/pool.min.js';
+                var x = document.getElementsByTagName('script')[0];
+                x.parentNode.insertBefore(s, x);
+            })();
+            _pool.push(['cacheBucketLocally', ['_dml']]);
+
+            // viewability js
+            _jrnl_viewability = [];
+            _jrnl_sidebar = [];
+  </script>
+  <!-- End dmlpool Tag -->
+  <script src="https://www.gstatic.com/charts/loader.js" type="text/javascript">
+  </script>
+  <script type="text/javascript">
+   var is_box_window = false;
+                    var is_box_name = '';
+  </script>
+  <script src="//b0.thejournal.ie/desktop/js/build/current-a09b59fcfa.js" type="text/javascript">
+  </script>
+  <script src="//b0.thejournal.ie/desktop/js/build/legacy-common-f2a87a3f2f.js" type="text/javascript">
+  </script>
+  <script src="" type="text/javascript">
+  </script>
+  <link href="//b0.thejournal.ie/desktop/css/build/desktop-c2db6bb710.css" rel="stylesheet" type="text/css"/>
+  <link href="//b0.thejournal.ie/desktop/css/build/legacy-common-c3a92aaa56.css" rel="stylesheet" type="text/css"/>
+  <link href="" rel="stylesheet" type="text/css"/>
+  <meta content="Read, share and shape the news on TheJournal.ie - Breaking Irish and International News" name="description"/>
+  <meta content="news, irish news, breaking news, irish politics, business, sports, entertainment, news blog, ireland, irish" name="keywords"/>
+  <meta content="news, irish news, breaking news, irish politics, business, sports, entertainment, news blog, ireland, irish" name="news_keywords"/>
+  <link href="https://www.thejournal.ie/page/2/" rel="next"/>
+  <meta content="116141121768215" name="fb:app_id"/>
+  <meta content="website" property="og:type"/>
+  <meta content="TheJournal.ie" property="og:title"/>
+  <meta content="https://www.thejournal.ie" property="og:url"/>
+  <meta content="https://graph.facebook.com/v3.2/137576076262825/picture?type=large" property="og:image"/>
+  <meta content="TheJournal.ie" property="og:site_name"/>
+  <meta content="137576076262825" property="fb:pages"/>
+  <script>
+   var commentSec = {
+        token : "c65560743"
+    }
+  </script>
+  <script type="text/javascript">
+   var googletag = googletag || {};
+googletag.cmd = googletag.cmd || [];
+(function() {
+var gads = document.createElement('script');
+gads.async = true;
+gads.type = 'text/javascript';
+var useSSL = 'https:' == document.location.protocol;
+gads.src = (useSSL ? 'https:' : 'http:') +
+'//www.googletagservices.com/tag/js/gpt.js';
+var node = document.getElementsByTagName('script')[0];
+node.parentNode.insertBefore(gads, node);
+})();
+  </script>
+  <script type="text/javascript">
+   googletag.cmd.push(function() {
+    
+    var consent = CookieConsentRepository.fetch();
+    var areCookiesDisabled = consent.targeting ? 0 : 1;
+    googletag.pubads().setCookieOptions(areCookiesDisabled);
+    console.log("User Consent: Google Ads " + (consent.targeting ? "enabled" : "disabled"));
+
+    CookieConsentListener.onTargetingConsentChange(function (hasTargetingConsent) {
+        var areCookiesDisabled = hasTargetingConsent ? 0 : 1;
+        googletag.pubads().setCookieOptions(areCookiesDisabled);
+        googletag.pubads().refresh();
+        console.log("User Consent: Google Ads " + (hasTargetingConsent ? "enabled" : "disabled"));
+    });
+googletag.defineSlot('/5512429/J_Half_Page', [[2,1],[300,600],[160,600]], 'div-gpt-ad-1365092406213-0').addService(googletag.pubads());
+googletag.defineSlot('/5512429/J_MPU', [["fluid"],[1,1],[300,250],[300,600]], 'div-gpt-ad-1365092406213-1').addService(googletag.pubads());
+googletag.defineSlot('/5512429/J_Riverblock', [[2,1],[630,172]], 'div-gpt-ad-1365092406213-2').addService(googletag.pubads());
+googletag.defineSlot('/5512429/J_Leaderboard', [[1,1],[728,90],[970,250]], 'div-gpt-ad-1365092406213-3').addService(googletag.pubads());
+googletag.pubads().setTargeting('platform', 'desktop');
+googletag.pubads().setTargeting('sitemode', 'default');
+
+googletag.pubads().setTargeting('site', 'thejournal');
+googletag.pubads().setTargeting('publication', 'thejournal');
+googletag.pubads().setTargeting('section', ["river","homepage"]);
+googletag.pubads().setTargeting('tiling', '4');
+
+if ($("#js-retargeting").length > 0)
+{
+    try
+    {
+        var retargeting = new RetargetingClient();
+        retargeting.trackView();
+    }
+    catch (e)
+    {
+        console.error(e.message);
+        console.log(e);
+    }
+}
+
+//googletag.pubads().disableInitialLoad();
+if(lscache && Object.keys)
+{
+    var _dml = Object.keys(lscache.getBucket('_dml')).join(",");
+    googletag.pubads().setTargeting('_dml', _dml);
+}
+
+
+
+    googletag.pubads().enableSingleRequest();
+    googletag.pubads().collapseEmptyDivs();
+    googletag.enableServices();
+
+});
+
+
+dfpLoadCheck('div-gpt-ad-1365092406213-3');
+  </script>
+  <!-- IE9 Pinning -->
+  <meta content="TheJournal" name="application-name"/>
+  <meta content="TheJournal.ie - Read, Share and Shape the news" name="msapplication-tooltip"/>
+  <meta content="https://www.thejournal.ie/" name="msapplication-starturl"/>
+  <meta content="name=The 9 at 9;action-uri=https://www.thejournal.ie/9at9;icon-uri=//b0.thejournal.ie/desktop/i/thejournal/favicon.ico" name="msapplication-task"/>
+  <meta content="name=The42;action-uri=https://www.the42.ie/;icon-uri=//b0.thejournal.ie/desktop/i/the42/favicon.ico" name="msapplication-task"/>
+  <meta content="name=Business Etc;action-uri=https://businessetc.thejournal.ie/;icon-uri=//b0.thejournal.ie/desktop/i/businessetc/favicon.ico" name="msapplication-task"/>
+  <meta content="name=DailyEdge.ie;action-uri=https://thedailyedge.thejournal.ie/;icon-uri=//b0.thejournal.ie/desktop/i/thedailyedge/favicon.ico" name="msapplication-task"/>
+  <meta content="name=Irish News;action-uri=https://www.thejournal.ie/irish/;icon-uri=//b0.thejournal.ie/desktop/i/thejournal/favicon.ico" name="msapplication-task"/>
+  <!-- /IE9 Pinning -->
+  <script src="https://www.google.com/recaptcha/api.js">
+  </script>
+ </head>
+ <!--[if IE 6]><body class="ie ie6 ie-lt8 "><![endif]-->
+ <!--[if IE 7]><body class="ie ie7 ie-lt8 "><![endif]-->
+ <!--[if IE 8]><body class="ie ie8 "><![endif]-->
+ <!--[if gte IE 9]><body class="ie9up "><![endif]-->
+ <!--[if !IE]><!-->
+ <body class="nie">
+  <!--<![endif]-->
+  <script>
+   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  </script>
+  <script type="text/javascript">
+   (function(){
+
+    var hasSentPageView = false;
+
+    function consentYes()
+    {
+        window['ga-disable-UA-17456403-37'] = false;
+        console.log("User Consent: Google Analytics enabled");
+        if (hasSentPageView) {
+            return;
+        }
+        ga('send', 'pageview');
+        hasSentPageView = true;
+    }
+
+    function consentNo()
+    {
+        window['ga-disable-UA-17456403-37'] = true;
+        console.log("User Consent: Google Analytics disabled");
+    }
+
+    function boot()
+    {
+        ga('create', 'UA-17456403-37', 'auto');
+
+        var consent = CookieConsentRepository.fetch();
+        if (consent.performance) {
+            consentYes();
+        } else {
+            consentNo();
+        }
+
+        CookieConsentListener.onPerformanceConsentChange(function(hasPerformanceConsent) {
+            if (hasPerformanceConsent) {
+                consentYes();
+                return;
+            }
+            consentNo();
+        });
+    }
+
+    boot();
+}());
+  </script>
+  <div class="hidden" id="myfeed-banner">
+   <div class="page-content screen-1">
+    <div class="sections-blurb">
+     <div class="title">
+      My News
+     </div>
+     <div class="subtext">
+      Personalise your news feed by choosing your favourite topics of interest
+     </div>
+     <div class="buttons">
+      <div class="btn btn-action">
+       Get Started
+      </div>
+      <div class="btn btn-decline">
+       No Thanks
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="page-content screen-2 hidden">
+    <div class="sections-blurb">
+     <div class="title">
+      Create your own newsfeed
+     </div>
+     <div class="subtext">
+      Choose 3 or more topics that you want to see.
+     </div>
+    </div>
+    <div class="sections-options">
+     <div class="section-option" data-section="irish" id="myfeed-section-irish">
+      <img src="//b0.thejournal.ie/desktop/i/myfeed/irish.png"/>
+      <img class="section-tick" src="//b0.thejournal.ie/desktop/i/myfeed/tick.png"/>
+      <span>
+       Irish News
+      </span>
+     </div>
+     <div class="section-option" data-section="politics" id="myfeed-section-politics">
+      <img src="//b0.thejournal.ie/desktop/i/myfeed/politics.png"/>
+      <img class="section-tick" src="//b0.thejournal.ie/desktop/i/myfeed/tick.png"/>
+      <span>
+       Politics
+      </span>
+     </div>
+     <div class="section-option" data-section="international" id="myfeed-section-international">
+      <img src="//b0.thejournal.ie/desktop/i/myfeed/international.png"/>
+      <img class="section-tick" src="//b0.thejournal.ie/desktop/i/myfeed/tick.png"/>
+      <span>
+       International
+      </span>
+     </div>
+     <div class="section-option" data-section="readme" id="myfeed-section-readme">
+      <img src="//b0.thejournal.ie/desktop/i/myfeed/readme.png"/>
+      <img class="section-tick" src="//b0.thejournal.ie/desktop/i/myfeed/tick.png"/>
+      <span>
+       Opinion
+      </span>
+     </div>
+     <div class="section-option" data-section="living" id="myfeed-section-living">
+      <img src="//b0.thejournal.ie/desktop/i/myfeed/living.png"/>
+      <img class="section-tick" src="//b0.thejournal.ie/desktop/i/myfeed/tick.png"/>
+      <span>
+       Living
+      </span>
+     </div>
+     <div class="section-option" data-section="family" id="myfeed-section-family">
+      <img src="//b0.thejournal.ie/desktop/i/myfeed/family.png"/>
+      <img class="section-tick" src="//b0.thejournal.ie/desktop/i/myfeed/tick.png"/>
+      <span>
+       Family
+      </span>
+     </div>
+     <div class="section-option" data-section="technology" id="myfeed-section-technology">
+      <img src="//b0.thejournal.ie/desktop/i/myfeed/technology.png"/>
+      <img class="section-tick" src="//b0.thejournal.ie/desktop/i/myfeed/tick.png"/>
+      <span>
+       Technology
+      </span>
+     </div>
+     <div class="section-option" data-section="business" id="myfeed-section-business">
+      <img src="//b0.thejournal.ie/desktop/i/myfeed/business.png"/>
+      <img class="section-tick" src="//b0.thejournal.ie/desktop/i/myfeed/tick.png"/>
+      <span>
+       Business
+      </span>
+     </div>
+     <div class="section-option" data-section="gaa" id="myfeed-section-gaa">
+      <img src="//b0.thejournal.ie/desktop/i/myfeed/gaa.png"/>
+      <img class="section-tick" src="//b0.thejournal.ie/desktop/i/myfeed/tick.png"/>
+      <span>
+       GAA
+      </span>
+     </div>
+     <div class="section-option" data-section="soccer" id="myfeed-section-soccer">
+      <img src="//b0.thejournal.ie/desktop/i/myfeed/soccer.png"/>
+      <img class="section-tick" src="//b0.thejournal.ie/desktop/i/myfeed/tick.png"/>
+      <span>
+       Soccer
+      </span>
+     </div>
+     <div class="section-option" data-section="rugby" id="myfeed-section-rugby">
+      <img src="//b0.thejournal.ie/desktop/i/myfeed/rugby.png"/>
+      <img class="section-tick" src="//b0.thejournal.ie/desktop/i/myfeed/tick.png"/>
+      <span>
+       Rugby
+      </span>
+     </div>
+     <div class="section-option" data-section="mma" id="myfeed-section-mma">
+      <img src="//b0.thejournal.ie/desktop/i/myfeed/mma.png"/>
+      <img class="section-tick" src="//b0.thejournal.ie/desktop/i/myfeed/tick.png"/>
+      <span>
+       MMA
+      </span>
+     </div>
+     <div class="section-option" data-section="watercooler" id="myfeed-section-watercooler">
+      <img src="//b0.thejournal.ie/desktop/i/myfeed/watercooler.png"/>
+      <img class="section-tick" src="//b0.thejournal.ie/desktop/i/myfeed/tick.png"/>
+      <span>
+       Watercooler
+      </span>
+     </div>
+     <div class="section-option" data-section="going-out" id="myfeed-section-going-out">
+      <img src="//b0.thejournal.ie/desktop/i/myfeed/going-out.png"/>
+      <img class="section-tick" src="//b0.thejournal.ie/desktop/i/myfeed/tick.png"/>
+      <span>
+       Going Out
+      </span>
+     </div>
+     <div class="section-option" data-section="screens" id="myfeed-section-screens">
+      <img src="//b0.thejournal.ie/desktop/i/myfeed/screens.png"/>
+      <img class="section-tick" src="//b0.thejournal.ie/desktop/i/myfeed/tick.png"/>
+      <span>
+       Screens
+      </span>
+     </div>
+     <div class="section-option" data-section="quiz" id="myfeed-section-quiz">
+      <img src="//b0.thejournal.ie/desktop/i/myfeed/quiz.png"/>
+      <img class="section-tick" src="//b0.thejournal.ie/desktop/i/myfeed/tick.png"/>
+      <span>
+       Quizzes
+      </span>
+     </div>
+     <div class="section-option" data-section="change-generation" id="myfeed-section-change-generation">
+      <img src="//b0.thejournal.ie/desktop/i/myfeed/change-generation.png"/>
+      <img class="section-tick" src="//b0.thejournal.ie/desktop/i/myfeed/tick.png"/>
+      <span>
+       Change Generation
+      </span>
+     </div>
+     <div class="buttons">
+      <div class="btn btn-action inactive">
+       Create my newsfeed
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="my-feed-close">
+    <span>
+    </span>
+   </div>
+  </div>
+  <script type="text/javascript">
+   $( document ).ready(function() {
+        // accepts if on feed river
+        myfeedSelector.init(0);
+    });
+  </script>
+  <div id="header_leaderboard_container">
+   <center class="header_leaderboard river_leaderboard" id="header_leaderboard">
+    <span class="information">
+     Advertisement
+    </span>
+    <script>
+     var defaultSpacing = "101";
+                if(window.localStorage) {
+                    var lastBanner = localStorage.getItem('last_masthead_ad_size');
+                    if(lastBanner == 'billboard') {
+                        defaultSpacing = "261";
+                    }
+                    else if(lastBanner == 'none') {
+                        defaultSpacing = "11";
+                    }
+                }
+                document.write('<div id="leaderboard_height_spacer" style="width:1px; float:left; display:inline; height:'+defaultSpacing+'px"></div>');
+    </script>
+    <div style="width: 970px;">
+     <div id="div-gpt-ad-1365092406213-3">
+      <script type="text/javascript">
+       googletag.cmd.push(function() { googletag.display('div-gpt-ad-1365092406213-3'); });
+      </script>
+     </div>
+    </div>
+   </center>
+  </div>
+  <div id="fb-root">
+  </div>
+  <section class="contribution-prompt" id="contribution-prompt-overlay">
+   <img alt="" class="close-button" src="//b0.thejournal.ie/desktop/i//contribution-prompt/close-button.svg"/>
+   <div class="text-content">
+    <span class="hashtag">
+     #Open journalism
+    </span>
+    <span class="title">
+     No news is bad news
+    </span>
+    <p>
+     Your
+     <b>
+      contributions
+     </b>
+     will help us continue to deliver the stories that are important to you
+    </p>
+   </div>
+   <a href="/contribute">
+    Support The Journal
+   </a>
+  </section>
+  <header>
+   <div class="header-wrapper">
+    <div class="logo-wrapper">
+     <a class="logo-link" data-analytics-label="Homepage" href="https://www.thejournal.ie/">
+      <img class="logo" src="//b0.thejournal.ie/desktop/i/thejournal/logo.svg"/>
+     </a>
+     <a class="additional-button has-hover" data-analytics-label="Contribute [Logo Button]" href="/contribute">
+      Contribute :
+      <b>
+       Support us now
+      </b>
+     </a>
+    </div>
+    <div class="additional-infos">
+     <a class="weather has-hover" href="/weather">
+      <span>
+       Dublin: 7°C
+      </span>
+      <img src="//b0.thejournal.ie/desktop/i/thejournal/weather-icons/07.svg"/>
+     </a>
+     <span>
+      Sunday 21 March 2021
+     </span>
+    </div>
+   </div>
+  </header>
+  <nav id="main-navigation">
+   <div class="nav-links">
+    <ul class="nav-categories">
+     <li>
+      <a href="https://www.thejournal.ie/irish/">
+       Irish News
+      </a>
+     </li>
+     <li>
+      <a href="https://www.thejournal.ie/factcheck/news/">
+       FactCheck
+      </a>
+     </li>
+     <li>
+      <a href="https://www.thejournal.ie/voices/">
+       Voices
+      </a>
+     </li>
+     <li>
+      <a href="https://www.thejournal.ie/brexit/">
+       Brexit
+      </a>
+     </li>
+     <li>
+      <a href="https://www.thejournal.ie/covid19-facts/news/">
+       Covid-19
+      </a>
+     </li>
+    </ul>
+   </div>
+   <div id="main-nav-toggle-handler">
+    <div class="nav-toggle-open">
+     <div class="nav-toggle">
+      <ul>
+       <li>
+        Newsletters
+       </li>
+       <li>
+        Podcasts
+       </li>
+       <li>
+        More
+       </li>
+      </ul>
+      <svg fill="none" height="30" viewbox="0 0 25 25" width="30" xmlns="http://www.w3.org/2000/svg">
+       <circle cx="12.5" cy="12.5" fill="currentColor" r="12.5">
+       </circle>
+       <path d="M18.125 10.083H6.875" stroke="white" stroke-linecap="round" stroke-linejoin="round">
+       </path>
+       <path d="M18.125 13H6.875" stroke="white" stroke-linecap="round" stroke-linejoin="round">
+       </path>
+       <path d="M18.125 15.916H6.875" stroke="white" stroke-linecap="round" stroke-linejoin="round">
+       </path>
+      </svg>
+     </div>
+    </div>
+    <div class="nav-toggle-close hidden">
+     <div class="nav-toggle">
+      <ul>
+       <li>
+        Close
+       </li>
+      </ul>
+      <svg fill="none" height="30" viewbox="0 0 25 25" width="30" xmlns="http://www.w3.org/2000/svg">
+       <circle cx="12.5" cy="12.5" fill="currentColor" r="12.5">
+       </circle>
+       <path d="M9.16602 9.16602L16.8327 16.8327" stroke="white" stroke-linecap="round" stroke-linejoin="round">
+       </path>
+       <path d="M16.8327 9.16602L9.16602 16.8327" stroke="white" stroke-linecap="round" stroke-linejoin="round">
+       </path>
+      </svg>
+     </div>
+    </div>
+   </div>
+  </nav>
+  <div class="closed" id="main-nav-dropdown">
+   <a class="left-link-section" data-analytics-label="The Explainer" href="https://www.thejournal.ie/the-explainer/news/">
+    <div class="details">
+     <div class="heading">
+      Weekly Podcast
+     </div>
+     <div class="title">
+      The Explainer
+     </div>
+     <div class="description">
+      The Explainer is a weekly podcast from TheJournal.ie that takes a deeper look at one big news story you need to know about. Listen now wherever you get your podcasts
+     </div>
+    </div>
+   </a>
+   <div class="options">
+    <div class="sections">
+     <div class="section">
+      <div class="heading">
+       Newsletters : Sign Up
+      </div>
+      <ul class="section-links">
+       <li>
+        <a href="https://www.thejournal.ie/morning-memo-business-newsletter-5081408-Apr2020/">
+         Morning Memo
+        </a>
+       </li>
+       <li>
+        <a href="https://www.thejournal.ie/coronavirus-information-email-newsletter-5039553-Mar2020/">
+         Coronavirus
+        </a>
+       </li>
+       <li>
+        <a href="https://www.thejournal.ie/brexit-newsletter-signup-4774811-Sep2019/">
+         Brexit
+        </a>
+       </li>
+       <li>
+        <a href="https://www.thejournal.ie/evening-fix-sign-up-5177724-Aug2020/">
+         The Evening Fix
+        </a>
+       </li>
+      </ul>
+     </div>
+     <div class="section">
+      <div class="heading">
+       Sections &amp; Topics
+      </div>
+      <ul class="section-links">
+       <li>
+        <a href="https://www.thejournal.ie/international/">
+         International
+        </a>
+       </li>
+       <li>
+        <a href="https://www.thejournal.ie/family/">
+         Family
+        </a>
+       </li>
+       <li>
+        <a href="https://www.thejournal.ie/politics/">
+         Politics
+        </a>
+       </li>
+       <li>
+        <a href="https://www.thejournal.ie/property-magazine/news/">
+         Property
+        </a>
+       </li>
+       <li>
+        <a href="https://www.thejournal.ie/culture/">
+         Culture
+        </a>
+       </li>
+       <li>
+        <a href="https://www.thejournal.ie/home-magazine/news/">
+         Home
+        </a>
+       </li>
+       <li>
+        <a href="https://www.thejournal.ie/business/">
+         Business
+        </a>
+       </li>
+      </ul>
+     </div>
+    </div>
+    <div class="partner-pubs-holder">
+     <div class="heading">
+      Partner Publications
+     </div>
+     <div class="partner-pubs">
+      <a class="partner" data-analytics-label="The42" href="https://www.the42.ie/" target="_blank">
+       <div class="title">
+        The42
+       </div>
+       <div class="description">
+        The latest Irish and international sports news for readers and members
+       </div>
+      </a>
+      <a class="partner" data-analytics-label="Noteworthy" href="https://www.noteworthy.ie/" target="_blank">
+       <div class="title">
+        Noteworthy
+       </div>
+       <div class="description">
+        A platform helping fund the type of in-depth journalism that the public wants to see
+       </div>
+      </a>
+     </div>
+    </div>
+    <a class="btn-support" href="https://www.thejournal.ie/contribute/">
+     <span class="text">
+      Support The Journal
+     </span>
+     <img class="arrow" src="//b0.thejournal.ie/desktop/i/contribution-prompt/link-arrow.svg"/>
+    </a>
+   </div>
+  </div>
+  <div class="mainContainer content">
+   <script type="text/javascript">
+    (function () {
+    var today = new Date();
+    var key = "hp-thejournal-" + today.getDate() + "-" + (today.getMonth()+1) + "-" + today.getFullYear();
+        var ttl = 64800;
+    window._pool.push(['add', ['_dml', key, ttl]]);
+})();
+   </script>
+   <div class="mainContent container">
+    <div class="river span-8">
+     <div class="mainStory mainStoryLeft clearfix">
+      <div itemscope="" itemtype="https://schema.org/Brand">
+       <meta content="//b0.thejournal.ie/desktop/i/thejournal/landscape.png" itemprop="image"/>
+      </div>
+      <div class="primary span-8 responsive-top-stories responsive-top-stories--thejournal">
+       <div class="desktop">
+        <div class="layout one-four less">
+         <div class="article edit-post edit-post-0" id="post-5387821">
+          <a href="https://www.thejournal.ie/daily-figures-covid-5387821-Mar2021/">
+           <img alt="" src="https://c1.thejournal.ie/media/2021/03/dept-of-health-briefing-008-2-630x260.jpg"/>
+          </a>
+          <div class="heading">
+           <h4>
+            Sunday 21 March
+           </h4>
+           <h1>
+            Today's Top Stories
+           </h1>
+          </div>
+          <a class="tag" href="https://www.thejournal.ie/daily-figures/news/">
+           # DAILY FIGURES
+          </a>
+          <h1>
+           <a href="https://www.thejournal.ie/daily-figures-covid-5387821-Mar2021/">
+            Coronavirus: Two deaths and 769 new cases confirmed in Ireland
+           </a>
+          </h1>
+         </div>
+         <div class="article edit-post edit-post-1" id="post-5387690">
+          <a href="https://www.thejournal.ie/hospitals-icu-patients-covid-19-latest-figures-5387690-Mar2021/">
+           <img alt="" src="https://c2.thejournal.ie/media/2021/03/shutterstock_633363035-150x100.jpg"/>
+          </a>
+          <a class="tag" href="https://www.thejournal.ie/frontline/news/">
+           # Frontline
+          </a>
+          <h1>
+           <a href="https://www.thejournal.ie/hospitals-icu-patients-covid-19-latest-figures-5387690-Mar2021/">
+            Hospital numbers still a 'concern' as 360 patients with Covid-19 reported in latest figures
+           </a>
+          </h1>
+         </div>
+         <div class="article edit-post edit-post-2" id="post-5386250">
+          <a href="https://www.thejournal.ie/fetal-diagnosis-5386250-Mar2021/">
+           <img alt="" src="https://c1.thejournal.ie/media/2021/03/dublin-airport052-150x100.jpg"/>
+          </a>
+          <a class="tag" href="https://www.thejournal.ie/pregnancy/news/">
+           # Pregnancy
+          </a>
+          <h1>
+           <a href="https://www.thejournal.ie/fetal-diagnosis-5386250-Mar2021/">
+            'Two-tier system' means couples still forced to travel for termination after severe foetal diagnoses
+           </a>
+          </h1>
+         </div>
+         <div class="article edit-post edit-post-3" id="post-5387712">
+          <a href="https://www.thejournal.ie/immigrant-council-racism-support-5387712-Mar2021/">
+           <img alt="" src="https://c1.thejournal.ie/media/2021/03/screenshot-2021-03-21-12-49-45-pm-150x100.png"/>
+          </a>
+          <a class="tag" href="https://www.thejournal.ie/racism/news/">
+           # Racism
+          </a>
+          <h1>
+           <a href="https://www.thejournal.ie/immigrant-council-racism-support-5387712-Mar2021/">
+            Immigrant Council calls on Government to grant legal advice to victims of racism
+           </a>
+          </h1>
+         </div>
+         <div class="article edit-post edit-post-4" id="post-5387668">
+          <a href="https://www.thejournal.ie/north-korea-diplomats-leave-malaysia-5387668-Mar2021/">
+           <img alt="" src="https://c2.thejournal.ie/media/2021/03/shutterstock_136286885-150x100.jpg"/>
+          </a>
+          <a class="tag" href="https://www.thejournal.ie/cut-ties/news/">
+           # cut ties
+          </a>
+          <h1>
+           <a href="https://www.thejournal.ie/north-korea-diplomats-leave-malaysia-5387668-Mar2021/">
+            North Korean diplomats leave Malaysia after ties cut over US extradition row
+           </a>
+          </h1>
+         </div>
+         <a class="more-top-stories" data-toggle="less" href="#" id="more-top-stories-toggle">
+          Show more Top Stories
+          <span class="arrow-down">
+          </span>
+         </a>
+        </div>
+       </div>
+       <script type="text/javascript">
+        (function(){
+
+    var showMoreToggle = document.getElementById('more-top-stories-toggle');
+    var layout = document.getElementsByClassName('layout')[0];
+
+    function toggleMoreStories(e)
+    {
+        e.preventDefault();
+        var state = showMoreToggle.getAttribute('data-toggle');
+
+        if (state === 'less') {
+            showMore();
+            return;
+        }
+        showLess();
+    }
+
+    function showMore()
+    {
+        showMoreToggle.setAttribute('data-toggle', 'more');
+        showMoreToggle.innerHTML = 'Show fewer Top Stories <span class="arrow-up"></span>';
+        layout.classList.remove('less');
+        ga('send', 'event', 'TopStories:show-fewer', 'click', 'TopStories');
+    }
+
+    function showLess()
+    {
+        showMoreToggle.setAttribute('data-toggle', 'less');
+        showMoreToggle.innerHTML = 'Show more Top Stories <span class="arrow-down"></span>';
+        layout.classList.add('less');
+        ga('send', 'event', 'TopStories:show-more', 'click', 'TopStories');
+    }
+
+    showMoreToggle.addEventListener('click', toggleMoreStories);
+
+}());
+       </script>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="separator show-on-desktop">
+       <h3>
+        Today’s News
+       </h3>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.the42.ie/ireland-squad-6-5387844-Mar2021/">
+         <img alt="Caoimhín Kelleher among four players ruled out of Ireland's World Cup qualifiers" class="lazy" data-original="https://img2.thejournal.ie/article/5387844/river?version=5387851&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="Caoimhín Kelleher among four players ruled out of Ireland's World Cup qualifiers" height="150px" src="https://img2.thejournal.ie/article/5387844/river?version=5387851&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/bad-luck-continues/news/">
+         <div class="tag show-on-desktop">
+          # Bad Luck Continues
+         </div>
+        </a>
+        <span class="icon iconThe42">
+         From The42
+        </span>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/bad-luck-continues/news/">
+         # Bad Luck Continues
+        </a>
+        <h4 class="title">
+         <a href="https://www.the42.ie/ireland-squad-6-5387844-Mar2021/">
+          Caoimhín Kelleher among four players ruled out of Ireland's World Cup qualifiers
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          Updated
+                                        7 minutes ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          10,080
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.the42.ie/ireland-squad-6-5387844-Mar2021/#comments" title="Comment on Caoimhín Kelleher among four players ruled out of Ireland's World Cup qualifiers ">
+           <span class="icon iconCommentPopular">
+           </span>
+           14
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         Conor Hourihane and Callum O’Dowda are also out, as the bad news keeps on rolling for Stephen Kenny.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/quiz-stretch-coastline-5386160-Mar2021/">
+         <img alt="Quiz: Which stretch of Irish coastline is this?" class="lazy" data-original="https://img2.thejournal.ie/article/5386160/river?version=5386385&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="Quiz: Which stretch of Irish coastline is this?" height="150px" src="https://img2.thejournal.ie/article/5386160/river?version=5386385&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/maps/news/">
+         <div class="tag show-on-desktop">
+          # Maps
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/maps/news/">
+         # Maps
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/quiz-stretch-coastline-5386160-Mar2021/">
+          Quiz: Which stretch of Irish coastline is this?
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          46 minutes ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          10,592
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/quiz-stretch-coastline-5386160-Mar2021/#comments" title="Comment on Quiz: Which stretch of Irish coastline is this? ">
+           <span class="icon iconCommentPopular">
+           </span>
+           7
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         Can the eagle-eyed of you spot these coastal counties?
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/readme/money-finances-money-diaries-5379813-Mar2021/">
+         <img alt="Money Diaries: An occupational therapist on €54K working through the pandemic in Dublin" class="lazy" data-original="https://img2.thejournal.ie/article/5379813/river?version=5379833&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="Money Diaries: An occupational therapist on €54K working through the pandemic in Dublin" height="150px" src="https://img2.thejournal.ie/article/5379813/river?version=5379833&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/hismm/news/">
+         <div class="tag show-on-desktop">
+          # HISMM
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/hismm/news/">
+         # HISMM
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/readme/money-finances-money-diaries-5379813-Mar2021/">
+          Money Diaries: An occupational therapist on €54K working through the pandemic in Dublin
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          2 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          30,741
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/readme/money-finances-money-diaries-5379813-Mar2021/#comments" title="Comment on Money Diaries: An occupational therapist on €54K working through the pandemic in Dublin">
+           <span class="icon iconCommentPopular">
+           </span>
+           23
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         This week, our reader is busy working in a hospital and watching spending to save for a wedding.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/news-fix-sunday-73-5387871-Mar2021/">
+         <img alt="Here's What Happened Today: Sunday" class="lazy" data-original="https://img2.thejournal.ie/article/5387871/river?version=5387873&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="Here's What Happened Today: Sunday" height="150px" src="https://img2.thejournal.ie/article/5387871/river?version=5387873&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/news-fix/news/">
+         <div class="tag show-on-desktop">
+          # News Fix
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/news-fix/news/">
+         # News Fix
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/news-fix-sunday-73-5387871-Mar2021/">
+          Here's What Happened Today: Sunday
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          3 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          7,193
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/news-fix-sunday-73-5387871-Mar2021/#comments" title="Comment on Here's What Happened Today: Sunday">
+           <span class="icon iconComment">
+           </span>
+           1
+           <span class="show-on-desktop">
+            Comment
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         Here’s what made the headlines today.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div style="position:absolute;">
+      <img src="/i.php?i=5382334&amp;r=16163668041408&amp;type=supplement&amp;key=supplement_5382334&amp;interaction=impression"/>
+     </div>
+     <a class="post river-unit--magazine" href="https://www.thejournal.ie/river/daft-ie-property-magazine-2478858-Mar2021/">
+      <div class="river-unit__image-container">
+       <div class="river-unit__image">
+        <img class="lazy" data-original="https://img2.thejournal.ie/article/5382335/river/?width=650&amp;version=4c436" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"/>
+        <noscript>
+         <img src="https://img2.thejournal.ie/article/5382335/river/?width=650&amp;version=4c436"/>
+        </noscript>
+       </div>
+       <div class="river-unit__text">
+        <div class="river-unit__title">
+         DAFT.IE PROPERTY MAGAZINE
+        </div>
+        <div class="river-unit__headline">
+         Enchanting Donegal hideaway with its own lake, walled garden and wine cellar
+        </div>
+       </div>
+      </div>
+     </a>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.the42.ie/leicester-manchester-united-5387893-Mar2021/">
+         <img alt="Leicester knock Man United out of FA Cup and reach semi-finals for first time since 1982" class="lazy" data-original="https://img2.thejournal.ie/article/5387893/river?version=5387892&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="Leicester knock Man United out of FA Cup and reach semi-finals for first time since 1982" height="150px" src="https://img2.thejournal.ie/article/5387893/river?version=5387892&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/fantastic-foxes/news/">
+         <div class="tag show-on-desktop">
+          # Fantastic Foxes
+         </div>
+        </a>
+        <span class="icon iconThe42">
+         From The42
+        </span>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/fantastic-foxes/news/">
+         # Fantastic Foxes
+        </a>
+        <h4 class="title">
+         <a href="https://www.the42.ie/leicester-manchester-united-5387893-Mar2021/">
+          Leicester knock Man United out of FA Cup and reach semi-finals for first time since 1982
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          3 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          20,301
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.the42.ie/leicester-manchester-united-5387893-Mar2021/#comments" title="Comment on Leicester knock Man United out of FA Cup and reach semi-finals for first time since 1982">
+           <span class="icon iconCommentVeryPopular">
+           </span>
+           46
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         The Foxes now face Southampton in the last four.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/liverpool-run-by-tories-corruption-5387882-Mar2021/">
+         <img alt="Tories set to run Liverpool as Government sends in inspectors" class="lazy" data-original="https://img2.thejournal.ie/article/5387882/river?version=5387883&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="Tories set to run Liverpool as Government sends in inspectors" height="150px" src="https://img2.thejournal.ie/article/5387882/river?version=5387883&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/corruption/news/">
+         <div class="tag show-on-desktop">
+          # Corruption
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/corruption/news/">
+         # Corruption
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/liverpool-run-by-tories-corruption-5387882-Mar2021/">
+          Tories set to run Liverpool as Government sends in inspectors
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          3 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          25,377
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/liverpool-run-by-tories-corruption-5387882-Mar2021/#comments" title="Comment on Tories set to run Liverpool as Government sends in inspectors">
+           <span class="icon iconCommentVeryPopular">
+           </span>
+           25
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         The city could be only the fourth local authority in 25 years to be run by commissioners following a corruption probe.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="post riverblockAd">
+      <center>
+       <div id="div-gpt-ad-1365092406213-2">
+        <script type="text/javascript">
+         googletag.cmd.push(function() { googletag.display('div-gpt-ad-1365092406213-2'); });
+        </script>
+       </div>
+      </center>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/week-in-quotes-289-5386389-Mar2021/">
+         <img alt="'It’s not clear what’s going to happen next': The week in quotes" class="lazy" data-original="https://img2.thejournal.ie/article/5386389/river?version=5386393&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="'It’s not clear what’s going to happen next': The week in quotes" height="150px" src="https://img2.thejournal.ie/article/5386389/river?version=5386393&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/say-that-again/news/">
+         <div class="tag show-on-desktop">
+          # Say That Again
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/say-that-again/news/">
+         # Say That Again
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/week-in-quotes-289-5386389-Mar2021/">
+          'It’s not clear what’s going to happen next': The week in quotes
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          4 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          37,502
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/week-in-quotes-289-5386389-Mar2021/#comments" title="Comment on 'It’s not clear what’s going to happen next': The week in quotes">
+           <span class="icon iconCommentVeryPopular">
+           </span>
+           46
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         Here’s what was said and who said what this week.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="spotlight-responsive desktop" data-role="none">
+      <div class="spotlight-background" style="background-image: url('https://c2.thejournal.ie/media/2021/03/telegram-4-752x501.png');">
+      </div>
+      <div class="spotlight-content">
+       <div class="spotlight-details">
+        <div class="spotlight-label">
+         Spotlight
+        </div>
+        <h1>
+         Investigation: The growth of far-right activity in Ireland
+        </h1>
+        <div class="spotlight-excerpt">
+         Eyes Right: This four-part series from Noteworthy and The Journal examines the online tactics and common playbooks of far-right groups.
+        </div>
+       </div>
+       <div class="spotlight-list">
+        <a class="spotlight-article spotlight-article-link" data-article-id="5364809" data-position="1" href="https://www.thejournal.ie/eyes-right-pt1-5364809-Mar2021/">
+         <img alt="" class="attachment-listings_0" height="98" src="https://img2.thejournal.ie/article/5364809/river?version=5379604&amp;width=150" width="150"/>
+         <div class="spotlight-heading">
+          Direct Provision
+         </div>
+         <div class="spotlight-title">
+          A catalyst for misinformation and far-right activism
+         </div>
+        </a>
+        <a class="spotlight-article spotlight-article-link" data-article-id="5379406" data-position="2" href="https://www.thejournal.ie/eyes-right-pt2-5379406-Mar2021/">
+         <img alt="" class="attachment-listings_0" height="98" src="https://img2.thejournal.ie/article/5379406/river?version=5379755&amp;width=150" width="150"/>
+         <div class="spotlight-heading">
+          Covid 19
+         </div>
+         <div class="spotlight-title">
+          Groups use anti-lockdown sentiment to grow support
+         </div>
+        </a>
+        <a class="spotlight-article spotlight-article-link" data-article-id="5358102" data-position="3" href="https://www.thejournal.ie/eyes-right-pt3-5358102-Mar2021/">
+         <img alt="" class="attachment-listings_0" height="98" src="https://img2.thejournal.ie/article/5358102/river?version=5379767&amp;width=150" width="150"/>
+         <div class="spotlight-heading">
+          Doxxing
+         </div>
+         <div class="spotlight-title">
+          Campaigns leading to harassment and death threats
+         </div>
+        </a>
+        <a class="spotlight-article spotlight-article-link" data-article-id="5381554" data-position="4" href="https://www.thejournal.ie/eyes-right-pt4-5381554-Mar2021/">
+         <img alt="" class="attachment-listings_0" height="98" src="https://img2.thejournal.ie/article/5381554/river?version=5381582&amp;width=150" width="150"/>
+         <div class="spotlight-heading">
+          Telegram
+         </div>
+         <div class="spotlight-title">
+          Mobilise: The messaging app popular among the far right
+         </div>
+        </a>
+       </div>
+      </div>
+     </div>
+     <script type="text/javascript">
+      jQuery(function($) {
+        $('.spotlight-article-link').click(function(e){
+            var label = parseInt($(this).attr('data-position'));
+            var value = parseInt($(this).attr('data-article-id'));
+            window.ga('send', 'event', 'spotlight', 'click', label, value);
+        });
+    });
+     </script>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/readme/extract-sophie-white-corpsing-5385376-Mar2021/">
+         <img alt="Sophie White: 'This illness is a thief and a liar. It ransacks my happy memories'" class="lazy" data-original="https://img2.thejournal.ie/article/5385376/river?version=5385406&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="Sophie White: 'This illness is a thief and a liar. It ransacks my happy memories'" height="150px" src="https://img2.thejournal.ie/article/5385376/river?version=5385406&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/extract/news/">
+         <div class="tag show-on-desktop">
+          # EXTRACT
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/extract/news/">
+         # EXTRACT
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/readme/extract-sophie-white-corpsing-5385376-Mar2021/">
+          Sophie White: 'This illness is a thief and a liar. It ransacks my happy memories'
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          4 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          29,331
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/readme/extract-sophie-white-corpsing-5385376-Mar2021/#comments" title="Comment on Sophie White: 'This illness is a thief and a liar. It ransacks my happy memories'">
+           <span class="icon iconComment">
+           </span>
+           2
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         Sophie White writes about her father’s illness and death, and its impact on her.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/shebeen-limerick-raid-5387860-Mar2021/">
+         <img alt="Gardaí raid suspected shebeen in Limerick" class="lazy" data-original="https://img2.thejournal.ie/article/5387860/river?version=5387861&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="Gardaí raid suspected shebeen in Limerick" height="150px" src="https://img2.thejournal.ie/article/5387860/river?version=5387861&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/limerick/news/">
+         <div class="tag show-on-desktop">
+          # Limerick
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/limerick/news/">
+         # Limerick
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/shebeen-limerick-raid-5387860-Mar2021/">
+          Gardaí raid suspected shebeen in Limerick
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          4 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          43,177
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/shebeen-limerick-raid-5387860-Mar2021/#comments" title="Comment on Gardaí raid suspected shebeen in Limerick ">
+           <span class="icon iconCommentVeryPopular">
+           </span>
+           56
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         The shebeen had a toilet, dartboard and TV.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/daily-figures-covid-5387821-Mar2021/">
+         <img alt="Coronavirus: Two deaths and 769 new cases confirmed in Ireland" class="lazy" data-original="https://img2.thejournal.ie/article/5387821/river?version=5387820&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="Coronavirus: Two deaths and 769 new cases confirmed in Ireland" height="150px" src="https://img2.thejournal.ie/article/5387821/river?version=5387820&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/daily-figures/news/">
+         <div class="tag show-on-desktop">
+          # DAILY FIGURES
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/daily-figures/news/">
+         # DAILY FIGURES
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/daily-figures-covid-5387821-Mar2021/">
+          Coronavirus: Two deaths and 769 new cases confirmed in Ireland
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          5 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          124,425
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/daily-figures-covid-5387821-Mar2021/#comments" title="Comment on Coronavirus: Two deaths and 769 new cases confirmed in Ireland">
+           <span class="icon iconCommentVeryPopular">
+           </span>
+           317
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         The figures were released by the Department of Health this evening.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/gsoc-garda-missing-usb-5387787-Mar2021/">
+         <img alt="USB key sent by Gsoc to garda internal affairs 'went missing after being sent in the post'" class="lazy" data-original="https://img2.thejournal.ie/article/5387787/river?version=5387788&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="USB key sent by Gsoc to garda internal affairs 'went missing after being sent in the post'" height="150px" src="https://img2.thejournal.ie/article/5387787/river?version=5387788&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/gsoc/news/">
+         <div class="tag show-on-desktop">
+          # Gsoc
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/gsoc/news/">
+         # Gsoc
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/gsoc-garda-missing-usb-5387787-Mar2021/">
+          USB key sent by Gsoc to garda internal affairs 'went missing after being sent in the post'
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          6 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          26,088
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/gsoc-garda-missing-usb-5387787-Mar2021/#comments" title="Comment on USB key sent by Gsoc to garda internal affairs 'went missing after being sent in the post'">
+           <span class="icon iconComment">
+           </span>
+           0
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         The data breach was one of 29 reported by the Garda Ombudsman over the past two years.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/scotland-indepdence-referendum-5387791-Mar2021/">
+         <img alt="Scottish minister says vote for independence will take place at the end of Covid pandemic" class="lazy" data-original="https://img2.thejournal.ie/article/5387791/river?version=5387793&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="Scottish minister says vote for independence will take place at the end of Covid pandemic" height="150px" src="https://img2.thejournal.ie/article/5387791/river?version=5387793&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/scotland/news/">
+         <div class="tag show-on-desktop">
+          # Scotland
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/scotland/news/">
+         # Scotland
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/scotland-indepdence-referendum-5387791-Mar2021/">
+          Scottish minister says vote for independence will take place at the end of Covid pandemic
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          6 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          13,605
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/scotland-indepdence-referendum-5387791-Mar2021/#comments" title="Comment on Scottish minister says vote for independence will take place at the end of Covid pandemic">
+           <span class="icon iconCommentVeryPopular">
+           </span>
+           53
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         Scotland’s constitution secretary said such a vote will be held ‘when the time is right’.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/mandatory-quarantine-4-5387798-Mar2021/">
+         <img alt="Mandatory hotel quarantine will be in effect 'by next weekend'" class="lazy" data-original="https://img2.thejournal.ie/article/5387798/river?version=5387807&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="Mandatory hotel quarantine will be in effect 'by next weekend'" height="150px" src="https://img2.thejournal.ie/article/5387798/river?version=5387807&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/hotel-quarantine/news/">
+         <div class="tag show-on-desktop">
+          # Hotel Quarantine
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/hotel-quarantine/news/">
+         # Hotel Quarantine
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/mandatory-quarantine-4-5387798-Mar2021/">
+          Mandatory hotel quarantine will be in effect 'by next weekend'
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          6 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          27,337
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/mandatory-quarantine-4-5387798-Mar2021/#comments" title="Comment on Mandatory hotel quarantine will be in effect 'by next weekend'">
+           <span class="icon iconCommentVeryPopular">
+           </span>
+           83
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         Most of the high risk countries are in South America and Africa.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/buckingham-palace-diversity-5387753-Mar2021/">
+         <img alt="British royal family to consider possible appointment of diversity chief" class="lazy" data-original="https://img2.thejournal.ie/article/5387753/river?version=5387772&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="British royal family to consider possible appointment of diversity chief" height="150px" src="https://img2.thejournal.ie/article/5387753/river?version=5387772&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/equality/news/">
+         <div class="tag show-on-desktop">
+          # Equality
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/equality/news/">
+         # Equality
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/buckingham-palace-diversity-5387753-Mar2021/">
+          British royal family to consider possible appointment of diversity chief
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          7 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          52,510
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/buckingham-palace-diversity-5387753-Mar2021/#comments" title="Comment on British royal family to consider possible appointment of diversity chief">
+           <span class="icon iconCommentVeryPopular">
+           </span>
+           34
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         Buckingham Palace is understood to be working on plans around diversity, which would include LGBTQI+ and disability issues.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/northern-ireland-latest-figures-covid-19-3-5387755-Mar2021/">
+         <img alt="One death and 125 new cases of Covid-19 confirmed in Northern Ireland" class="lazy" data-original="https://img2.thejournal.ie/article/5387755/river?version=5387760&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="One death and 125 new cases of Covid-19 confirmed in Northern Ireland" height="150px" src="https://img2.thejournal.ie/article/5387755/river?version=5387760&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/latest-figures/news/">
+         <div class="tag show-on-desktop">
+          # Latest Figures
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/latest-figures/news/">
+         # Latest Figures
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/northern-ireland-latest-figures-covid-19-3-5387755-Mar2021/">
+          One death and 125 new cases of Covid-19 confirmed in Northern Ireland
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          8 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          9,657
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/northern-ireland-latest-figures-covid-19-3-5387755-Mar2021/#comments" title="Comment on One death and 125 new cases of Covid-19 confirmed in Northern Ireland">
+           <span class="icon iconComment">
+           </span>
+           3
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         Hospitals in the North are operating at 96% occupancy today.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/immigrant-council-racism-support-5387712-Mar2021/">
+         <img alt="Immigrant Council calls on Government to grant legal advice to victims of racism" class="lazy" data-original="https://img2.thejournal.ie/article/5387712/river?version=5387719&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="Immigrant Council calls on Government to grant legal advice to victims of racism" height="150px" src="https://img2.thejournal.ie/article/5387712/river?version=5387719&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/racism/news/">
+         <div class="tag show-on-desktop">
+          # Racism
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/racism/news/">
+         # Racism
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/immigrant-council-racism-support-5387712-Mar2021/">
+          Immigrant Council calls on Government to grant legal advice to victims of racism
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          9 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          9,996
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/immigrant-council-racism-support-5387712-Mar2021/#comments" title="Comment on Immigrant Council calls on Government to grant legal advice to victims of racism">
+           <span class="icon iconCommentVeryPopular">
+           </span>
+           59
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         The council also wants victims to be able to access counselling services.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/hospitals-icu-patients-covid-19-latest-figures-5387690-Mar2021/">
+         <img alt="Hospital numbers still a 'concern' as 360 patients with Covid-19 reported in latest figures" class="lazy" data-original="https://img2.thejournal.ie/article/5387690/river?version=5387691&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="Hospital numbers still a 'concern' as 360 patients with Covid-19 reported in latest figures" height="150px" src="https://img2.thejournal.ie/article/5387690/river?version=5387691&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/frontline/news/">
+         <div class="tag show-on-desktop">
+          # Frontline
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/frontline/news/">
+         # Frontline
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/hospitals-icu-patients-covid-19-latest-figures-5387690-Mar2021/">
+          Hospital numbers still a 'concern' as 360 patients with Covid-19 reported in latest figures
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          10 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          25,697
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/hospitals-icu-patients-covid-19-latest-figures-5387690-Mar2021/#comments" title="Comment on Hospital numbers still a 'concern' as 360 patients with Covid-19 reported in latest figures">
+           <span class="icon iconCommentVeryPopular">
+           </span>
+           60
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         HSE chief executive Paul Reid has said there is still a “lot more to get through” before a return to more normal levels in hospitals.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.the42.ie/analysis-ireland-attack-england-5387509-Mar2021/">
+         <img alt="'Something we worked on all week' - Ireland's attack cuts England apart" class="lazy" data-original="https://img2.thejournal.ie/article/5387509/river?version=5387590&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="'Something we worked on all week' - Ireland's attack cuts England apart" height="150px" src="https://img2.thejournal.ie/article/5387509/river?version=5387590&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/analysis/news/">
+         <div class="tag show-on-desktop">
+          # Analysis
+         </div>
+        </a>
+        <span class="icon iconThe42">
+         From The42
+        </span>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/analysis/news/">
+         # Analysis
+        </a>
+        <h4 class="title">
+         <a href="https://www.the42.ie/analysis-ireland-attack-england-5387509-Mar2021/">
+          'Something we worked on all week' - Ireland's attack cuts England apart
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          10 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          34,591
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.the42.ie/analysis-ireland-attack-england-5387509-Mar2021/#comments" title="Comment on 'Something we worked on all week' - Ireland's attack cuts England apart">
+           <span class="icon iconCommentPopular">
+           </span>
+           19
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         Ireland scored excellent tries through Keith Earls and Jack Conan, and nearly had a beautiful third.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/ireland-10-vaccine-rollout-5373321-Mar2021/">
+         <img alt="10% of people in Ireland have now received their first dose of a Covid-19 vaccine" class="lazy" data-original="https://img2.thejournal.ie/article/5373321/river?version=5376347&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="10% of people in Ireland have now received their first dose of a Covid-19 vaccine" height="150px" src="https://img2.thejournal.ie/article/5373321/river?version=5376347&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/rollout/news/">
+         <div class="tag show-on-desktop">
+          # Rollout
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/rollout/news/">
+         # Rollout
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/ireland-10-vaccine-rollout-5373321-Mar2021/">
+          10% of people in Ireland have now received their first dose of a Covid-19 vaccine
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          10 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          59,248
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/ireland-10-vaccine-rollout-5373321-Mar2021/#comments" title="Comment on 10% of people in Ireland have now received their first dose of a Covid-19 vaccine">
+           <span class="icon iconCommentVeryPopular">
+           </span>
+           184
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         Over 478,000 people have been administered a first dose.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/north-korea-diplomats-leave-malaysia-5387668-Mar2021/">
+         <img alt="North Korean diplomats leave Malaysia after ties cut over US extradition row" class="lazy" data-original="https://img2.thejournal.ie/article/5387668/river?version=5387672&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="North Korean diplomats leave Malaysia after ties cut over US extradition row" height="150px" src="https://img2.thejournal.ie/article/5387668/river?version=5387672&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/cut-ties/news/">
+         <div class="tag show-on-desktop">
+          # Cut Ties
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/cut-ties/news/">
+         # Cut Ties
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/north-korea-diplomats-leave-malaysia-5387668-Mar2021/">
+          North Korean diplomats leave Malaysia after ties cut over US extradition row
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          11 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          14,945
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/north-korea-diplomats-leave-malaysia-5387668-Mar2021/#comments" title="Comment on North Korean diplomats leave Malaysia after ties cut over US extradition row">
+           <span class="icon iconCommentPopular">
+           </span>
+           12
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         Malaysia gave North Korean diplomats 48 hours to leave the country.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/readme/larry-donnelly-usa-ireland-biden-shamrock-5386034-Mar2021/">
+         <img alt="Larry Donnelly: From Kennedy to Biden, Irish-American ties remain robust" class="lazy" data-original="https://img2.thejournal.ie/article/5386034/river?version=5386133&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="Larry Donnelly: From Kennedy to Biden, Irish-American ties remain robust" height="150px" src="https://img2.thejournal.ie/article/5386034/river?version=5386133&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/opinion/news/">
+         <div class="tag show-on-desktop">
+          # Opinion
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/opinion/news/">
+         # Opinion
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/readme/larry-donnelly-usa-ireland-biden-shamrock-5386034-Mar2021/">
+          Larry Donnelly: From Kennedy to Biden, Irish-American ties remain robust
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          12 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          10,522
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/readme/larry-donnelly-usa-ireland-biden-shamrock-5386034-Mar2021/#comments" title="Comment on Larry Donnelly: From Kennedy to Biden, Irish-American ties remain robust">
+           <span class="icon iconCommentVeryPopular">
+           </span>
+           25
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         In a special week for Ireland, our Boston-born columnist looks at the strength of ties between the two countries.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/easter-eggs-poll-2-5387639-Mar2021/">
+         <img alt="Poll: Is it too early to start eating Easter eggs?" class="lazy" data-original="https://img2.thejournal.ie/article/5387639/river?version=5387647&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="Poll: Is it too early to start eating Easter eggs?" height="150px" src="https://img2.thejournal.ie/article/5387639/river?version=5387647&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/your-say/news/">
+         <div class="tag show-on-desktop">
+          # Your Say
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/your-say/news/">
+         # Your Say
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/easter-eggs-poll-2-5387639-Mar2021/">
+          Poll: Is it too early to start eating Easter eggs?
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          12 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          31,805
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/easter-eggs-poll-2-5387639-Mar2021/#comments" title="Comment on Poll: Is it too early to start eating Easter eggs?">
+           <span class="icon iconCommentVeryPopular">
+           </span>
+           45
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         It’s two weeks until Easter Sunday.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.the42.ie/lions-ireland-gatland-england-5387535-Mar2021/">
+         <img alt="'One or two headaches for Warren' as Irish players put hands up for Lions" class="lazy" data-original="https://img2.thejournal.ie/article/5387535/river?version=5387549&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="'One or two headaches for Warren' as Irish players put hands up for Lions" height="150px" src="https://img2.thejournal.ie/article/5387535/river?version=5387549&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/performance/news/">
+         <div class="tag show-on-desktop">
+          # Performance
+         </div>
+        </a>
+        <span class="icon iconThe42">
+         From The42
+        </span>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/performance/news/">
+         # Performance
+        </a>
+        <h4 class="title">
+         <a href="https://www.the42.ie/lions-ireland-gatland-england-5387535-Mar2021/">
+          'One or two headaches for Warren' as Irish players put hands up for Lions
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          Updated
+                                        13 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          58,062
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.the42.ie/lions-ireland-gatland-england-5387535-Mar2021/#comments" title="Comment on 'One or two headaches for Warren' as Irish players put hands up for Lions">
+           <span class="icon iconCommentVeryPopular">
+           </span>
+           57
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         The series against the Springboks has yet to be confirmed.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/internet-republic-of-congo-election-5387607-Mar2021/">
+         <img alt="Internet blackout as Republic of Congo votes in presidential election" class="lazy" data-original="https://img2.thejournal.ie/article/5387607/river?version=5387618&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="Internet blackout as Republic of Congo votes in presidential election" height="150px" src="https://img2.thejournal.ie/article/5387607/river?version=5387618&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/voting/news/">
+         <div class="tag show-on-desktop">
+          # Voting
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/voting/news/">
+         # Voting
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/internet-republic-of-congo-election-5387607-Mar2021/">
+          Internet blackout as Republic of Congo votes in presidential election
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          13 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          8,497
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/internet-republic-of-congo-election-5387607-Mar2021/#comments" title="Comment on Internet blackout as Republic of Congo votes in presidential election">
+           <span class="icon iconComment">
+           </span>
+           1
+           <span class="show-on-desktop">
+            Comment
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         Access to the internet and social media was cut hours before polls opened.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/sitdown-sunday-longread-6-5385171-Mar2021/">
+         <img alt="Sitdown Sunday: Why did some countries get dealing with Covid-19 right, and some get it wrong?" class="lazy" data-original="https://img2.thejournal.ie/article/5385171/river?version=5385268&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="Sitdown Sunday: Why did some countries get dealing with Covid-19 right, and some get it wrong?" height="150px" src="https://img2.thejournal.ie/article/5385171/river?version=5385268&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/7-great-reads/news/">
+         <div class="tag show-on-desktop">
+          # 7 Great Reads
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/7-great-reads/news/">
+         # 7 Great Reads
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/sitdown-sunday-longread-6-5385171-Mar2021/">
+          Sitdown Sunday: Why did some countries get dealing with Covid-19 right, and some get it wrong?
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          13 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          20,492
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/sitdown-sunday-longread-6-5385171-Mar2021/#comments" title="Comment on Sitdown Sunday: Why did some countries get dealing with Covid-19 right, and some get it wrong?">
+           <span class="icon iconCommentPopular">
+           </span>
+           16
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         Settle back in a comfy chair and sit back with some of the week’s best longreads.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/9-at-9-news-this-morning-2-5387579-Mar2021/">
+         <img alt="The 9 at 9: Sunday" class="lazy" data-original="https://img2.thejournal.ie/article/5387579/river?version=5387580&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="The 9 at 9: Sunday" height="150px" src="https://img2.thejournal.ie/article/5387579/river?version=5387580&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/9-at-9/news/">
+         <div class="tag show-on-desktop">
+          # 9 At 9
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/9-at-9/news/">
+         # 9 At 9
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/9-at-9-news-this-morning-2-5387579-Mar2021/">
+          The 9 at 9: Sunday
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          13 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          13,459
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/9-at-9-news-this-morning-2-5387579-Mar2021/#comments" title="Comment on The 9 at 9: Sunday">
+           <span class="icon iconComment">
+           </span>
+           0
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         Here’s what’s making headlines this morning.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/myanmar-refugees-india-5387569-Mar2021/">
+         <img alt="Police officers fleeing Myanmar seek asylum in India" class="lazy" data-original="https://img2.thejournal.ie/article/5387569/river?version=5387573&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="Police officers fleeing Myanmar seek asylum in India" height="150px" src="https://img2.thejournal.ie/article/5387569/river?version=5387573&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/coup/news/">
+         <div class="tag show-on-desktop">
+          # Coup
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/coup/news/">
+         # Coup
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/myanmar-refugees-india-5387569-Mar2021/">
+          Police officers fleeing Myanmar seek asylum in India
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          14 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          14,412
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/myanmar-refugees-india-5387569-Mar2021/#comments" title="Comment on Police officers fleeing Myanmar seek asylum in India">
+           <span class="icon iconCommentPopular">
+           </span>
+           7
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         The military crackdown in Myanmar has forced scores of refugees over the border into India.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article important landscape">
+       <span class="image">
+        <a href="https://www.the42.ie/stephen-kenny-longford-town-2-5386578-Mar2021/">
+         <img alt="Planes, trains and cat food - the untold story of the Ireland manager's first trip" class="lazy" data-original="https://c0.thejournal.ie/media/2021/03/kenny-52-630x332.jpg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 650px; height: 343px"/>
+         <noscript>
+          <img alt="Planes, trains and cat food - the untold story of the Ireland manager's first trip" height="343px" src="https://c0.thejournal.ie/media/2021/03/kenny-52-630x332.jpg" width="650px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/the42-reads/news/">
+         <div class="tag show-on-desktop">
+          # The42 Reads
+         </div>
+        </a>
+        <span class="icon iconThe42">
+         From The42
+        </span>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/the42-reads/news/">
+         # The42 Reads
+        </a>
+        <h4 class="title">
+         <a href="https://www.the42.ie/stephen-kenny-longford-town-2-5386578-Mar2021/">
+          Planes, trains and cat food - the untold story of the Ireland manager's first trip
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          14 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          19,944
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.the42.ie/stephen-kenny-longford-town-2-5386578-Mar2021/#comments" title="Comment on Planes, trains and cat food - the untold story of the Ireland manager's first trip">
+           <span class="icon iconComment">
+           </span>
+           2
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         Stephen Kenny jets out of Dublin this week for Ireland’s opening World Cup qualifier – but no matter what happens it is unlikely to be as dramatic as his first European trip as a manager.
+        </p>
+       </div>
+       <div class="article-extended">
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/teenage-boy-missing-dublin-7-5387561-Mar2021/">
+         <img alt="Gardaí seek assistance tracing teenage boy missing from Dublin 7" class="lazy" data-original="https://img2.thejournal.ie/article/5387561/river?version=5387563&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="Gardaí seek assistance tracing teenage boy missing from Dublin 7" height="150px" src="https://img2.thejournal.ie/article/5387561/river?version=5387563&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/search/news/">
+         <div class="tag show-on-desktop">
+          # Search
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/search/news/">
+         # Search
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/teenage-boy-missing-dublin-7-5387561-Mar2021/">
+          Gardaí seek assistance tracing teenage boy missing from Dublin 7
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          15 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          32,290
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/teenage-boy-missing-dublin-7-5387561-Mar2021/#comments" title="Comment on Gardaí seek assistance tracing teenage boy missing from Dublin 7">
+           <span class="icon iconComment">
+           </span>
+           1
+           <span class="show-on-desktop">
+            Comment
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         Colin Daly, 17, has been missing from Dublin 7 since Wednesday.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/australia-flooding-evacuation-5387552-Mar2021/">
+         <img alt="More evacuation orders issued in Australia amid worst flooding in decades" class="lazy" data-original="https://img2.thejournal.ie/article/5387552/river?version=5387554&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="More evacuation orders issued in Australia amid worst flooding in decades" height="150px" src="https://img2.thejournal.ie/article/5387552/river?version=5387554&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/new-south-wales/news/">
+         <div class="tag show-on-desktop">
+          # New South Wales
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/new-south-wales/news/">
+         # New South Wales
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/australia-flooding-evacuation-5387552-Mar2021/">
+          More evacuation orders issued in Australia amid worst flooding in decades
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          15 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          44,587
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/australia-flooding-evacuation-5387552-Mar2021/#comments" title="Comment on More evacuation orders issued in Australia amid worst flooding in decades">
+           <span class="icon iconCommentPopular">
+           </span>
+           16
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         Hundreds of people have been rescued from rising waters, authorities said.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/readme/maternity-care-5381970-Mar2021/">
+         <img alt="Opinion: Our baby would not live, so we had to travel to London. Our hearts are broken" class="lazy" data-original="https://img2.thejournal.ie/article/5381970/river?version=5383166&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="Opinion: Our baby would not live, so we had to travel to London. Our hearts are broken" height="150px" src="https://img2.thejournal.ie/article/5381970/river?version=5383166&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/maternity-care/news/">
+         <div class="tag show-on-desktop">
+          # Maternity Care
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/maternity-care/news/">
+         # Maternity Care
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/readme/maternity-care-5381970-Mar2021/">
+          Opinion: Our baby would not live, so we had to travel to London. Our hearts are broken
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          15 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          95,190
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/readme/maternity-care-5381970-Mar2021/#comments" title="Comment on Opinion: Our baby would not live, so we had to travel to London. Our hearts are broken">
+           <span class="icon iconComment">
+           </span>
+           0
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         One father details the life-changing news he and his wife received in their 20-week scan, resulting in a trip to London and saying goodbye to Riley, their son.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/fetal-diagnosis-5386250-Mar2021/">
+         <img alt="'Two-tier system' means couples still forced to travel for termination after severe foetal diagnoses" class="lazy" data-original="https://img2.thejournal.ie/article/5386250/river?version=5386451&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="'Two-tier system' means couples still forced to travel for termination after severe foetal diagnoses" height="150px" src="https://img2.thejournal.ie/article/5386250/river?version=5386451&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/pregnancy/news/">
+         <div class="tag show-on-desktop">
+          # Pregnancy
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/pregnancy/news/">
+         # Pregnancy
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/fetal-diagnosis-5386250-Mar2021/">
+          'Two-tier system' means couples still forced to travel for termination after severe foetal diagnoses
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          22 hours ago
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          36,970
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/fetal-diagnosis-5386250-Mar2021/#comments" title="Comment on 'Two-tier system' means couples still forced to travel for termination after severe foetal diagnoses">
+           <span class="icon iconCommentVeryPopular">
+           </span>
+           48
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         The legislation is due to be reviewed this year.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="separator show-on-desktop">
+       <h3>
+        Yesterday’s News
+       </h3>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/chocolates-quiz-5382225-Mar2021/">
+         <img alt="Quiz: Can you name these chocolates?" class="lazy" data-original="https://img2.thejournal.ie/article/5382225/river?version=5384763&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="Quiz: Can you name these chocolates?" height="150px" src="https://img2.thejournal.ie/article/5382225/river?version=5384763&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/quiz/news/">
+         <div class="tag show-on-desktop">
+          # Quiz
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/quiz/news/">
+         # Quiz
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/chocolates-quiz-5382225-Mar2021/">
+          Quiz: Can you name these chocolates?
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          Sat 10:00 PM
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          85,947
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/chocolates-quiz-5382225-Mar2021/#comments" title="Comment on Quiz: Can you name these chocolates?">
+           <span class="icon iconCommentVeryPopular">
+           </span>
+           27
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         Time to put that sweet tooth to use.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/readme/universal-basic-income-catherine-martin-5385399-Mar2021/">
+         <img alt="Minister Martin: We can protect our artists by covering their basic living costs" class="lazy" data-original="https://img2.thejournal.ie/article/5385399/river?version=5386689&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="Minister Martin: We can protect our artists by covering their basic living costs" height="150px" src="https://img2.thejournal.ie/article/5385399/river?version=5386689&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/opinion/news/">
+         <div class="tag show-on-desktop">
+          # Opinion
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/opinion/news/">
+         # Opinion
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/readme/universal-basic-income-catherine-martin-5385399-Mar2021/">
+          Minister Martin: We can protect our artists by covering their basic living costs
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          Sat 8:00 PM
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          34,951
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/readme/universal-basic-income-catherine-martin-5385399-Mar2021/#comments" title="Comment on Minister Martin: We can protect our artists by covering their basic living costs">
+           <span class="icon iconCommentVeryPopular">
+           </span>
+           55
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         The creative sector was badly hit by the pandemic and has most to benefit from a Universal Basic Income pilot, write the Arts Minister.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/news-fix-saturday-65-5387374-Mar2021/">
+         <img alt="Here's What Happened Today: Saturday" class="lazy" data-original="https://img2.thejournal.ie/article/5387374/river?version=5387378&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="Here's What Happened Today: Saturday" height="150px" src="https://img2.thejournal.ie/article/5387374/river?version=5387378&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/evening-fix/news/">
+         <div class="tag show-on-desktop">
+          # Evening Fix
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/evening-fix/news/">
+         # Evening Fix
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/news-fix-saturday-65-5387374-Mar2021/">
+          Here's What Happened Today: Saturday
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          Sat 7:45 PM
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          39,100
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/news-fix-saturday-65-5387374-Mar2021/#comments" title="Comment on Here's What Happened Today: Saturday">
+           <span class="icon iconCommentPopular">
+           </span>
+           19
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         Here’s your round-up of what made the headlines today.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article important landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/astrazeneca-rollout-resumes-5386998-Mar2021/">
+         <img alt="AstraZeneca rollout resumes in Ireland after pause as EU threatens company with export ban" class="lazy" data-original="https://c3.thejournal.ie/media/2021/03/shutterstock_1925291177-630x332.jpg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 650px; height: 343px"/>
+         <noscript>
+          <img alt="AstraZeneca rollout resumes in Ireland after pause as EU threatens company with export ban" height="343px" src="https://c3.thejournal.ie/media/2021/03/shutterstock_1925291177-630x332.jpg" width="650px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/back-again/news/">
+         <div class="tag show-on-desktop">
+          # Back Again
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/back-again/news/">
+         # Back Again
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/astrazeneca-rollout-resumes-5386998-Mar2021/">
+          AstraZeneca rollout resumes in Ireland after pause as EU threatens company with export ban
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          Updated
+                                        Sat 7:16 PM
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          63,626
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/astrazeneca-rollout-resumes-5386998-Mar2021/#comments" title="Comment on AstraZeneca rollout resumes in Ireland after pause as EU threatens company with export ban">
+           <span class="icon iconCommentVeryPopular">
+           </span>
+           134
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+       </div>
+       <div class="article-extended">
+        <ul class="synopsis">
+         <li>
+          The European Medicines Agency reviewed the AstraZeneca vaccine and has concluded that it is safe and effective.
+         </li>
+         <li>
+          The EU is threatening AstraZeneca with an export ban.
+         </li>
+         <li>
+          There are 328 patients with Covid-19 in hospitals around Ireland as of this morning.
+         </li>
+        </ul>
+        <ul class="related-reads">
+         <li>
+          <a href="http://www.thejournal.ie/astrazeneca-ireland-2-5386091-Mar2021/?utm_source=story" onclick="ga('send', 'event', 'RiverRelatedRead', 'click', 'Redesign');">
+           AstraZeneca: NPHET says use of Covid-19 vaccine can resume in Ireland
+          </a>
+         </li>
+         <li>
+          <a href="http://www.thejournal.ie/5km-restrictions-easing-5386135-Mar2021/?utm_source=story" onclick="ga('send', 'event', 'RiverRelatedRead', 'click', 'Redesign');">
+           Taoiseach says government knows people are 'fed up' as speculation over easing of 5km rule downplayed
+          </a>
+         </li>
+        </ul>
+       </div>
+      </div>
+     </div>
+     <div style="position:absolute; visibility:hidden;">
+      <img src="/i.php?i=5376273&amp;r=16163668041408&amp;key=river_5376273&amp;interaction=view"/>
+     </div>
+     <div class="post postFill post-https://www.thejournal.ie/the-falcon-and-the-winter-soldier-5375375-Mar2021/" data-index="5375375" style="position:relative;">
+      <div class="img span-3" data-index="5375375" style="">
+       <a href="https://www.thejournal.ie/the-falcon-and-the-winter-soldier-5375375-Mar2021/">
+        <div class="movedimg" style="">
+         <img alt="" class="lazy attachment-river_0" data-original="https://c0.thejournal.ie/media/2021/03/8ddf7dd0c0bbc3c6fe008734962d6fc5_4096x2730_38cdbde8-230x150.jpeg" height="150" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="" width="230"/>
+         <noscript>
+          <img alt="" class="attachment-river_0" height="150" src="https://c0.thejournal.ie/media/2021/03/8ddf7dd0c0bbc3c6fe008734962d6fc5_4096x2730_38cdbde8-230x150.jpeg" width="230"/>
+         </noscript>
+        </div>
+       </a>
+      </div>
+      <div class="text span-5 sponsored last" style="">
+       <div class="addata">
+        <h4>
+         <a data-index="5375375" href="https://www.thejournal.ie/the-falcon-and-the-winter-soldier-5375375-Mar2021/" id="nativelink-5375375">
+          'Superheroes cannot be allowed to exist': Marvel's new series The Falcon and The Winter Soldier is out now on Disney+
+         </a>
+        </h4>
+        <p class="excerpt excerpt_holder">
+         The Falcon and The Winter Soldier follows the events of Avengers: Endgame.
+        </p>
+       </div>
+       <div class="share">
+        <span class="share">
+         <a class="open-window social" href="https://www.facebook.com/dialog/feed?app_id=116141121768215&amp;display=popup&amp;link=https%3A%2F%2Fwww.thejournal.ie%2Fthe-falcon-and-the-winter-soldier-5375375-Mar2021%2F&amp;picture=https%3A%2F%2Fc0.thejournal.ie%2Fmedia%2F2021%2F03%2F8ddf7dd0c0bbc3c6fe008734962d6fc5_4096x2730_38cdbde8-197x197.jpeg&amp;name=%27Superheroes+cannot+be+allowed+to+exist%27%3A+Marvel%27s+new+series+The+Falcon+and+The+Winter+Soldier+is+out+now+on+Disney%2B&amp;description=The+Falcon+and+The+Winter+Soldier+follows+the+events+of+Avengers%3A+Endgame.&amp;message=&amp;redirect_uri=https%3A%2F%2Fthejournal.ie%2Futils%2Ffb_post.php%3Fp_id%3D5375375 " target="_blank" title="Share on Facebook">
+          <span class="icon iconFacebook">
+          </span>
+          Share
+         </a>
+         <a class="open-window social share-twitter twitter-tweet jrnl-tweet-5375375" href="https://twitter.com/share?url=https%3A%2F%2Fjrnl.ie%2F5375375&amp;text=%27Superheroes+cannot+be+allowed+to+exist%27%3A+Marvel%27s+new+series+The+Falcon+and+The+Winter+Soldier+is+o+%28via+%40thejournal_ie%29&amp;related=@thejournal_ie" target="_blank" title="Tweet this">
+          <span class="icon iconTwitter">
+          </span>
+          Tweet
+         </a>
+        </span>
+       </div>
+      </div>
+      <div style="position:absolute;right:5px; bottom:5px;">
+       SPONSORED
+       <img src="https://cdn.thejournal.ie/media/2021/03/Disney-90x.png" style="vertical-align:middle;"/>
+      </div>
+     </div>
+     <hr/>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/scottish-independenec-mars-brexit-5387348-Mar2021/">
+         <img alt="Scottish independence would be like Brexit on a rocket to Mars, Lib Dem leader warns" class="lazy" data-original="https://img2.thejournal.ie/article/5387348/river?version=5387352&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="Scottish independence would be like Brexit on a rocket to Mars, Lib Dem leader warns" height="150px" src="https://img2.thejournal.ie/article/5387348/river?version=5387352&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/vote/news/">
+         <div class="tag show-on-desktop">
+          # Vote
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/vote/news/">
+         # Vote
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/scottish-independenec-mars-brexit-5387348-Mar2021/">
+          Scottish independence would be like Brexit on a rocket to Mars, Lib Dem leader warns
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          Sat 6:52 PM
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          25,575
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/scottish-independenec-mars-brexit-5387348-Mar2021/#comments" title="Comment on Scottish independence would be like Brexit on a rocket to Mars, Lib Dem leader warns">
+           <span class="icon iconCommentVeryPopular">
+           </span>
+           37
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         Scottish party leader Willie Rennie said now is not the time for another referendum on the issue.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.the42.ie/ireland-england-2021-six-nations-5387210-Mar2021/">
+         <img alt="Ireland blow England away as Farrell era hits an impressive benchmark" class="lazy" data-original="https://img2.thejournal.ie/article/5387210/river?version=5387332&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="Ireland blow England away as Farrell era hits an impressive benchmark" height="150px" src="https://img2.thejournal.ie/article/5387210/river?version=5387332&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/dominant/news/">
+         <div class="tag show-on-desktop">
+          # Dominant
+         </div>
+        </a>
+        <span class="icon iconThe42">
+         From The42
+        </span>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/dominant/news/">
+         # Dominant
+        </a>
+        <h4 class="title">
+         <a href="https://www.the42.ie/ireland-england-2021-six-nations-5387210-Mar2021/">
+          Ireland blow England away as Farrell era hits an impressive benchmark
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          Sat 6:39 PM
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          71,139
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.the42.ie/ireland-england-2021-six-nations-5387210-Mar2021/#comments" title="Comment on Ireland blow England away as Farrell era hits an impressive benchmark">
+           <span class="icon iconCommentVeryPopular">
+           </span>
+           198
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         Robbie Henshaw led the way in a convincing Irish win at the Aviva Stadium.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="responsive-article desktop">
+      <div class="article standard landscape">
+       <span class="image">
+        <a href="https://www.thejournal.ie/garda-protests-arrests-5387309-Mar2021/">
+         <img alt="Gardaí make 11 arrests at anti-lockdown protest in Dublin" class="lazy" data-original="https://img2.thejournal.ie/article/5387309/river?version=5387316&amp;width=230" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="width: 230px; height: 150px"/>
+         <noscript>
+          <img alt="Gardaí make 11 arrests at anti-lockdown protest in Dublin" height="150px" src="https://img2.thejournal.ie/article/5387309/river?version=5387316&amp;width=230" width="230px"/>
+         </noscript>
+        </a>
+        <a href="https://www.thejournal.ie/arrests/news/">
+         <div class="tag show-on-desktop">
+          # Arrests
+         </div>
+        </a>
+       </span>
+       <div class="article-details">
+        <a class="tag show-on-touch" href="https://www.thejournal.ie/arrests/news/">
+         # Arrests
+        </a>
+        <h4 class="title">
+         <a href="https://www.thejournal.ie/garda-protests-arrests-5387309-Mar2021/">
+          Gardaí make 11 arrests at anti-lockdown protest in Dublin
+         </a>
+        </h4>
+        <div class="meta">
+         <span class="published-at">
+          Sat 5:57 PM
+         </span>
+         <span class="interactions">
+          <span class="red-views icon iconViewVeryPopular">
+          </span>
+          129,085
+          <span class="show-on-desktop">
+           Views
+          </span>
+          <a href="https://www.thejournal.ie/garda-protests-arrests-5387309-Mar2021/#comments" title="Comment on Gardaí make 11 arrests at anti-lockdown protest in Dublin ">
+           <span class="icon iconComment">
+           </span>
+           0
+           <span class="show-on-desktop">
+            Comments
+           </span>
+          </a>
+         </span>
+        </div>
+        <p class="excerpt">
+         Several fines were also issued.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="paginate">
+      <div class="wp-pagenavi">
+       <span class="current">
+        1
+       </span>
+       <a class="page" href="https://www.thejournal.ie/page/2/">
+        2
+       </a>
+       <a class="page" href="https://www.thejournal.ie/page/3/">
+        3
+       </a>
+       <a class="page" href="https://www.thejournal.ie/page/4/">
+        4
+       </a>
+       <a class="page" href="https://www.thejournal.ie/page/5/">
+        5
+       </a>
+       <a class="nextpostslink" href="https://www.thejournal.ie/page/2/">
+        Next
+       </a>
+      </div>
+     </div>
+    </div>
+    <!-- Close off river -->
+    <!-- Sidebar -->
+    <div class="sidebar span-4 last" id="sidebar-holder">
+     <div class="advert adserverad">
+      <div id="div-gpt-ad-1365092406213-1">
+       <script type="text/javascript">
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1365092406213-1'); });
+       </script>
+      </div>
+     </div>
+     <div class="widget">
+      <div class="sectionSeparator">
+       <h3>
+        <a class="tag" href="https://www.thejournal.ie/factcheck/news/">
+         factcheck
+        </a>
+       </h3>
+      </div>
+      <div class="widgetContent">
+       <div class="post postMini postMiniLandscape">
+        <div class="img">
+         <a href="https://www.thejournal.ie/factfind-ireland-excess-deaths-covid-19-5376262-Mar2021/">
+          <img alt="" class="attachment-super_wide_1" height="80" src="https://c2.thejournal.ie/media/2021/03/figure-3-comparing-morta-3-290x80.jpeg" width="290"/>
+         </a>
+         <a class="tag" href="https://www.thejournal.ie/factfind/news/">
+          factfind
+         </a>
+        </div>
+        <div class="text">
+         <h4>
+          <a href="https://www.thejournal.ie/factfind-ireland-excess-deaths-covid-19-5376262-Mar2021/">
+           Factfind: Has Ireland experienced 'excess mortality' since the start of the Covid-19 pandemic?
+          </a>
+         </h4>
+        </div>
+       </div>
+       <!-- Mini post -->
+       <div class="post postMini">
+        <div class="img">
+         <a href="https://www.thejournal.ie/mosney-direct-provision-vaccine-5376043-Mar2021/">
+          <img alt="" class="attachment-listings_1" height="50" src="https://c2.thejournal.ie/media/2021/03/mosney-direct-provision-centre-3-80x50.jpg" width="80"/>
+         </a>
+        </div>
+        <div class="text">
+         <a class="tag" href="https://www.thejournal.ie/factcheck/news/">
+          factcheck
+         </a>
+         <h5>
+          <a href="https://www.thejournal.ie/mosney-direct-provision-vaccine-5376043-Mar2021/">
+           Debunked: No, all Direct Provision residents at Mosney are not receiving vaccine ahead of priority schedule
+          </a>
+         </h5>
+        </div>
+       </div>
+       <!-- /Mini post -->
+       <!-- Mini post -->
+       <div class="post postMini">
+        <div class="img">
+         <a href="https://www.thejournal.ie/false-claims-renua-irish-freedom-party-direct-democracy-ireland-leaflet-dublin-5358471-Mar2021/">
+          <img alt="The leaflet sent to homes in Dublin." class="attachment-listings_1" height="50" src="https://c1.thejournal.ie/media/2021/02/img-20210206-wa0001-80x50.jpg" width="80"/>
+         </a>
+        </div>
+        <div class="text">
+         <a class="tag" href="https://www.thejournal.ie/coronavirus/news/">
+          Coronavirus
+         </a>
+         <h5>
+          <a href="https://www.thejournal.ie/false-claims-renua-irish-freedom-party-direct-democracy-ireland-leaflet-dublin-5358471-Mar2021/">
+           FactCheck: Misleading Covid-19 claims in a leaflet made by three political parties
+          </a>
+         </h5>
+        </div>
+       </div>
+       <!-- /Mini post -->
+      </div>
+     </div>
+     <div class="widget widgetYourSay">
+      <div class="sectionSeparator">
+       <h3>
+        Your say
+       </h3>
+       <a class="details" href="/your-say/news/">
+        View more polls
+       </a>
+      </div>
+      <div class="widgetContent">
+       <div class="post postMini postMiniLandscape postYourSay">
+        <div class="img">
+         <a href="https://www.thejournal.ie/easter-eggs-poll-2-5387639-Mar2021/">
+          <img alt="Poll: Is it too early to start eating Easter eggs?" class="attachment-super_wide_1" height="80" src="https://c1.thejournal.ie/media/2021/03/shutterstock_607420661-290x80.jpg" width="290"/>
+         </a>
+        </div>
+        <div class="text">
+         <h4>
+          <a href="https://www.thejournal.ie/easter-eggs-poll-2-5387639-Mar2021/">
+           Poll: Is it too early to start eating Easter eggs?
+          </a>
+         </h4>
+         <p>
+          EASTER SUNDAY IS officially two weeks away.
+         </p>
+         <p>
+          Lent, which started on 17 February, has been ongoing for the last four-and-a-half weeks.
+         </p>
+         <p>
+          Easter chocolate, including Easter eggs, are in season.
+         </p>
+         <p>
+          Most supermarkets have some variation of a multi-buy offer on the eggs and it can be difficult to pass them by.
+         </p>
+         <p>
+         </p>
+         <p>
+          So today, we’re asking you:
+          <strong>
+           Is it too early to start eating Easter eggs?
+          </strong>
+          <br/>
+         </p>
+         <div class="journal_poll_container" id="j_p-5387639">
+          <div class="hidden_block journal_poll_result j_p_result-5387639">
+           <br/>
+           <p>
+            <b>
+             <i>
+              Poll Results:
+             </i>
+            </b>
+           </p>
+           <div class="j_p_piechart" data-options="[{&quot;question&quot;:&quot;Yes, you have to hold on until Easter Sunday&quot;,&quot;count&quot;:5109,&quot;backgroundColour&quot;:&quot;ff9a66&quot;,&quot;textColour&quot;:&quot;505050&quot;},{&quot;question&quot;:&quot;No, you can eat them any time&quot;,&quot;count&quot;:3217,&quot;backgroundColour&quot;:&quot;9accff&quot;,&quot;textColour&quot;:&quot;505050&quot;},{&quot;question&quot;:&quot;No, I've eaten one already&quot;,&quot;count&quot;:2046,&quot;backgroundColour&quot;:&quot;ccfe67&quot;,&quot;textColour&quot;:&quot;505050&quot;},{&quot;question&quot;:&quot;Yes, I'll wait another week or so&quot;,&quot;count&quot;:806,&quot;backgroundColour&quot;:&quot;cb99cc&quot;,&quot;textColour&quot;:&quot;505050&quot;},{&quot;question&quot;:&quot;I'm not sure&quot;,&quot;count&quot;:152,&quot;backgroundColour&quot;:&quot;99ffcd&quot;,&quot;textColour&quot;:&quot;505050&quot;}]" id="j_p_piechart">
+           </div>
+           <div class="j_p_legend">
+            <div class="j_p_legend_option clearfix">
+             <div class="j_p_legend_color" style="background-color: #ff9a66">
+             </div>
+             <div class="j_p_legend_label">
+              Yes, you have to hold on until Easter Sunday
+              <span>
+               (5109)
+              </span>
+             </div>
+            </div>
+            <div class="j_p_legend_option clearfix">
+             <div class="j_p_legend_color" style="background-color: #9accff">
+             </div>
+             <div class="j_p_legend_label">
+              No, you can eat them any time
+              <span>
+               (3217)
+              </span>
+             </div>
+            </div>
+            <div class="j_p_legend_option clearfix">
+             <div class="j_p_legend_color" style="background-color: #ccfe67">
+             </div>
+             <div class="j_p_legend_label">
+              No, I've eaten one already
+              <span>
+               (2046)
+              </span>
+             </div>
+            </div>
+            <div class="j_p_legend_option clearfix">
+             <div class="j_p_legend_color" style="background-color: #cb99cc">
+             </div>
+             <div class="j_p_legend_label">
+              Yes, I'll wait another week or so
+              <span>
+               (806)
+              </span>
+             </div>
+            </div>
+            <div class="j_p_legend_option clearfix">
+             <div class="j_p_legend_color" style="background-color: #99ffcd">
+             </div>
+             <div class="j_p_legend_label">
+              I'm not sure
+              <span>
+               (152)
+              </span>
+             </div>
+            </div>
+           </div>
+          </div>
+          <div class="j_p_form-5387639 hidden_block">
+           <form action="/submit.php" class="simplepoll formPoll" method="post" style="margin-top:10px">
+            <ul>
+             <input name="action" type="hidden" value="inline_poll_vote"/>
+             <input name="redirect" type="hidden" value="https://www.thejournal.ie/easter-eggs-poll-2-5387639-Mar2021/"/>
+             <input name="poll" type="hidden" value="5387639"/>
+             <li>
+              <input id="poll-5387639-0" name="vote" type="radio" value="0"/>
+              <label for="poll-5387639-0">
+               Yes, you have to hold on until Easter Sunday
+              </label>
+              <br/>
+             </li>
+             <li>
+              <input id="poll-5387639-1" name="vote" type="radio" value="1"/>
+              <label for="poll-5387639-1">
+               Yes, I'll wait another week or so
+              </label>
+              <br/>
+             </li>
+             <li>
+              <input id="poll-5387639-2" name="vote" type="radio" value="2"/>
+              <label for="poll-5387639-2">
+               I'm not sure
+              </label>
+              <br/>
+             </li>
+             <li>
+              <input id="poll-5387639-3" name="vote" type="radio" value="3"/>
+              <label for="poll-5387639-3">
+               No, I've eaten one already
+              </label>
+              <br/>
+             </li>
+             <li>
+              <input id="poll-5387639-4" name="vote" type="radio" value="4"/>
+              <label for="poll-5387639-4">
+               No, you can eat them any time
+              </label>
+              <br/>
+             </li>
+            </ul>
+            <div class="submit">
+            </div>
+            <button class="buttonVote" type="submit">
+             Vote
+            </button>
+           </form>
+          </div>
+         </div>
+        </div>
+        <p>
+        </p>
+        <br/>
+        <div class="metadata">
+         <span class="share">
+          <a class="open-window social" href="https://www.facebook.com/dialog/feed?app_id=116141121768215&amp;display=popup&amp;link=https%3A%2F%2Fwww.thejournal.ie%2Feaster-eggs-poll-2-5387639-Mar2021%2F&amp;picture=https%3A%2F%2Fc2.thejournal.ie%2Fmedia%2F2021%2F03%2Fshutterstock_607420661-197x197.jpg&amp;name=Poll%3A+Is+it+too+early+to+start+eating+Easter+eggs%3F&amp;description=It%E2%80%99s+two+weeks+until+Easter+Sunday.&amp;message=&amp;redirect_uri=https%3A%2F%2Fthejournal.ie%2Futils%2Ffb_post.php%3Fp_id%3D5387639 " target="_blank" title="Share on Facebook">
+           <span class="icon iconFacebook">
+           </span>
+           Share
+           <span class="number">
+            4
+           </span>
+          </a>
+          <a class="open-window social share-twitter twitter-tweet jrnl-tweet-5387639" href="https://twitter.com/share?url=https%3A%2F%2Fjrnl.ie%2F5387639&amp;text=Poll%3A+Is+it+too+early+to+start+eating+Easter+eggs%3F+%28via+%40thejournal_ie%29&amp;related=@thejournal_ie" target="_blank" title="Tweet this">
+           <span class="icon iconTwitter">
+           </span>
+           Tweet
+          </a>
+         </span>
+         <a href="https://www.thejournal.ie/easter-eggs-poll-2-5387639-Mar2021/#comments">
+          <span class="icon iconCommentVeryPopular">
+          </span>
+          45
+         </a>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="advert adserverad">
+     <div id="div-gpt-ad-1365092406213-0">
+      <script type="text/javascript">
+       googletag.cmd.push(function() { googletag.display('div-gpt-ad-1365092406213-0'); });
+      </script>
+     </div>
+    </div>
+    <div class="widget widgetOpinions">
+     <div class="head">
+      <a class="voices-banner" href="/readme/">
+       <img src="//b0.thejournal.ie/desktop/i/thejournal/voices-small.png"/>
+      </a>
+      <strong>
+       Share your story:
+       <a href="mailto:voices@thejournal.ie">
+        voices@thejournal.ie
+       </a>
+      </strong>
+     </div>
+     <div class="widgetContent">
+      <div class="post postMini postMiniOpinion">
+       <img alt="TheJournal.ie reader" height="60" src="https://f2.thejournal.ie/media/2018/09/money-diary-series-river-image1-133x133.png" width="60"/>
+       <h5>
+        <a href="https://www.thejournal.ie/readme/money-finances-money-diaries-5379813-Mar2021/">
+         Money Diaries: An occupational therapist on €54K working through the pandemic in Dublin
+        </a>
+       </h5>
+       <div class="byLine">
+        By TheJournal.ie reader
+       </div>
+       <p>
+        <a class="excerpt" href="https://www.thejournal.ie/readme/money-finances-money-diaries-5379813-Mar2021/">
+         This week, our reader is busy working in a hospital and watching spending to save for a wedding.
+        </a>
+       </p>
+      </div>
+      <div class="post postMini postMiniOpinion">
+       <img alt="Sophie White" height="60" src="https://f0.thejournal.ie/media/2021/03/sophie-q-133x133.png" width="60"/>
+       <h5>
+        <a href="https://www.thejournal.ie/readme/extract-sophie-white-corpsing-5385376-Mar2021/">
+         Sophie White: 'This illness is a thief and a liar. It ransacks my happy memories'
+        </a>
+       </h5>
+       <div class="byLine">
+        By Sophie White
+       </div>
+       <p>
+        <a class="excerpt" href="https://www.thejournal.ie/readme/extract-sophie-white-corpsing-5385376-Mar2021/">
+         Sophie White writes about her father’s illness and death, and its impact on her.
+        </a>
+       </p>
+      </div>
+      <div class="post postMini postMiniOpinion">
+       <img alt="Larry Donnelly" height="60" src="https://f2.thejournal.ie/media/2012/11/pic-larry-133x133.jpg" width="60"/>
+       <h5>
+        <a href="https://www.thejournal.ie/readme/larry-donnelly-usa-ireland-biden-shamrock-5386034-Mar2021/">
+         Larry Donnelly: From Kennedy to Biden, Irish-American ties remain robust
+        </a>
+       </h5>
+       <div class="byLine">
+        By Larry Donnelly
+        <a href="https://twitter.com/LarryPDonnelly">
+         @LarryPDonnelly
+        </a>
+       </div>
+       <p>
+        <a class="excerpt" href="https://www.thejournal.ie/readme/larry-donnelly-usa-ireland-biden-shamrock-5386034-Mar2021/">
+         In a special week for Ireland, our Boston-born columnist looks at the strength of ties between the two countries.
+        </a>
+       </p>
+      </div>
+      <div class="post postMini postMiniOpinion">
+       <img alt="Richard Stevenson" height="60" src="https://f1.thejournal.ie/media/2021/03/File-Photo-133x133.jpg" width="60"/>
+       <h5>
+        <a href="https://www.thejournal.ie/readme/maternity-care-5381970-Mar2021/">
+         Opinion: Our baby would not live, so we had to travel to London. Our hearts are broken
+        </a>
+       </h5>
+       <div class="byLine">
+        By Richard Stevenson
+       </div>
+       <p>
+        <a class="excerpt" href="https://www.thejournal.ie/readme/maternity-care-5381970-Mar2021/">
+         One father details the life-changing news he and his wife received in their 20-week scan, resulting in a trip to London and saying goodbye to Riley, their son.
+        </a>
+       </p>
+      </div>
+      <div class="post postMini postMiniOpinion">
+       <img alt="Minister Catherine Martin" height="60" src="https://f2.thejournal.ie/media/2021/03/Pic-of-Min-CM-for-journal-133x133.png" width="60"/>
+       <h5>
+        <a href="https://www.thejournal.ie/readme/universal-basic-income-catherine-martin-5385399-Mar2021/">
+         Minister Martin: We can protect our artists by covering their basic living costs
+        </a>
+       </h5>
+       <div class="byLine">
+        By Minister Catherine Martin
+       </div>
+       <p>
+        <a class="excerpt" href="https://www.thejournal.ie/readme/universal-basic-income-catherine-martin-5385399-Mar2021/">
+         The creative sector was badly hit by the pandemic and has most to benefit from a Universal Basic Income pilot, write the Arts Minister.
+        </a>
+       </p>
+      </div>
+     </div>
+    </div>
+    <div class="widget widgetWeather">
+     <div class="sectionSeparator">
+      <h3>
+       Dublin Weather
+      </h3>
+      <a class="details" href="https://www.thejournal.ie/weather/" style="text-decoration:underline;">
+       Change location
+      </a>
+     </div>
+     <div class="weather_ad">
+     </div>
+     <div class="widgetContent">
+      <ul class="tablecell">
+       <li class="border">
+        <strong>
+         Sunday
+        </strong>
+        <img height="40" src="//b0.thejournal.ie/desktop/i/weather-icons/small/04.png" width="40"/>
+        <strong>
+         Periods of clouds and sunshine
+        </strong>
+        <em>
+         Max: 12 °C
+        </em>
+        <em>
+         Min: 5 °C
+        </em>
+       </li>
+       <li class="border">
+        <strong>
+         Monday
+        </strong>
+        <img height="40" src="//b0.thejournal.ie/desktop/i/weather-icons/small/04.png" width="40"/>
+        <strong>
+         Intervals of clouds and sun
+        </strong>
+        <em>
+         Max: 12 °C
+        </em>
+        <em>
+         Min: 5 °C
+        </em>
+       </li>
+       <li class="border">
+        <strong>
+         Tuesday
+        </strong>
+        <img height="40" src="//b0.thejournal.ie/desktop/i/weather-icons/small/14.png" width="40"/>
+        <strong>
+         Periods of sunshine with a shower
+        </strong>
+        <em>
+         Max: 12 °C
+        </em>
+        <em>
+         Min: 3 °C
+        </em>
+       </li>
+      </ul>
+     </div>
+    </div>
+    <div class="tabs ui-tabs ui-widget ui-widget-content ui-corner-all" id="trendingArticles">
+     <!-- Tabs -->
+     <ul class="sectionSeparator tabMenu ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+      <li>
+       <a href="#tabMostPopular" title="Most Popular">
+        Most Popular
+       </a>
+      </li>
+      <li>
+       <a href="#tabMostCommented" title="Most Commented">
+        Most Commented
+       </a>
+      </li>
+     </ul>
+     <!-- /Tabs -->
+     <!-- Most popular -->
+     <div class="widget tabPanel" id="tabMostPopular">
+      <div class="sectionSeparator">
+       <h3>
+        Most Popular
+       </h3>
+      </div>
+      <div class="widgetContent">
+       <div class="definition">
+        Most viewed articles in the past 24 hours
+       </div>
+       <!-- Mini post -->
+       <div class="post postMini">
+        <div class="img">
+         <a href="https://www.thejournal.ie/daily-figures-covid-5387821-Mar2021/">
+          <img class="attachment-listings_1" height="50" src="https://c3.thejournal.ie/media/2021/03/dept-of-health-briefing-008-2-80x50.jpg" width="80"/>
+         </a>
+        </div>
+        <div class="text">
+         <a class="tag" href="/daily-figures/news/">
+          DAILY FIGURES
+         </a>
+         <h5>
+          <a href="https://www.thejournal.ie/daily-figures-covid-5387821-Mar2021/">
+           Coronavirus: Two deaths and 769 new cases confirmed in Ireland
+          </a>
+         </h5>
+        </div>
+       </div>
+       <div class="post postMini">
+        <div class="img">
+         <a href="https://www.thejournal.ie/readme/maternity-care-5381970-Mar2021/">
+          <img class="attachment-listings_1" height="50" src="https://c1.thejournal.ie/media/2021/03/image1-203-80x50.jpeg" width="80"/>
+         </a>
+        </div>
+        <div class="text">
+         <a class="tag" href="/maternity-care/news/">
+          Maternity Care
+         </a>
+         <h5>
+          <a href="https://www.thejournal.ie/readme/maternity-care-5381970-Mar2021/">
+           Opinion: Our baby would not live, so we had to travel to London. Our hearts are broken
+          </a>
+         </h5>
+        </div>
+       </div>
+       <div class="post postMini">
+        <div class="img">
+         <a href="https://www.thejournal.ie/chocolates-quiz-5382225-Mar2021/">
+          <img class="attachment-listings_1" height="50" src="https://c2.thejournal.ie/media/2021/03/z9oqm3df-80x50.jpg" width="80"/>
+         </a>
+        </div>
+        <div class="text">
+         <a class="tag" href="/quiz/news/">
+          Quiz
+         </a>
+         <h5>
+          <a href="https://www.thejournal.ie/chocolates-quiz-5382225-Mar2021/">
+           Quiz: Can you name these chocolates?
+          </a>
+         </h5>
+        </div>
+       </div>
+       <div class="post postMini">
+        <div class="img">
+         <a href="https://www.thejournal.ie/ireland-10-vaccine-rollout-5373321-Mar2021/">
+          <img class="attachment-listings_1" height="50" src="https://c1.thejournal.ie/media/2021/03/no-fee-hse-06-3-80x50.jpg" width="80"/>
+         </a>
+        </div>
+        <div class="text">
+         <a class="tag" href="/rollout/news/">
+          rollout
+         </a>
+         <h5>
+          <a href="https://www.thejournal.ie/ireland-10-vaccine-rollout-5373321-Mar2021/">
+           10% of people in Ireland have now received their first dose of a Covid-19 vaccine
+          </a>
+         </h5>
+        </div>
+       </div>
+       <!-- /Mini post -->
+      </div>
+     </div>
+     <!-- /Most popular -->
+     <!-- Most commented -->
+     <div class="widget tabPanel" id="tabMostCommented">
+      <div class="sectionSeparator">
+       <h3>
+        Most Commented
+       </h3>
+      </div>
+      <div class="widgetContent">
+       <div class="definition">
+        Most commented articles in the past 3 days
+       </div>
+       <!-- Mini post -->
+       <div class="post postMini">
+        <div class="img">
+         <a href="https://www.thejournal.ie/daily-figures-covid-5387821-Mar2021/">
+          <img class="attachment-listings_1" height="50" src="https://c3.thejournal.ie/media/2021/03/dept-of-health-briefing-008-2-80x50.jpg" width="80"/>
+         </a>
+        </div>
+        <div class="text">
+         <a class="tag" href="/daily-figures/news/">
+          DAILY FIGURES
+         </a>
+         <h5>
+          <a href="https://www.thejournal.ie/daily-figures-covid-5387821-Mar2021/">
+           Coronavirus: Two deaths and 769 new cases confirmed in Ireland
+          </a>
+         </h5>
+        </div>
+       </div>
+       <div class="post postMini">
+        <div class="img">
+         <a href="https://www.the42.ie/ireland-england-2021-six-nations-5387210-Mar2021/">
+          <img class="attachment-listings_1" height="50" src="https://c2.thejournal.ie/media/2021/03/ireland-players-celebrate-with-keith-earls-after-scoring-the-opening-try-80x50.jpg" width="80"/>
+         </a>
+        </div>
+        <div class="text">
+         <a class="tag" href="/dominant/news/">
+          Dominant
+         </a>
+         <h5>
+          <a href="https://www.the42.ie/ireland-england-2021-six-nations-5387210-Mar2021/">
+           Ireland blow England away as Farrell era hits an impressive benchmark
+          </a>
+         </h5>
+        </div>
+       </div>
+       <div class="post postMini">
+        <div class="img">
+         <a href="https://www.thejournal.ie/nphet-daily-figures-5387154-Mar2021/">
+          <img class="attachment-listings_1" height="50" src="https://c1.thejournal.ie/media/2021/03/astrazeneca-007-80x50.jpg" width="80"/>
+         </a>
+        </div>
+        <div class="text">
+         <a class="tag" href="/daily-figures/news/">
+          DAILY FIGURES
+         </a>
+         <h5>
+          <a href="https://www.thejournal.ie/nphet-daily-figures-5387154-Mar2021/">
+           Coronavirus: Nine deaths and 525 new cases confirmed in Ireland
+          </a>
+         </h5>
+        </div>
+       </div>
+       <div class="post postMini">
+        <div class="img">
+         <a href="https://www.thejournal.ie/coronavirus-daily-figures-wednesday-5384077-Mar2021/">
+          <img class="attachment-listings_1" height="50" src="https://c2.thejournal.ie/media/2021/03/dept-of-health-010-5-80x50.jpg" width="80"/>
+         </a>
+        </div>
+        <div class="text">
+         <a class="tag" href="/coronavirus/news/">
+          Coronavirus
+         </a>
+         <h5>
+          <a href="https://www.thejournal.ie/coronavirus-daily-figures-wednesday-5384077-Mar2021/">
+           Coronavirus: 17 deaths and 557 new Covid-19 cases confirmed in Ireland
+          </a>
+         </h5>
+        </div>
+       </div>
+       <div class="post postMini">
+        <div class="img">
+         <a href="https://www.thejournal.ie/river/daft-ie-property-magazine-2478858-Mar2021/">
+          <img class="attachment-listings_1" height="50" src="https://c3.thejournal.ie/media/2021/03/zgqwodzmzgflythjmgm2zda1njrkmja4mwq4mwniyjce9pjb9biqbz3zfd8kz-bxahr0chm6ly9zmy1lds13zxn0lteuyw1hem9uyxdzlmnvbs9tzwrpyw1hc3rlci1zm2v1lzyvys82ytvinwu5mdzlmdcxndu3mwuyy2rjzja1mmy5ztm3zi5qcgd8fhwxmjawfh-3-80x50.jpeg" width="80"/>
+         </a>
+        </div>
+        <div class="text">
+         <a class="tag" href="//news/">
+         </a>
+         <h5>
+          <a href="https://www.thejournal.ie/river/daft-ie-property-magazine-2478858-Mar2021/">
+           DAFT.IE PROPERTY MAGAZINE
+          </a>
+         </h5>
+        </div>
+       </div>
+       <!-- /Mini post -->
+      </div>
+     </div>
+     <!-- /Most commented -->
+    </div>
+    <div class="widget widgetFromOtherPublication widgetTheScore">
+     <div class="sectionSeparator">
+      <h3>
+       <a href="https://www.the42.ie?utm_source=sidebar">
+        From The42
+       </a>
+      </h3>
+     </div>
+     <div class="widgetContent">
+      <!-- Post from other publication -->
+      <div class="post postMini postMiniLandscape">
+       <div class="img">
+        <a href="https://www.the42.ie/stephen-kenny-longford-town-2-5386578-Mar2021/">
+         <img alt="Planes, trains and cat food - the untold story of the Ireland manager's first trip" height="80" src="https://c3.thejournal.ie/media/2021/03/kenny-52-290x80.jpg" width="290"/>
+        </a>
+        <a class="tag" href="https://www.the42.ie?utm_source=sidebarthe42-reads/news/">
+         The42 Reads
+        </a>
+       </div>
+       <div class="text">
+        <h4>
+         <a href="https://www.the42.ie/stephen-kenny-longford-town-2-5386578-Mar2021/">
+          Planes, trains and cat food - the untold story of the Ireland manager's first trip
+         </a>
+        </h4>
+       </div>
+      </div>
+      <!-- /Post from other publication -->
+      <!-- Mini post -->
+      <div class="post postMini">
+       <div class="img">
+        <a href="https://www.the42.ie/analysis-ireland-attack-england-5387509-Mar2021/">
+         <img alt="'Something we worked on all week' - Ireland's attack cuts England apart" height="50" src="https://c3.thejournal.ie/media/2021/03/6-328-80x50.png" width="80"/>
+        </a>
+       </div>
+       <div class="text">
+        <a class="tag" href="https://www.the42.ie?utm_source=sidebaranalysis/news/">
+         Analysis
+        </a>
+        <h5>
+         <a href="https://www.the42.ie/analysis-ireland-attack-england-5387509-Mar2021/">
+          'Something we worked on all week' - Ireland's attack cuts England apart
+         </a>
+        </h5>
+       </div>
+      </div>
+      <!-- /Mini post -->
+      <!-- Mini post -->
+      <div class="post postMini">
+       <div class="img">
+        <a href="https://www.the42.ie/ireland-squad-6-5387844-Mar2021/">
+         <img alt="Caoimhín Kelleher among four players ruled out of Ireland's World Cup qualifiers " height="50" src="https://c3.thejournal.ie/media/2021/03/caoimhin-kelleher-before-the-game-80x50.jpg" width="80"/>
+        </a>
+       </div>
+       <div class="text">
+        <a class="tag" href="https://www.the42.ie?utm_source=sidebarbad-luck-continues/news/">
+         bad luck continues
+        </a>
+        <h5>
+         <a href="https://www.the42.ie/ireland-squad-6-5387844-Mar2021/">
+          Caoimhín Kelleher among four players ruled out of Ireland's World Cup qualifiers
+         </a>
+        </h5>
+       </div>
+      </div>
+      <!-- /Mini post -->
+     </div>
+    </div>
+    <div class="widget">
+     <div class="sectionSeparator">
+      <h3>
+       Download our app
+      </h3>
+     </div>
+     <div class="widgetContent" style="height:75px; margin:0px;  padding:0px">
+      <div class="single_app_link" style="margin-top:5px; width:100%">
+       <span style="float:left; margin-left: 15px">
+        <a href="https://itunes.apple.com/ie/app/thejournal-ie/id409359491?mt=8" title="Download the TheJournal.ie for the iPhone, iPad and iPod">
+         <img class="itunes_image" height="45" src="//b0.thejournal.ie/desktop/i/itunes_icon.png" width="134"/>
+         <!--span class="app_link_text app_link_text_ios">Get our free app for<br/>the iPhone & iPad</span-->
+        </a>
+       </span>
+       <span style="float:right; margin-right:5px">
+        <a href="https://play.google.com/store/apps/details?id=com.distilledmedia.thejournal" title="Download the TheJournal.ie for Android">
+         <img class="itunes_image" height="45" src="//b0.thejournal.ie/desktop/i/android_get_it_on_play_logo_small.png" width="129"/>
+         <!--span class="app_link_text app_link_text_android">Also available in<br/>the Android Market</span-->
+        </a>
+       </span>
+      </div>
+      <!--div style="padding:10px 20px 0; clear:both; line-height:1em">
+            <h3>Top Features:</h3>
+            <ul>
+                <li>5x faster loading of articles
+                <li>In-flight/offline reading
+                <li>Swipe between articles & photos
+                <li>Live-scores from rugby and football matches
+            </ul>
+
+            </div-->
+     </div>
+    </div>
+   </div>
+   <!-- /Sidebar -->
+   <!-- Latest Opinions -->
+   <div class="trendingTags span-12" id="scroll-footer">
+    <div class="sectionSeparator">
+     <h3>
+      Trending Opinions
+     </h3>
+    </div>
+    <div class="footer_lo">
+     <table>
+      <tr>
+       <td class="footer_lo_avatar">
+        <a href="https://www.thejournal.ie/author/thejournal.ie-reader/">
+         <img alt="TheJournal.ie reader" class="footer_lo_avatar" height="60" src="https://f3.thejournal.ie/media/2018/09/money-diary-series-river-image1-133x133.png" width="60"/>
+        </a>
+       </td>
+       <td class="footer_lo_article">
+        <a class="article" href="https://www.thejournal.ie/readme/money-finances-money-diaries-5379813-Mar2021/">
+         Money Diaries: An occupational therapist on €54K working through the pandemic in Dublin
+        </a>
+        <br/>
+        <a class="author" href="https://www.thejournal.ie/author/thejournal.ie-reader/">
+         TheJournal.ie reader
+        </a>
+       </td>
+      </tr>
+     </table>
+     <div class="footer_lo footer_lo_2nd_row">
+      <a class="excerpt" href="https://www.thejournal.ie/readme/money-finances-money-diaries-5379813-Mar2021/">
+       This week, our reader is busy working in a hospital and watching spending to save for a wedding.
+      </a>
+     </div>
+    </div>
+    <div class="footer_lo">
+     <table>
+      <tr>
+       <td class="footer_lo_avatar">
+        <a href="https://www.thejournal.ie/author/sophie-white/">
+         <img alt="Sophie White" class="footer_lo_avatar" height="60" src="https://f2.thejournal.ie/media/2021/03/sophie-q-133x133.png" width="60"/>
+        </a>
+       </td>
+       <td class="footer_lo_article">
+        <a class="article" href="https://www.thejournal.ie/readme/extract-sophie-white-corpsing-5385376-Mar2021/">
+         Sophie White: 'This illness is a thief and a liar. It ransacks my happy memories'
+        </a>
+        <br/>
+        <a class="author" href="https://www.thejournal.ie/author/sophie-white/">
+         Sophie White
+        </a>
+       </td>
+      </tr>
+     </table>
+     <div class="footer_lo footer_lo_2nd_row">
+      <a class="excerpt" href="https://www.thejournal.ie/readme/extract-sophie-white-corpsing-5385376-Mar2021/">
+       Sophie White writes about her father’s illness and death, and its impact on her.
+      </a>
+     </div>
+    </div>
+    <div class="footer_lo">
+     <table>
+      <tr>
+       <td class="footer_lo_avatar">
+        <a href="https://www.thejournal.ie/author/larry-donnelly/">
+         <img alt="Larry Donnelly" class="footer_lo_avatar" height="60" src="https://f2.thejournal.ie/media/2012/11/pic-larry-133x133.jpg" width="60"/>
+        </a>
+       </td>
+       <td class="footer_lo_article">
+        <a class="article" href="https://www.thejournal.ie/readme/larry-donnelly-usa-ireland-biden-shamrock-5386034-Mar2021/">
+         Larry Donnelly: From Kennedy to Biden, Irish-American ties remain robust
+        </a>
+        <br/>
+        <a class="author" href="https://www.thejournal.ie/author/larry-donnelly/">
+         Larry Donnelly
+        </a>
+       </td>
+      </tr>
+     </table>
+     <div class="footer_lo footer_lo_2nd_row">
+      <a class="excerpt" href="https://www.thejournal.ie/readme/larry-donnelly-usa-ireland-biden-shamrock-5386034-Mar2021/">
+       In a special week for Ireland, our Boston-born columnist looks at the strength of ties between the two countries.
+      </a>
+     </div>
+    </div>
+   </div>
+   <!-- /Latest Opinions -->
+  </div>
+  <!-- /Main content -->
+  <!-- Footer -->
+  <div class="footer background">
+   <div id="server_identifier">
+    <span title="Rendered at 2021-03-21 22:46:44 Europe/Dublin +0000 DST:1 on 021e5ff4295d4e976.thejournal.ie.aws.loc">
+     ∞
+    </span>
+   </div>
+   <div class="span-2">
+    <h3 class="border">
+     About Us
+    </h3>
+    <ul>
+     <li>
+      <a href="https://www.thejournal.ie/about-us/">
+       About Us
+      </a>
+     </li>
+     <li>
+      <a href="https://careers.thejournal.ie/">
+       We're Hiring!
+      </a>
+     </li>
+     <li>
+      <a href="https://www.thejournal.ie/contact/">
+       Contact Us
+      </a>
+     </li>
+     <li>
+      <a href="https://advertising.thejournal.ie">
+       Advertise With Us
+      </a>
+     </li>
+    </ul>
+   </div>
+   <div class="span-2">
+    <h3 class="border">
+     Follow Us
+    </h3>
+    <ul>
+     <li>
+      <a href="https://twitter.com/thejournal_ie">
+       Twitter
+      </a>
+     </li>
+     <li>
+      <a href="https://www.facebook.com/thejournal.ie">
+       Facebook
+      </a>
+     </li>
+    </ul>
+   </div>
+   <div class="span-2">
+    <h3 class="border">
+     Corrections
+    </h3>
+    <ul>
+     <li>
+      <a class="lightboxTrigger" href="#ReportContent" title="Corrections">
+       Report Content
+      </a>
+     </li>
+    </ul>
+   </div>
+   <div class="span-2">
+    <h3 class="border">
+     Policies
+    </h3>
+    <ul>
+     <li>
+      <a href="/terms/">
+       Terms of Use
+      </a>
+     </li>
+     <li>
+      <a href="/cookies-privacy-policy/" title="Cookies and Privacy">
+       Cookies &amp; Privacy
+      </a>
+     </li>
+     <li>
+      <a href="/advertising-policy/" title="Advertising">
+       Advertising
+      </a>
+     </li>
+     <li>
+      <a href="/comments-policy/" title="Comments">
+       Comments
+      </a>
+     </li>
+     <li>
+      <a href="/copyright-policy/" title="Copyright">
+       Copyright
+      </a>
+     </li>
+     <li>
+      <a href="/competitions-terms-and-conditions/">
+       Competition
+      </a>
+     </li>
+    </ul>
+   </div>
+   <div class="copyright span-4 last">
+    <strong>
+     Content copyright © Journal Media Ltd. 2021
+    </strong>
+    Registered in Dublin, registration number: 483623.
+                Registered office: 3rd floor, Latin Hall, Golden Lane, Dublin 8.
+   </div>
+   <div class="legal border span-12">
+    <span class="PCI-footer-logo PCI-logo">
+    </span>
+    <p>
+     <b>
+      <i>
+       TheJournal.ie
+      </i>
+     </b>
+     supports the work of the Press Council of Ireland and the Office of the Press Ombudsman, and our staff operate within the Code of Practice.  You can obtain a copy of the Code, or contact the Council, at
+     <a href="http://www.presscouncil.ie" target="_blank">
+      www.presscouncil.ie
+     </a>
+     , PH: (01) 6489130, Lo-Call 1890 208 080 or email:
+     <a href="mailto:info@presscouncil.ie" target="_blank">
+      info@presscouncil.ie
+     </a>
+     <br/>
+    </p>
+    <p>
+     Please note that TheJournal.ie uses cookies to improve your experience and to provide services and advertising. For more information on cookies please refer to our
+     <a href="https://www.thejournal.ie/cookies-policy">
+      cookies policy
+     </a>
+     .
+    </p>
+    <p>
+     News images provided by
+     <a href="https://www.pressassociation.com/images.html">
+      Press Association
+     </a>
+     and
+     <a href="https://www.photocallireland.com/">
+      Photocall Ireland
+     </a>
+     unless otherwise stated. Irish sport images provided by
+     <a href="https://www.inpho.ie">
+      Inpho Photography
+     </a>
+     unless otherwise stated. Wire service provided by
+     <a href="https://www.thejournal.ie/terms/?c=1#ap">
+      Associated Press
+     </a>
+     .
+    </p>
+    <p>
+     Journal Media does not control and is not responsible for user created content, posts, comments, submissions or preferences. Users are reminded that they are fully responsible for their own created content and their own posts, comments and submissions and fully and effectively warrant and indemnify Journal Media in relation to such content and their ability to make such content, posts, comments and submissions available. Journal Media does not control and is not responsible for the content of external websites.
+    </p>
+    <div class="footer-line">
+     <p class="switcher">
+      <a href="https://www.thejournal.ie/?switcher=touch" rel="nofollow">
+       Switch to Mobile Site
+      </a>
+     </p>
+     <p class="distilled">
+      Sites:
+      <a href="https://www.thejournal.ie/">
+       TheJournal.ie
+      </a>
+      |
+      <a href="https://www.noteworthy.ie/">
+       Noteworthy
+      </a>
+      |
+      <a href="https://www.the42.ie/">
+       The42
+      </a>
+      |
+      <a href="https://www.boards.ie/">
+       Boards.ie
+      </a>
+      |
+      <a href="https://www.adverts.ie/">
+       Adverts.ie
+      </a>
+      |
+      <a href="https://www.daft.ie/">
+       Daft.ie
+      </a>
+     </p>
+    </div>
+   </div>
+  </div>
+  <!-- /Footer -->
+  <!-- /Main container -->
+  <!-- Lightboxes -->
+  <div class="lightboxes">
+   <div class="lightbox" id="CommentLogIn">
+    <h1 class="border">
+     Please log in to comment
+    </h1>
+    <div class="login-buttons clearfix">
+     <div id="alt-login-methods">
+      <p>
+       <span>
+        <span class="facebook_connect_button label" id="" onclick="jrnl_social_login('facebook', true, false)">
+         <img height="22" src="//b0.thejournal.ie/desktop/i/fb-login.png" width="169"/>
+        </span>
+       </span>
+      </p>
+      <p>
+       <span class="twitter_connect_button label" id="" onclick="jrnl_social_login('twitter', true, false)">
+        <img border="0" height="24" src="//b0.thejournal.ie/desktop/i/tw-login.png" width="151"/>
+       </span>
+      </p>
+      <p>
+       <img class="login_loading_throb" id="main_page_login" src="//b0.thejournal.ie/desktop/i/loading.gif"/>
+      </p>
+     </div>
+    </div>
+   </div>
+   <div class="lightbox" id="feed-popup">
+    <h1 class="border">
+     RSS feeds available here:
+    </h1>
+    <div class="feedlist border">
+     <p class="rss">
+      <a href="/feed/">
+       TheJournal.ie Latest News Feed
+      </a>
+     </p>
+    </div>
+   </div>
+   <div class="lightbox reportContent" id="ReportContent">
+    <form id="report-content-popup-form" method="post">
+     <input name="current_page" type="hidden" value="https://www.thejournal.ie/"/>
+     <input name="action" type="hidden" value="post_report_content_form"/>
+     <input name="article-id" type="hidden" value=""/>
+     <h1 class="form-element border">
+      Report an error, omission or problem:
+     </h1>
+     <div class="form-element message">
+      <div class="field" id="AlertAuthorMessage">
+       <label for="AlertAuthorMessage">
+        Message:
+       </label>
+       <textarea id="AlertAuthorMessage" name="message"></textarea>
+      </div>
+     </div>
+     <div class="form-element">
+      <label for="yourEmail">
+       Your Email (optional)
+      </label>
+      <input class="text" id="yourEmail" name="email-from" type="email"/>
+     </div>
+     <div class="clearfix">
+      <button class="buttonSubmit" type="submit">
+       Submit
+      </button>
+      <img alt="One moment..." class="loading" height="16" src="//b0.thejournal.ie/desktop/i/loading.gif" width="16"/>
+     </div>
+    </form>
+   </div>
+   <div class="lightbox emailAlert" id="EmailAlert">
+    <form id="create-email-alert-form" method="post">
+     <input name="current_page" type="hidden" value="https://www.thejournal.ie/"/>
+     <input name="action" type="hidden" value="post_create_email_alert_form"/>
+     <h1 class="form-element border">
+      Create Email Alert
+     </h1>
+     <p>
+      Create an email alert based on the current article
+     </p>
+     <div class="form-element">
+      <label for="alertEmailAddress">
+       Email Address
+      </label>
+      <input class="text" id="alertEmailAddress" name="email-address" type="text"/>
+     </div>
+     <div class="form-element">
+      <input checked="checked" class="radio emailAlert" id="alertFrequencyDaily" name="alert-frequency" type="radio" value="daily"/>
+      <label class="emailAlert" for="alertFrequencyDaily">
+       One email every morning
+      </label>
+      <input class="radio emailAlert" id="alertFrequencyInstantly" name="alert-frequency" type="radio" value="instantly"/>
+      <label class="emailAlert" for="alertFrequencyInstantly">
+       As soon as new articles come online
+      </label>
+     </div>
+     <input name="ip-address" type="hidden" value="76.247.181.241"/>
+     <input name="feed-url" type="hidden" value="/topic//feed"/>
+     <input name="feed-description" type="hidden" value="Articles related to "/>
+     <div class="clearfix">
+      <button class="buttonSubmit" type="submit">
+       Submit
+      </button>
+      <img alt="One moment..." class="loading" height="16" src="//b0.thejournal.ie/desktop/i/loading.gif" width="16"/>
+     </div>
+    </form>
+   </div>
+   <div class="lightbox" id="Thanks">
+    <h1 id="thanks-message" style="color:#cc0000">
+    </h1>
+   </div>
+  </div>
+  <!-- /Lightboxes -->
+  <script type="text/javascript">
+   var _ac = 'thejournal.ie';
+            var _sid = '234604';
+            var _un = 'thejournal.ie';
+            var _pa = '76af0b4d8a69839c0d361c0862fd0ed8';
+  </script>
+  <script src="//b0.thejournal.ie/desktop/js/ping.1.js?adType=sale" type="text/javascript">
+  </script>
+  <script type="text/javascript">
+   jQuery(document).ready(function($){
+                if(window.fkjerbgknfbe == undefined)
+                {
+                    $.get('/internal.php', {
+                        'publication' : 'thejournal',
+                        'state' : true
+                    });
+                }
+                else
+                {
+                    $.get('/internal.php', {
+                        'publication' : 'thejournal'
+                    });
+                }
+            });
+  </script>
+ </body>
+</html>

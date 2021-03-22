@@ -1,0 +1,1 @@
+.vtex-store-components-3-x-discountContainer,.vtex-store-components-3-x-discountInsideContainer{}

@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+<html lang="en" ng-app="wikiwand" xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="https://www.facebook.com/2008/fbml" xmlns:og="http://ogp.me/ns#" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html lang="en" ng-app="wikiwand" xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="https://www.facebook.com/2008/fbml" xmlns:og="http://ogp.me/ns#" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html lang="en" ng-app="wikiwand" xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="https://www.facebook.com/2008/fbml" xmlns:og="http://ogp.me/ns#" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en" ng-app="wikiwand" xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="https://www.facebook.com/2008/fbml" xmlns:og="http://ogp.me/ns#">
+ <!--<![endif]-->
+ <head>
+  <!--header generic -->
+  <!--this is the original url for google fonts-->
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic|Lora:400,700,400italic,700italic|Merriweather:400italic,400,300italic,300,700,700italic|Open+Sans:300italic,400italic,700italic,700,300,400&amp;subset=latin,cyrillic-ext,greek-ext,greek,devanagari,vietnamese,latin-ext,cyrillic" rel="stylesheet" type="text/css"/>
+  <meta charset="utf-8"/>
+  <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <link href="https://chrome.google.com/webstore/detail/emffkefkbkpkgpdeeooapgaicgmcbolj" rel="chrome-webstore-item"/>
+  <link href="//assets.wikiwand.com/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="//assets.wikiwand.com/img/wikiwand_icon_apple.png" rel="apple-touch-icon"/>
+  <link href="https://www.wikiwand.com/" rel="canonical"/>
+  <script>
+   var serverData={"fromSearchEngine":false,"layout":"wikiwand","publisherMonetization":"false","showTOC":"true","settings":{},"agent":{"string":"python-requests/2.24.0","ua":{"family":"Python Requests","major":"2","minor":"24","patch":null},"userAgent":{"family":"Python Requests","major":"2","minor":"24","patch":null},"os":{"family":"Other","major":null,"minor":null,"patch":null,"patchMinor":null},"device":{"family":"Other"},"family":"Python Requests","major":2,"minor":24,"isMobileRes":false,"extensionInstalled":false,"fromSearchWidget":false,"isBot":false,"isHuman":false},"config":{"environment":"production","features":{"news":false,"map":true,"toc":true,"gallery":true,"partials":true,"apiCache":true,"invites":false,"articlePromo":true,"webSocket":false,"snippet":true,"userManagement":false,"comments":false,"paywall":false,"comparisons":false}}};
+  </script>
+ </head>
+ <body>
+  <img height="0" id="imagePlaceHolder" src="" style="opacity:0;position:fixed" width="0"/>
+  <script>
+   console.time('time up to showArticleContents');
+        var precache_from_extension = false;
+        if (window.location.hash.indexOf('precache_from_extension=true') > -1) {
+            precache_from_extension = true;
+        }
+        var pageLoadStart = new Date().getTime();
+        var pageHTMLReceived = (new Date()).getTime();
+        var genericData = {
+            debug: {
+                pageLoadedTimestamp: (new Date()).getTime()
+            }
+        };
+        var localContentHtml;
+        var localContentHtmlPartial;
+        var attempts = 0;
+        function tempConditioning(mystring) {
+            //this is to migrate old article contents until we do a database recaching (advance version)
+            //replace old pic-placeholder with one which supports both protocols
+            if (location.protocol === 'https:') {
+                var newstring = mystring.split('http://assets.cdn.wikiwand.com/img/pic-placeholder.gif').join('//assets.wikiwand.com/img/pic-placeholder.gif');
+            } else {
+                newstring = mystring;
+            }
+            return newstring;
+        }
+
+        function httpGet(theUrl, type) {
+            var xmlHttp = null;
+            xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function() {
+                if (xmlHttp.readyState === 4) // Finished
+                {
+                    if (xmlHttp.status === 200) {
+                        if (theUrl.indexOf('_PARTIAL_DOWNLOAD') === -1) {
+                            //console.log('got full text');
+                            localContentHtml = xmlHttp.responseText;
+                        } else {
+                            //console.log('got partial text');
+                            localContentHtmlPartial = xmlHttp.responseText;
+                        }
+                    }
+                    else {
+                        console.log('failed with status ',xmlHttp.status);
+                        attempts++;
+                        if (attempts < 10 && (theUrl.indexOf('_PARTIAL_DOWNLOAD') === -1)) {
+                            console.log("DOWNLOAD FAILED, TRYING AGAIN ", theUrl);
+                            if (xmlHttp.status === 0) {
+                                if (theUrl.indexOf('s3.amazonaws.com') !== -1) {
+                                    if (attempts === 9) {
+
+                                        setTimeout(function() {
+                                            var element;
+                                            if (typeof(noAdblock) == 'undefined') {
+                                                element = '#adblockNotice';
+                                            } else {
+                                                element = '#httpsEverywhereNotice';
+                                            }
+                                            if ($(element).length > 0) {
+                                                console.log(' element exists');
+                                                $(element).show();
+                                                $(element).css('opacity', 1);
+                                                $(element).detach().prependTo('#content');
+                                            }
+                                        }, 6000);
+                                    }
+                                }
+                                var urlOnS3 = '';
+                                urlOnS3 = urlOnS3.replace('http://', '//').replace('https://', '//');
+                                urlOnS3 = urlOnS3.replace(/\+/g, '%2B');
+                                httpGet(urlOnS3, 'html');
+                                httpGet(urlOnS3, 'html');
+                            } else {
+                                //console.log('status ', xmlHttp);
+                                setTimeout(function() {
+                                    httpGet(theUrl, 'html');
+                                }, 500);
+                            }
+                        }
+                    }
+                }
+            };
+            xmlHttp.open("GET", theUrl, true);
+            xmlHttp.send(null);
+        }
+  </script>
+  <script>
+   var loadedFromCache = false;
+  </script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+  </script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.min.js">
+  </script>
+  <!--
+    
+    <link rel="stylesheet" href="//assets.wikiwand.com/css/fonts.92ff4698.css" type="text/css" media="screen"/>
+    
+    -->
+  <script>
+   var CURRENT_USER_ID=null;
+  </script>
+  <link href="//assets.wikiwand.com/css/wikiwand.promotional.min.f19d0c0a.css" media="screen" rel="stylesheet" type="text/css"/>
+  <script src="//assets.wikiwand.com/js/wikiwand.promotional.min.c52122f2.js" type="text/javascript">
+  </script>
+  <!-- BEGIN TRACKJS -->
+  <script type="text/javascript">
+   var LOAD_TRACKJS = false;
+        if (LOAD_TRACKJS && !precache_from_extension) {
+            window._trackJs = {
+                token: '9bcd9b3d130a4b8eb9f58ff06e6781b5',
+                callback: {enabled: false},
+                console: {enabled: true, display: true, error: false},
+                network: {enabled: false},
+                visitor: {enabled: false},
+                window: {enabled: false},
+                onError: function(payload, error) {
+
+                    // List borrowed from the awesome @pamelafox
+                    // https://gist.github.com/pamelafox/1878283
+                    var i, commonCrypticExtensionErrors = [
+                        "top.GLOBALS",
+                        "originalCreateNotification",
+                        "canvas.contentDocument",
+                        "MyApp_RemoveAllHighlights",
+                        "http://tt.epicplay.com",
+                        "Can't find variable: ZiteReader",
+                        "jigsaw is not defined",
+                        "ComboSearch is not defined",
+                        "http://loading.retry.widdit.com/",
+                        "atomicFindClose",
+                        "fb_xd_fragment",
+                        "Script error",
+                        "__adg_gm_commands_api",
+                        "A Chrome Web Store installation is already pending.",
+                        "‘-×´]/: Range out of order in character class"
+                    ];
+                    for (i = 0; i < commonCrypticExtensionErrors.length; i++) {
+                        if (payload.message.indexOf(commonCrypticExtensionErrors[i]) > -1) {
+                            // returning any kind of falsy value will reject error
+                            return false;
+                        }
+                    }
+                    return true; // Return any kind of truthy value here to allow transmission of error
+                }
+            };
+            var fileref = document.createElement('script');
+            fileref.setAttribute("type", "text/javascript");
+            fileref.setAttribute("src", "//d2zah9y47r7bi2.cloudfront.net/releases/current/tracker.js");
+            if (typeof fileref != "undefined")    document.getElementsByTagName("head")[0].appendChild(fileref);
+        }
+  </script>
+  <script>
+   // disable all logs
+		if (document.location.search.indexOf('debug_logs=1') == -1) {
+			console.log = function() {};
+			console.time = function() {};
+			console.timeEnd = function() {};
+		}
+  </script>
+  <script>
+   var articleData={langCodeUrl:'en'};
+  </script>
+  <script>
+   if (location.host=='translate.googleusercontent.com' && location.search){
+
+			var requestedLang=location.search.split('tl=')[1];
+			if (requestedLang) {
+				requestedLang = requestedLang.split('&')[0];
+				var desiredLink = articleData.links.selfRead.replace('http://', 'https://');
+				for (idx in articleData.availableLanguages) {
+					var lang = articleData.availableLanguages[idx];
+					if (lang.langCodeURL == requestedLang) {
+						desiredLink = 'https://www.wikiwand.com' + lang.articleLink;
+						break;
+					}
+				}
+				window.location = desiredLink;
+				var dontReport=true;
+			}
+		}
+  </script>
+  <title>
+   Wikiwand
+  </title>
+  <meta content="summary_large_image" name="twitter:card"/>
+  <meta content="@wikiwand" name="twitter:site"/>
+  <meta content="wikiwand-article:///" name="twitter:app:url:iphone"/>
+  <meta content="wikiwand-article:///" name="twitter:app:url:ipad"/>
+  <meta content="823404911083396" property="fb:app_id"/>
+  <meta content="index,follow" name="robots"/>
+  <meta content="article" property="og:type"/>
+  <meta content="Wikiwand" property="og:site_name"/>
+  <meta content="https://www.wikiwand.com/" property="og:url"/>
+  <meta content="Wikiwand" property="og:title"/>
+  <meta content="Wikiwand" property="twitter:title"/>
+  <meta content="Wikiwand is the world's leading Wikipedia reader for web and mobile." property="og:description"/>
+  <meta content="Wikiwand is the world's leading Wikipedia reader for web and mobile." name="description"/>
+  <meta content="Wikiwand is the world's leading Wikipedia reader for web and mobile." name="twitter:description"/>
+  <meta content="https://assets.wikiwand.com/img/wikipedia_to_wikiwand2.jpg" property="og:image"/>
+  <meta content="https://assets.wikiwand.com/img/wikipedia_to_wikiwand2.jpg" property="twitter:image:src"/>
+  <meta content="wikiwand,wikipedia,interface" name="keywords"/>
+  <div id="body_wrapp" ng-click="clickedOutside()" ng-mousedown="clickedAnywhere($event)">
+   <!--************ promotional menu ***************-->
+   <nav id="promotional_menu" ng-class="{down: $root.menuDown, drop_down: $root.menuDropOpen}" ng-mouseenter="$root.menuDown = true" ng-mouseleave="$root.menuDown = false" onclick="event.stopPropagation()">
+    <div id="menu_btn">
+     <i>
+     </i>
+    </div>
+    <div class="unselectable" id="logo_wrapper">
+     <div class="logo" ng-class="{active: $root.menuDropOpen}" ng-click="$root.menuDropOpen = !$root.menuDropOpen; $root.menuDown = false" onclick="event.stopPropagation()">
+      <img alt="Wikiwand Logo" src="//assets.wikiwand.com/img/logo_new.svg"/>
+     </div>
+     <div class="search" ng-click="$root.openSearch('open');">
+     </div>
+    </div>
+    <div id="promotional_drop_down" ng-cloak="" ng-if="$root.menuDropOpen">
+     <ul data-text="Download for" id="menu_downloads">
+      <li>
+       <a href="https://chrome.google.com/webstore/detail/wikiwand-wikipedia-modern/emffkefkbkpkgpdeeooapgaicgmcbolj" target="_blank">
+        <span data-text="Chrome">
+         Chrome
+        </span>
+       </a>
+      </li>
+      <li>
+       <a href="https://addons.mozilla.org/en-us/firefox/addon/wikiwand-wikipedia-modernized/" target="_blank">
+        <span data-text="Firefox">
+         Firefox
+        </span>
+       </a>
+      </li>
+     </ul>
+     <ul data-text="Navigate" id="menu_navigate">
+      <li>
+       <a href="/">
+        <span data-text="Home">
+         Home
+        </span>
+       </a>
+      </li>
+      <li>
+       <a href="/news">
+        <span data-text="Start Page">
+         Start Page
+        </span>
+       </a>
+      </li>
+      <li>
+       <a href="/random/en/" target="_blank">
+        <span data-text="Random Article">
+         Random Article
+        </span>
+       </a>
+      </li>
+     </ul>
+     <ul data-text="Info" id="menu_info">
+      <li>
+       <a href="/about">
+        <span data-text="About Us">
+         About Us
+        </span>
+       </a>
+      </li>
+      <li>
+       <a href="/press">
+        <span data-text="Press">
+         Press
+        </span>
+       </a>
+      </li>
+     </ul>
+     <ul data-text="Follow Us" id="menu_social">
+      <li class="facebook">
+       <a href="https://www.facebook.com/wikiwandapp" target="_blank">
+        <span data-text="Like us on Facebook">
+         Like us on Facebook
+        </span>
+       </a>
+      </li>
+      <li class="twitter">
+       <a href="https://twitter.com/wikiwand" target="_blank">
+        <span data-text="Follow us on Twitter">
+         Follow us on Twitter
+        </span>
+       </a>
+      </li>
+      <li class="linkedin">
+       <a href="https://www.linkedin.com/company/wikiwand" target="_blank">
+        <span data-text="Follow us on LinkedIn">
+         Follow us on LinkedIn
+        </span>
+       </a>
+      </li>
+     </ul>
+     <ul data-text="Contact" id="menu_contact">
+      <li>
+       <a href="https://wikiwand.uservoice.com/" target="_blank">
+        <span data-text="Support">
+         Support
+        </span>
+       </a>
+      </li>
+     </ul>
+    </div>
+   </nav>
+   <!--************ promotional menu ENDS ***************-->
+   <div class="promotional_wrapper" id="visitor_homepage" ng-click="$root.menuDropOpen = false; $root.menuDown = false" ng-controller="VisitorHomepageControllerNew">
+    <section id="home_video">
+     <video autoplay="" height="100%" id="bg_vid" loop="" muted="" poster="//assets.wikiwand.com/img/video/hp_video_poster.jpg" preload="auto" webkit-playsinline="" width="100%">
+      <source src="//assets.wikiwand.com/img/video/hp_video.webm" type="video/webm">
+       <source src="//assets.wikiwand.com/img/video/hp_video.mp4" type="video/mp4">
+       </source>
+      </source>
+     </video>
+     <div id="dots">
+     </div>
+     <h1>
+      Wikipedia Modernized
+     </h1>
+     <h2>
+      The world's leading Wikipedia reader
+     </h2>
+     <a class="hp_btn desktop desk_res i_b cloak {{$root.promotionalActivationDesktop.class}}" ng-click="$root.reportHomeClick('main-download-desktop'); $root.actOnHomeClick();" ng-href="{{$root.promotionalActivationDesktop.href}}" target="{{$root.promotionalActivationDesktop.target}}">
+      <span class="unselectable">
+       Download for {{$root.promotionalActivationDesktop.name}}
+      </span>
+     </a>
+    </section>
+    <!--************ mobsedk ENDS *************-->
+    <div id="mobsedk" ng-class="{desktop: onDesktop, mobile: onMobile}">
+     <!--*********** hp mobile ***********-->
+     <section id="hp_mobile" ng-click="onMobile = true; onDesktop = false; pauseVid(); deskNum = 0;">
+      <article>
+       <!-- Device -->
+       <div class="device" id="mobile_device">
+        <img alt="Wikiwand" src="//assets.wikiwand.com/img/hp_mobile.jpg"/>
+        <div class="app_gallery mobile">
+         <div class="vid_loading">
+         </div>
+         <div class="video_wrapper" ng-class="{active: mobVidReady}">
+          <video height="100%" id="mob_vid" preload="auto" webkit-playsinline="" width="100%">
+           <source id="mobWebm" src="//assets.wikiwand.com/img/video/mob_1.webm" type="video/webm">
+            <source id="mobMp4" src="//assets.wikiwand.com/img/video/mob_1.mp4" type="video/mp4">
+            </source>
+           </source>
+          </video>
+          <div class="vid_progress mobile">
+          </div>
+         </div>
+         <img alt="Wikiwand" class="start_img" ng-class="{active:   mobNum != 0}" src="//assets.wikiwand.com/img/mobile_1.jpg"/>
+        </div>
+       </div>
+       <!-- Text  -->
+       <div class="device_txt inview">
+        <div class="txt_title mobile" ng-class="{active: mobFeatures}">
+         <h3>
+          Wikiwand on mobile
+         </h3>
+         <p>
+          The fastest way to find answers on the go.
+						Quickly access information on the go using Wikiwand's powerful search and quick facts display, presented in a beautiful award-winning interface.
+         </p>
+        </div>
+       </div>
+      </article>
+     </section>
+     <!--*********** hp desktop ***********-->
+     <section id="hp_desktop" ng-click="onDesktop = true; onMobile = false; pauseVid(); mobNum = 0;">
+      <article>
+       <!-- Text -->
+       <div class="device_txt inview">
+        <div class="txt_title desktop" ng-class="{active: deskFeatures}">
+         <h3 class="desktopTitle1">
+          Wikiwand on desktop
+         </h3>
+         <h3 class="desktopTitle2">
+          Wikiwand Browser Extension
+         </h3>
+         <p>
+          An award-winning beautiful interface for Wikipedia.
+						Used by over 100,000 people worldwide, Wikiwand overhauls Wikipedia's interface, making it more convenient, powerful and beautiful.
+         </p>
+        </div>
+        <div class="device_btn desk_res i_b" ng-class="{active: onDesktop}" ng-click="$root.reportHomeClick('learn-more-desktop')">
+         <i>
+         </i>
+         <span>
+          Learn More
+         </span>
+        </div>
+        <a class="hp_btn centered desktop chrome mob_res i_b" href="mailto:?subject=Reminder%3A%20check%20out%20Wikiwand&amp;body=Download%20the%20Wikiwand%20browser%20extension%20to%20make%20Wikipedia%20awesome%3A%0Ahttp%3A%2F%2Fwww.wikiwand.com%2F%3Fr%3D" target="_blank">
+         <span class="unselectable">
+          Send yourself a reminder
+         </span>
+        </a>
+       </div>
+       <!-- Device -->
+       <div class="device" id="desktop_device">
+        <img alt="Wikiwand" src="//assets.wikiwand.com/img/hp_desktop.jpg"/>
+        <div class="app_gallery desktop">
+         <div class="vid_loading">
+         </div>
+         <div class="video_wrapper" ng-class="{active: deskVidReady}">
+          <video height="100%" id="desk_vid" preload="auto" webkit-playsinline="" width="100%">
+           <source id="deskWebm" src="//assets.wikiwand.com/img/video/desk_1.webm" type="video/webm">
+            <source id="deskMp4" src="//assets.wikiwand.com/img/video/desk_1.mp4" type="video/mp4">
+            </source>
+           </source>
+          </video>
+          <div class="vid_progress desktop">
+          </div>
+         </div>
+         <img alt="Wikiwand" class="start_img" ng-class="{active:  deskNum != 0}" src="//assets.wikiwand.com/img/desktop_1.jpg"/>
+        </div>
+       </div>
+      </article>
+      <ul class="device_btns_mob desktop mob_res">
+       <li ng-class="{active: deskNum == 1}" ng-click="desktopHandler(1)">
+        <i>
+        </i>
+        <span>
+         Beautiful article display
+         <br/>
+         with cover photos
+        </span>
+       </li>
+       <li ng-class="{active: deskNum == 2}" ng-click="desktopHandler(2)">
+        <i>
+        </i>
+        <span>
+         Convenient table of
+         <br/>
+         contents that follows you
+        </span>
+       </li>
+       <li ng-class="{active: deskNum == 3}" ng-click="desktopHandler(3)">
+        <i>
+        </i>
+        <span>
+         Quick preview when
+         <br/>
+         hovering over links
+        </span>
+       </li>
+       <li ng-class="{active: deskNum == 4}" ng-click="desktopHandler(4)">
+        <i>
+        </i>
+        <span>
+         Powerful multi-
+         <br/>
+         language search
+        </span>
+       </li>
+       <li ng-class="{active: deskNum == 5}" ng-click="desktopHandler(5)">
+        <i>
+        </i>
+        <span>
+         Color theme, font and
+         <br/>
+         layout personalization
+        </span>
+       </li>
+       <li ng-class="{active: deskNum == 6}" ng-click="desktopHandler(6)">
+        <i>
+        </i>
+        <span>
+         Immersive
+         <br/>
+         media gallery
+        </span>
+       </li>
+       <li ng-class="{active: deskNum == 7}" ng-click="desktopHandler(7)">
+        <i>
+        </i>
+        <span>
+         Interactive map for
+         <br/>
+         browsing articles
+        </span>
+       </li>
+      </ul>
+     </section>
+     <ul class="device_btns desktop desk_res" ng-class="{active: onDesktop}">
+      <li ng-click="onDesktop = false; deskNum = 0; pauseVid()">
+       <i>
+       </i>
+      </li>
+      <li ng-class="{active: deskNum == 1}" ng-click="desktopHandler(1)" ng-mouseenter="deskFeatures = true" ng-mouseleave="deskFeatures = false">
+       <i>
+       </i>
+       <span>
+        Beautiful article display
+        <br/>
+        with cover photos
+       </span>
+      </li>
+      <li ng-class="{active: deskNum == 2}" ng-click="desktopHandler(2)" ng-mouseenter="deskFeatures = true" ng-mouseleave="deskFeatures = false">
+       <i>
+       </i>
+       <span>
+        Convenient table of
+        <br/>
+        contents that follows you
+       </span>
+      </li>
+      <li ng-class="{active: deskNum == 3}" ng-click="desktopHandler(3)" ng-mouseenter="deskFeatures = true" ng-mouseleave="deskFeatures = false">
+       <i>
+       </i>
+       <span>
+        Quick preview when
+        <br/>
+        hovering over links
+       </span>
+      </li>
+      <li ng-class="{active: deskNum == 4}" ng-click="desktopHandler(4)" ng-mouseenter="deskFeatures = true" ng-mouseleave="deskFeatures = false">
+       <i>
+       </i>
+       <span>
+        Powerful multi-
+        <br/>
+        language search
+       </span>
+      </li>
+      <li ng-class="{active: deskNum == 5}" ng-click="desktopHandler(5)" ng-mouseenter="deskFeatures = true" ng-mouseleave="deskFeatures = false">
+       <i>
+       </i>
+       <span>
+        Color theme, font and
+        <br/>
+        layout personalization
+       </span>
+      </li>
+      <li ng-class="{active: deskNum == 6}" ng-click="desktopHandler(6)" ng-mouseenter="deskFeatures = true" ng-mouseleave="deskFeatures = false">
+       <i>
+       </i>
+       <span>
+        Immersive
+        <br/>
+        media gallery
+       </span>
+      </li>
+      <li ng-class="{active: deskNum == 7}" ng-click="desktopHandler(7)" ng-mouseenter="deskFeatures = true" ng-mouseleave="deskFeatures = false">
+       <i>
+       </i>
+       <span>
+        Interactive map for
+        <br/>
+        browsing articles
+       </span>
+      </li>
+     </ul>
+     <ul class="device_btns mobile desk_res" ng-class="{active: onMobile}">
+      <li ng-click="onMobile = false; mobNum = 0; pauseVid()">
+       <i>
+       </i>
+      </li>
+      <li ng-class="{active: mobNum == 1}" ng-click="mobileHandler(1)" ng-mouseenter="mobFeatures = true" ng-mouseleave="mobFeatures = false">
+       <i>
+       </i>
+       <span>
+        Convenient facts panel
+        <br/>
+        for quick reference
+       </span>
+      </li>
+      <li ng-class="{active: mobNum == 2}" ng-click="mobileHandler(2)" ng-mouseenter="mobFeatures = true" ng-mouseleave="mobFeatures = false">
+       <i>
+       </i>
+       <span>
+        The most powerful
+        <br/>
+        multi-language search
+       </span>
+      </li>
+      <li ng-class="{active: mobNum == 3}" ng-click="mobileHandler(3)" ng-mouseenter="mobFeatures = true" ng-mouseleave="mobFeatures = false">
+       <i>
+       </i>
+       <span>
+        Quick preview for links
+        <br/>
+        without leaving the article
+       </span>
+      </li>
+      <li ng-class="{active: mobNum == 4}" ng-click="mobileHandler(4)" ng-mouseenter="mobFeatures = true" ng-mouseleave="mobFeatures = false">
+       <i>
+       </i>
+       <span>
+        Interactive map for browsing
+        <br/>
+        articles around you
+       </span>
+      </li>
+      <li ng-class="{active: mobNum == 5}" ng-click="mobileHandler(5)" ng-mouseenter="mobFeatures = true" ng-mouseleave="mobFeatures = false">
+       <i>
+       </i>
+       <span>
+        In-article text search
+        <br/>
+        capability
+       </span>
+      </li>
+      <li ng-class="{active: mobNum == 6}" ng-click="mobileHandler(6)" ng-mouseenter="mobFeatures = true" ng-mouseleave="mobFeatures = false">
+       <i>
+       </i>
+       <span>
+        Immersive photo gallery with
+        <br/>
+        filmstrip navigation
+       </span>
+      </li>
+      <li ng-class="{active: mobNum == 7}" ng-click="mobileHandler(7)" ng-mouseenter="mobFeatures = true" ng-mouseleave="mobFeatures = false">
+       <i>
+       </i>
+       <span>
+        Smart table of contents
+        <br/>
+        one tap away
+       </span>
+      </li>
+     </ul>
+    </div>
+    <!--************ mobsedk ENDS *************-->
+    <!--************ bling  *************-->
+    <div class="inview" id="bling">
+     <img alt="Wikiwand PR" class="pr unselectable desktop_res" src="//assets.wikiwand.com/img/pr.svg"/>
+     <img alt="Wikiwand PR" class="pr unselectable mobile_res" src="//assets.wikiwand.com/img/pr_mobile.svg"/>
+     <ul>
+      <li>
+       <img alt="Wikiwand PR" class="unselectable" src="//assets.wikiwand.com/img/design_awards.svg"/>
+      </li>
+      <li>
+       <img alt="Wikiwand PR" class="unselectable" src="//assets.wikiwand.com/img/chrome_rate.svg"/>
+      </li>
+     </ul>
+     <ul class="inview" id="sep_colors">
+      <li style="background-color:#40bbe1">
+      </li>
+      <li style="background-color:#cc56a2">
+      </li>
+      <li style="background-color:#fbbb1a">
+      </li>
+      <li style="background-color:#94c16c">
+      </li>
+      <li style="background-color:#7f7e7f">
+      </li>
+     </ul>
+    </div>
+    <!--************ bling ENDS ***************-->
+    <!--************ gallery ENDS ***************-->
+    <div id="home_gallery">
+     <div id="hp_gallery_loader">
+     </div>
+     <ul id="drag_div">
+      <li ng-class="{active: true}" ng-repeat="galleryItem in galleryItems|limitTo:limit">
+       <div ng-style="{'background-image': galleryItem.imgString}">
+       </div>
+       <a class="no_hovercard" ng-click="galleryItemClick(galleryItem)" ng-href="{{galleryItem.link}}" target="_blank">
+        <span>
+         {{galleryItem.txt}}
+         <svg height="15px" version="1.1" width="30px">
+          <line fill="none" stroke="#000000" stroke-linecap="round" stroke-miterlimit="10" x1="3" x2="26" y1="7.5" y2="7.5">
+          </line>
+          <g class="late_line">
+           <line fill="none" stroke="#000000" stroke-linecap="round" stroke-miterlimit="10" x1="26.487" x2="20.207" y1="7.402" y2="1.797">
+           </line>
+           <line fill="none" stroke="#000000" stroke-linecap="round" stroke-miterlimit="10" x1="26.488" x2="20.208" y1="7.402" y2="13.254">
+           </line>
+          </g>
+         </svg>
+        </span>
+        <i>
+         Read this article on Wikiwand
+        </i>
+       </a>
+      </li>
+     </ul>
+    </div>
+    <!--************ gallery ENDS ***************-->
+    <!--************ apps  *************-->
+    <div class="inview" id="apps">
+     <h3>
+      Upgrade your Wikipedia experience
+     </h3>
+     <ul>
+      <li class="chrome">
+       <a href="https://chrome.google.com/webstore/detail/wikiwand-wikipedia-modern/emffkefkbkpkgpdeeooapgaicgmcbolj" ng-click="$root.reportHomeClick('platform-download-chrome')" target="_blank">
+        <span>
+        </span>
+        <i>
+        </i>
+        <p>
+         Chrome
+        </p>
+       </a>
+      </li>
+      <li class="mozilla">
+       <a href="https://addons.mozilla.org/en-us/firefox/addon/wikiwand-wikipedia-modernized/" ng-click="$root.reportHomeClick('platform-download-firefox')" target="_blank">
+        <span>
+        </span>
+        <i>
+        </i>
+        <p>
+         Firefox
+        </p>
+       </a>
+      </li>
+     </ul>
+    </div>
+    <!--************ apps ENDS *************-->
+   </div>
+   <!--
+<div id="googleTranslateBG"></div>
+<div id="googleTranslateNotice">
+	<b>Google Translate error&nbsp;&nbsp;&nbsp; :-( </b><br>
+	Sorry, Google Translate doesn't work well with Wikiwand.
+	We recommend using Wikiwand directly. Wikiwand supports over 200 languages!<br>
+	<a href="#" onclick="top.location.href='https://www.wikiwand.com';">Go to Wikiwand</a>
+</div>
+<style>
+	#googleTranslateBG{
+		display:none;
+		position:fixed;
+		top:0;
+		left:0;
+		width:100%;
+		height:100%;
+		background-color: rgba(0,0,0,0.8);
+		z-index:1000000
+	}
+	#googleTranslateNotice{
+		display:none;
+		font-family: 'Open Sans', sans-serif;
+		position:fixed;
+		bottom:0%;
+		left:35%;
+		width:30%;
+		height:50%;
+		z-index:1000001;
+		background-color:white;
+		text-align:center;
+		font-size:20px;
+		padding:2%;
+	}
+</style>
+-->
+   <script>
+    analytics.gaVirtualPageView('virtualpageview/home/impression');
+
+	var now = new Date();
+	var time = now.getTime();
+	time += 3600 * 1000;
+	now.setTime(time);
+	document.cookie ="wikiwand_install_src=home; expires=" + now.toUTCString() +"; path=/";
+   </script>
+   <!--************ footer  ***************-->
+   <div id="promo_footer">
+    <ul class="footer_list">
+     <li>
+      <a data-text="Home" href="/">
+       Home
+      </a>
+     </li>
+     <li>
+      <a data-text="Start Page" href="/news">
+       Start Page
+      </a>
+     </li>
+     <li>
+      <a data-text="Random Article" href="/random/" target="_blank">
+       Random Article
+      </a>
+     </li>
+    </ul>
+    <ul class="footer_list">
+     <li>
+      <a data-text="About Us" href="/about">
+       About Us
+      </a>
+     </li>
+     <li>
+      <a data-text="Press" href="/press">
+       Press
+      </a>
+     </li>
+    </ul>
+    <ul class="footer_list">
+     <li>
+      <a data-text="Support" href="https://wikiwand.uservoice.com/" target="_blank">
+       Support
+      </a>
+     </li>
+    </ul>
+    <ul class="footer_list">
+     <li>
+      <a data-text="Terms of Service" href="/terms" target="_blank">
+       Terms of Service
+      </a>
+     </li>
+     <li>
+      <a data-text="Privacy Policy" href="/privacy" target="_blank">
+       Privacy Policy
+      </a>
+     </li>
+    </ul>
+    <ul class="social_links">
+     <li class="facebook">
+      <a class="hover" href="https://www.facebook.com/wikiwandapp" target="_blank">
+      </a>
+     </li>
+     <li class="twitter">
+      <a class="hover" href="https://twitter.com/wikiwand" target="_blank">
+      </a>
+     </li>
+     <li class="linkedin">
+      <a class="hover" href="https://www.linkedin.com/company/wikiwand" target="_blank">
+      </a>
+     </li>
+    </ul>
+   </div>
+   <!--************ footer ENDS ***************-->
+   <!--*************************** search  *************************-->
+   <!--*************************** search  *************************-->
+   <div id="wikiwand_search" ng-cloak="" ng-controller="ArticleSearchControllerRev2" ng-init="initSearch()" ng-show="$root.showSearch">
+    <div class="bg darkBlack" ng-click="$root.openSearch('close')">
+    </div>
+    <div id="search_list" ng-class="{on: search.query.length}">
+     <input autocomplete="off" class="toolbar-search" id="queryinput" ng-class="{selectedResult: noSelection, loading:waiting}" ng-keyup="testKeyboard($event)" ng-model="search.query" placeholder="Search" type="text"/>
+     <div id="articleSearch" ng-show="search.query.length">
+      <ul class="results-container" ng-show="search.results.length">
+       <li class="searchResult" desc-attr="{{result.desc}}" id="result_{{$index}}" ng-class="{selectedResult:result.selected, rtl: result.rtl}" ng-click='resultClicked($event,"{{result.linkEncoded}}");' ng-repeat="result in search.results">
+        <span class="thumbicon" ng-style="{'background-image' :result.backgroundImageSring}">
+        </span>
+        <span class="langtag" ng-if="result.firstInlang">
+         <i>
+          {{result.lang}}
+         </i>
+        </span>
+        <span class="value">
+         {{result.T}}
+        </span>
+        <div class="suggestion-type-icon {{result.c}}">
+        </div>
+       </li>
+      </ul>
+      <div id="no_results" ng-if="noResults &amp;&amp; search.query &amp;&amp; !waiting">
+       No matching articles found
+      </div>
+      <a class="searchResult containing" ng-class="{selectedResult:fullSearch}" ng-href="/en/{{search.query}}?fullSearch=true" ng-show="search.query &amp;&amp; !waiting">
+       <span class="value">
+        Search for articles containing:
+        <i>
+         {{search.query}}
+        </i>
+       </span>
+      </a>
+     </div>
+     <img id="search-hint" ng-if="!$root.touchDevices" src="//assets.wikiwand.com/img/search_ctrl.svg" style="display: block; margin: 20px auto"/>
+    </div>
+    <div id="search_description">
+    </div>
+   </div>
+   <!--*************************** search ENDS *************************-->
+   <!--*************************** search ENDS *************************-->
+   <div class="dialog_wrapper follow_dialog hide_before_angular" ng-cloak="" ng-if="$root.showFollow">
+    <div class="bg" ng-click="$root.showFollow = false">
+    </div>
+    <div class="dialog_box follow_box round" ng-class="{active: $root.showFollow}">
+     <h4>
+      Follow Us
+     </h4>
+     <div class="follow_iframe">
+      <iframe allowtransparency="true" frameborder="0" ng-src="https://platform.twitter.com/widgets/follow_button.html?screen_name=wikiwand&amp;lang=en&amp;show_count=true&amp;show_screen_name=false&amp;dnt=true" scrolling="no" style="max-width:155px; height:20px;">
+      </iframe>
+     </div>
+     <br/>
+     <div class="follow_iframe">
+      <iframe allowtransparency="true" frameborder="0" ng-src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fpages%2FQuickiWiki%2F419557388127338&amp;send=false&amp;layout=button_count&amp;width=90&amp;show_faces=false&amp;font=arial&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=503340393059553" scrolling="no" style="border:none; overflow:hidden; max-width:90px; height:21px;">
+      </iframe>
+     </div>
+     <br/>
+     <h6 ng-if="serverData.agent.family=='Chrome' || serverData.agent.family=='Firefox'">
+      Don't forget to rate us
+     </h6>
+     <div class="follow_rate">
+      <a class="hover" href="https://chrome.google.com/webstore/detail/better-wikipedia/emffkefkbkpkgpdeeooapgaicgmcbolj/reviews" ng-if="serverData.agent.family=='Chrome'" target="_blank">
+       <img ng-src="//assets.wikiwand.com/img/rate-us-on-chrome-webstore.png" style="position: relative;top:2px"/>
+      </a>
+      <a class="hover" href="https://addons.mozilla.org/en-US/firefox/addon/wikiwand-wikipedia-modernized/reviews/add" ng-if="serverData.agent.family=='Firefox'" target="_blank">
+       <img ng-src="//assets.wikiwand.com/img/rate-us-on-mozilla.png" style="position: relative;top:2px"/>
+      </a>
+     </div>
+    </div>
+   </div>
+   <popups ng-include="'/api/activation_popups'">
+   </popups>
+  </div>
+  <div id="error_message" style="display:none;width:500px;padding: 20px;margin: 30vh auto;font-size:16px;text-align:center;">
+   <h1>
+    Oh no, there's been an error
+   </h1>
+   Please help us solve this error by emailing us at
+   <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;tf=1&amp;to=support@wikiwand.com&amp;su=Encountered an error on Wikiwand" target="_blank">
+    support@wikiwand.com
+   </a>
+   <br/>
+   Let us know what you've done that caused this error, what browser you're using, and whether you have any special extensions/add-ons installed.
+   <br/>
+   Thank you!
+  </div>
+ </body>
+</html>

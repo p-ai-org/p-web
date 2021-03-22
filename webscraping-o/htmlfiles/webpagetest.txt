@@ -1,0 +1,1674 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>
+   WebPageTest - Website Performance and Optimization Test
+  </title>
+  <meta content="text/html;charset=utf-8" http-equiv="Content-type"/>
+  <meta content="WebPageTest,Website Speed Test,Page Speed" name="keywords"/>
+  <meta content="Run a free website speed test from around the globe using real browsers at consumer connection speeds with detailed optimization recommendations." name="description"/>
+  <meta content="Patrick Meenan" name="author"/>
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible"/>
+  <link href="/images/favicon/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+  <link href="/images/favicon/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+  <link href="/images/favicon/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+  <link color="#5bbad5" href="/images/favicon/safari-pinned-tab.svg" rel="mask-icon"/>
+  <link href="/images/favicon/favicon.ico" rel="shortcut icon"/>
+  <script type="text/javascript">
+   var wptTemplate = 'Main';
+  </script>
+  <script type="text/javascript">
+   ;window.markUserTime = function(l) {
+  if (window['performance'] && window.performance['mark']) {
+    var raf = window['requestAnimationFrame'] ||
+      (function(callback){setTimeout(callback, 0);});
+    raf(function(){
+      window.performance.mark(l);
+      if (window['console'] && console['timeStamp'])
+        console.timeStamp(l);
+    });
+  }
+};
+// Support routines for automatically reporting user timing for common analytics platforms
+// Currently supports Google Analytics, Boomerang and SOASTA mPulse
+// In the case of Boomerang, you will need to map the event names you want reported
+// to timer names (for mPulse, these need to be custom0, custom1, etc.) using a global variable:
+// rumMapping = {'aft': 'custom0'};
+(function() {
+var wtt = function(n, t, b) {
+  t = Math.round(t);
+  if (t >= 0 && t < 3600000) {
+    // Google Analytics
+    if (!b && window['_gaq'])
+      _gaq.push(['_trackTiming', 'UserTimings', n, t]);
+
+    // Boomerang/mPulse
+    if (b && window['rumMapping'] && window.rumMapping[n])
+      BOOMR.plugins.RT.setTimer(window.rumMapping[n], t);
+  }
+};
+utReportRUM = function(b){
+  if (window['performance'] && window.performance['getEntriesByType']) {
+    var m = window.performance.getEntriesByType("mark");
+    var lm={};
+    for (i = 0; i < m.length; i++) {
+      g = 'usertiming';
+      if (lm[g] == undefined || m[i].startTime > lm[g])
+        lm[g] = m[i].startTime;
+      p = m[i].name.match(/([^\.]+)\.([^\.]*)/);
+      if (p && p.length > 2 &&
+          (lm[p[1]] == undefined ||
+           m[i].startTime > lm[p[1]]))
+          lm[p[1]] = m[i].startTime;
+    }
+    for (g in lm)
+      wtt(g, lm[g], b);
+  }
+};
+utOnLoad = function() {utReportRUM(false);};
+if (window['addEventListener'])
+    window.addEventListener('load', utOnLoad, false);
+else if (window['attachEvent'])
+    window.attachEvent('onload', utOnLoad);
+
+// Boomerang/mPulse support
+utSent = false;
+BOOMR = window.BOOMR || {};
+BOOMR.plugins = BOOMR.plugins || {};
+BOOMR.plugins.UserTiming = {
+  init: function(config) {BOOMR.subscribe('page_ready', function(){
+    if (!utSent) {
+      utReportRUM(true);
+      utSent=true;
+      BOOMR.sendBeacon();
+    }
+  });},
+  is_complete: function() {return utSent;}
+};
+})();
+  </script>
+  <link href="/pagestyle.css?v=82" rel="stylesheet" type="text/css"/>
+  <style type="text/css">
+  </style>
+  <script type="text/javascript">
+   var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-3755571-1']);
+_gaq.push(['_setCustomVar', 1, 'Template', 'Main', 3]);
+    _gaq.push(['_setSiteSpeedSampleRate', 100]);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+    var ga = document.createElement('script');
+    ga.src = ('https:' == document.location.protocol ?
+        'https://ssl' : 'http://www') +
+        '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+    })();
+  </script>
+ </head>
+ <body>
+  <div class="page">
+   <script async="" defer="" src="https://www.google.com/recaptcha/api.js">
+   </script>
+   <script>
+    function onRecaptchaSubmit(token) {
+                var form = document.getElementById("urlEntry");
+                if (ValidateInput(form)) {
+                  form.submit();
+                } else {
+                  grecaptcha.reset();
+                }
+              }
+   </script>
+   <div class="page" id="wptAuthBar">
+    <a href="/forums/member.php?action=login">
+     Login
+    </a>
+    |
+    <a href="/forums/member.php?action=register">
+     Register
+    </a>
+    |
+    <a href="/oauth/login.php">
+     Login with Google
+    </a>
+   </div>
+   <div class="page" id="header">
+    <h1 class="logo">
+     <a href="/">
+      WebPageTest
+     </a>
+    </h1>
+    <div class="headerAd" style="text-align: right;">
+     <br/>
+     <a href="/survey.php" title="Help improve WebPageTest">
+      <img alt="Help us improve WebPageTest by taking a survey" src="/images/survey-banner.png"/>
+     </a>
+    </div>
+   </div>
+   <div id="nav_bkg">
+    <div id="nav_bar">
+     <div class="page">
+      <ul class="cufon-dincond_black" id="nav">
+       <li class="current">
+        <a href="/" title="Home">
+         Home
+        </a>
+       </li>
+       <li>
+        <a href="/testlog/1/" title="Test History">
+         Test History
+        </a>
+       </li>
+       <li>
+        <a href="/forums/" title="Forums">
+         Forums
+        </a>
+       </li>
+       <li>
+        <a href="https://docs.webpagetest.org/" target="_blank" title="Documentation (opens in a new tab)">
+         Documentation
+        </a>
+       </li>
+       <li>
+        <a href="/about" title="About">
+         About
+        </a>
+       </li>
+      </ul>
+     </div>
+    </div>
+   </div>
+   <div id="main">
+    <div class="level_2">
+     <div class="content-wrap">
+      <div class="content">
+       <script type="text/javascript">
+        markUserTime('aft.Site Header');
+       </script>
+       <form action="/runtest.php" enctype="multipart/form-data" id="urlEntry" method="POST" name="urlEntry" onsubmit="return ValidateInput(this)">
+        <input name="lighthouseTrace" type="hidden" value="1"/>
+        <input name="lighthouseScreenshots" type="hidden" value="0"/>
+        <input name="vo" type="hidden" value="39f5ddc3cd424bbe904ebf51a98ceceeba6e3cd9"/>
+        <input name="vd" type="hidden" value="2021-03-22T00:49:22+00:00"/>
+        <input name="vh" type="hidden" value="e1752129240f91e279a0c3bd98bbbda12f42837b"/>
+        <h2 class="cufon-dincond_black">
+         Test a website's performance
+        </h2>
+        <div id="test_box-container">
+         <ul class="ui-tabs-nav">
+          <li class="analytical_review ui-state-default ui-corner-top ui-tabs-selected ui-state-active">
+           <a href="#">
+            Advanced Testing
+           </a>
+          </li>
+          <li class="easy_mode">
+           <a href="/easy">
+            Simple Testing
+           </a>
+          </li>
+          <li class="visual_comparison">
+           <a href="/video/">
+            Visual Comparison
+           </a>
+          </li>
+          <li class="traceroute">
+           <a href="/traceroute.php">
+            Traceroute
+           </a>
+          </li>
+         </ul>
+         <div class="test_box" id="analytical-review">
+          <ul class="input_fields">
+           <li>
+            <input autocapitalize="off" autocorrect="off" class="text large" id="url" inputmode="url" name="url" onblur="if (this.value == '') {this.value = this.defaultValue;}" onfocus="if (this.value == this.defaultValue) {this.value = '';}" onkeypress="if (event.keyCode == 32) {return false;}" type="text" value="Enter a Website URL"/>
+           </li>
+           <li>
+            <label for="location">
+             Test Location
+            </label>
+            <select id="location" name="where">
+             <optgroup label="Android Devices - Dulles, VA">
+              <option value="Mobile_Dulles_MotoG4">
+               Moto G (gen 4)
+              </option>
+              <option value="Mobile_Dulles_MotoG6">
+               Moto G (gen 6)
+              </option>
+              <option value="Mobile_Dulles_MotoG">
+               Moto G (gen 1)
+              </option>
+              <option value="Mobile_Dulles_MotoE">
+               Moto E (gen 1)
+              </option>
+             </optgroup>
+             <optgroup label="Apple Devices - Dulles, VA">
+              <option value="Mobile_Dulles_iPhone8">
+               iPhone 8 (iOS 14)
+              </option>
+              <option value="Mobile_Dulles_iPhone7plus">
+               iPhone 7+ (iOS 14)
+              </option>
+              <option value="Mobile_Dulles_iPhone5c">
+               iPhone 5c (iOS 10.3)
+              </option>
+              <option value="Mobile_Dulles_iPad">
+               iPad 2017 (iOS 14)
+              </option>
+              <option value="Mobile_Dulles_iPadMini2">
+               iPad Mini 2 (iOS 12)
+              </option>
+             </optgroup>
+             <optgroup label="North America">
+              <option selected="" value="Dulles_VA">
+               Dulles, VA USA (Desktop, Android, iOS)
+              </option>
+              <option value="Dulles_Thinkpad_VA">
+               Dulles, VA - Thinkpad T430 (Chrome,Firefox,Edge,IE 11)
+              </option>
+              <option value="Dulles_Aspire17_VA">
+               Dulles, VA - Asus Aspire i3 2017 (Chrome,Firefox,Edge,IE 11)
+              </option>
+              <option value="Dulles_M1MacMini_VA">
+               Dulles, VA - M1 Mac Mini (Chrome,Firefox,iOS Simulator)
+              </option>
+              <option value="Dulles_Pi3_VA">
+               Dulles, VA - Raspberry Pi 3 B (Chromium,Firefox)
+              </option>
+              <option value="Dulles_Pi4_VA">
+               Dulles, VA - Raspberry Pi 4 (Chromium,Firefox)
+              </option>
+              <option value="ec2-us-east-1-catchpoint">
+               Virginia - EC2 (Chrome,Firefox)
+              </option>
+              <option value="gce-us-west3-catchpoint">
+               Salt Lake City, Utah - GCE (Chrome,Firefox)
+              </option>
+              <option value="ec2-us-west-1-catchpoint">
+               California - EC2 (Chrome,Firefox)
+              </option>
+              <option value="LosAngeles_CA">
+               Los Angeles, CA USA (Chrome, Firefox,Opera)
+              </option>
+              <option value="LosAngeles_M1MacMini_CA">
+               Los Angeles, CA - M1 Mac Mini (Chrome,Firefox,iOS Simulator)
+              </option>
+              <option value="ec2-ca-central-1-catchpoint">
+               Toronto, Canada - EC2 (Chrome,Firefox)
+              </option>
+             </optgroup>
+             <optgroup label="South America">
+              <option value="ec2-sa-east-1-catchpoint">
+               Sao Paulo, Brazil - EC2 (Chrome,Firefox)
+              </option>
+             </optgroup>
+             <optgroup label="Europe">
+              <option value="ec2-eu-west-1-catchpoint">
+               Ireland - EC2 (Chrome,Firefox)
+              </option>
+              <option value="London_EC2_Loc">
+               London, UK - EC2 (Chrome,Firefox)
+              </option>
+              <option value="ec2-eu-west-3-catchpoint">
+               Paris - EC2 (Chrome,Firefox)
+              </option>
+              <option value="gce-europe-west4-catchpoint">
+               Amsterdam, NL - GCE (Chrome,Firefox)
+              </option>
+              <option value="ec2-eu-central-1-catchpoint">
+               Frankfurt, Germany - EC2 (Chrome,Firefox)
+              </option>
+              <option value="ec2-eu-south-1-catchpoint">
+               Milan, Italy - EC2 (Chrome,Firefox)
+              </option>
+              <option value="ec2-eu-north-1-catchpoint">
+               Stockholm, Sweden - EC2 (Chrome,Firefox)
+              </option>
+             </optgroup>
+             <optgroup label="Africa">
+              <option value="ec2-af-south-1-catchpoint">
+               Cape Town, South Africa - EC2 (Chrome,Firefox)
+              </option>
+             </optgroup>
+             <optgroup label="Middle East">
+              <option value="ec2-me-south-1-catchpoint">
+               Bahrain - EC2 (Chrome,Firefox)
+              </option>
+              <option value="azure-uae-north-catchpoint">
+               Dubai, UAE - Azure (Chrome, Firefox)
+              </option>
+             </optgroup>
+             <optgroup label="Asia">
+              <option value="ap-south-1-catchpoint">
+               Mumbai, India - EC2 (Chrome,Firefox)
+              </option>
+              <option value="tencent-bangkok-catchpoint">
+               Bangkok, Thailand - Tencent (Chrome, Firefox)
+              </option>
+              <option value="ec2-ap-southeast-1-catchpoint">
+               Singapore - EC2 (Chrome,Firefox)
+              </option>
+              <option value="gce-asia-southeast2-catchpoint">
+               Jakarta, Indonesia - GCE (Chrome,Firefox)
+              </option>
+              <option value="ec2-ap-east-1-catchpoint">
+               Hong Kong, China - EC2 (Chrome,Firefox)
+              </option>
+              <option value="tencent-shanghai-catchpoint">
+               Shanghai, China - Tencent (Chrome, Firefox)
+              </option>
+              <option value="ec2-cn-north-1-catchpoint">
+               Beijing, China - EC2 (Chrome, Firefox)
+              </option>
+              <option value="tencent-beijing-catchpoint">
+               Beijing, China - Tencent (Chrome, Firefox)
+              </option>
+              <option value="ec2-cn-northwest-1-catchpoint">
+               Ningxia, China - EC2 (Chrome, Firefox)
+              </option>
+              <option value="gce-asia-east1-catchpoint">
+               Taiwan - GCE (Chrome,Firefox)
+              </option>
+              <option value="ec2-ap-northeast-2-catchpoint">
+               Seoul, Korea - EC2 (Chrome,Firefox)
+              </option>
+              <option value="ec2-ap-northeast-1-catchpoint">
+               Tokyo, Japan - EC2 (Chrome,Firefox)
+              </option>
+             </optgroup>
+             <optgroup label="Oceania">
+              <option value="ec2-ap-southeast-2-catchpoint">
+               Sydney, Australia - EC2 (Chrome,Firefox)
+              </option>
+              <option value="azure-australia-southeast-catchpoint">
+               Melbourne, Australia - Azure (Chrome,Firefox)
+              </option>
+             </optgroup>
+            </select>
+            <input id="change-location-btn" onclick="SelectLocation();" type="button" value="Select from Map"/>
+           </li>
+           <li>
+            <label for="browser">
+             Browser
+            </label>
+            <select id="browser" name="browser">
+             <option selected="" value="Chrome">
+              Chrome
+             </option>
+             <option value="ChromeBeta">
+              Chrome Beta
+             </option>
+             <option value="Canary">
+              Canary
+             </option>
+             <option value="Firefox">
+              Firefox
+             </option>
+             <option value="FirefoxNightly">
+              Firefox Nightly
+             </option>
+             <option value="Brave">
+              Brave
+             </option>
+             <option value="MicrosoftEdge(Chromium)">
+              Microsoft Edge (Chromium)
+             </option>
+             <option value="MicrosoftEdgeDev(Chromium)">
+              Microsoft Edge Dev (Chromium)
+             </option>
+             <option value="MicrosoftEdgeCanary(Chromium)">
+              Microsoft Edge Canary (Chromium)
+             </option>
+             <option value="IE11">
+              IE 11
+             </option>
+             <option value="MotoG4-Chrome">
+              Moto G4 - Chrome
+             </option>
+             <option value="MotoG4-ChromeCanary">
+              Moto G4 - Chrome Canary
+             </option>
+             <option value="MotoG4-ChromeBeta">
+              Moto G4 - Chrome Beta
+             </option>
+             <option value="MotoG4-ChromeDev">
+              Moto G4 - Chrome Dev
+             </option>
+             <option value="MotoG4-SamsungInternet">
+              Moto G4 - Samsung Internet
+             </option>
+             <option value="MotoG4-UCBrowser">
+              Moto G4 - UC Browser
+             </option>
+             <option value="MotoG4-UCMini">
+              Moto G4 - UC Mini
+             </option>
+             <option value="MotoG4-OperaMini(Extreme)">
+              Moto G4 - Opera Mini (Extreme)
+             </option>
+             <option value="MotoG4-OperaMini(High)">
+              Moto G4 - Opera Mini (High)
+             </option>
+             <option value="MotoG4-Firefox">
+              Moto G4 - Firefox
+             </option>
+             <option value="MotoG6-Chrome">
+              Moto G6 - Chrome
+             </option>
+             <option value="MotoG6-ChromeCanary">
+              Moto G6 - Chrome Canary
+             </option>
+             <option value="MotoG6-ChromeBeta">
+              Moto G6 - Chrome Beta
+             </option>
+             <option value="MotoG6-ChromeDev">
+              Moto G6 - Chrome Dev
+             </option>
+             <option value="MotoG6-UCBrowser">
+              Moto G6 - UC Browser
+             </option>
+             <option value="MotoG6-UCMini">
+              Moto G6 - UC Mini
+             </option>
+             <option value="MotoG6-OperaMini(Extreme)">
+              Moto G6 - Opera Mini (Extreme)
+             </option>
+             <option value="MotoG6-OperaMini(High)">
+              Moto G6 - Opera Mini (High)
+             </option>
+             <option value="MotoG6-Firefox">
+              Moto G6 - Firefox
+             </option>
+             <option value="MotoG-Chrome">
+              Moto G - Chrome
+             </option>
+             <option value="MotoG-ChromeCanary">
+              Moto G - Chrome Canary
+             </option>
+             <option value="MotoG-ChromeBeta">
+              Moto G - Chrome Beta
+             </option>
+             <option value="MotoG-ChromeDev">
+              Moto G - Chrome Dev
+             </option>
+             <option value="MotoG-UCBrowser">
+              Moto G - UC Browser
+             </option>
+             <option value="MotoG-UCMini">
+              Moto G - UC Mini
+             </option>
+             <option value="MotoG-OperaMini(Extreme)">
+              Moto G - Opera Mini (Extreme)
+             </option>
+             <option value="MotoG-OperaMini(High)">
+              Moto G - Opera Mini (High)
+             </option>
+             <option value="MotoG-Firefox">
+              Moto G - Firefox
+             </option>
+             <option value="MotoE-Chrome">
+              Moto E - Chrome
+             </option>
+             <option value="MotoE-ChromeCanary">
+              Moto E - Chrome Canary
+             </option>
+             <option value="MotoE-ChromeBeta">
+              Moto E - Chrome Beta
+             </option>
+             <option value="iPhone8iOS14">
+              iPhone 8 iOS 14
+             </option>
+             <option value="iPhone8iOS14-Landscape">
+              iPhone 8 iOS 14 - Landscape
+             </option>
+             <option value="iPhone7+iOS14">
+              iPhone 7+ iOS 14
+             </option>
+             <option value="iPhone7+iOS14-Landscape">
+              iPhone 7+ iOS 14 - Landscape
+             </option>
+             <option value="iPhone5ciOS10.3">
+              iPhone 5c iOS 10.3
+             </option>
+             <option value="iPhone5ciOS10.3-Landscape">
+              iPhone 5c iOS 10.3 - Landscape
+             </option>
+             <option value="iPad2017iOS14">
+              iPad 2017 iOS 14
+             </option>
+             <option value="iPad2017iOS14-Landscape">
+              iPad 2017 iOS 14 - Landscape
+             </option>
+             <option value="iPadMini2iOS12">
+              iPad Mini 2 iOS 12
+             </option>
+             <option value="iPadMini2iOS12-Landscape">
+              iPad Mini 2 iOS 12 - Landscape
+             </option>
+            </select>
+            <span class="pending_tests hidden" id="pending_tests">
+             <span id="backlog">
+              0
+             </span>
+             Pending Tests
+            </span>
+            <span class="cleared">
+            </span>
+           </li>
+          </ul>
+          <p>
+           <a href="javascript:void(0)" id="advanced_settings">
+            Advanced Settings
+            <span class="arrow">
+            </span>
+           </a>
+           <small id="settings_summary_label">
+            <br/>
+            <span id="settings_summary">
+            </span>
+           </small>
+          </p>
+          <div class="hidden" id="advanced_settings-container">
+           <div id="test_subbox-container">
+            <ul class="ui-tabs-nav">
+             <li>
+              <a href="#test-settings">
+               Test Settings
+              </a>
+             </li>
+             <li>
+              <a href="#advanced-settings">
+               Advanced
+              </a>
+             </li>
+             <li>
+              <a href="#advanced-chrome">
+               Chromium
+              </a>
+             </li>
+             <li>
+              <a href="#auth">
+               Auth
+              </a>
+             </li>
+             <li>
+              <a href="#script">
+               Script
+              </a>
+             </li>
+             <li>
+              <a href="#block">
+               Block
+              </a>
+             </li>
+             <li>
+              <a href="#spof">
+               SPOF
+              </a>
+             </li>
+             <li>
+              <a href="#custom-metrics">
+               Custom
+              </a>
+             </li>
+            </ul>
+            <div class="test_subbox" id="test-settings">
+             <ul class="input_fields">
+              <li>
+               <label for="connection">
+                Connection
+               </label>
+               <select id="connection" name="location">
+                <option selected="" value="Dulles:Chrome.Cable">
+                 Cable (5/1 Mbps 28ms RTT)
+                </option>
+                <option value="Dulles:Chrome.DSL">
+                 DSL (1.5 Mbps/384 Kbps 50ms RTT)
+                </option>
+                <option value="Dulles:Chrome.3GSlow">
+                 3G Slow (400 Kbps, 400ms RTT)
+                </option>
+                <option value="Dulles:Chrome.3G_EM">
+                 Emerging Markets 3G (400 Kbps, 400ms RTT)
+                </option>
+                <option value="Dulles:Chrome.3G">
+                 3G (1.6 Mbps/768 Kbps 300ms RTT)
+                </option>
+                <option value="Dulles:Chrome.3GFast">
+                 3G Fast (1.6 Mbps/768 Kbps 150ms RTT)
+                </option>
+                <option value="Dulles:Chrome.4G">
+                 4G (9 Mbps, 170ms RTT)
+                </option>
+                <option value="Dulles:Chrome.LTE">
+                 LTE (12 Mbps/12 Mbps 70ms RTT)
+                </option>
+                <option value="Dulles:Chrome.Edge">
+                 Mobile Edge (240 Kbps/200 Kbps 840ms RTT)
+                </option>
+                <option value="Dulles:Chrome.2G">
+                 2G (280 Kbps/256 Kbps 800ms RTT)
+                </option>
+                <option value="Dulles:Chrome.Dial">
+                 56K Dial-Up (49/30 Kbps 120ms RTT)
+                </option>
+                <option value="Dulles:Chrome.FIOS">
+                 FIOS (20/5 Mbps 4ms RTT)
+                </option>
+                <option value="Dulles:Chrome.Native">
+                 Native Connection (No Traffic Shaping)
+                </option>
+                <option value="Dulles:Chrome.custom">
+                 Custom
+                </option>
+               </select>
+               <br/>
+               <table class="configuration hidden" id="bwTable">
+                <tr>
+                 <th>
+                  BW Down
+                 </th>
+                 <th>
+                  BW Up
+                 </th>
+                 <th>
+                  Latency
+                 </th>
+                 <th>
+                  Packet Loss
+                 </th>
+                </tr>
+                <tr>
+                 <td class="value">
+                  <input id="bwDown" name="bwDown" style="width:3em; text-align: right;" type="text" value="1500"/>
+                  Kbps
+                 </td>
+                 <td class="value">
+                  <input id="bwUp" name="bwUp" style="width:3em; text-align: right;" type="text" value="384"/>
+                  Kbps
+                 </td>
+                 <td class="value">
+                  <input id="latency" name="latency" style="width:3em; text-align: right;" type="text" value="50"/>
+                  ms
+                 </td>
+                 <td class="value">
+                  <input id="plr" name="plr" style="width:3em; text-align: right;" type="text" value="0"/>
+                  %
+                 </td>
+                </tr>
+               </table>
+              </li>
+              <li>
+               <label for="number_of_tests">
+                Number of Tests to Run
+                <br/>
+                <small>
+                 Up to 9
+                </small>
+               </label>
+               <input class="text short" id="number_of_tests" max="9" min="1" name="runs" required="" type="number" value="3"/>
+              </li>
+              <li>
+               <label for="viewBoth">
+                Repeat View
+               </label>
+               <input id="viewBoth" name="fvonly" type="radio" value="0"/>
+               First View and Repeat View
+               <input checked="checked" id="viewFirst" name="fvonly" type="radio" value="1"/>
+               First View Only
+              </li>
+              <li>
+               <label for="videoCheck">
+                Capture Video
+               </label>
+               <input class="checkbox" id="videoCheck" name="video" type="checkbox"/>
+              </li>
+              <li>
+               All test results are configured to be private by default.
+              </li>
+              <li>
+               <label for="label">
+                Label
+               </label>
+               <input id="label" name="label" type="text" value=""/>
+              </li>
+             </ul>
+            </div>
+            <div class="test_subbox ui-tabs-hide" id="advanced-settings">
+             <ul class="input_fields">
+              <li>
+               <input class="checkbox before_label" id="stop_test_at_document_complete" name="web10" type="checkbox"/>
+               <label class="auto_width" for="stop_test_at_document_complete">
+                Stop Test at Document Complete
+                <br/>
+                <small>
+                 Typically, tests run until all activity stops.
+                </small>
+               </label>
+              </li>
+              <li>
+               <input class="checkbox" id="noscript" name="noscript" style="float: left;width: auto;" type="checkbox"/>
+               <label class="auto_width" for="noscript">
+                Disable JavaScript
+               </label>
+              </li>
+              <li>
+               <input class="checkbox" id="clearcerts" name="clearcerts" style="float: left;width: auto;" type="checkbox"/>
+               <label class="auto_width" for="clearcerts">
+                Clear SSL Certificate Caches
+                <br/>
+                <small>
+                 Internet Explorer and Chrome
+                </small>
+               </label>
+              </li>
+              <li>
+               <input class="checkbox" id="ignore_ssl_cerificate_errors" name="ignoreSSL" style="float: left;width: auto;" type="checkbox"/>
+               <label class="auto_width" for="ignore_ssl_cerificate_errors">
+                Ignore SSL Certificate Errors
+                <br/>
+                <small>
+                 e.g. Name mismatch, Self-signed certificates, etc.
+                </small>
+               </label>
+              </li>
+              <li>
+               <input class="checkbox" id="force_standards_mode" name="standards" style="float: left;width: auto;" type="checkbox"/>
+               <label class="auto_width" for="force_standards_mode">
+                Disable Compatibility View (IE Only)
+                <br/>
+                <small>
+                 Forces all pages to load in standards mode
+                </small>
+               </label>
+              </li>
+              <li>
+               <input class="checkbox" id="tcpdump" name="tcpdump" style="float: left;width: auto;" type="checkbox"/>
+               <label class="auto_width" for="tcpdump">
+                Capture network packet trace (tcpdump)
+               </label>
+              </li>
+              <li>
+               <input class="checkbox" id="bodies" name="bodies" style="float: left;width: auto;" type="checkbox"/>
+               <label class="auto_width" for="bodies">
+                Save response bodies
+                <br/>
+                <small>
+                 For text resources (HTML, CSS, etc.)
+                </small>
+               </label>
+              </li>
+              <li>
+               <input class="checkbox" id="keepua" name="keepua" style="float: left;width: auto;" type="checkbox"/>
+               <label class="auto_width" for="keepua">
+                Preserve original User Agent string
+                <br/>
+                <small>
+                 Do not add PTST to the browser UA string
+                </small>
+               </label>
+              </li>
+              <li>
+               <label for="uastring" style="width: auto;">
+                User Agent String
+                <br/>
+                <small>
+                 (Custom UA String)
+                </small>
+               </label>
+               <input class="text" id="uastring" name="uastring" style="width: 350px;" type="text"/>
+              </li>
+              <li>
+               <label for="appendua" style="width: auto;">
+                Append to UA String
+               </label>
+               <input class="text" id="appendua" name="appendua" style="width: 350px;" type="text"/>
+              </li>
+              <li>
+               <input class="checkbox" id="full_size_video" name="fullsizevideo" style="float: left;width: auto;" type="checkbox"/>
+               <label class="auto_width" for="full_size_video">
+                Capture Full Size Video
+                <br/>
+                <small>
+                 Enables full size screenshots in the filmstrip
+                </small>
+               </label>
+              </li>
+              <li>
+               <label for="time">
+                Minimum test duration
+                <br/>
+                <small>
+                 Capture data for at least...
+                </small>
+               </label>
+               <input class="text short" id="time" name="time" type="number" value=""/>
+               seconds
+              </li>
+              <li>
+               <label for="customHeaders">
+                Custom headers
+                <br/>
+                <small>
+                 Add custom headers to all network requests emitted from the browser
+                </small>
+               </label>
+               <textarea class="text" id="customHeaders" name="customHeaders" type="text" value=""></textarea>
+              </li>
+              <li>
+               <label for="injectScript">
+                Inject Script
+                <br/>
+                <small>
+                 JavaScript to run after the document has started loading
+                </small>
+               </label>
+               <textarea class="text" id="injectScript" name="injectScript" type="text" value=""></textarea>
+              </li>
+             </ul>
+            </div>
+            <div class="test_subbox ui-tabs-hide" id="advanced-chrome">
+             <p>
+              Chrome-specific advanced settings:
+             </p>
+             <ul class="input_fields">
+              <li>
+               <input class="checkbox" id="lighthouse" name="lighthouse" style="float: left;width: auto;" type="checkbox"/>
+               <label class="auto_width" for="lighthouse">
+                Capture Lighthouse Report
+                <small>
+                 (Uses a "3G Fast" connection independent of test settings)
+                </small>
+               </label>
+              </li>
+              <li>
+               <input class="checkbox" id="mobile" name="mobile" style="float: left;width: auto;" type="checkbox"/>
+               <select id="mobileDevice" name="mobileDevice">
+                <optgroup label="Android">
+                 <option value="MotoG4">
+                  Motorola G (gen 4)
+                 </option>
+                 <option value="Nexus5">
+                  Nexus 5
+                 </option>
+                 <option value="Nexus5X">
+                  Nexus 5X
+                 </option>
+                 <option value="Pixel">
+                  Google Pixel
+                 </option>
+                 <option value="PixelXL">
+                  Google Pixel XL
+                 </option>
+                 <option value="Pixel2">
+                  Google Pixel 2
+                 </option>
+                 <option value="Pixel2XL">
+                  Google Pixel 2 XL
+                 </option>
+                 <option value="MotoG">
+                  Motorola G (gen 1)
+                 </option>
+                 <option value="GalaxyS5">
+                  Samsung Galaxy S5
+                 </option>
+                 <option value="GalaxyS7">
+                  Samsung Galaxy S7
+                 </option>
+                 <option value="GalaxyS8">
+                  Samsung Galaxy S8/S8+/Note 8
+                 </option>
+                 <option value="MotoE">
+                  Motorola E
+                 </option>
+                 <option value="AndroidOne">
+                  Android One
+                 </option>
+                 <option value="Nexus7">
+                  Nexus 7
+                 </option>
+                 <option value="Nexus7L">
+                  Nexus 7 - Landscape
+                 </option>
+                </optgroup>
+                <optgroup label="iOS">
+                 <option value="iPhone5c">
+                  iPhone 5C
+                 </option>
+                 <option value="iPhone6">
+                  iPhone 6/7/8
+                 </option>
+                 <option value="iPhone6plus">
+                  iPhone 6+/7+/8+
+                 </option>
+                 <option value="iPhoneX">
+                  iPhone X
+                 </option>
+                 <option value="iPad">
+                  iPad
+                 </option>
+                 <option value="iPadMini2">
+                  iPad Mini
+                 </option>
+                </optgroup>
+               </select>
+               <label class="auto_width" for="mobile">
+                Emulate Mobile Browser
+               </label>
+              </li>
+              <li>
+               <input class="checkbox" id="timeline" name="timeline" style="float: left;width: auto;" type="checkbox"/>
+               <label class="auto_width" for="timeline">
+                Capture Dev Tools Timeline
+               </label>
+               <input class="checkbox" id="profiler" name="profiler" style="float: left;width: auto;" type="checkbox"/>
+               <label class="auto_width" for="profiler">
+                Enable v8 Sampling Profiler (much larger traces)
+               </label>
+              </li>
+              <li>
+               <input class="checkbox" id="v8rcs" name="v8rcs" style="float: left;width: auto;" type="checkbox"/>
+               <label class="auto_width" for="v8rcs">
+                Capture
+                <a href="https://v8.dev/docs/rcs">
+                 V8 Runtime Call Stats
+                </a>
+               </label>
+              </li>
+              <li>
+               <input class="checkbox" id="trace" name="trace" style="float: left;width: auto;" type="checkbox"/>
+               <label class="auto_width" for="trace">
+                Capture Chrome Trace (about://tracing)
+               </label>
+              </li>
+              <li>
+               <label for="traceCategories" style="width: auto;">
+                Trace Categories
+                <br/>
+                <small>
+                 (when tracing is enabled)
+                </small>
+               </label>
+               <input autocomplete="off" class="text" id="traceCategories" name="traceCategories" style="width: 400px;" type="text" value="blink,v8,cc,gpu,blink.net,netlog,disabled-by-default-v8.runtime_stats"/>
+              </li>
+              <li>
+               <input class="checkbox" id="netlog" name="netlog" style="float: left;width: auto;" type="checkbox"/>
+               <label class="auto_width" for="netlog">
+                Capture Network Log
+               </label>
+              </li>
+              <li>
+               <input class="checkbox" id="dataReduction" name="dataReduction" style="float: left;width: auto;" type="checkbox"/>
+               <label class="auto_width" for="dataReduction">
+                Enable Data Reduction
+                <br/>
+                <small>
+                 Chrome 34+ on Android
+                </small>
+               </label>
+              </li>
+              <li>
+               <input class="checkbox" id="disableAVIF" name="disableAVIF" style="float: left;width: auto;" type="checkbox"/>
+               <label class="auto_width" for="disableAVIF">
+                Disable AVIF image support
+               </label>
+               <input class="checkbox" id="disableWEBP" name="disableWEBP" style="float: left;width: auto;" type="checkbox"/>
+               <label class="auto_width" for="disableWEBP">
+                Disable WEBP image support
+               </label>
+              </li>
+              <li>
+               <label for="hostResolverRules" style="width: auto;">
+                <a href="https://github.com/atom/electron/blob/master/docs/api/chrome-command-line-switches.md#--host-rulesrules">
+                 Host Resolver Rules
+                </a>
+                <br/>
+                <small>
+                 i.e. MAP * 1.2.3.4
+                </small>
+               </label>
+               <input autocomplete="off" class="text" id="hostResolverRules" name="hostResolverRules" style="width: 400px;" type="text"/>
+              </li>
+              <li>
+               <label for="cmdline" style="width: auto;">
+                Command-line
+                <br/>
+                <small>
+                 Custom options
+                </small>
+               </label>
+               <input autocomplete="off" class="text" id="cmdline" name="cmdline" style="width: 400px;" type="text"/>
+              </li>
+             </ul>
+            </div>
+            <div class="test_subbox ui-tabs-hide" id="auth">
+             <div class="notification-container">
+              <div class="notification">
+               <div class="warning">
+                PLEASE USE A TEST ACCOUNT! as your credentials may be available to anyone viewing the results.
+                <br/>
+                <br/>
+                Using this feature will make this test Private. Thus, it will *not* appear in Test History.
+               </div>
+              </div>
+             </div>
+             <ul class="input_fields">
+              <li>
+               HTTP Basic Authentication
+              </li>
+              <li>
+               <label for="username" style="width: auto;">
+                Username
+               </label>
+               <input autocomplete="off" class="text" id="username" name="login" style="width: 200px;" type="text"/>
+              </li>
+              <li>
+               <label for="password" style="width: auto;">
+                Password
+               </label>
+               <input autocomplete="off" class="text" id="password" name="password" style="width: 200px;" type="text"/>
+              </li>
+             </ul>
+            </div>
+            <div class="test_subbox ui-tabs-hide" id="script">
+             <div>
+              <div class="notification-container">
+               <div class="notification">
+                <div class="message">
+                 Check out
+                 <a href="https://docs.webpagetest.org/scripting/">
+                  the documentation
+                 </a>
+                 for more information on this feature
+                </div>
+               </div>
+              </div>
+              <p>
+               <label class="full_width" for="enter_script">
+                Enter Script
+               </label>
+              </p>
+              <textarea cols="0" id="enter_script" name="script" rows="0"></textarea>
+             </div>
+             <br/>
+             <ul class="input_fields">
+              <li>
+               <input class="checkbox" id="sensitive" name="sensitive" style="float: left;width: auto;" type="checkbox"/>
+               <label class="auto_width" for="sensitive">
+                Script includes sensitive data
+                <br/>
+                <small>
+                 The script will be discarded and the HTTP headers will not be available in the results
+                </small>
+               </label>
+              </li>
+              <li>
+               <input class="checkbox" id="noheaders" name="noheaders" style="float: left;width: auto;" type="checkbox"/>
+               <label class="auto_width" for="noheaders">
+                Discard all HTTP headers
+               </label>
+              </li>
+             </ul>
+            </div>
+            <div class="test_subbox ui-tabs-hide" id="block">
+             <p>
+              <label class="full_width" for="block_requests_containing">
+               Block Requests Containing (URL substrings)...
+               <br/>
+               <small>
+                Space-separated list
+               </small>
+              </label>
+              <textarea cols="0" id="block_requests_containing" name="block" rows="0"></textarea>
+             </p>
+             <p>
+              <label class="full_width" for="block_domains">
+               Block Domains (full host names)...
+               <br/>
+               <small>
+                Space-separated list of domains
+               </small>
+              </label>
+              <textarea cols="0" id="block_domains" name="blockDomains" rows="0"></textarea>
+             </p>
+            </div>
+            <div class="test_subbox ui-tabs-hide" id="spof">
+             <p>
+              Simulate failure of specified domains.  This is done by re-routing all requests for
+                                    the domains to
+              <a href="http://blog.patrickmeenan.com/2011/10/testing-for-frontend-spof.html">
+               blackhole.webpagetest.org
+              </a>
+              which will silently drop all requests.
+             </p>
+             <p>
+              <label class="full_width" for="spof_hosts">
+               Hosts to fail (one host per line)...
+              </label>
+             </p>
+             <textarea cols="0" id="spof_hosts" name="spof" rows="0"></textarea>
+            </div>
+            <div class="test_subbox ui-tabs-hide" id="custom-metrics">
+             <div>
+              <div class="notification-container">
+               <div class="notification">
+                <div class="message">
+                 See
+                 <a href="https://docs.webpagetest.org/custom-metrics/">
+                  the documentation
+                 </a>
+                 for details on how to specify custom metrics to be captured.
+                </div>
+               </div>
+              </div>
+              <p>
+               <label class="full_width" for="custom_metrics">
+                Custom Metrics:
+               </label>
+              </p>
+              <textarea cols="0" id="custom_metrics" name="custom" rows="0"></textarea>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div id="start_test-container">
+         <p>
+          <button class="g-recaptcha start_test" data-callback="onRecaptchaSubmit" data-sitekey="6Lfz3EIUAAAAABOI30NdBNjN5DiSt9ehLU5BUElf">
+          </button>
+         </p>
+         <div id="sponsor">
+         </div>
+        </div>
+        <div class="cleared">
+        </div>
+        <div id="location-dialog" style="display:none;">
+         <h3>
+          Select Test Location
+         </h3>
+         <div id="map">
+         </div>
+         <p>
+          <select id="location2">
+           <optgroup label="Android Devices - Dulles, VA">
+            <option value="Mobile_Dulles_MotoG4">
+             Moto G (gen 4)
+            </option>
+            <option value="Mobile_Dulles_MotoG6">
+             Moto G (gen 6)
+            </option>
+            <option value="Mobile_Dulles_MotoG">
+             Moto G (gen 1)
+            </option>
+            <option value="Mobile_Dulles_MotoE">
+             Moto E (gen 1)
+            </option>
+           </optgroup>
+           <optgroup label="Apple Devices - Dulles, VA">
+            <option value="Mobile_Dulles_iPhone8">
+             iPhone 8 (iOS 14)
+            </option>
+            <option value="Mobile_Dulles_iPhone7plus">
+             iPhone 7+ (iOS 14)
+            </option>
+            <option value="Mobile_Dulles_iPhone5c">
+             iPhone 5c (iOS 10.3)
+            </option>
+            <option value="Mobile_Dulles_iPad">
+             iPad 2017 (iOS 14)
+            </option>
+            <option value="Mobile_Dulles_iPadMini2">
+             iPad Mini 2 (iOS 12)
+            </option>
+           </optgroup>
+           <optgroup label="North America">
+            <option selected="" value="Dulles_VA">
+             Dulles, VA USA (Desktop, Android, iOS)
+            </option>
+            <option value="Dulles_Thinkpad_VA">
+             Dulles, VA - Thinkpad T430 (Chrome,Firefox,Edge,IE 11)
+            </option>
+            <option value="Dulles_Aspire17_VA">
+             Dulles, VA - Asus Aspire i3 2017 (Chrome,Firefox,Edge,IE 11)
+            </option>
+            <option value="Dulles_M1MacMini_VA">
+             Dulles, VA - M1 Mac Mini (Chrome,Firefox,iOS Simulator)
+            </option>
+            <option value="Dulles_Pi3_VA">
+             Dulles, VA - Raspberry Pi 3 B (Chromium,Firefox)
+            </option>
+            <option value="Dulles_Pi4_VA">
+             Dulles, VA - Raspberry Pi 4 (Chromium,Firefox)
+            </option>
+            <option value="ec2-us-east-1-catchpoint">
+             Virginia - EC2 (Chrome,Firefox)
+            </option>
+            <option value="gce-us-west3-catchpoint">
+             Salt Lake City, Utah - GCE (Chrome,Firefox)
+            </option>
+            <option value="ec2-us-west-1-catchpoint">
+             California - EC2 (Chrome,Firefox)
+            </option>
+            <option value="LosAngeles_CA">
+             Los Angeles, CA USA (Chrome, Firefox,Opera)
+            </option>
+            <option value="LosAngeles_M1MacMini_CA">
+             Los Angeles, CA - M1 Mac Mini (Chrome,Firefox,iOS Simulator)
+            </option>
+            <option value="ec2-ca-central-1-catchpoint">
+             Toronto, Canada - EC2 (Chrome,Firefox)
+            </option>
+           </optgroup>
+           <optgroup label="South America">
+            <option value="ec2-sa-east-1-catchpoint">
+             Sao Paulo, Brazil - EC2 (Chrome,Firefox)
+            </option>
+           </optgroup>
+           <optgroup label="Europe">
+            <option value="ec2-eu-west-1-catchpoint">
+             Ireland - EC2 (Chrome,Firefox)
+            </option>
+            <option value="London_EC2_Loc">
+             London, UK - EC2 (Chrome,Firefox)
+            </option>
+            <option value="ec2-eu-west-3-catchpoint">
+             Paris - EC2 (Chrome,Firefox)
+            </option>
+            <option value="gce-europe-west4-catchpoint">
+             Amsterdam, NL - GCE (Chrome,Firefox)
+            </option>
+            <option value="ec2-eu-central-1-catchpoint">
+             Frankfurt, Germany - EC2 (Chrome,Firefox)
+            </option>
+            <option value="ec2-eu-south-1-catchpoint">
+             Milan, Italy - EC2 (Chrome,Firefox)
+            </option>
+            <option value="ec2-eu-north-1-catchpoint">
+             Stockholm, Sweden - EC2 (Chrome,Firefox)
+            </option>
+           </optgroup>
+           <optgroup label="Africa">
+            <option value="ec2-af-south-1-catchpoint">
+             Cape Town, South Africa - EC2 (Chrome,Firefox)
+            </option>
+           </optgroup>
+           <optgroup label="Middle East">
+            <option value="ec2-me-south-1-catchpoint">
+             Bahrain - EC2 (Chrome,Firefox)
+            </option>
+            <option value="azure-uae-north-catchpoint">
+             Dubai, UAE - Azure (Chrome, Firefox)
+            </option>
+           </optgroup>
+           <optgroup label="Asia">
+            <option value="ap-south-1-catchpoint">
+             Mumbai, India - EC2 (Chrome,Firefox)
+            </option>
+            <option value="tencent-bangkok-catchpoint">
+             Bangkok, Thailand - Tencent (Chrome, Firefox)
+            </option>
+            <option value="ec2-ap-southeast-1-catchpoint">
+             Singapore - EC2 (Chrome,Firefox)
+            </option>
+            <option value="gce-asia-southeast2-catchpoint">
+             Jakarta, Indonesia - GCE (Chrome,Firefox)
+            </option>
+            <option value="ec2-ap-east-1-catchpoint">
+             Hong Kong, China - EC2 (Chrome,Firefox)
+            </option>
+            <option value="tencent-shanghai-catchpoint">
+             Shanghai, China - Tencent (Chrome, Firefox)
+            </option>
+            <option value="ec2-cn-north-1-catchpoint">
+             Beijing, China - EC2 (Chrome, Firefox)
+            </option>
+            <option value="tencent-beijing-catchpoint">
+             Beijing, China - Tencent (Chrome, Firefox)
+            </option>
+            <option value="ec2-cn-northwest-1-catchpoint">
+             Ningxia, China - EC2 (Chrome, Firefox)
+            </option>
+            <option value="gce-asia-east1-catchpoint">
+             Taiwan - GCE (Chrome,Firefox)
+            </option>
+            <option value="ec2-ap-northeast-2-catchpoint">
+             Seoul, Korea - EC2 (Chrome,Firefox)
+            </option>
+            <option value="ec2-ap-northeast-1-catchpoint">
+             Tokyo, Japan - EC2 (Chrome,Firefox)
+            </option>
+           </optgroup>
+           <optgroup label="Oceania">
+            <option value="ec2-ap-southeast-2-catchpoint">
+             Sydney, Australia - EC2 (Chrome,Firefox)
+            </option>
+            <option value="azure-australia-southeast-catchpoint">
+             Melbourne, Australia - Azure (Chrome,Firefox)
+            </option>
+           </optgroup>
+          </select>
+          <input class="simplemodal-close" id="location-ok" type="button" value="OK"/>
+         </p>
+        </div>
+       </form>
+       <div style="width: 709px; padding: 1em 0 0 0;">
+        <p>
+         Run a free website speed test from multiple locations around the globe using real browsers (IE and Chrome) 
+    and at real consumer connection speeds.  You can run simple tests or perform advanced testing 
+    including multi-step transactions, video capture, content blocking and much more.  Your results 
+    will provide rich diagnostic information including resource loading waterfall charts, Page Speed optimization 
+    checks and suggestions for improvements.
+        </p>
+        <p>
+         If you have any performance/optimization questions you should visit the
+         <a href="/forums" title="Forums">
+          Forums
+         </a>
+         where
+    industry experts regularly discuss Web Performance Optimization.
+        </p>
+       </div>
+       <div style="width:100%;float:none;clear:both;">
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="page">
+    <table id="feeds">
+     <tr>
+      <th>
+       Recent Industry Blog Posts
+      </th>
+      <th>
+       Recent Discussions
+      </th>
+     </tr>
+     <tr>
+      <td>
+       <ul>
+        <li>
+         <a href="https://blog.catchpoint.com/2021/03/19/how-to-improve-your-secure-web-gateway-rollout-with-endpoints/" title="Catchpoint">
+          How To – Improve Your Secure Web Gateway Rollout With Endpoints
+         </a>
+        </li>
+        <li>
+         <a href="https://blog.cloudflare.com/third-times-the-cache-no-more/" title="Cloudflare">
+          Third Time’s the Cache, No More
+         </a>
+        </li>
+        <li>
+         <a href="https://wpostats.com/2021/03/18/vodafone-lcp-sales.html" title="WPO stats">
+          Vodafone improved their LCP by 31%, resulting in an 8% increase in sales, a 15% increase in their lead to visit rate, and an 11% increase in their cart to visit rate.
+         </a>
+        </li>
+        <li>
+         <a href="https://web.dev/vodafone/" title="Google Developers">
+          Vodafone: A 31% improvement in LCP increased sales by 8%
+         </a>
+        </li>
+        <li>
+         <a href="https://web.dev/building-a-settings-component/" title="Google Developers">
+          Building a Settings component
+         </a>
+        </li>
+        <li id="show_more_feeds_1">
+         <a href="javascript:void(o)" onclick="showFeeds(1)">
+          more...
+         </a>
+        </li>
+        <li class="morefeeds">
+         <div class="hidden" id="more_feeds_1">
+          <ul>
+           <li>
+            <a href="https://blog.catchpoint.com/2021/03/16/how-endpoint-monitoring-saved-my-life/" title="Catchpoint">
+             How Endpoint Monitoring Saved My Life (Or At Least My Sanity)
+            </a>
+           </li>
+           <li>
+            <a href="https://blog.cloudflare.com/apo-post-launch-report/" title="Cloudflare">
+             Automatic Platform Optimization post-launch report
+            </a>
+           </li>
+           <li>
+            <a href="https://web.dev/strict-csp/" title="Google Developers">
+             Mitigate cross-site scripting (XSS) with a strict Content Security Policy (CSP)
+            </a>
+           </li>
+           <li>
+            <a href="https://nooshu.github.io/blog/2021/03/14/setting-up-cloudflare-workers-for-web-performance-optimisation-and-testing/" title="Matt Hobbs">
+             Setting up Cloudflare Workers for web performance optimisation and testing
+            </a>
+           </li>
+           <li>
+            <a href="https://wpostats.com/2021/03/11/yahoo-japan-pageviews-cls.html" title="WPO stats">
+             Yahoo! Japan News reduced CLS by .2, decreasing the number of URLS with poor performance in search console by 98%. As a result, they saw a 15.1% increase in page views per session, 13.3% longer session durations and a 1.72 percentage point decrease in bounce rate.
+            </a>
+           </li>
+           <li>
+            <a href="https://web.dev/debugging-layout-shifts/" title="Google Developers">
+             Debugging layout shifts
+            </a>
+           </li>
+           <li>
+            <a href="https://blog.catchpoint.com/2021/03/10/hiring-at-catchpoint-how-to-run-a-technical-interview/" title="Catchpoint">
+             Hiring At Catchpoint – How To Run a Technical Interview
+            </a>
+           </li>
+           <li>
+            <a href="https://web.dev/wix/" title="Google Developers">
+             How Wix improved website performance by evolving their infrastructure
+            </a>
+           </li>
+           <li>
+            <a href="https://blog.catchpoint.com/2021/03/09/it-operations-monitoring-evolved/" title="Catchpoint">
+             IT Operations Monitoring, Evolved
+            </a>
+           </li>
+           <li>
+            <a href="https://web.dev/yahoo-japan-news/" title="Google Developers">
+             How CLS optimizations increased Yahoo! JAPAN News's page views per session by 15%
+            </a>
+           </li>
+           <li>
+            <a href="https://web.dev/javascript-this/" title="Google Developers">
+             JavaScript: What is the meaning of this?
+            </a>
+           </li>
+           <li>
+            <a href="https://blog.catchpoint.com/2021/03/05/how-to-monitor-multi-cloud-with-catchpoint/" title="Catchpoint">
+             How To – Monitor Multi-Cloud with Catchpoint
+            </a>
+           </li>
+           <li>
+            <a href="https://blog.catchpoint.com/2021/03/02/sre-survey-2021-where-do-we-go-from-here/" title="Catchpoint">
+             SRE Survey 2021: Where do we go from here
+            </a>
+           </li>
+           <li>
+            <a href="https://nooshu.github.io/blog/2021/03/02/cloudflare-worker-recipes-for-frontend-performance-testing/" title="Matt Hobbs">
+             Cloudflare Worker recipes for frontend performance testing
+            </a>
+           </li>
+           <li>
+            <a href="https://web.dev/agrofy/" title="Google Developers">
+             Agrofy: A 70% improvement in LCP correlated to a 76% reduction in load abandonment
+            </a>
+           </li>
+           <li>
+            <a href="https://blog.catchpoint.com/2021/02/26/how-to-monitor-your-email-service-with-catchpoint/" title="Catchpoint">
+             How To – Monitor Your Email Service with Catchpoint
+            </a>
+           </li>
+           <li>
+            <a href="https://web.dev/tabbed-application-mode/" title="Google Developers">
+             Tabbed application mode for PWAs
+            </a>
+           </li>
+           <li>
+            <a href="https://web.dev/display-override/" title="Google Developers">
+             Preparing for the display modes of tomorrow
+            </a>
+           </li>
+           <li>
+            <a href="https://nooshu.github.io/blog/2021/02/20/testing-priority-hints-with-webpagetest/" title="Matt Hobbs">
+             Testing priority hints with WebPageTest
+            </a>
+           </li>
+          </ul>
+         </div>
+        </li>
+       </ul>
+      </td>
+      <td>
+       <ul>
+        <li>
+         <a href="https://www.webpagetest.org/forums/showthread.php?tid=16344" title="WebPagetest Forums">
+          CLS issue only in field data - how to diagnose it?
+         </a>
+        </li>
+        <li>
+         <a href="https://www.webpagetest.org/forums/showthread.php?tid=16343" title="WebPagetest Forums">
+          Lighthouse Test Fails with Timeout
+         </a>
+        </li>
+        <li>
+         <a href="https://www.webpagetest.org/forums/showthread.php?tid=16342" title="WebPagetest Forums">
+          Uncaught ReferenceError: wptRequestData is not defined
+         </a>
+        </li>
+        <li>
+         <a href="https://www.webpagetest.org/forums/showthread.php?tid=16341" title="WebPagetest Forums">
+          Agent stuck with Error processing netlog event
+         </a>
+        </li>
+        <li>
+         <a href="https://www.webpagetest.org/forums/showthread.php?tid=16338" title="WebPagetest Forums">
+          Reasoning for using median for load time?
+         </a>
+        </li>
+        <li id="show_more_feeds_2">
+         <a href="javascript:void(o)" onclick="showFeeds(2)">
+          more...
+         </a>
+        </li>
+        <li class="morefeeds">
+         <div class="hidden" id="more_feeds_2">
+          <ul>
+           <li>
+            <a href="https://www.webpagetest.org/forums/showthread.php?tid=16337" title="WebPagetest Forums">
+             WebPageTest doesn't recognize Fastly CDN
+            </a>
+           </li>
+           <li>
+            <a href="https://www.webpagetest.org/forums/showthread.php?tid=16335" title="WebPagetest Forums">
+             3g-end of life: what does it mean for webpagetest, Lighthouse and Core Web Vitals
+            </a>
+           </li>
+           <li>
+            <a href="https://www.webpagetest.org/forums/showthread.php?tid=16333" title="WebPagetest Forums">
+             page speed issue
+            </a>
+           </li>
+           <li>
+            <a href="https://www.webpagetest.org/forums/showthread.php?tid=16332" title="WebPagetest Forums">
+             How to tell if shared hosting is REALLY hurting page speed???
+            </a>
+           </li>
+           <li>
+            <a href="https://www.webpagetest.org/forums/showthread.php?tid=16331" title="WebPagetest Forums">
+             Navigation Timing API
+            </a>
+           </li>
+           <li>
+            <a href="https://www.webpagetest.org/forums/showthread.php?tid=16330" title="WebPagetest Forums">
+             Document Complete vs Load Event Start
+            </a>
+           </li>
+           <li>
+            <a href="https://www.webpagetest.org/forums/showthread.php?tid=16328" title="WebPagetest Forums">
+             If inlining critical CSS, also load the file in the body?
+            </a>
+           </li>
+           <li>
+            <a href="https://www.webpagetest.org/forums/showthread.php?tid=16327" title="WebPagetest Forums">
+             How to find and evaluate "best case" TTFB?
+            </a>
+           </li>
+           <li>
+            <a href="https://www.webpagetest.org/forums/showthread.php?tid=16326" title="WebPagetest Forums">
+             Moto G4 - a terrible Mobile device goal for 2021?
+            </a>
+           </li>
+           <li>
+            <a href="https://www.webpagetest.org/forums/showthread.php?tid=16325" title="WebPagetest Forums">
+             NEL reporting
+            </a>
+           </li>
+           <li>
+            <a href="https://www.webpagetest.org/forums/showthread.php?tid=16323" title="WebPagetest Forums">
+             What means TTFB for files, which are loaded through keep-alive-ed connection?
+            </a>
+           </li>
+           <li>
+            <a href="https://www.webpagetest.org/forums/showthread.php?tid=16322" title="WebPagetest Forums">
+             3rd party JS execution is slowing down the performance
+            </a>
+           </li>
+           <li>
+            <a href="https://www.webpagetest.org/forums/showthread.php?tid=16320" title="WebPagetest Forums">
+             Prerendering vs. optimization?
+            </a>
+           </li>
+           <li>
+            <a href="https://www.webpagetest.org/forums/showthread.php?tid=16319" title="WebPagetest Forums">
+             Enabling Webpagetest in restricted staging environments.
+            </a>
+           </li>
+           <li>
+            <a href="https://www.webpagetest.org/forums/showthread.php?tid=16318" title="WebPagetest Forums">
+             How looks server cache in WPT?
+            </a>
+           </li>
+           <li>
+            <a href="https://www.webpagetest.org/forums/showthread.php?tid=16317" title="WebPagetest Forums">
+             How to optimize image progressive
+            </a>
+           </li>
+          </ul>
+         </div>
+        </li>
+       </ul>
+      </td>
+     </tr>
+    </table>
+   </div>
+   <div class="cleared">
+   </div>
+   <script src="/js/site.js?v=37" type="text/javascript">
+   </script>
+   <script type="text/javascript">
+    function showFeeds(column)
+        {
+            var label = document.getElementById("show_more_feeds_" + column);
+            label.parentNode.removeChild( label );
+
+            document.getElementById("more_feeds_" + column).className = "";
+            return false;
+        }
+   </script>
+   <div id="experiment-timing" style="color: #77A;">
+   </div>
+  </div>
+  <script type="text/javascript">
+   var maxRuns = 9;
+var locations = {"locations":{"1":"Mobile_Dulles_MotoG4","2":"Mobile_Dulles_MotoG6","3":"Mobile_Dulles_MotoG","4":"Mobile_Dulles_MotoE","5":"Mobile_Dulles_iPhone8","6":"Mobile_Dulles_iPhone7plus","7":"Mobile_Dulles_iPhone5c","8":"Mobile_Dulles_iPad","9":"Mobile_Dulles_iPadMini2","10":"Dulles_VA","11":"Dulles_Thinkpad_VA","12":"Dulles_Aspire17_VA","13":"Dulles_M1MacMini_VA","14":"Dulles_Pi3_VA","15":"Dulles_Pi4_VA","16":"ec2-us-east-1-catchpoint","17":"gce-us-west3-catchpoint","18":"ec2-us-west-1-catchpoint","19":"LosAngeles_CA","20":"LosAngeles_M1MacMini_CA","21":"ec2-ca-central-1-catchpoint","22":"ec2-sa-east-1-catchpoint","23":"ec2-eu-west-1-catchpoint","24":"London_EC2_Loc","25":"ec2-eu-west-3-catchpoint","26":"gce-europe-west4-catchpoint","27":"ec2-eu-central-1-catchpoint","28":"ec2-eu-south-1-catchpoint","29":"ec2-eu-north-1-catchpoint","30":"ec2-af-south-1-catchpoint","31":"ec2-me-south-1-catchpoint","32":"azure-uae-north-catchpoint","33":"ap-south-1-catchpoint","34":"tencent-bangkok-catchpoint","35":"ec2-ap-southeast-1-catchpoint","36":"gce-asia-southeast2-catchpoint","37":"ec2-ap-east-1-catchpoint","38":"tencent-shanghai-catchpoint","39":"ec2-cn-north-1-catchpoint","40":"tencent-beijing-catchpoint","41":"ec2-cn-northwest-1-catchpoint","42":"gce-asia-east1-catchpoint","43":"ec2-ap-northeast-2-catchpoint","44":"ec2-ap-northeast-1-catchpoint","45":"ec2-ap-southeast-2-catchpoint","46":"azure-australia-southeast-catchpoint","default":"Dulles_VA"},"Dulles_MotoG:Moto G - Chrome":{"browser":"Moto G - Chrome","sponsor":"catchpoint","label":"Dulles, VA - Moto G - Chrome","default_connectivity":"3G","agents":"5","allowKeys":"A","location":"Dulles_MotoG","status":"OK","backlog":0},"Dulles_MotoG:Moto G - Chrome Canary":{"browser":"Moto G - Chrome Canary","sponsor":"catchpoint","label":"Dulles, VA - Moto G - Chrome Canary","default_connectivity":"3G","agents":"5","allowKeys":"A","location":"Dulles_MotoG","status":"OK","backlog":0},"Dulles_MotoG:Moto G - Chrome Beta":{"browser":"Moto G - Chrome Beta","sponsor":"catchpoint","label":"Dulles, VA - Moto G - Chrome Beta","default_connectivity":"3G","agents":"5","allowKeys":"A","location":"Dulles_MotoG","status":"OK","backlog":0},"Dulles_MotoG:Moto G - Chrome Dev":{"browser":"Moto G - Chrome Dev","sponsor":"catchpoint","label":"Dulles, VA - Moto G - Chrome Dev","default_connectivity":"3G","agents":"5","allowKeys":"A","location":"Dulles_MotoG","status":"OK","backlog":0},"Dulles_MotoG:Moto G - UC Browser":{"browser":"Moto G - UC Browser","sponsor":"catchpoint","label":"Dulles, VA - Moto G - UC Browser","default_connectivity":"3G","agents":"5","allowKeys":"A","location":"Dulles_MotoG","status":"OK","backlog":0},"Dulles_MotoG:Moto G - UC Mini":{"browser":"Moto G - UC Mini","sponsor":"catchpoint","label":"Dulles, VA - Moto G - UC Mini","default_connectivity":"3G","agents":"5","allowKeys":"A","location":"Dulles_MotoG","status":"OK","backlog":0},"Dulles_MotoG:Moto G - Opera Mini (Extreme)":{"browser":"Moto G - Opera Mini (Extreme)","sponsor":"catchpoint","label":"Dulles, VA - Moto G - Opera Mini (Extreme)","default_connectivity":"3G","agents":"5","allowKeys":"A","location":"Dulles_MotoG","status":"OK","backlog":0},"Dulles_MotoG:Moto G - Opera Mini (High)":{"browser":"Moto G - Opera Mini (High)","sponsor":"catchpoint","label":"Dulles, VA - Moto G - Opera Mini (High)","default_connectivity":"3G","agents":"5","allowKeys":"A","location":"Dulles_MotoG","status":"OK","backlog":0},"Dulles_MotoG:Moto G - Firefox":{"browser":"Moto G - Firefox","sponsor":"catchpoint","label":"Dulles, VA - Moto G - Firefox","default_connectivity":"3G","agents":"5","allowKeys":"A","location":"Dulles_MotoG","status":"OK","backlog":0},"Mobile_Dulles_MotoG":{"1":"Dulles_MotoG:Moto G - Chrome","2":"Dulles_MotoG:Moto G - Chrome Canary","3":"Dulles_MotoG:Moto G - Chrome Beta","4":"Dulles_MotoG:Moto G - Chrome Dev","5":"Dulles_MotoG:Moto G - UC Browser","6":"Dulles_MotoG:Moto G - UC Mini","7":"Dulles_MotoG:Moto G - Opera Mini (Extreme)","8":"Dulles_MotoG:Moto G - Opera Mini (High)","9":"Dulles_MotoG:Moto G - Firefox","label":"Moto G (gen 1)","group":"Android Devices - Dulles, VA","default":"Dulles_MotoG:Moto G - Chrome"},"Dulles_MotoG4:Moto G4 - Chrome":{"browser":"Moto G4 - Chrome","sponsor":"catchpoint","label":"Dulles, VA - Moto G4 - Chrome","default_connectivity":"3G","agents":"10","allowKeys":"A","location":"Dulles_MotoG4","status":"OK","backlog":0},"Dulles_MotoG4:Moto G4 - Chrome Canary":{"browser":"Moto G4 - Chrome Canary","sponsor":"catchpoint","label":"Dulles, VA - Moto G4 - Chrome Canary","default_connectivity":"3G","agents":"10","allowKeys":"A","location":"Dulles_MotoG4","status":"OK","backlog":0},"Dulles_MotoG4:Moto G4 - Chrome Beta":{"browser":"Moto G4 - Chrome Beta","sponsor":"catchpoint","label":"Dulles, VA - Moto G4 - Chrome Beta","default_connectivity":"3G","agents":"10","allowKeys":"A","location":"Dulles_MotoG4","status":"OK","backlog":0},"Dulles_MotoG4:Moto G4 - Chrome Dev":{"browser":"Moto G4 - Chrome Dev","sponsor":"catchpoint","label":"Dulles, VA - Moto G4 - Chrome Dev","default_connectivity":"3G","agents":"10","allowKeys":"A","location":"Dulles_MotoG4","status":"OK","backlog":0},"Dulles_MotoG4:Moto G4 - Samsung Internet":{"browser":"Moto G4 - Samsung Internet","sponsor":"catchpoint","label":"Dulles, VA - Moto G4 - Samsung Internet","default_connectivity":"3G","agents":"10","allowKeys":"A","location":"Dulles_MotoG4","status":"OK","backlog":0},"Dulles_MotoG4:Moto G4 - UC Browser":{"browser":"Moto G4 - UC Browser","sponsor":"catchpoint","label":"Dulles, VA - Moto G4 - UC Browser","default_connectivity":"3G","agents":"10","allowKeys":"A","location":"Dulles_MotoG4","status":"OK","backlog":0},"Dulles_MotoG4:Moto G4 - UC Mini":{"browser":"Moto G4 - UC Mini","sponsor":"catchpoint","label":"Dulles, VA - Moto G4 - UC Mini","default_connectivity":"3G","agents":"10","allowKeys":"A","location":"Dulles_MotoG4","status":"OK","backlog":0},"Dulles_MotoG4:Moto G4 - Opera Mini (Extreme)":{"browser":"Moto G4 - Opera Mini (Extreme)","sponsor":"catchpoint","label":"Dulles, VA - Moto G4 - Opera Mini (Extreme)","default_connectivity":"3G","agents":"10","allowKeys":"A","location":"Dulles_MotoG4","status":"OK","backlog":0},"Dulles_MotoG4:Moto G4 - Opera Mini (High)":{"browser":"Moto G4 - Opera Mini (High)","sponsor":"catchpoint","label":"Dulles, VA - Moto G4 - Opera Mini (High)","default_connectivity":"3G","agents":"10","allowKeys":"A","location":"Dulles_MotoG4","status":"OK","backlog":0},"Dulles_MotoG4:Moto G4 - Firefox":{"browser":"Moto G4 - Firefox","sponsor":"catchpoint","label":"Dulles, VA - Moto G4 - Firefox","default_connectivity":"3G","agents":"10","allowKeys":"A","location":"Dulles_MotoG4","status":"OK","backlog":0},"Mobile_Dulles_MotoG4":{"1":"Dulles_MotoG4:Moto G4 - Chrome","2":"Dulles_MotoG4:Moto G4 - Chrome Canary","3":"Dulles_MotoG4:Moto G4 - Chrome Beta","4":"Dulles_MotoG4:Moto G4 - Chrome Dev","5":"Dulles_MotoG4:Moto G4 - Samsung Internet","6":"Dulles_MotoG4:Moto G4 - UC Browser","7":"Dulles_MotoG4:Moto G4 - UC Mini","8":"Dulles_MotoG4:Moto G4 - Opera Mini (Extreme)","9":"Dulles_MotoG4:Moto G4 - Opera Mini (High)","10":"Dulles_MotoG4:Moto G4 - Firefox","label":"Moto G (gen 4)","group":"Android Devices - Dulles, VA","default":"Dulles_MotoG4:Moto G4 - Chrome"},"Dulles_MotoG6:Moto G6 - Chrome":{"browser":"Moto G6 - Chrome","sponsor":"catchpoint","label":"Dulles, VA - Moto G6 - Chrome","default_connectivity":"3G","location":"Dulles_MotoG6","status":"OK","backlog":22},"Dulles_MotoG6:Moto G6 - Chrome Canary":{"browser":"Moto G6 - Chrome Canary","sponsor":"catchpoint","label":"Dulles, VA - Moto G6 - Chrome Canary","default_connectivity":"3G","location":"Dulles_MotoG6","status":"OK","backlog":22},"Dulles_MotoG6:Moto G6 - Chrome Beta":{"browser":"Moto G6 - Chrome Beta","sponsor":"catchpoint","label":"Dulles, VA - Moto G6 - Chrome Beta","default_connectivity":"3G","location":"Dulles_MotoG6","status":"OK","backlog":22},"Dulles_MotoG6:Moto G6 - Chrome Dev":{"browser":"Moto G6 - Chrome Dev","sponsor":"catchpoint","label":"Dulles, VA - Moto G6 - Chrome Dev","default_connectivity":"3G","location":"Dulles_MotoG6","status":"OK","backlog":22},"Dulles_MotoG6:Moto G6 - UC Browser":{"browser":"Moto G6 - UC Browser","sponsor":"catchpoint","label":"Dulles, VA - Moto G6 - UC Browser","default_connectivity":"3G","location":"Dulles_MotoG6","status":"OK","backlog":22},"Dulles_MotoG6:Moto G6 - UC Mini":{"browser":"Moto G6 - UC Mini","sponsor":"catchpoint","label":"Dulles, VA - Moto G6 - UC Mini","default_connectivity":"3G","location":"Dulles_MotoG6","status":"OK","backlog":22},"Dulles_MotoG6:Moto G6 - Opera Mini (Extreme)":{"browser":"Moto G6 - Opera Mini (Extreme)","sponsor":"catchpoint","label":"Dulles, VA - Moto G6 - Opera Mini (Extreme)","default_connectivity":"3G","location":"Dulles_MotoG6","status":"OK","backlog":22},"Dulles_MotoG6:Moto G6 - Opera Mini (High)":{"browser":"Moto G6 - Opera Mini (High)","sponsor":"catchpoint","label":"Dulles, VA - Moto G6 - Opera Mini (High)","default_connectivity":"3G","location":"Dulles_MotoG6","status":"OK","backlog":22},"Dulles_MotoG6:Moto G6 - Firefox":{"browser":"Moto G6 - Firefox","sponsor":"catchpoint","label":"Dulles, VA - Moto G6 - Firefox","default_connectivity":"3G","location":"Dulles_MotoG6","status":"OK","backlog":22},"Mobile_Dulles_MotoG6":{"1":"Dulles_MotoG6:Moto G6 - Chrome","2":"Dulles_MotoG6:Moto G6 - Chrome Canary","3":"Dulles_MotoG6:Moto G6 - Chrome Beta","4":"Dulles_MotoG6:Moto G6 - Chrome Dev","5":"Dulles_MotoG6:Moto G6 - UC Browser","6":"Dulles_MotoG6:Moto G6 - UC Mini","7":"Dulles_MotoG6:Moto G6 - Opera Mini (Extreme)","8":"Dulles_MotoG6:Moto G6 - Opera Mini (High)","9":"Dulles_MotoG6:Moto G6 - Firefox","label":"Moto G (gen 6)","group":"Android Devices - Dulles, VA","default":"Dulles_MotoG6:Moto G6 - Chrome"},"Dulles_MotoE:Moto E - Chrome":{"browser":"Moto E - Chrome","sponsor":"catchpoint","label":"Dulles, VA - Moto E - Chrome","default_connectivity":"3G","agents":"1","location":"Dulles_MotoE","status":"OK","backlog":0},"Dulles_MotoE:Moto E - Chrome Canary":{"browser":"Moto E - Chrome Canary","sponsor":"catchpoint","label":"Dulles, VA - Moto E - Chrome Canary","default_connectivity":"3G","agents":"1","location":"Dulles_MotoE","status":"OK","backlog":0},"Dulles_MotoE:Moto E - Chrome Beta":{"browser":"Moto E - Chrome Beta","sponsor":"catchpoint","label":"Dulles, VA - Moto E - Chrome Beta","default_connectivity":"3G","agents":"1","location":"Dulles_MotoE","status":"OK","backlog":0},"Mobile_Dulles_MotoE":{"1":"Dulles_MotoE:Moto E - Chrome","2":"Dulles_MotoE:Moto E - Chrome Canary","3":"Dulles_MotoE:Moto E - Chrome Beta","label":"Moto E (gen 1)","group":"Android Devices - Dulles, VA","default":"Dulles_MotoE:Moto E - Chrome"},"Dulles_iPhone8:iPhone 8 iOS 14":{"browser":"iPhone 8 iOS 14","sponsor":"catchpoint","label":"Dulles, VA - iPhone 8 iOS 14","default_connectivity":"3G","agents":"1","location":"Dulles_iPhone8","status":"OK","backlog":29},"Dulles_iPhone8:iPhone 8 iOS 14 - Landscape":{"browser":"iPhone 8 iOS 14 - Landscape","sponsor":"catchpoint","label":"Dulles, VA - iPhone 8 iOS 14 - Landscape","default_connectivity":"3G","agents":"1","location":"Dulles_iPhone8","status":"OK","backlog":29},"Mobile_Dulles_iPhone8":{"1":"Dulles_iPhone8:iPhone 8 iOS 14","2":"Dulles_iPhone8:iPhone 8 iOS 14 - Landscape","label":"iPhone 8 (iOS 14)","group":"Apple Devices - Dulles, VA","default":"Dulles_iPhone8:iPhone 8 iOS 14"},"Dulles_iPhone7plus:iPhone 7+ iOS 14":{"browser":"iPhone 7+ iOS 14","sponsor":"catchpoint","label":"Dulles, VA - iPhone 7+ iOS 14","default_connectivity":"3G","agents":"1","location":"Dulles_iPhone7plus","status":"OK","backlog":0},"Dulles_iPhone7plus:iPhone 7+ iOS 14 - Landscape":{"browser":"iPhone 7+ iOS 14 - Landscape","sponsor":"catchpoint","label":"Dulles, VA - iPhone 7+ iOS 14 - Landscape","default_connectivity":"3G","agents":"1","location":"Dulles_iPhone7plus","status":"OK","backlog":0},"Mobile_Dulles_iPhone7plus":{"1":"Dulles_iPhone7plus:iPhone 7+ iOS 14","2":"Dulles_iPhone7plus:iPhone 7+ iOS 14 - Landscape","label":"iPhone 7+ (iOS 14)","group":"Apple Devices - Dulles, VA","default":"Dulles_iPhone7plus:iPhone 7+ iOS 14"},"Dulles_iPhone5c:iPhone 5c iOS 10.3":{"browser":"iPhone 5c iOS 10.3","sponsor":"catchpoint","label":"Dulles, VA - iPhone 5c iOS 10.3","default_connectivity":"3G","agents":"1","location":"Dulles_iPhone5c","status":"OK","backlog":0},"Dulles_iPhone5c:iPhone 5c iOS 10.3 - Landscape":{"browser":"iPhone 5c iOS 10.3 - Landscape","sponsor":"catchpoint","label":"Dulles, VA - iPhone 5c iOS 10.3 - Landscape","default_connectivity":"3G","agents":"1","location":"Dulles_iPhone5c","status":"OK","backlog":0},"Mobile_Dulles_iPhone5c":{"1":"Dulles_iPhone5c:iPhone 5c iOS 10.3","2":"Dulles_iPhone5c:iPhone 5c iOS 10.3 - Landscape","label":"iPhone 5c (iOS 10.3)","group":"Apple Devices - Dulles, VA","default":"Dulles_iPhone5c:iPhone 5c iOS 10.3"},"Dulles_iPad:iPad 2017 iOS 14":{"browser":"iPad 2017 iOS 14","sponsor":"catchpoint","label":"Dulles, VA - iPad 2017 iOS 14","default_connectivity":"3G","agents":"1","location":"Dulles_iPad","status":"OK","backlog":0},"Dulles_iPad:iPad 2017 iOS 14 - Landscape":{"browser":"iPad 2017 iOS 14 - Landscape","sponsor":"catchpoint","label":"Dulles, VA - iPad 2017 iOS 14 - Landscape","default_connectivity":"3G","agents":"1","location":"Dulles_iPad","status":"OK","backlog":0},"Mobile_Dulles_iPad":{"1":"Dulles_iPad:iPad 2017 iOS 14","2":"Dulles_iPad:iPad 2017 iOS 14 - Landscape","label":"iPad 2017 (iOS 14)","group":"Apple Devices - Dulles, VA","default":"Dulles_iPad:iPad 2017 iOS 14"},"Dulles_iPadMini2:iPad Mini 2 iOS 12":{"browser":"iPad Mini 2 iOS 12","sponsor":"catchpoint","label":"Dulles, VA - iPad Mini 2 iOS 12","default_connectivity":"3G","agents":"1","location":"Dulles_iPadMini2","status":"OK","backlog":0},"Dulles_iPadMini2:iPad Mini 2 iOS 12 - Landscape":{"browser":"iPad Mini 2 iOS 12 - Landscape","sponsor":"catchpoint","label":"Dulles, VA - iPad Mini 2 iOS 12 - Landscape","default_connectivity":"3G","agents":"1","location":"Dulles_iPadMini2","status":"OK","backlog":0},"Mobile_Dulles_iPadMini2":{"1":"Dulles_iPadMini2:iPad Mini 2 iOS 12","2":"Dulles_iPadMini2:iPad Mini 2 iOS 12 - Landscape","label":"iPad Mini 2 (iOS 12)","group":"Apple Devices - Dulles, VA","default":"Dulles_iPadMini2:iPad Mini 2 iOS 12"},"Dulles:Chrome":{"browser":"Chrome","sponsor":"catchpoint","latency":"4","label":"Dulles, VA - Chrome","agents":"32","allowKeys":"A","location":"Dulles","status":"OK","backlog":0},"Dulles:Chrome Beta":{"browser":"Chrome Beta","sponsor":"catchpoint","latency":"4","label":"Dulles, VA - Chrome Beta","agents":"32","allowKeys":"A","location":"Dulles","status":"OK","backlog":0},"Dulles:Canary":{"browser":"Canary","sponsor":"catchpoint","latency":"4","label":"Dulles, VA - Canary","agents":"32","allowKeys":"A","location":"Dulles","status":"OK","backlog":0},"Dulles:Firefox":{"browser":"Firefox","sponsor":"catchpoint","latency":"4","label":"Dulles, VA - Firefox","agents":"32","allowKeys":"A","location":"Dulles","status":"OK","backlog":0},"Dulles:Firefox Nightly":{"browser":"Firefox Nightly","sponsor":"catchpoint","latency":"4","label":"Dulles, VA - Firefox Nightly","agents":"32","allowKeys":"A","location":"Dulles","status":"OK","backlog":0},"Dulles:Brave":{"browser":"Brave","sponsor":"catchpoint","latency":"4","label":"Dulles, VA - Brave","agents":"32","allowKeys":"A","location":"Dulles","status":"OK","backlog":0},"Dulles_Edge:Microsoft Edge (Chromium)":{"browser":"Microsoft Edge (Chromium)","sponsor":"catchpoint","latency":"4","label":"Dulles, VA - Microsoft Edge (Chromium)","agents":"4","allowKeys":"A","location":"Dulles_Edge","status":"OK","backlog":0},"Dulles_Edge:Microsoft Edge Dev (Chromium)":{"browser":"Microsoft Edge Dev (Chromium)","sponsor":"catchpoint","latency":"4","label":"Dulles, VA - Microsoft Edge Dev (Chromium)","agents":"4","allowKeys":"A","location":"Dulles_Edge","status":"OK","backlog":0},"Dulles_Edge:Microsoft Edge Canary (Chromium)":{"browser":"Microsoft Edge Canary (Chromium)","sponsor":"catchpoint","latency":"4","label":"Dulles, VA - Microsoft Edge Canary (Chromium)","agents":"4","allowKeys":"A","location":"Dulles_Edge","status":"OK","backlog":0},"Dulles_VA":{"1":"Dulles:Chrome","2":"Dulles:Chrome Beta","3":"Dulles:Canary","4":"Dulles:Firefox","5":"Dulles:Firefox Nightly","6":"Dulles:Brave","7":"Dulles_Edge:Microsoft Edge (Chromium)","8":"Dulles_Edge:Microsoft Edge Dev (Chromium)","9":"Dulles_Edge:Microsoft Edge Canary (Chromium)","10":"Dulles_IE11","11":"Dulles_MotoG4:Moto G4 - Chrome","12":"Dulles_MotoG4:Moto G4 - Chrome Canary","13":"Dulles_MotoG4:Moto G4 - Chrome Beta","14":"Dulles_MotoG4:Moto G4 - Chrome Dev","15":"Dulles_MotoG4:Moto G4 - Samsung Internet","16":"Dulles_MotoG4:Moto G4 - UC Browser","17":"Dulles_MotoG4:Moto G4 - UC Mini","18":"Dulles_MotoG4:Moto G4 - Opera Mini (Extreme)","19":"Dulles_MotoG4:Moto G4 - Opera Mini (High)","20":"Dulles_MotoG4:Moto G4 - Firefox","21":"Dulles_MotoG6:Moto G6 - Chrome","22":"Dulles_MotoG6:Moto G6 - Chrome Canary","23":"Dulles_MotoG6:Moto G6 - Chrome Beta","24":"Dulles_MotoG6:Moto G6 - Chrome Dev","25":"Dulles_MotoG6:Moto G6 - UC Browser","26":"Dulles_MotoG6:Moto G6 - UC Mini","27":"Dulles_MotoG6:Moto G6 - Opera Mini (Extreme)","28":"Dulles_MotoG6:Moto G6 - Opera Mini (High)","29":"Dulles_MotoG6:Moto G6 - Firefox","30":"Dulles_MotoG:Moto G - Chrome","31":"Dulles_MotoG:Moto G - Chrome Canary","32":"Dulles_MotoG:Moto G - Chrome Beta","33":"Dulles_MotoG:Moto G - Chrome Dev","34":"Dulles_MotoG:Moto G - UC Browser","35":"Dulles_MotoG:Moto G - UC Mini","36":"Dulles_MotoG:Moto G - Opera Mini (Extreme)","37":"Dulles_MotoG:Moto G - Opera Mini (High)","38":"Dulles_MotoG:Moto G - Firefox","39":"Dulles_MotoE:Moto E - Chrome","40":"Dulles_MotoE:Moto E - Chrome Canary","41":"Dulles_MotoE:Moto E - Chrome Beta","42":"Dulles_iPhone8:iPhone 8 iOS 14","43":"Dulles_iPhone8:iPhone 8 iOS 14 - Landscape","44":"Dulles_iPhone7plus:iPhone 7+ iOS 14","45":"Dulles_iPhone7plus:iPhone 7+ iOS 14 - Landscape","46":"Dulles_iPhone5c:iPhone 5c iOS 10.3","47":"Dulles_iPhone5c:iPhone 5c iOS 10.3 - Landscape","48":"Dulles_iPad:iPad 2017 iOS 14","49":"Dulles_iPad:iPad 2017 iOS 14 - Landscape","50":"Dulles_iPadMini2:iPad Mini 2 iOS 12","51":"Dulles_iPadMini2:iPad Mini 2 iOS 12 - Landscape","label":"Dulles, VA USA (Desktop, Android, iOS)","lat":"38.954980","lng":"-77.447956","group":"North America","default":"Dulles:Chrome"},"Dulles_IE11":{"browser":"IE 11","sponsor":"catchpoint","latency":"4","label":"Dulles, VA","agents":"4","allowKeys":"A","location":"Dulles_IE11","status":"OK","backlog":0},"Dulles_Edge":{"browser":"Microsoft Edge (Chromium),Microsoft Edge Dev (Chromium),Microsoft Edge Canary (Chromium)","sponsor":"catchpoint","latency":"4","label":"Dulles, VA","agents":"4","allowKeys":"A","location":"Dulles_Edge","status":"OK","backlog":0},"Dulles":{"browser":"Chrome,Chrome Beta,Canary,Firefox,Firefox Nightly,Brave","sponsor":"catchpoint","latency":"4","label":"Dulles, VA","agents":"32","allowKeys":"A","location":"Dulles","status":"OK","backlog":0},"Dulles_MotoG":{"browser":"Moto G - Chrome,Moto G - Chrome Canary,Moto G - Chrome Beta,Moto G - Chrome Dev,Moto G - UC Browser,Moto G - UC Mini,Moto G - Opera Mini (Extreme),Moto G - Opera Mini (High),Moto G - Firefox","sponsor":"catchpoint","label":"Dulles, VA","default_connectivity":"3G","agents":"5","allowKeys":"A","location":"Dulles_MotoG","status":"OK","backlog":0},"Dulles_MotoG4":{"browser":"Moto G4 - Chrome,Moto G4 - Chrome Canary,Moto G4 - Chrome Beta,Moto G4 - Chrome Dev,Moto G4 - Samsung Internet,Moto G4 - UC Browser,Moto G4 - UC Mini,Moto G4 - Opera Mini (Extreme),Moto G4 - Opera Mini (High),Moto G4 - Firefox","sponsor":"catchpoint","label":"Dulles, VA","default_connectivity":"3G","agents":"10","allowKeys":"A","location":"Dulles_MotoG4","status":"OK","backlog":0},"Dulles_MotoG6":{"browser":"Moto G6 - Chrome,Moto G6 - Chrome Canary,Moto G6 - Chrome Beta,Moto G6 - Chrome Dev,Moto G6 - UC Browser,Moto G6 - UC Mini,Moto G6 - Opera Mini (Extreme),Moto G6 - Opera Mini (High),Moto G6 - Firefox","sponsor":"catchpoint","label":"Dulles, VA","default_connectivity":"3G","location":"Dulles_MotoG6","status":"OK","backlog":22},"Dulles_MotoE":{"browser":"Moto E - Chrome,Moto E - Chrome Canary,Moto E - Chrome Beta","sponsor":"catchpoint","label":"Dulles, VA","default_connectivity":"3G","agents":"1","location":"Dulles_MotoE","status":"OK","backlog":0},"Dulles_iPhone8":{"browser":"iPhone 8 iOS 14,iPhone 8 iOS 14 - Landscape","sponsor":"catchpoint","label":"Dulles, VA","default_connectivity":"3G","agents":"1","location":"Dulles_iPhone8","status":"OK","backlog":29},"Dulles_iPhone7plus":{"browser":"iPhone 7+ iOS 14,iPhone 7+ iOS 14 - Landscape","sponsor":"catchpoint","label":"Dulles, VA","default_connectivity":"3G","agents":"1","location":"Dulles_iPhone7plus","status":"OK","backlog":0},"Dulles_iPhone5c":{"browser":"iPhone 5c iOS 10.3,iPhone 5c iOS 10.3 - Landscape","sponsor":"catchpoint","label":"Dulles, VA","default_connectivity":"3G","agents":"1","location":"Dulles_iPhone5c","status":"OK","backlog":0},"Dulles_iPad":{"browser":"iPad 2017 iOS 14,iPad 2017 iOS 14 - Landscape","sponsor":"catchpoint","label":"Dulles, VA","default_connectivity":"3G","agents":"1","location":"Dulles_iPad","status":"OK","backlog":0},"Dulles_iPadMini2":{"browser":"iPad Mini 2 iOS 12,iPad Mini 2 iOS 12 - Landscape","sponsor":"catchpoint","label":"Dulles, VA","default_connectivity":"3G","agents":"1","location":"Dulles_iPadMini2","status":"OK","backlog":0},"Dulles_Thinkpad:Chrome":{"browser":"Chrome","sponsor":"catchpoint","label":"Dulles, VA - Thinkpad T430 - Chrome","agents":"5","allowKeys":"A","location":"Dulles_Thinkpad","status":"OK","backlog":0},"Dulles_Thinkpad:Canary":{"browser":"Canary","sponsor":"catchpoint","label":"Dulles, VA - Thinkpad T430 - Canary","agents":"5","allowKeys":"A","location":"Dulles_Thinkpad","status":"OK","backlog":0},"Dulles_Thinkpad:Firefox":{"browser":"Firefox","sponsor":"catchpoint","label":"Dulles, VA - Thinkpad T430 - Firefox","agents":"5","allowKeys":"A","location":"Dulles_Thinkpad","status":"OK","backlog":0},"Dulles_Thinkpad:Firefox Beta":{"browser":"Firefox Beta","sponsor":"catchpoint","label":"Dulles, VA - Thinkpad T430 - Firefox Beta","agents":"5","allowKeys":"A","location":"Dulles_Thinkpad","status":"OK","backlog":0},"Dulles_Thinkpad:Firefox Nightly":{"browser":"Firefox Nightly","sponsor":"catchpoint","label":"Dulles, VA - Thinkpad T430 - Firefox Nightly","agents":"5","allowKeys":"A","location":"Dulles_Thinkpad","status":"OK","backlog":0},"Dulles_Thinkpad:Firefox ESR":{"browser":"Firefox ESR","sponsor":"catchpoint","label":"Dulles, VA - Thinkpad T430 - Firefox ESR","agents":"5","allowKeys":"A","location":"Dulles_Thinkpad","status":"OK","backlog":0},"Dulles_Thinkpad:Microsoft Edge (Chromium)":{"browser":"Microsoft Edge (Chromium)","sponsor":"catchpoint","label":"Dulles, VA - Thinkpad T430 - Microsoft Edge (Chromium)","agents":"5","allowKeys":"A","location":"Dulles_Thinkpad","status":"OK","backlog":0},"Dulles_Thinkpad:Microsoft Edge Dev (Chromium)":{"browser":"Microsoft Edge Dev (Chromium)","sponsor":"catchpoint","label":"Dulles, VA - Thinkpad T430 - Microsoft Edge Dev (Chromium)","agents":"5","allowKeys":"A","location":"Dulles_Thinkpad","status":"OK","backlog":0},"Dulles_Thinkpad:Microsoft Edge Canary (Chromium)":{"browser":"Microsoft Edge Canary (Chromium)","sponsor":"catchpoint","label":"Dulles, VA - Thinkpad T430 - Microsoft Edge Canary (Chromium)","agents":"5","allowKeys":"A","location":"Dulles_Thinkpad","status":"OK","backlog":0},"Dulles_Thinkpad:IE 11":{"browser":"IE 11","sponsor":"catchpoint","label":"Dulles, VA - Thinkpad T430 - IE 11","agents":"5","allowKeys":"A","location":"Dulles_Thinkpad","status":"OK","backlog":0},"Dulles_Thinkpad_VA":{"1":"Dulles_Thinkpad:Chrome","2":"Dulles_Thinkpad:Canary","3":"Dulles_Thinkpad:Firefox","4":"Dulles_Thinkpad:Firefox Beta","5":"Dulles_Thinkpad:Firefox Nightly","6":"Dulles_Thinkpad:Firefox ESR","7":"Dulles_Thinkpad:Microsoft Edge (Chromium)","8":"Dulles_Thinkpad:Microsoft Edge Dev (Chromium)","9":"Dulles_Thinkpad:Microsoft Edge Canary (Chromium)","10":"Dulles_Thinkpad:IE 11","label":"Dulles, VA - Thinkpad T430 (Chrome,Firefox,Edge,IE 11)","lat":"38.954980","lng":"-77.447956","group":"North America","default":"Dulles_Thinkpad:Chrome"},"Dulles_Thinkpad":{"browser":"Chrome,Canary,Firefox,Firefox Beta,Firefox Nightly,Firefox ESR,Microsoft Edge (Chromium),Microsoft Edge Dev (Chromium),Microsoft Edge Canary (Chromium),IE 11","sponsor":"catchpoint","label":"Dulles, VA - Thinkpad T430","agents":"5","allowKeys":"A","location":"Dulles_Thinkpad","status":"OK","backlog":0},"Dulles_Aspire17:Chrome":{"browser":"Chrome","sponsor":"catchpoint","label":"Dulles, VA - Asus Aspire i3 2017 - Chrome","agents":"1","location":"Dulles_Aspire17","status":"OK","backlog":0},"Dulles_Aspire17:Chrome Beta":{"browser":"Chrome Beta","sponsor":"catchpoint","label":"Dulles, VA - Asus Aspire i3 2017 - Chrome Beta","agents":"1","location":"Dulles_Aspire17","status":"OK","backlog":0},"Dulles_Aspire17:Chrome Dev":{"browser":"Chrome Dev","sponsor":"catchpoint","label":"Dulles, VA - Asus Aspire i3 2017 - Chrome Dev","agents":"1","location":"Dulles_Aspire17","status":"OK","backlog":0},"Dulles_Aspire17:Canary":{"browser":"Canary","sponsor":"catchpoint","label":"Dulles, VA - Asus Aspire i3 2017 - Canary","agents":"1","location":"Dulles_Aspire17","status":"OK","backlog":0},"Dulles_Aspire17:Firefox":{"browser":"Firefox","sponsor":"catchpoint","label":"Dulles, VA - Asus Aspire i3 2017 - Firefox","agents":"1","location":"Dulles_Aspire17","status":"OK","backlog":0},"Dulles_Aspire17:Firefox Beta":{"browser":"Firefox Beta","sponsor":"catchpoint","label":"Dulles, VA - Asus Aspire i3 2017 - Firefox Beta","agents":"1","location":"Dulles_Aspire17","status":"OK","backlog":0},"Dulles_Aspire17:Microsoft Edge (Chromium)":{"browser":"Microsoft Edge (Chromium)","sponsor":"catchpoint","label":"Dulles, VA - Asus Aspire i3 2017 - Microsoft Edge (Chromium)","agents":"1","location":"Dulles_Aspire17","status":"OK","backlog":0},"Dulles_Aspire17:Microsoft Edge Dev (Chromium)":{"browser":"Microsoft Edge Dev (Chromium)","sponsor":"catchpoint","label":"Dulles, VA - Asus Aspire i3 2017 - Microsoft Edge Dev (Chromium)","agents":"1","location":"Dulles_Aspire17","status":"OK","backlog":0},"Dulles_Aspire17:Microsoft Edge Canary (Chromium)":{"browser":"Microsoft Edge Canary (Chromium)","sponsor":"catchpoint","label":"Dulles, VA - Asus Aspire i3 2017 - Microsoft Edge Canary (Chromium)","agents":"1","location":"Dulles_Aspire17","status":"OK","backlog":0},"Dulles_Aspire17:IE 11":{"browser":"IE 11","sponsor":"catchpoint","label":"Dulles, VA - Asus Aspire i3 2017 - IE 11","agents":"1","location":"Dulles_Aspire17","status":"OK","backlog":0},"Dulles_Aspire17_VA":{"1":"Dulles_Aspire17:Chrome","2":"Dulles_Aspire17:Chrome Beta","3":"Dulles_Aspire17:Chrome Dev","4":"Dulles_Aspire17:Canary","5":"Dulles_Aspire17:Firefox","6":"Dulles_Aspire17:Firefox Beta","7":"Dulles_Aspire17:Microsoft Edge (Chromium)","8":"Dulles_Aspire17:Microsoft Edge Dev (Chromium)","9":"Dulles_Aspire17:Microsoft Edge Canary (Chromium)","10":"Dulles_Aspire17:IE 11","label":"Dulles, VA - Asus Aspire i3 2017 (Chrome,Firefox,Edge,IE 11)","lat":"38.954980","lng":"-77.447956","group":"North America","default":"Dulles_Aspire17:Chrome"},"Dulles_Aspire17":{"browser":"Chrome,Chrome Beta,Chrome Dev,Canary,Firefox,Firefox Beta,Microsoft Edge (Chromium),Microsoft Edge Dev (Chromium),Microsoft Edge Canary (Chromium),IE 11","sponsor":"catchpoint","label":"Dulles, VA - Asus Aspire i3 2017","agents":"1","location":"Dulles_Aspire17","status":"OK","backlog":0},"Dulles_M1MacMini:Chrome":{"browser":"Chrome","sponsor":"catchpoint","label":"Dulles, VA - M1 Mac Mini - Chrome","agents":"1","location":"Dulles_M1MacMini","status":"OK","backlog":0},"Dulles_M1MacMini:Chrome Beta":{"browser":"Chrome Beta","sponsor":"catchpoint","label":"Dulles, VA - M1 Mac Mini - Chrome Beta","agents":"1","location":"Dulles_M1MacMini","status":"OK","backlog":0},"Dulles_M1MacMini:Chrome Dev":{"browser":"Chrome Dev","sponsor":"catchpoint","label":"Dulles, VA - M1 Mac Mini - Chrome Dev","agents":"1","location":"Dulles_M1MacMini","status":"OK","backlog":0},"Dulles_M1MacMini:Chrome Canary":{"browser":"Chrome Canary","sponsor":"catchpoint","label":"Dulles, VA - M1 Mac Mini - Chrome Canary","agents":"1","location":"Dulles_M1MacMini","status":"OK","backlog":0},"Dulles_M1MacMini:Firefox":{"browser":"Firefox","sponsor":"catchpoint","label":"Dulles, VA - M1 Mac Mini - Firefox","agents":"1","location":"Dulles_M1MacMini","status":"OK","backlog":0},"Dulles_M1MacMini:iPhone 8 (simulator)":{"browser":"iPhone 8 (simulator)","sponsor":"catchpoint","label":"Dulles, VA - M1 Mac Mini - iPhone 8 (simulator)","agents":"1","location":"Dulles_M1MacMini","status":"OK","backlog":0},"Dulles_M1MacMini:iPhone 8 (simulator) - Landscape":{"browser":"iPhone 8 (simulator) - Landscape","sponsor":"catchpoint","label":"Dulles, VA - M1 Mac Mini - iPhone 8 (simulator) - Landscape","agents":"1","location":"Dulles_M1MacMini","status":"OK","backlog":0},"Dulles_M1MacMini:iPhone 8 Plus (simulator)":{"browser":"iPhone 8 Plus (simulator)","sponsor":"catchpoint","label":"Dulles, VA - M1 Mac Mini - iPhone 8 Plus (simulator)","agents":"1","location":"Dulles_M1MacMini","status":"OK","backlog":0},"Dulles_M1MacMini:iPhone 8 Plus (simulator) - Landscape":{"browser":"iPhone 8 Plus (simulator) - Landscape","sponsor":"catchpoint","label":"Dulles, VA - M1 Mac Mini - iPhone 8 Plus (simulator) - Landscape","agents":"1","location":"Dulles_M1MacMini","status":"OK","backlog":0},"Dulles_M1MacMini:iPhone SE (2nd generation) (simulator)":{"browser":"iPhone SE (2nd generation) (simulator)","sponsor":"catchpoint","label":"Dulles, VA - M1 Mac Mini - iPhone SE (2nd generation) (simulator)","agents":"1","location":"Dulles_M1MacMini","status":"OK","backlog":0},"Dulles_M1MacMini:iPhone SE (2nd generation) (simulator) - Landscape":{"browser":"iPhone SE (2nd generation) (simulator) - Landscape","sponsor":"catchpoint","label":"Dulles, VA - M1 Mac Mini - iPhone SE (2nd generation) (simulator) - Landscape","agents":"1","location":"Dulles_M1MacMini","status":"OK","backlog":0},"Dulles_M1MacMini:iPhone 12 (simulator)":{"browser":"iPhone 12 (simulator)","sponsor":"catchpoint","label":"Dulles, VA - M1 Mac Mini - iPhone 12 (simulator)","agents":"1","location":"Dulles_M1MacMini","status":"OK","backlog":0},"Dulles_M1MacMini:iPhone 12 (simulator) - Landscape":{"browser":"iPhone 12 (simulator) - Landscape","sponsor":"catchpoint","label":"Dulles, VA - M1 Mac Mini - iPhone 12 (simulator) - Landscape","agents":"1","location":"Dulles_M1MacMini","status":"OK","backlog":0},"Dulles_M1MacMini:iPhone 12 Pro (simulator)":{"browser":"iPhone 12 Pro (simulator)","sponsor":"catchpoint","label":"Dulles, VA - M1 Mac Mini - iPhone 12 Pro (simulator)","agents":"1","location":"Dulles_M1MacMini","status":"OK","backlog":0},"Dulles_M1MacMini:iPhone 12 Pro (simulator) - Landscape":{"browser":"iPhone 12 Pro (simulator) - Landscape","sponsor":"catchpoint","label":"Dulles, VA - M1 Mac Mini - iPhone 12 Pro (simulator) - Landscape","agents":"1","location":"Dulles_M1MacMini","status":"OK","backlog":0},"Dulles_M1MacMini:iPhone 12 Pro Max (simulator)":{"browser":"iPhone 12 Pro Max (simulator)","sponsor":"catchpoint","label":"Dulles, VA - M1 Mac Mini - iPhone 12 Pro Max (simulator)","agents":"1","location":"Dulles_M1MacMini","status":"OK","backlog":0},"Dulles_M1MacMini:iPhone 12 Pro Max (simulator) - Landscape":{"browser":"iPhone 12 Pro Max (simulator) - Landscape","sponsor":"catchpoint","label":"Dulles, VA - M1 Mac Mini - iPhone 12 Pro Max (simulator) - Landscape","agents":"1","location":"Dulles_M1MacMini","status":"OK","backlog":0},"Dulles_M1MacMini:iPhone 12 mini (simulator)":{"browser":"iPhone 12 mini (simulator)","sponsor":"catchpoint","label":"Dulles, VA - M1 Mac Mini - iPhone 12 mini (simulator)","agents":"1","location":"Dulles_M1MacMini","status":"OK","backlog":0},"Dulles_M1MacMini:iPhone 12 mini (simulator) - Landscape":{"browser":"iPhone 12 mini (simulator) - Landscape","sponsor":"catchpoint","label":"Dulles, VA - M1 Mac Mini - iPhone 12 mini (simulator) - Landscape","agents":"1","location":"Dulles_M1MacMini","status":"OK","backlog":0},"Dulles_M1MacMini:iPad Pro (9.7-inch) (simulator)":{"browser":"iPad Pro (9.7-inch) (simulator)","sponsor":"catchpoint","label":"Dulles, VA - M1 Mac Mini - iPad Pro (9.7-inch) (simulator)","agents":"1","location":"Dulles_M1MacMini","status":"OK","backlog":0},"Dulles_M1MacMini:iPad Pro (9.7-inch) (simulator) - Landscape":{"browser":"iPad Pro (9.7-inch) (simulator) - Landscape","sponsor":"catchpoint","label":"Dulles, VA - M1 Mac Mini - iPad Pro (9.7-inch) (simulator) - Landscape","agents":"1","location":"Dulles_M1MacMini","status":"OK","backlog":0},"Dulles_M1MacMini:iPad Pro (11-inch) (2nd generation) (simulator)":{"browser":"iPad Pro (11-inch) (2nd generation) (simulator)","sponsor":"catchpoint","label":"Dulles, VA - M1 Mac Mini - iPad Pro (11-inch) (2nd generation) (simulator)","agents":"1","location":"Dulles_M1MacMini","status":"OK","backlog":0},"Dulles_M1MacMini:iPad Pro (11-inch) (2nd generation) (simulator) - Landscape":{"browser":"iPad Pro (11-inch) (2nd generation) (simulator) - Landscape","sponsor":"catchpoint","label":"Dulles, VA - M1 Mac Mini - iPad Pro (11-inch) (2nd generation) (simulator) - Landscape","agents":"1","location":"Dulles_M1MacMini","status":"OK","backlog":0},"Dulles_M1MacMini:iPad Pro (12.9-inch) (4th generation) (simulator)":{"browser":"iPad Pro (12.9-inch) (4th generation) (simulator)","sponsor":"catchpoint","label":"Dulles, VA - M1 Mac Mini - iPad Pro (12.9-inch) (4th generation) (simulator)","agents":"1","location":"Dulles_M1MacMini","status":"OK","backlog":0},"Dulles_M1MacMini:iPad Pro (12.9-inch) (4th generation) (simulator) - Landscape":{"browser":"iPad Pro (12.9-inch) (4th generation) (simulator) - Landscape","sponsor":"catchpoint","label":"Dulles, VA - M1 Mac Mini - iPad Pro (12.9-inch) (4th generation) (simulator) - Landscape","agents":"1","location":"Dulles_M1MacMini","status":"OK","backlog":0},"Dulles_M1MacMini:iPod touch (7th generation) (simulator)":{"browser":"iPod touch (7th generation) (simulator)","sponsor":"catchpoint","label":"Dulles, VA - M1 Mac Mini - iPod touch (7th generation) (simulator)","agents":"1","location":"Dulles_M1MacMini","status":"OK","backlog":0},"Dulles_M1MacMini:iPod touch (7th generation) (simulator) - Landscape":{"browser":"iPod touch (7th generation) (simulator) - Landscape","sponsor":"catchpoint","label":"Dulles, VA - M1 Mac Mini - iPod touch (7th generation) (simulator) - Landscape","agents":"1","location":"Dulles_M1MacMini","status":"OK","backlog":0},"Dulles_M1MacMini_VA":{"1":"Dulles_M1MacMini:Chrome","2":"Dulles_M1MacMini:Chrome Beta","3":"Dulles_M1MacMini:Chrome Dev","4":"Dulles_M1MacMini:Chrome Canary","5":"Dulles_M1MacMini:Firefox","6":"Dulles_M1MacMini:iPhone 8 (simulator)","7":"Dulles_M1MacMini:iPhone 8 (simulator) - Landscape","8":"Dulles_M1MacMini:iPhone 8 Plus (simulator)","9":"Dulles_M1MacMini:iPhone 8 Plus (simulator) - Landscape","10":"Dulles_M1MacMini:iPhone SE (2nd generation) (simulator)","11":"Dulles_M1MacMini:iPhone SE (2nd generation) (simulator) - Landscape","12":"Dulles_M1MacMini:iPhone 12 (simulator)","13":"Dulles_M1MacMini:iPhone 12 (simulator) - Landscape","14":"Dulles_M1MacMini:iPhone 12 Pro (simulator)","15":"Dulles_M1MacMini:iPhone 12 Pro (simulator) - Landscape","16":"Dulles_M1MacMini:iPhone 12 Pro Max (simulator)","17":"Dulles_M1MacMini:iPhone 12 Pro Max (simulator) - Landscape","18":"Dulles_M1MacMini:iPhone 12 mini (simulator)","19":"Dulles_M1MacMini:iPhone 12 mini (simulator) - Landscape","20":"Dulles_M1MacMini:iPad Pro (9.7-inch) (simulator)","21":"Dulles_M1MacMini:iPad Pro (9.7-inch) (simulator) - Landscape","22":"Dulles_M1MacMini:iPad Pro (11-inch) (2nd generation) (simulator)","23":"Dulles_M1MacMini:iPad Pro (11-inch) (2nd generation) (simulator) - Landscape","24":"Dulles_M1MacMini:iPad Pro (12.9-inch) (4th generation) (simulator)","25":"Dulles_M1MacMini:iPad Pro (12.9-inch) (4th generation) (simulator) - Landscape","26":"Dulles_M1MacMini:iPod touch (7th generation) (simulator)","27":"Dulles_M1MacMini:iPod touch (7th generation) (simulator) - Landscape","label":"Dulles, VA - M1 Mac Mini (Chrome,Firefox,iOS Simulator)","lat":"38.954980","lng":"-77.447956","group":"North America","default":"Dulles_M1MacMini:Chrome"},"Dulles_M1MacMini":{"browser":"Chrome,Chrome Beta,Chrome Dev,Chrome Canary,Firefox,iPhone 8 (simulator),iPhone 8 (simulator) - Landscape,iPhone 8 Plus (simulator),iPhone 8 Plus (simulator) - Landscape,iPhone SE (2nd generation) (simulator),iPhone SE (2nd generation) (simulator) - Landscape,iPhone 12 (simulator),iPhone 12 (simulator) - Landscape,iPhone 12 Pro (simulator),iPhone 12 Pro (simulator) - Landscape,iPhone 12 Pro Max (simulator),iPhone 12 Pro Max (simulator) - Landscape,iPhone 12 mini (simulator),iPhone 12 mini (simulator) - Landscape,iPad Pro (9.7-inch) (simulator),iPad Pro (9.7-inch) (simulator) - Landscape,iPad Pro (11-inch) (2nd generation) (simulator),iPad Pro (11-inch) (2nd generation) (simulator) - Landscape,iPad Pro (12.9-inch) (4th generation) (simulator),iPad Pro (12.9-inch) (4th generation) (simulator) - Landscape,iPod touch (7th generation) (simulator),iPod touch (7th generation) (simulator) - Landscape","sponsor":"catchpoint","label":"Dulles, VA - M1 Mac Mini","agents":"1","location":"Dulles_M1MacMini","status":"OK","backlog":0},"Dulles_Pi3:Chromium":{"browser":"Chromium","sponsor":"catchpoint","label":"Dulles, VA - Raspberry Pi 3 B - Chromium","agents":"2","allowKeys":"A","location":"Dulles_Pi3","status":"OK","backlog":0},"Dulles_Pi3:Firefox":{"browser":"Firefox","sponsor":"catchpoint","label":"Dulles, VA - Raspberry Pi 3 B - Firefox","agents":"2","allowKeys":"A","location":"Dulles_Pi3","status":"OK","backlog":0},"Dulles_Pi3:Firefox ESR":{"browser":"Firefox ESR","sponsor":"catchpoint","label":"Dulles, VA - Raspberry Pi 3 B - Firefox ESR","agents":"2","allowKeys":"A","location":"Dulles_Pi3","status":"OK","backlog":0},"Dulles_Pi3_VA":{"1":"Dulles_Pi3:Chromium","2":"Dulles_Pi3:Firefox","3":"Dulles_Pi3:Firefox ESR","label":"Dulles, VA - Raspberry Pi 3 B (Chromium,Firefox)","lat":"38.954980","lng":"-77.447956","group":"North America","default":"Dulles_Pi3:Chromium"},"Dulles_Pi3":{"browser":"Chromium,Firefox,Firefox ESR","sponsor":"catchpoint","label":"Dulles, VA - Raspberry Pi 3 B","agents":"2","allowKeys":"A","location":"Dulles_Pi3","status":"OK","backlog":0},"Dulles_Pi4:Chromium":{"browser":"Chromium","sponsor":"catchpoint","label":"Dulles, VA - Raspberry Pi 4 - Chromium","agents":"1","allowKeys":"A","location":"Dulles_Pi4","status":"OK","backlog":0},"Dulles_Pi4:Firefox":{"browser":"Firefox","sponsor":"catchpoint","label":"Dulles, VA - Raspberry Pi 4 - Firefox","agents":"1","allowKeys":"A","location":"Dulles_Pi4","status":"OK","backlog":0},"Dulles_Pi4:Firefox ESR":{"browser":"Firefox ESR","sponsor":"catchpoint","label":"Dulles, VA - Raspberry Pi 4 - Firefox ESR","agents":"1","allowKeys":"A","location":"Dulles_Pi4","status":"OK","backlog":0},"Dulles_Pi4_VA":{"1":"Dulles_Pi4:Chromium","2":"Dulles_Pi4:Firefox","3":"Dulles_Pi4:Firefox ESR","label":"Dulles, VA - Raspberry Pi 4 (Chromium,Firefox)","lat":"38.954980","lng":"-77.447956","group":"North America","default":"Dulles_Pi4:Chromium"},"Dulles_Pi4":{"browser":"Chromium,Firefox,Firefox ESR","sponsor":"catchpoint","label":"Dulles, VA - Raspberry Pi 4","agents":"1","allowKeys":"A","location":"Dulles_Pi4","status":"OK","backlog":0},"LosAngeles:Chrome":{"sponsor":"catchpoint","browser":"Chrome","latency":"20","label":"Los Angeles, CA - Chrome","location":"LosAngeles","status":"OK","backlog":0},"LosAngeles:Chrome Beta":{"sponsor":"catchpoint","browser":"Chrome Beta","latency":"20","label":"Los Angeles, CA - Chrome Beta","location":"LosAngeles","status":"OK","backlog":0},"LosAngeles:Chrome Canary":{"sponsor":"catchpoint","browser":"Chrome Canary","latency":"20","label":"Los Angeles, CA - Chrome Canary","location":"LosAngeles","status":"OK","backlog":0},"LosAngeles:Firefox":{"sponsor":"catchpoint","browser":"Firefox","latency":"20","label":"Los Angeles, CA - Firefox","location":"LosAngeles","status":"OK","backlog":0},"LosAngeles:Firefox Nightly":{"sponsor":"catchpoint","browser":"Firefox Nightly","latency":"20","label":"Los Angeles, CA - Firefox Nightly","location":"LosAngeles","status":"OK","backlog":0},"LosAngeles:Opera":{"sponsor":"catchpoint","browser":"Opera","latency":"20","label":"Los Angeles, CA - Opera","location":"LosAngeles","status":"OK","backlog":0},"LosAngeles:Opera Beta":{"sponsor":"catchpoint","browser":"Opera Beta","latency":"20","label":"Los Angeles, CA - Opera Beta","location":"LosAngeles","status":"OK","backlog":0},"LosAngeles:Opera Developer":{"sponsor":"catchpoint","browser":"Opera Developer","latency":"20","label":"Los Angeles, CA - Opera Developer","location":"LosAngeles","status":"OK","backlog":0},"LosAngeles_CA":{"1":"LosAngeles:Chrome","2":"LosAngeles:Chrome Beta","3":"LosAngeles:Chrome Canary","4":"LosAngeles:Firefox","5":"LosAngeles:Firefox Nightly","6":"LosAngeles:Opera","7":"LosAngeles:Opera Beta","8":"LosAngeles:Opera Developer","label":"Los Angeles, CA USA (Chrome, Firefox,Opera)","lat":"34.057552","lng":"-118.240585","group":"North America","default":"LosAngeles:Chrome"},"LosAngeles":{"sponsor":"catchpoint","browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Opera,Opera Beta,Opera Developer","latency":"20","label":"Los Angeles, CA","location":"LosAngeles","status":"OK","backlog":0},"LosAngeles_M1MacMini:Chrome":{"browser":"Chrome","sponsor":"catchpoint","label":"Los Angeles, CA- M1 Mac Mini - Chrome","agents":"1","location":"LosAngeles_M1MacMini","status":"OK","backlog":0},"LosAngeles_M1MacMini:Chrome Beta":{"browser":"Chrome Beta","sponsor":"catchpoint","label":"Los Angeles, CA- M1 Mac Mini - Chrome Beta","agents":"1","location":"LosAngeles_M1MacMini","status":"OK","backlog":0},"LosAngeles_M1MacMini:Chrome Dev":{"browser":"Chrome Dev","sponsor":"catchpoint","label":"Los Angeles, CA- M1 Mac Mini - Chrome Dev","agents":"1","location":"LosAngeles_M1MacMini","status":"OK","backlog":0},"LosAngeles_M1MacMini:Chrome Canary":{"browser":"Chrome Canary","sponsor":"catchpoint","label":"Los Angeles, CA- M1 Mac Mini - Chrome Canary","agents":"1","location":"LosAngeles_M1MacMini","status":"OK","backlog":0},"LosAngeles_M1MacMini:Firefox":{"browser":"Firefox","sponsor":"catchpoint","label":"Los Angeles, CA- M1 Mac Mini - Firefox","agents":"1","location":"LosAngeles_M1MacMini","status":"OK","backlog":0},"LosAngeles_M1MacMini:iPhone 8 (simulator)":{"browser":"iPhone 8 (simulator)","sponsor":"catchpoint","label":"Los Angeles, CA- M1 Mac Mini - iPhone 8 (simulator)","agents":"1","location":"LosAngeles_M1MacMini","status":"OK","backlog":0},"LosAngeles_M1MacMini:iPhone 8 (simulator) - Landscape":{"browser":"iPhone 8 (simulator) - Landscape","sponsor":"catchpoint","label":"Los Angeles, CA- M1 Mac Mini - iPhone 8 (simulator) - Landscape","agents":"1","location":"LosAngeles_M1MacMini","status":"OK","backlog":0},"LosAngeles_M1MacMini:iPhone 8 Plus (simulator)":{"browser":"iPhone 8 Plus (simulator)","sponsor":"catchpoint","label":"Los Angeles, CA- M1 Mac Mini - iPhone 8 Plus (simulator)","agents":"1","location":"LosAngeles_M1MacMini","status":"OK","backlog":0},"LosAngeles_M1MacMini:iPhone 8 Plus (simulator) - Landscape":{"browser":"iPhone 8 Plus (simulator) - Landscape","sponsor":"catchpoint","label":"Los Angeles, CA- M1 Mac Mini - iPhone 8 Plus (simulator) - Landscape","agents":"1","location":"LosAngeles_M1MacMini","status":"OK","backlog":0},"LosAngeles_M1MacMini:iPhone SE (2nd generation) (simulator)":{"browser":"iPhone SE (2nd generation) (simulator)","sponsor":"catchpoint","label":"Los Angeles, CA- M1 Mac Mini - iPhone SE (2nd generation) (simulator)","agents":"1","location":"LosAngeles_M1MacMini","status":"OK","backlog":0},"LosAngeles_M1MacMini:iPhone SE (2nd generation) (simulator) - Landscape":{"browser":"iPhone SE (2nd generation) (simulator) - Landscape","sponsor":"catchpoint","label":"Los Angeles, CA- M1 Mac Mini - iPhone SE (2nd generation) (simulator) - Landscape","agents":"1","location":"LosAngeles_M1MacMini","status":"OK","backlog":0},"LosAngeles_M1MacMini:iPhone 12 (simulator)":{"browser":"iPhone 12 (simulator)","sponsor":"catchpoint","label":"Los Angeles, CA- M1 Mac Mini - iPhone 12 (simulator)","agents":"1","location":"LosAngeles_M1MacMini","status":"OK","backlog":0},"LosAngeles_M1MacMini:iPhone 12 (simulator) - Landscape":{"browser":"iPhone 12 (simulator) - Landscape","sponsor":"catchpoint","label":"Los Angeles, CA- M1 Mac Mini - iPhone 12 (simulator) - Landscape","agents":"1","location":"LosAngeles_M1MacMini","status":"OK","backlog":0},"LosAngeles_M1MacMini:iPhone 12 Pro (simulator)":{"browser":"iPhone 12 Pro (simulator)","sponsor":"catchpoint","label":"Los Angeles, CA- M1 Mac Mini - iPhone 12 Pro (simulator)","agents":"1","location":"LosAngeles_M1MacMini","status":"OK","backlog":0},"LosAngeles_M1MacMini:iPhone 12 Pro (simulator) - Landscape":{"browser":"iPhone 12 Pro (simulator) - Landscape","sponsor":"catchpoint","label":"Los Angeles, CA- M1 Mac Mini - iPhone 12 Pro (simulator) - Landscape","agents":"1","location":"LosAngeles_M1MacMini","status":"OK","backlog":0},"LosAngeles_M1MacMini:iPhone 12 Pro Max (simulator)":{"browser":"iPhone 12 Pro Max (simulator)","sponsor":"catchpoint","label":"Los Angeles, CA- M1 Mac Mini - iPhone 12 Pro Max (simulator)","agents":"1","location":"LosAngeles_M1MacMini","status":"OK","backlog":0},"LosAngeles_M1MacMini:iPhone 12 Pro Max (simulator) - Landscape":{"browser":"iPhone 12 Pro Max (simulator) - Landscape","sponsor":"catchpoint","label":"Los Angeles, CA- M1 Mac Mini - iPhone 12 Pro Max (simulator) - Landscape","agents":"1","location":"LosAngeles_M1MacMini","status":"OK","backlog":0},"LosAngeles_M1MacMini:iPhone 12 mini (simulator)":{"browser":"iPhone 12 mini (simulator)","sponsor":"catchpoint","label":"Los Angeles, CA- M1 Mac Mini - iPhone 12 mini (simulator)","agents":"1","location":"LosAngeles_M1MacMini","status":"OK","backlog":0},"LosAngeles_M1MacMini:iPhone 12 mini (simulator) - Landscape":{"browser":"iPhone 12 mini (simulator) - Landscape","sponsor":"catchpoint","label":"Los Angeles, CA- M1 Mac Mini - iPhone 12 mini (simulator) - Landscape","agents":"1","location":"LosAngeles_M1MacMini","status":"OK","backlog":0},"LosAngeles_M1MacMini:iPad Pro (9.7-inch) (simulator)":{"browser":"iPad Pro (9.7-inch) (simulator)","sponsor":"catchpoint","label":"Los Angeles, CA- M1 Mac Mini - iPad Pro (9.7-inch) (simulator)","agents":"1","location":"LosAngeles_M1MacMini","status":"OK","backlog":0},"LosAngeles_M1MacMini:iPad Pro (9.7-inch) (simulator) - Landscape":{"browser":"iPad Pro (9.7-inch) (simulator) - Landscape","sponsor":"catchpoint","label":"Los Angeles, CA- M1 Mac Mini - iPad Pro (9.7-inch) (simulator) - Landscape","agents":"1","location":"LosAngeles_M1MacMini","status":"OK","backlog":0},"LosAngeles_M1MacMini:iPad Pro (11-inch) (2nd generation) (simulator)":{"browser":"iPad Pro (11-inch) (2nd generation) (simulator)","sponsor":"catchpoint","label":"Los Angeles, CA- M1 Mac Mini - iPad Pro (11-inch) (2nd generation) (simulator)","agents":"1","location":"LosAngeles_M1MacMini","status":"OK","backlog":0},"LosAngeles_M1MacMini:iPad Pro (11-inch) (2nd generation) (simulator) - Landscape":{"browser":"iPad Pro (11-inch) (2nd generation) (simulator) - Landscape","sponsor":"catchpoint","label":"Los Angeles, CA- M1 Mac Mini - iPad Pro (11-inch) (2nd generation) (simulator) - Landscape","agents":"1","location":"LosAngeles_M1MacMini","status":"OK","backlog":0},"LosAngeles_M1MacMini:iPad Pro (12.9-inch) (4th generation) (simulator)":{"browser":"iPad Pro (12.9-inch) (4th generation) (simulator)","sponsor":"catchpoint","label":"Los Angeles, CA- M1 Mac Mini - iPad Pro (12.9-inch) (4th generation) (simulator)","agents":"1","location":"LosAngeles_M1MacMini","status":"OK","backlog":0},"LosAngeles_M1MacMini:iPad Pro (12.9-inch) (4th generation) (simulator) - Landscape":{"browser":"iPad Pro (12.9-inch) (4th generation) (simulator) - Landscape","sponsor":"catchpoint","label":"Los Angeles, CA- M1 Mac Mini - iPad Pro (12.9-inch) (4th generation) (simulator) - Landscape","agents":"1","location":"LosAngeles_M1MacMini","status":"OK","backlog":0},"LosAngeles_M1MacMini:iPod touch (7th generation) (simulator)":{"browser":"iPod touch (7th generation) (simulator)","sponsor":"catchpoint","label":"Los Angeles, CA- M1 Mac Mini - iPod touch (7th generation) (simulator)","agents":"1","location":"LosAngeles_M1MacMini","status":"OK","backlog":0},"LosAngeles_M1MacMini:iPod touch (7th generation) (simulator) - Landscape":{"browser":"iPod touch (7th generation) (simulator) - Landscape","sponsor":"catchpoint","label":"Los Angeles, CA- M1 Mac Mini - iPod touch (7th generation) (simulator) - Landscape","agents":"1","location":"LosAngeles_M1MacMini","status":"OK","backlog":0},"LosAngeles_M1MacMini_CA":{"1":"LosAngeles_M1MacMini:Chrome","2":"LosAngeles_M1MacMini:Chrome Beta","3":"LosAngeles_M1MacMini:Chrome Dev","4":"LosAngeles_M1MacMini:Chrome Canary","5":"LosAngeles_M1MacMini:Firefox","6":"LosAngeles_M1MacMini:iPhone 8 (simulator)","7":"LosAngeles_M1MacMini:iPhone 8 (simulator) - Landscape","8":"LosAngeles_M1MacMini:iPhone 8 Plus (simulator)","9":"LosAngeles_M1MacMini:iPhone 8 Plus (simulator) - Landscape","10":"LosAngeles_M1MacMini:iPhone SE (2nd generation) (simulator)","11":"LosAngeles_M1MacMini:iPhone SE (2nd generation) (simulator) - Landscape","12":"LosAngeles_M1MacMini:iPhone 12 (simulator)","13":"LosAngeles_M1MacMini:iPhone 12 (simulator) - Landscape","14":"LosAngeles_M1MacMini:iPhone 12 Pro (simulator)","15":"LosAngeles_M1MacMini:iPhone 12 Pro (simulator) - Landscape","16":"LosAngeles_M1MacMini:iPhone 12 Pro Max (simulator)","17":"LosAngeles_M1MacMini:iPhone 12 Pro Max (simulator) - Landscape","18":"LosAngeles_M1MacMini:iPhone 12 mini (simulator)","19":"LosAngeles_M1MacMini:iPhone 12 mini (simulator) - Landscape","20":"LosAngeles_M1MacMini:iPad Pro (9.7-inch) (simulator)","21":"LosAngeles_M1MacMini:iPad Pro (9.7-inch) (simulator) - Landscape","22":"LosAngeles_M1MacMini:iPad Pro (11-inch) (2nd generation) (simulator)","23":"LosAngeles_M1MacMini:iPad Pro (11-inch) (2nd generation) (simulator) - Landscape","24":"LosAngeles_M1MacMini:iPad Pro (12.9-inch) (4th generation) (simulator)","25":"LosAngeles_M1MacMini:iPad Pro (12.9-inch) (4th generation) (simulator) - Landscape","26":"LosAngeles_M1MacMini:iPod touch (7th generation) (simulator)","27":"LosAngeles_M1MacMini:iPod touch (7th generation) (simulator) - Landscape","label":"Los Angeles, CA - M1 Mac Mini (Chrome,Firefox,iOS Simulator)","lat":"34.057552","lng":"-118.240585","group":"North America","default":"LosAngeles_M1MacMini:Chrome"},"LosAngeles_M1MacMini":{"browser":"Chrome,Chrome Beta,Chrome Dev,Chrome Canary,Firefox,iPhone 8 (simulator),iPhone 8 (simulator) - Landscape,iPhone 8 Plus (simulator),iPhone 8 Plus (simulator) - Landscape,iPhone SE (2nd generation) (simulator),iPhone SE (2nd generation) (simulator) - Landscape,iPhone 12 (simulator),iPhone 12 (simulator) - Landscape,iPhone 12 Pro (simulator),iPhone 12 Pro (simulator) - Landscape,iPhone 12 Pro Max (simulator),iPhone 12 Pro Max (simulator) - Landscape,iPhone 12 mini (simulator),iPhone 12 mini (simulator) - Landscape,iPad Pro (9.7-inch) (simulator),iPad Pro (9.7-inch) (simulator) - Landscape,iPad Pro (11-inch) (2nd generation) (simulator),iPad Pro (11-inch) (2nd generation) (simulator) - Landscape,iPad Pro (12.9-inch) (4th generation) (simulator),iPad Pro (12.9-inch) (4th generation) (simulator) - Landscape,iPod touch (7th generation) (simulator),iPod touch (7th generation) (simulator) - Landscape","sponsor":"catchpoint","label":"Los Angeles, CA- M1 Mac Mini","agents":"1","location":"LosAngeles_M1MacMini","status":"OK","backlog":0},"ec2-us-east-1:Chrome":{"browser":"Chrome","label":"Virginia USA - EC2  - Chrome","region":"us-east-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ec2-us-east-1","status":"OK","backlog":0},"ec2-us-east-1:Chrome Beta":{"browser":"Chrome Beta","label":"Virginia USA - EC2  - Chrome Beta","region":"us-east-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ec2-us-east-1","status":"OK","backlog":0},"ec2-us-east-1:Chrome Canary":{"browser":"Chrome Canary","label":"Virginia USA - EC2  - Chrome Canary","region":"us-east-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ec2-us-east-1","status":"OK","backlog":0},"ec2-us-east-1:Firefox":{"browser":"Firefox","label":"Virginia USA - EC2  - Firefox","region":"us-east-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ec2-us-east-1","status":"OK","backlog":0},"ec2-us-east-1:Firefox Nightly":{"browser":"Firefox Nightly","label":"Virginia USA - EC2  - Firefox Nightly","region":"us-east-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ec2-us-east-1","status":"OK","backlog":0},"ec2-us-east-1:Firefox ESR":{"browser":"Firefox ESR","label":"Virginia USA - EC2  - Firefox ESR","region":"us-east-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ec2-us-east-1","status":"OK","backlog":0},"ec2-us-east-1:Brave":{"browser":"Brave","label":"Virginia USA - EC2  - Brave","region":"us-east-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ec2-us-east-1","status":"OK","backlog":0},"ec2-us-east-1-catchpoint":{"1":"ec2-us-east-1:Chrome","2":"ec2-us-east-1:Chrome Beta","3":"ec2-us-east-1:Chrome Canary","4":"ec2-us-east-1:Firefox","5":"ec2-us-east-1:Firefox Nightly","6":"ec2-us-east-1:Firefox ESR","7":"ec2-us-east-1:Brave","label":"Virginia - EC2 (Chrome,Firefox)","lat":"38.954980","lng":"-77.447956","group":"North America","default":"ec2-us-east-1:Chrome"},"ec2-us-east-1":{"browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Firefox ESR,Brave","label":"Virginia USA - EC2 ","region":"us-east-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ec2-us-east-1","status":"OK","backlog":0},"ec2-us-west-1:Chrome":{"sponsor":"catchpoint","browser":"Chrome","label":"California, USA - EC2 - Chrome","region":"us-west-1","allowKeys":"A","agents":"3","fallback":"California","location":"ec2-us-west-1","status":"OK","backlog":0},"ec2-us-west-1:Chrome Beta":{"sponsor":"catchpoint","browser":"Chrome Beta","label":"California, USA - EC2 - Chrome Beta","region":"us-west-1","allowKeys":"A","agents":"3","fallback":"California","location":"ec2-us-west-1","status":"OK","backlog":0},"ec2-us-west-1:Chrome Canary":{"sponsor":"catchpoint","browser":"Chrome Canary","label":"California, USA - EC2 - Chrome Canary","region":"us-west-1","allowKeys":"A","agents":"3","fallback":"California","location":"ec2-us-west-1","status":"OK","backlog":0},"ec2-us-west-1:Firefox":{"sponsor":"catchpoint","browser":"Firefox","label":"California, USA - EC2 - Firefox","region":"us-west-1","allowKeys":"A","agents":"3","fallback":"California","location":"ec2-us-west-1","status":"OK","backlog":0},"ec2-us-west-1:Firefox Nightly":{"sponsor":"catchpoint","browser":"Firefox Nightly","label":"California, USA - EC2 - Firefox Nightly","region":"us-west-1","allowKeys":"A","agents":"3","fallback":"California","location":"ec2-us-west-1","status":"OK","backlog":0},"ec2-us-west-1:Firefox ESR":{"sponsor":"catchpoint","browser":"Firefox ESR","label":"California, USA - EC2 - Firefox ESR","region":"us-west-1","allowKeys":"A","agents":"3","fallback":"California","location":"ec2-us-west-1","status":"OK","backlog":0},"ec2-us-west-1:Brave":{"sponsor":"catchpoint","browser":"Brave","label":"California, USA - EC2 - Brave","region":"us-west-1","allowKeys":"A","agents":"3","fallback":"California","location":"ec2-us-west-1","status":"OK","backlog":0},"ec2-us-west-1-catchpoint":{"1":"ec2-us-west-1:Chrome","2":"ec2-us-west-1:Chrome Beta","3":"ec2-us-west-1:Chrome Canary","4":"ec2-us-west-1:Firefox","5":"ec2-us-west-1:Firefox Nightly","6":"ec2-us-west-1:Firefox ESR","7":"ec2-us-west-1:Brave","label":"California - EC2 (Chrome,Firefox)","lat":"37.343577","lng":"-121.894798","group":"North America","default":"ec2-us-west-1:Chrome"},"ec2-us-west-1":{"sponsor":"catchpoint","browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Firefox ESR,Brave","label":"California, USA - EC2","region":"us-west-1","allowKeys":"A","agents":"3","fallback":"California","location":"ec2-us-west-1","status":"OK","backlog":0},"ec2-eu-west-1:Chrome":{"browser":"Chrome","label":"Ireland - EC2 - Chrome","region":"eu-west-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","fallback":"Ireland","location":"ec2-eu-west-1","status":"OK","backlog":0},"ec2-eu-west-1:Chrome Beta":{"browser":"Chrome Beta","label":"Ireland - EC2 - Chrome Beta","region":"eu-west-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","fallback":"Ireland","location":"ec2-eu-west-1","status":"OK","backlog":0},"ec2-eu-west-1:Chrome Canary":{"browser":"Chrome Canary","label":"Ireland - EC2 - Chrome Canary","region":"eu-west-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","fallback":"Ireland","location":"ec2-eu-west-1","status":"OK","backlog":0},"ec2-eu-west-1:Firefox":{"browser":"Firefox","label":"Ireland - EC2 - Firefox","region":"eu-west-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","fallback":"Ireland","location":"ec2-eu-west-1","status":"OK","backlog":0},"ec2-eu-west-1:Firefox Nightly":{"browser":"Firefox Nightly","label":"Ireland - EC2 - Firefox Nightly","region":"eu-west-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","fallback":"Ireland","location":"ec2-eu-west-1","status":"OK","backlog":0},"ec2-eu-west-1:Firefox ESR":{"browser":"Firefox ESR","label":"Ireland - EC2 - Firefox ESR","region":"eu-west-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","fallback":"Ireland","location":"ec2-eu-west-1","status":"OK","backlog":0},"ec2-eu-west-1:Brave":{"browser":"Brave","label":"Ireland - EC2 - Brave","region":"eu-west-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","fallback":"Ireland","location":"ec2-eu-west-1","status":"OK","backlog":0},"ec2-eu-west-1-catchpoint":{"1":"ec2-eu-west-1:Chrome","2":"ec2-eu-west-1:Chrome Beta","3":"ec2-eu-west-1:Chrome Canary","4":"ec2-eu-west-1:Firefox","5":"ec2-eu-west-1:Firefox Nightly","6":"ec2-eu-west-1:Firefox ESR","7":"ec2-eu-west-1:Brave","label":"Ireland - EC2 (Chrome,Firefox)","lat":"53.343583","lng":"-6.267014","group":"Europe","default":"ec2-eu-west-1:Chrome"},"ec2-eu-west-1":{"browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Firefox ESR,Brave","label":"Ireland - EC2","region":"eu-west-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","fallback":"Ireland","location":"ec2-eu-west-1","status":"OK","backlog":0},"ec2-eu-west-3:Chrome":{"browser":"Chrome","label":"Paris - EC2 - Chrome","region":"eu-west-3","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-eu-west-3","status":"OK","backlog":0},"ec2-eu-west-3:Chrome Beta":{"browser":"Chrome Beta","label":"Paris - EC2 - Chrome Beta","region":"eu-west-3","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-eu-west-3","status":"OK","backlog":0},"ec2-eu-west-3:Chrome Canary":{"browser":"Chrome Canary","label":"Paris - EC2 - Chrome Canary","region":"eu-west-3","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-eu-west-3","status":"OK","backlog":0},"ec2-eu-west-3:Firefox":{"browser":"Firefox","label":"Paris - EC2 - Firefox","region":"eu-west-3","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-eu-west-3","status":"OK","backlog":0},"ec2-eu-west-3:Firefox Nightly":{"browser":"Firefox Nightly","label":"Paris - EC2 - Firefox Nightly","region":"eu-west-3","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-eu-west-3","status":"OK","backlog":0},"ec2-eu-west-3:Firefox ESR":{"browser":"Firefox ESR","label":"Paris - EC2 - Firefox ESR","region":"eu-west-3","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-eu-west-3","status":"OK","backlog":0},"ec2-eu-west-3:Brave":{"browser":"Brave","label":"Paris - EC2 - Brave","region":"eu-west-3","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-eu-west-3","status":"OK","backlog":0},"ec2-eu-west-3-catchpoint":{"1":"ec2-eu-west-3:Chrome","2":"ec2-eu-west-3:Chrome Beta","3":"ec2-eu-west-3:Chrome Canary","4":"ec2-eu-west-3:Firefox","5":"ec2-eu-west-3:Firefox Nightly","6":"ec2-eu-west-3:Firefox ESR","7":"ec2-eu-west-3:Brave","label":"Paris - EC2 (Chrome,Firefox)","lat":"53.343583","lng":"-6.267014","group":"Europe","default":"ec2-eu-west-3:Chrome"},"ec2-eu-west-3":{"browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Firefox ESR,Brave","label":"Paris - EC2","region":"eu-west-3","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-eu-west-3","status":"OK","backlog":0},"ec2-eu-central-1:Chrome":{"browser":"Chrome","label":"Frankfurt, Germany - EC2 - Chrome","region":"eu-central-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","fallback":"Frankfurt","location":"ec2-eu-central-1","status":"OK","backlog":0},"ec2-eu-central-1:Chrome Beta":{"browser":"Chrome Beta","label":"Frankfurt, Germany - EC2 - Chrome Beta","region":"eu-central-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","fallback":"Frankfurt","location":"ec2-eu-central-1","status":"OK","backlog":0},"ec2-eu-central-1:Chrome Canary":{"browser":"Chrome Canary","label":"Frankfurt, Germany - EC2 - Chrome Canary","region":"eu-central-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","fallback":"Frankfurt","location":"ec2-eu-central-1","status":"OK","backlog":0},"ec2-eu-central-1:Firefox":{"browser":"Firefox","label":"Frankfurt, Germany - EC2 - Firefox","region":"eu-central-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","fallback":"Frankfurt","location":"ec2-eu-central-1","status":"OK","backlog":0},"ec2-eu-central-1:Firefox Nightly":{"browser":"Firefox Nightly","label":"Frankfurt, Germany - EC2 - Firefox Nightly","region":"eu-central-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","fallback":"Frankfurt","location":"ec2-eu-central-1","status":"OK","backlog":0},"ec2-eu-central-1:Firefox ESR":{"browser":"Firefox ESR","label":"Frankfurt, Germany - EC2 - Firefox ESR","region":"eu-central-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","fallback":"Frankfurt","location":"ec2-eu-central-1","status":"OK","backlog":0},"ec2-eu-central-1:Brave":{"browser":"Brave","label":"Frankfurt, Germany - EC2 - Brave","region":"eu-central-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","fallback":"Frankfurt","location":"ec2-eu-central-1","status":"OK","backlog":0},"ec2-eu-central-1-catchpoint":{"1":"ec2-eu-central-1:Chrome","2":"ec2-eu-central-1:Chrome Beta","3":"ec2-eu-central-1:Chrome Canary","4":"ec2-eu-central-1:Firefox","5":"ec2-eu-central-1:Firefox Nightly","6":"ec2-eu-central-1:Firefox ESR","7":"ec2-eu-central-1:Brave","label":"Frankfurt, Germany - EC2 (Chrome,Firefox)","lat":"50.1057043","lng":"8.6698232","group":"Europe","default":"ec2-eu-central-1:Chrome"},"ec2-eu-central-1":{"browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Firefox ESR,Brave","label":"Frankfurt, Germany - EC2","region":"eu-central-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","fallback":"Frankfurt","location":"ec2-eu-central-1","status":"OK","backlog":0},"ec2-ap-northeast-2:Chrome":{"browser":"Chrome","label":"Seoul, Korea - EC2 - Chrome","region":"ap-northeast-2","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-northeast-2","status":"OK","backlog":0},"ec2-ap-northeast-2:Chrome Beta":{"browser":"Chrome Beta","label":"Seoul, Korea - EC2 - Chrome Beta","region":"ap-northeast-2","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-northeast-2","status":"OK","backlog":0},"ec2-ap-northeast-2:Chrome Canary":{"browser":"Chrome Canary","label":"Seoul, Korea - EC2 - Chrome Canary","region":"ap-northeast-2","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-northeast-2","status":"OK","backlog":0},"ec2-ap-northeast-2:Firefox":{"browser":"Firefox","label":"Seoul, Korea - EC2 - Firefox","region":"ap-northeast-2","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-northeast-2","status":"OK","backlog":0},"ec2-ap-northeast-2:Firefox Nightly":{"browser":"Firefox Nightly","label":"Seoul, Korea - EC2 - Firefox Nightly","region":"ap-northeast-2","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-northeast-2","status":"OK","backlog":0},"ec2-ap-northeast-2:Firefox ESR":{"browser":"Firefox ESR","label":"Seoul, Korea - EC2 - Firefox ESR","region":"ap-northeast-2","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-northeast-2","status":"OK","backlog":0},"ec2-ap-northeast-2:Brave":{"browser":"Brave","label":"Seoul, Korea - EC2 - Brave","region":"ap-northeast-2","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-northeast-2","status":"OK","backlog":0},"ec2-ap-northeast-2-catchpoint":{"1":"ec2-ap-northeast-2:Chrome","2":"ec2-ap-northeast-2:Chrome Beta","3":"ec2-ap-northeast-2:Chrome Canary","4":"ec2-ap-northeast-2:Firefox","5":"ec2-ap-northeast-2:Firefox Nightly","6":"ec2-ap-northeast-2:Firefox ESR","7":"ec2-ap-northeast-2:Brave","label":"Seoul, Korea - EC2 (Chrome,Firefox)","lat":"37.5647689","lng":"126.7093638","group":"Asia"},"ec2-ap-northeast-2":{"browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Firefox ESR,Brave","label":"Seoul, Korea - EC2","region":"ap-northeast-2","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-northeast-2","status":"OK","backlog":0},"ec2-ap-northeast-1:Chrome":{"browser":"Chrome","label":"Tokyo, Japan - EC2 - Chrome","region":"ap-northeast-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ec2-ap-northeast-1","status":"OK","backlog":0},"ec2-ap-northeast-1:Chrome Beta":{"browser":"Chrome Beta","label":"Tokyo, Japan - EC2 - Chrome Beta","region":"ap-northeast-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ec2-ap-northeast-1","status":"OK","backlog":0},"ec2-ap-northeast-1:Chrome Canary":{"browser":"Chrome Canary","label":"Tokyo, Japan - EC2 - Chrome Canary","region":"ap-northeast-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ec2-ap-northeast-1","status":"OK","backlog":0},"ec2-ap-northeast-1:Firefox":{"browser":"Firefox","label":"Tokyo, Japan - EC2 - Firefox","region":"ap-northeast-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ec2-ap-northeast-1","status":"OK","backlog":0},"ec2-ap-northeast-1:Firefox Nightly":{"browser":"Firefox Nightly","label":"Tokyo, Japan - EC2 - Firefox Nightly","region":"ap-northeast-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ec2-ap-northeast-1","status":"OK","backlog":0},"ec2-ap-northeast-1:Firefox ESR":{"browser":"Firefox ESR","label":"Tokyo, Japan - EC2 - Firefox ESR","region":"ap-northeast-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ec2-ap-northeast-1","status":"OK","backlog":0},"ec2-ap-northeast-1:Brave":{"browser":"Brave","label":"Tokyo, Japan - EC2 - Brave","region":"ap-northeast-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ec2-ap-northeast-1","status":"OK","backlog":0},"ec2-ap-northeast-1-catchpoint":{"1":"ec2-ap-northeast-1:Chrome","2":"ec2-ap-northeast-1:Chrome Beta","3":"ec2-ap-northeast-1:Chrome Canary","4":"ec2-ap-northeast-1:Firefox","5":"ec2-ap-northeast-1:Firefox Nightly","6":"ec2-ap-northeast-1:Firefox ESR","7":"ec2-ap-northeast-1:Brave","label":"Tokyo, Japan - EC2 (Chrome,Firefox)","lat":"35.682175","lng":"139.752731","group":"Asia","default":"ec2-ap-northeast-1:Chrome"},"ec2-ap-northeast-1":{"browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Firefox ESR,Brave","label":"Tokyo, Japan - EC2","region":"ap-northeast-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ec2-ap-northeast-1","status":"OK","backlog":0},"ap-south-1:Chrome":{"browser":"Chrome","label":"Mumbai, India - EC2 - Chrome","region":"ap-south-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ap-south-1","status":"OK","backlog":0},"ap-south-1:Chrome Beta":{"browser":"Chrome Beta","label":"Mumbai, India - EC2 - Chrome Beta","region":"ap-south-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ap-south-1","status":"OK","backlog":0},"ap-south-1:Chrome Canary":{"browser":"Chrome Canary","label":"Mumbai, India - EC2 - Chrome Canary","region":"ap-south-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ap-south-1","status":"OK","backlog":0},"ap-south-1:Firefox":{"browser":"Firefox","label":"Mumbai, India - EC2 - Firefox","region":"ap-south-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ap-south-1","status":"OK","backlog":0},"ap-south-1:Firefox Nightly":{"browser":"Firefox Nightly","label":"Mumbai, India - EC2 - Firefox Nightly","region":"ap-south-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ap-south-1","status":"OK","backlog":0},"ap-south-1:Firefox ESR":{"browser":"Firefox ESR","label":"Mumbai, India - EC2 - Firefox ESR","region":"ap-south-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ap-south-1","status":"OK","backlog":0},"ap-south-1:Brave":{"browser":"Brave","label":"Mumbai, India - EC2 - Brave","region":"ap-south-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ap-south-1","status":"OK","backlog":0},"ap-south-1-catchpoint":{"1":"ap-south-1:Chrome","2":"ap-south-1:Chrome Beta","3":"ap-south-1:Chrome Canary","4":"ap-south-1:Firefox","5":"ap-south-1:Firefox Nightly","6":"ap-south-1:Firefox ESR","7":"ap-south-1:Brave","label":"Mumbai, India - EC2 (Chrome,Firefox)","lat":"19.0827699","lng":"72.7411179","group":"Asia","default":"ap-south-1:Chrome"},"ap-south-1":{"browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Firefox ESR,Brave","label":"Mumbai, India - EC2","region":"ap-south-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ap-south-1","status":"OK","backlog":0},"ec2-ap-southeast-1:Chrome":{"browser":"Chrome","label":"Singapore - EC2 - Chrome","region":"ap-southeast-1","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-southeast-1","status":"OK","backlog":0},"ec2-ap-southeast-1:Chrome Beta":{"browser":"Chrome Beta","label":"Singapore - EC2 - Chrome Beta","region":"ap-southeast-1","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-southeast-1","status":"OK","backlog":0},"ec2-ap-southeast-1:Chrome Canary":{"browser":"Chrome Canary","label":"Singapore - EC2 - Chrome Canary","region":"ap-southeast-1","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-southeast-1","status":"OK","backlog":0},"ec2-ap-southeast-1:Firefox":{"browser":"Firefox","label":"Singapore - EC2 - Firefox","region":"ap-southeast-1","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-southeast-1","status":"OK","backlog":0},"ec2-ap-southeast-1:Firefox Nightly":{"browser":"Firefox Nightly","label":"Singapore - EC2 - Firefox Nightly","region":"ap-southeast-1","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-southeast-1","status":"OK","backlog":0},"ec2-ap-southeast-1:Firefox ESR":{"browser":"Firefox ESR","label":"Singapore - EC2 - Firefox ESR","region":"ap-southeast-1","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-southeast-1","status":"OK","backlog":0},"ec2-ap-southeast-1:Brave":{"browser":"Brave","label":"Singapore - EC2 - Brave","region":"ap-southeast-1","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-southeast-1","status":"OK","backlog":0},"ec2-ap-southeast-1-catchpoint":{"1":"ec2-ap-southeast-1:Chrome","2":"ec2-ap-southeast-1:Chrome Beta","3":"ec2-ap-southeast-1:Chrome Canary","4":"ec2-ap-southeast-1:Firefox","5":"ec2-ap-southeast-1:Firefox Nightly","6":"ec2-ap-southeast-1:Firefox ESR","7":"ec2-ap-southeast-1:Brave","label":"Singapore - EC2 (Chrome,Firefox)","lat":"1.352708","lng":"103.819935","group":"Asia","default":"ec2-ap-southeast-1:Chrome"},"ec2-ap-southeast-1":{"browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Firefox ESR,Brave","label":"Singapore - EC2","region":"ap-southeast-1","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-southeast-1","status":"OK","backlog":0},"ec2-ap-southeast-2:Chrome":{"browser":"Chrome","label":"Sydney, Australia - EC2 - Chrome","region":"ap-southeast-2","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-southeast-2","status":"OK","backlog":0},"ec2-ap-southeast-2:Chrome Beta":{"browser":"Chrome Beta","label":"Sydney, Australia - EC2 - Chrome Beta","region":"ap-southeast-2","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-southeast-2","status":"OK","backlog":0},"ec2-ap-southeast-2:Chrome Canary":{"browser":"Chrome Canary","label":"Sydney, Australia - EC2 - Chrome Canary","region":"ap-southeast-2","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-southeast-2","status":"OK","backlog":0},"ec2-ap-southeast-2:Firefox":{"browser":"Firefox","label":"Sydney, Australia - EC2 - Firefox","region":"ap-southeast-2","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-southeast-2","status":"OK","backlog":0},"ec2-ap-southeast-2:Firefox Nightly":{"browser":"Firefox Nightly","label":"Sydney, Australia - EC2 - Firefox Nightly","region":"ap-southeast-2","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-southeast-2","status":"OK","backlog":0},"ec2-ap-southeast-2:Firefox ESR":{"browser":"Firefox ESR","label":"Sydney, Australia - EC2 - Firefox ESR","region":"ap-southeast-2","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-southeast-2","status":"OK","backlog":0},"ec2-ap-southeast-2:Brave":{"browser":"Brave","label":"Sydney, Australia - EC2 - Brave","region":"ap-southeast-2","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-southeast-2","status":"OK","backlog":0},"ec2-ap-southeast-2-catchpoint":{"1":"ec2-ap-southeast-2:Chrome","2":"ec2-ap-southeast-2:Chrome Beta","3":"ec2-ap-southeast-2:Chrome Canary","4":"ec2-ap-southeast-2:Firefox","5":"ec2-ap-southeast-2:Firefox Nightly","6":"ec2-ap-southeast-2:Firefox ESR","7":"ec2-ap-southeast-2:Brave","label":"Sydney, Australia - EC2 (Chrome,Firefox)","lat":"-33.7969235","lng":"150.9224326","group":"Oceania","default":"ec2-ap-southeast-2:Chrome"},"ec2-ap-southeast-2":{"browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Firefox ESR,Brave","label":"Sydney, Australia - EC2","region":"ap-southeast-2","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-southeast-2","status":"OK","backlog":0},"ec2-sa-east-1:Chrome":{"browser":"Chrome","label":"Sao Paulo, Brazil - EC2 - Chrome","region":"sa-east-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ec2-sa-east-1","status":"OK","backlog":0},"ec2-sa-east-1:Chrome Beta":{"browser":"Chrome Beta","label":"Sao Paulo, Brazil - EC2 - Chrome Beta","region":"sa-east-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ec2-sa-east-1","status":"OK","backlog":0},"ec2-sa-east-1:Chrome Canary":{"browser":"Chrome Canary","label":"Sao Paulo, Brazil - EC2 - Chrome Canary","region":"sa-east-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ec2-sa-east-1","status":"OK","backlog":0},"ec2-sa-east-1:Firefox":{"browser":"Firefox","label":"Sao Paulo, Brazil - EC2 - Firefox","region":"sa-east-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ec2-sa-east-1","status":"OK","backlog":0},"ec2-sa-east-1:Firefox Nightly":{"browser":"Firefox Nightly","label":"Sao Paulo, Brazil - EC2 - Firefox Nightly","region":"sa-east-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ec2-sa-east-1","status":"OK","backlog":0},"ec2-sa-east-1:Firefox ESR":{"browser":"Firefox ESR","label":"Sao Paulo, Brazil - EC2 - Firefox ESR","region":"sa-east-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ec2-sa-east-1","status":"OK","backlog":0},"ec2-sa-east-1:Brave":{"browser":"Brave","label":"Sao Paulo, Brazil - EC2 - Brave","region":"sa-east-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ec2-sa-east-1","status":"OK","backlog":0},"ec2-sa-east-1-catchpoint":{"1":"ec2-sa-east-1:Chrome","2":"ec2-sa-east-1:Chrome Beta","3":"ec2-sa-east-1:Chrome Canary","4":"ec2-sa-east-1:Firefox","5":"ec2-sa-east-1:Firefox Nightly","6":"ec2-sa-east-1:Firefox ESR","7":"ec2-sa-east-1:Brave","label":"Sao Paulo, Brazil - EC2 (Chrome,Firefox)","lat":"-23.55014","lng":"-46.641083","group":"South America","default":"ec2-sa-east-1:Chrome"},"ec2-sa-east-1":{"browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Firefox ESR,Brave","label":"Sao Paulo, Brazil - EC2","region":"sa-east-1","sponsor":"catchpoint","allowKeys":"A","agents":"3","location":"ec2-sa-east-1","status":"OK","backlog":0},"London_EC2:Chrome":{"sponsor":"catchpoint","browser":"Chrome","label":"London, UK - EC2 - Chrome","allowKeys":"A","location":"London_EC2","status":"OK","backlog":0},"London_EC2:Chrome Beta":{"sponsor":"catchpoint","browser":"Chrome Beta","label":"London, UK - EC2 - Chrome Beta","allowKeys":"A","location":"London_EC2","status":"OK","backlog":0},"London_EC2:Chrome Canary":{"sponsor":"catchpoint","browser":"Chrome Canary","label":"London, UK - EC2 - Chrome Canary","allowKeys":"A","location":"London_EC2","status":"OK","backlog":0},"London_EC2:Firefox":{"sponsor":"catchpoint","browser":"Firefox","label":"London, UK - EC2 - Firefox","allowKeys":"A","location":"London_EC2","status":"OK","backlog":0},"London_EC2:Firefox Nightly":{"sponsor":"catchpoint","browser":"Firefox Nightly","label":"London, UK - EC2 - Firefox Nightly","allowKeys":"A","location":"London_EC2","status":"OK","backlog":0},"London_EC2_Loc":{"1":"London_EC2:Chrome","2":"London_EC2:Chrome Beta","3":"London_EC2:Chrome Canary","4":"London_EC2:Firefox","5":"London_EC2:Firefox Nightly","label":"London, UK - EC2 (Chrome,Firefox)","lat":"51.503015","lng":"-0.125198","group":"Europe","default":"London_EC2:Chrome"},"London_EC2":{"sponsor":"catchpoint","browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly","label":"London, UK - EC2","allowKeys":"A","location":"London_EC2","status":"OK","backlog":0},"ec2-eu-north-1:Chrome":{"browser":"Chrome","label":"Stockholm, Sweden - EC2 - Chrome","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"ec2-eu-north-1","status":"OK","backlog":0},"ec2-eu-north-1:Chrome Beta":{"browser":"Chrome Beta","label":"Stockholm, Sweden - EC2 - Chrome Beta","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"ec2-eu-north-1","status":"OK","backlog":0},"ec2-eu-north-1:Chrome Canary":{"browser":"Chrome Canary","label":"Stockholm, Sweden - EC2 - Chrome Canary","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"ec2-eu-north-1","status":"OK","backlog":0},"ec2-eu-north-1:Firefox":{"browser":"Firefox","label":"Stockholm, Sweden - EC2 - Firefox","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"ec2-eu-north-1","status":"OK","backlog":0},"ec2-eu-north-1:Firefox Nightly":{"browser":"Firefox Nightly","label":"Stockholm, Sweden - EC2 - Firefox Nightly","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"ec2-eu-north-1","status":"OK","backlog":0},"ec2-eu-north-1:Firefox ESR":{"browser":"Firefox ESR","label":"Stockholm, Sweden - EC2 - Firefox ESR","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"ec2-eu-north-1","status":"OK","backlog":0},"ec2-eu-north-1:Brave":{"browser":"Brave","label":"Stockholm, Sweden - EC2 - Brave","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"ec2-eu-north-1","status":"OK","backlog":0},"ec2-eu-north-1-catchpoint":{"1":"ec2-eu-north-1:Chrome","2":"ec2-eu-north-1:Chrome Beta","3":"ec2-eu-north-1:Chrome Canary","4":"ec2-eu-north-1:Firefox","5":"ec2-eu-north-1:Firefox Nightly","6":"ec2-eu-north-1:Firefox ESR","7":"ec2-eu-north-1:Brave","label":"Stockholm, Sweden - EC2 (Chrome,Firefox)","lat":"59.33424","lng":"18.064842","group":"Europe","default":"ec2-eu-north-1:Chrome"},"ec2-eu-north-1":{"browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Firefox ESR,Brave","label":"Stockholm, Sweden - EC2","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"ec2-eu-north-1","status":"OK","backlog":0},"ec2-eu-south-1:Chrome":{"browser":"Chrome","label":"Milan, Italy - EC2 - Chrome","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-eu-south-1","status":"OK","backlog":0},"ec2-eu-south-1:Chrome Beta":{"browser":"Chrome Beta","label":"Milan, Italy - EC2 - Chrome Beta","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-eu-south-1","status":"OK","backlog":0},"ec2-eu-south-1:Chrome Canary":{"browser":"Chrome Canary","label":"Milan, Italy - EC2 - Chrome Canary","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-eu-south-1","status":"OK","backlog":0},"ec2-eu-south-1:Firefox":{"browser":"Firefox","label":"Milan, Italy - EC2 - Firefox","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-eu-south-1","status":"OK","backlog":0},"ec2-eu-south-1:Firefox Nightly":{"browser":"Firefox Nightly","label":"Milan, Italy - EC2 - Firefox Nightly","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-eu-south-1","status":"OK","backlog":0},"ec2-eu-south-1:Firefox ESR":{"browser":"Firefox ESR","label":"Milan, Italy - EC2 - Firefox ESR","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-eu-south-1","status":"OK","backlog":0},"ec2-eu-south-1:Brave":{"browser":"Brave","label":"Milan, Italy - EC2 - Brave","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-eu-south-1","status":"OK","backlog":0},"ec2-eu-south-1-catchpoint":{"1":"ec2-eu-south-1:Chrome","2":"ec2-eu-south-1:Chrome Beta","3":"ec2-eu-south-1:Chrome Canary","4":"ec2-eu-south-1:Firefox","5":"ec2-eu-south-1:Firefox Nightly","6":"ec2-eu-south-1:Firefox ESR","7":"ec2-eu-south-1:Brave","label":"Milan, Italy - EC2 (Chrome,Firefox)","lat":"45.4626482","lng":"9.0376489","group":"Europe","default":"ec2-eu-south-1:Chrome"},"ec2-eu-south-1":{"browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Firefox ESR,Brave","label":"Milan, Italy - EC2","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-eu-south-1","status":"OK","backlog":0},"ec2-af-south-1:Chrome":{"browser":"Chrome","label":"Cape Town, South Africa - EC2 - Chrome","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-af-south-1","status":"OK","backlog":0},"ec2-af-south-1:Chrome Beta":{"browser":"Chrome Beta","label":"Cape Town, South Africa - EC2 - Chrome Beta","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-af-south-1","status":"OK","backlog":0},"ec2-af-south-1:Chrome Canary":{"browser":"Chrome Canary","label":"Cape Town, South Africa - EC2 - Chrome Canary","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-af-south-1","status":"OK","backlog":0},"ec2-af-south-1:Firefox":{"browser":"Firefox","label":"Cape Town, South Africa - EC2 - Firefox","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-af-south-1","status":"OK","backlog":0},"ec2-af-south-1:Firefox Nightly":{"browser":"Firefox Nightly","label":"Cape Town, South Africa - EC2 - Firefox Nightly","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-af-south-1","status":"OK","backlog":0},"ec2-af-south-1:Firefox ESR":{"browser":"Firefox ESR","label":"Cape Town, South Africa - EC2 - Firefox ESR","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-af-south-1","status":"OK","backlog":0},"ec2-af-south-1:Brave":{"browser":"Brave","label":"Cape Town, South Africa - EC2 - Brave","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-af-south-1","status":"OK","backlog":0},"ec2-af-south-1-catchpoint":{"1":"ec2-af-south-1:Chrome","2":"ec2-af-south-1:Chrome Beta","3":"ec2-af-south-1:Chrome Canary","4":"ec2-af-south-1:Firefox","5":"ec2-af-south-1:Firefox Nightly","6":"ec2-af-south-1:Firefox ESR","7":"ec2-af-south-1:Brave","label":"Cape Town, South Africa - EC2 (Chrome,Firefox)","lat":"-33.9152209","lng":"18.3758859","group":"Africa","default":"ec2-af-south-1:Chrome"},"ec2-af-south-1":{"browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Firefox ESR,Brave","label":"Cape Town, South Africa - EC2","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-af-south-1","status":"OK","backlog":0},"ec2-ap-east-1:Chrome":{"browser":"Chrome","label":"Hong Kong, China - EC2 - Chrome","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-east-1","status":"OK","backlog":0},"ec2-ap-east-1:Chrome Beta":{"browser":"Chrome Beta","label":"Hong Kong, China - EC2 - Chrome Beta","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-east-1","status":"OK","backlog":0},"ec2-ap-east-1:Chrome Canary":{"browser":"Chrome Canary","label":"Hong Kong, China - EC2 - Chrome Canary","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-east-1","status":"OK","backlog":0},"ec2-ap-east-1:Firefox":{"browser":"Firefox","label":"Hong Kong, China - EC2 - Firefox","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-east-1","status":"OK","backlog":0},"ec2-ap-east-1:Firefox Nightly":{"browser":"Firefox Nightly","label":"Hong Kong, China - EC2 - Firefox Nightly","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-east-1","status":"OK","backlog":0},"ec2-ap-east-1:Firefox ESR":{"browser":"Firefox ESR","label":"Hong Kong, China - EC2 - Firefox ESR","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-east-1","status":"OK","backlog":0},"ec2-ap-east-1:Brave":{"browser":"Brave","label":"Hong Kong, China - EC2 - Brave","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-east-1","status":"OK","backlog":0},"ec2-ap-east-1-catchpoint":{"1":"ec2-ap-east-1:Chrome","2":"ec2-ap-east-1:Chrome Beta","3":"ec2-ap-east-1:Chrome Canary","4":"ec2-ap-east-1:Firefox","5":"ec2-ap-east-1:Firefox Nightly","6":"ec2-ap-east-1:Firefox ESR","7":"ec2-ap-east-1:Brave","label":"Hong Kong, China - EC2 (Chrome,Firefox)","lat":"22.279614","lng":"114.179163","group":"Asia","default":"ec2-ap-east-1:Chrome"},"ec2-ap-east-1":{"browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Firefox ESR,Brave","label":"Hong Kong, China - EC2","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ap-east-1","status":"OK","backlog":0},"ec2-ca-central-1:Chrome":{"browser":"Chrome","label":"Toronto, Canada - EC2 - Chrome","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ca-central-1","status":"OK","backlog":0},"ec2-ca-central-1:Chrome Beta":{"browser":"Chrome Beta","label":"Toronto, Canada - EC2 - Chrome Beta","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ca-central-1","status":"OK","backlog":0},"ec2-ca-central-1:Chrome Canary":{"browser":"Chrome Canary","label":"Toronto, Canada - EC2 - Chrome Canary","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ca-central-1","status":"OK","backlog":0},"ec2-ca-central-1:Firefox":{"browser":"Firefox","label":"Toronto, Canada - EC2 - Firefox","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ca-central-1","status":"OK","backlog":0},"ec2-ca-central-1:Firefox Nightly":{"browser":"Firefox Nightly","label":"Toronto, Canada - EC2 - Firefox Nightly","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ca-central-1","status":"OK","backlog":0},"ec2-ca-central-1:Firefox ESR":{"browser":"Firefox ESR","label":"Toronto, Canada - EC2 - Firefox ESR","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ca-central-1","status":"OK","backlog":0},"ec2-ca-central-1:Brave":{"browser":"Brave","label":"Toronto, Canada - EC2 - Brave","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ca-central-1","status":"OK","backlog":0},"ec2-ca-central-1-catchpoint":{"1":"ec2-ca-central-1:Chrome","2":"ec2-ca-central-1:Chrome Beta","3":"ec2-ca-central-1:Chrome Canary","4":"ec2-ca-central-1:Firefox","5":"ec2-ca-central-1:Firefox Nightly","6":"ec2-ca-central-1:Firefox ESR","7":"ec2-ca-central-1:Brave","label":"Toronto, Canada - EC2 (Chrome,Firefox)","lat":"37.7577627","lng":"-122.4726193","group":"North America","default":"ec2-ca-central-1:Chrome"},"ec2-ca-central-1":{"browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Firefox ESR,Brave","label":"Toronto, Canada - EC2","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-ca-central-1","status":"OK","backlog":0},"ec2-me-south-1:Chrome":{"browser":"Chrome","label":"Bahrain - EC2 - Chrome","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-me-south-1","status":"OK","backlog":0},"ec2-me-south-1:Chrome Beta":{"browser":"Chrome Beta","label":"Bahrain - EC2 - Chrome Beta","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-me-south-1","status":"OK","backlog":0},"ec2-me-south-1:Chrome Canary":{"browser":"Chrome Canary","label":"Bahrain - EC2 - Chrome Canary","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-me-south-1","status":"OK","backlog":0},"ec2-me-south-1:Firefox":{"browser":"Firefox","label":"Bahrain - EC2 - Firefox","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-me-south-1","status":"OK","backlog":0},"ec2-me-south-1:Firefox Nightly":{"browser":"Firefox Nightly","label":"Bahrain - EC2 - Firefox Nightly","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-me-south-1","status":"OK","backlog":0},"ec2-me-south-1:Firefox ESR":{"browser":"Firefox ESR","label":"Bahrain - EC2 - Firefox ESR","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-me-south-1","status":"OK","backlog":0},"ec2-me-south-1:Brave":{"browser":"Brave","label":"Bahrain - EC2 - Brave","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-me-south-1","status":"OK","backlog":0},"ec2-me-south-1-catchpoint":{"1":"ec2-me-south-1:Chrome","2":"ec2-me-south-1:Chrome Beta","3":"ec2-me-south-1:Chrome Canary","4":"ec2-me-south-1:Firefox","5":"ec2-me-south-1:Firefox Nightly","6":"ec2-me-south-1:Firefox ESR","7":"ec2-me-south-1:Brave","label":"Bahrain - EC2 (Chrome,Firefox)","lat":"25.9406805","lng":"50.3074005","group":"Middle East","default":"ec2-me-south-1:Chrome"},"ec2-me-south-1":{"browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Firefox ESR,Brave","label":"Bahrain - EC2","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"ec2-me-south-1","status":"OK","backlog":0},"gce-us-west3:Chrome":{"browser":"Chrome","label":"Salt Lake City, Utah - GCE - Chrome","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-us-west3","status":"OK","backlog":0},"gce-us-west3:Chrome Beta":{"browser":"Chrome Beta","label":"Salt Lake City, Utah - GCE - Chrome Beta","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-us-west3","status":"OK","backlog":0},"gce-us-west3:Chrome Canary":{"browser":"Chrome Canary","label":"Salt Lake City, Utah - GCE - Chrome Canary","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-us-west3","status":"OK","backlog":0},"gce-us-west3:Firefox":{"browser":"Firefox","label":"Salt Lake City, Utah - GCE - Firefox","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-us-west3","status":"OK","backlog":0},"gce-us-west3:Firefox Nightly":{"browser":"Firefox Nightly","label":"Salt Lake City, Utah - GCE - Firefox Nightly","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-us-west3","status":"OK","backlog":0},"gce-us-west3:Firefox ESR":{"browser":"Firefox ESR","label":"Salt Lake City, Utah - GCE - Firefox ESR","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-us-west3","status":"OK","backlog":0},"gce-us-west3:Brave":{"browser":"Brave","label":"Salt Lake City, Utah - GCE - Brave","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-us-west3","status":"OK","backlog":0},"gce-us-west3-catchpoint":{"1":"gce-us-west3:Chrome","2":"gce-us-west3:Chrome Beta","3":"gce-us-west3:Chrome Canary","4":"gce-us-west3:Firefox","5":"gce-us-west3:Firefox Nightly","6":"gce-us-west3:Firefox ESR","7":"gce-us-west3:Brave","label":"Salt Lake City, Utah - GCE (Chrome,Firefox)","lat":"40.7765868","lng":"-111.9905241","group":"North America","default":"gce-us-west3:Chrome"},"gce-us-west3":{"browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Firefox ESR,Brave","label":"Salt Lake City, Utah - GCE","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-us-west3","status":"OK","backlog":0},"gce-europe-west4:Chrome":{"browser":"Chrome","label":"Amsterdam, NL - GCE - Chrome","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-europe-west4","status":"OK","backlog":0},"gce-europe-west4:Chrome Beta":{"browser":"Chrome Beta","label":"Amsterdam, NL - GCE - Chrome Beta","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-europe-west4","status":"OK","backlog":0},"gce-europe-west4:Chrome Canary":{"browser":"Chrome Canary","label":"Amsterdam, NL - GCE - Chrome Canary","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-europe-west4","status":"OK","backlog":0},"gce-europe-west4:Firefox":{"browser":"Firefox","label":"Amsterdam, NL - GCE - Firefox","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-europe-west4","status":"OK","backlog":0},"gce-europe-west4:Firefox Nightly":{"browser":"Firefox Nightly","label":"Amsterdam, NL - GCE - Firefox Nightly","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-europe-west4","status":"OK","backlog":0},"gce-europe-west4:Firefox ESR":{"browser":"Firefox ESR","label":"Amsterdam, NL - GCE - Firefox ESR","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-europe-west4","status":"OK","backlog":0},"gce-europe-west4:Brave":{"browser":"Brave","label":"Amsterdam, NL - GCE - Brave","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-europe-west4","status":"OK","backlog":0},"gce-europe-west4-catchpoint":{"1":"gce-europe-west4:Chrome","2":"gce-europe-west4:Chrome Beta","3":"gce-europe-west4:Chrome Canary","4":"gce-europe-west4:Firefox","5":"gce-europe-west4:Firefox Nightly","6":"gce-europe-west4:Firefox ESR","7":"gce-europe-west4:Brave","label":"Amsterdam, NL - GCE (Chrome,Firefox)","lat":"52.374824","lng":"4.890919","group":"Europe","default":"gce-europe-west4:Chrome"},"gce-europe-west4":{"browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Firefox ESR,Brave","label":"Amsterdam, NL - GCE","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-europe-west4","status":"OK","backlog":0},"gce-asia-southeast2:Chrome":{"browser":"Chrome","label":"Jakarta, Indonesia - GCE - Chrome","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-asia-southeast2","status":"OK","backlog":1},"gce-asia-southeast2:Chrome Beta":{"browser":"Chrome Beta","label":"Jakarta, Indonesia - GCE - Chrome Beta","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-asia-southeast2","status":"OK","backlog":1},"gce-asia-southeast2:Chrome Canary":{"browser":"Chrome Canary","label":"Jakarta, Indonesia - GCE - Chrome Canary","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-asia-southeast2","status":"OK","backlog":1},"gce-asia-southeast2:Firefox":{"browser":"Firefox","label":"Jakarta, Indonesia - GCE - Firefox","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-asia-southeast2","status":"OK","backlog":1},"gce-asia-southeast2:Firefox Nightly":{"browser":"Firefox Nightly","label":"Jakarta, Indonesia - GCE - Firefox Nightly","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-asia-southeast2","status":"OK","backlog":1},"gce-asia-southeast2:Firefox ESR":{"browser":"Firefox ESR","label":"Jakarta, Indonesia - GCE - Firefox ESR","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-asia-southeast2","status":"OK","backlog":1},"gce-asia-southeast2:Brave":{"browser":"Brave","label":"Jakarta, Indonesia - GCE - Brave","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-asia-southeast2","status":"OK","backlog":1},"gce-asia-southeast2-catchpoint":{"1":"gce-asia-southeast2:Chrome","2":"gce-asia-southeast2:Chrome Beta","3":"gce-asia-southeast2:Chrome Canary","4":"gce-asia-southeast2:Firefox","5":"gce-asia-southeast2:Firefox Nightly","6":"gce-asia-southeast2:Firefox ESR","7":"gce-asia-southeast2:Brave","label":"Jakarta, Indonesia - GCE (Chrome,Firefox)","lat":"-5.7773029","lng":"106.1174885","group":"Asia","default":"gce-asia-southeast2:Chrome"},"gce-asia-southeast2":{"browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Firefox ESR,Brave","label":"Jakarta, Indonesia - GCE","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-asia-southeast2","status":"OK","backlog":1},"gce-asia-east1:Chrome":{"browser":"Chrome","label":"Taiwan - GCE - Chrome","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-asia-east1","status":"OK","backlog":0},"gce-asia-east1:Chrome Beta":{"browser":"Chrome Beta","label":"Taiwan - GCE - Chrome Beta","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-asia-east1","status":"OK","backlog":0},"gce-asia-east1:Chrome Canary":{"browser":"Chrome Canary","label":"Taiwan - GCE - Chrome Canary","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-asia-east1","status":"OK","backlog":0},"gce-asia-east1:Firefox":{"browser":"Firefox","label":"Taiwan - GCE - Firefox","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-asia-east1","status":"OK","backlog":0},"gce-asia-east1:Firefox Nightly":{"browser":"Firefox Nightly","label":"Taiwan - GCE - Firefox Nightly","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-asia-east1","status":"OK","backlog":0},"gce-asia-east1:Firefox ESR":{"browser":"Firefox ESR","label":"Taiwan - GCE - Firefox ESR","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-asia-east1","status":"OK","backlog":0},"gce-asia-east1:Brave":{"browser":"Brave","label":"Taiwan - GCE - Brave","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-asia-east1","status":"OK","backlog":0},"gce-asia-east1-catchpoint":{"1":"gce-asia-east1:Chrome","2":"gce-asia-east1:Chrome Beta","3":"gce-asia-east1:Chrome Canary","4":"gce-asia-east1:Firefox","5":"gce-asia-east1:Firefox Nightly","6":"gce-asia-east1:Firefox ESR","7":"gce-asia-east1:Brave","label":"Taiwan - GCE (Chrome,Firefox)","lat":"23.4817416","lng":"118.9632676","group":"Asia","default":"gce-asia-east1:Chrome"},"gce-asia-east1":{"browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Firefox ESR,Brave","label":"Taiwan - GCE","sponsor":"catchpoint","allowKeys":"A","agents":"2","location":"gce-asia-east1","status":"OK","backlog":0},"azure-uae-north:Chrome":{"browser":"Chrome","label":"Dubai, UAE - Azure - Chrome","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"azure-uae-north","status":"OK","backlog":0},"azure-uae-north:Chrome Beta":{"browser":"Chrome Beta","label":"Dubai, UAE - Azure - Chrome Beta","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"azure-uae-north","status":"OK","backlog":0},"azure-uae-north:Chrome Canary":{"browser":"Chrome Canary","label":"Dubai, UAE - Azure - Chrome Canary","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"azure-uae-north","status":"OK","backlog":0},"azure-uae-north:Firefox":{"browser":"Firefox","label":"Dubai, UAE - Azure - Firefox","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"azure-uae-north","status":"OK","backlog":0},"azure-uae-north:Firefox Nightly":{"browser":"Firefox Nightly","label":"Dubai, UAE - Azure - Firefox Nightly","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"azure-uae-north","status":"OK","backlog":0},"azure-uae-north:Firefox ESR":{"browser":"Firefox ESR","label":"Dubai, UAE - Azure - Firefox ESR","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"azure-uae-north","status":"OK","backlog":0},"azure-uae-north-catchpoint":{"1":"azure-uae-north:Chrome","2":"azure-uae-north:Chrome Beta","3":"azure-uae-north:Chrome Canary","4":"azure-uae-north:Firefox","5":"azure-uae-north:Firefox Nightly","6":"azure-uae-north:Firefox ESR","label":"Dubai, UAE - Azure (Chrome, Firefox)","lat":"25.0742933","lng":"55.0880239","group":"Middle East","default":"azure-uae-north:Chrome"},"azure-uae-north":{"browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Firefox ESR","label":"Dubai, UAE - Azure","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"azure-uae-north","status":"OK","backlog":0},"tencent-beijing:Chrome":{"browser":"Chrome","label":"Beijing, China - Tencent - Chrome","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"tencent-beijing","status":"OK","backlog":0},"tencent-beijing:Chrome Beta":{"browser":"Chrome Beta","label":"Beijing, China - Tencent - Chrome Beta","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"tencent-beijing","status":"OK","backlog":0},"tencent-beijing:Chrome Canary":{"browser":"Chrome Canary","label":"Beijing, China - Tencent - Chrome Canary","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"tencent-beijing","status":"OK","backlog":0},"tencent-beijing:Firefox":{"browser":"Firefox","label":"Beijing, China - Tencent - Firefox","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"tencent-beijing","status":"OK","backlog":0},"tencent-beijing:Firefox Nightly":{"browser":"Firefox Nightly","label":"Beijing, China - Tencent - Firefox Nightly","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"tencent-beijing","status":"OK","backlog":0},"tencent-beijing:Firefox ESR":{"browser":"Firefox ESR","label":"Beijing, China - Tencent - Firefox ESR","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"tencent-beijing","status":"OK","backlog":0},"tencent-beijing:Brave":{"browser":"Brave","label":"Beijing, China - Tencent - Brave","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"tencent-beijing","status":"OK","backlog":0},"tencent-beijing-catchpoint":{"1":"tencent-beijing:Chrome","2":"tencent-beijing:Chrome Beta","3":"tencent-beijing:Chrome Canary","4":"tencent-beijing:Firefox","5":"tencent-beijing:Firefox Nightly","6":"tencent-beijing:Firefox ESR","7":"tencent-beijing:Brave","label":"Beijing, China - Tencent (Chrome, Firefox)","lat":"39.9387995","lng":"116.2573784","group":"Asia","default":"tencent-beijing:Chrome"},"tencent-beijing":{"browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Firefox ESR,Brave","label":"Beijing, China - Tencent","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"tencent-beijing","status":"OK","backlog":0},"ec2-cn-north-1:Chrome":{"browser":"Chrome","label":"Beijing, China - EC2 - Chrome","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"ec2-cn-north-1","status":"OK","backlog":0},"ec2-cn-north-1:Chrome Beta":{"browser":"Chrome Beta","label":"Beijing, China - EC2 - Chrome Beta","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"ec2-cn-north-1","status":"OK","backlog":0},"ec2-cn-north-1:Chrome Canary":{"browser":"Chrome Canary","label":"Beijing, China - EC2 - Chrome Canary","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"ec2-cn-north-1","status":"OK","backlog":0},"ec2-cn-north-1:Firefox":{"browser":"Firefox","label":"Beijing, China - EC2 - Firefox","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"ec2-cn-north-1","status":"OK","backlog":0},"ec2-cn-north-1:Firefox Nightly":{"browser":"Firefox Nightly","label":"Beijing, China - EC2 - Firefox Nightly","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"ec2-cn-north-1","status":"OK","backlog":0},"ec2-cn-north-1:Firefox ESR":{"browser":"Firefox ESR","label":"Beijing, China - EC2 - Firefox ESR","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"ec2-cn-north-1","status":"OK","backlog":0},"ec2-cn-north-1:Brave":{"browser":"Brave","label":"Beijing, China - EC2 - Brave","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"ec2-cn-north-1","status":"OK","backlog":0},"ec2-cn-north-1-catchpoint":{"1":"ec2-cn-north-1:Chrome","2":"ec2-cn-north-1:Chrome Beta","3":"ec2-cn-north-1:Chrome Canary","4":"ec2-cn-north-1:Firefox","5":"ec2-cn-north-1:Firefox Nightly","6":"ec2-cn-north-1:Firefox ESR","7":"ec2-cn-north-1:Brave","label":"Beijing, China - EC2 (Chrome, Firefox)","lat":"39.9387995","lng":"116.2573784","group":"Asia","default":"ec2-cn-north-1:Chrome"},"ec2-cn-north-1":{"browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Firefox ESR,Brave","label":"Beijing, China - EC2","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"ec2-cn-north-1","status":"OK","backlog":0},"tencent-shanghai:Chrome":{"browser":"Chrome","label":"Shanghai, China - Tencent - Chrome","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"tencent-shanghai","status":"OK","backlog":0},"tencent-shanghai:Chrome Beta":{"browser":"Chrome Beta","label":"Shanghai, China - Tencent - Chrome Beta","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"tencent-shanghai","status":"OK","backlog":0},"tencent-shanghai:Chrome Canary":{"browser":"Chrome Canary","label":"Shanghai, China - Tencent - Chrome Canary","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"tencent-shanghai","status":"OK","backlog":0},"tencent-shanghai:Firefox":{"browser":"Firefox","label":"Shanghai, China - Tencent - Firefox","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"tencent-shanghai","status":"OK","backlog":0},"tencent-shanghai:Firefox Nightly":{"browser":"Firefox Nightly","label":"Shanghai, China - Tencent - Firefox Nightly","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"tencent-shanghai","status":"OK","backlog":0},"tencent-shanghai:Firefox ESR":{"browser":"Firefox ESR","label":"Shanghai, China - Tencent - Firefox ESR","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"tencent-shanghai","status":"OK","backlog":0},"tencent-shanghai:Brave":{"browser":"Brave","label":"Shanghai, China - Tencent - Brave","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"tencent-shanghai","status":"OK","backlog":0},"tencent-shanghai-catchpoint":{"1":"tencent-shanghai:Chrome","2":"tencent-shanghai:Chrome Beta","3":"tencent-shanghai:Chrome Canary","4":"tencent-shanghai:Firefox","5":"tencent-shanghai:Firefox Nightly","6":"tencent-shanghai:Firefox ESR","7":"tencent-shanghai:Brave","label":"Shanghai, China - Tencent (Chrome, Firefox)","lat":"31.2240453","lng":"121.1965785","group":"Asia","default":"tencent-shanghai:Chrome"},"tencent-shanghai":{"browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Firefox ESR,Brave","label":"Shanghai, China - Tencent","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"tencent-shanghai","status":"OK","backlog":0},"ec2-cn-northwest-1:Chrome":{"browser":"Chrome","label":"Ningxia, China - EC2 - Chrome","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"ec2-cn-northwest-1","status":"OK","backlog":1},"ec2-cn-northwest-1:Chrome Beta":{"browser":"Chrome Beta","label":"Ningxia, China - EC2 - Chrome Beta","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"ec2-cn-northwest-1","status":"OK","backlog":1},"ec2-cn-northwest-1:Chrome Canary":{"browser":"Chrome Canary","label":"Ningxia, China - EC2 - Chrome Canary","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"ec2-cn-northwest-1","status":"OK","backlog":1},"ec2-cn-northwest-1:Firefox":{"browser":"Firefox","label":"Ningxia, China - EC2 - Firefox","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"ec2-cn-northwest-1","status":"OK","backlog":1},"ec2-cn-northwest-1:Firefox Nightly":{"browser":"Firefox Nightly","label":"Ningxia, China - EC2 - Firefox Nightly","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"ec2-cn-northwest-1","status":"OK","backlog":1},"ec2-cn-northwest-1:Firefox ESR":{"browser":"Firefox ESR","label":"Ningxia, China - EC2 - Firefox ESR","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"ec2-cn-northwest-1","status":"OK","backlog":1},"ec2-cn-northwest-1:Brave":{"browser":"Brave","label":"Ningxia, China - EC2 - Brave","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"ec2-cn-northwest-1","status":"OK","backlog":1},"ec2-cn-northwest-1-catchpoint":{"1":"ec2-cn-northwest-1:Chrome","2":"ec2-cn-northwest-1:Chrome Beta","3":"ec2-cn-northwest-1:Chrome Canary","4":"ec2-cn-northwest-1:Firefox","5":"ec2-cn-northwest-1:Firefox Nightly","6":"ec2-cn-northwest-1:Firefox ESR","7":"ec2-cn-northwest-1:Brave","label":"Ningxia, China - EC2 (Chrome, Firefox)","lat":"37.3046495","lng":"104.8522204","group":"Asia","default":"ec2-cn-northwest-1:Chrome"},"ec2-cn-northwest-1":{"browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Firefox ESR,Brave","label":"Ningxia, China - EC2","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"ec2-cn-northwest-1","status":"OK","backlog":1},"tencent-bangkok:Chrome":{"browser":"Chrome","label":"Bangkok, Thailand - Tencent - Chrome","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"tencent-bangkok","status":"OK","backlog":0},"tencent-bangkok:Chrome Beta":{"browser":"Chrome Beta","label":"Bangkok, Thailand - Tencent - Chrome Beta","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"tencent-bangkok","status":"OK","backlog":0},"tencent-bangkok:Chrome Canary":{"browser":"Chrome Canary","label":"Bangkok, Thailand - Tencent - Chrome Canary","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"tencent-bangkok","status":"OK","backlog":0},"tencent-bangkok:Firefox":{"browser":"Firefox","label":"Bangkok, Thailand - Tencent - Firefox","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"tencent-bangkok","status":"OK","backlog":0},"tencent-bangkok:Firefox Nightly":{"browser":"Firefox Nightly","label":"Bangkok, Thailand - Tencent - Firefox Nightly","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"tencent-bangkok","status":"OK","backlog":0},"tencent-bangkok:Firefox ESR":{"browser":"Firefox ESR","label":"Bangkok, Thailand - Tencent - Firefox ESR","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"tencent-bangkok","status":"OK","backlog":0},"tencent-bangkok:Brave":{"browser":"Brave","label":"Bangkok, Thailand - Tencent - Brave","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"tencent-bangkok","status":"OK","backlog":0},"tencent-bangkok-catchpoint":{"1":"tencent-bangkok:Chrome","2":"tencent-bangkok:Chrome Beta","3":"tencent-bangkok:Chrome Canary","4":"tencent-bangkok:Firefox","5":"tencent-bangkok:Firefox Nightly","6":"tencent-bangkok:Firefox ESR","7":"tencent-bangkok:Brave","label":"Bangkok, Thailand - Tencent (Chrome, Firefox)","lat":"13.7245601","lng":"100.4930285","group":"Asia","default":"tencent-bangkok:Chrome"},"tencent-bangkok":{"browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Firefox ESR,Brave","label":"Bangkok, Thailand - Tencent","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"tencent-bangkok","status":"OK","backlog":0},"azure-australia-southeast:Chrome":{"browser":"Chrome","label":"Melbourne, Australia - Azure - Chrome","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"azure-australia-southeast","status":"OK","backlog":0},"azure-australia-southeast:Chrome Beta":{"browser":"Chrome Beta","label":"Melbourne, Australia - Azure - Chrome Beta","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"azure-australia-southeast","status":"OK","backlog":0},"azure-australia-southeast:Chrome Canary":{"browser":"Chrome Canary","label":"Melbourne, Australia - Azure - Chrome Canary","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"azure-australia-southeast","status":"OK","backlog":0},"azure-australia-southeast:Firefox":{"browser":"Firefox","label":"Melbourne, Australia - Azure - Firefox","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"azure-australia-southeast","status":"OK","backlog":0},"azure-australia-southeast:Firefox Nightly":{"browser":"Firefox Nightly","label":"Melbourne, Australia - Azure - Firefox Nightly","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"azure-australia-southeast","status":"OK","backlog":0},"azure-australia-southeast:Firefox ESR":{"browser":"Firefox ESR","label":"Melbourne, Australia - Azure - Firefox ESR","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"azure-australia-southeast","status":"OK","backlog":0},"azure-australia-southeast:Brave":{"browser":"Brave","label":"Melbourne, Australia - Azure - Brave","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"azure-australia-southeast","status":"OK","backlog":0},"azure-australia-southeast-catchpoint":{"1":"azure-australia-southeast:Chrome","2":"azure-australia-southeast:Chrome Beta","3":"azure-australia-southeast:Chrome Canary","4":"azure-australia-southeast:Firefox","5":"azure-australia-southeast:Firefox Nightly","6":"azure-australia-southeast:Firefox ESR","7":"azure-australia-southeast:Brave","label":"Melbourne, Australia - Azure (Chrome,Firefox)","lat":"-37.9722342","lng":"144.7729631","group":"Oceania","default":"azure-australia-southeast:Chrome"},"azure-australia-southeast":{"browser":"Chrome,Chrome Beta,Chrome Canary,Firefox,Firefox Nightly,Firefox ESR,Brave","label":"Melbourne, Australia - Azure","sponsor":"catchpoint","allowKeys":"A","agents":"1","location":"azure-australia-southeast","status":"OK","backlog":0},"processed":true};
+var connectivity = {"Cable":{"label":"Cable (5\/1 Mbps 28ms RTT)","bwIn":"5000000","bwOut":"1000000","latency":"28","plr":"0"},"DSL":{"label":"DSL (1.5 Mbps\/384 Kbps 50ms RTT)","bwIn":"1500000","bwOut":"384000","latency":"50","plr":"0"},"3GSlow":{"label":"3G Slow (400 Kbps, 400ms RTT)","bwIn":"400000","bwOut":"400000","latency":"400","plr":"0","timeout":"480"},"3G_EM":{"label":"Emerging Markets 3G (400 Kbps, 400ms RTT)","bwIn":"400000","bwOut":"400000","latency":"400","plr":"0","timeout":"480","hidden":"1"},"3G":{"label":"3G (1.6 Mbps\/768 Kbps 300ms RTT)","bwIn":"1600000","bwOut":"768000","latency":"300","plr":"0","timeout":"120"},"3GFast":{"label":"3G Fast (1.6 Mbps\/768 Kbps 150ms RTT)","bwIn":"1600000","bwOut":"768000","latency":"150","plr":"0","timeout":"120"},"4G":{"label":"4G (9 Mbps, 170ms RTT)","bwIn":"9000000","bwOut":"9000000","latency":"170"},"LTE":{"label":"LTE (12 Mbps\/12 Mbps 70ms RTT)","bwIn":"12000000","bwOut":"12000000","latency":"70","plr":"0"},"Edge":{"label":"Mobile Edge (240 Kbps\/200 Kbps 840ms RTT)","bwIn":"240000","bwOut":"200000","latency":"840","plr":"0","timeout":"300"},"2G":{"label":"2G (280 Kbps\/256 Kbps 800ms RTT)","bwIn":"280000","bwOut":"256000","latency":"800","plr":"0","timeout":"300"},"Dial":{"label":"56K Dial-Up (49\/30 Kbps 120ms RTT)","bwIn":"49000","bwOut":"30000","latency":"120","plr":"0","timeout":"300"},"FIOS":{"label":"FIOS (20\/5 Mbps 4ms RTT)","bwIn":"20000000","bwOut":"5000000","latency":"4","plr":"0"},"Native":{"label":"Native Connection (No Traffic Shaping)","bwIn":"0","bwOut":"0","latency":"0","plr":"0"}};
+var mapsApiKey = 'AIzaSyAzyFn0PtnwAfLZspDDhrBjzpesvxEax3g';var forgetSettings = false;
+  </script>
+  <script src="/js/test.js?v=44" type="text/javascript">
+  </script>
+ </body>
+</html>

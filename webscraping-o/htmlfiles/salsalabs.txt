@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8"/>
+  <title>
+   Welcome
+  </title>
+  <script src="/public/scripts/jquery-1.11.1.ignite.min.js" type="text/javascript">
+  </script>
+  <script src="/public/scripts/json2html.js" type="text/javascript">
+  </script>
+  <script src="/public/scripts/jquery.json2html.js" type="text/javascript">
+  </script>
+  <link href="/public/styles/sli-styles.css" rel="stylesheet"/>
+  <link href="/api/organization/style" rel="stylesheet"/>
+ </head>
+ <body>
+  <script type="text/javascript">
+   $(document).ready(function() {
+		$.getJSON("/api/organization", function(data, status) {
+			$("#orgName").html(data.payload.name);
+								var settings;
+			data.payload.attributes.forEach(function(entry) { if (entry.key == 'Organization@Settings') settings = $.parseJSON(entry.value); });
+				var transform = {"tag":"div","children":[ {"tag":"span","children":[
+						{"tag":"p","html":"${generalContactInformation.Addrline1}"},
+						{"tag":"p","html":"${generalContactInformation.Addrline2}"},
+						{"tag":"p","html":"${generalContactInformation.City}, ${generalContactInformation.StateProvince.name} ${generalContactInformation.PortalCode}"} ]} ]};
+							$("#contactInfo").json2html(settings,transform);
+
+		});
+	});
+  </script>
+  <div ignite-content-container="ignite-content-container">
+   <div class="widget sli-widget">
+    <section class="sli-section">
+     <div class="sli-header header salsa_widget_primary sli-primary-background">
+      <div class="sli-header-image">
+       <img src="/api/organization/logo/data" width="100"/>
+      </div>
+      <div class="sli-header-text">
+       <p>
+        Welcome
+       </p>
+      </div>
+     </div>
+    </section>
+    <section class="sli-section">
+     <div class="sli-row">
+      <div class="sli-columns-12">
+       <h1 class="sli-primary-color">
+        Welcome to the default home page for
+        <span id="orgName">
+        </span>
+       </h1>
+      </div>
+     </div>
+     <div class="sli-row">
+      <div class="sli-columns-6">
+       <p class="sli-secondary-color">
+        <strong>
+         Contact Info
+        </strong>
+       </p>
+       <div id="contactInfo">
+       </div>
+      </div>
+     </div>
+    </section>
+   </div>
+  </div>
+ </body>
+</html>

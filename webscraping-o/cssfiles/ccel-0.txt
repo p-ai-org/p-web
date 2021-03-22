@@ -1,0 +1,851 @@
+/** page-front.css
+ *
+ *  @brief CCEL Home Page CSS
+ *  
+ *  This manages some interesting responses to window size.
+ *  
+ *  @TODO Removing unused styles, such as:
+ *    -- Many for .grid-box and descendants.
+ *    -- Several @media rules for 'grid-box-6' (???)
+ *    -- .wrapper stuff (???)
+ */
+
+/** Basic page layout/components:
+ *  
+ *  |-------------------------------------------------------------------------|
+ *  | CCEL header                                                       Logo  |
+ *  |                          main menu bar                                  |
+ *  |-------------------------------------------------------------------------|
+ *  |                         Library picture                                 |
+ *  |-------------------------------------------------------------------------|
+ *  |  Facet form   |    Contents / discovery items        |       Ads        |
+ *  |               |                                      |                  |
+ *  |-------------------------------------------------------------------------|
+ *  |  Developer/debugging messages (optional)                                |
+ *  |-------------------------------------------------------------------------|
+ *  |                          Footer button bar                              |
+ *  |-------------------------------------------------------------------------|
+ *
+ *  HTML structure summary
+ *  
+ *  ------------ layouts/ContentWrapper.blade.php
+ *  DOCTYPE
+ *  html
+ *    head
+ *      include('CommonHead')
+ *    body
+ *      div id="fatness"
+ *        div id="main-content"
+ ***        div id="banner-nav"
+ *            @include('MainBanner')
+ ***        div id="main"&gt;
+ *            @include('SidebarRight')
+ *            div id="content"
+ *              @include('LibraryContainer')
+ *              @include('Greeting')
+ *              @include('Searchbox2')
+ *              div id="clear-space"
+ *                // MAIN CONTENT GOES HERE ***
+ *              div id="content-foot" class="content-foot"
+ *                // content-foot was the block area: research, study,
+ *                //   read, give, meditate, book groups;
+ *                //   support ccel, forums, popular, what's new, top 3.
+ *              div class="debugInfo"
+ *            br clear
+ ***      div id="footer"    
+ *          div class="content"
+ *                      
+ *  ------------ MainBanner.blade.php:
+ *            div id="banner-nav-right"
+ *              div id="banner"
+ *                div id="banner-left"
+ *                  div class="display-inline-block"
+ *                    div id="site-name" [fancy CCEL lettering]
+ *                      a / img id="banner-site-name"
+ *                    div id="banner-tagline"
+ *                div id="banner-right"
+ *                  div id="banner-calvin"
+ *                    div / a / div / img data:
+ *
+ *  ------------ MainMenuBar.blade.php:
+ *              div class="navbar"
+ *                ul / li / ...
+ *
+ *  ------------ SidebarRight.blade.php:
+ *            div id="sidebar-right" class="sidebar"
+ *              div class="block block-user" id="block-user-1"
+ *                h2
+ *                div class="content"
+ *                  ul class="menu"...
+ *              div class="block block-advertising" id="block-advertising-1"
+ *                div class="content"
+ *                  div class="rsb-ads"
+ *              div class="block block-ccelmod" id="block-ccelmod-8"
+ *                h2 class="block-title title"&gt;Recently viewed
+ *                div class="content"
+ *                  ul class="nav-list"
+ *              div class="block block-block" id="block-block-45"
+ *                div class="content"
+ */
+
+.caption {
+  display: inline-block;
+  padding: 0em 1em 0em 1em;
+}
+
+hr {
+  display: block;
+}
+
+#content {
+  overflow: visible; /* Allow overflow content to be visible for items such as dropdowns */
+  /* Line up the library image with the navbar */
+  padding: 0;
+}
+
+#nav-top .searchbox-wrapper,
+#searchboxDiv {
+  display: none;
+}
+
+#nav-top #user-greeting {
+  margin-left: 290px;
+}
+
+/* Alter the searchbox (for the home page only) */
+#librarySearchbox .searchbox,
+#searchboxDiv .searchbox {
+  position: absolute;
+  font-size: 16px;
+  width: 32.55%;
+  height: 28px;
+}
+
+.mainMenuBar .navbar-brand {
+  margin-right: unset;
+}
+
+#banner-site-name {
+  width: 430px;
+  height: auto;
+}
+
+#librarySearchbox input.searchbox,
+#searchboxDiv input.searchbox {
+  /* don't allow the text to approach the icon */
+  padding: 1px 25px 1px 4px;
+}
+#librarySearchbox .searchicon,
+#searchboxDiv .searchicon {
+  position: absolute;
+  top: 5px;
+  left: 30.3%;
+  width: 20px;
+  height: 20px;
+}
+.searchicon img {
+  width: 100%;
+  height: auto;
+}
+#librarySearchbox .searchbox-wrapper {
+  position: relative;
+  top: 27px;
+  left: 61.36%;
+}
+
+/* Reduce the distance between the top of the page and the library entrance */
+.node .content,
+.node {
+  margin-bottom: 0pt;
+}
+
+/* Pull in the library picture */
+#library-entrance {
+  width: 843px;
+  height: 236px;
+  margin-top: -6px;
+  margin-left: 20px;
+  color: white; /* must be kept in sync with style.css:.landingpage-quip */
+  /* background: no-repeat black url("../img/shortLibrary.png");*/
+  background-repeat: no-repeat;
+  /* background-color: black; */
+  background-image: url('../img/shortLibrary.png');
+  z-index: 1;
+}
+a#searchExamplesLink,
+a#searchExamplesLink:link,
+a#searchExamplesLink:visited {
+  color: var(--ccel-red);
+  font-style: normal;
+}
+a#searchExamplesLink:hover {
+  text-decoration: underline;
+  color: #ab4c4c;
+}
+
+#greeting {
+  padding-right: 10%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+#greeting h1,
+.h3 {
+  /* Must be kept in sync with style.css:.landingpage-title */
+  color: #587436;
+  font-weight: bold;
+}
+
+#greeting * {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+#examples-link-wrapper {
+  position: relative;
+  top: 61px;
+  left: 62%;
+  width: 235px;
+}
+
+#examples-link {
+  height: 0px;
+  width: 0px;
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  cursor: pointer;
+  /* Prevent text highlighting */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.toolTipContainer {
+  position: relative;
+  top: 4px;
+  width: 235px;
+}
+.toolTipTriangle {
+  width: 0px;
+  height: 0px;
+  border-style: solid;
+  border-width: 0 5px 5px 5px;
+  border-color: transparent transparent #83786f transparent;
+  margin-bottom: 0px;
+  margin-left: 5px;
+}
+.toolTip {
+  margin-top: 0px;
+  background-color: #83786f;
+  color: #eeeeee;
+  width: auto;
+  text-align: left;
+  padding: 4px 15px 8px 15px;
+  border-style: solid;
+  border-width: 0px;
+  font-family: Georgia;
+  font-size: 0.85rem;
+}
+#exampleToolTip span {
+  font-family: Arial;
+}
+
+/* Hide container2 until screen width is below 769,
+   and hide top until the screen width is below 611 */
+#container2,
+#top {
+  display: none;
+}
+
+#info-boxes-wrapper {
+  max-width: none;
+}
+
+#whatsnew p {
+  border-top: 2px solid #83786f;
+  padding: 5px 0px;
+}
+
+#whatsnew p:first-of-type {
+  border-top: 0;
+}
+
+#whatsnew ul {
+  padding-left: 8%;
+}
+
+#more-wikibook {
+  margin-top: -30px;
+}
+
+.returnToTop {
+  display: none;
+}
+
+.info-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 8px;
+  margin: 4px;
+}
+
+.info-table td {
+  width: 50%;
+}
+
+.tracking_page_row {
+  height: 135px !important;
+  margin: auto;
+}
+
+li.tracking_page_row {
+  width: 100%;
+  vertical-align: top;
+}
+
+@media only screen and (min-width: 2000px) /*here is good for everything but the descendent of #grid-box-6*/ {
+  /*	.original-break
+	{
+		display: none;
+	}
+
+	#grid-box-6 .responsive-break
+	{
+		display: block;
+	}
+*/
+}
+
+@media only screen and (max-width: 1999px) /*here is good for everything but the descendent of #grid-box-6*/ {
+  /*	.original-break
+	{
+		display: none;
+	}
+
+	.responsive-break
+	{
+		display: block;
+	}
+
+	#grid-box-6 .original-break
+	{
+		display: block;
+	}
+
+	#grid-box-6 .responsive-break
+	{
+		display: none;
+	}
+
+	span.caption
+	{
+		margin-bottom: 0em;
+	}
+*/
+}
+
+@media only screen and (max-width: 700px) {
+  #library-entrance {
+    display: none;
+    /* background-image: none; */
+    /*margin: 0 auto; */
+  }
+}
+
+/************************************************************** 
+
+  Media queries for scaling to smaller browser screen widths.
+  
+  The <meta content="width=device-width, initial-scale=1.0" name="viewport"/> tag
+  takes pixel density into account, so a device with true resolution of 640px 
+  width and 2.0 pixel density will have a browser viewport width of 320px.
+  
+***************************************************************/
+@media only screen and (min-width: 769px) and (max-width: 960px),
+  only screen and (max-device-width: 1024px) {
+  div#sidebar-right.sidebar {
+    display: none;
+  }
+
+  #fatness {
+    /* Allow the library image to scale. */
+    min-width: 650px;
+  }
+
+  #nav-top #user-greeting {
+    margin-left: 0px;
+  }
+
+  #container {
+    //width: 100%;
+    height: auto;
+    position: relative;
+    display: inline-block;
+  }
+
+  /* Appears just above the library-entrance picture.
+     * The element is/was generated in LibraryContainer.blade.php
+     * I don't think most displays have 2 femtometer resolution.
+     * That's about the radius of alpha particle.
+     */
+  #stretchy-wrapper {
+    padding-top: 27.99525504151839%; /* 843:236 aspect ratio */
+  }
+
+  /* @see also some @media rules below to adjust for width
+     */
+  #examples-link-wrapper {
+    top: 56px;
+    left: 61.7%;
+  }
+
+  #librarySearchbox .searchbox-wrapper,
+  #searchboxDiv .searchbox-wrapper {
+    position: static;
+    top: 0px;
+    left: 0px;
+  }
+
+  #librarySearchbox .searchbox,
+  #searchboxDiv .searchbox {
+    width: 31.95%;
+    position: absolute;
+    top: 28px;
+    left: 60.96014%;
+  }
+  #librarySearchbox input.searchbox,
+  #searchboxDiv input.searchbox {
+    padding-right: 27px;
+  }
+  #librarySearchbox .searchicon,
+  #searchboxDiv .searchicon {
+    position: absolute;
+    top: 33px;
+    left: 90.1%;
+  }
+
+  #greeting {
+    width: auto;
+  }
+}
+
+/************************************************************** 
+
+  This media query is specifically for iPad and other tablets 
+  with a max width of 1024px.  It does not affect desktop browsers,
+  unless the screen resolution has a width of 1024px which is
+  pretty unusual these days.
+ 
+***************************************************************/
+
+@media only screen and (max-width: 769px) {
+  #fatness {
+    /* allow the page to scale.  */
+    min-width: 250px;
+    padding: 0px;
+  }
+
+  /* add space between link items, especially for links */
+  #content li {
+    padding-bottom: 0.5em;
+    font-size: 1.1rem;
+  }
+
+  #nav-top #user-greeting {
+    margin-left: 0px;
+  }
+
+  /* hide various things, including the right sidebar */
+  div#sidebar-right.sidebar,
+  #container,
+  #info-boxes-wrapper {
+    display: none;
+  }
+
+  #greeting {
+    width: auto;
+  }
+
+  #searchboxDiv,
+  #searchboxDiv input.searchbox {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+  #searchboxDiv {
+    display: block;
+    margin-top: 12px;
+  }
+
+  #searchboxDiv .searchbox-wrapper {
+    top: 0px;
+    position: relative;
+  }
+
+  #searchboxDiv input.searchbox {
+    position: static;
+    width: 350px;
+    border: 2px solid #d4d0cd;
+    height: 34px;
+  }
+  #searchboxDiv .searchicon {
+    top: -27px;
+    left: 328px;
+    position: relative;
+  }
+
+  .row {
+    /*	margin-top: 48px !important;*/
+  }
+
+  li.tracking_page_row {
+    width: 50%;
+  }
+
+  .returnToTop {
+    margin: 3.9% 0 0 0;
+    padding-bottom: 7px;
+    text-align: center;
+    color: #ffffff;
+    background: #a8a09a;
+    cursor: pointer;
+    display: block;
+    max-width: 92%;
+  }
+
+  .arrow {
+    height: 0;
+    width: 0;
+    border: 4px solid transparent;
+    margin: 0px auto;
+  }
+
+  .arrow.up {
+    border-bottom-color: #83786f;
+  }
+
+  .original-break {
+    display: none;
+  }
+
+  .responsive-break {
+    display: block;
+  }
+}
+
+@media only screen and (max-width: 685px) {
+  #greeting {
+    padding: 0;
+  }
+}
+
+@media only screen and (max-width: 618px) {
+  #greeting {
+    display: none;
+  }
+
+  .returnToTop {
+    padding-bottom: 2px;
+  }
+}
+
+@media only screen and (max-width: 520px) {
+  /*
+	#grid-box-6 .original-break
+	{
+		display: block;
+	}
+
+	#grid-box-6 .responsive-break
+	{
+		display: none;
+	}
+*/
+}
+
+@media only screen and (max-width: 498px) {
+  /* Make the wikibook list becomes one column */
+  li.tracking_page_row {
+    width: 100%;
+    height: 110px !important;
+  }
+
+  #more-wikibook {
+    margin-top: -10px;
+  }
+}
+
+@media only screen and (max-width: 440px) {
+  #searchboxDiv .searchbox-wrapper,
+  #searchboxDiv .searchbox {
+    position: relative;
+    top: 0px;
+    left: 0px;
+  }
+
+  #searchboxDiv input.searchbox {
+    min-width: 0px;
+    max-width: 384px;
+    width: 100%;
+    padding-right: 23px;
+  }
+
+  #searchboxDiv .searchicon {
+    position: absolute;
+    top: 7px;
+    left: 93.5%;
+  }
+
+  .row,
+  .returnToTop {
+    max-width: none !important;
+  }
+}
+
+@media only screen and (max-width: 380px) {
+  #searchboxDiv .searchicon {
+    left: 92%;
+  }
+
+  .original-break {
+    display: block;
+  }
+
+  .responsive-break {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 325px) {
+  #searchboxDiv .searchicon {
+    left: 90.4%;
+  }
+}
+
+/* Media Queries for the navbar */
+
+@media only screen and (max-width: 920px) {
+  #banner-site-name {
+    width: 430px;
+    height: auto;
+  }
+}
+
+@media only screen and (max-width: 769px) {
+  #banner-left {
+    margin-left: 25px;
+  }
+}
+
+@media only screen and (max-width: 654px) {
+  #banner-calvin,
+  div#nav-top #user-greeting .picture {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 618px) {
+  #nav-top #menu-link-STORE {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 585px) {
+  /* Make the nav bar shorter */
+  #banner-nav,
+  #banner-nav-right {
+    height: 112px;
+    z-index: 9999;
+  }
+
+  #banner-nav-right {
+    background-size: auto 94px;
+  }
+
+  #banner {
+    padding: 20px 0px 0px 0px;
+    height: 58px;
+  }
+  #banner-left {
+    height: auto;
+  }
+
+  #banner-site-name {
+    width: 330px;
+  }
+
+  #banner-tagline {
+    font-size: 0.85rem;
+  }
+}
+
+@media only screen and (max-width: 514px) {
+  #nav-top #menu-link-COMMUNITY {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 440px) {
+  #banner {
+    height: 58px;
+  }
+  #banner-left {
+    height: auto;
+  }
+
+  #banner-site-name {
+    width: 260px;
+  }
+
+  #banner-tagline {
+    margin-top: -3px;
+  }
+
+  #nav-top #user-greeting {
+    display: none;
+  }
+
+  #banner-site-name {
+    width: 222px;
+  }
+  #banner-tagline {
+    margin-top: 0px;
+  }
+}
+
+@media only screen and (max-width: 305px) {
+  #nav-top #menu-link-BROWSE {
+    display: none;
+  }
+}
+
+/*  CSS FOR A RESPONSIVE GRID */
+/* ========================================================================
+.row {
+	clear: both;
+	max-width: 92%;
+	margin: 0 auto;
+}
+.row:after {
+	content:"";
+	display:table;
+	clear:both;
+}
+.col_1, .col_2, .col_3, .col_4, .col_5, .col_6, .col_7, .col_8, .col_9, .col_10, .col_11, .col_12 {
+	float: left;
+	width: 100%;
+	border-collapse:collapse;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	word-break: break-word;
+	margin: 4% 0 0;
+}
+.wrapper .row .col_1,
+.wrapper .row .col_2,
+.wrapper .row .col_3,
+.wrapper .row .col_4,
+.wrapper .row .col_5,
+.wrapper .row .col_6,
+.wrapper .row .col_7,
+.wrapper .row .col_8,
+.wrapper .row .col_9,
+.wrapper .row .col_10,
+.wrapper .row .col_11,
+.wrapper .row .col_12 {
+	padding: 20px;
+}
+.no_padding,
+.row.no_padding .col_1,
+.row.no_padding .col_2,
+.row.no_padding .col_3,
+.row.no_padding .col_4,
+.row.no_padding .col_5,
+.row.no_padding .col_6,
+.row.no_padding .col_7,
+.row.no_padding .col_8,
+.row.no_padding .col_9,
+.row.no_padding .col_10,
+.row.no_padding .col_11,
+.row.no_padding .col_12 {
+	padding: 0 !important;
+}
+
+@media all and (min-width : 769px) {
+	.wrapper {
+		width: 100%;
+		padding: 1% 0;
+		margin: 2% 0 0;
+	}
+	.row {
+		display: -webkit-box;
+		display: -moz-box;
+		display: -ms-flexbox;
+		display: -webkit-flex;
+		display: flex;
+		clear: both;
+		margin: 0 auto;
+		max-width: 100%;
+		padding: 2.4911% 0 0;
+	}
+	.wrapper .row {
+		padding: 1% 0;	
+	}
+	.row:after {
+		content:"";
+		display:table;
+		clear:both;
+	}
+	.col_1, .col_2, .col_3, .col_4, .col_5, .col_6, .col_7, .col_8, .col_9, .col_10, .col_11, .col_12 {
+		margin: 0 2.4911% 0 0;
+		float: left;
+		word-break: break-word;
+		position: relative;
+	}
+	
+	.col_1 { width: 6.5%; }
+	.col_2 { width: 15%; }
+	.col_3 { width: 23.5%; }
+	.col_4 { width: 31.6726%; }
+	.col_5 { width: 40.5%; }
+	.col_6 { width: 49%; }
+	.col_7 { width: 57.5%; }
+	.col_8 { width: 66%; }
+	.col_9 { width: 74.5%; }
+	.col_10 { width: 83%; }
+	.col_11 { width: 91.5%; }
+	.col_12 { width: 100%; margin: 0; }
+	
+	.last {
+		margin: 0;
+	}
+}
+======================================================================== */
+
+/*  SECTIONS  */
+.section {
+  clear: both;
+  padding: 0px;
+  margin: 0px;
+  text-align: center;
+}
+
+/*  GROUPING  */
+.group:before,
+.group:after {
+  content: '';
+  display: table;
+}
+.group:after {
+  clear: both;
+}
+.group {
+  zoom: 1; /* For IE 6/7 */
+}

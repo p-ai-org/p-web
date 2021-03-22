@@ -1,0 +1,1 @@
+.malinky-ajax-pagination-loading{display:none;margin:15px 0;text-align:center}.malinky-ajax-pagination-loading img{width:50px;height:50px}.malinky-load-more{text-align:center}.malinky-load-more__button-disable{pointer-events:none}

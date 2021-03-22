@@ -1,0 +1,61 @@
+/* $Id: homestyle.css,v 1.6 2019/06/29 21:40:08 karl Exp $
+   Copyright 2019 TeX Users Group.
+   You may freely use, modify and/or distribute this file.  */
+
+aside.navbar, div.topbar {
+  background-color:#E5E5E5;
+  padding:.5rem;
+}
+
+/* On small screens, a little space between the logo and the search,
+   which will be vertically stacked. (Overridden below.) */
+div.logo     { margin-bottom:.5rem; }
+
+/* Bring the buttons a little closer to the title text. */
+div.tugtitle { margin-bottom:-.5rem; }
+div.buttons  { margin-top:-.5rem; }
+
+/* Size of the search input field must be in rem like everything else,
+   since character widths (used with size=) are indeterminate. */
+input[name="q"] { width:10rem; }
+
+@media (max-width:768px) {
+  /* With the increased font size, make the navbar (which will appear
+     below the text) bigger. We don't want the gray to stretch across
+     the whole screen or we wouldn't have to specify anything. */
+  aside.navbar { width:14rem; }
+  td { display:table-row; }
+}
+
+/* bigger screens. */
+@media (min-width:44rem) {
+  /* Don't allow anything to float to the left or right of these, our
+     main chunks of text. */
+  div.topbar, div.main-container { clear:both; }
+
+  /* The stuff in the topbar. */
+  div.logo     { float:left; margin-bottom:0; }
+  div.tugtitle { text-align:center; margin-top:-1rem; }
+  form.search  { float:right; }
+
+  /* The hope is to center the buttons under the "TeX Users Group"
+     title text. And bring closer to the text. */
+  div.buttons  { text-align:center; padding-bottom:.5rem; margin-top:-.75rem; }
+
+  /* We need to use so-called Flexbox in order to make the main text
+     come out first and the navbar second (vertically) on small
+     displays, yet side-by-side on larger displays. */
+  div.main-container { display:flex; flex-direction:row; }
+  div.main     { order:2; }
+  div.navbar   { order:1; }
+  
+  section.main { max-width:52rem; padding-right:1rem; bottom:0; }
+  
+  /* The overall max-width is 64rem (from tugstyle.css), and that has
+     effect on the topbar. So the width of main+navbar+padding must = 64,
+     or blocks of gray will appear. */
+  aside.navbar { font-size:.95rem; width:11rem; }
+  
+  div.contact  { max-width:100%; }
+  div.contact table { overflow:scroll; }
+}

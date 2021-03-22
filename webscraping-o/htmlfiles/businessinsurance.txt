@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   Business Insurance | News for Insurance Professionals
+  </title>
+  <meta content="Business Insurance serves business executives who are responsible for the purchase and administration of corporate insurance/self-insurance programs." name="description"/>
+  <link href="/Common/Favicon" rel="shortcut icon" type="image/x-icon"/>
+  <link href="/Content/css/style.min.css?v=19012019" rel="stylesheet" type="text/css"/>
+  <script src="/Scripts/BIScripts?v=iq6GVUOPv2ZeG6vpHDsj391kUdpSIX4w2e13guPDO8U1">
+  </script>
+  <script type="text/javascript">
+   var isFirstImageLoaded = false;
+        var isSecondImageLoaded = false;
+
+
+        function searchArticle() {
+            if($.trim($('#txtSearch').val())!="")
+            {
+                var Url = "/section/search?q=" + encodeURI($('#txtSearch').val().replace('&','%26'));
+                location.href =Url;
+            }
+
+        }
+
+        function mobsearchArticle(){
+            if($.trim($('#txtmobsearch').val())!="")
+            {
+                var Url = "/section/search?q=" + encodeURI($('#txtmobsearch').val().replace('&','%26'));
+                location.href =Url;
+            }
+        }
+
+        if (typeof String.prototype.trim !== 'function') {
+            String.prototype.trim = function () {
+                return this.replace(/^\s+|\s+$/g, '');
+            }
+        }
+
+        function isMobileDevice() {
+            return (
+                (navigator.platform.indexOf("iPhone") != -1) ||
+                (navigator.platform.indexOf("iPod") != -1)
+            );
+        }
+
+        function advertismentLoad(sender) {
+
+            $(sender).parents().eq(1).height($(sender).height());
+
+            if ($(sender).attr('advertnumber') == "1") {
+                isFirstImageLoaded = true;
+            }
+
+            else if ($(sender).attr('advertnumber') == "2") {
+                isSecondImageLoaded = true;
+            }
+
+            if (isFirstImageLoaded && isSecondImageLoaded && (!isMobileDevice())) {
+                setLeftHeight();
+            }
+        }
+
+
+        $(document).ready(function () {
+            $('#dvFeaturedArticles').scrollbar();
+            $('#issues').hide();
+
+            var currentIssueUrl = '/Article/_CurrentIssue';
+            $('#issues').empty();
+            $('#issues').load(currentIssueUrl);
+
+            $("#articleDetails").jPaginate();
+
+
+            $('.bxslider').bxSlider({
+                auto: true,
+                autoControls: true,
+                captions: true
+            });
+
+            $('#txtSearch').live('keypress', function (e) {
+                if (e.which == 13 && $.trim($(this).val())!=null && $.trim($(this).val())!="") {
+
+                    searchArticle();
+                }
+            });
+
+            $('#txtmobsearch').live('keypress', function (e) {
+                if (e.which == 13 && $.trim($(this).val())!=null && $.trim($(this).val())!="") {
+
+                    mobsearchArticle();
+                }
+            });
+
+            $('.morefrom').add('.featuredArticles').jScrollPane();
+
+        });
+
+        var url = 'http://www.businessinsurance.com/CLMWeb/';
+
+        function resizeIframe(obj) {
+            var parentHeight = $('#divMainContent').height() + 100;
+            $(obj).height(parentHeight);
+        }
+
+        function fnLogin() {
+            location.href = '/Membership/Login';
+        }
+
+        function fnShowCurrentIssues() {
+            $('#dvCurrentIssues').show();
+            $('#issues').show();
+        }
+
+        function fnHideCurrentIssues() {
+            $('#dvCurrentIssues').hide();
+
+        }
+
+        //$(window).scroll(function () {
+        //    $('#dvCurrentIssues').hide();
+
+        //});
+        $(document).click(function (e) {
+            if ($(e.target).attr('id') != 'lnkCurrentIssues' && $(e.target).parents('div:first').attr('id') != 'dvCurrentIssues') {
+                $('#dvCurrentIssues').hide();
+
+            }
+        });
+
+        function fnRedirectToEdit(personID) {
+            if ('http://www.businessinsurance.com/'.indexOf("www.businessinsurance.com") > 0) {
+                location.href = "https://www.businessinsurance.com/Membership/EditRegistration?type=2";
+            }
+            else {
+                location.href = "/Membership/EditRegistration?type=2";
+            }
+        }
+
+        function fnCloseMembersipRenewalPopup() {
+            $.ajax({
+                url: '/Membership/DismissRenewalPopup',
+                cache: false,
+                success: function (response) {
+                    if (response != null && response != undefined && response.status != null && response.status != undefined) {
+                        note = document.getElementById("dvMembersipRenewalPopup");
+                        note.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        function fnArticleSearchInfo() {
+            if ($('#articlesearchhelp').hasClass('nodisplay')) {
+                $('#articlesearchhelp').removeClass('nodisplay');
+            }
+            else {
+                if (!($('#articlesearchhelp').hasClass('nodisplay'))) {
+                    $('#articlesearchhelp').addClass('nodisplay');
+                }
+            }
+        }
+
+        $(document).ready(function () {
+            $('body').click(function (e) {
+                if (!$(e.target).closest('#articlesearchhelp').length && !$(e.target).closest('#articlesearchinfo').length && !($('#articlesearchhelp').hasClass('nodisplay'))) {
+                    $('#articlesearchhelp').addClass('nodisplay');
+                }
+            });
+
+
+        });
+  </script>
+  <script type="text/javascript">
+   function getHreffromString() {
+            var hr = $("#hdnITALatestIssue").val();
+            var url = jQuery("a", hr).attr("href");
+            window.location = url;
+        }
+  </script>
+  <script type="text/javascript">
+   var freeSubscriptionUrl = '/Membership/RegisterForFreeSubscription';
+
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for(var i = 0; i <ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        var max_height = 0;
+        var add_height = 0;
+
+        $(window).scroll(function () {
+            var scroll = $(window).scrollTop();
+
+            if (scroll >= 100) {
+                $(".header").addClass("scrollon");
+                $(".content.wrapper").addClass("scrollon");
+                $(".mainMenu").addClass("scrollon");
+                $(".liveSlider").addClass("scrollon");
+                $(".share").addClass("open");
+                $(".righttoggler").addClass("open");
+                $(".toggler").addClass("scrollon");
+            }
+            else {
+                $(".header").removeClass("scrollon");
+                $("#wrapper").removeClass("scrollon");
+                $(".mainMenu").removeClass("scrollon");
+                $(".liveSlider").removeClass("scrollon");
+                $(".share").removeClass("open");
+                $(".righttoggler").removeClass("open");
+                $(".toggler").removeClass("scrollon");
+            }
+
+            if($(window).scrollTop() + $(window).height() >= $(document).height() - $('.footer').height() / 2) {
+                max_height = $(window).scrollTop();
+            }
+
+        });
+
+        $(document).ready(function () {
+
+
+            $(".toggler").click(function () {
+                $(".mainMenu").toggleClass("open");
+                $(".toggler").toggleClass("open");
+            });
+
+            $(".ftclick").click(function () {
+                $(this).next(".ftlinks").toggleClass("open");
+                $(this).toggleClass("open");
+
+
+            });
+            $(".lfmenu").click(function () {
+                $("#dvCurrentIssues").removeClass("open");
+                $(".lfmenu").addClass("selected");
+                $(".curntissue").removeClass("selected");
+
+            });
+            $(".curntissue").click(function () {
+                $("#dvCurrentIssues").addClass("open");
+                $(".curntissue").addClass("selected");
+                $(".lfmenu").removeClass("selected");
+
+            });
+
+
+            $('.clsMainMenu a').click(function () {
+                if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) && $(this).hasClass('hasSubMenu')) {
+                    if ($(this).parent('li').hasClass('open')) {
+                        $(this).next(".clsSubMenu").toggleClass("open");
+                        $(this).parent('li').toggleClass("open");
+                    }
+                    else {
+                        $('.clsSubMenu').removeClass('open');
+                        $('.clsSubMenu').parent('li').removeClass('open');
+                        $(this).next(".clsSubMenu").toggleClass("open");
+                        $(this).parent('li').toggleClass("open");
+                    }
+                }
+            });
+        });
+  </script>
+  <script type="text/javascript">
+   (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+        
+        ga('create', 'UA-9007262-1', 'auto');
+        
+        ga('set', 'anonymizeIp', true);
+        ga('send', 'pageview');
+
+        var trackOutboundLink = function (url) {
+            ga('send', 'event', 'outbound', 'click', url, {
+                'transport': 'beacon',
+                'hitCallback': function () {}
+            });
+        }
+
+        var trackSponsoredContent = function (url,label) {
+            ga('send', 'event', label, 'click', url, {
+                'transport': 'beacon',
+                'hitCallback': function () {}
+            });
+        }
+  </script>
+  <!-- Advertisement Begins -->
+  <script async="async" src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" type="text/javascript">
+  </script>
+  <script type="text/javascript">
+   var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        var mapping, mapping1, mapping2, mapping3;
+  </script>
+  <script type="text/javascript">
+   googletag.cmd.push(function () {
+
+            googletag.pubads().enableSingleRequest();
+            googletag.pubads().collapseEmptyDivs();
+            googletag.pubads().disableInitialLoad();
+            googletag.enableServices();
+
+            if (navigator.userAgent.match(/iPad/i) != null && window.matchMedia("(-webkit-device-pixel-ratio: 2)").matches) {
+                mapping = googletag.sizeMapping().
+                         addSize([768, 0], [728, 90]).
+                         addSize([0, 0], [[320, 50], [300, 50]]).
+                         build();
+            }
+            else {
+                mapping = googletag.sizeMapping().
+                         addSize([1024, 0], [[970, 90],[970, 250],[728, 90]]).
+                         addSize([768, 0], [728, 90]).
+                         addSize([0, 0], [[320, 50], [300, 50]]).
+                         build();
+            }
+
+            mapping1 = googletag.sizeMapping().
+                 addSize([1024, 0], [300, 600]).
+                           addSize([768, 0], [300, 250]).
+                           addSize([0, 0], [[320, 50], [300, 50]]).
+                           build();
+            mapping2 = googletag.sizeMapping().
+                 addSize([1024, 0], [300, 250]).
+                           addSize([768, 0], [300, 250]).
+                           addSize([0, 0], [[320, 50], [300, 50]]).
+                           build();
+            mapping3 = googletag.sizeMapping().
+                 addSize([1024, 0], []).
+                           addSize([768, 0], [300, 250]).
+                           addSize([0, 0], [[320, 50], [300, 50]]).
+                           build();
+
+            if(getCookie("cookieconsent_status") != "" && getCookie("cookieconsent_status") == "dismiss")
+            {
+                googletag.pubads().setRequestNonPersonalizedAds(0);
+            }
+            else
+            {
+                googletag.pubads().setRequestNonPersonalizedAds(1);
+            }
+            if(navigator.userAgent.indexOf("MeltwaterNews www.meltwater.com") != -1 )
+            {
+                googletag.pubads().setTargeting('IVT','yes');
+            }
+
+            // legacy Forensiq
+            //googletag.pubads().setTargeting('ShowPaidAd','yes');
+			
+			 if (getCookie("PollQuestionHome") != "" && getCookie("PollAnswerHome") != ""){
+                googletag.pubads().setTargeting(getCookie("PollQuestionHome"), getCookie("PollAnswerHome"));
+            }
+            if (getCookie("PollQuestionArticle") != "" && getCookie("PollAnswerArticle") != ""){
+                googletag.pubads().setTargeting(getCookie("PollQuestionArticle"), getCookie("PollAnswerArticle"));
+            }
+			
+			//Key Value Pair for Ad
+            if (getCookie("BusinessIndustry") != ""){
+                googletag.pubads().setTargeting('BusinessIndustry', getCookie("BusinessIndustry").replace(/[`~!#%^&*()_|+\=?;:'",<>\{\}\[\]\\\/]/gi,'_').replace(/ /g,''));
+            }
+            if (getCookie("JobFunction") != ""){
+                googletag.pubads().setTargeting('JobFunction', getCookie("JobFunction").replace(/[`~!#%^&*()_|+\=?;:'",<>\{\}\[\]\\\/]/gi,'_').replace(/ /g,''));
+            }
+            if (getCookie("EmployeeCountOrganization") != ""){
+                googletag.pubads().setTargeting('EmployeeCountOrganization', getCookie("EmployeeCountOrganization").replace(/[`~!#%^&*()_|+\=?;:'",<>\{\}\[\]\\\/]/gi,'_').replace(/ /g,''));
+            }
+            if (getCookie("SalesVolume") != ""){
+                googletag.pubads().setTargeting('SalesVolume', getCookie("SalesVolume").replace(/[`~!#%^&*()_|+\=?;:'",<>\{\}\[\]\\\/]/gi,'_').replace(/ /g,''));
+            }
+			
+        });
+
+
+
+
+        
+        googletag.cmd.push(function () {
+            if (navigator.userAgent.match(/iPad/i) != null && window.matchMedia("(-webkit-device-pixel-ratio: 2)").matches) {
+                googletag.defineSlot('/86975980/businessinsurance/home', [[300, 50], [320, 50], [728, 90]], 'top-leaderboard').setTargeting('position', ['top']).defineSizeMapping(mapping).addService(googletag.pubads());
+            }
+            else {
+                googletag.defineSlot('/86975980/businessinsurance/home', [[300, 50], [320, 50], [728, 90], [970, 90], [970, 250]], 'top-leaderboard').setTargeting('position', ['top']).defineSizeMapping(mapping).addService(googletag.pubads());
+            }
+            googletag.defineOutOfPageSlot('/86975980/businessinsurance/home', 'div-gpt-ad-1482664088024-0').setTargeting('position', ['interstitial']).addService(googletag.pubads());
+            googletag.defineSlot('/86975980/businessinsurance/home', [[300, 250], [300, 50], [320, 50]], 'rectangle-1').setTargeting('position', ['position1']).defineSizeMapping(mapping2).addService(googletag.pubads());
+            googletag.defineSlot('/86975980/businessinsurance/home', [[300, 250], [300, 50], [320, 50]], 'rectangle-2').setTargeting('position', ['position2']).defineSizeMapping(mapping2).addService(googletag.pubads());
+            googletag.defineSlot('/86975980/businessinsurance/home', [[300, 600], [300, 250],[300, 50],[320, 50]], 'sticky-1').setTargeting('position', ['halfpage1']).defineSizeMapping(mapping1).addService(googletag.pubads());
+            googletag.defineOutOfPageSlot('/86975980/businessinsurance/home', 'peel').setTargeting('position', ['peel']).addService(googletag.pubads());
+        })
+  </script>
+  <!-- Adloox -->
+  <script async="" src="//p.adlooxtracking.com/gpt/a.js">
+  </script>
+  <script>
+   window.adloox_pubint = window.adloox_pubint || { cmd: [] };
+        adloox_pubint.cmd.push(function() {
+            adloox_pubint.init({
+                clientid: 519,
+                platformid: 239,
+                tagid: 1115
+            });
+        });
+
+        window.googletag = window.googletag || { cmd: [] };
+        googletag.cmd.push(function() {
+            adloox_pubint.cmd.push(function() {
+                adloox_pubint.gpt_js(googletag);
+            });
+        });
+
+        var adloox_pubint_timeout = function(fn, to) {
+            var cb = (function(that) {
+                return function() {
+                    if (!cb.t) return;
+                    window.clearTimeout(cb.t);
+                    delete cb.t;
+                    fn.apply(that);
+                };
+            })(this);
+            cb.t = window.setTimeout(cb, to);
+            return cb;
+        };
+  </script>
+  <!-- Advertisement Ends -->
+  <script type="text/javascript">
+   window.addEventListener("load", function(){
+
+            window.cookieconsent.initialise({
+                palette: {
+                    "popup":{"background":"#e2e4ea" },
+                    "button":{"background":"#4E83E1","text":"#ffffff"},
+                },
+                "position": "bottom-left",
+                "type": "info"
+            })});
+
+        function handleCookieConsentclick()
+        {
+            $.getJSON('https://api.ipify.org?format=jsonp&callback=?', function(data) {
+                var ip = data.ip;
+                $.ajax({
+                    url: '/Common/AddNonMemberCookieConsent',
+                    data:{ "ipAddress" : ip,"from":"BI" },
+                    type: 'post',
+                    cache: false,
+                    success: function (data) {
+                    }, error: function () {
+                    }
+                });
+            });
+        }
+  </script>
+  <!--FullStory-->
+  <script type="text/javascript">
+   (function() {
+					var didInit = false;
+					function initMunchkin() {
+						if(didInit === false) {
+							didInit = true;
+							Munchkin.init('432-FXE-547');
+						}
+					}
+					var s = document.createElement('script');
+					s.type = 'text/javascript';
+					s.async = true;
+					s.src = '//munchkin.marketo.net/munchkin.js';
+					s.onreadystatechange = function() {
+						if (this.readyState == 'complete' || this.readyState == 'loaded') {
+							initMunchkin();
+						}
+					};
+					s.onload = initMunchkin;
+					document.getElementsByTagName('head')[0].appendChild(s);
+				})();
+  </script>
+ </head>
+ <body id="body">
+  <div id="dvFreeSubscriptionPopup">
+  </div>
+  <div class="advtbox">
+   <div id="top-leaderboard" style="text-align: center;">
+    <script>
+     googletag.cmd.push(function () { googletag.display('top-leaderboard'); });
+    </script>
+   </div>
+  </div>
+  <div class="header">
+   <div class="wrapper">
+    <span class="toggler">
+    </span>
+    <span class="righttoggler righttog_top">
+    </span>
+    <a class="mainLogo" href="/">
+    </a>
+    <span class="social">
+     <a class="icon icon-facebook" href="http://www.facebook.com/BusInsMagazine" target="_blank">
+     </a>
+     <a class="icon icon-twitter" href="http://twitter.com/BusInsMagazine" target="_blank">
+     </a>
+     <a class="icon icon-linkedin" href="https://www.linkedin.com/company/656162" target="_blank">
+     </a>
+    </span>
+    <div class="headercmnlinks">
+     <a href="javascript:void(0);" id="lnkLogin" onclick="fnLogin();">
+      Login
+     </a>
+     <a class="sign-up" href="/Membership">
+      Register for Free
+     </a>
+    </div>
+    <div class="search_slider">
+     <span class="clmSearch">
+      <input id="txtSearch" name="" placeholder="SEARCH" type="text"/>
+      <input class="clmsearchbtn" name="" onclick="searchArticle();" type="button"/>
+      <a class="infolink InfoLink_btn" href="javascript:void(0)" id="articlesearchinfo" onclick="javascript: fnArticleSearchInfo(this);" title="Help">
+      </a>
+     </span>
+     <div class="searchpopup searchpopuphome nodisplay" id="articlesearchhelp">
+      <a class="close" href="javascript:void(0);" onclick="javascript: fnArticleSearchInfo(this);">
+      </a>
+      <h2>
+       Help
+      </h2>
+      <p>
+       BI’s Article search uses Boolean search capabilities. If you are not familiar with these principles, here are some quick tips.
+      </p>
+      <p>
+       To search specifically for more than one word, put the search term in quotation marks. For example, “workers compensation”. This will limit your search to that combination of words.
+      </p>
+      <p>
+       To search for a combination of terms, use quotations and the &amp; symbol. For example, “hurricane” &amp; “loss”.
+      </p>
+     </div>
+    </div>
+   </div>
+  </div>
+  <span class="mobsublinks mob_sblink">
+   <a class="lfmenu selected" href="#">
+   </a>
+   <a class="curntissue" href="#">
+   </a>
+  </span>
+  <span class="headercmnlinksformob">
+   <a href="javascript:void(0);" id="lnkLogin" onclick="fnLogin();">
+    Login
+   </a>
+   <a class="sign-up" href="/Membership">
+    Register
+   </a>
+   <a class="subscribe" href="#">
+    Subscribe
+   </a>
+  </span>
+  <div class="mainMenu cm_mainmenu" id="dvMenuHeader">
+   <div class="wrapper">
+    <span class="mobsearch">
+     <input id="txtmobsearch" name="" placeholder="SEARCH" type="text"/>
+     <input class="clmsearchbtn" name="" onclick="mobsearchArticle();" type="button"/>
+    </span>
+    <ul>
+     <li class="clsMainMenu">
+      <a href="/section/risk-management">
+       Risk Management
+      </a>
+      <ul class="clsSubMenu">
+       <li class="submenulist">
+        <a href="/section/cyber-risks">
+         Cyber Risks
+        </a>
+       </li>
+       <li class="submenulist">
+        <a href="/section/Pricing-Trends">
+         Pricing Trends
+        </a>
+       </li>
+       <li class="submenulist">
+        <a href="/section/Mergers-and-Acquisitions">
+         Mergers &amp; Acquisitions
+        </a>
+       </li>
+       <li class="submenulist">
+        <a href="/section/ITC-Conference">
+         Insurtech
+        </a>
+       </li>
+       <li class="submenulist">
+        <a href="/section/Coronavirus">
+         Coronavirus
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="clsMainMenu">
+      <a href="/section/workers-comp">
+       Workers Comp
+      </a>
+      <ul class="clsSubMenu">
+       <li class="submenulist">
+        <a href="/section/Pain-Management">
+         Pain Management
+        </a>
+       </li>
+       <li class="submenulist">
+        <a href="/section/workers-comp-cost-control">
+         Workers Comp Cost Control
+        </a>
+       </li>
+       <li class="submenulist">
+        <a href="/section/workplace-safety">
+         Workplace Safety
+        </a>
+       </li>
+       <li>
+        <a href="http://www.wcauthority.com/section/wcmagazine" target="_blank">
+         WC Magazine
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="clsMainMenu">
+      <a href="/section/international">
+       International
+      </a>
+      <ul class="clsSubMenu">
+       <li class="submenulist">
+        <a href="/section/emea">
+         EMEA
+        </a>
+       </li>
+       <li class="submenulist">
+        <a href="/section/asia-pacific">
+         Asia-Pacific
+        </a>
+       </li>
+       <li class="submenulist">
+        <a href="/section/latin-america">
+         Latin America
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="clsMainMenu">
+      <a href="/section/researchandreports">
+       Research &amp; Reports
+      </a>
+      <ul class="clsSubMenu">
+       <li class="submenulist">
+        <a href="/section/directories">
+         Rankings &amp; Directories
+        </a>
+       </li>
+       <li class="submenulist">
+        <a href="/section/best-places-to-work">
+         Best Places to Work
+        </a>
+       </li>
+       <li class="submenulist">
+        <a href="/section/white-papers">
+         White Papers
+        </a>
+       </li>
+       <li class="submenulist italic">
+        <a href="/section/risk-perspectives">
+         Risk Perspectives
+        </a>
+       </li>
+       <li class="submenulist">
+        <a href="/article/20200713/STORY/912335411/Business-Insurance-2020-Data-Rankings-BI-Top-100-brokers-US-business?ticks=637298754431195905&amp;ticks=637298754431195905">
+         Top 100 Brokers
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="clsMainMenu">
+      <a href="/section/up-close">
+       People
+      </a>
+      <ul class="clsSubMenu">
+       <li class="submenulist">
+        <a href="/section/comings-and-goings">
+         Comings &amp; Goings
+        </a>
+       </li>
+       <li class="submenulist">
+        <a href="/section/up-close">
+         Up Close
+        </a>
+       </li>
+       <li class="submenulist">
+        <a href="/section/executive-q-a">
+         Executive Q&amp;A's
+        </a>
+       </li>
+       <li class="submenulist">
+        <a href="/section/opinion">
+         Opinion
+        </a>
+        <ul class="clsSubMenuChild">
+         <li>
+          <a href="/section/editorials">
+           Editorials
+          </a>
+         </li>
+         <li>
+          <a href="/section/columns">
+           Columns
+          </a>
+         </li>
+         <li>
+          <a href="/section/perspectives">
+           Perspectives
+          </a>
+         </li>
+         <li>
+          <a href="/section/cartoons">
+           Editorial Cartoons
+          </a>
+         </li>
+        </ul>
+       </li>
+      </ul>
+     </li>
+     <li class="clsMainMenu">
+      <a href="/section/employeebenefits">
+       Employee Benefits
+      </a>
+     </li>
+     <li class="clsMainMenu">
+      <a href="/section/events">
+       Awards &amp; Events
+      </a>
+      <ul class="clsSubMenu">
+       <li class="submenulist">
+        <a href="/section/webinars">
+         Webinars
+        </a>
+       </li>
+       <li class="submenulist">
+        <a href="/conference/BOA2021/2021/about">
+         Break Out Awards
+        </a>
+       </li>
+       <li>
+        <a href="https://businsmag.com/diconference/en/page/home" target="_blank">
+         Diversity &amp; Inclusion Conference
+        </a>
+       </li>
+       <li>
+        <a href="https://businsmag.com/innovationawards2020/en/page/home" target="_blank">
+         Innovation Awards
+        </a>
+       </li>
+       <li>
+        <a href="https://usia.evessiocloud.com/live/en/page/home" target="_blank">
+         US Insurance Awards
+        </a>
+       </li>
+       <li>
+        <a href="https://www.businsmag.com/w2wemea" target="_blank">
+         Women to Watch EMEA
+        </a>
+       </li>
+       <li>
+        <a href="http://www.businsmag.com/w2w" target="_blank">
+         Women to Watch
+        </a>
+       </li>
+       <li class="submenulist">
+        <a href="/conference/20wcf/2021/about">
+         World Captive Forum
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="clsMainMenu">
+      <a href="/section/current-issue">
+       Current Issue
+      </a>
+      <ul class="clsSubMenu">
+       <li>
+        <a href="/section/current-issue" id="lnkCurrentIssues">
+         Current Issue
+        </a>
+       </li>
+       <li class="submenulist">
+        <a href="/MagazineArchives">
+         Archives
+        </a>
+       </li>
+       <li class="submenulist">
+        <a href="/Membership">
+         Subscribe
+        </a>
+       </li>
+       <li class="submenulist">
+        <a href="/article/reprintpage">
+         Reprints
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="clsMainMenu">
+      <a class="hasSubMenu" href="https://www.diversityinclusioninstitute.com/" target="_blank">
+       D&amp;I Institute
+      </a>
+     </li>
+    </ul>
+    <div id="issues">
+    </div>
+   </div>
+  </div>
+  <div class="wrapper content" id="wrapper">
+   <div id="divMainContent">
+    <script>
+     var tagID = 329;
+    var articleListUrl = '/Section/ArticleList';
+    var upcomingEventUrl = '/Section/UpcomingEvents';
+    
+    var sponsorInsightUrl = '/Section/SponsorInsight?mainCategoryID=0';
+    var featuredDirectoriesUrl = '/Section/FeaturedDirectories';
+    var featuredArticleListUrl = '/Section/FeaturedArticles';
+    
+    var featuredNativeAdUrl = '/Section/FeaturedNativeAds';
+    var FeaturedArticleSlide = '/Section/FeaturedArticleSlide';
+    var FeaturedArticlesLoadMore = '/Section/FeaturedArticlesLoadMore';
+    var PeopleURL = '/Section/GetPeoplesList';
+    var UpCloseURL = '/Section/UpCloseProfile';
+    var ViewFromTheTopURL = '/Section/ViewFromTheTop';
+    </script>
+    <link href="/Content/css/jcarousel.basic.css" rel="stylesheet"/>
+    <script src="/Scripts/jcarousel/jquery.jcarousel.min.js">
+    </script>
+    <script src="/Scripts/jcarousel/jquery.jcarousel-pagination.min.js">
+    </script>
+    <script src="/Scripts/jcarousel/jcarousel.ajax.min.js">
+    </script>
+    <script>
+     $(document).ready(function () {
+
+        //setTimeout(function () {
+        //    if (getCookie("CLMUserLogged") == "") {
+        //        debugger;
+        //        if (getCookie("IsFreeDailyBriefingSubscribed") == "" && getCookie("IsFreeDailyBriefingSubscribedPopupClosed") == "") {
+        //            $('#dvFreeSubscriptionPopup').load(freeSubscriptionUrl, function () {
+        //            });
+        //        }
+        //    }
+        //}, 5000);
+
+        $('#dvArticleList').empty();
+        $('#dvArticleList').append('<div></div>');
+        $('#dvArticleList div:last').load(articleListUrl + "?articleListType=" + 2 +"&pageIndex=" + $('#dvArticleList div').length);
+
+        //$('#dvRightArticleList').empty();
+        //$('#dvRightArticleList').append('<div></div>');
+        //$('#dvRightArticleList div:last').load(articleListUrl + "?mainCategoryID=" + encodeURI("Risk Management") + "&subCategoryID=" + "" + "&articleListType=" + 1 +"&pageIndex=" + $('#dvRightArticleList div').length);
+
+        //$('#dvSignleArticleList').empty();
+        //$('#dvSignleArticleList').append('<div></div>');
+        //$('#dvSignleArticleList div:last').load(articleListUrl + "?mainCategoryID=" + encodeURI("Risk Management") + "&subCategoryID=" + "" + "&articleListType=" + 1 +"&pageIndex=" + $('#dvSignleArticleList div').length);
+
+        //$('#dvNewsLetter').empty();
+        //$('#dvNewsLetter').load(upcomingEventUrl);
+
+        //$('#dvUpcomingEvents').empty();
+        //$('#dvUpcomingEvents').load(upcomingEventUrl);
+
+        //$('#dvFeaturedArticles').empty();
+        //$('#dvFeaturedArticles').load(featuredArticleListUrl + "?tagId=329");
+
+        //$('#dvFeaturedVideos').empty();
+        //$('#dvFeaturedVideos').load(featuredVideoUrl);
+
+        //$('#dvFeaturedNativeAds').empty();
+        //$('#dvFeaturedNativeAds').load(featuredNativeAdUrl);
+
+        $('#dvPeopleContent > div').empty();
+        $('#dvPeopleContent > div').load(PeopleURL);
+        $('#dvUpClose > div').empty();
+        $('#dvUpClose > div').load(UpCloseURL);
+        $('#dvViewFromTop > div').empty();
+        $('#dvViewFromTop > div').load(ViewFromTheTopURL + "?tagId=30");
+
+
+        $('#dvOffBeatStoriesContent > div').empty();
+        $('#dvOffBeatStoriesContent > div').load(featuredArticleListUrl + "?tagId=522&pageIndex=1&pageSize=10");
+
+        $('#dvArchiveContent > div').empty();
+        $('#dvArchiveContent > div').load(featuredArticleListUrl + "?tagId=523&pageIndex=1&pageSize=5");
+
+        $('#dvSponsorInsight').empty();
+        $('#dvSponsorInsight').load(sponsorInsightUrl);
+
+        $('#dvFeaturedDirectories').empty();
+        $('#dvFeaturedDirectories').load(featuredDirectoriesUrl);
+
+        
+		
+		 $.get('/Home/GetReadersPoll', function (response) {
+
+            var options = "";
+
+            if (response != null && response.length > 0 && !response[0].IsAlreadyAnswered) {
+
+                $('#PollQuestion').text(response[0].Question);
+
+                $.each(response, function (index, obj) {
+                    options = options + "<li> <input id='" + obj.OptionID + "' type='radio' name='rdoPollOptions' answer='" + obj.OptionText + "' value='" + obj.OptionID + "'/><label for='"+ obj.OptionID + "'>" + obj.OptionText + "</label</li>"
+                });
+
+                $('#hdnPollQuestionID').val(response[0].PollQuestionID);
+                $('#PollOption').append(options);
+                $('#dvReaderPoll').show();
+            }
+        });
+    });
+
+    function fnshowMostRecent(obj) {
+        $('.articletabs li.selected').removeClass('selected');
+        $(obj).parent('li').addClass('selected');
+        $('#dvArticleList').empty();
+        $('#dvArticleList').append('<div></div>');
+        $('#dvArticleList div:last').load(articleListUrl + "?articleListType=" + 2 +"&pageIndex=" + $('#dvArticleList div').length);
+        return false;
+    }
+
+    function fnshowMostPopular(obj) {
+        $('.articletabs li.selected').removeClass('selected');
+        $(obj).parent('li').addClass('selected');
+        $('#dvArticleList').empty();
+        $('#dvArticleList').append('<div></div>');
+        $('#dvArticleList div:last').load(articleListUrl + "?articleListType=" + 3 +"&pageIndex=" + $('#dvArticleList div').length);
+        return false;
+    }
+
+    function fnshowCoronaVirus(obj) {
+        $('.articletabs li.selected').removeClass('selected');
+        $(obj).parent('li').addClass('selected');
+        $('#dvArticleList').empty();
+        $('#dvArticleList').append('<div></div>');
+        $('#dvArticleList div:last').load(articleListUrl + "?articleListType=" + 5 +"&pageIndex=" + $('#dvArticleList div').length);
+        return false;
+    }
+
+    
+
+    function fnLoadMoreArticles(obj, articleListType) {
+        var dvName = $(obj).parents('div').eq(1).attr('id');
+        $('#' + dvName).find('.cmnlist:last li:last').attr('style', 'border-bottom:1px solid #cccccc !important');
+        $('#' + dvName).append('<div></div>');
+        $('#' + dvName).find('div:last').load(articleListUrl + "?articleListType=" + articleListType + "&pageIndex=" + $('#dvArticleList div').length);
+        $(obj).parent().remove();
+        return false;
+    }
+
+    function fnLoadMoreStories(obj, tagID) {
+        var dvName = $(obj).parents('div').eq(1).attr('id');
+        //$('#' + dvName).find('.cmnlist:last li:last').attr('style', 'border-bottom:1px solid #cccccc !important');
+        $('#' + dvName).append('<div></div>');
+        $('#' + dvName).find('div:last').load(FeaturedArticlesLoadMore + "?tagId=" + tagID + "&pageIndex=" + ($('#' + dvName + ' div').length) + "&pageSize=4");
+        $(obj).parent().remove();
+        return false;
+    }
+
+    function fnSubmittRegistrationPopup() {
+        var isValid = true;
+
+        if ($('#txtFirstName').val().trim() == "") {
+            isValid = false;
+            $('#txtFirstName').css('border-color', 'red');
+        }
+        else if ($('#txtLastName').val().trim() == "") {
+            isValid = false;
+            $('#txtLastName').css('border-color', 'red');
+        }
+        else if ($('#txtEmail').val().trim() == "") {
+            isValid = false;
+            $('#txtEmail').css('border-color', 'red');
+        }
+        else if ($('#txtCompanyName').val().trim() == "") {
+            isValid = false;
+            $('#txtCompanyName').css('border-color', 'red');
+        }
+        else if ($('#ddlJobFunction').val().trim() == '0') {
+            isValid = false;
+            $('#lblJobFunctionRequired').show();
+        }
+        else if ($("#ddlBusinessIndustry").val().trim() == '0') {
+            isValid = false;
+            $('#lblBusinessIndustryRequired').show();
+        }
+
+
+        if ($('#txtEmail').val().trim() != "") {
+            var EmailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+            if (!EmailRex.test($('#txtEmail').val())) {
+                isValid = false;
+                $('#lbInvalidEmail').show();
+            }
+            else {
+                $('#lbInvalidEmail').hide();
+            }
+        }
+
+        if (isValid) {
+            $.post(
+                '/Article/RegistrationPopup',
+                {
+                    firstName: $('#txtFirstName').val().trim(),
+                    lastName: $('#txtLastName').val().trim(),
+                    email: $('#txtEmail').val().trim(),
+                    companyName: $('#txtCompanyName').val().trim(),
+                    jobFunction: $('#ddlJobFunction').val().trim(),
+                    businessIndustry: $("#ddlBusinessIndustry").val().trim()
+                },
+                function (response) {
+                    if (response) {
+                        $('#dvRegPopup').hide();
+                    }
+                }
+                );
+        }
+    }
+
+    function fnCloseRegPopup() {
+        $.post('/Article/UpdatePopupCloseCount', function () {
+            $('#dvRegPopup').hide();
+        });
+       
+    }
+
+    function fnTrackLink(label, url, target) {
+        $.post(
+            '/Home/TrackButtonClicks',
+            {
+                linkName: label,
+                guestUserID: getCookie("GuestUser"),
+                url: url
+            },
+            function () {
+                if (target == ""){
+                    window.location.href = url;
+                }
+                else{
+                    window.open(url);
+                }
+            });
+    }
+	
+	function fnAnswerReaderPoll() {
+
+        if ($('input[name=rdoPollOptions]:checked').length > 0) {
+			$('#btnPollAnser').attr("onclick", "").unbind("click");
+            $('#lblPollRequired').hide();
+            $.post('/Home/AnswerReaderPoll', {
+                questionID: $('#hdnPollQuestionID').val(),
+                optionID: $('input[name=rdoPollOptions]:checked').val(),
+                answer: $('input[name=rdoPollOptions]:checked').attr('answer'),
+                page: 'home'
+            }, function (response) {
+                if (response.status) {
+                    debugger;
+                    //$('#PollQuestion').hide();
+                    $('#PollOption').hide();
+                    $('#btnPollAnser').hide();
+                    //$('#lblPollSuccessMessage').show();
+                    var html = "<ul>";
+                    $.each(response.pollResult, function (index, obj) {
+                        html = html + "<li><span>" + obj.OptionText + " <label>"+ obj.PollPercentage + "%<label></span>" + "<p><span class='pollPercentage' style='width:" + obj.PollPercentage + "%'></span></p></li>";
+                    });
+
+                    html = html + '</ul>';
+
+                    $('#dvPollPercentage').append(html);
+                    $('#dvPollPercentage').show();
+                }
+            });
+        }
+        else {
+            $('#lblPollRequired').show();
+        }
+    }
+    </script>
+    <!-- Hotjar Tracking Code for www.businessinsurance.com -->
+    <script>
+     (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:1894832,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+    </script>
+    <div class="mainsection">
+     <h1 style="display:none">
+      Latest news and information on business insurance, risk management, workers comp
+     </h1>
+     <div class="cmnleft">
+      <div class="homepageleftsection">
+       <!--Image slider Begin-->
+       <div class="wrapper">
+        <div class="jcarousel-wrapper">
+         <div class="jcarousel">
+          <div class="loading">
+           Loading...
+          </div>
+         </div>
+         <a class="jcarousel-control-prev" href="#">
+          ‹
+         </a>
+         <a class="jcarousel-control-next" href="#">
+          ›
+         </a>
+         <p class="jcarousel-pagination">
+          <!-- Pagination items will be generated in here -->
+         </p>
+        </div>
+       </div>
+       <!--Image slider End-->
+       <!--Slider Description Begin-->
+       <div id="dvArticleDescription">
+        <div id="dvDescription1">
+        </div>
+        <div id="dvDescription2" style="display:none">
+        </div>
+        <div id="dvDescription3" style="display:none">
+        </div>
+        <div id="dvDescription4" style="display:none">
+        </div>
+        <div id="dvDescription5" style="display:none">
+        </div>
+        <div id="dvDescription6" style="display:none">
+        </div>
+       </div>
+       <!--Slider Description End-->
+       <ul class="articletabs">
+        <li class="selected">
+         <a href="javascript:void(0);" onclick="return fnshowMostRecent(this);">
+          Most Recent
+         </a>
+        </li>
+        <li>
+         <a href="javascript:void(0);" onclick="return fnshowMostPopular(this);">
+          Most Popular
+         </a>
+        </li>
+        <li style="background-color:red">
+         <a href="javascript:void(0);" onclick="return fnshowCoronaVirus(this);" style="background-color:red;color:white;">
+          COVID-19 Update
+         </a>
+        </li>
+       </ul>
+       <div id="dvArticleList">
+       </div>
+       <div id="dvFromTheArchive">
+        <h2>
+         From the Archives
+        </h2>
+        <div id="dvArchiveContent">
+         <div>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="homepagerightsection">
+       <div class="excecutiveqa" id="dvFeaturedVideos" style="display:none">
+       </div>
+       <div class="excecutiveqa" id="dvFeaturedNativeAds" style="display:none">
+       </div>
+       <p class="suplinks">
+        <a class="covid" href="#" onclick="fnTrackLink('Video Series', 'https://www.businessinsurance.com/section/risk-management', '_blank');">
+         Click here to watch the BI Interview video series&gt;&gt;
+        </a>
+        <a class="latestissue" href="#" onclick="fnTrackLink('Latestissue', 'http://info.businessinsurance.com/rs/432-FXE-547/images/BI_0321.pdf', '_blank');">
+         Click here to access the latest issue of Business Insurance.
+        </a>
+       </p>
+       <div id="dvPeolpe">
+        <h2>
+         People: Comings &amp; Goings
+        </h2>
+        <div id="dvPeopleContent">
+         <div>
+         </div>
+        </div>
+        <h2>
+         People: Up Close
+        </h2>
+        <div id="dvUpClose">
+         <div>
+         </div>
+        </div>
+        <h2>
+         People: View from the Top
+        </h2>
+        <div id="dvViewFromTop">
+         <div>
+         </div>
+        </div>
+       </div>
+       <div class="sponsorinsighthd">
+        <div id="dvSponsorInsight">
+         <div>
+         </div>
+        </div>
+       </div>
+       <div id="dvReaderPoll" style="display:none">
+        <h2>
+         Readers Poll
+        </h2>
+        <input id="hdnPollQuestionID" type="hidden"/>
+        <h4 id="PollQuestion">
+        </h4>
+        <ul id="PollOption">
+        </ul>
+        <input id="btnPollAnser" onclick="fnAnswerReaderPoll();" type="button" value="Vote"/>
+        <label id="lblPollSuccessMessage" style="display:none">
+         Your response has been saved successfully.
+        </label>
+        <div id="dvPollPercentage" style="display:none">
+        </div>
+        <label id="lblPollRequired" style="display:none;color:red;">
+         Please select one option.
+        </label>
+       </div>
+       <div id="dvOffBeatStories">
+        <h2>
+         Off Beat
+        </h2>
+        <div id="dvOffBeatStoriesContent">
+         <div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="cmnright">
+      <div class="box3" id="dvAd">
+       <div id="sticky-1">
+        <script>
+         googletag.cmd.push(function () { googletag.display('sticky-1'); });
+        </script>
+       </div>
+       <div id="rectangle-1">
+        <script>
+         googletag.cmd.push(function () { googletag.display('rectangle-1'); });
+        </script>
+       </div>
+       <div id="rectangle-2">
+        <script>
+         googletag.cmd.push(function () { googletag.display('rectangle-2'); });
+        </script>
+       </div>
+      </div>
+     </div>
+     <div class="featuredDirectories">
+      <h2>
+       BI Directories
+      </h2>
+      <div id="dvFeaturedDirectories">
+       <div>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div id="dvRegPopup" style="display:none">
+     <div class="registrationbox">
+      <a class="close" href="#" id="lnkClosePopup" onclick="fnCloseRegPopup();">
+       X
+      </a>
+      <h1>
+       Sign up now for free access to this article and much more.
+      </h1>
+      <h4>
+       If you are already registered with Business Insurance, click here to
+       <a href="/Membership/Login">
+        Login
+       </a>
+      </h4>
+      <div class="regmain">
+       <h2>
+        Please tell us a bit more about yourself in order to continue
+       </h2>
+       <ul>
+        <li>
+         <label>
+          First Name
+         </label>
+         <input id="txtFirstName" type="text"/>
+        </li>
+        <li>
+         <label>
+          Last Name
+         </label>
+         <input id="txtLastName" type="text"/>
+        </li>
+        <li>
+         <label>
+          Email
+         </label>
+         <input id="txtEmail" type="text"/>
+         <label id="lbInvalidEmail" style="display:none;color:red">
+          Invalid email address.
+         </label>
+        </li>
+        <li>
+         <label>
+          Company Name
+         </label>
+         <input id="txtCompanyName" type="text"/>
+        </li>
+        <li>
+         <label>
+          Job Function
+         </label>
+         <select id="ddlJobFunction">
+          <option value="0">
+           --Select--
+          </option>
+          <option value="100">
+           Accountant/Finance
+          </option>
+          <option value="103">
+           Advertiser/Marketer/PR Professional
+          </option>
+          <option value="137">
+           Agent (Resale)
+          </option>
+          <option value="138">
+           Agent (Wholesale)
+          </option>
+          <option value="108">
+           Attorney/General Counsel
+          </option>
+          <option value="139">
+           Broker
+          </option>
+          <option value="135">
+           Chief Technology/Information Officer
+          </option>
+          <option value="110">
+           Claims
+          </option>
+          <option value="140">
+           CSuite/Executive Management
+          </option>
+          <option value="117">
+           Human Resources/Benefits
+          </option>
+          <option value="141">
+           Risk Manager
+          </option>
+          <option value="128">
+           Sales
+          </option>
+          <option value="136">
+           Service Provider (TPA, Consultant, Outside Counsel)
+          </option>
+          <option value="129">
+           Student
+          </option>
+         </select>
+         <label id="lblJobFunctionRequired" style="display:none;color:red">
+          Required
+         </label>
+        </li>
+        <li>
+         <label>
+          Type of Business
+         </label>
+         <select id="ddlBusinessIndustry">
+          <option value="0">
+           --Select--
+          </option>
+          <option value="128">
+           Agriculture/Forestry/Fishing
+          </option>
+          <option value="109">
+           Construction
+          </option>
+          <option value="129">
+           Finance, Banking &amp; Real Estate Services
+          </option>
+          <option value="130">
+           Government/Education/NonProfit
+          </option>
+          <option value="131">
+           Hospitality
+          </option>
+          <option value="132">
+           Insurance
+          </option>
+          <option value="118">
+           Manufacturing/Utilities
+          </option>
+          <option value="134">
+           Services
+          </option>
+          <option value="13">
+           Technology
+          </option>
+          <option value="135">
+           Transportation/Communications/Electric/Gas
+          </option>
+          <option value="136">
+           Wholesale/Retail Trade
+          </option>
+         </select>
+         <label id="lblBusinessIndustryRequired" style="display:none;color:red">
+          Required
+         </label>
+        </li>
+       </ul>
+       <p>
+        <input onclick="fnSubmittRegistrationPopup();" type="button" value="Submit"/>
+       </p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <div class="footer">
+   <div class="footertoplinks">
+    <a class="footerlogo" href="/">
+    </a>
+    <span class="social">
+     <a class="icon icon-facebook" href="http://www.facebook.com/BusInsMagazine">
+     </a>
+     <a class="icon icon-twitter" href="http://twitter.com/BusInsMagazine">
+     </a>
+     <a class="icon icon-linkedin" href="https://www.linkedin.com/company/656162">
+     </a>
+    </span>
+   </div>
+   <div class="footerclmlinks">
+    <div class="column">
+     <section>
+      <h3 class="ftclick">
+       About
+      </h3>
+      <ul class="ftlinks">
+       <li>
+        <a href="/article/99999999/PAGES/141219880">
+         About Us
+        </a>
+       </li>
+       <li>
+        <a href="/article/99999999/PAGES/150129927">
+         Customer Service
+        </a>
+       </li>
+       <li>
+        <a href="/article/99999999/PAGES/150129927">
+         Contact Us
+        </a>
+       </li>
+       <li>
+        <a href="/article/99999999/PAGES/150109861">
+         Privacy Policy
+        </a>
+       </li>
+       <li>
+        <a href="/article/99999999/PAGES/150109859">
+         Terms of Use
+        </a>
+       </li>
+       <li>
+        <a href="/section/jobopportunities">
+         Career Opportunities
+        </a>
+       </li>
+      </ul>
+     </section>
+    </div>
+    <div class="column">
+     <section>
+      <h3 class="ftclick">
+       Advertise
+      </h3>
+      <ul class="ftlinks">
+       <li>
+        <a href="https://bimediakit.com/">
+         Advertise
+        </a>
+       </li>
+       <li>
+        <a href="/section/events">
+         Event Sponsorship
+        </a>
+       </li>
+       <li>
+        <a href="https://bimediakit.com/">
+         Media Kit
+        </a>
+       </li>
+      </ul>
+     </section>
+    </div>
+    <div class="column">
+     <section>
+      <h3 class="ftclick">
+       <a href="/article/reprintpage">
+        Reprints and Licensing
+       </a>
+      </h3>
+      <ul class="ftlinks">
+       <li>
+        <a href="/article/reprintpage">
+         Request Reprints
+        </a>
+       </li>
+       <li>
+        <a href="/Membership">
+         Register Online
+        </a>
+       </li>
+      </ul>
+     </section>
+    </div>
+    <div class="column">
+     <section>
+      <h3 class="ftclick">
+       Resources
+      </h3>
+      <ul class="ftlinks">
+       <li>
+        <a href="/section/directories">
+         Directories &amp; Rankings
+        </a>
+       </li>
+       <li>
+        <a href="http://www.diversityinclusioninstitute.com/">
+         Diversity &amp; Inclusion Institute
+        </a>
+       </li>
+       <li>
+        <a href="/article/99999999/PAGES/150129891#IMediakit">
+         Editorial Calendar
+        </a>
+       </li>
+       <li>
+        <a href="/section/international">
+         International
+        </a>
+       </li>
+       <li>
+        <a href="/MagazineArchives">
+         Magazine Archives
+        </a>
+       </li>
+       <li>
+        <a href="/section/perspectives">
+         Perspectives
+        </a>
+       </li>
+       <li>
+        <a href="/section/risk-perspectives">
+         Risk Perspective
+        </a>
+       </li>
+       <!-- <li><a href="/section/events">Webinars</a></li> -->
+       <li>
+        <a href="/section/Webinars">
+         Webinars
+        </a>
+       </li>
+       <li>
+        <a href="/W2WFoundation">
+         W2W Foundation
+        </a>
+       </li>
+      </ul>
+     </section>
+    </div>
+    <div class="column">
+     <section class="current-issue">
+      <a class="omnitrack" href="http://info.businessinsurance.com/rs/432-FXE-547/images/BI_0321.pdf" target="_blank">
+       <img src="https://bicontent.businessinsurance.com/EditionThumbnailMedium/cfffdfc3-6973-4789-a342-473f0f0622cd.jpg"/>
+      </a>
+     </section>
+    </div>
+   </div>
+   <div class="copyright">
+    <span style="color:white">
+     .
+    </span>
+    <a href="/article/99999999/PAGES/150109861">
+     Privacy Policy
+    </a>
+    •
+    <a href="/article/99999999/PAGES/150109859">
+     Terms of Use
+    </a>
+    <p>
+     COPYRIGHT © 2021 BUSINESS INSURANCE HOLDINGS
+    </p>
+   </div>
+  </div>
+  <div id="peel">
+   <script>
+    googletag.cmd.push(function () { googletag.display('peel'); });
+   </script>
+  </div>
+  <div id="div-gpt-ad-1482664088024-0" style="z-index: 999999 !important">
+   <script>
+    googletag.cmd.push(function () { googletag.display('div-gpt-ad-1482664088024-0'); });
+   </script>
+  </div>
+  <script type="text/javascript">
+   _linkedin_data_partner_id = "186298";
+  </script>
+  <script type="text/javascript">
+   (function(){var s = document.getElementsByTagName("script")[0]; var b = document.createElement("script"); b.type = "text/javascript";b.async = true; b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js"; s.parentNode.insertBefore(b, s);})();
+  </script>
+  <noscript>
+   <img alt="" height="1" src="https://dc.ads.linkedin.com/collect/?pid=186298&amp;fmt=gif" style="display:none;" width="1"/>
+  </noscript>
+  <script type="text/javascript">
+   // Set to false if opt-in required
+            var trackByDefault = true;
+            var trackcmp_email = '';
+
+            if (getCookie("CLMUserLogged") != "")
+            {
+                trackcmp_email=getCookie("CLMUserLogged");
+            }
+            else if(getCookie("IsFreeDailyBriefingSubscribed") != "")
+            {
+                trackcmp_email=getCookie("IsFreeDailyBriefingSubscribed");
+            }
+
+            function acEnableTracking() {
+                var expiration = new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 30);
+                document.cookie = "ac_enable_tracking=1; expires= " + expiration + "; path=/";
+                acTrackVisit();
+            }
+
+            function acTrackVisit() {
+                var trackcmp = document.createElement("script");
+                trackcmp.async = true;
+                trackcmp.type = 'text/javascript';
+                trackcmp.src = '//trackcmp.net/visit?actid=649094365&e='+encodeURIComponent(trackcmp_email)+'&r='+encodeURIComponent(document.referrer)+'&u='+encodeURIComponent(window.location.href);
+                var trackcmp_s = document.getElementsByTagName("script");
+                if (trackcmp_s.length) {
+                    trackcmp_s[0].parentNode.appendChild(trackcmp);
+                } else {
+                    var trackcmp_h = document.getElementsByTagName("head");
+                    trackcmp_h.length && trackcmp_h[0].appendChild(trackcmp);
+                }
+            }
+
+            if (trackByDefault || /(^|; )ac_enable_tracking=([^;]+)/.test(document.cookie)) {
+                acEnableTracking();
+            }
+  </script>
+  <!-- Start of HubSpot Embed Code -->
+  <!-- End of HubSpot Embed Code -->
+  <script src="//adpxl.co/of3pxlsH/an.js">
+  </script>
+  <noscript>
+   <img alt="" src="//adpxl.co/of3pxlsH/spacer.gif"/>
+  </noscript>
+  <!-- Start of Subscribers Embed Code -->
+  <script type="text/javascript">
+   var subscribersSiteId='94d321ce-8ff7-4385-8528-b8368b83d56a';
+  </script>
+  <script src="https://cdn.subscribers.com/assets/subscribers.js" type="text/javascript">
+  </script>
+  <!-- End of Subscribers Embed Code -->
+  <!-- Adloox -->
+  <script>
+   googletag.cmd.push(function() {
+            var cb = adloox_pubint_timeout(function() {
+                googletag.pubads().refresh();
+            }, 700);	// 700 milliseconds maximum delay
+            adloox_pubint.cmd.push(function() {
+                adloox_pubint.gpt(googletag, cb);
+            });
+        });
+  </script>
+  <link href="/Content/css/Styles?v=rcXHm12Qyl9WYni57ilrdbtq-A8NAMJCHvl7MlPq8Ss1" rel="stylesheet"/>
+ </body>
+</html>

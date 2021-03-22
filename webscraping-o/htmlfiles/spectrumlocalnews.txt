@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html lang="en">
+ <head>
+  <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+  <meta name="keywords"/>
+  <meta name="description"/>
+  <script type="text/javascript">
+   CQURLInfo={"requestPath":"/content/news","extension":"html","selectors":[],"systemId":"1ad85e90-ff99-4837-b8f1-6d85347d55ac","runModes":"prod,s7connect,crx3,nosamplecontent,publish,crx3tar"};
+  </script>
+  <link href="/etc.clientlibs/foundation/clientlibs/main.min.731db1757391070f3ea2ead82acaf408.css" rel="stylesheet" type="text/css"/>
+  <script src="/etc.clientlibs/clientlibs/granite/jquery.min.1494c0abbe501301e2ab9daecc6082a8.js" type="text/javascript">
+  </script>
+  <script src="/etc.clientlibs/clientlibs/granite/utils.min.4a192b590a2c2926fb000264370c0588.js" type="text/javascript">
+  </script>
+  <script src="/etc.clientlibs/clientlibs/granite/jquery/granite.min.d9075d4175ab7b0e3ccf4305a4089645.js" type="text/javascript">
+  </script>
+  <script src="/etc.clientlibs/foundation/clientlibs/jquery.min.dd9b395c741ce2784096e26619e14910.js" type="text/javascript">
+  </script>
+  <script src="/etc.clientlibs/foundation/clientlibs/shared.min.9f3716b2c473fd53ab31b1caa53131a8.js" type="text/javascript">
+  </script>
+  <script src="/etc.clientlibs/foundation/clientlibs/main.min.e2198d73b3e90f0b787085da720eb46e.js" type="text/javascript">
+  </script>
+  <link href="/etc/designs/news-empire.css" rel="stylesheet" type="text/css"/>
+ </head>
+ <body>
+  <!-- /* Redirect component does not wait for page load but immediately executes JS. 
+            JS Includes that should go at end of page are placed at top of body. */ -->
+  <script src="/etc/clientlibs/news/vendor/bowser.min.66fb5ded26b5d86decaa5cc59ba79320.js" type="text/javascript">
+  </script>
+  <script src="/etc/designs/news/clientlibs/js.min.b8354a387a11689c0ed09746b7833221.js" type="text/javascript">
+  </script>
+  <script src="/etc/clientlibs/news/vendor/js-cookie-2-2-0.min.741107d982f45fcc065a865fa0e275c2.js" type="text/javascript">
+  </script>
+  <div>
+   <div class="redirect" data-defaultpage="/splash" data-frompages="/content/news/nc/charlotte,/content/news/nc/coastal,/content/news/nc/triad,/content/news/nc/triangle-sandhills,/content/news/tx/austin,/content/news/tx/san-antonio,/content/news/fl/tampa,/content/news/fl/orlando,/content/news/nyc/brooklyn,/content/news/nyc/manhattan,/content/news/nyc/all-boroughs,/content/news/nyc/queens,/content/news/nyc/bronx,/content/news/ca/la-east,/content/news/ca/la-west,/content/news/ca/orange-county,/content/news/ca/san-fernando-valley-ventura,/content/news/ky/bowling-green,/content/news/nys/buffalo,/content/news/nys/capital-region,/content/news/nys/central-ny,/content/news/oh/cincinnati,/content/news/oh/cleveland,/content/news/oh/columbus,/content/news/oh/dayton,/content/news/nys/hudson-valley,/content/news/nyc/noticias,/content/news/nyc/all-boroughs,/content/news/nys/jamestown,/content/news/nys/rochester,/content/news/nys/binghamton,/content/news/nys/watertown,/content/news/ky/lexington,/content/news/ky/louisville,/content/news/ky/northern-ky,/content/news/oh/toledo,/content/news/nyc/staten-island" data-topages="/content/news/nc/charlotte,/content/news/nc/coastal,/content/news/nc/triad,/content/news/nc/triangle-sandhills,/content/news/tx/austin,/content/news/tx/san-antonio,/content/news/fl/tampa,/content/news/fl/orlando,/content/news/nyc/brooklyn,/content/news/nyc/manhattan,/content/news/nyc/all-boroughs,/content/news/nyc/queens,/content/news/nyc/bronx,/content/news/ca/la-east,/content/news/ca/la-west,/content/news/ca/orange-county,/content/news/ca/san-fernando-valley-ventura,/content/news/ky/bowling-green,/content/news/nys/buffalo,/content/news/nys/capital-region,/content/news/nys/central-ny,/content/news/oh/cincinnati,/content/news/oh/cleveland,/content/news/oh/columbus,/content/news/oh/dayton,/content/news/nys/hudson-valley,/content/news/nyc/noticias,/content/news/nyc/all-boroughs,/content/news/nys/jamestown,/content/news/nys/rochester,/content/news/nys/binghamton,/content/news/nys/watertown,/content/news/ky/lexington,/content/news/ky/louisville,/content/news/ky/northern-ky,/content/news/oh/toledo,/content/news/nyc/staten-island">
+   </div>
+   <script type="text/javascript">
+    (function($) {
+        //ensures the default selection string doesn't
+        //dangle any periods at the end of the redirect URL
+        function cleanUrl(urlString) {
+            var newUrl = urlString.trim();
+            var trailingSlash = /\/$/;
+            if (newUrl.match('/content/news')) {
+                newUrl = newUrl.replace('/content/news', "");
+            }
+            if (newUrl.match(trailingSlash)) {
+                newUrl = newUrl.replace(trailingSlash, "");
+            }
+            return newUrl;
+        }
+        $(function() {
+            var regionCookie = News.region.getRegionCookieVal();
+            var redirectNode = $('.redirect');
+            var defaultPage = redirectNode.data('defaultpage');
+            var returnFromDefault = Boolean(redirectNode.data('returnfromdefault'));
+            if (returnFromDefault) {
+                var selector = window.location.pathname.replace('/', '.')
+                defaultPage = defaultPage + selector
+            }
+            var fromPages = redirectNode.data('frompages');
+            var toPages = redirectNode.data('topages');
+            if(regionCookie && fromPages && toPages){
+                var from = fromPages.split(',');
+                var to = toPages.split(',');
+                var matchedRegion = from.indexOf(regionCookie);
+                if (matchedRegion > -1) {
+                    window.location.replace(cleanUrl(to[matchedRegion]));
+                } else {
+                    window.location.replace(cleanUrl(defaultPage));
+                }
+            } else {
+                //If no region cookie is set go to the splash page, let user select region
+                // splash page will detect the redirect and handle accordingly.
+                var newLocation = defaultPage;
+                //If a user goes to ny1 with no cookie set they are redirected
+                //to nyc/all-boroughs per the splash page behavior discussions
+                if (window.location.hostname.indexOf("ny1.com") > -1) {
+                    newLocation = "/nyc/all-boroughs"
+                }
+                window.location.replace(newLocation);
+            }
+        });
+    })(jQuery);
+   </script>
+  </div>
+  <div>
+  </div>
+ </body>
+</html>

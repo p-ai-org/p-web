@@ -1,0 +1,178 @@
+/*
+Theme Name:   Dual Shockers Child
+Theme URI:    https://grv.media
+Description:  Dual Shockers Child Theme
+Author:       GRV Media
+Author URI:   https://grv.media
+Template:     dualshockers-theme-v4-master
+Version:      0.0.1
+License:      GNU General Public License v3 or later
+License URI:  http://www.gnu.org/licenses/gpl-3.0.html
+Tags:         two-columns, custom-background, custom-colors, custom-menu, featured-images, theme-options, threaded-comments, translation-ready
+Text Domain:  dualshockers-theme-v4-master-child
+*/
+
+
+.sidebar .GRVAd, .single-post .post-main-content .GRVAd.mobile{
+	margin-bottom:20px
+}
+
+/* counteract the a:hover border style */
+a.GRVAdClose, a.GRVAdClose:hover {
+    border-width: 0;
+}
+
+/* replacement SVG logo - ideally these would have gone in master with the html edits but 
+dont want to have to rebuild the theme CSS for it */
+.logo.lightdark-mode {
+    height: auto;
+}
+.nav-bar .logo.lightdark-mode {
+    display: block;
+    width: 180px;
+}
+.logo.lightdark-mode svg {
+    width: 180px;
+    height: auto;
+    display: block;
+}
+footer .logo.lightdark-mode svg {
+    margin: 0 auto;
+}
+html[data-theme='dark'] .logo.lightdark-mode #dsSVGLogoText {
+    fill: #fff;
+}
+
+/* sticky leader dark mode */
+html[data-theme='dark'] .GRVAd.leaderboard-fixed .GRVAdWrap .GRVAdBG { background-color: rgba(0,0,0,0.8); }
+html[data-theme='dark'] .GRVAd.leaderboard-fixed .GRVAdWrap .GRVAdBBG { fill: #000; }
+
+
+/* CJ - prevent grid template becoming wider than the screen on mobile view home page */
+/* NB think this is related to an issue we discovered with grid previously - it is not safe
+to use 100% width inside a grid column with auto or none explicit width - we could use 
+min-width: 100%; max-width:100%; on the content items so we can keep the auto width 
+column but as it is a single column just explicitly declare it as 100% width */
+.featured-articles {
+    grid-template-columns: 100%;
+}
+/* need to declare the media query again for the desktop grid due to styles in master being 
+higher up the cascade than our mobile fix above */
+@media only screen and (min-width: 1280px) {
+    .featured-articles {
+        grid-template-columns: auto 1fr 1fr auto;
+    }
+
+    /* position sticky works as long as we match up the row span on the grid column with grid-row: 2/100
+    from the content column but the full width images on some articles means we cannot use it */
+    /*.sidebar.sidebar-right {
+        grid-row: 2/100;
+    }
+    .sidebar-right-content {
+        position: sticky;
+        top: 80px;
+    }*/
+}
+
+/* space for the sticky leader */
+footer .footer-menu {
+    margin-bottom: 90px;
+}
+
+#contact-section{
+	margin-top:40px;
+	margin-bottom:40px;
+}
+
+#contact-section .contact-section-contact-button a {
+    background: #d8d8d8;
+    color: #000;
+    text-decoration: none;
+    padding: 17px;
+    min-width: 130px;
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    border-radius: 12px;
+    font-weight: 700;
+}
+
+/* force reddit embed to white BG as it was black on black - not sure why */
+iframe.embedly-card {
+    background-color: #fff;
+}
+
+@media (min-width: 1280px) {
+    .single-post .post-main-content .GRVAd.mobile[data-ad-type="primary-mpu"] {
+        display: none;
+    }
+    footer .footer-menu {
+        margin-bottom: 130px;
+    }
+}
+
+.page-404 {
+	text-align: center;
+}
+
+.page-404 h1 {
+	font-size: 180px;
+	color: hsla(0, 0%, calc(var(--dark-mode) * 100%), 1);
+}
+
+.page-404 h2 {
+	font-size: 29px;
+	font-weight: 100;
+	padding: 5px 12px;
+	display: inline-block;
+	color: hsla(0, 0%, calc(var(--dark-mode) * 100%), 1);
+	text-transform: uppercase;
+	position: relative;
+}
+
+.page-404 h2:before {
+	content: '';
+	position: absolute;
+	width: 120%;
+	top: 50%;
+	height: 1px;
+	left: -10%;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+	background: hsla(0, 0%, calc(var(--dark-mode) * 100%), 1);
+	z-index: -2;
+}
+
+.page-404 h2:after {
+	content: '';
+	background: hsla(0, 0%, calc(100% - (var(--dark-mode) * 100%)), 1);
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+}
+
+.page-404 form {
+	max-width: 400px;
+	margin: 0 auto;
+}
+
+.page-404 form input[type="text"] {
+	display: block;
+	padding: 18px 20px;
+	border-radius: 0;
+	width: 100%;
+	border: 1px solid;
+	border-color: hsla(0, 0%, calc(var(--dark-mode) * 100%), 1);
+}
+
+.page-404 form button {
+	display: block;
+	width: 100%;
+	padding: 18px;
+	border: none;
+	color: hsla(0, 0%, calc(var(--dark-mode) * 100%), 1);
+}

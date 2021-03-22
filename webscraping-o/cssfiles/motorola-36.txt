@@ -1,0 +1,1 @@
+.vtex-flex-layout-0-x-flexCol--priceWrapper{height:40px}

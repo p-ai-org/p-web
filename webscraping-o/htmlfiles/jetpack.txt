@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]><html class="no-js lt-ie10 lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie10 lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie10 lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]><html class="no-js lt-ie10" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en">
+ <!--<![endif]-->
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
+  <meta content="WordPress.com / Automattic Inc." name="author"/>
+  <meta content="width=device-width" name="viewport"/>
+  <title>
+   Jetpack: WordPress Security, Backups, Speed, &amp; Growth
+  </title>
+  <meta content="max-image-preview:large" name="robots"/>
+  <meta content="gprBhnJ5dQ2j8I3RU2MexFOZp5a6Ty3tLmUpKk4cbPg" name="google-site-verification"/>
+  <link href="https://jetpack.com" hreflang="x-default" rel="alternate"/>
+  <link href="https://ar.jetpack.com" hreflang="ar" rel="alternate"/>
+  <link href="https://de.jetpack.com" hreflang="de" rel="alternate"/>
+  <link href="https://jetpack.com" hreflang="en" rel="alternate"/>
+  <link href="https://es.jetpack.com" hreflang="es" rel="alternate"/>
+  <link href="https://fr.jetpack.com" hreflang="fr" rel="alternate"/>
+  <link href="https://he.jetpack.com" hreflang="he" rel="alternate"/>
+  <link href="https://id.jetpack.com" hreflang="id" rel="alternate"/>
+  <link href="https://it.jetpack.com" hreflang="it" rel="alternate"/>
+  <link href="https://ja.jetpack.com" hreflang="ja" rel="alternate"/>
+  <link href="https://ko.jetpack.com" hreflang="ko" rel="alternate"/>
+  <link href="https://nl.jetpack.com" hreflang="nl" rel="alternate"/>
+  <link href="https://br.jetpack.com" hreflang="pt-br" rel="alternate"/>
+  <link href="https://ru.jetpack.com" hreflang="ru" rel="alternate"/>
+  <link href="https://sv.jetpack.com" hreflang="sv" rel="alternate"/>
+  <link href="https://zh-cn.jetpack.com" hreflang="zh-Hans" rel="alternate"/>
+  <link href="https://zh-tw.jetpack.com" hreflang="zh-Hant" rel="alternate"/>
+  <!-- Async WordPress.com Remote Login -->
+  <script id="wpcom_remote_login_js">
+   var wpcom_remote_login_extra_auth = '';
+function wpcom_remote_login_remove_dom_node_id( element_id ) {
+	var dom_node = document.getElementById( element_id );
+	if ( dom_node ) { dom_node.parentNode.removeChild( dom_node ); }
+}
+function wpcom_remote_login_remove_dom_node_classes( class_name ) {
+	var dom_nodes = document.querySelectorAll( '.' + class_name );
+	for ( var i = 0; i < dom_nodes.length; i++ ) {
+		dom_nodes[ i ].parentNode.removeChild( dom_nodes[ i ] );
+	}
+}
+function wpcom_remote_login_final_cleanup() {
+	wpcom_remote_login_remove_dom_node_classes( "wpcom_remote_login_msg" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_key" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_validate" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_js" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_request_access_iframe" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_request_access_styles" );
+}
+
+// Watch for messages back from the remote login
+window.addEventListener( "message", function( e ) {
+	if ( e.origin === "https://r-login.wordpress.com" ) {
+		var data = {};
+		try {
+			data = JSON.parse( e.data );
+		} catch( e ) {
+			wpcom_remote_login_final_cleanup();
+			return;
+		}
+
+		if ( data.msg === 'LOGIN' ) {
+			// Clean up the login check iframe
+			wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_key" );
+
+			var id_regex = new RegExp( /^[0-9]+$/ );
+			var token_regex = new RegExp( /^.*|.*|.*$/ );
+			if (
+				token_regex.test( data.token )
+				&& id_regex.test( data.wpcomid )
+			) {
+				// We have everything we need to ask for a login
+				var script = document.createElement( "script" );
+				script.setAttribute( "id", "wpcom_remote_login_validate" );
+				script.src = '/remote-login.php?wpcom_remote_login=validate'
+					+ '&wpcomid=' + data.wpcomid
+					+ '&token=' + encodeURIComponent( data.token )
+					+ '&host=' + window.location.protocol
+						+ '//' + window.location.hostname;
+				document.body.appendChild( script );
+			}
+
+			return;
+		}
+
+		// Safari ITP, not logged in, so redirect
+		if ( data.msg === 'LOGIN-REDIRECT' ) {
+			window.location = 'https://wordpress.com/log-in?redirect_to=' + window.location.href;
+			return;
+		}
+
+		// Safari ITP, storage access failed, remove the request
+		if ( data.msg === 'LOGIN-REMOVE' ) {
+			var css_zap = 'html { -webkit-transition: margin-top 1s; transition: margin-top 1s; } /* 9001 */ html { margin-top: 0 !important; } * html body { margin-top: 0 !important; } @media screen and ( max-width: 782px ) { html { margin-top: 0 !important; } * html body { margin-top: 0 !important; } }';
+			var style_zap = document.createElement( 'style' );
+			style_zap.type = 'text/css';
+			style_zap.appendChild( document.createTextNode( css_zap ) );
+			document.body.appendChild( style_zap );
+
+			var e = document.getElementById( 'wpcom_request_access_iframe' );
+			e.parentNode.removeChild( e );
+
+			document.cookie = 'wordpress_com_login_access=denied; path=/; max-age=31536000';
+
+			return;
+		}
+
+		// Safari ITP
+		if ( data.msg === 'REQUEST_ACCESS' ) {
+			console.log( 'request access: safari' );
+
+			// Check ITP iframe enable/disable knob
+			if ( wpcom_remote_login_extra_auth !== 'safari_itp_iframe' ) {
+				return;
+			}
+
+			// If we are in a "private window" there is no ITP.
+			var private_window = false;
+			try {
+				var opendb = window.openDatabase( null, null, null, null );
+			} catch( e ) {
+				private_window = true;
+			}
+
+			if ( private_window ) {
+				console.log( 'private window' );
+				return;
+			}
+
+			var iframe = document.createElement( 'iframe' );
+			iframe.id = 'wpcom_request_access_iframe';
+			iframe.setAttribute( 'scrolling', 'no' );
+			iframe.setAttribute( 'sandbox', 'allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-top-navigation-by-user-activation' );
+			iframe.src = 'https://r-login.wordpress.com/remote-login.php?wpcom_remote_login=request_access&origin=' + encodeURIComponent( data.origin ) + '&wpcomid=' + encodeURIComponent( data.wpcomid );
+
+			var css = 'html { -webkit-transition: margin-top 1s; transition: margin-top 1s; } /* 9001 */ html { margin-top: 46px !important; } * html body { margin-top: 46px !important; } @media screen and ( max-width: 660px ) { html { margin-top: 71px !important; } * html body { margin-top: 71px !important; } #wpcom_request_access_iframe { display: block; height: 71px !important; } } #wpcom_request_access_iframe { border: 0px; height: 46px; position: fixed; top: 0; left: 0; width: 100%; min-width: 100%; z-index: 99999; background: #23282d; } ';
+
+			var style = document.createElement( 'style' );
+			style.type = 'text/css';
+			style.id = 'wpcom_request_access_styles';
+			style.appendChild( document.createTextNode( css ) );
+			document.body.appendChild( style );
+
+			document.body.appendChild( iframe );
+		}
+
+		if ( data.msg === 'DONE' ) {
+			wpcom_remote_login_final_cleanup();
+		}
+	}
+}, false );
+
+// Inject the remote login iframe after the page has had a chance to load
+// more critical resources
+window.addEventListener( "DOMContentLoaded", function( e ) {
+	var iframe = document.createElement( "iframe" );
+	iframe.style.display = "none";
+	iframe.setAttribute( "scrolling", "no" );
+	iframe.setAttribute( "id", "wpcom_remote_login_key" );
+	iframe.src = "https://r-login.wordpress.com/remote-login.php"
+		+ "?wpcom_remote_login=key"
+		+ "&origin=aHR0cHM6Ly9qZXRwYWNrLmNvbQ%3D%3D"
+		+ "&wpcomid=20115252"
+		+ "&time=1616415560";
+	document.body.appendChild( iframe );
+}, false );
+  </script>
+  <link href="//s0.wp.com" rel="dns-prefetch"/>
+  <link href="//s2.wp.com" rel="dns-prefetch"/>
+  <link href="//stats.wp.com" rel="dns-prefetch"/>
+  <link href="//s1.wp.com" rel="dns-prefetch"/>
+  <link href="//jetpackme.wordpress.com" rel="dns-prefetch"/>
+  <link href="//fonts.googleapis.com" rel="dns-prefetch"/>
+  <link href="https://jetpack.com/feed/" rel="alternate" title="Jetpack: WordPress Security, Performance, and Growth » Feed" type="application/rss+xml"/>
+  <link href="https://jetpack.com/comments/feed/" rel="alternate" title="Jetpack: WordPress Security, Performance, and Growth » Comments Feed" type="application/rss+xml"/>
+  <script type="text/javascript">
+   /* <![CDATA[ */
+		function addLoadEvent(func) {
+			var oldonload = window.onload;
+			if (typeof window.onload != 'function') {
+				window.onload = func;
+			} else {
+				window.onload = function () {
+					oldonload();
+					func();
+				}
+			}
+		}
+		/* ]]> */
+  </script>
+  <script type="text/javascript">
+   window._wpemojiSettings = {"baseUrl":"https:\/\/s0.wp.com\/wp-content\/mu-plugins\/wpcom-smileys\/twemoji\/2\/72x72\/","ext":".png","svgUrl":"https:\/\/s0.wp.com\/wp-content\/mu-plugins\/wpcom-smileys\/twemoji\/2\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/s2.wp.com\/wp-includes\/js\/wp-emoji-release.min.js?m=1612197847h&ver=5.7"}};
+			!function(e,a,t){var n,r,o,i=a.createElement("canvas"),p=i.getContext&&i.getContext("2d");function s(e,t){var a=String.fromCharCode;p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,e),0,0);e=i.toDataURL();return p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,t),0,0),e===i.toDataURL()}function c(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(o=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},r=0;r<o.length;r++)t.supports[o[r]]=function(e){if(!p||!p.fillText)return!1;switch(p.textBaseline="top",p.font="600 32px Arial",e){case"flag":return s([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])?!1:!s([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!s([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]);case"emoji":return!s([55357,56424,8205,55356,57212],[55357,56424,8203,55356,57212])}return!1}(o[r]),t.supports.everything=t.supports.everything&&t.supports[o[r]],"flag"!==o[r]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[o[r]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(n=t.source||{}).concatemoji?c(n.concatemoji):n.wpemoji&&n.twemoji&&(c(n.twemoji),c(n.wpemoji)))}(window,document,window._wpemojiSettings);
+  </script>
+  <style type="text/css">
+   img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+  </style>
+  <link href="https://s0.wp.com/_static/??-eJydketuwyAMhV9ojpup3eXHtGcB4lI6bjKwLG9fQhe1W7dompCQD/DZ+BjHCCr4TD6jKxBt0cYnHKMKDpIzlqZvqlMp3eEVtjC6VCmJdb1hwvd+0913Pcpi7IDSBvUG1kgWPGE+kKM/JGpUwiPlKGZcTKFk0GwGTHmy/0jBIhuv0y/4lQNzD/XcRZHnF44GI8jWb/u8ho1m0JQrnpYYMn2sI81dKSNTSlB3Z4qDZtGt2T+USiRYHVrFcwifhffcoGEtiaYA1aHqSvBfBOytMLyGMlVvdQ11q32RN9C5FxRPapmDI/A0Xqbw6l76h7oeN8+77fEE8PD4ww==?cssminify=yes" id="all-css-0-1" media="all" rel="stylesheet" type="text/css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans%3Aital%2Cwght%400%2C400%3B0%2C700%3B1%2C400&amp;display=swap&amp;ver=2.0" id="jetpackme-fonts-css" media="all" rel="stylesheet"/>
+  <link href="https://s0.wp.com/wp-content/lib/locale-guesser-switcher/switcher-widget/locale-switcher.css?m=1536934010h&amp;cssminify=yes" id="all-css-2-1" media="all" rel="stylesheet" type="text/css"/>
+  <style id="jetpack-global-styles-frontend-style-inline-css">
+   :root { --font-headings: unset; --font-base: unset; --font-headings-default: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif; --font-base-default: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;}
+  </style>
+  <link href="https://s0.wp.com/wp-content/themes/h4/global.css?m=1420737423h&amp;cssminify=yes" id="all-css-4-1" media="all" rel="stylesheet" type="text/css"/>
+  <script src="https://s1.wp.com/_static/??-eJylj9FuwjAMRX+I4FWo23hAfEtIvdZZ4hTbpfD3C9IibRPSHniy5Xt87Qvr7EJhQzaICnNRy6jqR9xG3cBvNZcTJXSLolSAzRF/lAecJHOzlOutacQhLQPqXYznBeX2XbaZ+F/IZRrFG/6E2zWbsP4L/j1ARJt9+MzoGNe7yQV5KAKT5dTrRJe/u4lOkErwNdK41NAoTleyMKFAa9xKw4jWuDZ+xsrEsyZvVFirzzEfuteu3+9e3voufgH/XpW/" type="text/javascript">
+  </script>
+  <script type="text/javascript">
+   window.addEventListener( 'DOMContentLoaded', function() {
+		rltInitialize( {"token":null,"iframeOrigins":["https:\/\/widgets.wp.com"]} );
+	} );
+  </script>
+  <link href="https://jetpackme.wordpress.com/xmlrpc.php?rsd" rel="EditURI" title="RSD" type="application/rsd+xml"/>
+  <link href="https://s1.wp.com/wp-includes/wlwmanifest.xml" rel="wlwmanifest" type="application/wlwmanifest+xml"/>
+  <meta content="WordPress.com" name="generator"/>
+  <link href="https://wp.me/P1moTy-9" rel="shortlink"/>
+  <style>
+   @font-face {
+			font-family: Recoleta;
+			src: url('https://s1.wp.com/i/fonts/recoleta/400.woff2')
+		}
+  </style>
+  <link href="https://public-api.wordpress.com/oembed/?format=json&amp;url=https%3A%2F%2Fjetpack.com%2F&amp;for=wpcom-auto-discovery" rel="alternate" type="application/json+oembed"/>
+  <link href="https://public-api.wordpress.com/oembed/?format=xml&amp;url=https%3A%2F%2Fjetpack.com%2F&amp;for=wpcom-auto-discovery" rel="alternate" type="application/xml+oembed"/>
+  <!-- Jetpack Open Graph Tags -->
+  <meta content="website" property="og:type"/>
+  <meta content="Jetpack — Essential Security &amp; Performance for WordPress" property="og:title"/>
+  <meta content="The ultimate WordPress plugin for security, backups, malware scan, anti-spam, CDN, site search, CRM, Stripe, Facebook, &amp; Instagram" property="og:description"/>
+  <meta content="https://jetpack.com/" property="og:url"/>
+  <meta content="Jetpack: WordPress Security, Performance, and Growth" property="og:site_name"/>
+  <meta content="https://i2.wp.com/s2.wp.com/wp-content/themes/a8c/jetpackme-new/images-2019/jetpack-logo.png?ssl=1" property="og:image"/>
+  <meta content="en_US" property="og:locale"/>
+  <meta content="@jetpack" name="twitter:site"/>
+  <meta content="Jetpack" name="twitter:text:title"/>
+  <meta content="https://jetpackme.files.wordpress.com/2018/04/cropped-jetpack-favicon-2018.png?w=240" name="twitter:image"/>
+  <meta content="summary" name="twitter:card"/>
+  <meta content="https://www.facebook.com/WordPresscom" property="article:publisher"/>
+  <meta content="The ultimate WordPress plugin for security, backups, malware scan, anti-spam, CDN, site search, CRM, Stripe, Facebook, &amp; Instagram" name="description"/>
+  <meta content="WordPress" name="twitter:app:name:iphone"/>
+  <meta content="335703880" name="twitter:app:id:iphone"/>
+  <meta content="WordPress" name="twitter:app:name:ipad"/>
+  <meta content="335703880" name="twitter:app:id:ipad"/>
+  <meta content="WordPress" name="twitter:app:name:googleplay"/>
+  <meta content="org.wordpress.android" name="twitter:app:id:googleplay"/>
+  <!-- End Jetpack Open Graph Tags -->
+  <link href="https://jetpack.com/?openidserver=1" rel="openid.server"/>
+  <link href="https://jetpack.com/" rel="openid.delegate"/>
+  <link href="https://jetpack.com/osd.xml" rel="search" title="Jetpack: WordPress Security, Performance, and Growth" type="application/opensearchdescription+xml"/>
+  <link href="https://s1.wp.com/opensearch.xml" rel="search" title="WordPress.com" type="application/opensearchdescription+xml"/>
+  <meta content="6fa21ec91fd22f37a48517db6b327918614366e821de0edc5b7f323cd1fc9dd4" name="ahrefs-site-verification"/>
+  <link href="https://jetpack.com/" rel="canonical"/>
+  <style type="text/css">
+   .recentcomments a {
+				display: inline !important;
+				padding: 0 !important;
+				margin: 0 !important;
+			}
+
+			table.recentcommentsavatartop img.avatar, table.recentcommentsavatarend img.avatar {
+				border: 0px;
+				margin: 0;
+			}
+
+			table.recentcommentsavatartop a, table.recentcommentsavatarend a {
+				border: 0px !important;
+				background-color: transparent !important;
+			}
+
+			td.recentcommentsavatarend, td.recentcommentsavatartop {
+				padding: 0px 0px 1px 0px;
+				margin: 0px;
+			}
+
+			td.recentcommentstextend {
+				border: none !important;
+				padding: 0px 0px 2px 10px;
+			}
+
+			.rtl td.recentcommentstextend {
+				padding: 0px 10px 2px 0px;
+			}
+
+			td.recentcommentstexttop {
+				border: none;
+				padding: 0px 0px 0px 10px;
+			}
+
+			.rtl td.recentcommentstexttop {
+				padding: 0px 10px 0px 0px;
+			}
+  </style>
+  <meta content="Jetpack: WordPress Security, Performance, and Growth" name="application-name"/>
+  <meta content="width=device-width;height=device-height" name="msapplication-window"/>
+  <meta content="The ultimate WordPress plugin for security, backups, malware scan, anti-spam, CDN, site search, CRM, Stripe, Facebook, &amp; Instagram" name="msapplication-tooltip"/>
+  <meta content="name=Subscribe;action-uri=https://jetpack.com/feed/;icon-uri=https://jetpackme.files.wordpress.com/2018/04/cropped-jetpack-favicon-2018.png?w=16" name="msapplication-task"/>
+  <meta content="name=Sign up for a free blog;action-uri=http://wordpress.com/signup/;icon-uri=https://s1.wp.com/i/favicon.ico" name="msapplication-task"/>
+  <meta content="name=WordPress.com Support;action-uri=http://support.wordpress.com/;icon-uri=https://s1.wp.com/i/favicon.ico" name="msapplication-task"/>
+  <meta content="name=WordPress.com Forums;action-uri=http://forums.wordpress.com/;icon-uri=https://s1.wp.com/i/favicon.ico" name="msapplication-task"/>
+  <link href="https://jetpackme.files.wordpress.com/2018/04/cropped-jetpack-favicon-2018.png?w=32" rel="icon" sizes="32x32"/>
+  <link href="https://jetpackme.files.wordpress.com/2018/04/cropped-jetpack-favicon-2018.png?w=192" rel="icon" sizes="192x192"/>
+  <link href="https://jetpackme.files.wordpress.com/2018/04/cropped-jetpack-favicon-2018.png?w=180" rel="apple-touch-icon"/>
+  <meta content="https://jetpackme.files.wordpress.com/2018/04/cropped-jetpack-favicon-2018.png?w=270" name="msapplication-TileImage"/>
+  <link href="https://s2.wp.com/?custom-css=1&amp;csblog=1moTy&amp;cscache=6&amp;csrev=278" id="custom-css-css" rel="stylesheet" type="text/css"/>
+  <!-- Your Google Analytics Plugin is missing the tracking ID -->
+ </head>
+ <body class="home page-template page-template-front-page-2018 page-template-front-page-2018-php page page-id-9 wp-embed-responsive customizer-styles-applied highlander-enabled highlander-light">
+  <header class="mast">
+   <div class="sticky-nav">
+    <div class="in">
+     <nav role="navigation">
+      <a class="logo" href="/" title="Jetpack">
+       <svg viewbox="0 0 385.9 104.8" xmlns="http://www.w3.org/2000/svg">
+        <title>
+         Jetpack
+        </title>
+        <desc>
+         The Jetpack logo
+        </desc>
+        <path class="jetpack-emblem" d="M52.4 0C23.5 0 0 23.5 0 52.4c0 28.9 23.5 52.4 52.4 52.4 28.9 0 52.4-23.5 52.4-52.4C104.8 23.5 81.3 0 52.4 0zM49.7 61.1H23.6l26.1-50.8V61.1zM55 94.4V43.6h26.1L55 94.4z">
+        </path>
+        <path d="M135.3 87c-1.5-2.3-2.9-4.6-4.3-6.8 7.4-4.5 9.9-8.1 9.9-14.9V26h-8.7v-7.5h18.5v44.8C150.7 74.7 147.4 81.1 135.3 87z">
+        </path>
+        <path d="M212.8 60.2c0 3.8 2.7 4.2 4.5 4.2s4.4-0.6 6.4-1.2v7c-2.8 0.9-5.7 1.6-9.7 1.6 -4.8 0-10.4-1.8-10.4-10.2V41h-5.1v-7.1h5.1V23.4h9.2v10.5h11.6V41h-11.6V60.2z">
+        </path>
+        <path d="M232 90.5V33.8h8.8v3.4c3.5-2.7 7.4-4.4 12.2-4.4 8.3 0 14.9 5.8 14.9 18.3 0 12.4-7.2 20.6-19.1 20.6 -2.9 0-5.2-0.4-7.6-0.9v19.6H232zM250.6 40.4c-2.7 0-6.1 1.3-9.3 4.1v19.3c2 0.4 4.1 0.7 6.9 0.7 6.5 0 10.2-4.1 10.2-12.7C258.4 43.9 255.7 40.4 250.6 40.4z">
+        </path>
+        <path d="M304.1 70.9h-8.6v-4.1h-0.2c-3 2.3-6.7 4.8-12.2 4.8 -4.8 0-10-3.5-10-10.6 0-9.5 8.1-11.3 13.8-12.1l8.1-1.1v-1.1c0-5-2-6.6-6.7-6.6 -2.3 0-7.7 0.7-12.1 2.5l-0.8-7.4c4-1.4 9.5-2.4 14.1-2.4 9 0 14.8 3.6 14.8 14.3V70.9zM294.9 53.6l-7.6 1.2c-2.3 0.3-4.7 1.7-4.7 5.1 0 3 1.7 4.7 4.2 4.7 2.7 0 5.6-1.6 8.1-3.4V53.6z">
+        </path>
+        <path d="M342.1 69.7c-3.8 1.3-7.2 2.1-11.5 2.1 -13.8 0-19.3-7.9-19.3-19.4 0-12.1 7.6-19.6 19.9-19.6 4.6 0 7.4 0.8 10.5 1.8v7.8c-2.7-1-6.6-2.1-10.4-2.1 -5.6 0-10.4 3-10.4 11.6 0 9.5 4.8 12.4 10.9 12.4 2.9 0 6.1-0.6 10.4-2.3V69.7z">
+        </path>
+        <path d="M359.5 49.8c0.8-0.9 1.4-1.8 13-15.9h12l-15 17.6 16.4 19.5h-12l-14.3-17.6v17.6h-9.2V18.5h9.2V49.8z">
+        </path>
+        <path d="M191.6 69.7c-4.8 1.5-8.9 2.1-13.7 2.1 -11.8 0-19.1-5.9-19.1-19.7 0-10.1 6.2-19.3 18.1-19.3 11.8 0 15.9 8.2 15.9 16 0 2.6-0.2 4-0.3 5.5h-23.8c0.2 8.1 4.8 10 11.7 10 3.8 0 7.2-0.9 11.1-2.3V69.7zM183.2 48.2c0-4.5-1.5-8.4-6.4-8.4 -4.6 0-7.4 3.3-8 8.4H183.2z">
+        </path>
+       </svg>
+      </a>
+      <div class="nav-container">
+       <button aria-controls="navigation" aria-label="Menu" class="mobilenav mobilenav-animate" id="mobilenav-toggle" type="button">
+        <span class="mobilenav-box">
+         <span class="mobilenav-inner">
+         </span>
+        </span>
+        <span class="mobilenav-label">
+         Menu
+        </span>
+       </button>
+       <ul class="pri-nav home-nav">
+        <li>
+         <a href="/features/security/" id="masthead-security">
+          Security
+         </a>
+        </li>
+        <li>
+         <a href="/pricing/" id="masthead-pricing">
+          Pricing
+         </a>
+        </li>
+        <li>
+         <a href="/support/" id="masthead-support">
+          Support
+         </a>
+        </li>
+        <li>
+         <a href="/blog/" id="masthead-blog">
+          Blog
+         </a>
+        </li>
+        <li class="install">
+         <a href="https://jetpack.com/install/" id="masthead-install-page-9">
+          Get started
+         </a>
+        </li>
+        <li class="lang-select">
+         <a class="wp-button language-toggle" href="#">
+          <span>
+           en
+          </span>
+          <svg class="gridicon gridicons-chevron-down" height="24" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+           <g>
+            <path d="M20 9l-8 8-8-8 1.414-1.414L12 14.172l6.586-6.586">
+            </path>
+           </g>
+          </svg>
+         </a>
+        </li>
+        <li class="jp-search">
+         <a class="jetpack-search-filter__link" href="#">
+          <svg class="gridicon gridicons-search" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+           <g>
+            <path d="M21 19l-5.154-5.154C16.574 12.742 17 11.42 17 10c0-3.866-3.134-7-7-7s-7 3.134-7 7 3.134 7 7 7c1.42 0 2.742-.426 3.846-1.154L19 21l2-2zM5 10c0-2.757 2.243-5 5-5s5 2.243 5 5-2.243 5-5 5-5-2.243-5-5z">
+            </path>
+           </g>
+          </svg>
+         </a>
+        </li>
+       </ul>
+       <script>
+        // toggles is-active class on click of mobilenav-toggle id.
+		( function(){
+			var mobilenav = document.getElementById( 'mobilenav-toggle' );
+			mobilenav.addEventListener( 'click', function() {
+				var classNameArray = this.className.split(" ");
+				var isActiveIndex = classNameArray.indexOf( 'is-active' );
+
+				if (  isActiveIndex >= 0) {
+					delete classNameArray.splice( isActiveIndex, 1);
+				} else {
+					classNameArray.push( 'is-active' );
+				}
+				this.className = classNameArray.join( ' ' );
+			}, false );
+		})();
+       </script>
+      </div>
+     </nav>
+    </div>
+   </div>
+   <div class="in revolving-headers">
+    <h1>
+     Safer. Faster. More traffic.
+    </h1>
+    <h2>
+     Security, performance, and marketing tools
+     <br/>
+     made for WordPress sites by the WordPress experts
+    </h2>
+    <div class="cta-install">
+     <a class="wp-button is-primary" href="https://jetpack.com/features/" id="btn-mast-install-home-get-started">
+      Take a product tour
+     </a>
+     <a class="wp-button" href="https://jetpack.com/pricing/" id="btn-mast-install-home">
+      Compare plans
+     </a>
+    </div>
+   </div>
+  </header>
+  <section class="feature-list" id="home-features">
+   <div class="in left-align">
+    <div class="home-feature-container initial-feature">
+     <div class="jetpack-home-feature home-feature-img home-feature-img-sm">
+      <img alt="Illustration showing a computer" src="https://s2.wp.com/wp-content/themes/a8c/jetpackme-new/images-2018/svg/jetpack-security.svg" title="Always on WordPress security"/>
+     </div>
+     <div class="jetpack-home-feature home-feature-desc">
+      <h2>
+       Always-on Security
+      </h2>
+      <p>
+       <a href="https://jetpack.com/upgrade/backup/">
+        Real-time backups
+       </a>
+       save every change, while instant downtime alerts and one-click restores get you back online quickly.
+      </p>
+      <p>
+       <a href="https://jetpack.com/upgrade/scan/">
+        Malware scanning
+       </a>
+       and one-click fixes keep your site ahead of security threats.
+      </p>
+      <p>
+       <a href="https://jetpack.com/upgrade/anti-spam/">
+        Automatically block spam
+       </a>
+       from comments and forms.
+      </p>
+     </div>
+     <div class="jetpack-home-feature home-feature-img home-feature-img-lrg">
+      <img alt="Illustration showing a computer" src="https://s2.wp.com/wp-content/themes/a8c/jetpackme-new/images-2018/svg/jetpack-security.svg" title="Always on WordPress security"/>
+     </div>
+    </div>
+    <div class="jetpack-home-products">
+     <div class="product">
+      <img alt="Jetpack Backup icon" class="product__icon" src="https://s2.wp.com/wp-content/themes/a8c/jetpackme-new/images/icons/jetpack-icon-backup.svg"/>
+      <h3>
+       Jetpack Backup
+      </h3>
+      <p>
+       Never lose an image, page, or time worrying about your site.
+      </p>
+      <div class="product-cta">
+       <a class="wp-button is-primary" href="/upgrade/backup/">
+        Back up your site
+       </a>
+      </div>
+     </div>
+     <div class="product">
+      <img alt="Jetpack Scan icon" class="product__icon" src="https://s2.wp.com/wp-content/themes/a8c/jetpackme-new/images/icons/jetpack-icon-scan.svg"/>
+      <h3>
+       Jetpack Security
+      </h3>
+      <p>
+       We guard your site.
+       <br/>
+       You run your business.
+      </p>
+      <div class="product-cta">
+       <a class="wp-button is-primary" href="/features/security/">
+        Protect your site
+       </a>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="in">
+    <div class="home-feature-container">
+     <div class="jetpack-home-feature home-feature-img home-feature-img-sm">
+      <img alt="Illustration showing a high-performance website" src="https://s2.wp.com/wp-content/themes/a8c/jetpackme-new/images-2018/svg/jetpack-performance.svg" title="Built-in high performance tools for WordPress"/>
+     </div>
+     <div class="jetpack-home-feature home-feature-img home-feature-img-lrg">
+      <img alt="Illustration showing a high-performance website" src="https://s2.wp.com/wp-content/themes/a8c/jetpackme-new/images-2018/svg/jetpack-performance.svg" title="Built-in high performance tools for WordPress"/>
+     </div>
+     <div class="jetpack-home-feature home-feature-desc">
+      <h2 title="Built-in high performance tools for WordPress">
+       One-click Performance
+      </h2>
+      <p>
+       Load pages faster with our blazing fast
+       <a href="https://www.jetpack.com/features/design/content-delivery-network/">
+        WordPress CDN
+       </a>
+       . It's totally free, no matter how big your site is.
+      </p>
+      <p>
+       Automatically increase your site speed and improve your SEO ranking.
+      </p>
+      <p>
+       Shorter load times can lead to happier readers, more page views, and — if you’re running a store — improved sales.
+      </p>
+     </div>
+    </div>
+   </div>
+   <div class="in">
+    <div class="home-feature-container">
+     <div class="jetpack-home-feature home-feature-img home-feature-img-sm">
+      <img alt="Illustration showing a person customizing their WordPress site" src="https://s2.wp.com/wp-content/themes/a8c/jetpackme-new/images-2018/svg/jetpack-design.svg" title="Code-free WordPress customization"/>
+     </div>
+     <div class="jetpack-home-feature home-feature-desc">
+      <h2 title="Code-free WordPress Customization">
+       Code-free Customization
+      </h2>
+      <p>
+       <a href="https://jetpack.com/upgrade/search/">
+        Jetpack Search
+       </a>
+       helps your visitors instantly find the right content — so they buy more products and stay on your site longer.
+      </p>
+      <p>
+       Seamlessly embed rich content and videos, deliver them all at high speed, with an ad-free experience.
+      </p>
+      <p>
+       Customize your homepage, blog posts, sidebars, and widgets — all without touching any code.
+      </p>
+     </div>
+     <div class="jetpack-home-feature home-feature-img home-feature-img-lrg">
+      <img alt="Illustration showing a person customizing their WordPress site" src="https://s2.wp.com/wp-content/themes/a8c/jetpackme-new/images-2018/svg/jetpack-design.svg" title="Code-free WordPress customization"/>
+     </div>
+    </div>
+   </div>
+   <div class="in">
+    <div class="home-feature-container">
+     <div class="jetpack-home-feature home-feature-img home-feature-img-sm">
+      <img alt="Illustration showing a person looking at their WordPress site stats" src="https://s2.wp.com/wp-content/themes/a8c/jetpackme-new/images-2018/svg/jetpack-marketing-stats.svg" title="Effortless WordPress marketing"/>
+     </div>
+     <div class="jetpack-home-feature home-feature-img home-feature-img-lrg">
+      <img alt="Illustration showing a person looking at their WordPress site stats" src="https://s2.wp.com/wp-content/themes/a8c/jetpackme-new/images-2018/svg/jetpack-marketing-stats.svg" title="Effortless WordPress marketing"/>
+     </div>
+     <div class="jetpack-home-feature home-feature-desc">
+      <h2 title="Effortless WordPress marketing">
+       Effortless Growth
+      </h2>
+      <p>
+       Automatically track your customers and leads so you can better act on them with
+       <a href="https://jetpackcrm.com/">
+        Jetpack CRM
+       </a>
+       .
+      </p>
+      <p>
+       Schedule social media promotion of your newest posts, pages, and products before they’re published.
+      </p>
+      <p>
+       Keep visitors interested with automatic links to your related content, and monitor stats and notifications on the go with the WordPress mobile app.
+      </p>
+      <p>
+       Grow your revenue with the WordPress ad program and simple payment buttons.
+      </p>
+     </div>
+    </div>
+   </div>
+  </section>
+  <section class="testimonials testimonials--home">
+   <div class="in">
+    <h2 class="testimonials__header">
+     Recommended by WordPress Experts
+    </h2>
+    <ul class="testimonials__container">
+     <li class="testimonial">
+      <blockquote class="testimonial__container">
+       <p class="testimonial__quote">
+        I can’t tell you what a relief it is to have our magazine safely situated on WordPress with Jetpack’s seamless and secure monitoring and blazing-fast site search.
+       </p>
+       <footer class="testimonial__author">
+        <img alt="pixelated avatar of Jeffrey Zeldman" class="author__avatar" src="https://s2.wp.com/wp-content/themes/a8c/jetpackme-new/images/avatars/jeffrey-zeldman.jpg"/>
+        <cite class="author__name">
+         Jeffrey Zeldman
+        </cite>
+        <div class="author__site">
+         <a href="https://alistapart.com/">
+          A List Apart
+         </a>
+        </div>
+       </footer>
+      </blockquote>
+     </li>
+     <li class="testimonial">
+      <blockquote class="testimonial__container">
+       <p class="testimonial__quote">
+        Jetpack backs up everything on your site, and you don’t have to lift a finger. It's comprehensive, real-time, and effortless.
+       </p>
+       <footer class="testimonial__author">
+        <img alt="photo of Chris Coyier" class="author__avatar" src="https://s2.wp.com/wp-content/themes/a8c/jetpackme-new/images/avatars/chris-coyier.jpg"/>
+        <cite class="author__name">
+         Chris Coyier
+        </cite>
+        <div class="author__site">
+         <a href="https://css-tricks.com/">
+          CSS-Tricks
+         </a>
+         ,
+         <a href="https://codepen.io/">
+          CodePen
+         </a>
+        </div>
+       </footer>
+      </blockquote>
+     </li>
+     <li class="testimonial">
+      <blockquote class="testimonial__container">
+       <p class="testimonial__quote">
+        Jetpack continues to get better and better, which made it a no-brainer to partner with for our WooCommerce customers at LiquidWeb.
+       </p>
+       <footer class="testimonial__author">
+        <img alt="photo of Chris Lema" class="author__avatar" src="https://s2.wp.com/wp-content/themes/a8c/jetpackme-new/images/avatars/chris-lema.jpg"/>
+        <cite class="author__name">
+         Chris Lema
+        </cite>
+        <div class="author__site">
+         <a href="https://liquidweb.com/">
+          LiquidWeb
+         </a>
+        </div>
+       </footer>
+      </blockquote>
+     </li>
+    </ul>
+   </div>
+  </section>
+  <section class="feature-logos">
+   <div class="in">
+    <h2 title="Jetpack is recommended by the biggest names in WordPress">
+     Recommended by the biggest names in WordPress
+    </h2>
+    <div class="feature-logos-container">
+     <div class="recommend-feature-logo">
+      <img alt="WordPress.com Logo" loading="lazy" src="https://jetpackme.files.wordpress.com/2018/04/wordpresscomlogo1.png"/>
+     </div>
+     <div class="recommend-feature-logo">
+      <img alt="Bluehost Logo" loading="lazy" src="https://jetpackme.files.wordpress.com/2017/11/logo-bluehost.png"/>
+     </div>
+     <div class="recommend-feature-logo">
+      <img alt="Dreamhost Logo" loading="lazy" src="https://jetpackme.files.wordpress.com/2017/11/logo-dreamhost.png"/>
+     </div>
+     <div class="recommend-feature-logo">
+      <img alt="Pressable Logo" loading="lazy" src="https://jetpackme.files.wordpress.com/2017/11/logo-pressable.png"/>
+     </div>
+    </div>
+    <div class="cta-install">
+     <a class="wp-button is-primary" href="https://jetpack.com/features/" id="recommended-block-take-product-tour" title="Take a product tour">
+      Take a product tour
+     </a>
+     <a class="wp-button" href="https://jetpack.com/pricing/" id="recommended-block-compare-plans" title="Compare plans">
+      Compare plans
+     </a>
+    </div>
+   </div>
+  </section>
+  <footer class="jp-anchor">
+   <div class="in">
+    <div class="footer-cols">
+     <div class="footer-col">
+      <a class="jp-logo" href="/" title="Jetpack">
+       <svg viewbox="0 0 385.9 104.8" xmlns="http://www.w3.org/2000/svg">
+        <title>
+         Jetpack
+        </title>
+        <path class="jetpack-emblem" d="M52.4 0C23.5 0 0 23.5 0 52.4c0 28.9 23.5 52.4 52.4 52.4 28.9 0 52.4-23.5 52.4-52.4C104.8 23.5 81.3 0 52.4 0zM49.7 61.1H23.6l26.1-50.8V61.1zM55 94.4V43.6h26.1L55 94.4z">
+        </path>
+        <path d="M135.3 87c-1.5-2.3-2.9-4.6-4.3-6.8 7.4-4.5 9.9-8.1 9.9-14.9V26h-8.7v-7.5h18.5v44.8C150.7 74.7 147.4 81.1 135.3 87z">
+        </path>
+        <path d="M212.8 60.2c0 3.8 2.7 4.2 4.5 4.2s4.4-0.6 6.4-1.2v7c-2.8 0.9-5.7 1.6-9.7 1.6 -4.8 0-10.4-1.8-10.4-10.2V41h-5.1v-7.1h5.1V23.4h9.2v10.5h11.6V41h-11.6V60.2z">
+        </path>
+        <path d="M232 90.5V33.8h8.8v3.4c3.5-2.7 7.4-4.4 12.2-4.4 8.3 0 14.9 5.8 14.9 18.3 0 12.4-7.2 20.6-19.1 20.6 -2.9 0-5.2-0.4-7.6-0.9v19.6H232zM250.6 40.4c-2.7 0-6.1 1.3-9.3 4.1v19.3c2 0.4 4.1 0.7 6.9 0.7 6.5 0 10.2-4.1 10.2-12.7C258.4 43.9 255.7 40.4 250.6 40.4z">
+        </path>
+        <path d="M304.1 70.9h-8.6v-4.1h-0.2c-3 2.3-6.7 4.8-12.2 4.8 -4.8 0-10-3.5-10-10.6 0-9.5 8.1-11.3 13.8-12.1l8.1-1.1v-1.1c0-5-2-6.6-6.7-6.6 -2.3 0-7.7 0.7-12.1 2.5l-0.8-7.4c4-1.4 9.5-2.4 14.1-2.4 9 0 14.8 3.6 14.8 14.3V70.9zM294.9 53.6l-7.6 1.2c-2.3 0.3-4.7 1.7-4.7 5.1 0 3 1.7 4.7 4.2 4.7 2.7 0 5.6-1.6 8.1-3.4V53.6z">
+        </path>
+        <path d="M342.1 69.7c-3.8 1.3-7.2 2.1-11.5 2.1 -13.8 0-19.3-7.9-19.3-19.4 0-12.1 7.6-19.6 19.9-19.6 4.6 0 7.4 0.8 10.5 1.8v7.8c-2.7-1-6.6-2.1-10.4-2.1 -5.6 0-10.4 3-10.4 11.6 0 9.5 4.8 12.4 10.9 12.4 2.9 0 6.1-0.6 10.4-2.3V69.7z">
+        </path>
+        <path d="M359.5 49.8c0.8-0.9 1.4-1.8 13-15.9h12l-15 17.6 16.4 19.5h-12l-14.3-17.6v17.6h-9.2V18.5h9.2V49.8z">
+        </path>
+        <path d="M191.6 69.7c-4.8 1.5-8.9 2.1-13.7 2.1 -11.8 0-19.1-5.9-19.1-19.7 0-10.1 6.2-19.3 18.1-19.3 11.8 0 15.9 8.2 15.9 16 0 2.6-0.2 4-0.3 5.5h-23.8c0.2 8.1 4.8 10 11.7 10 3.8 0 7.2-0.9 11.1-2.3V69.7zM183.2 48.2c0-4.5-1.5-8.4-6.4-8.4 -4.6 0-7.4 3.3-8 8.4H183.2z">
+        </path>
+       </svg>
+      </a>
+      <a class="wp-button language-toggle" href="#">
+       <span>
+        en
+       </span>
+       <svg class="gridicon gridicons-chevron-down" height="24" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+        <g>
+         <path d="M20 9l-8 8-8-8 1.414-1.414L12 14.172l6.586-6.586">
+         </path>
+        </g>
+       </svg>
+      </a>
+     </div>
+     <div class="footer-col">
+      <nav>
+       <h4>
+        Product
+       </h4>
+       <ul>
+        <li>
+         <a href="https://jetpack.com/features/" id="footer-cta-tour" title="Take a tour of Jetpack">
+          Tour
+         </a>
+        </li>
+        <li>
+         <a href="https://jetpack.com/features/security" id="footer-cta-security" title="Jetpack Security">
+          Security
+         </a>
+        </li>
+        <li>
+         <a href="https://jetpack.com/pricing/" id="footer-cta-pricing" title="View Jetpack Pricing">
+          Pricing
+         </a>
+        </li>
+        <li>
+         <a href="https://jetpack.com/blog/" id="footer-cta-blog" title="Jetpack News">
+          News
+         </a>
+        </li>
+        <li>
+         <a href="https://jetpack.com/about/" id="footer-cta-about" title="About Jetpack">
+          About
+         </a>
+        </li>
+        <li>
+         <a href="https://apps.wordpress.com/get?utm_source=jetpack-com-footer&amp;utm_medium=direct&amp;utm_campaign=get-apps-promo" id="footer-cta-apps" title="WordPress at your fingertips">
+          Mobile app
+         </a>
+        </li>
+        <li>
+         <a href="http://automattic.com/privacy/" id="footer-cta-privacy">
+          Privacy Policy
+         </a>
+        </li>
+        <li>
+         <a href="https://automattic.com/privacy/#california-consumer-privacy-act-ccpa" id="footer-cta-ccpa">
+          Privacy Notice for California Users
+         </a>
+        </li>
+        <li>
+         <a href="http://wordpress.com/tos/" id="footer-cta-tos">
+          Terms of Service
+         </a>
+        </li>
+       </ul>
+      </nav>
+     </div>
+     <div class="footer-col">
+      <nav>
+       <h4>
+        Support &amp; Resources
+       </h4>
+       <ul>
+        <li>
+         <a href="https://jetpack.com/support/" id="footer-cta-support">
+          Knowledge Base
+         </a>
+        </li>
+        <li>
+         <a href="https://wordpress.org/support/plugin/jetpack" id="footer-cta-forums" title="Support Forums">
+          Forums
+         </a>
+        </li>
+        <li>
+         <a href="https://jetpack.com/contact-support/" id="footer-cta-contact">
+          Contact Us
+         </a>
+        </li>
+        <li>
+         <a href="https://automattic.com/press/" id="footer-cta-press" target="_blank" title="Press information and Jetpack branding materials">
+          Press
+         </a>
+        </li>
+        <li>
+         <a href="https://jetpack.com/features/design/themes/showcase" id="footer-cta-themes">
+          Theme Showcase
+         </a>
+        </li>
+        <li>
+         <a href="https://jetpack.com/features/security/library" id="footer-cta-security-library">
+          Security Library
+         </a>
+        </li>
+        <li>
+         <a href="https://jetpack.com/business-guide" id="footer-cta-biz-guide">
+          Business Guide
+         </a>
+        </li>
+        <li>
+         <a href="https://jetpack.com/hosting" id="footer-cta-hosting-guide">
+          Hosting Guide
+         </a>
+        </li>
+       </ul>
+      </nav>
+     </div>
+     <div class="footer-col">
+      <nav>
+       <h4>
+        Developers
+       </h4>
+       <ul>
+        <li>
+         <a href="https://developer.jetpack.com/" id="footer-cta-developer">
+          Developers Site
+         </a>
+        </li>
+        <li>
+         <a href="https://jetpack.com/beta/" id="footer-cta-beta" title="Sign up for the Jetpack BETA Program">
+          Beta Program
+         </a>
+        </li>
+        <li>
+         <a href="https://jetpack.com/contribute/" id="footer-cta-contribute">
+          Contribute to Jetpack
+         </a>
+        </li>
+        <li>
+         <a href="https://jetpack.pro/" id="footer-cta-dev-network">
+          Developer Network
+         </a>
+        </li>
+        <li>
+         <a href="https://automattic.com/work-with-us/?utm_source=jetpackcom&amp;utm_medium=link" id="footer-cta-work">
+          Work With Us
+         </a>
+        </li>
+       </ul>
+      </nav>
+     </div>
+     <div class="footer-col">
+      <nav>
+       <h4>
+        More from Jetpack
+       </h4>
+       <ul class="jp-family">
+        <li>
+         <a href="https://jetpackcrm.com/" id="footer-cta-affiliate">
+          Jetpack CRM
+         </a>
+        </li>
+       </ul>
+       <h4>
+        Partnerships
+       </h4>
+       <ul>
+        <li>
+         <a href="https://jetpack.com/for/affiliates/" id="footer-cta-affiliate">
+          Become an Affiliate
+         </a>
+        </li>
+        <li>
+         <a href="https://jetpack.com/for/agencies/" id="footer-cta-agency">
+          Become an Agency
+         </a>
+        </li>
+        <li>
+         <a href="https://jetpack.com/for/hosts/" id="footer-cta-partner">
+          Become a Partner
+         </a>
+        </li>
+        <li>
+         <a href="https://jetpack.com/hosting/#criteria" id="footer-cta-hosting-criteria">
+          Listing Criteria
+         </a>
+        </li>
+       </ul>
+      </nav>
+     </div>
+    </div>
+   </div>
+   <div class="footer-plugs">
+    <div class="in">
+     <div class="a8c-services">
+      <img alt="WordPress Logo" class="wp-logo" src="https://s2.wp.com/wp-content/themes/a8c/jetpackme-new/assets/images/icon/wordpress-logo.svg"/>
+      <a href="https://wordpress.com/">
+       Powering WordPress.com
+      </a>
+     </div>
+     <div class="a8c-attr">
+      <a href="http://automattic.com" title="Automattic – makers of WordPress.com and more!">
+       <svg version="1.1" viewbox="0 0 928 38" x="0" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" y="0">
+        <path d="M317.1 38.2c-12.6 0-20.7-9.1-20.7-18.5v-1.2c0-9.6 8.2-18.5 20.7-18.5 12.6 0 20.8 8.9 20.8 18.5v1.2C337.9 29.1 329.7 38.2 317.1 38.2zM331.2 18.6c0-6.9-5-13-14.1-13s-14 6.1-14 13v0.9c0 6.9 5 13.1 14 13.1s14.1-6.2 14.1-13.1V18.6zM175 36.8l-4.7-8.8h-20.9l-4.5 8.8h-7L157 1.3h5.5l19.5 35.5H175zM159.7 8.2l-7.7 14.9h15.7L159.7 8.2zM212.4 38.2c-12.7 0-18.7-6.9-18.7-16.2V1.3h6.6v20.9c0 6.6 4.3 10.5 12.5 10.5 8.4 0 11.9-3.9 11.9-10.5V1.3h6.7V22C231.4 30.8 225.8 38.2 212.4 38.2zM268.6 6.8v30h-6.7v-30h-15.5V1.3h37.7v5.5H268.6zM397.3 36.8V8.7l-1.8 3.1 -14.9 25h-3.3l-14.7-25 -1.8-3.1v28.1h-6.5V1.3h9.2l14 24.4 1.7 3 1.7-3 13.9-24.4h9.1v35.5H397.3zM454.4 36.8l-4.7-8.8h-20.9l-4.5 8.8h-7l19.2-35.5h5.5l19.5 35.5H454.4zM439.1 8.2l-7.7 14.9h15.7L439.1 8.2zM488.4 6.8v30h-6.7v-30h-15.5V1.3h37.7v5.5H488.4zM537.3 6.8v30h-6.7v-30h-15.5V1.3h37.7v5.5H537.3zM569.3 36.8V4.6c2.7 0 3.7-1.4 3.7-3.4h2.8v35.5H569.3zM628 11.3c-3.2-2.9-7.9-5.7-14.2-5.7 -9.5 0-14.8 6.5-14.8 13.3v0.7c0 6.7 5.4 13 15.3 13 5.9 0 10.8-2.8 13.9-5.7l4 4.2c-3.9 3.8-10.5 7.1-18.3 7.1 -13.4 0-21.6-8.7-21.6-18.3v-1.2c0-9.6 8.9-18.7 21.9-18.7 7.5 0 14.3 3.1 18 7.1L628 11.3zM321.5 12.4c1.2 0.8 1.5 2.4 0.8 3.6l-6.1 9.4c-0.8 1.2-2.4 1.6-3.6 0.8l0 0c-1.2-0.8-1.5-2.4-0.8-3.6l6.1-9.4C318.7 11.9 320.3 11.6 321.5 12.4L321.5 12.4z">
+        </path>
+        <path d="M37.5 36.7l-4.7-8.9H11.7l-4.6 8.9H0L19.4 0.8H25l19.7 35.9H37.5zM22 7.8l-7.8 15.1h15.9L22 7.8zM82.8 36.7l-23.3-24 -2.3-2.5v26.6h-6.7V0.8H57l22.6 24 2.3 2.6V0.8h6.7v35.9H82.8z">
+        </path>
+        <g display="none">
+         <path d="M694.6 38c-6.4 0-11.3-2-15.4-5.3l3.3-4.6c3.2 2.5 7.1 4.3 11.7 4.3 5.6 0 8.2-2.6 8.2-6.9V1.1h6.7v24.8C708.9 32.8 703.6 38 694.6 38zM750.7 36.6l-4.7-8.8h-20.8l-4.5 8.8h-7l19.2-35.5h5.5l19.5 35.5H750.7zM735.4 8L727.7 23h15.7L735.4 8zM806.4 36.6V8.5l-1.8 3.1 -14.9 25h-3.2l-14.7-25 -1.8-3.1v28.1h-6.5V1.1h9.2l14 24.3 1.7 3 1.7-3L804 1.1h9.1v35.5H806.4z" display="inline">
+         </path>
+        </g>
+        <path d="M718.1 36.6l-4.7-8.7h-20.7l-4.5 8.7h-7l19-35.2h5.5l19.3 35.2H718.1zM702.9 8.3l-7.7 14.8h15.6L702.9 8.3zM730.9 36.6V1.4h6.6v35.2H730.9zM777.9 36.6c-1.8 0-2.6-2.5-2.8-5.7l-0.2-3.6c-0.2-3.5-1.6-5-8.2-5h-12.5v14.2h-6.6V1.4h19.2c10.6 0 15.3 4.2 15.3 9.7 0 3.9-2 7.5-8.8 8.8 6.9 0.5 8.4 3.6 8.4 7.8l0.1 2.9c0.1 2.4 0.5 4.2 2.2 5.9v0.2H777.9zM775.4 11.9c0-2.5-2.1-5-7.7-5h-13.5v10.6h14.1c4.9 0 7.1-2.3 7.1-5.1V11.9zM791.4 36.6V1.4h6.6v29.7h27.5v5.5H791.4zM832.4 36.6V1.4h6.6v35.2H832.4zM880.7 36.6l-22.9-23.6 -2.2-2.5v26.1H849V1.4h6.3l22.2 23.5 2.3 2.5V1.4h6.6v35.2H880.7zM896.5 36.6V1.4h32v5.5h-25.4v9h19.5v5.3h-19.5v9.8h25.4v5.5H896.5z">
+        </path>
+        <g display="none">
+         <rect display="inline" fill="#DEDDDD" height="35.5" width="49.4" x="88.4" y="1.2">
+         </rect>
+         <rect display="inline" fill="#DEDDDD" height="35.5" width="49.4" x="632.4" y="1.2">
+         </rect>
+        </g>
+       </svg>
+      </a>
+     </div>
+    </div>
+   </div>
+   <div class="in">
+    <div class="hiring">
+     <a href="https://automattic.com/work-with-us/code-wrangler/?utm_source=jetpackcom&amp;utm_campaign=cw-php-we" id="code-wrangler" title="We are super nice :)">
+      We are hiring PHP developers. Join us!
+     </a>
+    </div>
+    <script>
+     var cwLink = document.getElementById( 'code-wrangler' );
+				var alternatives = [
+					{text: 'Automattic is hiring PHP developers. Join us!', campaign: 'cw-php-a8c'},
+					{text: 'Automattic is hiring backend developers. Join us!', campaign: 'cw-backend-a8c'},
+					{text: 'We are hiring backend developers. Join us!', campaign: 'cw-backend-we'},
+					{text: 'Automattic is hiring PHP developers anywhere in the world. Join us!', campaign: 'cw-php-a8c-anywhere'},
+					{text: 'Automattic is hiring backend developers anywhere in the world. Join us!', campaign: 'cw-backend-a8c-anywhere'},
+					{text: 'Know PHP and want to improve Jetpack? Join us!', campaign: 'cw-knowphp-jetpack'},
+					{text: 'Know PHP and want to improve Jetpack from anywhere in the world? Join us!', campaign: 'cw-knowphp-jetpack-anywhere'}
+				];
+				var chosen = alternatives[ Math.floor( Math.random() * alternatives.length ) ];
+				cwLink.href = 'https://automattic.com/work-with-us/code-wrangler/?utm_source=jetpackcom&utm_medium=link&utm_campaign=' + chosen.campaign;
+				cwLink.innerHTML = chosen.text;
+    </script>
+   </div>
+   <script>
+    // Language switcher widget
+			(function($) {
+				'use strict';
+
+				var locales = [{"code":"ar","locale_name":"\u0627\u0644\u0639\u0631\u0628\u064a\u0629","href":"\/\/ar.jetpack.com\/"},{"code":"de","locale_name":"Deutsch","href":"\/\/de.jetpack.com\/"},{"code":"en","locale_name":"English","href":"\/\/en.jetpack.com\/"},{"code":"es","locale_name":"Espa\u00f1ol","href":"\/\/es.jetpack.com\/"},{"code":"fr","locale_name":"Fran\u00e7ais","href":"\/\/fr.jetpack.com\/"},{"code":"he","locale_name":"\u05e2\u05b4\u05d1\u05b0\u05e8\u05b4\u05d9\u05ea","href":"\/\/he.jetpack.com\/"},{"code":"id","locale_name":"Bahasa Indonesia","href":"\/\/id.jetpack.com\/"},{"code":"it","locale_name":"Italiano","href":"\/\/it.jetpack.com\/"},{"code":"ja","locale_name":"\u65e5\u672c\u8a9e","href":"\/\/ja.jetpack.com\/"},{"code":"ko","locale_name":"\ud55c\uad6d\uc5b4","href":"\/\/ko.jetpack.com\/"},{"code":"nl","locale_name":"Nederlands","href":"\/\/nl.jetpack.com\/"},{"code":"pt-br","locale_name":"Portugu\u00eas do Brasil","href":"\/\/br.jetpack.com\/"},{"code":"ro","locale_name":"Rom\u00e2n\u0103","href":"\/\/ro.jetpack.com\/"},{"code":"ru","locale_name":"\u0420\u0443\u0441\u0441\u043a\u0438\u0439","href":"\/\/ru.jetpack.com\/"},{"code":"sv","locale_name":"Svenska","href":"\/\/sv.jetpack.com\/"},{"code":"tr","locale_name":"T\u00fcrk\u00e7e","href":"\/\/tr.jetpack.com\/"},{"code":"zh-cn","locale_name":"\u7b80\u4f53\u4e2d\u6587","href":"\/\/zh-cn.jetpack.com\/"},{"code":"zh-tw","locale_name":"\u7e41\u9ad4\u4e2d\u6587","href":"\/\/zh-tw.jetpack.com\/"}];
+
+				window.WPCOMLocaleSwitcher.init( locales, 'en', '.jetpack.com' );
+
+				$( '.language-toggle' ).on( 'click', function( event ) {
+					event.preventDefault();
+					window.WPCOMLocaleSwitcher.toggle();
+
+					// Set the focus to the current language
+					$( '#ls-overlay .active a' ).focus();
+				});
+			})(jQuery);
+   </script>
+  </footer>
+  <script type="text/javascript">
+   jQuery ( document ).ready(function() {
+			_tkq = window._tkq || [];
+			_tkq.push(['recordEvent', 'jetpack_homepage_visit',[]]);
+		});
+  </script>
+  <!-- -->
+  <div class="jetpack-instant-search__widget-area" style="display: none">
+   <div class="widget jetpack-filters widget_search" id="jetpack-search-filters-3">
+    <div class="jetpack-instant-search-wrapper" id="jetpack-search-filters-3-wrapper">
+    </div>
+   </div>
+  </div>
+  <!-- A8C Analytics [start] -->
+  <script type="text/javascript">
+   ( function() {
+					'use strict';
+
+					var setupAnalytics = function() {
+						window.a8cAnalyticsConfig = {"cookieBanner":{"version":"1","cssZIndex":50001,"skipBanner":false,"cookieDomain":"jetpack.com","v1CookieName":"sensitive_pixel_option","v2CookieName":"sensitive_pixel_options","v1Text":"Our websites and dashboards use cookies. By continuing, you agree to their use. <a target=\"_blank\" href=\"https:\/\/automattic.com\/cookies\">Learn more<\/a>, including how to control cookies.","v2Text":"We and our partners process your personal data (such as browsing data, IP addresses, cookie information, and other unique identifiers) based on your consent and\/or our legitimate interest to optimize our website, marketing activities, and your user experience.","v2OptionsText":"Your privacy is critically important to us. We and our partners use, store, and process your personal data to optimize: our <strong>website<\/strong> such as by improving security or conducting analytics, <strong>marketing activities<\/strong> to help deliver relevant marketing or content, and your <strong>user experience<\/strong> such as by remembering your account name, language settings, or cart information, where applicable. You can customize your cookie settings below. Learn more in our <a href=\"https:\/\/automattic.com\/privacy\/\" target=\"_blank\">Privacy Policy<\/a> and <a href=\"https:\/\/automattic.com\/cookies\/\" target=\"_blank\">Cookie Policy<\/a>.","v2EssentialOptionText":"<strong>Required:<\/strong> These cookies are essential for our websites and services to perform basic functions and are necessary for us to operate certain features. These include those required to allow registered users to authenticate and perform account-related functions, store preferences set by users such as account name, language, and location, and ensure our services are operating properly.","v2AnalyticsOptionText":"<strong>Analytics:<\/strong> These cookies allow us to optimize performance by collecting information on how users interact with our websites, including which pages are visited most, as well as other analytical data. We use these details to improve how our websites function and to understand how users interact with them. You can opt-out by logging into your account and changing your privacy settings at <a target=\"_blank\" href=\"https:\/\/wordpress.com\/me\/privacy\">https:\/\/wordpress.com\/me\/privacy<\/a>.","v2AdvertisingOptionText":"<strong>Advertising:<\/strong> These cookies are set by us and our advertising partners to provide you with relevant content and to understand that content\u2019s effectiveness. They may be used to collect information about your online activities over time and across different websites to predict your preferences and to display more relevant advertisements to you. These cookies also allow a profile to be built about you and your interests, and enable personalized ads to be shown to you based on your profile.","v1ButtonText":"Got It!","v2CustomizeButtonText":"Customize","v2AcceptAllButtonText":"Accept All","v2AcceptSelectionButtonText":"Accept Selection"},"fireAnalyticsOptions":[]};
+					};
+
+					if ( window.defQueue && defQueue.isLOHP && defQueue.isLOHP === 2020 ) {
+						defQueue.items.push( setupAnalytics );
+					} else {
+						setupAnalytics();
+					}
+				} )();
+  </script>
+  <script type="text/javascript">
+   function getJetpackAnalyticsDefaultConfig() {
+		return {
+			currentUserIdHashShort: "",
+			currentUserEmailHash: "",
+		};
+	}
+
+	document.addEventListener( 'a8c-analytics:loaded', function () {
+		'use strict';
+
+		var cb = window.a8cAnalytics.cb;
+		var kit = window.a8cAnalytics.kit;
+
+		var gaOptimize = window.a8cGAOptimize || null;
+		var ssGAOptimize = window.a8cAnalyticsConfig.ssGAOptimize || null;
+		gaOptimize = gaOptimize && gaOptimize.isEnabled() ? gaOptimize : null;
+
+		var config = getJetpackAnalyticsDefaultConfig();
+
+		function fireAffiliateReferrals() {
+			kit.attachScriptElement( 'https://refer.wordpress.com/wp-content/themes/refer-wordpress/assets/js/referrals.min.js?v=20181205', {
+				'data-vendor': 67401,
+			} );
+		}
+
+		function fireGoogleAnalytics( id ) {
+			kit.loadGoogleAnalytics();
+
+			ga( 'create', id, 'auto' );
+			ga( 'set', 'transport', typeof navigator.sendBeacon === 'function' ? 'beacon' : 'xhr' );
+			ga( 'set', 'anonymizeIp', true );
+
+			if ( ssGAOptimize ) { // Server-side GO tests.
+				window._tkq.push( [ 'recordEvent', 'wpcom_gaexp_start', {
+					experiment_id: ssGAOptimize.experimentId,
+					variation_id: kit.getSSGAOptimizeVariationId( ssGAOptimize.experimentId ),
+				} ] );
+				ga( 'set', 'exp', ssGAOptimize.experimentId + '.' + kit.getSSGAOptimizeVariationId( ssGAOptimize.experimentId ) );
+			} else if ( gaOptimize ) {
+				ga( 'require', gaOptimize.config.id );
+			}
+
+			ga( 'send', 'pageview' );
+
+			if ( ! ssGAOptimize && gaOptimize ) {
+				gaOptimize.a8cAnalyticsSetup( cb, kit, {} );
+			}
+		}
+
+		function fireFacebook() {
+			kit.loadFacebook();
+			fbq( 'init', '919484458159593' );
+			fbq( 'track', "PageView" );
+		}
+
+		function fireBing() {
+			(function( w, d, t, r, u ) {
+				var f, n, i;
+				w[ u ] = w[ u ] || [], f = function() {
+					var o = { ti: "4074038" };
+					o.q = w[ u ], w[ u ] = new UET( o ), w[ u ].push( "pageLoad" )
+				}, n = d.createElement( t ), n.src = r, n.async = 1, n.onload = n.onreadystatechange = function() {
+					var s = this.readyState;
+					s && s !== "loaded" && s !== "complete" || ( f(), n.onload = n.onreadystatechange = null )
+				}, i = d.getElementsByTagName( t )[ 0 ], i.parentNode.insertBefore( n, i )
+			} )( window, document, "script", "//s1.wp.com/wp-content/mu-plugins/a8c-analytics/3rd-party/bing/bat.js?v=20190826", "uetq" );
+		}
+
+		function loadGoogleAdsGtag() {
+			kit.loadGtag( 'AW-946162814' );
+		}
+
+		if ( kit.doNotTrack() ) {
+			if ( gaOptimize ) {
+				gaOptimize.endAsyncDim();
+			}
+			return;
+		}
+
+		function applyLinkers() {
+			kit.linkQueryVars( [
+				{
+					includeRegExps: [
+						/^(?:[^\/]+\.)?(?:wordpress|jetpack|woocommerce|crowdsignal|wpjobmanager)\.com(?:\/|$)/i,
+					],
+					linkQueryVars: [
+						'aff',
+						'affiliate',
+						'cid', // Aff campaign ID.
+						'sid', // Aff sub ID.
+					],
+				},
+				{
+					includeRegExps: [
+						/^(?:[^\/]+\.)?(?:wordpress|jetpack)\.com(?:\/|$)/i,
+					],
+					linkQueryVars: [
+						'coupon',
+					],
+				},
+			] );
+		}
+
+		// ------- Apply Linkers -------
+
+		applyLinkers();
+
+		// ------- Fire Normal Pixels -------
+
+		fireAffiliateReferrals();
+
+		// ------- Fire "Sensitive" Pixels -------
+
+		document.addEventListener( 'a8c-analytics:fire-sensitive-pixels', function () {
+						fireGoogleAnalytics( 'UA-52447-43' );
+			loadGoogleAdsGtag();
+			fireFacebook();
+			fireBing();
+		} );
+	} );
+  </script>
+  <script type="text/javascript">
+   ( function() {
+					'use strict';
+					var currentScript = document.currentScript;
+
+					var setupAnalytics = function() {
+						function getScript() {
+							var script = document.createElement( 'script' );
+							var prev = currentScript || document.getElementsByTagName( 'script' )[ 0 ];
+							script.setAttribute( 'src', "https:\/\/s0.wp.com\/wp-content\/mu-plugins\/a8c-analytics\/a8c-analytics.js?v=1610571889" );
+							script.setAttribute( 'async', true );
+							prev.parentNode.insertBefore( script, prev );
+						}
+
+													getScript();
+											};
+
+					if ( window.defQueue && defQueue.isLOHP && defQueue.isLOHP === 2020 ) {
+						defQueue.items.push( setupAnalytics );
+					} else {
+						setupAnalytics();
+					}
+				} )();
+  </script>
+  <!-- A8C Analytics [end] -->
+  <script id="grofiles-cards-js" src="//0.gravatar.com/js/gprofiles.js?ver=202112y">
+  </script>
+  <script id="wpgroho-js-extra">
+   var WPGroHo = {"my_hash":""};
+  </script>
+  <script src="https://s1.wp.com/wp-content/mu-plugins/gravatar-hovercards/wpgroho.js?m=1610363240h" type="text/javascript">
+  </script>
+  <script>
+   // Initialize and attach hovercards to all gravatars
+		( function() {
+			function init() {
+				if ( typeof Gravatar === 'undefined' ) {
+					return;
+				}
+
+				if ( typeof Gravatar.init !== 'function' ) {
+					return;
+				}
+
+				Gravatar.profile_cb = function ( hash, id ) {
+					WPGroHo.syncProfileData( hash, id );
+				};
+
+				Gravatar.my_hash = WPGroHo.my_hash;
+				Gravatar.init( 'body', '#wp-admin-bar-my-account' );
+			}
+
+			if ( document.readyState !== 'loading' ) {
+				init();
+			} else {
+				document.addEventListener( 'DOMContentLoaded', init );
+			}
+		} )();
+  </script>
+  <div style="display:none">
+  </div>
+  <script type="text/javascript">
+   var JetpackInstantSearchIe11PolyfillPath=decodeURIComponent("https%3A%2F%2Fs1.wp.com%2Fwp-content%2Fmu-plugins%2Fjetpack%2F_inc%2Fbuild%2Finstant-search%2Fjp-search-ie11-polyfill-payload.bundle.js");
+  </script>
+  <script src="https://s1.wp.com/_static/??-eJxdj90OgjAMRl/IrcwEuTI+ioGtQkfZlv2gvr3DQGK8a3vSfqfwDEJ7l9FlsAkMrqQxvKRNJ/hBSxGBy0gugcUcej3DnZyGoRAbqOPcuywS9lFPYMNeCUKlRPD8fhCzYN8bjHIozjAeCfUKF4Ppm04pw4rO+LihY1Eu5P6FDpux1HbAOFYSEVbVyLNUu9fk/ZyqncHtodtyVRfVtm3TdZ39AE3FWnI=" type="text/javascript">
+  </script>
+  <script type="text/javascript">
+   ( 'fetch' in window ) || document.write( '<script src="https://s2.wp.com/wp-includes/js/dist/vendor/wp-polyfill-fetch.min.js?m=1612197847h&#038;ver=3.0.0"></scr' + 'ipt>' );( document.contains ) || document.write( '<script src="https://s1.wp.com/wp-includes/js/dist/vendor/wp-polyfill-node-contains.min.js?m=1540208548h&#038;ver=3.42.0"></scr' + 'ipt>' );( window.DOMRect ) || document.write( '<script src="https://s2.wp.com/wp-includes/js/dist/vendor/wp-polyfill-dom-rect.min.js?m=1612197847h&#038;ver=3.42.0"></scr' + 'ipt>' );( window.URL && window.URL.prototype && window.URLSearchParams ) || document.write( '<script src="https://s2.wp.com/wp-includes/js/dist/vendor/wp-polyfill-url.min.js?m=1585663916h&#038;ver=3.6.4"></scr' + 'ipt>' );( window.FormData && window.FormData.prototype.keys ) || document.write( '<script src="https://s1.wp.com/wp-includes/js/dist/vendor/wp-polyfill-formdata.min.js?m=1550600082h&#038;ver=3.0.12"></scr' + 'ipt>' );( Element.prototype.matches && Element.prototype.closest ) || document.write( '<script src="https://s2.wp.com/wp-includes/js/dist/vendor/wp-polyfill-element-closest.min.js?m=1540208548h&#038;ver=2.0.2"></scr' + 'ipt>' );( 'objectFit' in document.documentElement.style ) || document.write( '<script src="https://s0.wp.com/wp-includes/js/dist/vendor/wp-polyfill-object-fit.min.js?m=1615384028h&#038;ver=2.3.4"></scr' + 'ipt>' );
+( "objectFit" in document.documentElement.style ) || document.write( '<script src="https://s2.wp.com/wp-content/plugins/gutenberg-core/v10.2.1/vendor/object-fit-polyfill.min.f68d8b8b.js?m=1611569426h&#038;ver=2.3.0"></scr' + 'ipt>' );
+  </script>
+  <script id="wp-i18n-js" src="https://s2.wp.com/wp-content/plugins/gutenberg-core/v10.2.1/build/i18n/index.js?m=1615417825h&amp;ver=32edd9d351b187f371ba8ef4cb8021a3">
+  </script>
+  <script id="wp-i18n-js-after">
+   wp.i18n.setLocaleData( { 'text direction\u0004ltr': [ 'ltr' ] } );
+wp.i18n.setLocaleData( { 'text direction\u0004ltr': [ 'ltr' ] }, 'default' );
+  </script>
+  <script id="jetpack-instant-search-js-translations" type="text/javascript">
+   ( function( domain, translations ) {
+	var localeData = translations.locale_data[ domain ] || translations.locale_data.messages;
+	localeData[""].domain = domain;
+	wp.i18n.setLocaleData( localeData, domain );
+} )( "jetpack", { "locale_data": { "messages": { "": {} } } } );
+  </script>
+  <script type="text/javascript">
+   var JetpackInstantSearchOptions=JSON.parse(decodeURIComponent("%7B%22overlayOptions%22%3A%7B%22colorTheme%22%3A%22light%22%2C%22enableInfScroll%22%3Atrue%2C%22enableSort%22%3Atrue%2C%22highlightColor%22%3A%22%23e6f2e8%22%2C%22overlayTrigger%22%3A%22results%22%2C%22resultFormat%22%3A%22minimal%22%2C%22showPoweredBy%22%3Atrue%7D%2C%22homeUrl%22%3A%22https%3A%5C%2F%5C%2Fjetpack.com%22%2C%22locale%22%3A%22en-US%22%2C%22postsPerPage%22%3A10%2C%22siteId%22%3A20115252%2C%22postTypes%22%3A%7B%22post%22%3A%7B%22singular_name%22%3A%22Post%22%2C%22name%22%3A%22Posts%22%7D%2C%22page%22%3A%7B%22singular_name%22%3A%22Page%22%2C%22name%22%3A%22Pages%22%7D%2C%22attachment%22%3A%7B%22singular_name%22%3A%22Media%22%2C%22name%22%3A%22Media%22%7D%2C%22security%22%3A%7B%22singular_name%22%3A%22Vulnerability%22%2C%22name%22%3A%22Vulnerabilities%22%7D%2C%22theme%22%3A%7B%22singular_name%22%3A%22Theme%22%2C%22name%22%3A%22Themes%22%7D%2C%22jetpack_support%22%3A%7B%22singular_name%22%3A%22Article%22%2C%22name%22%3A%22Support%22%7D%7D%2C%22webpackPublicPath%22%3A%22https%3A%5C%2F%5C%2Fs2.wp.com%5C%2Fwp-content%5C%2Fmu-plugins%5C%2Fjetpack%5C%2F_inc%5C%2Fbuild%5C%2Finstant-search%5C%2F%22%2C%22isPhotonEnabled%22%3Atrue%2C%22apiRoot%22%3A%22https%3A%5C%2F%5C%2Fpublic-api.wordpress.com%5C%2F%22%2C%22apiNonce%22%3A%2233db62f0e2%22%2C%22isPrivateSite%22%3Afalse%2C%22isWpcom%22%3Atrue%2C%22defaultSort%22%3A%22relevance%22%2C%22excludedPostTypes%22%3A%5B%5D%2C%22hasOverlayWidgets%22%3Atrue%2C%22widgets%22%3A%5B%7B%22filters%22%3A%5B%7B%22name%22%3A%22Post%20Types%22%2C%22type%22%3A%22post_type%22%2C%22count%22%3A10%2C%22widget_id%22%3A%22jetpack-search-filters-3%22%2C%22filter_id%22%3A%22post_type_0%22%7D%2C%7B%22name%22%3A%22Categories%22%2C%22type%22%3A%22taxonomy%22%2C%22taxonomy%22%3A%22category%22%2C%22count%22%3A20%2C%22widget_id%22%3A%22jetpack-search-filters-3%22%2C%22filter_id%22%3A%22taxonomy_1%22%7D%2C%7B%22name%22%3A%22Year%22%2C%22type%22%3A%22date_histogram%22%2C%22count%22%3A5%2C%22field%22%3A%22post_date%22%2C%22interval%22%3A%22year%22%2C%22widget_id%22%3A%22jetpack-search-filters-3%22%2C%22filter_id%22%3A%22date_histogram_2%22%7D%5D%2C%22widget_id%22%3A%22jetpack-search-filters-3%22%7D%5D%2C%22widgetsOutsideOverlay%22%3A%5B%5D%2C%22adminQueryFilter%22%3A%7B%22bool%22%3A%7B%22must_not%22%3A%5B%7B%22term%22%3A%7B%22post_type%22%3A%22attachment%22%7D%7D%2C%7B%22term%22%3A%7B%22post_type%22%3A%22security%22%7D%7D%5D%7D%7D%7D"));
+  </script>
+  <script src="https://s1.wp.com/wp-content/mu-plugins/jetpack/_inc/build/instant-search/jp-search-main.bundle.js?m=1616182926h" type="text/javascript">
+  </script>
+  <script id="jp-tracks-js" src="//stats.wp.com/w.js?ver=202112">
+  </script>
+  <script src="https://s2.wp.com/_static/??-eJyVj0sOwjAMRC9Eaj4iwAJxlpCaNin5EDsK3J5EgFR1x8ojzzx5DCUKHTyjZ3BZxHsejCcoph+QCQhV0iPYnxIfo7O0ghnJIzokUEcNFjkqPTkUHksDLdVYmAz+BcVlui0fGdPrO7qbebY2oVDnjF/GZ7+ovvriqhI4RYypKsGpnqMKXdx5I9e7w1ae9tK+AULCYw0=" type="text/javascript">
+  </script>
+  <script type="text/javascript">
+   // <![CDATA[
+(function() {
+try{
+  if ( window.external &&'msIsSiteMode' in window.external) {
+    if (window.external.msIsSiteMode()) {
+      var jl = document.createElement('script');
+      jl.type='text/javascript';
+      jl.async=true;
+      jl.src='/wp-content/plugins/ie-sitemode/custom-jumplist.php';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(jl, s);
+    }
+  }
+}catch(e){}
+})();
+// ]]>
+  </script>
+  <script defer="" src="//stats.wp.com/w.js?61">
+  </script>
+  <script type="text/javascript">
+   _tkq = window._tkq || [];
+_stq = window._stq || [];
+_tkq.push(['storeContext', {'blog_id':'20115252','blog_tz':'-4','user_lang':'en','blog_lang':'en','user_id':'0'}]);
+_stq.push(['view', {'blog':'20115252','v':'wpcom','tz':'-4','user_id':'0','post':'9','subd':'jetpackme'}]);
+_stq.push(['extra', {'crypt':'UE40eW5QN0p8M2Y/RE1lSiYrZXhzUkM5fD1uTDNLUGt6QzVbd3FKb3Q4aWxFU0VMK3ppSG1wamM0bi81JStxN2lKP1pvVnxQRHk3W0d3VEh0SklpNENJfHppaiZjVlFtdzJJS0ovSDNEK0wuP0ZBPW5mTU1iSjY2dXExbCVab2ZBfFM9U2RrZW1xX1lNfHBnclY1UX4tXWp+eks2SEtsVlk9dFJSdWdjNXVocCZELFE5MkQzRFY0eStsenNwRUx1by5Udl8wZzdtS1hrNE1HLl1DP0tVa29RaTBiYUxYJUZuRmVKTn5tTW5EP0YtRFdGUVdLaXB6V0Z4P2VKS3dqb3xHd1lDWlt8fHN+Si84P3cmaD98eVU4R2JHWTRPakYybWMtcWs2X3pwPz1mVDhlSQ=='}]);
+_stq.push([ 'clickTrackerInit', '20115252', '9' ]);
+  </script>
+  <noscript>
+   <img alt="" src="https://pixel.wp.com/b.gif?v=noscript" style="height:1px;width:1px;overflow:hidden;position:absolute;bottom:1px;"/>
+  </noscript>
+  <script data-provider="wordpress.com" data-service="simple" defer="" id="bilmur" src="https://s0.wp.com/wp-content/js/bilmur.min.js?m=202112">
+  </script>
+  <script src="https://s1.wp.com/wp-content/themes/a8c/jetpackme-new/js/utm-tracking.js?m=1541183651h" type="text/javascript">
+  </script>
+  <script>
+   if ( 'object' === typeof wpcom_mobile_user_agent_info ) {
+
+	wpcom_mobile_user_agent_info.init();
+	var mobileStatsQueryString = "";
+	
+	if( false !== wpcom_mobile_user_agent_info.matchedPlatformName )
+		mobileStatsQueryString += "&x_" + 'mobile_platforms' + '=' + wpcom_mobile_user_agent_info.matchedPlatformName;
+	
+	if( false !== wpcom_mobile_user_agent_info.matchedUserAgentName )
+		mobileStatsQueryString += "&x_" + 'mobile_devices' + '=' + wpcom_mobile_user_agent_info.matchedUserAgentName;
+	
+	if( wpcom_mobile_user_agent_info.isIPad() )
+		mobileStatsQueryString += "&x_" + 'ipad_views' + '=' + 'views';
+
+	if( "" != mobileStatsQueryString ) {
+		new Image().src = document.location.protocol + '//pixel.wp.com/g.gif?v=wpcom-no-pv' + mobileStatsQueryString + '&baba=' + Math.random();
+	}
+	
+}
+  </script>
+ </body>
+</html>
+<!--
+	generated 13 seconds ago
+	generated in 0.096 seconds
+	served from batcache in 0.002 seconds
+	expires in 287 seconds
+-->

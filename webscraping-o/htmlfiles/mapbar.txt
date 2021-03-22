@@ -1,0 +1,966 @@
+<!DOCTYPE HTML>
+<html>
+ <head>
+  <meta content="ffCtXoe0GH" name="baidu-site-verification"/>
+  <meta content="IE=EmulateIE7" http-equiv="X-UA-Compatible"/>
+  <meta charset="utf-8"/>
+  <title>
+   图吧地图搜索-精准周边信息、公交、驾车线路查询
+  </title>
+  <meta content="图吧地图是国内在线电子地图及无线地图服务提供商,图吧地图为互联网和手机用户提供地图搜索、位置查询和公交,驾车线路等交通规划服务,为行业客户提供GIS行业应用解决方案和地图API产品,同时为中小企业客户提供推广必备的地图标注产品。" name="description"/>
+  <meta content="地图,地图查询,城市地图,电子地图,中国电子地图,地图搜索" name="keywords"/>
+  <meta content="all" name="robots"/>
+  <link href="//img.mapbar.com/web/index/style/index20141105.css" rel="stylesheet" type="text/css"/>
+  <!--[if IE]>
+<script type="text/javascript">
+document.createElement("abbr");
+document.createElement("article");
+document.createElement("aside");
+document.createElement("audio");
+document.createElement("canvas");
+document.createElement("details");
+document.createElement("figcaption");
+document.createElement("figure");
+document.createElement("footer");
+document.createElement("header");
+document.createElement("hgroup");
+document.createElement("mark");
+document.createElement("meter");
+document.createElement("nav");
+document.createElement("output");
+document.createElement("progress");
+document.createElement("section");
+document.createElement("summary");
+document.createElement("time");
+document.createElement("video");
+</script>
+<![endif]-->
+  <script type="text/javascript">
+   var _city = {
+		name : '北京市'	//城市名称
+		,ename : 'beijing'	//城市英文名
+		,latlon : 'UFBVHJTHTA'	//经纬度字符串
+		,level : '8'
+		,province : '直辖市'
+		,bus : '0'	//是否支持公交查询
+	};	
+   var _configeHost = {
+       tianqiHost : 'http://tianqi.mapbar.com'
+       ,imgHost : 'http://img.mapbar.com/web/index'
+       ,jsonHost : 'http://json.mapbar.com/AD'
+       ,searchHost : 'http://www.mapbar.com/search'
+   };
+   
+   function TraceTest_DoFSCommand(command, args){
+		openSearch();
+	}
+	if (navigator.appName && navigator.appName.indexOf("Microsoft") != -1 && 
+		  navigator.userAgent.indexOf("Windows") != -1 && navigator.userAgent.indexOf("Windows 3.1") == -1) {
+		  document.write('<SCRIPT LANGUAGE=VBScript\> \n');
+		  document.write('on error resume next \n');
+		  document.write('Sub TraceTest_FSCommand(ByVal command, ByVal args)\n');
+		  document.write(' call TraceTest_DoFSCommand(command, args)\n');
+		  document.write('end sub\n');
+		  document.write('
+  </script>
+ </head>
+ <body>
+  <p>
+   \n');
+	}
+   
+	var InternetExplorer = navigator.appName.indexOf("Microsoft") != -1,hasFlash = false,$swf = null;
+	if (InternetExplorer) try {$swf = new ActiveXObject("ShockwaveFlash.ShockwaveFlash")} catch (e) {} 
+	else navigator.plugins &amp;&amp; navigator.plugins.length &gt; 0 &amp;&amp; ($swf = navigator.plugins["Shockwave Flash"]);
+	$swf &amp;&amp; (hasFlash = true);
+	hasFlash || document.write('
+   <style type="text/css">
+    #abc{display:none;}
+   </style>
+   ');
+   <script src="//img.mapbar.com/web/index/js/mapbar.wt.index.js?20130515" type="text/javascript">
+   </script>
+   <style type="text/css">
+    .searchBoxbg {background:url(http://img.mapbar.com/web/index/images/home_default.jpg) repeat center top;}
+	.mwp_shx .mwp_stb_us li { color:black;}
+	.mwp_shx .mwp_stb_a .mwp_stb_a .mwp_stb_us li label {color:black;}
+	.searchBox aside a{color:black;}
+   </style>
+  </p>
+  <!-- 页头开始 -->
+  <div class="loginbar">
+   <div class="wrapper">
+    <figure class="navMenu">
+     <!--[if lte IE 6]>
+		<style type="text/css">
+		figure.navMenu ul li a.hide, figure.navMenu ul li a:visited.hide {display:none;}
+		figure.navMenu ul li a:hover {border:#b5b5b5 solid 1px; border-bottom:none; color:#004986;  white-space:nowrap; background:#fff url(http://img.mapbar.com/web/index/images/home_arr_2.gif) no-repeat 58px 8px;}
+		.loginbar figure ul li a:hover ul {display:block; position:absolute; top:20px; left:-150px;  padding-bottom:13px; width:221px;  border:#b5b5b5 solid 1px;border-top:none; background:#fff url(http://img.mapbar.com/web/index/images/home_54.jpg) no-repeat -150px top; overflow:hidden; }
+		figure.navMenu ul li a:hover ul li a {display:inline;  color:#666; float:left; width:auto; background:none; padding-left:17px; text-indent:0; padding-right:1px; line-height:22px; border:none;}
+		</style>
+	<![endif]-->
+     <ul>
+     </ul>
+    </figure>
+    <nav>
+     <a href="http://bus.mapbar.com/beijing/" target="_blank">
+      公交
+     </a>
+     |
+     <a href="http://poi.mapbar.com/" target="_blank">
+      本地生活
+     </a>
+    </nav>
+   </div>
+  </div>
+  <header class="Header">
+   <a href="http://www.mapbar.com/beijing">
+    <img alt="图吧北京市城市分站" class="logo" height="50" src="http://img.mapbar.com/web/logo/logo_100x57.png" width="90"/>
+   </a>
+   <div class="head">
+    <div class="cityselect">
+     <strong>
+      北京市
+     </strong>
+     <div class="mwp_cyl" id="cyl">
+      <span class="mwp_cyl_i">
+       <input autocomplete="off" name="input" size="9" style="display:block" type="text"/>
+       <a cl_mc="xgq" href="javascript:void(0)">
+        更换城市
+       </a>
+      </span>
+      <div class="mwp_stb_a" id="hotCity" style="top:200px;left:0;width:300px;display:none;">
+       <ul class="mwp_stb_us mwp_stb_cf" onselectstart="javascript:return false;">
+        <li url="http://www.mapbar.com/proxy.jsp?t=hc&amp;s=html">
+         <a href="javascript:void(0)">
+          热门
+         </a>
+        </li>
+        <li url="http://www.mapbar.com/proxy.jsp?t=cp&amp;is=a&amp;ie=g&amp;cr=4&amp;cc=5&amp;s=html">
+         <a href="javascript:void(0)">
+          A-G
+         </a>
+        </li>
+        <li url="http://www.mapbar.com/proxy.jsp?t=cp&amp;is=h&amp;ie=l&amp;cr=4&amp;cc=5&amp;s=html">
+         <a href="javascript:void(0)">
+          H-L
+         </a>
+        </li>
+        <li url="http://www.mapbar.com/proxy.jsp?t=cp&amp;is=m&amp;ie=t&amp;cr=4&amp;cc=5&amp;s=html">
+         <a href="javascript:void(0)">
+          M-T
+         </a>
+        </li>
+        <li url="http://www.mapbar.com/proxy.jsp?t=cp&amp;is=w&amp;ie=z&amp;cr=4&amp;cc=5&amp;s=html">
+         <a href="javascript:void(0)">
+          W-Z
+         </a>
+        </li>
+       </ul>
+       <div class="mwp_cyl_m">
+        <a href="javascript:void(0)" title="更多城市">
+         更多城市
+         <span>
+          &gt;&gt;
+         </span>
+        </a>
+       </div>
+       <span class="mwp_cyl_cle">
+        <a href="javascript:void(0)" title="关闭">
+         关闭
+        </a>
+       </span>
+      </div>
+      <div id="moreCity">
+      </div>
+     </div>
+    </div>
+    <div class="weather">
+     <p id="weatherPanel">
+     </p>
+    </div>
+   </div>
+  </header>
+  <!-- 页头结束 -->
+  <article class="searchbox">
+   <a href="http://www.mapbar.com/search" id="jump" style="display:none" target="_blank">
+    ##
+   </a>
+   <div class="toMapBox" id="abc" title="地图">
+   </div>
+   <script>
+    var objFlash = new mapbarFlash("http://img.mapbar.com/web/index/flash/gomap"+(InternetExplorer?"_ie":"")+".swf", "TraceTest", "100%", "100%", "9", "", false,"high");
+		objFlash.addParam("wmode", "transparent");
+		objFlash.addParam("align", "middle");
+		objFlash.addParam("allowScriptAccess", "always");
+		objFlash.write("abc");
+   </script>
+   <div class="searchBoxbg">
+    <div class="searchBox">
+     <!-- KSearchbox容器   开始-->
+     <div class="mwp_shx" id="ksearchbox">
+      <!-- 顶级选项卡 -->
+      <div class="mwp_stb_a">
+       <ul class="mwp_stb_us">
+        <li class="first-child mwp_stb_s" kvalue="ls" text="地图搜索" url="#lc">
+         地图查询
+        </li>
+        <li kvalue="bs" text="公交查询" url="#bus">
+         公交查询
+        </li>
+        <li kvalue="navs" text="驾车导航" url="#nav">
+         驾车导航
+        </li>
+        <li kvalue="ns" text="周边查询" url="#nb">
+         周边查询
+        </li>
+       </ul>
+       <!-- 地图查询项内容区 -->
+       <div class="mwp_stb_c" id="lc" style="display:block">
+        <form action="" onsubmit="return false;">
+         <div class="mwp_cyl">
+          <span class="mwp_cyl_i">
+           <input autocomplete="off" name="input" size="9" type="text"/>
+           <a href="javascript:void(0)">
+            ▼
+           </a>
+          </span>
+          <div id="tabs0" style="width:300px;">
+          </div>
+          <div>
+          </div>
+         </div>
+         <input autocomplete="off" class="mwp_shx_gray" mfg="ls" type="text"/>
+         <input class="mwp_shx_smt" mfg="lsb" src="http://img.mapbar.com/web/index/images/input_btn.png" title="搜索" type="image"/>
+        </form>
+        <aside>
+         <a href="http://www.mapbar.com/traffic/traffic_alive.jsp" target="_blank">
+          实时交通
+         </a>
+         <a href="http://ditie.mapbar.com" target="_blank">
+          地铁地图
+         </a>
+        </aside>
+       </div>
+       <!-- 公交查询项内容区 -->
+       <div class="mwp_stb_c" id="bus" style="">
+        <!-- 子级选项卡 -->
+        <div>
+         <!-- 公交换乘项内容区 -->
+         <div id="buschange" style="">
+          <form>
+           <div>
+            <span>
+             <input autocomplete="off" name="input" size="9" type="text"/>
+             <a href="javascript:void(0)">
+              ▼
+             </a>
+            </span>
+            <div id="tabs1" style="top:23px;left:0;width:300px;">
+            </div>
+            <div>
+            </div>
+           </div>
+           <input autocomplete="off" mfg="bo" name="orig" style="width:160px;border-right:#808d9d solid 1px;" type="text"/>
+           <span>
+            <a href="javascript:void(0)">
+             到
+            </a>
+           </span>
+           <input autocomplete="off" mfg="bd" name="dest" style="width:168px;*width:166px;border-left:#808d9d solid 1px; text-indent:10px;" type="text"/>
+           <input mfg="bsb" src="http://img.mapbar.com/web/index/images/input_btn.png" title="搜索" type="image"/>
+           <input style="width: 1px; overflow: hidden; opacity: 0; display:none;" type="submit"/>
+          </form>
+         </div>
+         <!-- 线路查询项内容区 -->
+         <div class="mwp_stb_c" id="busline" style="">
+          <form>
+           <div>
+            <span>
+             <input autocomplete="off" name="input" size="9" type="text"/>
+             <a href="javascript:void(0)">
+              ▼
+             </a>
+            </span>
+            <div id="tabs2" style="width:300px;">
+            </div>
+            <div>
+            </div>
+           </div>
+           <input autocomplete="off" mfg="bl" type="text"/>
+           <input mfg="blb" src="http://img.mapbar.com/web/index/images/input_btn.png" title="搜索" type="image"/>
+           <input style="width: 1px; overflow: hidden; opacity: 0; display:none;" type="submit"/>
+          </form>
+         </div>
+         <!-- 站点查询项内容区 -->
+         <div class="mwp_stb_c" id="busstation" style="">
+          <form>
+           <div>
+            <span>
+             <input autocomplete="off" name="input" size="9" type="text"/>
+             <a href="javascript:void(0)">
+              ▼
+             </a>
+            </span>
+            <div id="tabs3" style="width:300px;">
+            </div>
+            <div>
+            </div>
+           </div>
+           <input autocomplete="off" mfg="bz" type="text"/>
+           <input mfg="bzb" src="http://img.mapbar.com/web/index/images/input_btn.png" title="搜索" type="image"/>
+           <input style="width: 1px; overflow: hidden; opacity: 0; display:none;" type="submit"/>
+          </form>
+         </div>
+         <ul style="padding-top:18px;">
+          <li class="mwp_stb_s" kvalue="bs" style=" background:none; width:auto; margin-right:22px; margin-left:22px;" text="公交换乘" url="#buschange">
+           <input checked="checked" id="bst1" name="bstype" style="width:auto; margin:0; padding:0;" type="radio"/>
+           <label for="bst1">
+            公交换乘
+           </label>
+          </li>
+          <li class="mwp_stb_s" kvalue="bl" style=" background:none;width:auto; margin-right:22px; margin-left:22px;" text="线路查询" url="#busline">
+           <input id="bst2" name="bstype" style="width:auto; margin:0; padding:0;" type="radio"/>
+           <label for="bst2">
+            线路查询
+           </label>
+          </li>
+          <li class="mwp_stb_s" kvalue="bst" style=" background:none;width:auto; margin-left:22px;" text="站点查询" url="#busstation">
+           <input id="bst3" name="bstype" style="width:auto; margin:0; padding:0;" type="radio"/>
+           <label for="bst3">
+            站点查询
+           </label>
+          </li>
+         </ul>
+        </div>
+       </div>
+       <!-- 驾车导航项内容区 -->
+       <div class="mwp_stb_c" id="nav" style="">
+        <form>
+         <input autocomplete="off" mfg="no" name="orig" style="width:250px;height:38px; border:none;background:url(http://img.mapbar.com/web/index/images/input_L.png) no-repeat left center; border-right:#808d9d solid 1px; margin:3px 0 0 0;text-indent:10px;font-size:14px;line-height:38px\a;" type="text"/>
+         <span>
+          <a href="javascript:void(0)" title="到">
+           到
+          </a>
+         </span>
+         <input autocomplete="off" mfg="nd" name="dest" style="float:left;width:168px;*width:166px;border:none; text-indent:10px;border-top:#808d9d solid 1px;border-bottom:#808d9d solid 1px; border-left:#808d9d solid 1px; margin-top:3px; height:36px; line-height:36px\a; font-size:14px;" type="text"/>
+         <input mfg="nsb" src="http://img.mapbar.com/web/index/images/input_btn.png" title="搜索" type="image"/>
+         <input style="width: 1px; overflow: hidden; opacity: 0; display:none;" type="submit"/>
+        </form>
+        <aside>
+         <a href="http://www.mapbar.com/traffic/traffic_alive.jsp" target="_blank">
+          实时交通
+         </a>
+         <a href="http://ditie.mapbar.com/beijing/" target="_blank">
+          地铁地图
+         </a>
+        </aside>
+       </div>
+       <!-- 周边查询项内容区 -->
+       <div class="mwp_stb_c" id="nb" style="">
+        <form>
+         <div>
+          <span>
+           <input autocomplete="off" name="input" size="9" type="text"/>
+           <a href="javascript:void(0)">
+            ▼
+           </a>
+          </span>
+          <div id="tabs4" style="width:300px;">
+          </div>
+          <div>
+          </div>
+         </div>
+         <input autocomplete="off" mfg="zc" style="width:150px;border-right:#808d9d solid 1px;" type="text"/>
+         <span style="width:49px;">
+          附近的
+         </span>
+         <input autocomplete="off" mfg="zk" style="width:154px;*width:152px;border-left:#808d9d solid 1px; text-indent:10px;" type="text"/>
+         <input mfg="zsb" src="http://img.mapbar.com/web/index/images/input_btn.png" title="搜索" type="image"/>
+         <input style="width: 1px; overflow: hidden; opacity: 0; display:none;" type="submit"/>
+        </form>
+        <aside>
+         <a href="http://www.mapbar.com/traffic/traffic_alive.jsp" target="_blank">
+          实时交通
+         </a>
+         <a href="http://ditie.mapbar.com/beijing/" target="_blank">
+          地铁地图
+         </a>
+        </aside>
+       </div>
+      </div>
+      <div>
+      </div>
+     </div>
+    </div>
+    <!-- 底部热区广告链接-->
+    <!--<a href="javascript:void(0);" class="index_ad_link" target="_blank" style="top: -11px;left: 0px;height: 233px;width: 900px;" rel=“nofollow”>广告链接1</a>-->
+   </div>
+  </article>
+  <script>
+   if(!(jQuery.browser.msie && ($.browser.version == "6.0"||$.browser.version == "7.0"))){
+		indexInitialize(1);
+	}
+  </script>
+  <article class="contentbox">
+   <section class="app-section-wrap">
+    <div class="app-section app-section-left">
+     <div class="section-header">
+      <h3 style="background:none;">
+       图吧手机应用
+      </h3>
+     </div>
+     <ul class="app-grid-list">
+      <li class="even">
+       <img alt="汽车卫士" class="app-thumb" src="http://img.mapbar.com/web/index/images/app-qicheweishi.png"/>
+       <h4>
+        汽车卫士
+        <span style="display:none">
+         汽车卫士
+        </span>
+       </h4>
+       <p>
+        为您的爱车全面体检，改善您的驾驶习惯，为您省时省油，经济出行。
+       </p>
+       <a class="btn-dl" href="http://s.mapbar.com/oQXCeV4" target="_blank">
+        下载
+       </a>
+      </li>
+     </ul>
+    </div>
+   </section>
+  </article>
+  <aside class="cityMsgBox">
+   <h3>
+    城市分站
+   </h3>
+   <p>
+    <a href="http://www.mapbar.com/beijing/" target="_blank">
+     北京
+    </a>
+    <a href="http://www.mapbar.com/tianjin/" target="_blank">
+     天津
+    </a>
+    <a href="http://www.mapbar.com/shanghai/" target="_blank">
+     上海
+    </a>
+    <a href="http://www.mapbar.com/shenzhen/" target="_blank">
+     深圳
+    </a>
+    <a href="http://www.mapbar.com/hongkong/" target="_blank">
+     香港
+    </a>
+    <a href="http://www.mapbar.com/chengdu/" target="_blank">
+     成都
+    </a>
+    <a href="http://www.mapbar.com/guangzhou/" target="_blank">
+     广州
+    </a>
+    <a href="http://www.mapbar.com/chongqing/" target="_blank">
+     重庆
+    </a>
+    <a href="http://www.mapbar.com/shijiazhuang/" target="_blank">
+     石家庄
+    </a>
+    <a href="http://www.mapbar.com/taiyuan/" target="_blank">
+     太原
+    </a>
+    <a href="http://www.mapbar.com/shenyang/" target="_blank">
+     沈阳
+    </a>
+    <a href="http://www.mapbar.com/changchun/" target="_blank">
+     长春
+    </a>
+    <a href="http://www.mapbar.com/jinan/" target="_blank">
+     济南
+    </a>
+    <a href="http://www.mapbar.com/nanjing/" target="_blank">
+     南京
+    </a>
+    <a href="http://www.mapbar.com/hangzhou/" target="_blank">
+     杭州
+    </a>
+    <a href="http://www.mapbar.com/hefei/" target="_blank">
+     合肥
+    </a>
+    <a href="http://www.mapbar.com/fuzhou1/" target="_blank">
+     福州
+    </a>
+    <a href="http://www.mapbar.com/nanchang/" target="_blank">
+     南昌
+    </a>
+    <a href="http://www.mapbar.com/zhengzhou/" target="_blank">
+     郑州
+    </a>
+    <a href="http://www.mapbar.com/wuhan/" target="_blank">
+     武汉
+    </a>
+    <a href="http://www.mapbar.com/changsha/" target="_blank">
+     长沙
+    </a>
+    <a href="http://www.mapbar.com/haikou/" target="_blank">
+     海口
+    </a>
+    <a href="http://www.mapbar.com/guiyang/" target="_blank">
+     贵阳
+    </a>
+    <a href="http://www.mapbar.com/kunming/" target="_blank">
+     昆明
+    </a>
+    <a href="http://www.mapbar.com/xian/" target="_blank">
+     西安
+    </a>
+    <a href="http://www.mapbar.com/lanzhou/" target="_blank">
+     兰州
+    </a>
+    <a href="http://www.mapbar.com/xining/" target="_blank">
+     西宁
+    </a>
+    <a href="http://www.mapbar.com/nanning/" target="_blank">
+     南宁
+    </a>
+    <a href="http://www.mapbar.com/huhehaote/" target="_blank">
+     呼和浩特
+    </a>
+    <a href="http://www.mapbar.com/lasa/" target="_blank">
+     拉萨
+    </a>
+    <a href="http://www.mapbar.com/yinchuan/" target="_blank">
+     银川
+    </a>
+    <a href="http://www.mapbar.com/haerbin/" target="_blank">
+     哈尔滨
+    </a>
+    <a href="http://www.mapbar.com/wulumuqi/" target="_blank">
+     乌鲁木齐
+    </a>
+   </p>
+   <h3>
+    <a class="more" href="http://bus.mapbar.com/home/common/city.jsp" target="_blank">
+     更多 &gt;&gt;
+    </a>
+    城市公交
+   </h3>
+   <p>
+    <a href="http://bus.mapbar.com/beijing/" target="_blank">
+     北京公交
+    </a>
+    <a href="http://bus.mapbar.com/tianjin/" target="_blank">
+     天津公交
+    </a>
+    <a href="http://bus.mapbar.com/shanghai/" target="_blank">
+     上海公交
+    </a>
+    <a href="http://bus.mapbar.com/shenzhen/" target="_blank">
+     深圳公交
+    </a>
+    <a href="http://bus.mapbar.com/hongkong/" target="_blank">
+     香港公交
+    </a>
+    <a href="http://bus.mapbar.com/chengdu/" target="_blank">
+     成都公交
+    </a>
+    <a href="http://bus.mapbar.com/guangzhou/" target="_blank">
+     广州公交
+    </a>
+    <a href="http://bus.mapbar.com/chongqing/" target="_blank">
+     重庆公交
+    </a>
+    <a href="http://bus.mapbar.com/shijiazhuang/" target="_blank">
+     石家庄公交
+    </a>
+    <a href="http://bus.mapbar.com/taiyuan/" target="_blank">
+     太原公交
+    </a>
+    <a href="http://bus.mapbar.com/shenyang/" target="_blank">
+     沈阳公交
+    </a>
+    <a href="http://bus.mapbar.com/changchun/" target="_blank">
+     长春公交
+    </a>
+    <a href="http://bus.mapbar.com/jinan/" target="_blank">
+     济南公交
+    </a>
+    <a href="http://bus.mapbar.com/nanjing/" target="_blank">
+     南京公交
+    </a>
+    <a href="http://bus.mapbar.com/hangzhou/" target="_blank">
+     杭州公交
+    </a>
+    <a href="http://bus.mapbar.com/hefei/" target="_blank">
+     合肥公交
+    </a>
+    <a href="http://bus.mapbar.com/fuzhou1/" target="_blank">
+     福州公交
+    </a>
+    <a href="http://bus.mapbar.com/nanchang/" target="_blank">
+     南昌公交
+    </a>
+    <a href="http://bus.mapbar.com/zhengzhou/" target="_blank">
+     郑州公交
+    </a>
+    <a href="http://bus.mapbar.com/wuhan/" target="_blank">
+     武汉公交
+    </a>
+    <a href="http://bus.mapbar.com/changsha/" target="_blank">
+     长沙公交
+    </a>
+    <a href="http://bus.mapbar.com/haikou/" target="_blank">
+     海口公交
+    </a>
+    <a href="http://bus.mapbar.com/guiyang/" target="_blank">
+     贵阳公交
+    </a>
+    <a href="http://bus.mapbar.com/kunming/" target="_blank">
+     昆明公交
+    </a>
+    <a href="http://bus.mapbar.com/xian/" target="_blank">
+     西安公交
+    </a>
+    <a href="http://bus.mapbar.com/lanzhou/" target="_blank">
+     兰州公交
+    </a>
+    <a href="http://bus.mapbar.com/xining/" target="_blank">
+     西宁公交
+    </a>
+    <a href="http://bus.mapbar.com/nanning/" target="_blank">
+     南宁公交
+    </a>
+    <a href="http://bus.mapbar.com/huhehaote/" target="_blank">
+     呼和浩特公交
+    </a>
+    <a href="http://bus.mapbar.com/lasa/" target="_blank">
+     拉萨公交
+    </a>
+    <a href="http://bus.mapbar.com/yinchuan/" target="_blank">
+     银川公交
+    </a>
+    <a href="http://bus.mapbar.com/haerbin/" target="_blank">
+     哈尔滨公交
+    </a>
+    <a href="http://bus.mapbar.com/wulumuqi/" target="_blank">
+     乌鲁木齐公交
+    </a>
+   </p>
+  </aside>
+  <!-- 页尾开始 -->
+  <footer class="footer">
+   <section>
+    <p class="mapbarServer">
+     <strong>
+      网站商务联系
+     </strong>
+     付费修改邮箱：1105156027@qq.com
+    </p>
+    <p class="mapbarMicroBlog" style="background-image:url(http://img9.mapbar.com/web/index/images/home_44.png);">
+     <strong>
+      免费删除信息
+     </strong>
+     免费删除信息邮箱：285753734@qq.com
+    </p>
+    <div>
+     <ul>
+      <h5>
+       关于图吧
+      </h5>
+      <li>
+       <a href="http://www.mapbar.com/sitemap.html" target="_blank">
+        网站地图
+       </a>
+      </li>
+     </ul>
+     <ul>
+      <h5>
+       地图产品
+      </h5>
+      <li>
+       <a href="http://map.mapbar.com/" target="_blank">
+        城市地图
+       </a>
+      </li>
+      <li>
+       <a href="http://bus.mapbar.com/" target="_blank">
+        公交查询
+       </a>
+      </li>
+      <li>
+       <a href="http://poi.mapbar.com/" target="_blank">
+        本地生活
+       </a>
+      </li>
+      <li>
+       <a href="http://ditie.mapbar.com/" target="_blank">
+        地铁查询
+       </a>
+      </li>
+     </ul>
+     <ul>
+      <h5>
+       更多
+      </h5>
+      <li>
+       <a href="http://www.mapbar.com/link/index.html" target="_blank">
+        友情链接
+       </a>
+      </li>
+     </ul>
+    </div>
+   </section>
+   <aside>
+    <p class="partner">
+     <strong>
+      友情链接：
+     </strong>
+     <span>
+      <a href="http://www.iqiyi.com/lvyou/" target="_blank" title="爱奇艺旅游">
+       爱奇艺旅游
+      </a>
+     </span>
+     <em>
+      |
+     </em>
+     <span>
+      <a href="http://www.tieyou.com/" target="_blank" title="火车票">
+       火车票
+      </a>
+     </span>
+     <em>
+      |
+     </em>
+     <span>
+      <a href="http://www.appchina.com" target="_blank" title="安卓">
+       安卓
+      </a>
+     </span>
+     <em>
+      |
+     </em>
+     <span>
+      <a href="http://www.lvmama.com/" target="_blank" title="驴妈妈旅游网">
+       驴妈妈旅游网
+      </a>
+     </span>
+     <em>
+      |
+     </em>
+     <span>
+      <a href="http://www.19lou.com" target="_blank" title="19楼">
+       19楼
+      </a>
+     </span>
+     <em>
+      |
+     </em>
+     <span>
+      <a href="http://www.zhuna.cn/" target="_blank" title="酒店预订">
+       酒店预订
+      </a>
+     </span>
+     <em>
+      |
+     </em>
+     <span>
+      <a href="http://www.admin5.com" target="_blank" title="站长网">
+       站长网
+      </a>
+     </span>
+     <em>
+      |
+     </em>
+     <span>
+      <a href="http://www.jiancai.com" target="_blank" title="盛丰建材网">
+       盛丰建材网
+      </a>
+     </span>
+     <em>
+      |
+     </em>
+     <span>
+      <a href="http://www.wed114.cn/" target="_blank" title="婚纱摄影">
+       婚纱摄影
+      </a>
+     </span>
+     <em>
+      |
+     </em>
+     <span>
+      <a href="http://www.webcars.com.cn/" target="_blank" title="万车网 ">
+       万车网
+      </a>
+     </span>
+     <em>
+      |
+     </em>
+     <span>
+      <a href="http://www.mafengwo.cn/" target="_blank" title="蚂蜂窝旅游">
+       蚂蜂窝旅游
+      </a>
+     </span>
+     <em>
+      |
+     </em>
+     <span>
+      <a href="http://www.jianglishi.cn" target="_blank" title="中国历史">
+       中国历史
+      </a>
+     </span>
+     <em>
+      |
+     </em>
+     <span>
+      <a href="http://www.city8.com/" target="_blank" title="中国地图">
+       中国地图
+      </a>
+     </span>
+     <em>
+      |
+     </em>
+     <span>
+      <a href="http://soft.zol.com.cn/" target="_blank" title="软件资讯">
+       软件资讯
+      </a>
+     </span>
+     <em>
+      |
+     </em>
+     <span>
+      <a href="http://www.gbs.cn" target="_blank" title="光波网">
+       光波网
+      </a>
+     </span>
+     <em>
+      |
+     </em>
+     <span>
+      <a href="http://www.meishij.net/" target="_blank" title="美食杰网">
+       美食杰网
+      </a>
+     </span>
+     <em>
+      |
+     </em>
+     <span>
+      <a href="http://mobile.mapbar.com/daohang/pndpurchase/home" target="_blank" title="车载导航仪">
+       车载导航仪
+      </a>
+     </span>
+     <em>
+      |
+     </em>
+     <span>
+      <a href="http://www.yododo.com" target="_blank" title="游多多自助游">
+       游多多自助游
+      </a>
+     </span>
+     <em>
+      |
+     </em>
+     <span>
+      <a href="http://www.gaotie.cn/" target="_blank" title="高铁">
+       高铁
+      </a>
+     </span>
+     <em>
+      |
+     </em>
+     <span>
+      <a href="http://www.xdowns.com" target="_blank" title="绿盟">
+       绿盟
+      </a>
+     </span>
+     <em>
+      |
+     </em>
+     <span>
+      <a href="http://suixing.mapbar.com/" target="_blank" title="中国旅游地图">
+       中国旅游地图
+      </a>
+     </span>
+     <em>
+      |
+     </em>
+     <span>
+      <a href="http://www.ly.com/" target="_blank" title="同程旅游">
+       同程旅游
+      </a>
+     </span>
+     <em>
+      |
+     </em>
+     <span>
+      <a href="http://www.qc188.com/" target="_blank" title="平行进口车">
+       平行进口车
+      </a>
+     </span>
+     <em>
+      |
+     </em>
+    </p>
+   </aside>
+   <aside>
+    <p class="copyright" id="mapbarYear">
+     ©
+    </p>
+    <script type="text/javascript">
+     document.getElementById("mapbarYear").innerHTML = "&copy;"+new Date().getFullYear()+"mapbar. 审图号:GS(2019)2480号&nbsp;[甲测资字11002015]&nbsp;<a target='_blank' href='http://www.miibeian.gov.cn'>[京ICP证070616号]</a>&nbsp;<a target='_blank' href='http://www.miibeian.gov.cn'>[京ICP备08100418号]</a>&nbsp;<DIV style='width:300px;margin:0 auto; padding:20px 0;'><a target='_blank' href='http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11010802028056' style='display:inline-block;text-decoration:none;height:20px;line-height:20px;'><img src='http://r.mapbar.com/webSystemConfigure/2016/6/21/100/20160621111511.png' style='float:left;'/>[京公网安备 11010802028056号]<p style='float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;'> </p></a></DIV>";
+    </script>
+   </aside>
+  </footer>
+  <div class="mwp_acc" id="acc" style="display:none;">
+   <div class="mwp_acc_t">
+    <a class="mwp_acc_cb" href="javascript:void(0);" title="关闭">
+     关闭
+    </a>
+   </div>
+   <h4>
+    请登录
+   </h4>
+   <div class="mwp_acc_c">
+    <iframe frameborder="0" id="iframelogin" loginurl="http://passport.mapbar.com/index.php?m=user&amp;a=iframelogin&amp;backfunction=" marginheight="0" marginwidth="0" name="iframelogin" scrolling="no" src="" style="width:100%;height:138px;">
+    </iframe>
+   </div>
+  </div>
+  <div id="ewm_colse">
+   <img alt="点击展开二维码" border="0" onclick="show_ewm();" src="http://img.mapbar.com/web/index/images/ewm_close.png" title="点击展开二维码"/>
+  </div>
+  <script>
+   function hide_ewm(){
+	$('#ewm_default').hide();
+	$('#ewm_colse').show();
+	return false;
+}
+function show_ewm(){
+	$('#ewm_default').show();
+	$('#ewm_colse').hide();
+	return false;
+}
+
+function openSearch(){
+	document.getElementById("jump").href = "http://www.mapbar.com/search/#c="+encodeURIComponent("北京市")
+  	if(document.all){
+      document.getElementById("jump").click();    
+  	}else{
+      var evt = document.createEvent("MouseEvents");
+      evt.initEvent("click",true,true);
+      document.getElementById("jump").dispatchEvent(evt);
+  	}  
+}
+jQuery(document).ready(function(){
+	//为避免ie6下页面终止操作错误，ready后再初始化citylist
+	if(jQuery.browser.msie && ($.browser.version == "6.0"||$.browser.version == "7.0")){
+		indexInitialize(1);
+	}
+	indexInitialize(0);
+	indexInitialize(3);
+	indexInitialize(4);
+	indexInitialize(5);
+	
+	
+});
+  </script>
+  <script type="text/javascript">
+   var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F1e6b9bedc580a6f078c64baf0a968aaf' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+ </body>
+</html>

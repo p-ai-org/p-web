@@ -1,0 +1,150 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* Inheritted From Flyout **/
+.left-nav-col{margin-bottom: 1em;}
+#menu {position:relative; z-index:20; background-color:transparent; overflow:visible;}
+#menu &gt; #toplevel {margin-bottom: 1em;}
+
+
+/* ------ Side Navigation ----- */
+
+#sidebar {
+    overflow: hidden;
+    z-index: 3;
+}
+
+#sidebar i {
+    margin-right: 6px;
+}
+
+#sidebar .list-group-item {
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+    border-color: #e6e6e6;
+	line-height: 200%;
+    /* white-space: nowrap; */
+	padding: 8px 10px 8px 8px;
+}
+#sidebar .list-group-item:hover {
+	background: #f8f8ff;
+}
+
+#sidebar .nav-header a:hover {
+    direction: ltr;
+    background: #f8f8ff;
+    color: #333 !important;
+    position: relative;
+}
+#sidebar .nav-header a, #sidebar .nav-header.no-Link {
+    color: #ffffff;
+    font-weight: 600;
+    display: block;
+    padding: 8px 10px 8px 8px;
+	line-height: 200%;
+}
+
+/* highlight active menu */
+#sidebar .list-group-item:not(.collapsed) {
+    /* background-color: #222; */
+	background-color: #f8f8ff !important;
+}
+
+/* closed state */
+#sidebar .list-group .list-group-item[aria-expanded="false"]::after {
+  content: " \f0d7";
+  font-family: FontAwesome;
+  display: inline;
+  text-align: right;
+  padding-left: 5px;
+}
+
+/* open state */
+#sidebar .list-group .list-group-item[aria-expanded="true"] {
+  background-color: #e6e6e6 !important;
+}
+#sidebar .list-group .list-group-item[aria-expanded="true"]::after {
+  content: " \f0da";
+  font-family: FontAwesome;
+  display: inline;
+  text-align: right;
+  padding-left: 5px;
+}
+
+/* level 1*/
+#sidebar .list-group .collapse .list-group-item,
+#sidebar .list-group .collapsing .list-group-item  {
+  padding-left: 20px;
+  background: #f8f8ff;
+}
+
+/* level 2*/
+#sidebar .list-group .collapse &gt; .collapse .list-group-item,
+#sidebar .list-group .collapse &gt; .collapsing .list-group-item {
+  padding-left: 30px;
+  background: #f8f8ff;
+}
+
+/* level 3*/
+#sidebar .list-group .collapse &gt; .collapse &gt; .collapse .list-group-item {
+  padding-left: 40px;
+  background: #f8f8ff;
+}
+
+
+
+@media (max-width:768px) {
+  /*  #sidebar {
+        min-width: 35px;
+        max-width: 40px;
+        overflow-y: auto;
+        overflow-x: visible;
+        transition: all 0.25s ease;
+        transform: translateX(-45px);
+        position: fixed;
+    }
+    */
+    #sidebar.show {
+        transform: translateX(0);
+    }
+
+    #sidebar::-webkit-scrollbar{ width: 0px; }
+    
+    #sidebar, #sidebar .list-group {
+        min-width: 35px;
+        overflow: visible;
+    }
+    /* overlay sub levels on small screens */
+    #sidebar .list-group .collapse.show, #sidebar .list-group .collapsing {
+        position: relative;
+        z-index: 1;
+        top: 0;
+    }
+    #sidebar .list-group &gt; .list-group-item {
+        padding: .75rem .5rem;
+		padding: 8px 10px 8px 8px;
+    }
+
+}
+
+
+.collapse.show {
+  visibility: visible;
+}
+.collapsing {
+  visibility: visible;
+  height: 0;
+  -webkit-transition-property: height, visibility;
+  transition-property: height, visibility;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.collapsing.width {
+  -webkit-transition-property: width, visibility;
+  transition-property: width, visibility;
+  width: 0;
+  height: 100%;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}

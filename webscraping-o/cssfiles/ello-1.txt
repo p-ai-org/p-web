@@ -1,0 +1,3381 @@
+/* 2: 640  / 16 = 40em */    /* 3: 960  / 16 = 60em */    /* 4: 1360 / 16 = 85em */    /* 5: 1720 / 16 = 107.5em */    /* 6: 2080 / 16 = 130em */    /* 7: 2440 / 16 = 152.5em */    /* 2: 639  / 16 = 39.9375em */    /* stylelint-disable no-unsupported-browser-features, property-no-vendor-prefix */    /* stylelint-disable selector-list-comma-newline-after, selector-no-qualifying-type */    /* Fonts
+------------------------------------- */    @font-face {
+  font-family: AtlasGroteskRegular;
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: normal;
+  src:
+    local("AtlasGrotesk-Regular"),
+    url("//fonts.ello.co/AtlasGrotesk-Regular-Web.eot?#iefix") format("embedded-opentype"),
+    url("//fonts.ello.co/AtlasGrotesk-Regular-Web.woff") format("woff"),
+    url("//fonts.ello.co/AtlasGrotesk-Regular-Web.ttf") format("truetype"),
+    url("//fonts.ello.co/AtlasGrotesk-Regular-Web.svg#AtlasGroteskRegular") format("svg");
+}    @font-face {
+  font-family: AtlasGroteskBold;
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: normal;
+  src:
+    local("AtlasGrotesk-Bold"),
+    url("//fonts.ello.co/AtlasGrotesk-Bold-Web.eot?#iefix") format("embedded-opentype"),
+    url("//fonts.ello.co/AtlasGrotesk-Bold-Web.woff") format("woff"),
+    url("//fonts.ello.co/AtlasGrotesk-Bold-Web.ttf") format("truetype"),
+    url("//fonts.ello.co/AtlasGrotesk-Bold-Web.svg#AtlasGroteskBold") format("svg");
+}    @font-face {
+  font-family: AtlasGroteskBlack;
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: normal;
+  src:
+    local("AtlasGrotesk-Black"),
+    url("//fonts.ello.co/AtlasGrotesk-Black-Web.eot?#iefix") format("embedded-opentype"),
+    url("//fonts.ello.co/AtlasGrotesk-Black-Web.woff") format("woff"),
+    url("//fonts.ello.co/AtlasGrotesk-Black-Web.ttf") format("truetype"),
+    url("//fonts.ello.co/AtlasGrotesk-Black-Web.svg#AtlasGroteskBlack") format("svg");
+}    @font-face {
+  font-family: AtlasGroteskLight;
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: normal;
+  src:
+    local("AtlasGrotesk-Light"),
+    url("//fonts.ello.co/AtlasGrotesk-Light-Web.eot?#iefix") format("embedded-opentype"),
+    url("//fonts.ello.co/AtlasGrotesk-Light-Web.woff") format("woff"),
+    url("//fonts.ello.co/AtlasGrotesk-Light-Web.ttf") format("truetype"),
+    url("//fonts.ello.co/AtlasGrotesk-Light-Web.svg#AtlasGroteskLight") format("svg");
+}    @font-face {
+  font-family: AtlasTypewriterRegular;
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: normal;
+  src:
+    local("AtlasTypewriter-Regular"),
+    url("//fonts.ello.co/AtlasTypewriter-Regular-Web.eot?#iefix") format("embedded-opentype"),
+    url("//fonts.ello.co/AtlasTypewriter-Regular-Web.woff") format("woff"),
+    url("//fonts.ello.co/AtlasTypewriter-Regular-Web.ttf") format("truetype"),
+    url("//fonts.ello.co/AtlasTypewriter-Regular-Web.svg#AtlasTypewriterRegular") format("svg");
+}    /* Scaffold
+------------------------------------- */    *,
+*::before,
+*::after {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}    html {
+  font: normal 400 100% / 1.5 "AtlasGroteskRegular", "AtlasGrotesk-Regular", "Helvetica Neue", "HelveticaNeue", "Helvetica", sans-serif;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}    body {
+  position: relative;
+  margin: 0;
+  overflow-x: hidden;
+  background-color: #fff;
+}    body.isModalActive {
+  overflow: hidden;
+}    ::selection {
+  color: #fff;
+  text-shadow: none;
+  background: #000;
+}    [hidden] {
+  display: none;
+}    /* stylelint-disable selector-max-specificity, selector-no-id */    #root {
+  overflow-x: hidden;
+}    /*
+ * A probe into CSS used by the ResizeComponent
+ * Has to be the #root element since it is already present in the DOM. Would be
+ * nice to stick it on Viewport but it would be null on the first hit. The
+ * z-index is related to number of columns for grid mode.
+*/    #root::after {
+  position: absolute;
+  z-index: 2;
+  display: none !important;
+  width: 0;
+  height: 0;
+  visibility: hidden;
+}    @media (min-width: 40em) { #root::after { z-index: 2; } }    @media (min-width: 60em) { #root::after { z-index: 3; } }    @media (min-width: 85em) { #root::after { z-index: 4; } }    @media (min-width: 107.5em) { #root::after { z-index: 5; } }    @media (min-width: 130em) { #root::after { z-index: 6; } }    @media (min-width: 152.5em) { #root::after { z-index: 7; } }    /* stylelint-enable selector-max-specificity, selector-no-id */    /* Typography
+------------------------------------- */    h1, h2, h3, h4, h5, h6 {
+  font-family: "AtlasGroteskRegular", "AtlasGrotesk-Regular", "Helvetica Neue", "HelveticaNeue", "Helvetica", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  margin: 0;
+  font-size: 0.875rem;
+}    p {
+  margin: 0.9375rem 0;
+}    p, ol, ul, dl {
+  font-size: 0.875rem;
+}    p:empty {
+  display: none;
+}    ol, ul, dl, dd {
+  margin: 0;
+}    ol, ul {
+  padding: 0;
+}    ol {
+  margin-left: 2.2em;
+}    ul {
+  margin-left: 1.2em;
+}    a {
+  display: inline-block;
+  color: inherit;
+  text-decoration: none;
+  background: transparent;
+  transition: color 0.2s ease;
+}    a:focus,
+a:active,
+.no-touch a:hover {
+  outline: 0;
+}    p a,
+li a,
+dd a,
+[contenteditable="true"] a {
+  display: inline;
+  border-bottom: 1px solid;
+}    p a:focus,
+p a:active,
+.no-touch p a:hover {
+  color: #aaa;
+}    em, i {
+  font-family: "AtlasGroteskRegular", "AtlasGrotesk-Regular", "Helvetica Neue", "HelveticaNeue", "Helvetica", sans-serif;
+  font-style: italic;
+  font-weight: 400;
+}    strong, b {
+  font-family: "AtlasGroteskBold", "AtlasGrotesk-Bold", "Helvetica Neue", "HelveticaNeue", "Helvetica", sans-serif;
+  font-style: normal;
+  font-weight: 700;
+}    strong em,
+em strong,
+b i,
+i b,
+b em,
+em b,
+strong i,
+i strong {
+  font-family: "AtlasGroteskBold", "AtlasGrotesk-Bold", "Helvetica Neue", "HelveticaNeue", "Helvetica", sans-serif;
+  font-style: italic;
+  font-weight: 700;
+}    small {
+  font-size: 0.875em;
+}    sub, sup {
+  position: relative;
+  font-size: 0.75em;
+  line-height: 0;
+  vertical-align: baseline;
+}    sup {
+  top: -0.5em;
+}    sub {
+  bottom: -0.25em;
+}    mark {
+  padding: 2px 0.3125rem;
+  font-size: 0.875em;
+  color: #000;
+  background-color: #ffc;
+}    code, pre {
+  font-family: "AtlasTypewriterRegular", "AtlasTypewriter-Regular", "Andale Mono", "Consolas", "Lucida Console", "Menlo", "Luxi Mono", monospace;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.75rem;
+  background-color: #f1f1f1;
+}    code {
+  display: inline-block;
+  padding: 2px 0.3125rem;
+}    pre {
+  padding: 0.9375rem;
+  margin: 0.9375rem 0;
+  overflow: hidden;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}    pre code {
+  padding: 0;
+  background-color: transparent;
+}    hr {
+  display: block;
+  height: 1px;
+  padding: 0;
+  margin: 0.9375rem 0;
+  border: 0;
+  border-top: 1px solid #f1f1f1;
+}    /* Elements
+------------------------------------- */    audio, canvas, img, svg, video {
+  vertical-align: middle;
+}    audio:not([controls]) {
+  display: none;
+  height: 0;
+}    svg:not(:root) {
+  overflow: hidden;
+}    figure {
+  margin: 0;
+}    img {
+  max-width: 100%;
+  font-size: 0.75rem;
+  border: 0;
+  outline: 0;
+}    table {
+  width: 100%;
+  font-size: 0.875rem;
+  border-spacing: 0;
+  border-collapse: collapse;
+}    tr {
+  border-bottom: 1px solid #f1f1f1;
+}    td, th {
+  padding: 0.3125rem 0;
+  text-align: left;
+}    th {
+  font-family: "AtlasGroteskBold", "AtlasGrotesk-Bold", "Helvetica Neue", "HelveticaNeue", "Helvetica", sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  vertical-align: bottom;
+}    button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  cursor: pointer;
+  -webkit-appearance: button;
+}    button[disabled],
+html input[disabled] {
+  cursor: default;
+}    input::-moz-focus-inner,
+button::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}    button {
+  position: relative;
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-transform: none;
+  vertical-align: middle;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  outline: 0; /* stylelint-disable-line */
+}    button::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  content: "";
+  background-color: rgba(0, 0, 0, 0);
+}    input,
+textarea {
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  border-radius: 0;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+}    input::-ms-clear {
+  display: none;
+  width: 0;
+  height: 0;
+}    textarea {
+  height: 100%;
+  overflow: auto;
+  resize: none;
+}    input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}    /* stylelint-enable no-unsupported-browser-features, property-no-vendor-prefix */    /* stylelint-enable selector-list-comma-newline-after, selector-no-qualifying-type */    /* stylelint-disable primer/selector-no-utility */    /* Totally hidden from screen readers and browsers */    .hidden {
+  display: none !important;
+  visibility: hidden;
+}    /* Hide visually and remove from layout (useful for the checkbox hack) */    .invisible {
+  position: absolute;
+  visibility: hidden;
+  opacity: 0;
+}    .unselectable {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none; /* stylelint-disable-line */
+}    .disabled {
+  pointer-events: none;
+  cursor: default;
+}    .monospace {
+  font-family: "AtlasTypewriterRegular", "AtlasTypewriter-Regular", "Andale Mono", "Consolas", "Lucida Console", "Menlo", "Luxi Mono", monospace;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.75rem;
+}    .subheading {
+  font-family: "AtlasGroteskBold", "AtlasGrotesk-Bold", "Helvetica Neue", "HelveticaNeue", "Helvetica", sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.35;
+  color: #000;
+  text-rendering: optimizeLegibility; /* stylelint-disable-line */
+}    .fullscreen {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}    .uppercase {
+  text-transform: uppercase;
+}    .lowercase {
+  text-transform: uppercase;
+}    .truncate {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}    @keyframes animateLavaLamp {
+  0% {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  25% {
+    background-color: rgba(128, 0, 128, 0.1);
+  }
+
+  50% {
+    background-color: rgba(0, 128, 0, 0.1);
+  }
+
+  75% {
+    background-color: rgba(128, 0, 128, 0.1);
+  }
+
+  100% {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}    @keyframes animateCommentsLoading {
+  0% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(0.5625rem);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}    @keyframes animateIsBusy {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(720deg);
+  }
+}    @keyframes animateIsBusyButton {
+  from {
+    transform: rotate(0deg) scale(0.5);
+  }
+
+  to {
+    transform: rotate(720deg) scale(0.5);
+  }
+}    @keyframes animateUploaderMover {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(100% + 0.625rem)); }
+}    @keyframes paginatorLoading {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}    /* A, B, C, D, E, F... */    /* TODO: Move to immutable? */    .svg-fill {
+  fill: currentColor;
+  stroke: none;
+  transition: fill 0.2s ease;
+}    .svg-fill-transparent {
+  fill: transparent;
+  stroke: none;
+  transition: fill 0.2s ease;
+}    .svg-stroke {
+  fill: none;
+  stroke: currentColor;
+  stroke-miterlimit: 10;
+  stroke-width: 1.25;
+  transition: stroke 0.2s ease, transform 0.2s ease;
+  transform-origin: center center;
+}    .svg-stroke-bevel {
+  stroke-linejoin: bevel;
+}    .svg-stroke-round {
+  stroke-linejoin: round;
+}    .svg-fill-stroke {
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-miterlimit: 10;
+  stroke-width: 1.25;
+  transition: fill 0.2s ease, stroke 0.2s ease;
+}    /* ------------------------------------- */    .SVGBoxFG,
+.SVGBoxBG {
+  stroke: none;
+  transition: fill 0.2s ease;
+}    .SVGBoxFG {
+  fill: #fff;
+}    .SVGBoxBG {
+  fill: currentColor;
+}    /* ------------------------------------- */    .SVGIcon &gt; g {
+  fill: transparent;
+  stroke: currentColor;
+  stroke-miterlimit: 10;
+  stroke-width: 1.25;
+  transition: fill 0.2s ease 0.1s, stroke 0.2s ease, transform 0.2s ease;
+  transform-origin: center center;
+}    .SVGIcon &gt; g:nth-of-type(2) {
+  transition-delay: 0.2s, 0.1s, 0.1s;
+}    .SVGIcon &gt; g:nth-of-type(3) {
+  transition-delay: 0.3s, 0.2s, 0.2s;
+}    .SVGIcon &gt; g:nth-of-type(4) {
+  transition-delay: 0.4s, 0.2s, 0.2s;
+}    /* ------------------------------------- */    .ElloMark,
+.ElloDonutMark,
+.ElloRainbowMark,
+.ElloOutlineMark {
+  display: inline-block;
+  overflow: hidden;
+  border-radius: 2.5rem;
+}    .SmileShape {
+  fill: #fff;
+}    .ElloOutlineMark {
+  border: 1px solid #aaa;
+}    .ElloOutlineMark &gt; .SmileShape {
+  fill: transparent !important;
+  stroke: #aaa !important;
+  transform: translateX(-2px);
+}    .OnboardingAvatarPicker .ElloOutlineMark {
+  position: absolute;
+  top: 5rem;
+  right: 0;
+  left: 0;
+  z-index: 2;
+  margin: 0 auto;
+  pointer-events: none;
+  transform: scale(1.5);
+  transform-origin: 50% 0;
+}    .ElloNinjaSuit {
+  position: absolute;
+  top: 0;
+  left: 0;
+  fill: #ed2224;
+}    .ElloMark.isSpinner {
+  animation: animateIsBusy 1.03333s infinite cubic-bezier(0.645, 0.045, 0.355, 1);
+}    .ElloMark.isSpinner &gt; .SVGBoxBG {
+  fill: transparent !important;
+}    .ElloMark.isSpinner &gt; .SmileShape {
+  fill: #aaa !important;
+}    .BlockedUsers .ElloMark.isSpinner,
+.TabListStreamContainer .ElloMark.isSpinner,
+.MutedUsers .ElloMark.isSpinner {
+  animation: animateIsBusyButton 1.03333s infinite cubic-bezier(0.645, 0.045, 0.355, 1);
+}    .BlockedUsers .ElloMark.isSpinner &gt; .SmileShape,
+.MutedUsers .ElloMark.isSpinner &gt; .SmileShape {
+  fill: #fff !important;
+}    .OnboardingNavbar &gt; .ElloMark {
+  position: absolute;
+  top: 0.9375rem;
+  left: 0.625rem;
+  transform-origin: 0 0;
+}    @media (min-width: 40em) {
+  .OnboardingNavbar &gt; .ElloMark {
+    top: 1.25rem;
+    left: 1.25rem;
+    transform: scale(1.5);
+  }
+}    /* ------------------------------------- */    /* stylelint-disable selector-max-compound-selectors, selector-max-specificity, selector-no-qualifying-type */    /* Following
+------------------------------------- */    .FollowButton.isInHeader &gt; .SVGIcon {
+  vertical-align: top;
+}    .FollowButton.isInHeader[data-priority="noise"] &gt; .SVGIcon &gt; g:first-child,
+.FollowButton.isInHeader[data-priority="friend"] &gt; .SVGIcon &gt; g:first-child {
+  fill: #aaa;
+  stroke: #aaa;
+}    .FollowButton.isInHeader:hover &gt; .SVGIcon &gt; g:first-of-type {
+  fill: #535353;
+  stroke: #535353;
+}    .FollowButton:not(.isInHeader) &gt; .PlusIconSM {
+  margin-top: -2px;
+}    .FollowButton:not(.isInHeader) &gt; .CheckIconSM {
+  margin-top: -4px;
+}    /* Navbar
+------------------------------------- */    .NavbarLink.isActive &gt; .SVGIcon &gt; g,
+.NavbarLink:active &gt; .SVGIcon &gt; g,
+.no-touch .NavbarLink:hover &gt; .SVGIcon &gt; g {
+  stroke: #000;
+}    .NavbarLink.isActive &gt; .SVGIcon:not(.SearchIcon) g,
+.NavbarLink:active &gt; .SVGIcon:not(.SearchIcon) g,
+.no-touch .NavbarLink:hover &gt; .SVGIcon:not(.SearchIcon) g {
+  fill: #000;
+}    /* // Label only (icon is hidden) */    .NavbarLink.LabelOnly &gt; .SVGIcon {
+  width: 0;
+  opacity: 0;
+  transition:
+    width 0.2s cubic-bezier(0.23, 1, 0.32, 1),
+    opacity 0.2s ease,
+    transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+}    /* // Icon only (label is hidden) */    .NavbarLink.IconOnly {
+  width: 1.25rem;
+}    .isNotificationsActive ~ .Navbar .NavbarLink[href^="/notifications"] &gt; .SVGIcon &gt; g {
+  fill: #000;
+  stroke: #000;
+}    .NavbarMorePostsButton &gt; .ArrowIcon {
+  margin-top: -2px;
+  transform: rotate(270deg);
+}    .NavbarLink &gt; .SVGIcon {
+  margin-top: -0.3125rem;
+}    .NavbarOmniButton .SVGIcon {
+  margin-right: 0.3125rem;
+}    /* // Nabar Animations once we have room */    @media (min-width: 40em) {
+  /* // Show the icon on rollover for desktop */
+  .no-touch .NavbarLink.LabelOnly:hover &gt; .SVGIcon {
+    width: 1.25rem;
+    opacity: 1;
+    transition-delay: 0.5s;
+  }
+
+  /* // Show the label on rollover for desktop */
+  .no-touch .NavbarLink.IconOnly {
+    transition-delay: 0.5s;
+  }
+
+  /* // Specific widths for the labels */
+  /* // TODO: will need to figure out how to do this for i18n */
+  .no-touch .NavbarLink[href^="/notifications"]:hover {
+    width: 6.875rem;
+  }
+
+  .no-touch .NavbarLink[href^="/search"]:hover {
+    width: 4.5rem;
+  }
+
+  /* // Circle animation */
+  .no-touch .NavbarLink &gt; .CircleIcon {
+    transition-delay: 0.2s, 0.2s, 0s;
+    transform: scale(0.5);
+    transform-origin: 0.71875rem; /* 11.5 / 16 */
+  }
+
+  .no-touch .NavbarLink:hover &gt; .CircleIcon {
+    transition-delay: 0.5s, 0.5s, 0.7s;
+    transform: none;
+  }
+
+  .no-touch .NavbarLink &gt; .CircleIcon &gt; g {
+    transition-delay: 0s;
+  }
+
+  .no-touch .NavbarLink:hover &gt; .CircleIcon &gt; g {
+    transition-delay: 0.7s;
+  }
+
+  /* // Sparkles animation */
+  .no-touch .NavbarLink:hover &gt; .SparklesIcon &gt; g {
+    transition-delay: 0.6s;
+  }
+
+  .no-touch .NavbarLink:hover &gt; .SparklesIcon &gt; g:nth-of-type(2) {
+    transition-delay: 0.7s;
+  }
+
+  .no-touch .NavbarLink:hover &gt; .SparklesIcon &gt; g:nth-of-type(3) {
+    transition-delay: 1.05s;
+  }
+}    /* Posts and comments and notifications
+------------------------------------- */    .WatchTool &gt; button.isActive &gt; .BoltIcon &gt; g,
+.Post .isCommentsActive .BubbleIcon &gt; g,
+.Post .BubbleIcon &gt; g:nth-child(2) {
+  fill: #000;
+  stroke: #000;
+}    .no-touch .CommentTool &gt; button:hover &gt; .BubbleIcon &gt; g,
+.no-touch .FlagTool &gt; button:hover &gt; .FlagIcon &gt; g:nth-of-type(2) {
+  fill: #000;
+}    .no-touch .CommentTool.isLightBox &gt; button:hover &gt; .BubbleIcon &gt; g,
+.no-touch .FlagTool.isLightBox &gt; button:hover &gt; .FlagIcon &gt; g:nth-of-type(2) {
+  fill: #fff;
+}    .IconTab.isActive .BubbleIcon &gt; g,
+.IconTab.isActive .HeartIcon &gt; g,
+.no-touch .IconTab:hover .BubbleIcon &gt; g,
+.no-touch .IconTab:hover .HeartIcon &gt; g {
+  fill: #fff;
+}    /* Hide the tail */    .NotificationsContainerTabs  .BubbleIcon &gt; g:nth-child(2),
+.Post .BubbleIcon &gt; g:nth-child(2),
+.StyleGuide .BubbleIcon &gt; g:nth-child(2),
+.PostTool.isLightBox .BubbleIcon.SVGIcon &gt; g:nth-child(2) {
+  display: none;
+}    /* Animating */    .Post .isCommentsRequesting .BubbleIcon &gt; g:nth-child(1) {
+  display: none;
+}    .Post .isCommentsRequesting .BubbleIcon &gt; g:nth-child(2) {
+  display: inline;
+}    .Post .isCommentsRequesting .BubbleIcon polygon {
+  animation: animateCommentsLoading 0.75s infinite cubic-bezier(0.77, 0, 0.175, 1);
+}    .PostTool .ShareIcon,
+.PostTool .HeartIcon,
+.PostTool .EyeIcon,
+.PostTool .BubbleIcon {
+  margin-top: -2px;
+}    .PostTool .PencilIcon,
+.PostTool .RepostIcon {
+  margin-top: -4px;
+}    .PostTool .XBoxIcon {
+  padding-left: 1px;
+}    .PencilIcon &gt; g,
+.Post .XBoxIcon &gt; g {
+  stroke-linecap: square;
+  transition-delay: 0.1s, 0s, 0s;
+}    .RepostHeader .RepostIcon &gt; g {
+  stroke: #535353;
+}    /* Animations ?? */    .ViewsTool .EyeIcon &gt; circle {
+  fill: currentColor;
+  stroke: transparent;
+  transition: fill 0.2s ease, stroke 0.2s ease;
+}    .no-touch .ViewsTool &gt; a:hover &gt; .EyeIcon &gt; circle {
+  stroke: #000;
+  transition-delay: 0.2s, 0s;
+}    .no-touch .ViewsTool &gt; a:hover &gt; .EyeIcon &gt; g {
+  stroke: #000;
+}    .no-touch .ViewsTool.isLightBox &gt; a:hover &gt; .EyeIcon &gt; g {
+  stroke: #fff;
+}    .no-touch .LoveTool &gt; button:hover &gt; .HeartIcon &gt; g {
+  fill: #000;
+}    .no-touch .LoveTool.isLightBox &gt; button:hover &gt; .HeartIcon &gt; g {
+  fill: #fff;
+}    .LoveTool &gt; button.isActive &gt; .HeartIcon &gt; g {
+  fill: #f00;
+  stroke: #f00;
+}    .no-touch .LoveTool &gt; button.isActive:hover &gt; .HeartIcon &gt; g {
+  fill: #f99;
+  stroke: #f99;
+}    .no-touch .ShareTool &gt; button:hover &gt; .ShareIcon &gt; g:nth-of-type(2) {
+  transform: translate3d(0, -1px, 0);
+}    .no-touch .DeleteTool &gt; button:hover &gt; .XBoxIcon &gt; g:nth-of-type(2) {
+  transform: rotate(90deg);
+}    .ShareTool.isPill .ShareIcon {
+  display: none;
+}    .CommentTools .ReplyTool .SVGIcon {
+  margin-top: -2px;
+}    .CommentTools .MoreTool .SVGIcon {
+  transform: rotate(180deg);
+}    .CommentTools.isMoreToolActive .MoreTool .SVGIcon {
+  color: #000;
+  transform: none;
+}    /* // MAX WIDTH! */    @media (max-width: 39.9375em) {
+  .CommentTools .MoreTool .SVGIcon {
+    transform: rotate(180deg);
+  }
+
+  .CommentTools.isMoreToolActive .MoreTool .SVGIcon {
+    color: #000;
+    transform: none;
+  }
+}    /* Editor Icons
+------------------------------------- */    .BrowseIcon &gt; g {
+  fill: #fff;
+}    .ElloBuyButton &gt; .SVGIcon.MoneyIcon &gt; g {
+  fill: #fff;
+  stroke: #fff;
+  stroke-width: 0.5;
+}    .PostActionButton .BrowseIcon &gt; g {
+  fill: transparent;
+}    .PostActionButton .XIconLG {
+  margin-top: -2px;
+  margin-left: -2px;
+}    .SVGIcon.MoneyIconCircle path {
+  fill: #fff;
+  stroke: none;
+}    .PostActionButton .SVGIcon &gt; g {
+  stroke: #fff;
+}    .TextToolButton.forLink &gt; .SVGIcon {
+  margin-top: -2px;
+  margin-left: -1px;
+}    @media (min-width: 40em) {
+  .no-touch .BlockRemove &gt; .XIcon {
+    transition-duration: 0.2s, 0.2s, 0.4s;
+    transform-origin: center center;
+  }
+
+  .no-touch .BlockRemove:hover &gt; .XIcon {
+    transition-delay: 0.5s, 0.5s, 0.7s;
+    transform: rotate(360deg);
+  }
+
+  .no-touch .ElloBuyButton:hover &gt; .SVGIcon.MoneyIcon &gt; g {
+    fill: #000;
+    stroke: transparent;
+  }
+}    /* ??
+------------------------------------- */    .HeroScrollToContentButton .ChevronCircleIcon {
+  margin-top: -2px;
+  transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+  transform: rotate(90deg);
+}    .HeroScrollToContentButton .ChevronCircleIcon g {
+  fill: none;
+  stroke: #fff;
+}    .FooterTool.LayoutTool &gt; .SVGIcon {
+  margin-top: -2px;
+}    .FooterTools .ChevronIcon {
+  margin-top: -2px;
+  transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+  transform: rotate(-90deg);
+}    .OnboardingInfoForm .SVGIcon {
+  transform: scale(0.6);
+}    .FormControlStatus &gt; .SVGIcon &gt; g {
+  stroke-width: 2;
+}    /* Request */    .FormControlStatus &gt; .CircleIconLG &gt; g {
+  fill: #aaa;
+  stroke: transparent;
+}    /* Success */    .FormControlStatus &gt; .CheckIconLG &gt; g {
+  stroke: #06a54f;
+  stroke-linejoin: bevel;
+}    /* Failure */    .FormControlStatus &gt; .XIconLG &gt; g {
+  stroke: #f00;
+}    .MarkerIcon {
+  color: #ababab;
+}    .Omnibar .ChevronIcon {
+  margin-right: 0.3125rem;
+  transform: rotate(180deg);
+}    .BlockMuteButton &gt; .DotsIcon &gt; g {
+  fill: #fff;
+  stroke: transparent;
+}    .no-touch .BlockMuteButton:hover &gt; .DotsIcon &gt; g {
+  fill: #f00;
+}    /* stylelint-enable selector-max-compound-selectors, selector-max-specificity */    .Comments {
+  position: relative;
+  max-width: 40rem;
+}    .isLoggedOut .PostDetail .Comments {
+  margin-top: 0.3125rem;
+}    .Comment {
+  position: relative;
+  padding-top: 1.25rem;
+}    .CommentHeader {
+  position: relative;
+  height: 1.875rem;
+  font-size: 0.875rem;
+  color: #aaa;
+  background-color: #fff;
+}    .CommentHeaderAuthor {
+  position: relative;
+  display: inline-block;
+  max-width: calc(100% - 3.125rem);
+  padding-left: 2.5rem;
+  line-height: 1.875rem;
+  vertical-align: middle;
+}    .CommentHeaderLink {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}    .no-touch .CommentHeaderLink:hover {
+  color: #535353;
+}    .CommentBody {
+  padding-bottom: 1.25rem;
+  margin-left: 2.5rem;
+  border-bottom: 1px solid #e5e5e5;
+}    /* // TODO: Need to really separate CommentTools from PostTools. */    .CommentTools.PostTools {
+  position: absolute;
+  top: 1.25rem;
+  right: 0;
+  display: flex;
+  padding-top: 0;
+}    .CommentTools .ShyTool {
+  position: absolute;
+  right: -2.5rem;
+  z-index: 3;
+}    .CommentTools .ShyTool + .ShyTool {
+  right: -4.375rem;
+}    /* // Override the hiding of this thing from bad the PostTools */    .Posts .CommentTools .TimeAgoTool {
+  display: inline-block;
+  color: #aaa;
+  cursor: default;
+}    .CommentTools .MoreTool &gt; button {
+  padding-right: 0;
+}    .CommentBody .ImageAttachment {
+  height: auto;
+}    /* // MAX WIDTH! */    @media (max-width: 39.9375em) {
+  .CommentTools.PostTools.isMoreToolActive {
+    transform: translate3d(-3.75rem, 0, 0);
+  }
+
+  .CommentTools.PostTools.isMoreToolActive.isShyToolSolo {
+    transform: translate3d(-1.875rem, 0, 0);
+  }
+
+  .CommentTools.isMoreToolActive &gt; .ShyTool {
+    pointer-events: auto;
+    opacity: 1;
+  }
+
+  .CommentTools:not(.isMoreToolActive) &gt; .ShyTool {
+    display: none;
+  }
+
+  .Posts.asGrid .CommentTools .MoreTool {
+    display: none;
+  }
+}    /* // MIN WIDTH! */    @media (min-width: 40em) {
+  .CommentHeader {
+    height: 1.5625rem;
+  }
+
+  .CommentHeaderAuthor {
+    padding-left: 3.75rem;
+    line-height: 1.25rem;
+  }
+
+  .CommentBody {
+    margin-left: 3.75rem;
+  }
+
+  .CommentTools .MoreTool {
+    display: none;
+  }
+
+  .no-touch .CommentTools .ShyTool {
+    display: inline-block !important;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  /* stylelint-disable selector-max-specificity, selector-max-compound-selectors */
+  .ShyTools {
+    position: relative;
+    display: flex;
+    transition: margin-left 0.2s cubic-bezier(0.23, 1, 0.32, 1), transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .ShyTools::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -1.25rem;
+    width: 1.875rem;
+    content: "";
+  }
+
+  .no-touch .CommentTools.PostTools .ShyTools:hover {
+    margin-left: 3.75rem;
+    transform: translate3d(-3.75rem, 0, 0);
+  }
+
+  .no-touch .CommentTools.PostTools .ShyTools:hover::before {
+    width: 5.625rem;
+  }
+
+  .no-touch .CommentTools.PostTools.isShyToolSolo .ShyTools:hover {
+    margin-left: 1.875rem;
+    transform: translate3d(-1.875rem, 0, 0);
+  }
+
+  .no-touch .CommentTools.PostTools.isShyToolSolo .ShyTools:hover::before {
+    width: 3.75rem;
+  }
+
+  .no-touch .CommentTools.PostTools .ShyTools:hover .ShyTool {
+    pointer-events: auto;
+    opacity: 1;
+  }
+  /* stylelint-enable selector-max-specificity, selector-max-compound-selectors */
+}    .isDragging,
+.isDragging .editor-block {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none; /* stylelint-disable-line */
+}    .editor {
+  position: relative;
+  font-size: 0.875rem;
+  color: #000;
+}    .editor-region {
+  min-height: 14.375rem;
+  overflow: hidden;
+  background-color: #f2f2f2;
+  border-radius: 0.3125rem;
+  transition: background-color 0.2s ease;
+}    @media (min-width: 40em) {
+  .editor-region {
+    min-height: 18.125rem;
+  }
+}    .PostDetail .editor-region {
+  margin-top: 1.875rem;
+}    .editor.isComment {
+  margin-top: 0.625rem;
+}    .PostDetail .editor.isComment .editor-region {
+  margin-top: 1.25rem;
+}    .editor.isComment .editor-region {
+  min-height: 5.6875rem;
+}    /* // "Say Ello" placeholder text */    .editor::after {
+  position: absolute;
+  top: 2.375rem;
+  left: 1.9375rem;
+  max-width: calc(100% - 3.75rem);
+  color: #999;
+  pointer-events: none;
+  content: attr(data-placeholder);
+}    .editor.hasContent::after {
+  display: none;
+}    /* // editor is dragged over with a droppable element - turn background green */    .editor.hasDragOver &gt; .editor-region {
+  background-color: #cfc;
+}    .editor-block {
+  position: relative;
+}    .editor-block:not(:last-child) {
+  border-bottom: 1px solid #e5e5e5;
+}    .editable {
+  position: relative;
+  min-height: 3.75rem;
+  padding: 2.3125rem 0 1.4375rem;
+  margin: 0 1.875rem;
+  white-space: pre-wrap;
+  word-break: break-word; /* stylelint-disable-line */
+  outline: 0; /* stylelint-disable-line */
+}    .isComment .editable {
+  padding: 2.3125rem 0 2.0625rem;
+}    .editor.withQuickEmoji .editor-block:first-child .editable { /* stylelint-disable-line */
+  padding-right: 1.875rem;
+}    .editor-block.readonly {
+  padding: 1.875rem;
+  white-space: pre-wrap;
+  word-break: break-word; /* stylelint-disable-line */
+  background: #e5e5e5;
+}    .editor-block.readonly img {
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 0.625rem;
+}    .DragBlock {
+  position: absolute;
+  right: 0;
+  left: 0;
+  z-index: 2;
+  background: #e5e5e5;
+  border-radius: 0.3125rem;
+}    .RepostBlockLabel {
+  margin-bottom: 0.625rem;
+}    @media (min-width: 40em) {
+  .editable {
+    padding: 2.3125rem 0 2.6875rem;
+    margin: 0 2.5rem;
+  }
+
+  .isComment .editable {
+    margin: 0 1.875rem;
+  }
+
+  .editor.isComment {
+    max-width: 40rem;
+  }
+
+  .editor::after {
+    left: 2.5625rem;
+  }
+
+  .editor.hasContent::after {
+    display: none;
+  }
+
+  .editor.isComment::after {
+    left: 1.9375rem;
+  }
+
+  .editor.isComment .DragBlock {
+    left: 5rem;
+  }
+
+  /* stylelint-disable selector-max-compound-selectors, selector-max-specificity, selector-no-qualifying-type */
+  body.isOmnibarActive .Omnibar.isFullScreen &gt; .editor {
+    max-width: none;
+    padding-right: 2.5rem;
+  }
+
+  body.isOmnibarActive .Omnibar.isFullScreen &gt; .editor .editor-region {
+    min-height: calc(100vh - 6.25rem);
+  }
+  /* stylelint-enable selector-max-compound-selectors, selector-max-specificity, selector-no-qualifying-type */
+}    /* // ------------------------------------- */    /* // This should become a `ZeroStateEditor` at some point, */    /* // but waiting for the editor API to settle a little more */    .ZeroState .editor {
+  color: #666;
+}    .ZeroState .editor-region {
+  min-height: 3.75rem;
+}    .ZeroState .editable {
+  min-height: 0;
+  padding: 1.25rem 0 0;
+  border: 0;
+}    .ZeroState .PostActionButton.forSubmit {
+  width: 5.3125rem;
+  color: #aaa;
+  background-color: #fff;
+  border: 1px solid currentColor;
+}    /* stylelint-disable selector-max-compound-selectors, selector-max-specificity */    .ZeroState .PostActionButton .SVGIcon &gt; g {
+  stroke: #aaa;
+}    .no-touch .ZeroState .PostActionButton.forSubmit:hover {
+  color: #fff;
+  background-color: #000;
+  border: 1px solid #000;
+}    .ZeroState .PostActionButton:hover .SVGIcon &gt; g {
+  stroke: #fff;
+}    /* stylelint-enable selector-max-compound-selectors, selector-max-specificity */    .ZeroState .PostActionButton:not(.forSubmit) {
+  display: none;
+}    .FormControl {
+  position: relative;
+}    .FormControl.isBoxControl {
+  margin-bottom: 0.625rem;
+}    .FormControl.isSimpleWhiteControl {
+  margin-bottom: 1.875rem;
+}    .FormControl.isOnboardingControl {
+  margin-bottom: 1.5625rem;
+}    .FormControl.inFooter {
+  display: inline-block;
+  width: 8.125rem;
+  vertical-align: middle;
+}    @media (min-width: 40em) {
+  .FormControl.inFooter {
+    width: 12.5rem;
+  }
+}    @media (min-width: 60em) {
+  .FormControl.inFooter {
+    width: 16.875rem;
+  }
+}    /* ------------------------------------- */    .FormIcon {
+  position: absolute;
+  top: calc(50% - 0.9375rem);
+  left: 1.25rem;
+  color: #aaa;
+}    /* ------------------------------------- */    .FormControlInput {
+  display: inline-block;
+  width: 100%;
+  min-height: 2.5rem;
+  font-size: 0.875rem;
+  color: #000;
+  vertical-align: baseline;
+  background-color: transparent;
+  border: 0;
+  border-bottom: 1px solid #aaa;
+  transition:
+    background-color 0.2s cubic-bezier(0.23, 1, 0.32, 1),
+    border-color 0.2s cubic-bezier(0.23, 1, 0.32, 1),
+    color 0.2s cubic-bezier(0.23, 1, 0.32, 1),
+    width 0.2s cubic-bezier(0.23, 1, 0.32, 1),
+    height 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+}    .FormControlInput:focus {
+  border-color: #000;
+  outline: 0; /* stylelint-disable-line */
+}    .FormControlInput:-ms-input-placeholder {
+  color: #aaa;
+}    .FormControlInput::placeholder {
+  color: #aaa;
+}    .FormControlInput.isSimpleWhiteControl {
+  min-height: none;
+  font-size: 1.5rem;
+  border-bottom-color: #fff;
+}    .FormControlInput.isSimpleWhiteControl:focus {
+  color: #fff;
+}    .FormControlInput.isSimpleWhiteControl:-ms-input-placeholder {
+  color: #fff;
+}    .FormControlInput.isSimpleWhiteControl::placeholder {
+  color: #fff;
+}    .FormControlInput.isOnboardingControl {
+  padding-right: 1.25rem;
+  font-size: 1.125rem;
+  border-bottom-color: #f0f0f0;
+}    @media (min-width: 60em) {
+  .FormControlInput.isOnboardingControl {
+    font-size: 1.5rem;
+  }
+}    .FormControlInput.inFooter {
+  height: 1.875rem;
+  min-height: 1.875rem;
+  padding-left: 0.625rem;
+  line-height: 1.875rem;
+  background-color: #fff;
+  border-bottom: 0;
+}    .FormControlInput.isBoxControl {
+  height: 3.75rem;
+  padding: 0 1.875rem;
+  color: #000;
+  background-color: #d8d8d8;
+  border: 1px solid #d8d8d8;
+}    .FormControlInput.isBoxControl.hasIcon {
+  padding-left: 3.125rem !important;
+}    .FormControlInput.isBoxControl:focus {
+  background-color: #fff;
+  border-color: #fff;
+}    .FormControlInput.isBoxControl.onGrey {
+  background-color: #f2f2f2;
+  border: 1px solid #f2f2f2;
+}    .FormControlInput.isBoxControl.onGrey:focus {
+  color: #000;
+  background-color: #fff;
+  border-color: #f2f2f2;
+}    .hasValue:not(.isInitialValue) &gt; .FormControlInput {
+  border-color: #000;
+}    .hasValue:not(.isInitialValue) &gt; .FormControlInput.isSimpleWhiteControl {
+  color: #fff;
+  border-color: #fff;
+}    .hasValue:not(.isInitialValue) &gt; .FormControlInput.isOnboardingControl {
+  color: #000;
+  border-color: #f0f0f0;
+}    .hasValue:not(.isInitialValue) &gt; .FormControlInput.isBoxControl {
+  background-color: #fff;
+  border-color: #fff;
+}    .hasValue:not(.isInitialValue) &gt; .FormControlInput.isBoxControl.onGrey {
+  color: #000;
+  background-color: #fff;
+  border-color: #f2f2f2;
+}    .isFailing &gt; .FormControlInput,
+.isFailing &gt; .FormControlInput.isBoxControl,
+.isFailing &gt; .FormControlInput.isBoxControl.onGrey {
+  border-color: #f00;
+}    /* stylelint-disable selector-no-qualifying-type */    textarea.FormControlInput:not(.isBoxControl) {
+  height: 1.875rem;
+  min-height: 0;
+  margin-top: 0.625rem;
+}    textarea.FormControlInput.isBoxControl {
+  height: 7.5rem;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+  margin-bottom: -0.3125rem;
+}    .hasValue &gt; textarea.FormControlInput:not(.isBoxControl),
+.hasFocus &gt; textarea.FormControlInput:not(.isBoxControl) {
+  height: 7.1875rem;
+}    textarea.FormControlInput.isOnboardingControl {
+  height: 2.5rem;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}    textarea.FormControlInput.MessageMessageControl {
+  height: 11.25rem;
+}    @media (min-width: 60em) {
+  .hasValue &gt; textarea.FormControlInput:not(.isBoxControl),
+  .hasFocus &gt; textarea.FormControlInput:not(.isBoxControl) {
+    height: 5.3125rem;
+  }
+
+  .hasValue &gt; textarea.FormControlInput.isOnboardingControl,
+  .hasFocus &gt; textarea.FormControlInput.isOnboardingControl {
+    height: 7.1875rem;
+  }
+}    /* stylelint-enable selector-no-qualifying-type */    .BatchEmailControl.isBoxControl {
+  margin-bottom: 1.5625rem;
+}    .BatchEmailControl .FormControlInput.isBoxControl {
+  height: 10rem;
+}    /* ------------------------------------- */    .FormControlLabel {
+  position: absolute;
+  right: 0;
+  bottom: -0.9375rem;
+  display: inline-block;
+  font-size: 0.875rem;
+  color: #aaa;
+  vertical-align: baseline;
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s cubic-bezier(0.23, 1, 0.32, 1), color 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}    .FormControlLabel.isSimpleWhiteControl {
+  top: 2.0625rem;
+  bottom: auto;
+  color: #fff;
+}    .FormControlLabel.isBoxControl {
+  top: 1.25rem;
+  right: 0.6875rem;
+  bottom: auto;
+  left: auto;
+  font-size: 0.6875rem;
+  text-align: right;
+}    .FormControlLabel.inFooter,
+.FormControlLabel.isOnboardingControl {
+  display: none;
+}    .hasExceeded .FormControlLabel.isOnboardingControl {
+  display: inline-block;
+}    .isFailing &gt; .FormControlLabel,
+.hasValue &gt; .FormControlLabel {
+  opacity: 1;
+  transform: translate3d(0, 0.625rem, 0);
+}    .isFailing &gt; .FormControlLabel.isBoxControl,
+.hasValue &gt; .FormControlLabel.isBoxControl {
+  transform: translate3d(0, -0.8125rem, 0);
+}    .isFailing &gt; .FormControlLabel {
+  color: #f00 !important;
+}    .hasExceeded.hasValue &gt; .FormControlLabel {
+  color: #f00;
+}    /* ------------------------------------- */    .FormControlSuggestionList {
+  height: 0;
+  margin: 0;
+  overflow: hidden;
+  transition: height 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+}    .FormControlSuggestionList.hasSuggestions {
+  height: -webkit-max-content;
+  height: max-content; /* stylelint-disable-line */
+}    .FormControlSuggestionList &gt; p {
+  margin: 0.3125rem 0 0;
+}    .FormControlSuggestionButton {
+  margin-top: 0.3125rem;
+  margin-right: 0.625rem;
+  font-size: 0.875rem;
+  border-bottom: 1px solid currentColor;
+  transition: color 0.2s;
+}    .no-touch .FormControlSuggestionButton:hover {
+  color: #000;
+}    .FormControlSuggestionButton:last-of-type {
+  margin-right: 0;
+}    /* ------------------------------------- */    .FormControlStatus {
+  position: absolute;
+  top: 1.75rem;
+  right: 0.625rem;
+  transition: opacity 0.4s;
+}    .FormControlStatus:empty {
+  opacity: 0;
+}    .SettingsInfoForm .isInitialValue .FormControlStatus {
+  display: none;
+}    .OnboardingInfoForm .FormControlStatus {
+  top: 0.625rem;
+}    .isSafari .PasswordControl .FormControlStatus {
+  right: 1.25rem;
+}    .FormControlStatus.isSimpleWhiteControl {
+  top: 0.3125rem;
+}    .FormControl.isSimpleWhiteControl .FormControlStatusMessage {
+  margin-top: 1.875rem;
+}    .HoppyStatusMessage {
+  height: 0;
+  margin: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: height 0.2s ease, margin 0.2s ease, opacity 0.2s ease;
+}    .HoppyStatusMessage.hasContent {
+  height: 2.5rem;
+  margin: 0.625rem 0;
+  opacity: 1;
+  transition-delay: 1s, 1s, 1s;
+}    .FormControlStatusBubble {
+  display: inline-block;
+  height: 1.875rem;
+  padding: 0 0.9375rem;
+  line-height: 1.875rem;
+  color: #fff;
+  white-space: nowrap;
+  vertical-align: middle;
+  background-color: #000;
+  border: 1px solid #000;
+  border-radius: 1.25rem;
+  transition: opacity 0.2s;
+}    .isSucceeding &gt; .FormControlStatusBubble {
+  background-color: #00d100;
+  border-color: #00d100;
+}    .isFailing &gt; .FormControlStatusBubble {
+  background-color: #f00;
+  border-color: #f00;
+}    .FormControlStatusBubble.inFooter {
+  position: absolute;
+  top: -2.5rem;
+  right: 0;
+  z-index: 2;
+}    @media (min-width: 40em) {
+  .FormControlStatusBubble.inFooter {
+    right: auto;
+    left: 0;
+  }
+}    .Posts.asGrid {
+  margin-left: -1.25rem;
+}    .Post {
+  position: relative;
+  margin-bottom: 1.25rem;
+}    .Post.isPostHeaderHidden {
+  padding-top: 0.9375rem;
+}    .Column {
+  display: inline-block;
+  width: calc(50% - 1.25rem);
+  margin-left: 1.25rem;
+  vertical-align: top;
+}    @media (min-width: 60em) {
+  .Column {
+    width: calc(33.33333% - 1.25rem);
+  }
+
+  .isCategoryDrawerOpen ~ .MainView .Column {
+    width: calc(50% - 1.25rem);
+  }
+}    @media (min-width: 85em) {
+  .Posts.asGrid {
+    margin-left: -2.5rem;
+  }
+
+  .Post {
+    margin-bottom: 2.5rem;
+  }
+
+  .Column {
+    width: calc(25% - 2.5rem);
+    margin-left: 2.5rem;
+  }
+
+  .isCategoryDrawerOpen ~ .MainView .Column {
+    width: calc(33.33333% - 1.25rem);
+    margin-left: 1.25rem;
+  }
+}    @media (min-width: 107.5em) {
+  .Column {
+    width: calc(20% - 2.5rem);
+  }
+
+  .isCategoryDrawerOpen ~ .MainView .Column {
+    width: calc(25% - 2.5rem);
+    margin-left: 2.5rem;
+  }
+}    @media (min-width: 130em) {
+  .Column {
+    width: calc(16.66666% - 2.5rem);
+  }
+
+  .isCategoryDrawerOpen ~ .MainView .Column {
+    width: calc(20% - 2.5rem);
+  }
+}    @media (min-width: 152.5em) {
+  .Column {
+    width: calc(14.28571% - 2.5rem);
+  }
+
+  .isCategoryDrawerOpen ~ .MainView .Column {
+    width: calc(16.66666% - 2.5rem);
+  }
+}    .MainView:not(.PostDetail) .ContentWarningButton:not(.isOpen) + .PostBody {
+  height: 0;
+  overflow: hidden;
+}    .PostBody h1,
+.PostBody h2,
+.PostBody h3,
+.PostBody h4,
+.PostBody h5,
+.PostBody h6 {
+  font-family: "AtlasGroteskBold", "AtlasGrotesk-Bold", "Helvetica Neue", "HelveticaNeue", "Helvetica", sans-serif;
+  font-style: normal;
+  font-weight: 700;
+}    .ImageRegion + .ImageRegion,
+.ImageRegion + .EmbedRegion,
+.EmbedRegion + .ImageRegion,
+.EmbedRegion + .EmbedRegion {
+  margin-top: 0.625rem;
+}    .PostBody + .PostBody,
+.TextRegion + .TextRegion,
+.TextRegion + .ImageRegion,
+.TextRegion + .EmbedRegion,
+.ImageRegion + .TextRegion,
+.EmbedRegion + .TextRegion {
+  margin-top: 1.25rem;
+}    .TextRegion {
+  width: 100%;
+  max-width: 48.75rem;
+  word-wrap: break-word;
+}    .EmbedRegion {
+  position: relative;
+  max-width: 80rem;
+  overflow: hidden;
+}    .EmbedRegion.vimeo,
+.EmbedRegion.youtube {
+  width: 100%;
+}    /* // Todo: We should be able to rip this out when we convert your fake `span` */    /* // elements over to links */    .TextRegion .hashtag-link {
+  display: inline;
+  cursor: pointer;
+  border-bottom: 1px solid;
+  transition: color 0.2s ease;
+}    .no-touch .TextRegion .hashtag-link:hover {
+  color: #aaa;
+}    .RegionContent {
+  position: relative;
+  transition: background-color 0.4s, transform 300ms ease, margin-bottom 300ms ease;
+  transform-origin: 0 0;
+  will-change: transform, margin-bottom;
+}    .RegionContent.isHot {
+  cursor: pointer;
+}    .ImageRegion &gt; .RegionContent {
+  display: inline-block;
+  color: rgba(0, 0, 0, 0);
+}    .ImageAttachment {
+  transition: opacity 0.4s;
+}    .isPending .ImageAttachment,
+.isRequesting .ImageAttachment {
+  opacity: 0;
+}    .isPending.ImageRegion &gt; .RegionContent {
+  background-color: #f0f0f0;
+}    .isRequesting.ImageRegion &gt; .RegionContent {
+  animation: animateLavaLamp 3s infinite linear;
+}    /* // Always get's rid of the first and last child's margin and protect against */    /* // potentially nested elements */    .RegionContent &gt; *:first-child,
+.RegionContent:first-child &gt; *:first-child {
+  margin-top: 0;
+}    .RegionContent &gt; *:last-child,
+.RegionContent:last-child &gt; *:last-child {
+  margin-bottom: 0;
+}    .EmbedRegionContent {
+  background-color: #000;
+}    .PostDetails .ImageRegion {
+  width: 100%;
+}    .PostDetails .ImageRegion img {
+  height: auto;
+}    .PostDetails .ImageRegion video {
+  max-width: 100%;
+  height: auto;
+}    /* // ------------------------------------- */    .RepostedBody {
+  position: relative;
+  min-height: 1.875rem;
+  padding-top: 2.5rem;
+  padding-bottom: 1.25rem;
+  padding-left: 2.5rem;
+}    @media (min-width: 40em) {
+  .RepostedBody {
+    min-height: 2.5rem;
+    padding-left: 3.75rem;
+  }
+}    /* stylelint-disable selector-max-specificity, selector-max-compound-selectors */    .PostHeader,
+.CategoryHeader,
+.ArtistInviteSubmissionHeader,
+.RepostHeader {
+  position: relative;
+  height: 3.75rem;
+  font-size: 0.875rem;
+  color: #aaa;
+}    .PostDetailHeader {
+  position: relative;
+  display: flex;
+  align-items: center;
+}    .PostDetailHeader .PostHeaderLeft {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+}    .PostHeaderAuthor,
+.CategoryHeaderAuthor,
+.ArtistInviteSubmissionHeaderAuthor,
+.RepostHeaderAuthor,
+.CategoryHeaderCategory,
+.ArtistInviteSubmissionHeaderInvite,
+.PostDetailHeaderUsername,
+.OwnPostTools,
+.RepostHeaderReposter {
+  position: relative;
+}    .PostHeaderAuthor,
+.RepostHeaderAuthor,
+.CategoryHeaderAuthor,
+.ArtistInviteSubmissionHeaderAuthor,
+.PostHeader .RelationshipContainer,
+.CategoryHeader .RelationshipContainer,
+.RepostHeader .RelationshipContainer,
+.ArtistInviteSubmissionHeader .RelationshipContainer,
+.OwnPostTools {
+  display: inline-block;
+  vertical-align: middle;
+}    .PostHeaderAuthor,
+.CategoryHeaderAuthor,
+.ArtistInviteSubmissionHeaderAuthor,
+.RepostHeaderAuthor {
+  max-width: calc(100% - 5.625rem);
+}    .PostDetailHeader .PostHeaderAuthor {
+  width: 100%;
+}    .PostDetailHeader.isOwnPost .PostHeaderAuthor {
+  max-width: calc(100% - 7.5rem);
+}    .PostHeader .RelationshipContainer,
+.CategoryHeader .RelationshipContainer,
+.ArtistInviteSubmission .RelationshipContainer,
+.RepostHeader .RelationshipContainer {
+  margin-top: -2px;
+  margin-left: 0.625rem;
+}    .PostDetailHeader .RelationshipContainer {
+  margin-top: -2px;
+  margin-right: 2px;
+  margin-left: 0;
+}    .PostHeaderLinkAvatar {
+  left: 1.25rem;
+}    .PostHeaderAuthor {
+  padding-left: 2.5rem;
+  line-height: 3.75rem;
+}    .PostDetailHeader .PostHeaderLinks {
+  flex: none;
+  width: calc(100% - 3.75rem);
+  max-width: calc(100% - 3.75rem);
+  padding-left: 0.625rem;
+  overflow: hidden;
+}    .FullNameLink,
+.UserNameLink {
+  width: 100%;
+  padding-right: 0.3125rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}    .FullNameLink .DraggableUsername,
+.UserNameLink .DraggableUsername,
+.PostHeader .DraggableUsername,
+.CategoryHeader .DraggableUsername {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}    .PostHeader.UserPostHeader,
+.PostHeader.RepostHeader,
+.CategoryHeader {
+  display: flex;
+  align-items: center;
+}    .PostHeader.RepostHeader .author-with-relationship,
+.CategoryHeader .author-with-relationship {
+  display: block;
+  max-width: calc(100% - 5.625rem);
+}    .CategoryHeader .author-with-relationship {
+  width: 100%;
+}    .PostHeader.RepostHeader .author-with-relationship .container,
+.CategoryHeader .author-with-relationship .container {
+  display: block;
+  max-width: 100%;
+  white-space: nowrap;
+}    .PostHeader.RepostHeader .author-with-relationship .RepostHeaderAuthor,
+.CategoryHeader .author-with-relationship .CategoryHeaderAuthor {
+  display: inline-block;
+  max-width: 100%;
+  line-height: 1;
+}    .CategoryHeader .author-with-relationship .RelationshipContainer {
+  margin-top: -4px;
+}    .PostHeader.RepostHeader .author-with-relationship .RepostHeaderReposter,
+.CategoryHeader .author-with-relationship .CategoryHeaderCategory {
+  display: block;
+  max-width: 100%;
+  margin-top: 0;
+}    .PostHeader.RepostHeader .author-with-relationship .RepostHeaderReposter .PostHeaderLink,
+.CategoryHeader .author-with-relationship .CategoryHeaderCategory .PostHeaderLink {
+  display: flex;
+  align-items: center;
+}    .PostHeader.RepostHeader .author-with-relationship .RepostHeaderReposter .PostHeaderLink svg {
+  margin-right: 4px;
+  overflow: visible;
+}    .CategoryHeader .author-with-relationship .CategoryHeaderCategory .PostHeaderLink .CategoryHeaderCategoryName {
+  margin-left: 4px;
+}    .CategoryHeader .author-with-relationship .CategoryHeaderCategory {
+  padding-top: 2px;
+}    .PostHeader.UserPostHeader .DraggableUsername,
+.PostHeader.RepostHeader .author-with-relationship .DraggableUsername,
+.CategoryHeader .author-with-relationship .DraggableUsername {
+  display: inline-block;
+  max-width: 100%;
+}    .PostHeader.UserPostHeader .PostHeaderLink {
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  line-height: 1;
+}    .CategoryHeaderAuthor .PostHeaderLink {
+  max-width: 100%;
+}    .PostHeader.RepostHeader .author-with-relationship .PostHeaderLink,
+.CategoryHeader .author-with-relationship .PostHeaderLink {
+  max-width: 100%;
+  line-height: 1;
+}    .PostHeader.UserPostHeader .PostHeaderLink .Avatar,
+.PostHeader.RepostHeader .author-with-relationship .PostHeaderLink .Avatar,
+.CategoryHeader .author-with-relationship .PostHeaderLink .Avatar {
+  top: auto;
+}    .CategoryHeader .author-with-relationship .PostHeaderLink .Avatar {
+  top: -0.3125rem;
+}    @media (max-width: 39.9375em) {
+  .PostHeader.RepostHeader .author-with-relationship .PostHeaderLink .Avatar {
+    top: 4px;
+  }
+
+  .CategoryHeader .author-with-relationship .PostHeaderLink .Avatar {
+    top: 1px;
+  }
+}    .PostDetailHeader .UserNameLink.RepostAuthor .PostHeaderAuthorUsername {
+  display: inline-block;
+  max-width: 100%;
+  margin-bottom: -0.5rem;
+}    @media (max-width: 39.9375em) {
+  .PostDetailHeader .UserNameLink.RepostAuthor .PostHeaderAuthorUsername {
+    margin-bottom: 0;
+  }
+}    .PostDetailHeader .UserNameLink.RepostAuthor .PostHeaderAuthorUsername .username-container {
+  display: inline-block;
+  max-width: 100%;
+}    .PostDetailHeader.RepostDetailHeader .RelationshipContainer {
+  position: absolute;
+  margin: -1px 0 0 4px;
+}    @media (max-width: 39.9375em) {
+  .PostDetailHeader.RepostDetailHeader .RelationshipContainer {
+    margin-top: -0.3125rem;
+  }
+}    .PostDetailHeader &gt; .PostHeaderAuthor {
+  line-height: 2.8125rem;
+}    .CategoryHeaderAuthor,
+.ArtistInviteSubmissionHeaderAuthor,
+.RepostHeaderAuthor {
+  padding-left: 2.5rem;
+  line-height: 2.8125rem;
+}    .CategoryHeaderCategory,
+.ArtistInviteSubmissionHeaderInvite,
+.RepostHeaderReposter {
+  max-width: calc(100% - 7.5rem);
+  margin-top: -0.75rem;
+  margin-left: 2.5rem;
+  line-height: 0.9375rem;
+}    .PostDetailHeader.isOwnPost .PostDetailHeaderUsername,
+.PostDetailHeader.isOwnPost .RepostHeaderReposter {
+  max-width: calc(100% - 10rem);
+}    .CategoryHeaderCategoryName,
+.ArtistInviteSubmissionHeaderInviteName {
+  text-decoration: underline;
+}    .PostHeaderAuthorName {
+  display: inline-block;
+  margin-right: 0.9375rem;
+  color: #000;
+  vertical-align: middle;
+}    .PostDetailHeader .PostHeaderAuthorName {
+  margin-right: 0;
+}    .no-touch .PostHeaderLink:hover {
+  color: #535353;
+}    .no-touch .PostHeaderLink:hover .PostHeaderAuthorName {
+  color: currentColor;
+}    .PostHeaderTools {
+  position: absolute;
+  top: 1.25rem;
+  right: 0;
+}    .PostDetailAsideTop .PostHeaderTools {
+  right: 1.25rem;
+}    .PostDetailHeader .PostHeaderTools {
+  position: relative;
+  top: auto;
+  right: auto;
+  display: block;
+  flex: none;
+}    .PostHeaderTools &gt; a,
+.PostHeaderTools &gt; span {
+  float: right;
+}    .PostHeaderTools .PostTool &gt; button {
+  padding-right: 0.3125rem;
+  padding-left: 0.3125rem;
+}    .PostHeaderTools .PostTool .SVGIcon {
+  transform: scale(1.5);
+}    .PostHeaderTools .SVGIcon &gt; g {
+  stroke-width: 0.9375;
+}    .PostHeaderTools .SVGIcon line {
+  stroke-width: 1;
+}    .PostHeaderTools .featured-toggle {
+  width: 1.125rem;
+  height: 1.125rem;
+  margin-top: -2px;
+  margin-right: 0.3125rem;
+  overflow: hidden;
+}    .PostHeaderTools .featured-toggle:hover path {
+  fill: #000;
+}    .PostHeaderTools .featured-toggle.featured:hover path {
+  fill: #16a905;
+}    .PostHeaderTimeAgoLink {
+  padding-left: 0.3125rem;
+}    .no-touch .PostHeaderTimeAgoLink:hover {
+  color: #535353;
+}    /* Weird layout for reposts headers when in a UserDetail template */    .PostHeader.RepostHeader.inUserDetail .author-with-relationship .PostHeaderLink .Avatar {
+  top: -0.625rem;
+}    .RepostHeader.inUserDetail .author-with-relationship .RepostHeaderReposter {
+  position: absolute;
+  top: 1.8125rem;
+  left: 0;
+  z-index: 2;
+  margin-left: 0;
+}    @media (max-width: 39.9375em) {
+  .RepostHeader.inUserDetail .author-with-relationship .RepostHeaderReposter {
+    top: 1.125rem;
+  }
+}    .RepostHeader.inUserDetail .author-with-relationship .DraggableUsername {
+  margin-left: 0.625rem;
+}    .RepostHeader.inUserDetail .author-with-relationship .RepostHeaderReposter .DraggableUsername {
+  display: none;
+}    .RepostHeader.inUserDetail .author-with-relationship .CategoryHeaderAuthor,
+.RepostHeader.inUserDetail .author-with-relationship .ArtistInviteSubmissionHeaderAuthor,
+.RepostHeader.inUserDetail .author-with-relationship .RepostHeaderAuthor {
+  padding-left: 4.0625rem;
+}    @media (max-width: 39.9375em) {
+  .RepostHeader.inUserDetail .author-with-relationship .CategoryHeaderAuthor,
+  .RepostHeader.inUserDetail .author-with-relationship .ArtistInviteSubmissionHeaderAuthor,
+  .RepostHeader.inUserDetail .author-with-relationship .RepostHeaderAuthor {
+    padding-left: 3.4375rem;
+  }
+}    /* MIN WIDTH!!! */    @media (min-width: 40em) {
+  .PostHeader,
+  .CategoryHeader,
+  .ArtistInviteSubmissionHeader,
+  .RepostHeader {
+    height: 5rem;
+  }
+
+  .PostHeaderTools {
+    top: 1.875rem;
+  }
+
+  .PostHeaderLinks {
+    padding-left: 3.75rem;
+  }
+
+  .PostHeaderAuthor {
+    padding-left: 3.75rem;
+    line-height: 5rem;
+  }
+
+  .PostDetailHeader .PostHeaderAuthor {
+    line-height: 3.75rem;
+  }
+
+  .PostDetailHeader .PostHeaderAuthorName {
+    padding-top: 1px;
+    margin-right: 0;
+    margin-bottom: -1px;
+  }
+
+  .CategoryHeaderAuthor,
+  .ArtistInviteSubmissionHeaderAuthor,
+  .RepostHeaderAuthor {
+    padding-left: 3.75rem;
+    line-height: 3.75rem;
+  }
+
+  .CategoryHeaderCategory,
+  .ArtistInviteSubmissionHeaderInvite,
+  .PostDetailHeaderUsername,
+  .RepostHeaderReposter {
+    margin-top: -1.25rem;
+    margin-left: 3.75rem;
+    line-height: 1.25rem;
+  }
+
+  .RepostHeader.inUserDetail &gt; .CategoryHeaderAuthor,
+  .RepostHeader.inUserDetail &gt; .ArtistInviteSubmissionHeaderAuthor,
+  .RepostHeader.inUserDetail &gt; .RepostHeaderAuthor {
+    padding-left: 4.6875rem;
+    line-height: 5rem;
+  }
+
+  .RepostHeader.inUserDetail &gt; .RepostHeaderReposter {
+    top: 3.25rem;
+    left: -3.75rem;
+  }
+
+}    @media (min-width: 60em) {
+  .Posts.asList .PostHeaderTimeAgoLink {
+    display: none;
+  }
+
+  .PostDetailHeader .PostHeaderLinks {
+    padding-left: 1.25rem;
+  }
+
+  .PostHeaderLinks {
+    padding-left: 3.75rem;
+  }
+}    /* // Don't show the relationship buttons in these specific conditions */    .Following.MainView .PostHeader .RelationshipContainer,
+.UserDetail.MainView .PostHeader .RelationshipContainer[data-priority="friend"],
+.UserDetail.MainView .PostHeader .RelationshipContainer[data-priority="noise"],
+.UserDetail.MainView .PostHeader .RelationshipContainer[data-priority="self"] {
+  display: none;
+}    /* // MAX WIDTH!!! */    @media (max-width: 39.9375em) {
+  .Posts.asGrid .PostHeaderTimeAgoLink,
+  .Posts.asGrid .PostHeader .RelationshipContainer,
+  .Posts.asGrid .CategoryHeader .RelationshipContainer,
+  .Posts.asGrid .ArtistInviteSubmissionHeader .RelationshipContainer,
+  .Posts.asGrid .RepostHeader .RelationshipContainer {
+    display: none;
+  }
+
+  .Posts.asGrid .PostHeaderAuthor,
+  .Posts.asGrid .CategoryHeaderAuthor,
+  .Posts.asGrid .CategoryHeaderCategory,
+  .Posts.asGrid .ArtistInviteSubmissionHeaderAuthor,
+  .Posts.asGrid .ArtistInviteSubmissionHeaderInvite,
+  .Posts.asGrid .RepostHeaderAuthor,
+  .Posts.asGrid .RepostHeaderReposter {
+    max-width: 100%;
+  }
+
+  .PostHeaderLinks {
+    max-width: calc(100% - 6.875rem);
+    padding-top: 2px;
+    line-height: 1rem;
+  }
+
+  .PostDetailHeader .PostHeaderLinks {
+    width: calc(100% - 1.875rem);
+    max-width: 100%;
+    padding-left: 0.625rem;
+    line-height: 1.125rem;
+  }
+
+  .FullNameLink,
+  .UserNameLink {
+    line-height: 0.875rem;
+  }
+}    /* stylelint-enable selector-max-specificity, selector-max-compound-selectors */    /* stylelint-disable selector-no-qualifying-type, selector-max-specificity, selector-max-compound-selectors */    /* // ------------------------------------- */    .PostTools {
+  position: relative;
+  height: 3.75rem;
+  padding-top: 1.25rem;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+}    .PostTool {
+  position: relative;
+  display: inline-block;
+  height: 1.25rem;
+  line-height: 1.25rem;
+  transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+}    .PostTool.isLightBox {
+  font-size: 1rem;
+}    .PostTool.isLightBox .SVGIcon,
+.PostTool.isLightBox .CurateIcon.SVGBox {
+  margin-top: -2px;
+  transform: scale(1.4);
+}    .PostTool.isLightBox .SVGIcon g,
+.PostTool.isLightBox .CurateIcon.SVGBox path {
+  stroke-width: 1;
+}    .PostTool.isLightBox button:hover .CurateIcon.SVGBox path {
+  fill: #fff;
+  transition: fill 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+  transition-delay: 200ms;
+}    .PostTool.isLightBox button.featured:hover .CurateIcon.SVGBox path {
+  fill: #16a905;
+}    .PostTool.isLightBox .CurateIcon.SVGBox {
+  padding-top: 0.3125rem;
+  transform: scale(1.1);
+}    .PostTool.isLightBox .Hint {
+  top: calc(-100% - 0.625rem);
+}    .PostTool .PostToolValue.isZero {
+  display: none;
+}    .PostTool &gt; a,
+.PostTool &gt; button {
+  padding-right: 0.5rem;
+  padding-left: 4px;
+  color: #aaa;
+  transition: color 0.2s ease;
+}    .PostTool.isLightBox &gt; a,
+.PostTool.isLightBox &gt; button,
+.Posts.asList .PostTool.isLightBox &gt; a,
+.Posts.asList .PostTool.isLightBox &gt; button {
+  padding-right: 0.9375rem;
+  padding-left: 0.9375rem;
+  margin: 0;
+}    .PostTool &gt; button.hasPostToolDrawer {
+  padding-right: 0.3125rem;
+}    .PostTool.isLightBox &gt; a.hasPostToolDrawer,
+.PostTool.isLightBox &gt; button.hasPostToolDrawer,
+.Posts.asList .PostTool.isLightBox &gt; a.hasPostToolDrawer,
+.Posts.asList .PostTool.isLightBox &gt; button.hasPostToolDrawer {
+  padding-right: 0.9375rem;
+}    .PostTool &gt; button.PostToolDrawerButton {
+  padding-left: 0 !important;
+}    .PostDetailStreamContainer .CommentTool,
+.PostDetailStreamContainer .PostToolDrawerButton,
+.PostTool[data-count="0"] &gt; button.PostToolDrawerButton {
+  display: none;
+}    .PostTool &gt; a {
+  vertical-align: middle;
+}    .no-touch .PostTool a:hover,
+.no-touch .PostTool button:hover {
+  color: #000;
+}    .no-touch .PostTool.isLightBox a:hover,
+.no-touch .PostTool.isLightBox button:hover {
+  color: #fff;
+}    /* // Specific tools */    .CommentTool.PostTool button.isNotZero .PostToolValue {
+  padding-left: 0;
+}    .CommentTool.isLightBox.PostTool button.isNotZero .PostToolValue {
+  padding-left: 0.375rem;
+}    .CommentTool.isLightBox .Hint {
+  left: -1.5rem;
+}    .ViewsTool {
+  margin-left: -0.5rem;
+}    .PostTool.isLightBox.ViewsTool {
+  margin-top: 2px;
+}    .PostTool.isLightBox.ViewsTool .SVGIcon {
+  margin-top: -2px;
+  margin-right: 0.5rem;
+}    .PostTool.isLightBox .PostToolDrawerButton {
+  margin-left: -0.3125rem;
+}    .ViewsTool.isPill {
+  height: 1.375rem;
+  margin-right: 0.625rem;
+  margin-left: 0;
+  line-height: 1.375rem;
+}    .ViewsTool.isPill &gt; a {
+  padding-right: 0.6875rem;
+  padding-left: 0.6875rem;
+  color: #535353;
+  background-color: #e8e8e8;
+  border-radius: 0.6875rem;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}    .ViewsTool.isPill &gt; a .SVGIcon,
+.ViewsTool.isPill &gt; a .PostToolValue {
+  position: relative;
+  top: 1px;
+}    .no-touch .ViewsTool.isPill a:hover {
+  background-color: #ccc;
+}    .no-touch .LoveTool &gt; button.isActive:hover {
+  color: #aaa;
+}    .LoveTool.isLightBox .Hint {
+  left: -0.375rem;
+}    @media (min-width: 40em) {
+  .no-touch .LightBoxTriggerTool {
+    display: none;
+  }
+}    .LightBoxTriggerTool &gt; button svg polygon {
+  fill: currentColor;
+}    .no-touch .LightBoxTriggerTool &gt; button:hover svg polygon {
+  fill: #000;
+}    .LightBoxTriggerTool svg {
+  margin-top: -3px;
+}    .LightBoxTriggerTool .Hint {
+  left: -1.375rem;
+}    .PostTool .SVGIcon + .PostToolValue {
+  margin-left: 0.3125rem;
+}    .ViewsTool .Hint {
+  left: 0.625rem;
+}    .ViewsTool.isLightBox .Hint {
+  left: 0.5rem;
+}    .ArtistInviteSubmissionStatusTool.PostTool a,
+.ArtistInviteSubmissionStatusTool.PostTool &gt; a {
+  padding-right: 0 !important;
+}    .ArtistInviteSubmissionStatusTool.PostTool .SVGIcon {
+  padding-left: 4px;
+  margin-top: -2px;
+  transform: scale(1);
+}    .ArtistInviteSubmissionStatusTool.PostTool .SVGIcon g path {
+  stroke-width: 0;
+}    .ArtistInviteSubmissionStatusTool.PostTool .ArtistInviteSubmissionSelectedIcon.SVGIcon {
+  padding-left: 0;
+  margin-top: -4px;
+  overflow: visible;
+}    .ArtistInviteSubmissionStatusTool.PostTool .Hint {
+  left: -12.5rem;
+}    /* This is actually in the PostContainer */    .WatchTool.isPill {
+  position: absolute;
+  right: -0.5rem;
+  display: none;
+  height: 1.375rem;
+  margin-top: -0.9375rem;
+  line-height: 1.375rem;
+  color: #fff;
+}    .isCommentsActive ~ .WatchTool.isPill {
+  display: inline-block;
+}    .WatchTool.isPill &gt; button &gt; .SVGIcon {
+  position: absolute;
+  right: 0.625rem;
+  z-index: 1;
+  transform: scale(0.8);
+}    .WatchTool.isPill &gt; button &gt; .SVGIcon &gt; g {
+  fill: #fff;
+  stroke: #fff;
+}    .WatchTool.isPill &gt; button &gt; .Hint {
+  position: static;
+  display: inline-block;
+  padding-right: 1.25rem;
+  visibility: visible;
+  background-color: #aaa;
+  border-color: #aaa;
+  opacity: 1;
+}    .WatchTool.isPill.isWatchingPost &gt; button &gt; .Hint {
+  background-color: #000;
+  border-color: #000;
+}    .PostTools.with-lightbox .ViewsTool {
+  position: absolute;
+  top: 1.75rem;
+  right: 0.625rem;
+}    .ShareTool {
+  position: absolute;
+  top: 1.1875rem;
+  right: -0.625rem;
+}    .PostTools.with-lightbox .ShareTool,
+.PostTools.with-lightbox .FeatureCategoryPostTool {
+  position: relative;
+  top: auto;
+  right: auto;
+  display: inline-block;
+}    .PostTool.isLightBox.ShareTool .SVGIcon {
+  margin-top: -0.3125rem;
+}    .ShareTool .Hint {
+  left: calc(-100% - 2px);
+}    .ShareTool.isLightBox .Hint {
+  left: -0.625rem;
+}    .ShareTool.isPill {
+  right: 0;
+  height: 1.375rem;
+  line-height: 1.375rem;
+}    .ShareTool.isPill &gt; button {
+  padding-right: 0.6875rem;
+  padding-left: 0.6875rem;
+  background-color: #e8e8e8;
+  border-radius: 0.6875rem;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}    .no-touch .ShareTool.isPill &gt; button:hover {
+  background-color: #ccc;
+}    .ShareTool.isPill &gt; button &gt; .Hint {
+  position: static;
+  display: inline-block;
+  padding: 0;
+  color: #535353;
+  visibility: visible;
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  opacity: 1;
+}    .no-touch .ShareTool.isPill &gt; button:hover &gt; .Hint {
+  color: #000;
+  transition-delay: 0s;
+  transition-duration: 0.2s;
+}    .PostTool.isLightBox.RepostTool .SVGIcon {
+  margin-top: -4px;
+}    .RepostTool.isLightBox .Hint {
+  left: -0.75rem;
+}    .ShyTool {
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}    .Posts .TimeAgoTool {
+  display: none;
+}    /* // MAX WIDTH for hiding MOBILE in a GRID. 449 / 16 = 28.0625em */    @media (max-width: 28.0625em) {
+  .Posts.asGrid .ShareTool {
+    display: none;
+  }
+}    @media (max-width: 39.9375em) {
+  .Posts.asGrid .CommentTool {
+    margin-left: -0.625rem;
+  }
+
+  .Posts.asGrid .ViewsTool {
+    display: none;
+  }
+
+  .Posts.asList .PostTools .EditTool,
+  .Posts.asList .PostTools .DeleteTool,
+  .PostDetail .Posts.asList .PostTools .ShyTool {
+  pointer-events: auto;
+  opacity: 1;
+  }
+}    /* // MIN WIDTH  450 / 16 = 28.125em */    @media (min-width: 28.125em) {
+  .Posts.asGrid .ShyTool {
+    display: none;
+  }
+
+  .Posts.asList .ShyTool {
+  pointer-events: auto;
+  opacity: 1;
+  }
+}    @media (min-width: 40em) {
+  .no-touch .Posts.asList .ShyTool {
+  pointer-events: none;
+  opacity: 0;
+  }
+
+  .no-touch .Posts.asList .PostTools:not(.CommentTools):hover .ShyTool {
+  pointer-events: auto;
+  opacity: 1;
+  }
+
+  .Posts.asList .TimeAgoTool {
+    display: inline-block;
+  }
+
+  .Posts.asList .ShareTool {
+    position: static;
+    top: auto;
+    right: auto;
+  }
+
+  .Posts.asList .ShareTool .Hint {
+    left: 0;
+  }
+}    @media (min-width: 60em) {
+  .Posts.asList .PostTool &gt; a,
+  .Posts.asList .PostTool &gt; button {
+    padding-right: 0.75rem;
+    padding-left: 4px;
+  }
+
+  .Posts.asList .PostTool &gt; a.hasPostToolDrawer,
+  .Posts.asList .PostTool &gt; button.hasPostToolDrawer {
+    padding-right: 0.3125rem;
+  }
+
+  .Posts.asList .PostTool.EditTool &gt; button,
+  .Posts.asList .PostTool.DeleteTool &gt; button {
+    padding-right: 0.3125rem;
+    padding-left: 0.3125rem;
+  }
+
+  .Posts.asList .ViewsTool.isPill {
+    margin-right: 0.9375rem;
+  }
+}    /* stylelint-enable selector-no-qualifying-type, selector-max-specificity, selector-max-compound-selectors */    .Paginator {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 0;
+  overflow: hidden;
+  font-size: 0.875rem;
+  color: #aaa;
+  text-align: center;
+  background-color: transparent;
+  transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1), height 0.2s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+  transform: translate3d(0, 100%, 0);
+}    .Paginator.isCentered {
+  margin-right: auto !important;
+  margin-left: auto !important;
+}    .Paginator.isBusy.NotificationReload {
+  position: relative;
+  bottom: auto;
+  margin-top: 0.9375rem;
+}    .Paginator.isBusy {
+  height: 2.5rem;
+  line-height: 2.5rem;
+  background: linear-gradient(225deg, #f00, #d200ff, #0063ff, #00ffc1, #0bff66, #16ff00, #f0ff00, #f00);
+  background-size: 1600% 1600%;
+  transform: translate3d(0, 0, 0); /* force gpu to help with rendering? */
+  animation: paginatorLoading 10s ease infinite;
+}    .NotificationsContainer .Paginator.isBusy,
+.Notifications .Paginator.isBusy {
+  height: 0.625rem;
+}    .NotificationsContainer .Paginator span,
+.Notifications .Paginator span {
+  display: none;
+}    .PaginatorMessage {
+  margin-left: 0.625rem;
+}    /* // Position to the bottom for post detail */    .TabListStreamContainer .Paginator,
+.ArtistInvites .Paginator,
+.ArtistInvitesDetail .Paginator,
+.Editorial .Paginator,
+.Following .Paginator,
+.UserDetails .Paginator,
+.Discover .Paginator,
+.Search .Paginator,
+.BlockedUsers .Paginator,
+.MutedUsers .Paginator {
+  position: static;
+  width: calc(100% - 1.25rem);
+  max-width: 26.25rem;
+  height: 2.5rem;
+  margin-top: 1.875rem;
+  margin-bottom: 3.125rem;
+  line-height: 2.5rem;
+  color: #fff;
+  vertical-align: middle;
+  background-color: #aaa;
+  border-radius: 0.3125rem;
+  transform: none;
+}    .ArtistInvites .Paginator,
+.ArtistInvitesDetail .Paginaton,
+.Discover .Paginator,
+.Editorial .Paginator,
+.Following .Paginator {
+  margin-top: 0;
+}    .inEditorial .Paginator {
+  display: none;
+  margin-bottom: 0;
+}    .no-touch .TabListStreamContainer .Paginator:hover,
+.no-touch .ArtistInvites .Paginator:hover,
+.no-touch .ArtistInvitesDetail .Paginator:hover,
+.no-touch .Editorial .Paginator:hover,
+.no-touch .Following .Paginator:hover,
+.no-touch .UserDetails .Paginator:hover,
+.no-touch .Search .Paginator:hover,
+.no-touch .Discover .Paginator:hover,
+.no-touch .BlockedUsers .Paginator:hover,
+.no-touch .MutedUsers .Paginator:hover {
+  background-color: #000;
+}    .BlockedUsers .Paginator,
+.MutedUsers .Paginator {
+  margin-bottom: 1.875rem;
+}    .TabListStreamContainer .Paginator {
+  max-width: 36.25rem;
+}    .ArtistInvites .Paginator button,
+.ArtistInvitesDetail .Paginator button,
+.Following .Paginator button,
+.UserDetails .Paginator button,
+.Discover .Paginator button,
+.Search .Paginator button,
+.Editorial .Paginator button {
+  width: 100%;
+}    .TabListStreamContainer .Paginator button {
+  width: calc(100% - 2.5rem);
+}    .Paginator.isBusy .PaginatorButton span {
+  display: none;
+}    @media (min-width: 40em) {
+  .BlockedUsers .Paginator,
+  .MutedUsers .Paginator {
+    margin-top: 3.75rem;
+  }
+}    .StreamContainer {
+  padding: 0.625rem;
+}    .StreamContainer.empty {
+  padding: 0;
+}    .PostList .TabListStreamContainer {
+  padding-top: 0;
+}    .StreamContainer.isFullWidth {
+  padding-right: 0;
+  padding-left: 0;
+}    .StreamContainer.inEditorial {
+  width: 100%;
+  height: 100%;
+  padding: 0 !important;
+}    @media (min-width: 40em) {
+  .StreamContainer {
+    padding: 1.25rem;
+  }
+}    @media (min-width: 85em) {
+  .StreamContainer {
+    padding-right: 2.5rem;
+    padding-left: 2.5rem;
+  }
+}    /* ------------------------------------- */    .StreamContainer.isBusy {
+  min-height: 7.5rem;
+  text-align: center;
+}    .StreamContainer.inEditorial.isBusy {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e5e5e5;
+}    .PostList .TabListStreamContainer.isBusy {
+  max-width: 45rem;
+}    .StreamBusyIndicator {
+  position: relative;
+  top: 1.25rem;
+}    .RelatedPostsStreamContainer {
+  transition: opacity 250ms;
+}    .TabListStreamContainer.isBusy + .RelatedPostsStreamContainer {
+  opacity: 0;
+  transition: none;
+}    /* ------------------------------------- */    .MainView &gt; .StreamContainer.isError,
+.MainView &gt; .UserDetails &gt; .StreamContainer.isError,
+.MainView &gt; .PostDetails &gt; .StreamContainer.isError {
+  max-width: 48.75rem;
+  margin: 0 auto;
+}    .MainView &gt; .StreamContainer.isBusy {
+  min-height: 11.25rem;
+}    .MainView &gt; .StreamContainer .StreamBusyIndicator {
+  top: 5rem;
+}    .StreamContainer.inEditorial .StreamBusyIndicator {
+  top: 0 !important;
+}    .StreamContainer.inAllCategories {
+  padding-top: 0;
+}    .MainView &gt; .UserDetails {
+  min-height: 100vh;
+}    @media (min-width: 40em) {
+  .PostDetails .TabListStreamContainer {
+    padding: 0 1.25rem;
+    margin-top: 0;
+  }
+
+  .MainView &gt; .StreamContainer.isBusy {
+    min-height: 13.75rem;
+  }
+
+  .MainView &gt; .StreamContainer .StreamBusyIndicator {
+    top: 7.5rem;
+  }
+}    @media (min-width: 107.5em) {
+  .View &gt; .StreamContainer.isBusy {
+    min-height: 21.25rem;
+  }
+
+  .View &gt; .StreamContainer .StreamBusyIndicator {
+    top: 15rem;
+  }
+}    /* // ------------------------------------- */    .LabelTab {
+  position: relative;
+  /* height: 30px; */
+  margin-right: 0.9375rem;
+  overflow: hidden;
+  font-size: 1.125rem;
+  line-height: 1.35;
+  /* line-height: 30px; */
+  color: #aaa;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}    .LabelTab::after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  content: "";
+  background-color: transparent;
+  transition: width 0.2s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.2s ease;
+}    .LabelTab.isActive,
+.LabelTab:active,
+.no-touch .LabelTab:hover {
+  color: #000;
+}    .LabelTab.isActive::after,
+.LabelTab:active::after,
+.no-touch .LabelTab:hover::after {
+  width: 100%;
+  background-color: #000;
+}    /* .LabelTab + .LabelTab { */    /*   margin-left: 15px; */    /* } */    .PostDetail .LabelTab {
+  font-size: 1rem;
+}    @media (min-width: 40em) {
+  .LabelTab {
+    margin-right: 1.875rem;
+  }
+
+  .LabelTab:not(.SearchLabelTab) {
+    height: 2.5rem;
+    font-size: 1.5rem;
+    line-height: 2.5rem;
+  }
+}    /* // ------------------------------------- */    .IconTab {
+  height: 1.875rem;
+  font-size: 0.75rem;
+  line-height: 1.875rem;
+  color: #aaa;
+  text-align: center;
+  background-color: #e5e5e5;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}    .IconTab + .IconTab {
+  border-left: 1px solid #fff;
+}    .IconTab.isActive,
+.IconTab:active,
+.no-touch .IconTab:hover {
+  color: #fff;
+  background-color: #000;
+}    /* stylelint-disable selector-max-specificity, selector-max-compound-selectors */    /* These are the basic building blocks for putting together
+ * UserRenderables */    /* -------------------------------------
+User Cells  */    .UserCell {
+  position: relative;
+  z-index: 2;
+  min-height: 3.75rem;
+  padding-bottom: 1.0625rem;
+}    .UserCell:empty {
+  display: none;
+}    .UserCell + .UserCell {
+  padding-top: 1.25rem;
+  border-top: 1px solid #aaa;
+}    .UserCell.isMiniProfileCard + .UserCell.isMiniProfileCard {
+  border: 0;
+}    .UserCell.isMiniProfileCard .UserName {
+  padding-right: 0;
+}    @media (max-width: 39.9375em) {
+  .UserCell.inUserProfileCard + .UserCell.inUserProfileCard {
+    border: 0;
+  }
+}    @media (min-width: 40em) {
+  .UserCell.inUserProfile {
+    margin-left: 18.75rem;
+    text-align: left;
+  }
+
+  .UserCell.inUserProfileCard:not(.isMiniProfileCard) {
+    text-align: left;
+  }
+}    /* -------------------------------------
+User Buttons */    .UserProfileButtons {
+  position: relative;
+  z-index: 2;
+}    .UserProfileButtons.inUserProfile {
+  position: absolute;
+  top: 0.625rem;
+  right: 0.625rem;
+  z-index: 2;
+}    .UserProfileButtons.inUserProfileCard {
+  margin-top: 1.25rem;
+  margin-bottom: 0.9375rem;
+}    @media (max-width: 39.9375em) {
+  .Avatar.inUserProfile[data-priority="self"] ~ .UserProfileButtons {
+    right: 0.625rem;
+  }
+}    @media (min-width: 40em) {
+  .UserProfileButtons.inUserProfile {
+    top: 18.75rem;
+    right: 0;
+    left: 0;
+    max-width: 16.25rem;
+  }
+
+  .UserProfileButtons.inUserProfileCard:not(.isMiniProfileCard) {
+    margin-bottom: 2.1875rem;
+  }
+}    /* -------------------------------------
+User Names  */    .UserNamesCell {
+  min-height: 1.875rem;
+  max-height: none;
+}    .UserNamesCell.inUserProfile {
+  padding-bottom: 0.3125rem !important;
+}    .UserNamesCell.inUserProfile.isSingle {
+  min-height: 0;
+}    .UserName {
+  font-size: 1.125rem;
+}    .no-touch .UserName &gt; a:hover {
+  color: #666;
+}    .UserUsername {
+  margin-bottom: 0.625rem;
+  color: #aaa;
+}    .UserNamesCell.inUserProfile.isSingle .UserName {
+  margin-bottom: 0.625rem;
+}    .isChrome .UserUsername {
+  margin-top: -0.5rem;
+}    @media (min-width: 40em) {
+  .UserUsername {
+    color: #ccc;
+  }
+
+  .UserNamesCell.inUserProfile.isSingle .UserName {
+    max-width: calc(100% - 4.375rem);
+    margin-bottom: 0;
+  }
+
+  .isLoggedIn .UserName {
+    padding-right: 1.875rem;
+  }
+}    /* -------------------------------------
+User Figures */    .UserFiguresLabel {
+  margin-left: 0.3125rem;
+  color: #aaa;
+}    .UserShareButton.inUserProfile,
+.UserRolesButton.inUserProfile {
+  position: absolute;
+  top: -3.4375rem;
+  right: 0;
+  z-index: 2;
+  display: block;
+  color: #aaa;
+}    .UserRolesButton.inUserProfile {
+  right: auto;
+  left: 0;
+}    .UserRolesButton.inUserProfile svg {
+  overflow: visible;
+  transform: scale(0.85);
+}    .UserRolesButton.inUserProfile g {
+  stroke-width: 0;
+}    .UserRolesButton.inUserProfile g path {
+  fill: #aaa;
+  stroke-width: 0.4;
+}    @media (min-width: 40em) {
+  .UserFiguresLabel {
+    color: #ccc;
+  }
+}    /* -------------------------------------
+User Stats */    .UserStatsCell dl {
+  display: inline-block;
+  text-align: center;
+}    .UserStatsCell dl + dl {
+  margin-left: 8%;
+}    .UserStatsCell dt {
+  font-size: 1rem;
+}    .UserStatsCell dd {
+  display: block;
+  font-size: 0.6875rem;
+  line-height: 1;
+  color: #aaa;
+  transition: color 0.2s ease;
+}    .UserStatsCountLabel {
+  display: inline-block;
+  padding-bottom: 2px;
+}    /* This keeps the entire UserProfile from re-rendering on page changes.
+ * Dirty but efficient. Same below in the media query. */    .isUserDetailPosts ~ .Hero dl:nth-child(1) dd,
+.isUserDetailFollowing ~ .Hero dl:nth-child(2) dd,
+.isUserDetailFollowers ~ .Hero dl:nth-child(3) dd,
+.isUserDetailLoves ~ .Hero dl:nth-child(4) dd,
+.no-touch .UserStatsLink:not(.asDisabled):hover dd {
+  color: #000;
+}    /* Temporary disable a few of these buttons */    .UserStatsLink.asDisabled {
+  pointer-events: none !important;
+}    .UserStatsCell.inUserProfileCard.isMiniProfileCard {
+  margin-top: -1.25rem;
+}    @media (max-width: 39.9375em) {
+  .UserStatsCell.inUserProfileCard {
+    margin-top: -1.25rem;
+  }
+}    @media (min-width: 40em) {
+  .UserStatsCell dd {
+    color: #ccc;
+  }
+
+  .isUserDetailPosts ~ .Hero dl:nth-child(1) dd,
+  .isUserDetailFollowing ~ .Hero dl:nth-child(2) dd,
+  .isUserDetailFollowers ~ .Hero dl:nth-child(3) dd,
+  .isUserDetailLoves ~ .Hero dl:nth-child(4) dd,
+  .no-touch .UserStatsLink:not(.asDisabled):hover dd {
+    color: #fff;
+  }
+}    /* -------------------------------------
+User Info */    .UserInfoCell {
+  padding-top: 0.3125rem !important;
+  padding-bottom: 0.3125rem !important;
+  text-align: left;
+}    .UserShortBio {
+  position: relative;
+  max-height: 6.25rem;
+  overflow: hidden;
+  line-height: 1.3;
+  word-wrap: break-word;
+}    .UserLocation {
+  position: relative;
+  padding-left: 1.5625rem;
+  margin: 0;
+  color: #aaa;
+}    .UserLocation &gt; .SVGIcon {
+  position: absolute;
+  top: -1px;
+  left: 0;
+}    .UserShortBio a {
+  border-color: #aaa;
+}    @media (max-width: 39.9375em) {
+  .MoreBioButton {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding-top: 1.875rem;
+    padding-bottom: 0.625rem;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 75%);
+  }
+
+  .MoreBioButtonLabel {
+    display: inline-block;
+    height: 1.375rem;
+    padding: 0 0.625rem;
+    font-size: 0.625rem;
+    line-height: 1.375rem;
+    color: #aaa;
+    vertical-align: middle;
+    background-color: #e8e8e8;
+    border-radius: 0.6875rem;
+  }
+}    @media (min-width: 40em) {
+  .MoreBioButton {
+    margin-top: 0.625rem;
+    font-size: 0.875rem;
+    line-height: 1;
+    border-bottom: 1px solid;
+  }
+
+  .no-touch .MoreBioButton:hover {
+    color: #aaa;
+    border-bottom-color: #aaa;
+  }
+}    /* -------------------------------------
+User Links */    .UserLinksCell {
+  position: relative;
+  text-align: left;
+}    .UserExternalLinksLeft {
+  width: calc(100% - 6rem);
+  font-size: 0.875rem;
+  word-wrap: break-word;
+}    .UserLinksCell[data-num-icons="2"] .UserExternalLinksLeft {
+  width: calc(100% - 4rem);
+}    .UserLinksCell[data-num-icons="1"] .UserExternalLinksLeft {
+  width: calc(100% - 2rem);
+}    .UserLinksCell[data-num-icons="0"] .UserExternalLinksLeft {
+  width: 100%;
+}    .UserLinksCell[data-num-links="0"] .UserExternalLinksLeft {
+  display: none;
+}    .UserExternalLinksRight {
+  position: absolute;
+  top: 0.3125rem;
+  left: calc(100% - 6rem);
+}    .UserLinksCell[data-num-icons="2"] .UserExternalLinksRight {
+  left: calc(100% - 4rem);
+}    .UserLinksCell[data-num-icons="1"] .UserExternalLinksRight {
+  left: calc(100% - 2rem);
+}    .UserLinksCell[data-num-icons="0"] .UserExternalLinksRight {
+  display: none;
+}    .UserLinksCell[data-num-links="0"] .UserExternalLinksRight {
+  position: static;
+  left: 0;
+}    .UserLinksCell[data-num-links="0"] .UserExternalLinksRight &gt; .UserExternalLinksIcon &gt; a {
+  margin-right: 0.625rem;
+  margin-left: 0;
+}    .UserExternalLinksLabel {
+  display: block;
+  margin-bottom: 0.625rem;
+  overflow: hidden;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}    .UserExternalLinksLabel &gt; a {
+  display: inline;
+  border-bottom: 1px solid #aaa;
+}    .UserExternalLinksIcon &gt; a {
+  position: relative;
+  display: inline-block;
+  width: 1.375rem;
+  height: 1.375rem;
+  margin-top: 0.625rem;
+  margin-left: 0.625rem;
+  background-color: #e8e8e8;
+  border-radius: 0.6875rem;
+}    .UserExternalLinksIcon img {
+  width: 1.375rem;
+  height: 1.375rem;
+  margin-top: -2px;
+}    @media (min-width: 40em) {
+  .no-touch .UserExternalLinksLabel &gt; a:hover {
+    color: #aaa;
+  }
+
+  .no-touch .UserExternalLinksIcon &gt; a:hover {
+    background-color: #ddd;
+  }
+
+  .UserExternalLinksLeft {
+    width: calc(100% - 8rem);
+  }
+
+  .UserLinksCell[data-num-icons="3"] .UserExternalLinksLeft {
+    width: calc(100% - 6rem);
+  }
+
+  .UserExternalLinksRight {
+    left: calc(100% - 8rem);
+  }
+
+  .UserLinksCell[data-num-icons="3"] .UserExternalLinksRight {
+    left: calc(100% - 6rem);
+  }
+
+  .UserExternalLinksIcon &gt; a {
+    background-color: #fff;
+  }
+
+  .UserExternalLinksIcon img {
+    margin-top: -4px;
+  }
+}    /* stylelint-enable selector-max-specificity, selector-max-compound-selectors */    /* -------------------------------------
+Users Collections  */    @media (min-width: 40em) {
+  .Users.asGrid {
+    margin-left: -1.25rem;
+  }
+}    @media (min-width: 85em) {
+  .Users.asGrid {
+    margin-left: -2.5rem;
+  }
+}    /* -------------------------------------
+User Avatar  */    .UserAvatar {
+  position: relative;
+  display: inline-block;
+  font-size: 0.875rem;
+}    /* -------------------------------------
+User Compact  */    .UserCompact {
+  position: relative;
+  height: 2.5rem;
+  margin-bottom: 2.5rem;
+  overflow: hidden;
+  font-size: 0.875rem;
+}    .UserCompactHeader {
+  display: inline-block;
+  width: 100%;
+  height: 2.5rem;
+  overflow: hidden;
+  line-height: 2.5rem;
+}    .UserCompactHeader.hide-relationships {
+  width: calc(100% - 7.5rem);
+}    .UserCompactUserLink {
+  display: inline-block;
+  max-width: calc(100% - 1.25rem) !important;
+  transition: color 0.2s ease;
+}    .no-touch .UserCompactUserLink:hover {
+  color: #999;
+}    .UserCompactUsername {
+  padding-left: 0.625rem;
+}    .UserCompact &gt; .RelationshipContainer {
+  position: absolute;
+  top: 0.3125rem;
+  right: 0;
+}    /* -------------------------------------
+User Invitee  */    .UserInvitee {
+  position: relative;
+  height: 2.5rem;
+  padding-bottom: 3.125rem;
+  margin-bottom: 0.625rem;
+  overflow: hidden;
+  font-size: 0.875rem;
+  border-bottom: 1px solid #f2f2f2;
+}    .UserInviteeHeader {
+  display: inline-block;
+  width: calc(100% - 7.5rem);
+  height: 2.5rem;
+  overflow: hidden;
+  line-height: 2.5rem;
+}    .UserInviteeUserLink {
+  width: 100%;
+  transition: color 0.2s ease;
+}    .no-touch .UserInviteeUserLink:hover {
+  color: #999;
+}    .UserInviteeEmail {
+  padding-left: 0.625rem;
+}    .UserInviteeUsername {
+  padding-left: 0.625rem;
+}    .UserInviteeStatusLabel {
+  position: absolute;
+  top: 0.3125rem;
+  right: 0;
+  display: inline-block;
+  width: 6.875rem;
+  height: 1.875rem;
+  line-height: 1.875rem;
+  text-align: center;
+  white-space: nowrap;
+}    .UserInviteeAction {
+  position: absolute;
+  top: 0.3125rem;
+  right: 0;
+  width: 6.875rem;
+  height: 1.875rem;
+  overflow: hidden;
+  font-size: 0.75rem;
+  line-height: 1.875rem;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  background-color: #666;
+  border: 1px solid #666;
+  border-radius: 0.9375rem;
+  transition:
+    background-color 0.2s cubic-bezier(0.23, 1, 0.32, 1),
+    border-color 0.2s cubic-bezier(0.23, 1, 0.32, 1),
+    color 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+}    .no-touch .UserInviteeAction:hover {
+  color: #fff;
+  background-color: #aaa;
+  border-color: #aaa;
+}    .UserInvitee &gt; .RelationshipContainer {
+  position: absolute;
+  top: 0.3125rem;
+  right: 0;
+}    @media (min-width: 40em) {
+  /* // Start the grid layout */
+  .Users.asInviteeGrid {
+    margin-left: -1.25rem;
+  }
+
+  .UserInviteeGrid {
+    display: inline-block;
+    width: calc(50% - 1.25rem);
+    margin-left: 1.25rem;
+    vertical-align: top;
+  }
+}    @media (min-width: 60em) {
+  .UserInviteeGrid {
+    width: calc(33.33333% - 1.25rem);
+  }
+}    @media (min-width: 85em) {
+  .Users.asInviteeGrid {
+    margin-left: -2.5rem;
+  }
+
+  .UserInviteeGrid {
+    width: calc(25% - 2.5rem);
+    margin-left: 2.5rem;
+  }
+}    @media (min-width: 107.5em) {
+  .UserInviteeGrid {
+    width: calc(20% - 2.5rem);
+  }
+}    @media (min-width: 130em) {
+  .UserInviteeGrid {
+    width: calc(16.66666% - 2.5rem);
+  }
+}    @media (min-width: 152.5em) {
+  .UserInviteeGrid {
+    width: calc(14.28571% - 2.5rem);
+  }
+}    /* -------------------------------------
+User Profile  */    .UserProfile {
+  position: relative;
+  flex-grow: 1;
+  max-width: 100%;
+  padding-right: 0.625rem;
+  padding-left: 0.625rem;
+  margin: auto;
+  color: #000;
+  text-align: center;
+}    @media (min-width: 40em) {
+  .UserProfile {
+    max-width: 37.5rem;
+    min-height: 22.5rem;
+    padding-right: 0;
+    padding-left: 0;
+    color: #fff;
+  }
+}    /* -------------------------------------
+User Cards  */    .UserProfileCard {
+  position: relative;
+  height: 16.25rem;
+  padding: 1.25rem;
+  margin-top: 0.625rem;
+  overflow: hidden;
+  color: #fff;
+  text-align: center;
+  background-color: transparent;
+  border-radius: 0.3125rem;
+}    @media (min-width: 40em) {
+  .UserProfileCard {
+    display: inline-block;
+    width: calc(50% - 1.25rem);
+    margin-top: 1.25rem;
+    margin-left: 1.25rem;
+    vertical-align: top;
+  }
+
+  .UserProfileCard:not(.isMiniProfileCard) {
+    height: 33.75rem;
+  }
+}    @media (min-width: 60em) {
+  .UserProfileCard {
+    width: calc(33.33333% - 1.25rem);
+  }
+}    @media (min-width: 85em) {
+  .UserProfileCard {
+    width: calc(25% - 2.5rem);
+    margin-top: 2.5rem;
+    margin-left: 2.5rem;
+  }
+}    @media (min-width: 107.5em) {
+  .UserProfileCard:not(.isMiniProfileCard) {
+    width: calc(20% - 2.5rem);
+  }
+}    @media (min-width: 130em) {
+  .UserProfileCard:not(.isMiniProfileCard) {
+    width: calc(16.66666% - 2.5rem);
+  }
+}    @media (min-width: 152.5em) {
+  .UserProfileCard:not(.isMiniProfileCard) {
+    width: calc(14.28571% - 2.5rem);
+  }
+}    .MainView {
+  background-color: #fff;
+}    .MainView.Discover {
+  position: relative;
+}    /* stylelint-disable no-unsupported-browser-features */    @media (min-width: 40em) {
+  .isCategoryDrawerOpen ~ .MainView.show-info {
+    display: grid;
+    grid-template-columns: repeat(3, [col-start] 1fr);
+  }
+
+  .isCategoryDrawerOpen ~ .MainView.show-info .category-sub-nav {
+    grid-column: col-start / span 2;
+    grid-row: 1;
+  }
+
+  .isCategoryDrawerOpen ~ .MainView.show-info .sidebar {
+    grid-column: 3 / span 1;
+    grid-row: 1 / span 2;
+  }
+
+  .isCategoryDrawerOpen ~ .MainView.show-info .StreamContainer {
+    grid-column: col-start / span 2;
+    grid-row: 2;
+  }
+}    @media (min-width: 60em) {
+  .isCategoryDrawerOpen ~ .MainView.show-info {
+    display: grid;
+    grid-template-columns: repeat(3, [col-start] 1fr);
+  }
+
+  .isCategoryDrawerOpen ~ .MainView.show-info .category-sub-nav {
+    grid-column: col-start / span 2;
+    grid-row: 1;
+  }
+
+  .isCategoryDrawerOpen ~ .MainView.show-info .sidebar {
+    grid-column: 3 / span 1;
+    grid-row: 1 / span 2;
+  }
+
+  .isCategoryDrawerOpen ~ .MainView.show-info .StreamContainer {
+    grid-column: col-start / span 2;
+    grid-row: 2;
+  }
+}    @media (min-width: 85em) {
+  .isCategoryDrawerOpen ~ .MainView.show-info {
+    grid-template-columns: repeat(4, [col-start] 1fr);
+  }
+
+  .isCategoryDrawerOpen ~ .MainView.show-info .category-sub-nav {
+    grid-column: col-start / span 3;
+  }
+
+  .isCategoryDrawerOpen ~ .MainView.show-info .sidebar {
+    grid-column: 4 / span 1;
+  }
+
+  .isCategoryDrawerOpen ~ .MainView.show-info .StreamContainer {
+    grid-column: col-start / span 3;
+  }
+}    @media (min-width: 107.5em) {
+  .isCategoryDrawerOpen ~ .MainView.show-info {
+    grid-template-columns: repeat(5, [col-start] 1fr);
+  }
+
+  .isCategoryDrawerOpen ~ .MainView.show-info .category-sub-nav {
+    grid-column: col-start / span 4;
+  }
+
+  .isCategoryDrawerOpen ~ .MainView.show-info .sidebar {
+    grid-column: 5 / span 1;
+  }
+
+  .isCategoryDrawerOpen ~ .MainView.show-info .StreamContainer {
+    grid-column: col-start / span 4;
+  }
+}    @media (min-width: 130em) {
+  .isCategoryDrawerOpen ~ .MainView.show-info {
+    grid-template-columns: repeat(6, [col-start] 1fr);
+  }
+
+  .isCategoryDrawerOpen ~ .MainView.show-info .category-sub-nav {
+    grid-column: col-start / span 5;
+  }
+
+  .isCategoryDrawerOpen ~ .MainView.show-info .sidebar {
+    grid-column: 6 / span 1;
+  }
+
+  .isCategoryDrawerOpen ~ .MainView.show-info .StreamContainer {
+    grid-column: col-start / span 5;
+  }
+}    @media (min-width: 152.5em) {
+  .isCategoryDrawerOpen ~ .MainView.show-info {
+    grid-template-columns: repeat(7, [col-start] 1fr);
+  }
+
+  .isCategoryDrawerOpen ~ .MainView.show-info .category-sub-nav {
+    grid-column: col-start / span 6;
+  }
+
+  .isCategoryDrawerOpen ~ .MainView.show-info .sidebar {
+    grid-column: 7 / span 1;
+  }
+
+  .isCategoryDrawerOpen ~ .MainView.show-info .StreamContainer {
+    grid-column: col-start / span 6;
+  }
+}    /* stylelint-enable no-unsupported-browser-features */    .isModalActive .MainView {
+  pointer-events: none;
+}    .isOmnibarActive .MainView {
+  padding-top: 0;
+}    .PostDetail.MainView {
+  padding-bottom: 1.875rem;
+}    @media (min-width: 60em) {
+  .PostDetail.MainView {
+    height: calc(100vh - 5rem);
+    padding-bottom: 1.875rem;
+    overflow: hidden;
+  }
+}    .RelatedPostsTitle {
+  margin-top: 0.9375rem;
+  margin-bottom: 0.625rem;
+  font-size: 1.125rem;
+  color: #aaa;
+}    /* // MAX-WIDTH! */    @media (max-width: 39.9375em) {
+  .isOnboardingView ~ .MainView {
+    margin-top: 7.5rem;
+  }
+
+  .isOmnibarActive .MainView,
+  .isProfileMenuActive ~ .MainView {
+    display: none;
+  }
+
+  .isLoggedOut .ArtistInvites.MainView,
+  .isLoggedOut .Editorial.MainView {
+    margin-top: 1.25rem;
+  }
+}    @media (min-width: 40em) {
+  .Authentication.MainView {
+    padding-top: 0;
+  }
+
+  .RelatedPostsTitle {
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .TabListStreamContainer + .RelatedPostsStreamContainer .RelatedPostsTitle {
+    margin-top: 2.8125rem;
+  }
+
+  .isOmnibarActive .Omnibar.isFullScreen ~ .MainView {
+    display: none;
+  }
+}    @media (min-width: 60em) {
+  .isOnboardingView ~ .MainView {
+    padding-bottom: 5rem;
+  }
+}    .Authentication {
+  display: flex;
+  min-width: 100vw;
+  min-height: 100vh;
+  color: #fff;
+  background-color: transparent;
+}    .AuthenticationFormDialog {
+  position: relative;
+  z-index: 1;
+  width: 18.75rem;
+  margin: 0 auto;
+}    .AuthenticationFormDialog.inModal {
+  width: calc(100% - 2.5rem);
+  max-width: 37.5rem;
+  min-height: 31.25rem;
+  padding: 3.125rem 1.25rem 1.25rem;
+}    .AuthenticationFormDialog.inModal .AuthenticationForm {
+  max-width: none;
+}    .Authentication h1,
+.AuthenticationFormDialog h1 {
+  padding-top: 6.25rem;
+  font-size: 1.5rem;
+  line-height: 1;
+}    .AuthenticationFormDialog.inModal h1 {
+  padding-top: 0 !important;
+}    .AuthenticationFormDialog h1 + h2,
+.AuthenticationFormDialog h2 + .AuthenticationForm {
+  margin-top: 1.875rem;
+}    .AuthenticationFormDialog h1 + .AuthenticationForm,
+.AuthenticationFormDialog h2 + .AuthenticationForm {
+  margin-top: 2.5rem;
+}    .Authentication h1 &gt; .Emoji {
+  margin-right: 0.625rem;
+}    .AuthenticationForm {
+  max-width: 20rem;
+}    .AuthenticationFormDialog &gt; p {
+  margin-top: 3.4375rem;
+  font-size: 0.875rem;
+  color: #fff;
+}    .AuthenticationError.accessDenied {
+  padding-top: 0.75rem;
+  color: #f00;
+}    .AuthenticationFormDialog a:focus,
+.AuthenticationFormDialog a:active,
+.no-touch .AuthenticationFormDialog a:hover {
+  color: #fff;
+}    .isAuthenticationView.isNavbarHidden ~ .Navbar {
+  transform: translate3d(0, 0, 0);
+}    @media (max-width: 39.9375em) {
+  .JoinForm {
+    margin-top: 7.5rem;
+  }
+}    /* 350 / 16 = 21.875em */    @media (min-width: 21.875em) {
+  .AuthenticationFormDialog {
+    width: 20rem;
+  }
+}    @media (min-width: 40em) {
+  .AuthenticationFormDialog {
+    margin: auto;
+  }
+
+  .isIE11 .AuthenticationFormDialog {
+    margin-top: 7.5rem;
+  }
+
+  .Authentication h1,
+  .AuthenticationFormDialog h1 {
+    padding-top: 0;
+  }
+
+  .AuthenticationFormDialog.inModal {
+    width: 100%;
+    padding: 4.375rem 1.875rem 1.875rem;
+  }
+
+  .AuthenticationFormDialog.inModal .AuthenticationForm {
+    margin-bottom: 1.875rem;
+  }
+}    .isNotificationsScrolling {
+  overflow: hidden;
+}    .NotificationsContainer {
+  position: absolute;
+  top: 100%;
+  right: 1.25rem;
+  z-index: 3;
+  width: 22.5rem;
+  padding-bottom: 0.625rem;
+  overflow: hidden;
+  background-color: #fff;
+  border: 1px solid #aaa;
+  border-top: 0;
+}    .NotificationsContainer &gt; .Scrollable {
+  height: 18.75rem;
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+}    .NotificationsContainerTabs &gt; .IconTab {
+  width: 16.66667%;
+}    @media (min-width: 85em) {
+  .NotificationsContainer {
+    right: 2.5rem;
+  }
+}    /* // MIN HEIGHT!  660 / 16 = 41.25em */    @media (min-height: 41.25em) {
+  .NotificationsContainer &gt; .Scrollable {
+    height: 31.5625rem;
+  }
+}    /* // MIN HEIGHT!  760 / 16 = 47.5em */    @media (min-height: 47.5em) {
+  .NotificationsContainer &gt; .Scrollable {
+    height: 37.8125rem;
+  }
+}    .NotificationsContainer .StreamContainer {
+  padding: 0;
+}    .Search .FormControl {
+  max-width: none;
+}    .Search .SearchControl .FormControlInput {
+  font-family: "AtlasGroteskBlack", "AtlasGrotesk-Black", "Helvetica Neue", "HelveticaNeue", "Helvetica", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.5rem;
+}    .Search .SearchControl .FormControlLabel {
+  display: none;
+}    .Search .SearchTabList {
+  margin-top: 1.125rem;
+}    .Search .SearchTabList button {
+  width: 50%;
+  padding-bottom: 0.625rem;
+  margin: 0;
+  font-size: 0.875rem;
+}    .Search .LabelTab::after {
+  width: 100%;
+  background-color: #aaa;
+}    .Search .LabelTab.isActive::after,
+.Search .LabelTab:active::after {
+  background-color: #000;
+}    .Search .FormControlInput {
+  border-bottom: 0;
+}    .Search .SearchControl {
+  padding: 0.625rem 0.625rem 0.625rem 3.75rem;
+  background-color: #f2f2f2;
+  border-radius: 0.3125rem;
+}    .Search .SearchIcon g {
+  stroke: #aaa;
+}    .Settings {
+  position: relative;
+  max-width: 90rem;
+  padding: 0 0.625rem 3.75rem;
+  margin: 0 auto;
+}    .SettingsCoverPicker {
+  position: relative;
+  margin-bottom: 2.5rem;
+}    .SettingsBody {
+  position: relative;
+  max-width: 64rem;
+  margin: 0 auto;
+}    .SettingsRight {
+  padding-left: 0;
+}    .SettingsHeader {
+  margin-top: 1.25rem;
+}    /* // @see Forms.sass for SettingsForms */    .SettingsPreferences {
+  margin-top: 3.125rem;
+}    .SettingsPreferences .StreamContainer {
+  position: relative;
+  padding: 0;
+}    .SettingsHeading {
+  font-family: "AtlasGroteskBlack", "AtlasGrotesk-Black", "Helvetica Neue", "HelveticaNeue", "Helvetica", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  height: 2.5rem;
+  font-size: 1.125rem;
+  white-space: nowrap;
+}    .SettingsHeader &gt; p {
+  max-width: 30rem;
+  margin: 0 0 1.125rem;
+  color: #aaa;
+}    .SettingsLinks {
+  display: flex;
+  justify-content: flex-end;
+  margin-left: -0.9375rem;
+}    .SettingsLinks &gt; * {
+  margin-left: 0.9375rem;
+}    .SettingsCredentialActions {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  text-align: right;
+  transition: height 0.2s ease;
+}    .SettingsCredentialActions.requiresSave {
+  height: 15rem;
+}    .SettingsCredentialActions p {
+  text-align: left;
+}    .SettingsAvatarPicker {
+  margin-bottom: 2.5rem;
+}    /* // ------------------------------------- */    @media (min-width: 40em) {
+  .SettingsHeading {
+    font-size: 1.5rem;
+  }
+
+  .Settings {
+    padding-right: 1.25rem;
+    padding-left: 1.25rem;
+  }
+
+  .SettingsCoverPicker {
+    margin-bottom: 5.3125rem;
+  }
+
+  .SettingsAvatarPicker {
+    position: absolute;
+  }
+
+  .SettingsRight {
+    padding-left: 15rem;
+  }
+
+  .Settings .Uploader.isCoverUploader p::after {
+    content: ".";
+  }
+}    @media (min-width: 85em) {
+  .Settings {
+    padding-right: 2.5rem;
+    padding-left: 2.5rem;
+  }
+}    /* // ------------------------------------- */    /* // Same as a Preference */    .SettingsCell {
+  position: relative;
+  padding-top: 1.875rem;
+  padding-bottom: 1.6875rem;
+}    .SettingsButton {
+  display: inline-block;
+  min-width: 5rem;
+  height: 1.875rem;
+  padding: 0 0.9375rem;
+  font-size: 0.875rem;
+  line-height: 1.875rem;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  background-color: #aaa;
+  border: 1px solid #aaa;
+  border-radius: 0.3125rem;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}    .isFirefox .SettingsButton {
+  line-height: 1.75rem;
+}    .no-touch .SettingsButton:hover {
+  color: #aaa;
+  background-color: #fff;
+  border-color: #aaa;
+}    .no-touch .SettingsButton.asDangerous {
+  color: #fff;
+  background-color: #f00;
+  border-color: #f00;
+}    .SettingsCell .SettingsButton {
+  position: absolute;
+  top: 1.875rem;
+  right: 0;
+}    /* // ------------------------------------- */    .SettingsDataDescription {
+  max-width: 37.5rem;
+  margin-top: 1.875rem !important;
+  color: #aaa;
+}    /* // ------------------------------------- */    /* // Same as a Preference dl */    .SettingsDefinition {
+  width: calc(100% - 6.25rem);
+  max-width: 27.5rem;
+}    .SettingsDefinition dd {
+  margin-top: 1.25rem;
+  color: #aaa;
+}    /* stylelint-disable selector-max-compound-selectors */    .no-touch .SettingsDefinition dd a:hover {
+  color: #666;
+}    /* stylelint-enable selector-max-compound-selectors */    /* // ------------------------------------- */    .SettingsDefinitionValues {
+  line-height: 2.5rem;
+  color: #aaa;
+}    .SettingsDefinitionValues dt {
+  float: left;
+  width: 6.25rem;
+  overflow: hidden;
+  clear: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}    .SettingsDefinitionValues dd {
+  margin-left: 7.5rem;
+}    .SettingsDefinitionValues a {
+  text-decoration: underline;
+  border-bottom: 0;
+}    .no-touch .SettingsDefinitionValues a:hover {
+  color: #666;
+}    /* stylelint-disable */    .embetter {
+  transition: background-color 0.25s linear, max-width 0.25s linear, max-height 0.25s linear;
+
+  background-color: transparent;
+  position: relative;
+  display: block;
+  overflow: hidden;
+}    .embetter:hover {
+  background-color: #000;
+}    .embetter a {
+  display: block;
+  line-height: 0;
+  margin: 0;
+}    .embetter img {
+  transition: opacity 0.25s linear, padding 0.25s linear, max-width 0.25s linear, transform 0.25s linear;
+
+  width: 100%;
+  margin: 0;
+}    .embetter:hover img {
+  opacity: 0.9;
+  transform: scale(1.02);
+}    .embetter.embetter-static:hover img {
+  opacity: 1;
+  transform: none;
+}    .embetter.embetter-playing img {
+  opacity: 0;
+}    .embetter .embetter-play-button,
+.embetter .embetter-loading {
+  transition: opacity 0.25s linear;
+}    .embetter .embetter-play-button,
+.embetter .embetter-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  cursor: pointer;
+}    .embetter.embetter-playing .embetter-play-button {
+  opacity: 0;
+}    .embetter .embetter-play-button:before {
+  background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2286%22%20height%3D%2260%22%20viewBox%3D%220%200%2086%2060%22%3E%3Cpath%20fill%3D%22%23010101%22%20d%3D%22M0%200h86v60h-86z%22/%3E%3Cpath%20fill%3D%22%23fff%22%20d%3D%22M35.422%2017.6v24.8l22.263-12.048z%22/%3E%3C/svg%3E');
+  /* <svg height="60" viewbox="0 0 86 60" width="86" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h86v60h-86z" fill="#010101"></path><path d="M35.422 17.6v24.8l22.263-12.048z" fill="#fff"></path></svg> */
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: 33.333% auto;
+  width: 100%;
+  max-width: 16.125rem;
+  height: 100%;
+  min-height: 100%;
+  content: " ";
+  margin: 0 auto;
+  display: block;
+}    /* Audio services have a round play button */    .embetter[data-soundcloud-id] div:before,
+.embetter[data-mixcloud-id] div:before {
+  background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2265%22%20height%3D%2265%22%20viewBox%3D%220%200%2065%2065%22%3E%3Ccircle%20fill%3D%22%23010101%22%20cx%3D%2232.5%22%20cy%3D%2232.5%22%20r%3D%2232.5%22/%3E%3Cpath%20fill%3D%22%23fff%22%20d%3D%22M25.095%2020.932v23.136l20.769-11.24z%22/%3E%3C/svg%3E');
+  /* <svg height="65" viewbox="0 0 65 65" width="65" xmlns="http://www.w3.org/2000/svg"><circle cx="32.5" cy="32.5" fill="#010101" r="32.5"></circle><path d="M25.095 20.932v23.136l20.769-11.24z" fill="#fff"></path></svg> */
+  max-width: 12.1875rem;
+}    .embetter .embetter-loading {
+  background-color: #000000;
+  opacity: 0;
+}    .embetter.embetter-playing .embetter-loading {
+  opacity: 1;
+}    .embetter .embetter-loading:before {
+  background-repeat: no-repeat;
+  background-position: 51.7% 50%;
+  background-size: 9.0909% auto;  /* 1/11th of the max width for a background-size of 23px 25px */
+  max-width: 15.8125rem;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  content: " ";
+  margin: 0 auto;
+  display: block;
+}    /* TODO: This was a really big data url we removed and probably needs to be replaced */    /* .embetter.embetter-playing .embetter-loading:before { */    /* } */    .embetter iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}    /* Per-service overrides */    .embetter[data-youtube-id],
+.embetter[data-dailymotion-id] {
+  padding-bottom: 56.25%;
+  height: 0;
+}    .embetter[data-youtube-id] img {
+  margin: -9.4% 0;
+}    .embetter[data-soundcloud-id],
+.embetter[data-bandcamp-id],
+.embetter[data-vine-id] {
+  max-width: 37.5rem;
+}    .embetter[data-mixcloud-id] {
+  max-width: 37.5rem;
+  max-height: 37.5rem;
+}    .embetter[data-mixcloud-id].embetter-playing {
+  max-width: 41.25rem;
+  max-height: 11.25rem;
+}    .embetter[data-codepen-id] {
+  max-width: 43.75rem;
+}    .embetter[data-ustream-id] {
+  max-width: 40rem;
+}    .embetter[data-slideshare-id] {
+  max-width: 67.5rem;
+}    .embetter[data-imgur-id] {
+  max-width: 30rem;
+}    .embetter[data-instagram-id] {
+  max-width: 40rem;
+}    .embetter[data-instagram-id].embetter-playing {
+  max-width: 41.125rem;
+}    .embetter[data-instagram-id].embetter-playing img {
+  padding: 2rem 0 3rem 0;
+}    /* stylelint-enable */
+
+/*# sourceMappingURL=666701b25edc44b82ab00868d2913af6cf273d43.css.map*/

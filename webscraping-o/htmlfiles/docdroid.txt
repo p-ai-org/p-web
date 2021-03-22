@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <!-- Meta Information -->
+  <meta charset="utf-8"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <link href="https://www.docdroid.net" hreflang="en" rel="alternate"/>
+  <link href="https://www.docdroid.net/de" hreflang="de" rel="alternate"/>
+  <title>
+   Upload &amp; Share PDF | DocDroid
+  </title>
+  <link href="/images/favicon.png" rel="shortcut icon"/>
+  <meta content="Upload and share PDF documents. Free &amp; fast! No registration required." name="description"/>
+  <!-- CSS -->
+  <link href="/css/app.css?id=2fea23890eecf5036172" rel="stylesheet"/>
+  <meta content="450042191753217" property="fb:app_id"/>
+  <meta content="@docdroid_" name="twitter:site"/>
+  <meta content="d00a3eca2520f263d354" name="wot-verification"/>
+  <!-- Global Data -->
+  <script>
+   window.Spark = {"braintreeMerchantId":null,"braintreeToken":null,"cardUpFront":false,"collectsBillingAddress":true,"collectsEuropeanVat":true,"createsAdditionalTeams":true,"csrfToken":"PpS3aXVnJc8Ng33viOBMmJCgbVphuf8Dz2UES1AF","currencySymbol":"$","env":"production","roles":[],"state":{"user":null,"teams":[],"currentTeam":null},"stripeKey":"pk_live_e4QZlwMhPFKGIwXdgGYZsZlU","teamString":"team","pluralTeamString":"teams","userId":null,"usesApi":true,"usesBraintree":false,"usesTeams":false,"usesStripe":true};
+
+        window.app = {
+            env: 'production',
+            routeName: 'uploadDocuments',
+            isLoggedIn: false,
+            isSubscribed: false,
+            apiUrl: '/api'
+        };
+  </script>
+ </head>
+ <body class="with-navbar">
+  <div id="app">
+   <!-- Main Content -->
+   <!-- Navigation -->
+   <nav class="navbar navbar-shadow navbar-fixed-top">
+    <div class="container">
+     <!-- Branding Image -->
+     <div class="navbar-branding">
+      <a class="navbar-brand" href="https://www.docdroid.net">
+       <img alt="DocDroid" src="https://www.docdroid.net/images/logo_navbar.png"/>
+      </a>
+     </div>
+     <!-- Left Side Of Navbar -->
+     <ul class="nav navbar-nav navbar-left">
+      <li class="ml20 visible-sm">
+       <a href="https://www.docdroid.net" title="DocDroid - Share your documents">
+        <span class="fa fa-file-text pr5" title="Upload Documents">
+        </span>
+        <span>
+         Upload
+        </span>
+       </a>
+      </li>
+      <li class="ml20 hidden-xs hidden-sm">
+       <a href="https://www.docdroid.net" title="DocDroid - Share your documents">
+        <span class="fa fa-file-text pr5" title="Upload Documents">
+        </span>
+        <span>
+         Upload Documents
+        </span>
+       </a>
+      </li>
+      <li class="ml20 hidden-xs hidden-sm">
+       <a href="https://www.docdroid.net/share-slides" title="DocDroid - Share your slides">
+        <span class="fa fa-list-alt pr5" title="Share Slides">
+        </span>
+        <span>
+         Share Slides
+        </span>
+       </a>
+      </li>
+      <li class="ml20 hidden-xs">
+       <a href="https://www.docdroid.net/pricing">
+        <span class="fa fa-shopping-bag pr5" title="Pricing">
+        </span>
+        <span>
+         Pricing
+        </span>
+       </a>
+      </li>
+     </ul>
+     <ul class="nav navbar-nav navbar-right hidden-xs">
+      <li class="dropdown">
+       <a class="dropdown-toggle" data-toggle="dropdown" href="">
+        <span class="flag-xs flag-en">
+        </span>
+       </a>
+       <ul class="dropdown-menu animated animated-short flipInX" role="menu">
+        <li>
+         <a class="fw600" href="https://www.docdroid.net?hl=en" hreflang="en" rel="alternate">
+          <span class="flag-xs flag-en mr10">
+          </span>
+          English
+         </a>
+        </li>
+        <li>
+         <a class="fw600" href="https://www.docdroid.net/de?hl=de" hreflang="de" rel="alternate">
+          <span class="flag-xs flag-de mr10">
+          </span>
+          German
+         </a>
+        </li>
+       </ul>
+      </li>
+     </ul>
+     <!-- Right Side Of Navbar -->
+     <ul class="nav navbar-nav navbar-right">
+      <li>
+       <a class="navbar-link" href="/login">
+        Login
+       </a>
+      </li>
+      <li>
+       <a class="navbar-link" href="/register">
+        Register
+       </a>
+      </li>
+     </ul>
+    </div>
+   </nav>
+   <!-- Main Content -->
+   <div class="container">
+    <upload :hide-upload="false" :initial-show-documents="[]" inline-template="" session-email="" type="document" v-cloak="">
+     <div>
+      <div class="tray-bin pl10 mb30 pb10 pt10" v-if="!hideUpload">
+       <h5 class="text-muted fw600 pl10 hidden-xs">
+        <i class="fa fa-files-o fa-lg pr10">
+        </i>
+        Drop your PDF files here...
+       </h5>
+       <form action="" class="dropzone dz-clickable" id="dropzone">
+        <div class="dz-default dz-message">
+         <span>
+          <i class="fa fa-cloud-upload">
+          </i>
+          <h1 class="main-text fs35">
+           Upload PDF
+          </h1>
+          <span class="sub-text mb30">
+           or any document format: DOC, DOCX, TXT...
+          </span>
+          <br/>
+          <button class="btn btn-default btn-lg light" id="select" type="button">
+           <span class="fa fa-folder-open pr5">
+           </span>
+           Select Files
+          </button>
+         </span>
+        </div>
+       </form>
+      </div>
+      <document-edit :document="files[editingIndex]" ref="edit" v-if="files[editingIndex]" v-on:document-deleted="removeFile(editingIndex)">
+      </document-edit>
+      <div class="bs-component" v-for="(file,index) in files">
+       <div class="panel top">
+        <div class="panel-heading">
+         <span class="panel-icon">
+          <i class="fa fa-file-text">
+          </i>
+         </span>
+         <span class="panel-title">
+          {{file.filename}}
+          <span class="badge ml10 fileSize" v-html="dropzone.filesize(file.size)" v-if="file.size">
+          </span>
+         </span>
+         <span class="panel-controls">
+          <a class="panel-control-title fileEdit" v-if="file.status=='ok' || file.status=='processing'">
+          </a>
+          <a class="panel-control-remove fileCancel" v-else="">
+          </a>
+         </span>
+         <div class="widget-menu pull-right mr10">
+          <span class="label bg-danger" v-if="file.status == 'error'">
+           Error
+          </span>
+          <span class="label bg-warning" v-else-if="file.status != 'ok'">
+           {{file.status | capitalize}}
+          </span>
+          <div class="btn-group" v-if="file.status == 'ok'">
+           <a :href="getUri(file, 'editlink') ? getUri(file, 'editlink') : getUri(file, 'link')" class="btn btn-sm btn-primary" target="_blank">
+            <i class="fa fa-external-link mr5">
+            </i>
+            View
+           </a>
+          </div>
+          <div class="btn-group" v-if="file.status == 'ok'">
+           <button aria-expanded="false" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" type="button">
+            <i class="fa fa-share mr5">
+            </i>
+            Share
+            <span class="caret ml5">
+            </span>
+           </button>
+           <ul class="dropdown-menu" role="menu">
+            <li>
+             <a class="twitterShareLink" href="" target="_blank">
+              <span class="fa fa-twitter mr5">
+              </span>
+              Twitter
+             </a>
+            </li>
+            <li>
+             <a class="facebookShareLink" href="" target="_blank">
+              <span class="fa fa-facebook-square mr5">
+              </span>
+              Facebook
+             </a>
+            </li>
+           </ul>
+          </div>
+         </div>
+        </div>
+        <div class="panel-body admin-form theme-primary">
+         <strong class="error" v-if="file.status == 'error'">
+          {{ file.error }}
+         </strong>
+         <label class="field prepend-icon" v-else-if="file.status == 'ok'">
+          <input :value="getUri(file, 'shortlink')" class="gui-input linkInput" id="url" readonly="readonly" type="text"/>
+          <label class="field-icon" for="url">
+           <i class="fa fa-link">
+           </i>
+          </label>
+         </label>
+         <div class="progress mbn" v-else="">
+          <div :style="{ width: file.percent ? file.percent : 100 + '%' }" class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar">
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+      <captcha ref="captcha" sitekey="6Lem-icTAAAAAAHqZJpvJKTfeiUlpSC2SwTXfwUc" v-on:closed="onCaptchaSolved">
+      </captcha>
+      <subscription-required ref="subscriptionRequired">
+      </subscription-required>
+      <document-request-email ref="requestEmail" sitekey="6Lem-icTAAAAAAHqZJpvJKTfeiUlpSC2SwTXfwUc" v-on:closed="onCaptchaSolved" v-on:email-entered="onEmailEntered">
+      </document-request-email>
+     </div>
+    </upload>
+   </div>
+   <div class="container" id="marketing">
+    <div class="row mt50">
+     <div class="col-md-4 row">
+      <div class="col-md-3 text-center">
+       <i class="fa fa-files-o fa-lg fs60 mt5 mb5">
+       </i>
+      </div>
+      <div class="col-md-9">
+       Upload your documents in any format. We support
+       <strong>
+        PDF, DOCX, DOC, ODT, RTF, XLS, XLSX, ODS, PPT, PPTX, ODP, TXT and more
+       </strong>
+       ! DocDroid creates a link for sharing.
+      </div>
+     </div>
+     <div class="col-md-4 row">
+      <div class="col-md-3 text-center">
+       <i class="fa fa-download fa-lg fs60 mt5 mb5">
+       </i>
+      </div>
+      <div class="col-md-9">
+       <strong>
+        Fast and convenient
+       </strong>
+       browser preview for your readers (
+       <a href="/hptvUCe/example-document.docx" target="_blank">
+        example document
+       </a>
+       ). We automatically convert your document: If you upload a DOCX, your readers can choose to download it as PDF, DOC, ODT or TXT!
+      </div>
+     </div>
+     <div class="col-md-4 row">
+      <div class="col-md-3 text-center">
+       <i class="fa fa-lock fa-lg fs60 mt5 mb5">
+       </i>
+      </div>
+      <div class="col-md-9">
+       <strong>
+        Privacy
+       </strong>
+       is important to us! Uploaded documents are
+       <strong>
+        not publicly
+       </strong>
+       listed. If you want to, you can set up password protection or set your document to private at anytime.
+      </div>
+     </div>
+    </div>
+    <div class="row pt30">
+     <div class="col-md-4 row">
+      <div class="col-md-3 text-center">
+       <i class="fa fa-edit fa-lg fs60 mt5 mb5">
+       </i>
+      </div>
+      <div class="col-md-9">
+       You retain
+       <strong>
+        complete control
+       </strong>
+       over your uploaded documents. You can modify, replace and delete your PDFs later. Documents are automatically deleted after 60 days without view.
+      </div>
+     </div>
+     <div class="col-md-4 row">
+      <div class="col-md-3 text-center">
+       <i class="fa fa-user fa-lg fs60 mt5 mb5">
+       </i>
+      </div>
+      <div class="col-md-9">
+       <strong>
+        No sign up required
+       </strong>
+       . For more comfort we encourage you to create a free account, but we do not force you to do so!
+      </div>
+     </div>
+     <div class="col-md-4 row">
+      <div class="col-md-3 text-center">
+       <i class="fa fa-code fa-lg fs60 mt5 mb5">
+       </i>
+      </div>
+      <div class="col-md-9">
+       <strong>
+        Embed
+       </strong>
+       your uploaded PDFs in other websites. This way you can integrate DocDroid documents in your website as iframes.
+      </div>
+     </div>
+    </div>
+   </div>
+   <footer class="" id="content-footer">
+    <div class="container">
+     <span class="footer-legal hidden-xs">
+      © 2021 Lunaweb GmbH
+     </span>
+     <a href="https://twitter.com/docdroid_" target="_blank">
+      <span class="fa fa-twitter ml20">
+      </span>
+     </a>
+     <a href="https://www.facebook.com/docdroid" target="_blank">
+      <span class="fa fa-facebook ml20">
+      </span>
+     </a>
+     <a class="ml20" href="https://www.docdroid.net/contact">
+      Contact
+     </a>
+     <a class="ml20" href="https://www.docdroid.net/terms">
+      Terms Of Service
+     </a>
+     <a class="ml20" href="https://www.docdroid.net/privacy">
+      Privacy
+     </a>
+     <a class="hidden-xs hidden-sm ml20" href="https://cloudconvert.com" target="_blank">
+      File Conversion API
+     </a>
+    </div>
+   </footer>
+   <!-- Application Level Modals -->
+  </div>
+  <!-- JavaScript -->
+  <script src="/js/app.js?id=7030c1f33c66b4c30204">
+  </script>
+  <script async="" defer="" src="https://www.recaptcha.net/recaptcha/api.js?onload=vueRecaptchaApiLoaded&amp;render=explicit">
+  </script>
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" type="text/css"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+ </body>
+</html>

@@ -1,0 +1,1242 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <title>
+   Adminer - Database management in a single PHP file
+  </title>
+  <link href="/static/style.css" rel="stylesheet" type="text/css"/>
+  <link href="/static/jquery/fancybox/jquery.fancybox-1.3.4.css" media="screen" rel="stylesheet" type="text/css"/>
+  <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="https://sourceforge.net/p/adminer/news/feed" rel="alternate" title="News" type="application/rss+xml"/>
+  <link href="/en/" rel="canonical"/>
+  <link href="/cs/" lang="cs" rel="alternate" title="Čeština"/>
+  <link href="/sk/" lang="sk" rel="alternate" title="Slovenčina"/>
+  <link href="/de/" lang="de" rel="alternate" title="Deutsch"/>
+  <link href="/pl/" lang="pl" rel="alternate" title="Polski"/>
+  <meta content="Adminer (formerly phpMinAdmin) is a full-featured database management tool written in PHP. Conversely to phpMyAdmin, it consist of a single file ready to deploy to the target server. Adminer is available for MySQL, MariaDB, PostgreSQL, SQLite, MS SQL, Oracle, Elasticsearch, MongoDB and others via plugin." name="description"/>
+ </head>
+ <body>
+  <div id="container">
+   <div id="header">
+    <h1>
+     <a href="/en/">
+      Adminer
+      <span>
+       ­
+      </span>
+     </a>
+    </h1>
+    <div id="slogan">
+     Database management in a single PHP file
+    </div>
+    <ul id="languages">
+     <li>
+      <span class="icon" style="background-image: url(\/static/images/flags/en.gif);">
+       English
+      </span>
+     </li>
+     <li>
+      <a class="icon" href="/cs/" style="background-image: url(\/static/images/flags/cs.gif);">
+       Čeština
+      </a>
+     </li>
+     <li>
+      <a class="icon" href="/sk/" style="background-image: url(\/static/images/flags/sk.gif);">
+       Slovenčina
+      </a>
+     </li>
+     <li>
+      <a class="icon" href="/de/" style="background-image: url(\/static/images/flags/de.gif);">
+       Deutsch
+      </a>
+     </li>
+     <li>
+      <a class="icon" href="/pl/" style="background-image: url(\/static/images/flags/pl.gif);">
+       Polski
+      </a>
+     </li>
+    </ul>
+   </div>
+   <div id="navbar">
+    <ul>
+     <li>
+      <a class="current" href="/en/">
+       <em>
+        <span class="icon adminer">
+         Adminer
+        </span>
+       </em>
+      </a>
+     </li>
+     <li>
+      <a href="/en/editor/">
+       <em>
+        <span class="icon editor">
+         Adminer Editor
+        </span>
+       </em>
+      </a>
+     </li>
+     <li>
+      <a href="/en/plugins/">
+       <em>
+        <span class="icon plugin">
+         Plugins
+        </span>
+       </em>
+      </a>
+     </li>
+     <!-- <li><a href="/en/pro/"><em><span class="icon pro">Adminer Pro</span></em></a></li> -->
+     <li>
+      <a href="https://sourceforge.net/p/adminer/news/">
+       <em>
+        <span class="icon news">
+         News
+        </span>
+       </em>
+      </a>
+     </li>
+     <li>
+      <a href="https://sourceforge.net/p/adminer/discussion/">
+       <em>
+        <span class="icon forums">
+         Forums
+        </span>
+       </em>
+      </a>
+     </li>
+     <li>
+      <a href="https://sourceforge.net/p/adminer/bugs-and-features/">
+       <em>
+        <span class="icon bugs">
+         Bugs
+        </span>
+       </em>
+      </a>
+     </li>
+     <li>
+      <a href="https://github.com/vrana/adminer/">
+       <em>
+        <span class="icon svn">
+         Code
+        </span>
+       </em>
+      </a>
+     </li>
+    </ul>
+   </div>
+   <script src="/static/jquery/jquery-1.4.4.js" type="text/javascript">
+   </script>
+   <script src="/static/jquery/fancybox/jquery.mousewheel-3.0.4.pack.js" type="text/javascript">
+   </script>
+   <script src="/static/jquery/fancybox/jquery.fancybox-1.3.4.pack.js" type="text/javascript">
+   </script>
+   <div id="info-block">
+    <div id="screen">
+     <img alt="Adminer – screenshot" height="157" src="/static/images/adminer.png" width="266"/>
+    </div>
+    <div id="title">
+     <p>
+      Adminer (formerly phpMinAdmin) is a full-featured database management tool written in PHP. Conversely to
+      <a href="https://www.phpmyadmin.net/" target="_blank">
+       phpMyAdmin
+      </a>
+      , it consist of a single file ready to deploy to the target server.
+	Adminer is available for
+      <strong>
+       MySQL
+      </strong>
+      ,
+      <strong>
+       MariaDB
+      </strong>
+      ,
+      <strong>
+       PostgreSQL
+      </strong>
+      ,
+      <strong>
+       SQLite
+      </strong>
+      ,
+      <strong>
+       MS SQL
+      </strong>
+      ,
+      <strong>
+       Oracle
+      </strong>
+      ,
+      <strong>
+       Elasticsearch
+      </strong>
+      ,
+      <strong>
+       MongoDB
+      </strong>
+      and others via plugin.
+     </p>
+     <div class="more">
+      See:
+      <!-- <a href="#screenshots">Screenshots</a>,  -->
+      <a href="#features">
+       Features
+      </a>
+      ,
+      <a href="#requirements">
+       Requirements
+      </a>
+      ,
+      <a href="#extras">
+       Skins
+      </a>
+      ,
+      <a href="#references">
+       References
+      </a>
+     </div>
+    </div>
+    <div id="downloads" onclick="location.href = '#download';">
+     <div class="download">
+      <div class="content">
+       <a href="#download">
+        <strong>
+         Download
+        </strong>
+       </a>
+       <br/>
+       v 4.8.0, 2021-02-10
+      </div>
+     </div>
+    </div>
+    <!--
+	<div id="donate">
+		<a class="wepay-widget-button wepay-green" id="wepay_widget_anchor_51981d5f5e264" href="https://www.wepay.com/donations/952558063">Donate</a>
+		<script type="text/javascript" src="/static/wepay.js"></script>
+	</div>
+-->
+    <form action="https://demo.adminer.org/adminer.php" id="demo" method="post" onclick="this.submit();">
+     <input name="auth[driver]" type="hidden" value="server"/>
+     <div class="content">
+      <button>
+       <strong>
+        Online demo
+       </strong>
+      </button>
+     </div>
+    </form>
+   </div>
+   <h3>
+    <a name="phpmyadmin">
+    </a>
+    Why is Adminer better than phpMyAdmin?
+   </h3>
+   <p>
+    Replace
+    <strong>
+     phpMyAdmin
+    </strong>
+    with
+    <strong>
+     Adminer
+    </strong>
+    and you will get a tidier user interface, better support for MySQL features, higher performance and more security.
+    <a href="/en/phpmyadmin/">
+     See detailed comparison
+    </a>
+    .
+   </p>
+   <p>
+    Adminer development priorities are: 1. Security, 2. User experience, 3. Performance, 4. Feature set, 5. Size.
+   </p>
+   <h3>
+    <a name="screenshots">
+    </a>
+    Screenshots
+   </h3>
+   <p class="screenshots">
+    <a href="/static/screenshots/auth.png" rel="screenshot" title="Login">
+     <img alt="" height="100" src="/static/screenshots/preview/auth.png" width="100"/>
+    </a>
+    <a href="/static/screenshots/db.png" rel="screenshot" title="Database overview">
+     <img alt="" height="100" src="/static/screenshots/preview/db.png" width="100"/>
+    </a>
+    <a href="/static/screenshots/table.png" rel="screenshot" title="Table overview">
+     <img alt="" height="100" src="/static/screenshots/preview/table.png" width="100"/>
+    </a>
+    <a href="/static/screenshots/create.png" rel="screenshot" title="Alter table">
+     <img alt="" height="100" src="/static/screenshots/preview/create.png" width="100"/>
+    </a>
+    <a href="/static/screenshots/select.png" rel="screenshot" title="Select data">
+     <img alt="" height="100" src="/static/screenshots/preview/select.png" width="100"/>
+    </a>
+    <a href="/static/screenshots/edit.png" rel="screenshot" title="Edit data">
+     <img alt="" height="100" src="/static/screenshots/preview/edit.png" width="100"/>
+    </a>
+    <a href="/static/screenshots/database.png" rel="screenshot" title="Server overview">
+     <img alt="" height="100" src="/static/screenshots/preview/database.png" width="100"/>
+    </a>
+    <a href="/static/screenshots/schema.png" rel="screenshot" title="Database schema">
+     <img alt="" height="100" src="/static/screenshots/preview/schema.png" width="100"/>
+    </a>
+    <a href="/static/screenshots/dump.png" rel="screenshot" title="Export">
+     <img alt="" height="100" src="/static/screenshots/preview/dump.png" width="100"/>
+    </a>
+    <a href="/static/screenshots/sql.png" rel="screenshot" title="SQL command">
+     <img alt="" height="100" src="/static/screenshots/preview/sql.png" width="100"/>
+    </a>
+   </p>
+   <p>
+    <a href="/static/screencast/srigi.mp4">
+     Screencast
+    </a>
+    about Adminer features and using plugins (19:31, by
+    <a href="http://www.srigi.sk/">
+     Igor Hlina
+    </a>
+    )
+   </p>
+   <h3 id="download">
+    Downloads
+   </h3>
+   <ul>
+    <li>
+     <a href="https://github.com/vrana/adminer/releases/download/v4.8.0/adminer-4.8.0.php">
+      Adminer 4.8.0
+     </a>
+     (.php, 465 kB),
+     <a href="https://github.com/vrana/adminer/releases/download/v4.8.0/adminer-4.8.0-en.php">
+      English only
+     </a>
+     (.php, 309 kB)
+    </li>
+    <li>
+     <a href="https://github.com/vrana/adminer/releases/download/v4.8.0/adminer-4.8.0-mysql.php">
+      Adminer 4.8.0 for MySQL
+     </a>
+     (.php, 356 kB),
+     <a href="https://github.com/vrana/adminer/releases/download/v4.8.0/adminer-4.8.0-mysql-en.php">
+      English only
+     </a>
+     (.php, 207 kB)
+    </li>
+    <!--
+<li><a href="https://www.adminer.org/latest.php">Adminer 4.8.0</a> (.php, 465 kB), <a href="https://www.adminer.org/latest-en.php">English only</a> (.php, 309 kB)</li>
+<li><a href="https://www.adminer.org/latest-mysql.php">Adminer 4.8.0 for MySQL</a> (.php, 356 kB), <a href="https://www.adminer.org/latest-mysql-en.php">English only</a> (.php, 207 kB)</li>
+-->
+    <li>
+     <a href="https://github.com/vrana/adminer/releases/download/v4.8.0/adminer-4.8.0.zip">
+      Source codes
+     </a>
+     (.zip, 782 kB),
+     <a href="https://github.com/vrana/adminer/">
+      Current development version
+     </a>
+    </li>
+    <!--
+<li><a href="/static/download/4.8.0/adminer-4.8.0.php">Adminer 4.8.0</a> (.php, 465 kB), <a href="/static/download/4.8.0/adminer-4.8.0-en.php">English only</a> (.php, 309 kB)</li>
+<li><a href="/static/download/4.8.0/adminer-4.8.0-mysql.php">Adminer 4.8.0 for MySQL</a> (.php, 356 kB), <a href="/static/download/4.8.0/adminer-4.8.0-mysql-en.php">English only</a> (.php, 207 kB)</li>
+<li><a href="/static/download/4.8.0/adminer-4.8.0.zip">Source codes</a> (.zip, 782 kB), <a href="https://github.com/vrana/adminer/zipball/master">Current development version</a></li>
+-->
+    <li>
+     <a class="icon donate" href="https://sourceforge.net/p/adminer/donate/">
+      Donate
+     </a>
+     ,
+     <a href="https://www.patreon.com/jakubvrana">
+      Monthly contribution on Patreon
+     </a>
+    </li>
+    <li>
+     Latest stable version (use e.g. by
+     <code>
+      wget
+     </code>
+     ):
+     <code>
+      https://www.adminer.org/latest[-mysql][-en].php
+     </code>
+    </li>
+    <li>
+     <a href="https://github.com/vrana/adminer/blob/master/changes.txt">
+      Change log
+     </a>
+     ,
+     <a href="https://php.vrana.cz/-adminer.php">
+      blog
+     </a>
+    </li>
+    <li>
+     User contributed packages:
+     <a href="https://packages.debian.org/sid/adminer">
+      Debian package
+     </a>
+     ,
+     <a href="https://aur.archlinux.org/packages/adminer/">
+      Arch Linux package
+     </a>
+     ,
+     <a href="https://wordpress.org/plugins/ari-adminer/">
+      Wordpress plugin
+     </a>
+     ,
+     <a href="https://www.drupal.org/project/adminer">
+      Drupal module
+     </a>
+     ,
+     <a href="https://hub.docker.com/_/adminer/">
+      Docker
+     </a>
+     ,
+     <a href="http://extensions.joomla.org/extensions/hosting-a-servers/database-management/9886">
+      Joomla extension
+     </a>
+     ,
+     <a href="https://moodle.org/plugins/view.php?plugin=local_adminer">
+      Moodle plugin
+     </a>
+     ,
+     <a href="http://typo3.org/extensions/repository/view/t3adminer/current/">
+      TYPO3 extension
+     </a>
+     ,
+     <a href="http://dev.cmsmadesimple.org/projects/btadminer/">
+      CMS Made Simple Module
+     </a>
+     ,
+     <a href="https://packagist.org/packages/onecentlin/laravel-adminer">
+      Laravel
+     </a>
+     ,
+     <a href="https://github.com/robinflyhigh/laravel-adminer">
+      Laravel
+     </a>
+     ,
+     <a href="https://github.com/dotzero/Laravel-Adminer">
+      Laravel
+     </a>
+     ,
+     <a href="http://www.ampps.com/apps/dbtools/Adminer">
+      AMPPS
+     </a>
+     ,
+     <a href="https://github.com/lusingander/eledminer">
+      Electron
+     </a>
+    </li>
+    <li>
+     Adminer is also bundled with
+     <a href="https://nette.org/">
+      Nette Framework
+     </a>
+     (which this site runs on).
+    </li>
+    <li>
+     <a href="https://github.com/vrana/adminer/releases/">
+      Older versions
+     </a>
+    </li>
+   </ul>
+   <h3 id="features">
+    Features
+   </h3>
+   <ul>
+    <li>
+     <strong>
+      Connect
+     </strong>
+     to a database server with username and password
+    </li>
+    <li>
+     Select an existing
+     <strong>
+      database
+     </strong>
+     or create a new one
+    </li>
+    <li>
+     List fields, indexes, foreign keys and triggers of table
+    </li>
+    <li>
+     Change name, engine, collation, auto_increment and comment of
+     <strong>
+      table
+     </strong>
+    </li>
+    <li>
+     Alter name, type, collation, comment and default values of
+     <strong>
+      columns
+     </strong>
+    </li>
+    <li>
+     Add and drop tables and columns
+    </li>
+    <li>
+     Create, alter, drop and search by
+     <strong>
+      indexes
+     </strong>
+     including fulltext
+    </li>
+    <li>
+     Create, alter, drop and link lists by
+     <strong>
+      foreign keys
+     </strong>
+    </li>
+    <li>
+     Create, alter, drop and select from
+     <strong>
+      views
+     </strong>
+    </li>
+    <li>
+     Create, alter, drop and call
+     <strong>
+      stored procedures and functions
+     </strong>
+    </li>
+    <li>
+     Create, alter and drop
+     <strong>
+      triggers
+     </strong>
+    </li>
+    <li>
+     <strong>
+      List data
+     </strong>
+     in tables with search, aggregate, sort and limit results
+    </li>
+    <li>
+     Insert new
+     <strong>
+      records
+     </strong>
+     , update and delete the existing ones
+    </li>
+    <li>
+     Supports all
+     <strong>
+      data types
+     </strong>
+     , blobs through file transfer
+    </li>
+    <li>
+     Execute any
+     <strong>
+      SQL command
+     </strong>
+     from a text field or a file
+    </li>
+    <li>
+     <strong>
+      Export
+     </strong>
+     table structure, data, views, routines, databases to SQL or CSV
+    </li>
+    <li>
+     Print
+     <strong>
+      database schema
+     </strong>
+     connected by foreign keys
+    </li>
+    <li>
+     Show
+     <strong>
+      processes
+     </strong>
+     and kill them
+    </li>
+    <li>
+     Display
+     <strong>
+      users and rights
+     </strong>
+     and change them
+    </li>
+    <li>
+     Display
+     <strong>
+      variables
+     </strong>
+     with links to documentation
+    </li>
+    <li>
+     Manage
+     <strong>
+      events
+     </strong>
+     and
+     <strong>
+      table partitions
+     </strong>
+     (MySQL 5.1)
+    </li>
+    <li>
+     Schemas, sequences, user types (PostgreSQL)
+    </li>
+    <li>
+     <a href="/en/extension/">
+      Extensive
+      <strong>
+       customization
+      </strong>
+      options
+     </a>
+    </li>
+   </ul>
+   <h3 id="requirements">
+    Requirements
+   </h3>
+   <ul>
+    <li>
+     Works with
+     <acronym title="4.1, 5.0, 5.1, 5.5, 5.6, 5.7, 8.0 through extensions: mysql, mysqli, pdo_mysql">
+      MySQL
+     </acronym>
+     , MariaDB,
+     <acronym title="through extensions: pgsql, pdo_pgsql">
+      PostgreSQL
+     </acronym>
+     ,
+     <acronym title="2.8, 3 through extensions: sqlite, sqlite3, pdo_sqlite">
+      SQLite
+     </acronym>
+     ,
+     <acronym title="2005, 2008 through extensions: sqlsrv, mssql">
+      MS SQL
+     </acronym>
+     ,
+     <acronym lang="en" title="through extensions: oci8, pdo_oci">
+      Oracle
+     </acronym>
+     , Elasticsearch, MongoDB, SimpleDB (
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/plugins/drivers/simpledb.php">
+      plugin
+     </a>
+     ), Firebird (
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/plugins/drivers/firebird.php">
+      plugin
+     </a>
+     ), ClickHouse (
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/plugins/drivers/clickhouse.php">
+      plugin
+     </a>
+     ) -
+     <a href="/en/drivers/">
+      Improve your driver
+     </a>
+    </li>
+    <li>
+     Supports PHP 5, 7 and 8 with enabled sessions
+    </li>
+    <li>
+     Available in many languages
+     <a href="https://github.com/vrana/adminer/blob/master/adminer/include/lang.inc.php#L4">
+      (43)
+     </a>
+     -
+     <a href="/en/translation/">
+      Create a new translation
+     </a>
+    </li>
+    <li>
+     Free for commercial and non-commercial use (
+     <a href="https://www.apache.org/licenses/LICENSE-2.0.html">
+      Apache License
+     </a>
+     or
+     <a href="https://www.gnu.org/licenses/gpl-2.0.txt">
+      GPL 2
+     </a>
+     )
+    </li>
+   </ul>
+   <p>
+    Security is #1 priority in development of Adminer. Adminer does not allow connecting to databases without a password and it rate-limits the connection attempts to protect against brute-force attacks. Still, consider making Adminer inaccessible to public by whitelisting IP addresses allowed to connect to it, password-protecting the access in your web server, enabling security
+    <a href="/en/plugins/">
+     plugins
+    </a>
+    (e.g. to require an
+    <acronym lang="en" title="One Time Password">
+     OTP
+    </acronym>
+    ) or by
+    <a href="/en/extension/">
+     customizing
+    </a>
+    the
+    <code>
+     login
+    </code>
+    method. You can also delete Adminer if not needed anymore, it is just one file which is easy to upload in the future. Adminer had some security bugs in the past so update whenever Adminer tells you there is a new version available (ask your administrator if you could not update yourself).
+   </p>
+   <h3 id="extras">
+    Alternative designs
+   </h3>
+   <ul class="extras">
+    <li>
+     <a href="/static/designs/hever/screenshot.png" rel="extras" title="hever (Martin Hořínek)">
+      <img alt="screenshot" height="100" src="/static/designs/hever/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/designs/hever/adminer.css">
+      hever
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/nette/screenshot.png" rel="extras" title="nette (David Grudl)">
+      <img alt="screenshot" height="100" src="/static/designs/nette/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/designs/nette/adminer.css">
+      nette
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/brade/screenshot.png" rel="extras" title="brade (Brad Garrett)">
+      <img alt="screenshot" height="100" src="/static/designs/brade/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/designs/brade/adminer.css">
+      brade
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/ng9/screenshot.png" rel="extras" title="ng9 (Lukáš Brandejs)">
+      <img alt="screenshot" height="100" src="/static/designs/ng9/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/designs/ng9/adminer.css">
+      ng9
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/pepa-linha/screenshot.png" rel="extras" title="pepa-linha">
+      <img alt="screenshot" height="100" src="/static/designs/pepa-linha/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/designs/pepa-linha/adminer.css">
+      pepa-linha
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/lucas-sandery/screenshot.png" rel="extras" title="lucas-sandery">
+      <img alt="screenshot" height="100" src="/static/designs/lucas-sandery/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/designs/lucas-sandery/adminer.css">
+      lucas-sandery
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/pappu687/screenshot.png" rel="extras" title="pappu687">
+      <img alt="screenshot" height="100" src="/static/designs/pappu687/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/designs/pappu687/adminer.css">
+      pappu687
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/mvt/screenshot.png" rel="extras" title="mvt">
+      <img alt="screenshot" height="100" src="/static/designs/mvt/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/designs/mvt/adminer.css">
+      mvt
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/rmsoft/screenshot.png" rel="extras" title="rmsoft">
+      <img alt="screenshot" height="100" src="/static/designs/rmsoft/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/designs/rmsoft/adminer.css">
+      rmsoft
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/rmsoft_blue/screenshot.png" rel="extras" title="rmsoft blue">
+      <img alt="screenshot" height="100" src="/static/designs/rmsoft_blue/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/designs/rmsoft_blue/adminer.css">
+      rmsoft blue
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/pepa-linha-dark/screenshot.png" rel="extras" title="pepa-linha-dark">
+      <img alt="screenshot" height="100" src="/static/designs/pepa-linha-dark/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/pepa-linha/Adminer-Design-Dark/master/adminer.css">
+      pepa-linha-dark
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/mancave/screenshot.png" rel="extras" title="mancave (MonolithForge)">
+      <img alt="screenshot" height="100" src="/static/designs/mancave/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/designs/mancave/adminer.css">
+      mancave
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/galkaev/screenshot.png" rel="extras" title="galkaev (Peter Galkaev)">
+      <img alt="screenshot" height="100" src="/static/designs/galkaev/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/designs/galkaev/adminer.css">
+      galkaev
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/hydra/screenshot.png" rel="extras" title="hydra (Niyko)">
+      <img alt="screenshot" height="100" src="/static/designs/hydra/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/Niyko/Hydra-Dark-Theme-for-Adminer/master/adminer.css">
+      hydra
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/dracula/screenshot.png" rel="extras" title="dracula (Douglas Damasio)">
+      <img alt="screenshot" height="100" src="/static/designs/dracula/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/designs/dracula/adminer.css">
+      dracula
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/arcs-material/screenshot.png" rel="extras" title="arcs-material (Patrick Stillhart - Material Design)">
+      <img alt="screenshot" height="100" src="/static/designs/arcs-material/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/arcs-/Adminer-Material-Theme/master/adminer.css">
+      arcs-material
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/price/screenshot.png" rel="extras" title="price (James Price)">
+      <img alt="screenshot" height="100" src="/static/designs/price/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/designs/price/adminer.css">
+      price
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/flat/screenshot.png" rel="extras" title="flat (Israel Viana)">
+      <img alt="screenshot" height="100" src="/static/designs/flat/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/designs/flat/adminer.css">
+      flat
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/haeckel/screenshot.png" rel="extras" title="haeckel (Klemens Häckel)">
+      <img alt="screenshot" height="100" src="/static/designs/haeckel/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/designs/haeckel/adminer.css">
+      haeckel
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/pokorny/screenshot.png" rel="extras" title="pokorny (Miroslav Pokorný)">
+      <img alt="screenshot" height="100" src="/static/designs/pokorny/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/designs/pokorny/adminer.css">
+      pokorny
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/paranoiq/screenshot.png" rel="extras" title="paranoiq (Vlasta Neubauer)">
+      <img alt="screenshot" height="100" src="/static/designs/paranoiq/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/designs/paranoiq/adminer.css">
+      paranoiq
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/bueltge/screenshot.png" rel="extras" title="bueltge (Frank Bültge)">
+      <img alt="screenshot" height="100" src="/static/designs/bueltge/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/designs/bueltge/adminer.css">
+      bueltge
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/esterka/screenshot.png" rel="extras" title="esterka (Petr Esterka)">
+      <img alt="screenshot" height="100" src="/static/designs/esterka/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/designs/esterka/adminer.css">
+      esterka
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/nicu/screenshot.png" rel="extras" title="nicu (Iordachescu Nicu)">
+      <img alt="screenshot" height="100" src="/static/designs/nicu/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/designs/nicu/adminer.css">
+      nicu
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/arcs-/screenshot.png" rel="extras" title="arcs- (Patrick Stillhart)">
+      <img alt="screenshot" height="100" src="/static/designs/arcs-/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/arcs-/adminer.css/master/adminer.css">
+      arcs-
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/konya/screenshot.png" rel="extras" title="konya (Oğuz Konya)">
+      <img alt="screenshot" height="100" src="/static/designs/konya/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/designs/konya/adminer.css">
+      konya
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/pilot/screenshot.png" rel="extras" title="pilot (Miroslav Kovář)">
+      <img alt="screenshot" height="100" src="/static/designs/pilot/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/designs/pilot/adminer.css">
+      pilot
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/kahi/screenshot.png" rel="extras" title="kahi (Petr Kahoun)">
+      <img alt="screenshot" height="100" src="/static/designs/kahi/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/designs/kahi/adminer.css">
+      kahi
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/cvicebni-ubor/screenshot.png" rel="extras" title="cvicebni-ubor">
+      <img alt="screenshot" height="100" src="/static/designs/cvicebni-ubor/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/designs/cvicebni-ubor/adminer.css">
+      cvicebni-ubor
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/jukin/screenshot.png" rel="extras" title="jukin (Tomáš Jukin, Janča Moudrá)">
+      <img alt="screenshot" height="100" src="/static/designs/jukin/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="https://raw.githubusercontent.com/vrana/adminer/master/designs/jukin/adminer.css">
+      jukin
+     </a>
+    </li>
+    <li>
+     <a href="/static/designs/kahi2/screenshot.png" rel="extras" title="kahi2 (Petr Kahoun)">
+      <img alt="screenshot" height="100" src="/static/designs/kahi2/preview.png" width="100"/>
+     </a>
+     <br/>
+     <a href="http://kahi.cz/blog/images/adminer-makeup/adminer331-kahi.zip">
+      kahi2
+     </a>
+    </li>
+   </ul>
+   <p class="clear">
+    <strong>
+     Usage:
+    </strong>
+    Just put the file
+    <code>
+     adminer.css
+    </code>
+    alongside
+    <code>
+     adminer.php
+    </code>
+    .
+   </p>
+   <ul>
+    <li>
+     <a href="https://github.com/pematon/adminer-theme">
+      Several styles by Pematon
+     </a>
+    </li>
+    <li>
+     <a href="http://www.rmsoft.sk/index.php/en/portfolio/programming-work/web-services/graphical-interface-css-for-adminer">
+      Several styles by Robert Mesaros
+     </a>
+    </li>
+   </ul>
+   <script type="text/javascript">
+    jQuery(function ($) {
+	$('.screenshots a, .extras a[rel]').fancybox();
+});
+   </script>
+   <h3 id="references">
+    References
+   </h3>
+   <ul class="references">
+    <li>
+     2021-01-18
+     <a href="https://kinsta.com/blog/adminer/">
+      Kinsta
+     </a>
+     (English)
+    </li>
+    <li>
+     2020-12-30
+     <a href="http://php.vrana.cz/users-of-adminer-3-7-1-and-older-might-have-been-hacked.php">
+      Users of Adminer 3.7.1 and older might have been hacked
+     </a>
+     (English)
+    </li>
+    <li>
+     2020-02-01
+     <a href="https://analyzegear.co.jp/blog/632">
+      Analyzegear
+     </a>
+     (Japanese)
+    </li>
+    <li>
+     2019-04-01
+     <a href="http://www.linux-magazine.com/Issues/2019/222/The-sys-admin-s-daily-grind-Adminer">
+      Linux Magazine
+     </a>
+     (English)
+    </li>
+    <li>
+     2018-02-13
+     <a href="https://www.techrepublic.com/article/how-to-make-mysql-administration-simple-with-adminer/">
+      TechRepublic
+     </a>
+     (English)
+    </li>
+    <li>
+     2016-02-21
+     <a href="https://www.youtube.com/watch?v=1vNPEPPJOtA">
+      Youtube
+     </a>
+     (Portuguese)
+    </li>
+    <li>
+     2015-08-17
+     <a href="http://sourceforge.net/blog/project-of-the-week-august-17-2015/">
+      SourceForge Community Blog
+     </a>
+     (English)
+    </li>
+    <li>
+     2014-07-17
+     <a href="http://www.linuxjournal.com/content/adminer%E2%80%94better-awesome">
+      Linux Journal
+     </a>
+     (English)
+    </li>
+    <li>
+     2014-01-31
+     <a href="http://www.ubuntugeek.com/adminer-database-management-in-a-single-php-file.html">
+      Ubuntu Geek
+     </a>
+     (English)
+    </li>
+    <li>
+     2014-01-29
+     <a href="http://www.tecmint.com/adminer-a-advanced-web-based-databases-administration-tool-for-linux/">
+      Tecmint
+     </a>
+     (English)
+    </li>
+    <li>
+     2012-10-15
+     <a href="http://www.postgresonline.com/journal/archives/276-Adminer-web-based-database-administration.html">
+      Postgres OnLine Journal
+     </a>
+     (English)
+    </li>
+    <li>
+     2012-04-19
+     <a href="https://www.linux.com/learn/tutorials/566420-manage-your-database-with-adminer">
+      Linux.com
+     </a>
+     (English)
+    </li>
+    <li>
+     2012-03-19
+     <a href="https://sourceforge.net/blog/podcast-adminer/">
+      SourceForge.net
+     </a>
+     (English)
+    </li>
+    <li>
+     2011-11-09
+     <a href="http://how-to.linuxcareer.com/using-adminer-to-manage-your-databases">
+      Linux Career
+     </a>
+     (English)
+    </li>
+    <li>
+     2010-10-27
+     <a href="http://www.sitepoint.com/phpmyadmin-alternatives/">
+      SitePoint
+     </a>
+     (English)
+    </li>
+    <li>
+     2010-10-13
+     <a href="http://codingthis.com/databases/mysql/adminer-mysql-admin-script/">
+      CodingThis.com
+     </a>
+     (English)
+    </li>
+    <li>
+     2010-02-03
+     <a href="http://www.freakzion.com/2010/02/tools-adminer-alternative-to-phpmyadmin.html">
+      FreakZion
+     </a>
+     (English)
+    </li>
+    <li>
+     2010-01-12
+     <a href="http://zdrojak.root.cz/clanky/phpmyadmin-vs-adminer/">
+      Zdroják
+     </a>
+     (Czech)
+    </li>
+    <li>
+     2009-12-28
+     <a href="http://php.vrana.cz/architecture-of-adminer.php">
+      PHP triky
+     </a>
+     (English)
+    </li>
+    <li>
+     2009-09-10
+     <a href="http://www.wp-zone.de/adminer-mysql-datenbank-verwaltung-als-wordpress-plugin/">
+      WordPress-Zone
+     </a>
+     (German)
+    </li>
+    <li>
+     2009-08-27
+     <a href="http://www.phparch.com/magazine/2009-2/august/">
+      php|arch
+     </a>
+     (English)
+    </li>
+    <li>
+     2009-08-18
+     <a href="http://www.codediesel.com/mysql/adminer-a-fast-mysql-administrator-tool/">
+      CodeDiesel
+     </a>
+     (English)
+    </li>
+    <li>
+     2009-08-17
+     <a href="http://www.webresourcesdepot.com/web-based-mysql-management-with-only-1-file-adminer/">
+      Web Resources Depot
+     </a>
+     (English)
+    </li>
+    <li>
+     2009-08-02
+     <a href="http://en.wikipedia.org/wiki/Adminer">
+      Wikipedia
+     </a>
+     (English)
+    </li>
+    <li>
+     2008-09-04
+     <a href="http://www.lenzg.net/archives/215-MySQL-5.1-Use-Case-Competition-Adding-support-for-MySQL-5.1-Events-to-phpMinAdmin.html">
+      Lenz Grimmer
+     </a>
+     (English)
+    </li>
+    <li>
+     2008-08-21
+     <a href="http://www.linux.com/archive/feature/145334">
+      Linux.com
+     </a>
+     (English)
+    </li>
+    <li>
+     2008-07-03
+     <a href="https://sourceforge.net/community/cca08-finalists/">
+      SourceForge.net
+     </a>
+     (English)
+    </li>
+    <li>
+     2007-11-21
+     <a href="http://programujte.com/index.php?akce=clanek&amp;cl=2007111000-phpminadmin-efektne-na-mysql">
+      Programujte.com
+     </a>
+     (Czech)
+    </li>
+    <li>
+     2007-07-25
+     <a href="http://www.root.cz/zpravicky/phpminadmin-pohodlna-administrace-databaze/">
+      Root.cz
+     </a>
+     (Czech)
+    </li>
+    <li>
+     2007-07-25
+     <a href="http://php.vrana.cz/phpminadmin.php">
+      PHP triky
+     </a>
+     (Czech)
+    </li>
+   </ul>
+   <div class="more ref">
+    <a href="/en/reference/">
+     More…
+    </a>
+   </div>
+   <div id="footer">
+    <p id="author">
+     <a href="https://www.vrana.cz/">
+      Jakub Vrána
+     </a>
+     <!-- <a href="https://sourceforge.net/projects/adminer/"><img src="https://sflogo.sourceforge.net/sflogo.php?group_id=264133&amp;type=1" width="88" height="31" style="vertical-align: middle; border: 0;" alt="SourceForge.net Logo" /></a> -->
+    </p>
+    <p id="credits">
+     Design:
+     <a href="mailto:jan@smitka.org">
+      Jan Smitka
+     </a>
+     ,
+     <a href="http://www.famfamfam.com/lab/icons/silk/">
+      Silk Icons
+     </a>
+     ,
+					Translation:
+     <a href="https://php.vrana.cz/">
+      Jakub Vrána
+     </a>
+     ,
+     <a href="https://www.vas-hosting.com/?ref=3000">
+      Hosting
+     </a>
+    </p>
+   </div>
+  </div>
+ </body>
+</html>

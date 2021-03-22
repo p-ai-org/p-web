@@ -1,0 +1,214 @@
+/**
+ *	UMG Core 2
+ *	./inc/slides/slider.css
+ *
+ *      19-Feb-2021 - Bartu - adjusted slider position to display artist names
+ *	20-Dec-2019 - Ade - adhusted v1 (slideralt) position to account for longer footer #161 + #74
+ *	05-Apr-2018 - Ade - adjusted for Owl slider + Chrome user agent - buttons n active
+ */
+.page-template-template-slider,
+.page-template-template-slider #main{
+	padding:0;
+	overflow:hidden;
+}
+.slider-thumbs,.slider-thumb{
+	display:none !important;
+}
+
+/* =cover
+   ========================================================================== */
+#main,
+#slider-cover{
+	background-color:#000 !important;
+	background-position:center center;
+	background-repeat:no-repeat;
+  background-size:260px auto;
+}
+#slider-cover{
+	background-image:url(../../assets/img/logo.png);
+	position:absolute;
+	top:0;left:0;right:0;bottom:0;
+	display:none;
+}
+.cover-on #slider-cover{
+	display:block;
+}
+.slider-legacy-bg #main{
+	background-image:url(slider-bg.jpg);
+	background-size:cover;
+}
+
+/* =Slides
+   ========================================================================== */
+#slides{
+	height:100%;
+	width:100%;
+	z-index:0;
+}
+#slides .slide{
+	opacity:0;
+	background-repeat:no-repeat;
+	background-position:top center;
+	background-size:cover;
+	height:100vh !important;
+	width:100vw !important;
+}
+#slides .slide img{
+	object-fit:cover;
+}
+
+/* =Buttons
+   ========================================================================== */
+#slides .button-group,
+#slides .button{
+	z-index:100;
+	position:absolute;
+}
+#slides .button-group {
+	left:0;
+	height:0;
+	width:100vw;
+	top:50vh;
+	transform:translateY(-50%);
+}
+
+
+#slides .button{
+	display:block;
+	right:0;
+	text-align:center;
+	width:45px;
+	font-size:30px;
+	line-height:56px;
+	height:56px;
+
+	/* added 05-Apr-2018 */
+	border:0;
+	cursor:pointer;
+}
+#slides .button.prev{
+	top:-60px;
+	left:auto;
+}
+.sidesliderbuttons #slides .button.prev{
+	top:0;
+	left:0;
+}
+
+.resizing #slides .button-group .button{
+	display:none !important;
+}
+/* =Titles
+   ========================================================================== */
+#slides .slide-inner{
+	opacity:0;
+	overflow:hidden;
+	font-size:1.7rem;
+	font-family:Lato,sans-serif;
+	line-height:1.2;
+	text-transform:uppercase;
+	text-align:center;
+	position:absolute;
+	bottom:75px;
+	width:100%;
+	height:auto;
+	padding:0 2em;
+	margin-bottom:-1.4rem;
+}
+
+.admin-bar #slides .slide-inner{
+	bottom:107px;
+}
+#slides h1{
+	font-size:0;
+	display:none;
+}
+#slides h2{
+	font-weight:300;
+	font-style:normal;
+	font-size:1.3em;
+}
+#slides h3{
+    font-size:.7em;
+	font-weight:300;
+}
+
+/* =Transitions + switches
+   ========================================================================== */
+.slider-loaded #slides .slide-inner,
+#slides .button{
+	-webkit-transition:all .6s;transition:all .6s;
+}
+#slides .slide-inner{
+	-webkit-transition:margin-bottom .6s ease-out,opacity 1.1s ease-in;
+    transition:margin-bottom .6s ease-out,opacity 1.1s ease-in;
+}
+#slides .active .slide-inner,
+#slides .animated .slide-inner{
+	-webkit-transition:none;
+    transition:none;
+}
+#slides .slide,
+#slides .active .slide-inner{
+	opacity:1 !important;
+}
+#slides .active .slide-inner{
+    margin-bottom:0;
+}
+
+/* =Media queries
+   ========================================================================== */
+@media screen and (max-width:960px) and (orientation:portrait) {
+	.slider-noclip #slides .slide{
+		background-size:100% auto;
+		/* ade/push - 2019-12-20 changed from 50 to 40% */
+		background-position:0 40%;
+		width:100%;
+		height:100%;
+	}
+	.slider-noclip #slides .slide img{
+		object-fit:cover;
+		width:100%;
+		height:auto;
+		max-height:none;
+	}
+	/* ade/push - 2019-12-20 - adjust for longer footer */
+	.slider-noclip #slides .button-group{
+		top:40vh;
+	}
+}
+/* ade/push - 2019-12-20 - to fix long */
+@media screen and (max-width:900px) {
+	.slider-noclip #slides .slide-inner{
+		/*display:none !important;*/
+		bottom: unset;
+		top: 60vh;
+	}
+}
+/* Sean/Push - 2021-02-08 - hide artist names on landscape #112545 */
+@media screen and (max-width:900px) and (orientation:landscape) {
+        .slider-noclip #slides .slide-inner{
+                display:none !important;
+        }
+}
+@media screen and (max-width:900px){
+	#slides .slide-inner{font-size:1.4rem;top: 55vh;}
+}
+@media screen and (max-width:640px) {
+        .slider-noclip #slides .slide-inner{
+                /*display:none !important;*/
+                bottom: unset;
+                top: 63vh;
+        }
+}
+@media screen and (max-width:768px){
+	#slides .slide-inner{font-size:1.2rem;line-height:1.1;}
+    #slides .button.prev,
+	.slider-noclip #slides .button.prev{top:0;left:0;}
+}
+@media screen and (max-width:480px){
+	#slides .slide-inner{font-size:1rem;line-height:1.2;top: 45vh;}
+}
+@media screen and (max-width:375px){
+	#slides .slide-inner{font-size:1.1rem;bottom:65px}
+}

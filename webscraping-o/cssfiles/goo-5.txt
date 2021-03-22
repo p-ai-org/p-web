@@ -1,0 +1,456 @@
+@charset "utf-8";
+/* for modal window */
+html.gameplay,
+html.gameplay body {
+  height: 100%;
+  overflow: hidden;
+}
+.gamewindow-wrap {
+  background: rgba(0,0,0,.5);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+}
+.gamewindow-wrap.active {
+  display: flex;
+}
+.gamewindow {
+  background: #fff;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  padding: 10px;
+  max-height: 95%;
+  max-width: 100%;
+  position: relative;
+  width: 1046px;
+}
+.gamewindow-heading {
+  border-bottom: 1px solid #ccc;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0 -6px 10px;
+  padding: 0 6px 6px;
+}
+.gamewindow-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: .5em;
+}
+.gamewindow-title img {
+  vertical-align: middle;
+}
+.gamewindow-inbox {
+  display: flex;
+  flex-direction: column;
+}
+.gamewindow-lead {
+  margin-bottom: 10px;
+}
+.gamewindow-lead span {
+  color: #f00;
+}
+.gamewindow-gamewrap {
+  text-align: center;
+}
+.gamewindow canvas {
+  max-width: 100%;
+  max-height: 100%;
+  vertical-align: top;
+}
+.gamewindow p {
+  color: #999;
+  font-size: 14px;
+  line-height: 1.4;
+  margin: 0 0 .75em;
+}
+.gamewindow p b {
+  color: #3cbfe8;
+  font-weight: bold;
+}
+.gamewindow.fullScreen {
+  background: none;
+  border: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+.gamewindow.fullScreen .gamewindow-heading,
+.gamewindow.fullScreen .gamewindow-title,
+.gamewindow.fullScreen .gamewindow-lead,
+.gamewindow.fullScreen .gamewindow-commonBtn {
+  display: none;
+}
+.gamewindow.fullScreen .gamewindow-gamewrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%!important;
+  width: 100%;
+}
+.gamewindow-closebtn {
+  align-items: center;
+  background: rgba(0,0,0,0.5);
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  font-weight: bold;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 44px;
+  width: 44px;
+  transform: translate(50%,-50%);
+  cursor: pointer;
+}
+.gamewindow-commonBtn {
+  margin: 10px 0 0;
+  text-align: center;
+}
+.gamewindow-commonBtn a {
+  background: #fff;
+  border: 1px solid #ccc;
+  color: #333;
+  border-radius: 5px;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 1em;
+}
+@media screen and (max-width: 599px) {
+    .gamewindow {
+        max-width: 90%;
+    }
+    .gamewindow-gamewrap {
+        margin: 0 auto;
+        max-width: 80%;
+    }
+    .gamewindow.fullScreen,
+    .gamewindow.fullScreen .gamewindow-gamewrap {
+        max-width: 100%;
+        width: 100%;
+    }
+}
+
+/* for single page */
+.gamepage {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKwAAACVBAMAAAA3agyOAAAAKlBMVEXy8vLz8/P09PT19fX29vb39/f4+Pj5+fn6+vr7+/v8/Pz9/f3+/v7///8W37AjAAAD1klEQVR4Xu3Z72tbVRjA8e+9ubltE4UrTIfYwbUORG0hAlMEhThBASlEFBEw0L0TtRBhAE4LFSw6NTAryoAFShEBtkCFuTFZYKk6kfXCWH/l1/O/KFkOaQc9z3kpcL6vL58czj0nwH0Qk/S+FdfubIm9A2yNj53M3tkUjn3nyPYgbIretQSAoOHGbgKxrv4FvFECptzYBYDnNLWT8MzF65sALZXtf93oMWxJYStwrVoGoKqx/RLBFwzLtazqHrAwexuAExrbZtykld0AWJmBz8oUNLbMI5hoKHswLCe3mFDYAflsGdOijU0ZRigb5BW2y0NSxlS3sTCxCsALCZHOdiA067AF1R6jQoXtE7dhMQWgaGVTql3DBgorJSB0Orhl4k8wZfLTayfrR7O/AoXN0Su2tsw4rpwBoqPZXgqLFcLvtT2QW4zj1aN3mNEiQrm5Vmyrl3eHB3vTwlaIti5vL1W0PZAuhws/FwtbBsJuF54QpYSD5ZtiYysArTbUNbbCOI5nYmWXAZbKRKJ14aAqYmfbAMdg2m7+cnqmhImwpbD/mDU0rOoqh5oVO9tjVN6q7nKoKFNY8zyz7jcMCqKwe/pmmVNIgCnS2EEKQE45XVff/fRyJv0vE+DRi9Cwsma5TXGsS3BFZJWqxso6UHdl+/eP941MZQcVqLqvtihajB5NWHJmg4YrK7dfFOcuiRoKoeRZz3pWy7Oe9axnPetZz3rWs5717A9PO7Od0zOnzrmpf0Ldke2nAI+1RK+TwLQju8awSHf7JSByZBMg+j0lzjR2AYCGE7sPEJ26fkYdv6wzbNqJvQfPQ27/G4KmOikCiJ3YNSYHCR/9UYCClS0xqunC1oajB14HAtvu9jHNubAl4h7oQ6gBpgk7+/NT72UyYByvuH0WbllZIJ91MD0JD9vYNsPeUX6dEvD4jlHjQWpnRwtopExa2X2AmmELUuGEfhSYW7O/WuQq44juJMxrg7hcSryrDg3XOVxDG2gUN8K3txKKdlZqHCwUa2XI7xVFlokVtl9iHFP6B/Lm/MoHZSL1s7DzsZUNTsKcpGZYpU5J3C57ja2EuA+QV9ltTNqgZCEnF+BHgCmVHSSYina2FmQ7Dn82PDhTeFmUvX1p1bzbS+pqU0yEH7rO4YJM21t1YGcalCAwbl1h1zj+GzhNkPfTsG7uT0Nhu+cz+buk3gjTYOUt5dAwBu4ycf7mjbMJBKK1DwR1J3b7/pHp/wer7D3gfXFiu+be9s6p7F14VtxYqcyLa7vE4sr2MnHuq5YfEPy/Wc961rOe9axnPetZz3rWs5717L8ON3LgCFGINgAAAABJRU5ErkJggg==) 50% 50% repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+/* for goo top PC */
+.meguGamesPC {
+  background: #f5f6f7;
+  font-size: 12px;
+}
+.meguGamesPC .ttl-a {
+  font-size: 13px;
+}
+.meguGamesPC-footer {
+  background: #f5f6f7;
+  border-top: 1px solid #bfbfbf;
+  font-size: 12px;
+}
+.meguGamesPC-footer .fa {
+  margin-left: .3em;
+}
+.meguGamesPC-footer a {
+  color: #333;
+  display: block;
+  padding: 6px;
+  text-align: center;
+}
+.meguGamesPC-footer a:before {
+  content: '閉じる';
+}
+.meguGamesPC-footer a.closed:before {
+  content: '開く';
+}
+.meguGamesPC-footer a.closed .fa:before {
+  content: "\f078";
+}
+.meguGamesPC-lead {
+  margin: 5px;
+}
+.meguGamesPC .module-frame-in {
+  padding: 0 6px 6px;
+}
+.meguGamesPC-item {
+  background: #fff;
+  border: 1px solid #bfbfbf;
+  margin-top: 6px;
+}
+.meguGamesPC-item-inbox {
+  padding: 6px;
+}
+.meguGamesPC-item-inbox:not(:first-child) {
+  border-top: 1px solid #bfbfbf;
+}
+.meguGamesPC-score-title {
+  line-height: 1.4;
+  margin-bottom: 5px;
+}
+.meguGamesPC-more {
+  text-align: right;
+}
+.meguGamesPC-more i.fa {
+  margin-right: 3px;
+}
+.meguGamesPC-score-number {
+  background: #f5f6f7;
+  font-size: 14px;
+  margin-bottom: 6px;
+  padding: 6px;
+  text-align: center;
+}
+.meguGamesPC-score-number b {
+  font-weight: bold;
+}
+.meguGamesPC-item-dt a {
+  align-items: center;
+  color: #333;
+  display: flex;
+  justify-content: space-between;
+}
+.meguGamesPC-item-dt a:hover {
+  opacity: .8;
+  text-decoration: none;
+}
+.meguGamesPC-item-dt a.closed .fa:before {
+  content: "\f078";
+}
+.meguGamesPC-item-dd {
+  border-top: 1px solid #e4e4e4;
+  line-height: 1.3;
+  margin-top: 6px;
+  padding-top: 6px;
+}
+.meguGamesPC-item-banner {
+  position: relative;
+}
+.meguGamesPC-item-banner.logout:after {
+  align-items: center;
+  background: linear-gradient(0deg, rgba(50,50,50,0.55) 0%, rgba(0,0,0,0.55) 100%);
+  color: #fff;
+  content: "ログインしてから遊んでね";
+  display: flex;
+  font-size: 13px;
+  font-weight: bold;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+.meguGamesPC-item-banner.pre:before {
+  background: rgba(255,255,255,.8);
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+.meguGamesPC-item-banner.pre:after {
+  background: rgba(102,102,102,.8);
+  border-radius: 3px;
+  color: #fff;
+  content: "準備中";
+  font-size: 13px;
+  padding: .5em 1em;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+.meguGamesPC-login {
+  margin: 10px 0;
+  text-align: center;
+}
+.meguGamesPC-login a {
+  font-weight: bold;
+}
+
+/* for goo top SP */
+.meguGamesSP-inner {
+  background: #fff;
+  border-top: 1px solid #e3e4e6;
+  border-bottom: 1px solid #e3e4e6;
+  padding: 10px 5px;
+}
+.meguGamesSP-lead {
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: .5em;
+}
+.meguGamesSP-score {
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  padding: 10px 12px 14px;
+}
+.meguGamesSP-score-title {
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: .5em;
+}
+.meguGamesSP-score-title a {
+  font-weight: bold;
+  text-decoration: underline;
+}
+.meguGamesSP-score-number {
+  background: #f5f6f7;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.5;
+  margin-bottom: 15px;
+  padding: .25em;
+  text-align: center;
+}
+.meguGamesSP-score-number:last-child {
+  margin-bottom: 0;
+}
+.meguGamesSP-score-number b {
+  font-weight: inherit;
+}
+.meguGamesSP .module-more-btn {
+  border-top: 1px solid #d4d4d6;
+  margin: 0 -5px;
+}
+.meguGamesSP-list-wrap {
+  background: #fff;
+}
+.meguGamesSP-item {
+  border-bottom: 1px solid #e3e4e6;
+  margin: 0;
+  position: relative;
+}
+.meguGamesSP-item.logout:after {
+  align-items: center;
+  background: linear-gradient(0deg, rgba(50,50,50,0.65) 0%, rgba(0,0,0,0.65) 100%);
+  color: #fff;
+  content: "ログインしてから遊んでね";
+  display: flex;
+  font-size: 13px;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+}
+.meguGamesSP-item.pre:before {
+  background: rgba(255,255,255,.8);
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+}
+.meguGamesSP-item.pre:after {
+  background: rgba(102,102,102,.8);
+  border-radius: 3px;
+  color: #fff;
+  content: "準備中";
+  font-size: 13px;
+  padding: .5em 1em;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  z-index: 2;
+}
+.meguGamesSP-item-inbox {
+  display: flex;
+  padding: 8px 5px;
+}
+.meguGamesSP-text {
+  flex-grow: 1;
+  line-height: 1.45;
+  margin-left: 10px;
+}
+.meguGamesSP-item-banner {
+  flex-shrink: 0;
+}
+.meguGamesSP-item-dt {
+  font-size: 14px;
+  font-weight: bold;
+}
+.meguGamesSP-item-dt {
+  font-size: 12px;
+}
+.meguGamesSP-footer {
+  background: #fff;
+  border-bottom: #e3e4e6;
+  margin: 0;
+}
+.meguGamesSP-footer a {
+  align-items: center;
+  display: flex;
+  font-size: 14px;
+  justify-content: center;
+  padding: .84em;
+}
+.meguGamesSP-footer a:before {
+  content: '閉じる';
+  margin-right: .5em;
+}
+.meguGamesSP-footer a.closed:before {
+  content: 'ほかのメグたんゲームを見る';
+}
+.meguGamesSP-footer a.closed .fa:before {
+  content: "\f078";
+}
+.meguGamesSP-more {
+  text-align: right;
+}
+.meguGamesSP-more a:after {
+  content: "\f054";
+  display: inline-block;
+  font-family: FontAwesome;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 1;
+  margin-left: .5em;
+}
+.meguGamesSP-login {
+  text-align: center;
+}
+.meguGamesSP-login a {
+  font-weight: bold;
+  text-decoration: underline;
+}
+.module-login-btn {
+        background: #fcd965;
+        border: 0;
+        border-radius: 5px;
+        box-sizing: border-box;
+        box-shadow: 0 -3px 0 0 #776116 inset;
+        color: #333;
+        display: block;
+        font-size: 14px;
+        font-weight: bold;
+        margin: 8px auto 0;
+        padding: 1.25em;
+        text-align: center;
+        width: 94.36%;
+        vertical-align: top;
+}

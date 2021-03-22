@@ -1,0 +1,493 @@
+/*
+ *	Main CSS File
+ *
+ * 	@author		Kerry Kline
+ * 	@copyright	Copyright (c) 2015-2018, Kerry Kline
+ * 	@link		http://www.bnecreative.com
+ * 	@package	BNE Flyout
+ *
+ *	@updated	October 23, 2018
+ *
+*/
+
+
+
+/* ===========================================================
+ *	1) General
+ * ======================================================== */
+
+/* Main Flyout Container Wrapper */
+.bne-flyout-wrapper * {
+	box-sizing: border-box;
+}
+
+/* Lock Scrolling */
+.sidr-animating {
+	overflow-x: hidden !important;
+}
+
+.flyout-lock {
+	overflow: hidden !important;
+	width: auto;
+}
+.flyout-lock body {
+	overflow: hidden !important;
+}
+
+/* Adjust page content when scrollbar is removed */
+html.shownscroll.flyout-margin,
+html.shownscroll.flyout-margin .flyout-trigger.trigger-right {
+	margin-right: 15px;
+}
+
+/* Overlay body content when Flyout is shown */
+.flyout-overlay {
+	display: none;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+    z-index: 999998;
+    background: url('../images/shade.png') repeat; /* IE fallback */
+	background: rgba(0,0,0,.6);
+	cursor: pointer;
+	-webkit-backface-visibility: hidden;
+}
+
+.flyout-overlay.active {
+	display: block;
+	height: auto;
+	width: auto;
+}
+
+/* Hide visible triggers when overlay is open */
+html.flyout-lock .flyout-trigger {
+	opacity: 0;
+}
+
+
+
+/* ===========================================================
+ *	2) Trigger
+ * ======================================================== */
+
+/* Location */
+.flyout-trigger {
+	position: fixed;
+	top: 40%; /* default */
+	z-index: 999997;
+	cursor: pointer;
+	-ms-touch-action: none;
+	touch-action: none;
+	transition: opacity .3s ease;
+
+	/* Windows Chrome fix for jumping buttons */
+	-webkit-backface-visibility: hidden;
+}
+
+.flyout-trigger.trigger-left {
+	left: 0px;
+}
+
+.flyout-trigger.trigger-right {
+	right: 0px;
+}
+
+.flyout-trigger.trigger-top {
+	top: 0px;
+	bottom: auto;
+}
+
+.flyout-trigger.trigger-bottom {
+	top: auto;
+	bottom: 0px;
+}
+
+/* Button */
+.flyout-trigger.trigger-button {
+	padding: 5px 10px;
+	background: #333; /* default */
+	box-shadow: 0px 0px 5px rgba(0,0,0,.4);
+	color: white;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+/* Trigger as a Page Link */
+.flyout-trigger a, .flyout-trigger a:hover, .flyout-trigger a:visited { color: white; }
+
+/* Button Rotation Left */
+.flyout-trigger.trigger-left.trigger-button {
+	-webkit-transform-origin: left top;
+	    -ms-transform-origin: left top;
+			transform-origin: left top;
+	-webkit-transform: rotate(-90deg);
+	   -moz-transform: rotate(-90deg);
+	    -ms-transform: rotate(-90deg);
+	     -o-transform: rotate(-90deg);
+	        transform: rotate(-90deg);
+}
+
+/* Button Rotation Right */
+.flyout-trigger.trigger-right.trigger-button {
+	-webkit-transform-origin: right top;
+	    -ms-transform-origin: right top;
+			transform-origin: right top;
+	-webkit-transform: rotate(90deg);
+	   -moz-transform: rotate(90deg);
+	    -ms-transform: rotate(90deg);
+	     -o-transform: rotate(90deg);
+	        transform: rotate(90deg);
+}
+
+
+/* Image */
+.flyout-trigger.trigger-image img {
+	height: auto;
+	width: 100%;
+	/* Set to a max-width so that it doesn't take over the whole page. */
+	max-width: 200px;
+	cursor: pointer;
+}
+
+@media only screen and (max-width: 600px) {
+	/* Set to a max-width of 75px so that it doesn't take over the whole page on mobile. */
+	.flyout-trigger.trigger-image img { max-width: 75px; }
+}
+
+/* For top and bottom images, remove the max-width limitation */
+.flyout-trigger.trigger-top img,
+.flyout-trigger.trigger-bottom img {
+	max-width: 100%;
+}
+
+img[class*='flyout-trigger-id-'] {
+	cursor: pointer;
+}
+
+
+
+/* ===========================================================
+ *	Flyout Location
+ * ======================================================== */
+
+.bne-flyout-wrapper .sidr {
+	/* Allows iframes and google maps to display correctly while still being "hidden" */
+	display: block;
+    position: fixed;
+	z-index: 999999;
+    padding: 0;
+    margin: 0;
+	-webkit-backface-visibility: hidden;
+}
+
+.bne-flyout-wrapper .sidr.flyout-open {
+    -webkit-overflow-scrolling: touch;
+}
+
+.bne-flyout-wrapper .sidr.right {
+	top: 0;
+	bottom: 0;
+	left: auto;
+	right: -100%; /* default */
+	height: 100%;
+	height: 100vh;
+	width: 300px; /* default */
+	max-width: 100%;
+}
+
+.bne-flyout-wrapper .sidr.left {
+	top: 0;
+	bottom: 0;
+	left: -100%; /* default */
+	right: auto;
+	height: 100%;
+	height: 100vh;
+	width: 300px; /* default */
+	max-width: 100%;
+	max-width: 100vw;
+}
+
+.bne-flyout-wrapper .sidr.top {
+	top: -100%; /* default */
+	bottom: auto;
+	left: 0;
+	right: 0;
+	width: 100%;
+	width: 100vw;
+	height: 300px; /* default */
+	max-height: 100%;
+}
+
+.bne-flyout-wrapper .sidr.bottom {
+	top: auto;
+	bottom: -100%; /* default */
+	left: 0;
+	right: 0;
+	width: 100%;
+	width: 100vw;
+	height: 300px; /* default */
+	max-height: 100%;
+}
+
+
+
+/* ===========================================================
+ *	Flyout Container
+ * ======================================================== */
+
+.flyout-content {
+    height: 100%;
+	padding: 40px 30px 30px 30px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: #333333; /* default */
+    line-height: 1.4em;
+    color: #fff;
+}
+/* iOS fix */
+@media (max-width:1024px) {
+	.flyout-content {
+		transform: translateZ(0);
+	}
+}
+
+.flyout-content::-webkit-scrollbar {
+ 	display: none;
+}
+
+.bne-flyout-wrapper .sidr.left.flyout-open .flyout-content.push { box-shadow: inset -8px 0px 8px -8px rgba(0,0,0,.5); }
+.bne-flyout-wrapper .sidr.right.flyout-open .flyout-content.push { box-shadow: inset 8px 0px 8px -8px rgba(0,0,0,.5); }
+.bne-flyout-wrapper .sidr.top.flyout-open .flyout-content.push { box-shadow: inset 0px -8px 8px -8px rgba(0,0,0,.5); }
+.bne-flyout-wrapper .sidr.bottom.flyout-open .flyout-content.push { box-shadow: inset 0px 8px 8px -8px rgba(0,0,0,.5); }
+.bne-flyout-wrapper .flyout-open .flyout-content.slide { box-shadow: 0 0 8px rgba(0,0,0,.5); }
+
+
+/* Default Typography */
+.flyout-content,
+.flyout-content a,
+.flyout-content h1,
+.flyout-content h2,
+.flyout-content h3,
+.flyout-content h4,
+.flyout-content h5,
+.flyout-content h6 {
+	color: white;
+}
+
+.flyout-content a:hover,
+.flyout-content a:visited {
+	color: inherit;
+}
+
+.flyout-content p {
+	margin-bottom: 15px;
+	line-height: 1.4em;
+}
+
+.flyout-content img {
+	max-width: 100%;
+}
+
+
+
+/* ===========================================================
+ *	Flyout Custom Menu
+ * ======================================================== */
+.flyout-menu {
+	margin-bottom: 20px;
+}
+
+.flyout-menu ul {
+	padding: 0;
+	margin: 0 ;
+	list-style: none;
+}
+
+.flyout-menu &gt; ul {
+	margin-left: -30px;
+	margin-right: -30px;
+}
+
+.flyout-menu li .fa {
+	margin-right: 5px;
+}
+
+.flyout-menu li a {
+	display: block;
+	padding: 10px 30px;
+	font-size: 15px;
+	font-weight: bold;
+	text-align: left;
+	text-decoration: none;
+	text-shadow: 1px 1px 0px rgba(0,0,0,.3);
+	text-transform: uppercase;
+}
+
+/* Sub Menu transition */
+.flyout-menu li ul.sub-menu {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 1s ease;
+}
+
+.flyout-menu li.menu-item-has-children:hover &gt; ul.sub-menu {
+   max-height: 1000px;
+}
+
+/* Level 2 */
+.flyout-menu li li a {
+	padding-left: 50px;
+}
+
+/* Level 3 */
+.flyout-menu li li li a {
+	padding-left: 70px;
+}
+
+/* Sub Menu Indicator */
+.bne-flyout-wrapper .flyout-menu .bne-icon-submenu {
+	float: right;
+	height: 20px;
+	width: 20px;
+	transition: all .3s ease;
+	fill: currentColor;
+}
+
+.flyout-menu li.menu-item-has-children:hover &gt; a .bne-icon-submenu {
+	transform: rotate(90deg);
+}
+
+/* Show Hover and Active State */
+.flyout-menu a:hover,
+.flyout-menu li.current_page_item &gt; a,
+.flyout-menu li.current_page_parent &gt; a,
+.flyout-menu li.current-page-ancestor &gt; a,
+.flyout-menu li.current-menu-ancestor &gt; a,
+.flyout-menu li.current-menu-item &gt; a {
+	background: rgba( 0, 0, 0, 0.3);
+	color: inherit;
+}
+
+
+
+/* ===========================================================
+ *	Flyout Edit / Close Button
+ * ======================================================== */
+
+.flyout-header-buttons {
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 10;
+}
+
+.flyout-close-button,
+.flyout-edit-button {
+    display: block;
+    float: right;
+	padding: 5px 10px;
+	background: rgba(0,0,0,.3);
+	border-radius: 0px;
+	color: white !important;
+    cursor: pointer;
+	font-size: 16px;
+	font-weight: normal;
+	vertical-align: middle;
+}
+
+.bne-flyout-wrapper .bne-icon-svg {
+	fill: white;
+	width: 12px;
+	height: 12px;
+}
+.bne-flyout-wrapper .bne-icon-edit {}
+.bne-flyout-wrapper .bne-icon-close {}
+
+
+.flyout-edit-button {
+	margin-right: 1px;
+}
+
+.bne-flyout-wrapper .sidr.right .flyout-header-buttons {
+	left: 0;
+	right: auto;
+}
+
+.bne-flyout-wrapper .sidr.right .flyout-close-button {
+	margin-right: 1px;
+	float: left;
+}
+
+
+
+/* ===========================================================
+ *	Form Fields
+ * ======================================================== */
+
+.bne-flyout-wrapper form { margin: 10px; }
+.bne-flyout-wrapper input[type="text"],
+.bne-flyout-wrapper input[type="password"],
+.bne-flyout-wrapper input[type="date"],
+.bne-flyout-wrapper input[type="datetime"],
+.bne-flyout-wrapper input[type="email"],
+.bne-flyout-wrapper input[type="number"],
+.bne-flyout-wrapper input[type="search"],
+.bne-flyout-wrapper input[type="tel"],
+.bne-flyout-wrapper input[type="time"],
+.bne-flyout-wrapper input[type="url"],
+.bne-flyout-wrapper textarea,
+.bne-flyout-wrapper select {
+	display: block;
+	width: 100% !important;
+	clear: both;
+	background: rgba(0,0,0,0.3) !important;
+	border: none;
+	color: white !important;
+	font-size: 16px;
+}
+
+.bne-flyout-wrapper input[type="file"] {
+	width: 100% !important;
+}
+
+
+
+/* ===========================================================
+ *	Helper Classes and Miscellaneous
+ * ======================================================== */
+
+/* Responsive visiblity classes */
+.flyout-trigger.hide_on_standard { display: none; }
+
+@media (min-width: 481px) and (max-width: 1024px) {
+	/* Tablets */
+	.flyout-trigger.hide_on_standard,
+	.flyout-trigger.hide_on_mobile {
+		display: block;
+	}
+	.flyout-trigger.hide_on_tablet {
+		display: none;
+	}
+}
+@media (max-width: 480px) {
+	/* Mobile */
+	.flyout-trigger.hide_on_standard,
+	.flyout-trigger.hide_on_tablet {
+		display: block;
+	}
+	.flyout-trigger.hide_on_mobile {
+		display: none;
+	}
+}
+
+
+
+/* Clear Floats */
+.bne-flyout-wrapper .clear:before, .bne-flyout-wrapper .clear:after, .bne-flyout-wrapper .clearfix:before, .bne-flyout-wrapper .clearfix:after {display: table;content: "";}
+.bne-flyout-wrapper .clear:after, .bne-flyout-wrapper .clearfix:after {content: "";visibility: hidden;display: block;height: 0;clear: both;}
+
+
+/* Fixes IE10+ scroll bars to not overlay on top of our flyout triggers */
+@-ms-viewport{ width: auto !important; }

@@ -1,0 +1,176 @@
+/* Modified from http://thecodeplayer.com/experiment/vertical-accordion-menu-using-jquery-css3/3 */
+
+.accordian {
+   width: 250px;
+   color: white; font-size: 15px;
+   font-weight:bold;
+   line-height:2em;
+   padding: 0px;
+   padding-top: 5px;
+   overflow-y: auto;
+}
+
+/* Although clicking the activating icon, or clicking OFF of nav will close nav, 
+ * ALSO present a "close" icon - especially useful for customers on a small form factor device */
+.nav.accordian .closer {
+   display: flex;
+   position: absolute;
+   top: 1px;
+   right: 12px;
+   color: #B50000;
+   color: #002855;
+   cursor: pointer;
+   width: 15px;
+   padding: 0px;
+}
+.nav.accordian .closer i { font-size: 24px; }
+
+/* CATEGORY emphasis on hover / focus */
+.accordian li h3 &gt; a:hover, .accordian li h3 &gt; a:focus {
+   background-color: #002855;
+   color: #FAFAFA !important; /* use !important here to OVERRIDE base_IE_20170517.css line 7 */
+}
+
+/* CHILDLESS category emphasis */
+.accordian li h3.childless &gt; a:hover, .accordian li h3 &gt; a:focus {
+   color: #8FC7FF !important; /* use !important here to OVERRIDE base_IE_20170517.css line 7 */
+}
+
+/* ACTIVE CATEGORY highlight */
+.accordian li.active h3 { background-color: #002855; border-radius: 5px; }
+
+/* ENLARGE the header text of the active category header */
+.accordian li.active h3 &gt; a, .accordian li.active h3 &gt; a:focus .accordian li.active h3 &gt; a:hover {
+   color: #FAFAFA;
+   background-color: #002855;
+}
+
+/* CURRENTLY NOT in use - retained for technique */
+/* Embed the image of this category within it's header */
+.accordian li.active h3:after {
+   content : initial; /* set to "" instead to display the image, but lose the ability to close an open category */
+   display: block;
+   position: relative;
+   top: 0;
+   left: 0;
+/*  background:url("origin+full-path-to-image-url"); */
+   background-size:cover; /* or contain - see https://developer.mozilla.org/en-US/docs/Web/CSS/background-size */
+   height: 60px;
+   margin-top: -40px;
+   width: 100%;
+   opacity : 0.25;
+   z-index: 101;
+}
+/* ENLARGE the header text of non-active CATEGORies (half of the active header size) */
+.accordian h3 a {
+   padding: 0 10px;
+   line-height: 1.4em;
+   display: block;
+   color: #002855;
+   text-decoration: none;
+}
+
+/* don't want the default list styling */
+.accordian li {
+   list-style-type: none;
+   padding: 0px 10px;
+   margin-right: 21px;
+}
+
+/* Add borders, emphasize CATEGORY level elements */
+.accordian &gt; ul &gt; li {
+   padding: 10px 10px;
+   border-bottom: 1px solid #5353533b;
+   margin: 5px 5% 0;
+}
+
+/* Make CATEGORY hover highlight larger (taller) */
+.accordian &gt; ul &gt; li &gt; h3 &gt; a { padding: 5px 5px 0; border-radius: 5px; }
+
+/* TOPIC heading styling */
+.accordian ul ul li a {
+   display: block;
+   position: relative;
+   text-decoration: none;
+   line-height: 1.5em;
+   padding-left: 22px;
+   width: 100%;
+}
+/* SIZE emphasis on hover / focus of TOPIC (2nd level) elements */
+.accordian ul ul li a:not(:only-child):hover, .accordian ul ul li a:not(:only-child):focus {
+}
+/* SIZE and COLOR emphasis for the active TOPIC element */
+.accordian ul ul li.active a:not(:only-child) {
+   color: #379CF4;
+}
+/*
+.accordian ul ul li.active a:not(:only-child):hover, .accordian ul ul li.active a:not(:only-child):focus {
+   color: #379CF4 !important;
+   font-size: 16px;
+}
+*/
+/* Adjust link indent */
+.accordian ul ul ul li a { margin-left: -10px; }
+
+.accordian li.active h3 a:hover,
+.accordian li.active h3 a:focus {
+   color: #FAFAFA;
+}
+.accordian li a:focus {
+   color: #F2F2F2; /* DARK background */
+}
+
+/* Highlight the active (hovered) 2nd level menu / item via sidebar */
+.accordian ul ul li a:not(:only-child):hover,
+.accordian ul ul li a:not(:only-child):focus
+ {
+   color: #379CF4 !important; /* use !important here to OVERRIDE base_IE_20170517.css line 7 */
+   outline: none;
+}
+
+/* Highlight the active (hovered) 3rd level menu / item via sidebar */
+.accordian li.active li.active li a:hover,
+.accordian li.active li.active li a:focus {
+   color: #8FC7FF !important; /* use !important here to OVERRIDE base_IE_20170517.css line 7 */
+   outline: none;
+}
+
+/* HIDE non-active categories (and children) */
+.accordian ul ul {
+   display: none;
+}
+/* SHOW the active category (and children) */
+.accordian li.active&gt;ul {
+   display: block;
+}
+
+.accordian ul ul ul {
+   margin-left: 25px; 
+   border-left: 1px dotted rgba(0, 0, 0, 0.5);
+   outline: none;
+   width: 100%;
+}
+
+/* TOPIC indicator (collapsed) */
+.accordian a:not(:only-child):before {
+	content: "chevron_right";
+	font-family: 'Material Icons Round';
+	position: absolute; left:0px; top:0;
+	padding-right:10px;
+}
+
+/* TOPIC indicator (expanded) */
+.accordian .active&gt;a:not(:only-child):before {
+	content: "expand_more";
+}
+
+/* styling for medium devices and smaller */
+@media(max-width: 700px) { 
+   .nav.accordian .closer { right: 25px; }
+   .accordian li { margin-right: 30px; }
+}
+
+/* Modify default class styling for category navigation */
+.accordian .info-you-saved { color: #B50000; }
+.accordian .info-you-saved:before { vertical-align: text-top;  padding-right: 3px }
+.accordian .info-you-saved:hover:before { color: #8FC7FF; }

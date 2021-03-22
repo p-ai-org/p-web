@@ -1,0 +1,104 @@
+/**
+ * @file
+ * This is the base CSS rules for anything off-canvas.
+ *
+ * .is-ultimenu-canvas-off: #header or .region-primary-menu, etc.
+ * .is-ultimenu-canvas-on: any sibling of #header.
+ *
+ * Tips: Use Modernizer.js to have graceful fallback for old browsers.
+ *
+ * The is-ultimenu-canvas--active is if enabled for both mobile and desktop.
+ * Otherwise only exists on mobile only.
+ */
+
+/** Global off-canvas rules. */
+.is-ultimenu-canvas-backdrop {
+  background-color: transparent;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  -ms-transition: all .3s ease;
+  transition: all .3s ease;
+  z-index: -1;
+}
+
+.is-ultimenu-expanded .is-ultimenu-canvas-backdrop,
+.is-ultimenu-canvas--hiding .is-ultimenu-canvas-backdrop {
+  background-color: rgba(0, 0, 0, .6);
+  opacity: 1;
+  -ms-transition-delay: .2s;
+  transition-delay: .2s;
+  height: 100%;
+  width: 100%;
+  z-index: 9997;
+}
+
+/** If off-canvas is enabled for both mobile and desktop. */
+.is-ultimenu-canvas--active {
+  /** Necessary for `overflow: hidden` when expanded below. */
+  position: relative;
+}
+
+/** Hide body overflow when off-canvas is being expanded. */
+.is-ultimenu-canvas.is-ultimenu-expanded,
+.is-ultimenu-canvas.is-ultimenu-canvas--hiding {
+  overflow: hidden;
+}
+
+/** The #header element, safe whether enabled for desktop, or mobile only. */
+.is-ultimenu-canvas .is-ultimenu-canvas-off {
+  backface-visibility: hidden;
+  display: block;
+  float: none;
+  width: 100%;
+  z-index: 9998;
+}
+
+/** The #header alike element, if activated for both desktop and mobile. */
+.is-ultimenu-canvas--active .is-ultimenu-canvas-off {
+  /** Adjust and remove !important accordingly. This is to override Bartik. */
+  background: rgba(0, 0, 0, .9) !important;
+  bottom: 0;
+  height: 100%;
+  height: 100vh;
+  left: -100%;
+  max-height: none;
+  /** Desktop needs the exact pixel to avoid too wide off-canvas. */
+  max-width: 320px;
+  min-height: 320px;
+  overflow: hidden;
+  padding: 0;
+  position: fixed;
+  top: 0;
+  transition: all 500ms ease;
+}
+
+.is-ultimenu-canvas.is-ultimenu-expanded .is-ultimenu-canvas-off {
+  left: 0;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
+}
+
+/** Any element below #header alike. */
+.is-ultimenu-canvas--active .is-ultimenu-canvas-on {
+  backface-visibility: hidden;
+  position: relative;
+}
+
+/**
+ * 944px with 16px base font.
+ * .is-ultimenu-canvas--active is only available if off-canvas is enabled for
+ * both desktop and mobile. Or a little later via JS if not. That's why we don't
+ * rely on it for the smaller device to avoid FOUC.
+ */
+@media only screen and (max-width: 58.999em) {
+  /** The #header alike element. This ensures it always kicks in. */
+  .is-ultimenu-canvas .is-ultimenu-canvas-off {
+    max-width: 80%;
+    position: fixed;
+  }
+}

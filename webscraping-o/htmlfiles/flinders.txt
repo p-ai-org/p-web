@@ -1,0 +1,2889 @@
+<!DOCTYPE HTML>
+<html lang="en">
+ <head>
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible"/>
+  <script>
+   var gdpr_opt_in_cookie_name = "gdpr_opted_in";
+    var gdpr_opt_in_cookie_duration = 180; //days - Note: GDPR regulation mandates that users be asked every year to confirm their opt in, so we will go for 6 months!
+
+    var PostGDPRHooks = [];
+
+    var GDPROptedIn = false;
+
+    function RegisterPostGDPRHook(hook){
+        if(typeof hook !== 'function')
+        {
+            console.error('PostGDPRHooks must be functions!');
+        }
+        else if(GDPROptedIn)
+        {
+            hook();
+        }
+        else
+        {
+            PostGDPRHooks.push(hook);
+        }
+    }
+
+
+
+    //If policy has been accepted, send an event so GTM can use it to inject the applicable code.
+    function handlePolicyOptIn() {
+        window.dataLayer = window.dataLayer || [];
+        //NOTE(Christof): clear the cookie that disables Adobe Target - this does mean that target won't function until the next page load
+        //deleteCookieFromAllPaths('mboxDisable');
+        document.cookie = "mboxDisable=; path=/";
+
+        GDPROptedIn = true;
+
+        for(var Index = 0; Index < PostGDPRHooks.length; Index++)
+        {
+            if(typeof PostGDPRHooks[Index] !== 'function')
+            {
+                console.error('PostGDPRHooks must be functions!');
+            }
+            else
+            {
+                PostGDPRHooks[Index]();
+            }
+
+        }
+
+        //This may need to be delayed until window page loaded or something?
+        window.dataLayer.push({
+            'event': 'GDPR_OPTIN_EVENT'
+        });
+    }
+
+    function checkCookiesForOptIn(cookie_name) {
+        var has_cookie = document.cookie.match('(^|;)\\s*' + cookie_name + '\\s*=\\s*([^;]+)');
+        return has_cookie ? has_cookie.pop() : '';
+    }
+
+
+    //This function can be used if we run into issues deleting all cookies with the flinders domain variants
+    function deleteAllCookiesForAllDomainsAndPaths() {
+        var cookies = document.cookie.split("; ");
+        for (var c = 0; c < cookies.length; c++) {
+            var d = window.location.hostname.split(".");
+            while (d.length > 0) {
+                var cookieBase = encodeURIComponent(cookies[c].split(";")[0].split("=")[0]) + '=; expires=Thu, 01-Jan-1970 00:00:01 GMT; domain=' + d.join('.') + ' ;path=';
+                var p = location.pathname.split('/');
+                document.cookie = cookieBase + '/';
+                while (p.length > 0) {
+                    document.cookie = cookieBase + p.join('/');
+                    p.pop();
+                }
+                d.shift();
+            }
+        }
+    }
+
+    function clearLocalStorage() {
+        if (window.localStorage) {
+            window.localStorage.clear();
+        }
+    }
+
+
+    var PageIsLoaded = false;
+
+    //If policy has not been accepted, clear all cookies and localStorage
+    function handlePolicyOptOut() {
+
+        GDPROptedIn = false;
+        
+        deleteAllCookiesForAllDomainsAndPaths();
+        clearLocalStorage();
+        //NOTE(Christof): as the regular cookie setting code checks for GDPR acceptance, we just do the easy thing and just set the Adobe Target disabling cookie without the helper
+        document.cookie = "mboxDisable=1; path=/";
+
+        //NOTE(Christof): this is a bit of a hack as we will mostly be calling this function before any of the body of the document is loaded,
+        //                so the fadeIn needs to be delayed, except in the case of the opt-out button, when the document ready event has likely already
+        //                occured, so we check for that and just call the delayed function directly
+        gdpr_delayed_function = function(){
+            $('#gdpr_notification_container').fadeIn(function() {
+                $('body').addClass("gdpr-shown");
+                $(window).scroll();
+                $('#gdpr_accept_button').focus(); //With a full screen popup we need to focus the button because the button is technically at the bottom of the document
+            });
+        }
+        if(PageIsLoaded)
+        {
+            gdpr_delayed_function();
+        }
+    }
+
+    if(checkCookiesForOptIn(gdpr_opt_in_cookie_name)) {
+        handlePolicyOptIn();
+    } else {
+        handlePolicyOptOut();
+    }
+  </script>
+  <!-- Google Tag Manager -->
+  <script>
+   (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-5CP583G');
+  </script>
+  <!-- End Google Tag Manager -->
+  <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+  <meta content="initial-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" name="viewport"/>
+  <meta content="Flinders is a leading international university in Australia with a record of excellence and innovation in teaching" name="description"/>
+  <meta content="Flinders University" name="creator"/>
+  <meta content="Flinders University" name="publisher"/>
+  <meta name="language"/>
+  <meta content="Thu Mar 04 13:29:08 AEDT 2021" name="date-created"/>
+  <meta content="Thu Mar 04 13:29:04 AEDT 2021" name="date-published"/>
+  <meta content="https://www.flinders.edu.au" name="identifier"/>
+  <!-- Twitter Meta Data -->
+  <meta content="Flinders University - Adelaide, South Australia" name="twitter:title"/>
+  <meta content="@Flinders" name="twitter:creator"/>
+  <meta content="Flinders is a leading international university in Australia with a record of excellence and innovation in teaching" name="twitter:description"/>
+  <meta content="summary_large_image" name="twitter:card"/>
+  <meta content="@Flinders" name="twitter:site"/>
+  <meta content="15996963" name="twitter:site:id"/>
+  <meta content="http://www.flinders.edu.au/etc.clientlibs/flinders/clientlibs/clientlib-site/resources/images/flinders-university.png" name="twitter:image"/>
+  <!-- OG Meta Data -->
+  <meta content="Flinders University - Adelaide, South Australia" property="og:title"/>
+  <meta content="Flinders is a leading international university in Australia with a record of excellence and innovation in teaching" property="og:description"/>
+  <meta content="https://www.flinders.edu.au" property="og:url"/>
+  <meta content="website" property="og:type"/>
+  <meta content="http://www.flinders.edu.au/etc.clientlibs/flinders/clientlibs/clientlib-site/resources/images/flinders-university.png" property="og:image"/>
+  <meta content="Flinders University" property="og:site_name"/>
+  <meta content="en_au" property="og:locale"/>
+  <meta content="617493925277622" property="fb:app_id"/>
+  <link href="https://www.flinders.edu.au" rel="canonical"/>
+  <title>
+   Flinders University - Adelaide, South Australia - Flinders University
+  </title>
+  <meta content="Flinders University Home" property="page_title_clean"/>
+  <!-- Build information -->
+  <meta content="1.2.96.2021_0210_113805_0000306195" name="build-version"/>
+  <meta content="Thu Feb 11 15:58:16 AEDT 2021" name="build-date"/>
+  <!-- Hide from search engines-->
+  <!-- For phone numbers on Iphone -->
+  <meta content="telephone=no" name="format-detection"/>
+  <link href="/etc.clientlibs/flinders/clientlibs/clientlib-site/resources/google-fonts/roboto/css/fonts.css" rel="stylesheet"/>
+  <link href="/etc.clientlibs/flinders/clientlibs/clientlib-site/resources/google-fonts/open-sans/css/fonts.css" rel="stylesheet"/>
+  <link href="/etc.clientlibs/flinders/clientlibs/clientlib-site/resources/google-fonts/anton/css/fonts.css" rel="stylesheet"/>
+  <link href="/etc.clientlibs/foundation/clientlibs/main.min.b4994788cf1eaeed300a0aa7af53f3c8.css" rel="stylesheet" type="text/css"/>
+  <script src="/etc.clientlibs/clientlibs/granite/jquery.min.772fb04d4ce536dfb06c17e789ad4dbd.js" type="text/javascript">
+  </script>
+  <script src="/etc.clientlibs/clientlibs/granite/utils.min.308082b4c347f4fec37ffef277d39d0e.js" type="text/javascript">
+  </script>
+  <script src="/etc.clientlibs/clientlibs/granite/jquery/granite.min.d9075d4175ab7b0e3ccf4305a4089645.js" type="text/javascript">
+  </script>
+  <script src="/etc.clientlibs/foundation/clientlibs/jquery.min.dd9b395c741ce2784096e26619e14910.js" type="text/javascript">
+  </script>
+  <script src="/etc.clientlibs/foundation/clientlibs/shared.min.d8eee0685f08a5253a1d753a2619a08f.js" type="text/javascript">
+  </script>
+  <script src="/etc.clientlibs/foundation/clientlibs/main.min.389fe618ce999edba5773cfbe96a5adb.js" type="text/javascript">
+  </script>
+  <!--begin of custom header scripts-->
+  <!--end of custom header scripts-->
+  <meta content="http://author.flinders.edu.au/editor.html/content/flinders/en.html" id="flinders-author-link" name="flinders-author-link"/>
+  <link href="/etc.clientlibs/flinders/clientlibs/author-bar-publisher.min.6c0ec7ece5394ce9a57b3ba384034fbb.css" rel="stylesheet" type="text/css"/>
+  <link href="/etc.clientlibs/flinders/clientlibs/clientlib-site.min.a3fb4c6be9e940e05c65ec77392a355b.css" rel="stylesheet" type="text/css"/>
+  <script type="text/javascript">
+   if ( !window.CQ_Analytics ) {
+                window.CQ_Analytics = {};
+            }
+            if ( !CQ_Analytics.TestTarget ) {
+                CQ_Analytics.TestTarget = {};
+            }
+            CQ_Analytics.TestTarget.clientCode = 'flindersuniversity';
+            CQ_Analytics.TestTarget.currentPagePath = '/content/flinders/en';
+  </script>
+  <script src="/etc/cloudservices/testandtarget/target-configuration-at-js-v1-2-2---biztech/_jcr_content/public/at.js" type="text/javascript">
+  </script>
+  <script src="/etc.clientlibs/cq/testandtarget/clientlibs/testandtarget/parameters.min.aa1df8baf5daa28aa3dc5c706c803eff.js" type="text/javascript">
+  </script>
+  <script src="/etc.clientlibs/cq/personalization/clientlib/personalization/integrations/commons.min.2b48968f693eba80428c01cfb96e50d3.js" type="text/javascript">
+  </script>
+  <script src="/etc.clientlibs/cq/testandtarget/clientlibs/testandtarget/atjs-integration.min.bf698881817b705e1fa6826af3c6ceb0.js" type="text/javascript">
+  </script>
+  <link href="/etc.clientlibs/flinders/clientlibs/clientlib-site/resources/favicons/icon-192x192.png" rel="icon" sizes="192x192"/>
+  <link href="/etc.clientlibs/flinders/clientlibs/clientlib-site/resources/favicons/apple-touch-icon-180x180.png" rel="apple-touch-icon" sizes="180x180"/>
+  <link href="/etc.clientlibs/flinders/clientlibs/clientlib-site/resources/favicons/apple-touch-icon-167x167.png" rel="apple-touch-icon" sizes="167x167"/>
+  <link href="/etc.clientlibs/flinders/clientlibs/clientlib-site/resources/favicons/apple-touch-icon-152x152.png" rel="apple-touch-icon" sizes="152x152"/>
+  <link href="/etc.clientlibs/flinders/clientlibs/clientlib-site/resources/favicons/apple-touch-icon-120x120.png" rel="apple-touch-icon" sizes="120x120"/>
+  <meta content="/etc.clientlibs/flinders/clientlibs/clientlib-site/resources/favicons/icon-310x310.png" name="msapplication-square310x310logo"/>
+  <meta content="/etc.clientlibs/flinders/clientlibs/clientlib-site/resources/favicons/icon-310x150.png" name="msapplication-wide310x150logo"/>
+  <meta content="/etc.clientlibs/flinders/clientlibs/clientlib-site/resources/favicons/icon-150x150.png" name="msapplication-square150x150logo"/>
+  <meta content="/etc.clientlibs/flinders/clientlibs/clientlib-site/resources/favicons/icon-70x70.png" name="msapplication-square70x70logo"/>
+  <link href="/etc.clientlibs/flinders/clientlibs/clientlib-site/resources/favicon.ico" rel="icon" type="image/vnd.microsoft.icon"/>
+  <link href="/etc.clientlibs/flinders/clientlibs/clientlib-site/resources/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon"/>
+ </head>
+ <body class="content-page base-page page basicpage">
+  <!-- always include the rest of the page -->
+  <!-- Google Tag Manager (noscript) -->
+  <noscript>
+   <iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-5CP583G" style="display:none;visibility:hidden" width="0">
+   </iframe>
+  </noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <div class="main_page_body" name="page-top">
+   <a class="scroll-top js-scroll-top" href="#page-top" title="Back to top">
+    <i class="material-icons">
+     
+    </i>
+   </a>
+   <header class="main_header_container">
+    <div class="navigation-global">
+     <!-- Start for links to staff, student, library for flinders home page-->
+     <div class="header_site collapse navbar-toggleable-md navbar-collapse home_header_line">
+      <div class="container">
+       <div class="row head_inner_horisontal">
+        <div class="col-lg-12 col-sm-12 col-xs-12">
+         <div class="pull-right">
+          <ul class="header_sitelink_section">
+           <li>
+            <a class="header_sitelink" href="https://staff.flinders.edu.au">
+             <span>
+              Staff
+             </span>
+            </a>
+           </li>
+          </ul>
+          <ul class="header_sitelink_section">
+           <li>
+            <a class="header_sitelink" href="https://students.flinders.edu.au">
+             <span>
+              Students
+             </span>
+            </a>
+           </li>
+          </ul>
+          <ul class="header_sitelink_section">
+           <li>
+            <a class="header_sitelink" href="https://library.flinders.edu.au">
+             <span>
+              Library
+             </span>
+            </a>
+           </li>
+          </ul>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <!-- End -->
+     <div class="global_header">
+      <!-- Start for links to staff, student, library for student, staff, library home page-->
+      <!-- End -->
+      <div class="logo_line">
+       <div class="container">
+        <div class="row head_inner_horisontal">
+         <div class="col-lg-12 col-sm-12 text-center col-xs-12">
+          <div class="header_logo_place pull-left">
+           <a href="http://www.flinders.edu.au">
+            <img alt="Flinders University Logo" class="flinders_logo_white" height="49" src="/etc.clientlibs/flinders/clientlibs/clientlib-site/resources/images/flinder-logo_white.png" width="130"/>
+            <img alt="Flinders University Logo" class="flinders_logo_black" height="49" src="/etc.clientlibs/flinders/clientlibs/clientlib-site/resources/images/flinderuni_main_logo_black.png" width="130"/>
+           </a>
+          </div>
+          <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+           <div class="collapse navbar-toggleable-md navbar-collapse" id="navbar-main-top-collapse">
+            <div class="top_main_navigation_wrap">
+             <ul class="nav navbar-nav top_main_navigation js-menu-aim" id="main-nav">
+              <li class="nav-item dropdown">
+               <a aria-expanded="false" aria-haspopup="true" class="nav_top_link 2 false domestic_content" data-toggle="dropdown" href="/study" id="menu-option0" role="button" style="display:">
+                Study
+               </a>
+               <div aria-labelledby="menu-option0" class="dropdown-menu">
+                <div class="dropmenu_section_wrapper">
+                 <div class="col-lg-9 dropmenu_section">
+                  <p class="head_list_heading">
+                   <a aria-expanded="false" data-toggle="dropdown" href="#" role="button">
+                    Study areas
+                   </a>
+                  </p>
+                  <ul class="dropdown_menu__list dropdown-menu">
+                   <li>
+                    <a href="/study/business">
+                     Business
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/study/computer-science-information-technology">
+                     Computer science and information technology
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/study/creative-arts-media">
+                     Creative arts and media
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/study/criminology">
+                     Criminology
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/study/defence-national-security">
+                     Defence and national security
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/study/education">
+                     Education
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/study/engineering">
+                     Engineering
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/study/environment">
+                     Environment
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/study/health">
+                     Health
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/study/humanities-social-sciences">
+                     Humanities and social sciences
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/study/innovation-enterprise">
+                     Innovation and enterprise
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/study/international-relations-political-science">
+                     International relations and political science
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/study/languages-culture">
+                     Languages and culture
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/study/law">
+                     Law
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/study/medicine">
+                     Medicine
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/study/nursing-midwifery">
+                     Nursing and midwifery
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/study/psychology">
+                     Psychology
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/study/science">
+                     Science
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/study/social-work">
+                     Social work
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/study/sport">
+                     Sport
+                    </a>
+                   </li>
+                  </ul>
+                 </div>
+                 <div class="col-lg-3 dropmenu_section dropmenu_section gray_light_container-d1">
+                  <p class="head_list_heading">
+                   <a aria-expanded="false" data-toggle="dropdown" href="#" role="button">
+                    I am...
+                   </a>
+                  </p>
+                  <ul class="dropdown_menu__list dropdown-menu">
+                   <li>
+                    <a href="/study/high-school-students">
+                     a high school student
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/study/adult-entry">
+                     a non-school leaver
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/study/apply/honours">
+                     a future honours student
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/study/postgrad">
+                     a future postgraduate student
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/study/apply/apply-research-degree">
+                     a future research student
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/study-online">
+                     a future online student
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/study/indigenous-students">
+                     a future Indigenous student
+                    </a>
+                   </li>
+                   <li>
+                    <a class="change_to_international" href="/international">
+                     an international student
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/study/parents">
+                     a parent
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/study/schools-teachers">
+                     a school counsellor/teacher
+                    </a>
+                   </li>
+                  </ul>
+                 </div>
+                 <div class="col-lg-12 dropdown_buttons_line">
+                  <div class="row">
+                   <div class="col-lg-3">
+                    <a class="black_transparent_button col-lg-12" href="/study/explore">
+                     Explore
+                    </a>
+                   </div>
+                   <div class="col-lg-3">
+                    <a class="black_transparent_button col-lg-12" href="/study/pathways">
+                     Admission pathways
+                    </a>
+                   </div>
+                   <div class="col-lg-3">
+                    <a class="black_transparent_button col-lg-12" href="/study/apply">
+                     Apply
+                    </a>
+                   </div>
+                   <div class="col-lg-3">
+                    <a class="black_transparent_button col-lg-12" href="/study/contact-us">
+                     Contact us
+                    </a>
+                   </div>
+                  </div>
+                 </div>
+                </div>
+               </div>
+              </li>
+              <li class="nav-item dropdown">
+               <a aria-expanded="false" aria-haspopup="true" class="nav_top_link 2 false international_content" data-toggle="dropdown" href="/international" id="menu-option1" role="button" style="display:none">
+                Study
+               </a>
+               <div aria-labelledby="menu-option1" class="dropdown-menu">
+                <div class="dropmenu_section_wrapper">
+                 <div class="col-lg-9 dropmenu_section">
+                  <p class="head_list_heading">
+                   <a aria-expanded="false" data-toggle="dropdown" href="#" role="button">
+                    Study areas
+                   </a>
+                  </p>
+                  <ul class="dropdown_menu__list dropdown-menu">
+                   <li>
+                    <a href="/international/business">
+                     Business
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/international/creative-arts">
+                     Creative arts
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/international/education">
+                     Education
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/international/engineering">
+                     Engineering
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/international/environment">
+                     Environment
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/international/government">
+                     Government
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/international/health-sciences">
+                     Health sciences
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/international/humanities">
+                     Humanities
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/international/information-technology">
+                     Information technology
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/international/law">
+                     Law
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/international/medicine">
+                     Medicine
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/international/nursing">
+                     Nursing
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/international/psychology">
+                     Psychology
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/international/public-health">
+                     Public health
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/international/science">
+                     Science
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/international/social-sciences">
+                     Social sciences
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/international/social-work">
+                     Social work
+                    </a>
+                   </li>
+                  </ul>
+                 </div>
+                 <div class="col-lg-3 dropmenu_section gray_light_container-d1">
+                  <p class="head_list_heading">
+                   <a aria-expanded="false" data-toggle="dropdown" href="#" role="button">
+                    International websites
+                   </a>
+                  </p>
+                  <ul class="dropdown_menu__list dropdown-menu">
+                   <li>
+                    <a href="http://china.flinders.edu.au/" target="_blank">
+                     China
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/vietnam" target="_blank">
+                     Vietnam
+                    </a>
+                   </li>
+                  </ul>
+                 </div>
+                 <div class="col-lg-12 dropdown_buttons_line">
+                  <div class="row">
+                   <div class="col-lg-3">
+                    <a class="black_transparent_button col-lg-12" href="/international/explore">
+                     Explore Flinders
+                    </a>
+                   </div>
+                   <div class="col-lg-3">
+                    <a class="black_transparent_button col-lg-12" href="/international/apply">
+                     Apply
+                    </a>
+                   </div>
+                   <div class="col-lg-3">
+                   </div>
+                   <div class="col-lg-3">
+                    <a class="black_transparent_button col-lg-12" href="/international/contact-us">
+                     Contact us
+                    </a>
+                   </div>
+                  </div>
+                 </div>
+                </div>
+               </div>
+              </li>
+              <li class="nav-item dropdown">
+               <a aria-expanded="false" aria-haspopup="true" class="nav_top_link 2 false" data-toggle="dropdown" href="/research" id="menu-option2" role="button" style="display:">
+                Research
+               </a>
+               <div aria-labelledby="menu-option2" class="dropdown-menu">
+                <div class="dropmenu_section_wrapper">
+                 <div class="col-lg-6 dropmenu_section">
+                  <p class="head_list_heading">
+                   <a aria-expanded="false" data-toggle="dropdown" href="#" role="button">
+                    Research areas
+                   </a>
+                  </p>
+                  <ul class="dropdown_menu__list dropdown-menu">
+                   <li>
+                    <a href="/research/engineering-and-technology">
+                     Engineering and technology
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/research/health-and-medical">
+                     Health and medical
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/research/people-and-society">
+                     People and society
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/research/science-environment-and-natural-resources">
+                     Science, environment and natural resources
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/research/defence">
+                     Emerging research - Defence
+                    </a>
+                   </li>
+                  </ul>
+                 </div>
+                 <div class="col-lg-3 dropmenu_section dropmenu_section">
+                  <p class="head_list_heading">
+                   <a aria-expanded="false" data-toggle="dropdown" href="#" role="button">
+                    Brave Minds
+                   </a>
+                  </p>
+                  <ul class="dropdown_menu__list dropdown-menu">
+                   <li>
+                    <a href="/braveminds">
+                     Making a difference
+                    </a>
+                   </li>
+                  </ul>
+                 </div>
+                 <div class="col-lg-3 dropmenu_section dropmenu_section gray_light_container-d1">
+                  <p class="head_list_heading">
+                   <a aria-expanded="false" data-toggle="dropdown" href="#" role="button">
+                    I am...
+                   </a>
+                  </p>
+                  <ul class="dropdown_menu__list dropdown-menu">
+                   <li>
+                    <a href="/research/collaborate">
+                     a potential collaborator
+                    </a>
+                   </li>
+                   <li>
+                    <a href="http://staff.flinders.edu.au/research">
+                     a researcher
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/study/apply/apply-research-degree">
+                     a potential research student
+                    </a>
+                   </li>
+                   <li>
+                    <a href="http://students.flinders.edu.au/my-course/hdr">
+                     a current research student
+                    </a>
+                   </li>
+                  </ul>
+                 </div>
+                 <div class="col-lg-12 dropdown_buttons_line">
+                  <div class="row">
+                   <div class="col-lg-3">
+                    <a class="black_transparent_button col-lg-12" href="/research/research-impact">
+                     Research impact
+                    </a>
+                   </div>
+                   <div class="col-lg-3">
+                    <a class="black_transparent_button col-lg-12" href="/research/centres-institutes">
+                     Institutes and centres
+                    </a>
+                   </div>
+                   <div class="col-lg-3">
+                    <a class="black_transparent_button col-lg-12" href="/research/collaborate">
+                     Partner with us
+                    </a>
+                   </div>
+                   <div class="col-lg-3">
+                    <a class="black_transparent_button col-lg-12" href="/research/research-study">
+                     Participate
+                    </a>
+                   </div>
+                  </div>
+                 </div>
+                </div>
+               </div>
+              </li>
+              <li class="nav-item dropdown">
+               <a aria-expanded="false" aria-haspopup="true" class="nav_top_link 2 false" data-toggle="dropdown" href="/engage" id="menu-option3" role="button" style="display:">
+                Engage
+               </a>
+               <div aria-labelledby="menu-option3" class="dropdown-menu">
+                <div class="dropmenu_section_wrapper">
+                 <div class="col-lg-6 dropmenu_section">
+                  <p class="head_list_heading">
+                   <a aria-expanded="false" data-toggle="dropdown" href="#" role="button">
+                    I want to...
+                   </a>
+                  </p>
+                  <ul class="dropdown_menu__list dropdown-menu">
+                   <li>
+                    <a href="/engage/engage-with-us">
+                     Engage with us
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/engage/employment">
+                     Connect with students
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/engage/community">
+                     Locate a clinic
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/engage/campus">
+                     Book a campus venue
+                    </a>
+                   </li>
+                   <li>
+                    <a href="https://www.tenderlink.com/flinders/">
+                     Find a tender
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/giving">
+                     Give to Flinders
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/employment">
+                     Work at Flinders
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/research/research-study">
+                     Participate in a research study
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/engage/culture/whats-on">
+                     See what's on
+                    </a>
+                   </li>
+                  </ul>
+                 </div>
+                 <div class="col-lg-3 dropmenu_section dropmenu_section">
+                  <p class="head_list_heading invisible">
+                  </p>
+                 </div>
+                 <div class="col-lg-3 dropmenu_section dropmenu_section gray_light_container-d1">
+                  <p class="head_list_heading">
+                   <a aria-expanded="false" data-toggle="dropdown" href="#" role="button">
+                    Related links
+                   </a>
+                  </p>
+                  <ul class="dropdown_menu__list dropdown-menu">
+                   <li>
+                    <a href="/new-venture-institute">
+                     Flinders New Venture Institute
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/alumni">
+                     Alumni
+                    </a>
+                   </li>
+                   <li>
+                    <a href="https://www.health2go.com.au/" target="_blank">
+                     Health2Go
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/museum-of-art" target="_blank">
+                     Flinders University Museum of Art
+                    </a>
+                   </li>
+                   <li>
+                    <a href="http://www.onesportandfitness.com.au/" target="_blank">
+                     Flinders One Sport and Fitness
+                    </a>
+                   </li>
+                  </ul>
+                 </div>
+                 <div class="col-lg-12 dropdown_buttons_line">
+                  <div class="row">
+                   <div class="col-lg-3">
+                    <a class="black_transparent_button col-lg-12" href="/engage/business-government">
+                     Business and government
+                    </a>
+                   </div>
+                   <div class="col-lg-3">
+                    <a class="black_transparent_button col-lg-12" href="/engage/community">
+                     Community
+                    </a>
+                   </div>
+                   <div class="col-lg-3">
+                    <a class="black_transparent_button col-lg-12" href="/engage/culture">
+                     Culture
+                    </a>
+                   </div>
+                   <div class="col-lg-3">
+                    <a class="black_transparent_button col-lg-12" href="/engage/international">
+                     International
+                    </a>
+                   </div>
+                  </div>
+                 </div>
+                </div>
+               </div>
+              </li>
+              <li class="nav-item dropdown">
+               <a aria-expanded="false" aria-haspopup="true" class="nav_top_link 2 false" data-toggle="dropdown" href="/alumni" id="menu-option4" role="button" style="display:">
+                Alumni
+               </a>
+               <div aria-labelledby="menu-option4" class="dropdown-menu">
+                <div class="dropmenu_section_wrapper">
+                 <div class="col-lg-9 dropmenu_section">
+                  <p class="head_list_heading">
+                   <a aria-expanded="false" data-toggle="dropdown" href="#" role="button">
+                    I want to...
+                   </a>
+                  </p>
+                  <ul class="dropdown_menu__list dropdown-menu">
+                   <li>
+                    <a href="/alumni/get-involved/networks-and-groups">
+                     Join an Alumni network
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/alumni/get-involved/networks-and-groups#network">
+                     Establish an Alumni network
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/alumni/stay-connected/your-memories">
+                     Share a memory
+                    </a>
+                   </li>
+                   <li>
+                    <a href="http://students.flinders.edu.au/finances-and-admin/official-university-documents/transcript-of-academic-record">
+                     Access career services
+                    </a>
+                   </li>
+                   <li>
+                    <a href="http://students.flinders.edu.au/finances-and-admin/official-university-documents/transcript-of-academic-record">
+                     Order a transcript
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/giving">
+                     Give to Flinders
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/alumni/stay-connected/update-your-details">
+                     Update my details
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/alumni/stay-connected">
+                     Find a classmate
+                    </a>
+                   </li>
+                  </ul>
+                 </div>
+                 <div class="col-lg-12 dropdown_buttons_line">
+                  <div class="row">
+                   <div class="col-lg-3">
+                    <a class="black_transparent_button col-lg-12" href="/alumni/our-alumni">
+                     Our alumni
+                    </a>
+                   </div>
+                   <div class="col-lg-3">
+                    <a class="black_transparent_button col-lg-12" href="/alumni/your-benefits-and-services">
+                     Benefits and services
+                    </a>
+                   </div>
+                   <div class="col-lg-3">
+                    <a class="black_transparent_button col-lg-12" href="/alumni/get-involved">
+                     Get involved
+                    </a>
+                   </div>
+                   <div class="col-lg-3">
+                    <a class="black_transparent_button col-lg-12" href="/alumni/stay-connected">
+                     Stay connected
+                    </a>
+                   </div>
+                  </div>
+                 </div>
+                </div>
+               </div>
+              </li>
+              <li class="nav-item dropdown">
+               <a aria-expanded="false" aria-haspopup="true" class="nav_top_link 2 false" data-toggle="dropdown" href="/giving" id="menu-option5" role="button" style="display:">
+                Giving
+               </a>
+               <div aria-labelledby="menu-option5" class="dropdown-menu">
+                <div class="dropmenu_section_wrapper">
+                 <div class="col-lg-3 dropmenu_section">
+                  <p class="head_list_heading">
+                   <a aria-expanded="false" data-toggle="dropdown" href="#" role="button">
+                    Donate today
+                   </a>
+                  </p>
+                  <ul class="dropdown_menu__list dropdown-menu">
+                   <li>
+                    <a href="https://pay.flinders.edu.au/Alumni/tran?tran-type=DON001">
+                     Donate online
+                    </a>
+                   </li>
+                   <li>
+                    <a href="https://www.flinders.edu.au/content/dam/documents/giving/giving-form.pdf">
+                     Donate by mail
+                    </a>
+                   </li>
+                   <li>
+                    <a href="https://www.flinders.edu.au/content/dam/documents/giving/online-giving-faq.pdf">
+                     Giving online FAQs (PDF)
+                    </a>
+                   </li>
+                   <li>
+                    <a href="http://staff.flinders.edu.au/employee-resources/benefits-pay/workplace-giving">
+                     Staff Workplace Giving Program
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/giving/contact-us">
+                     Contact us
+                    </a>
+                   </li>
+                  </ul>
+                 </div>
+                 <div class="col-lg-6 dropmenu_section">
+                  <p class="head_list_heading">
+                   <a aria-expanded="false" data-toggle="dropdown" href="#" role="button">
+                    Ways to give
+                   </a>
+                  </p>
+                  <ul class="dropdown_menu__list dropdown-menu">
+                   <li>
+                    <a href="/giving/ways-to-give/pay-tribute">
+                     Give in celebration or in memory
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/giving/ways-to-give/bequests">
+                     Leave a gift in your Will
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/giving/ways-to-give/overseas-giving">
+                     Giving from overseas
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/giving/ways-to-give/cultural-gift">
+                     Give a cultural gift
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/giving/ways-to-give/get-involved">
+                     Get involved
+                    </a>
+                   </li>
+                  </ul>
+                 </div>
+                 <div class="col-lg-3 dropmenu_section dropmenu_section">
+                  <p class="head_list_heading invisible">
+                  </p>
+                 </div>
+                 <div class="col-lg-12 dropdown_buttons_line">
+                  <div class="row">
+                   <div class="col-lg-3">
+                    <a class="black_transparent_button col-lg-12" href="/giving/give-to">
+                     Donate to
+                    </a>
+                   </div>
+                   <div class="col-lg-3">
+                    <a class="black_transparent_button col-lg-12" href="/giving/why-give">
+                     Why give
+                    </a>
+                   </div>
+                   <div class="col-lg-3">
+                    <a class="black_transparent_button col-lg-12" href="/giving/our-donors">
+                     Our donors
+                    </a>
+                   </div>
+                   <div class="col-lg-3">
+                   </div>
+                  </div>
+                 </div>
+                </div>
+               </div>
+              </li>
+              <li class="nav-item dropdown">
+               <a aria-expanded="false" aria-haspopup="true" class="nav_top_link 2 false" data-toggle="dropdown" href="/about" id="menu-option6" role="button" style="display:">
+                About
+               </a>
+               <div aria-labelledby="menu-option6" class="dropdown-menu">
+                <div class="dropmenu_section_wrapper">
+                 <div class="col-lg-3 dropmenu_section">
+                  <p class="head_list_heading">
+                   <a aria-expanded="false" data-toggle="dropdown" href="#" role="button">
+                    The 2025 agenda
+                   </a>
+                  </p>
+                  <ul class="dropdown_menu__list dropdown-menu">
+                   <li>
+                    <a href="/about/strategy/vision-mission">
+                     Vision and mission
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/about/strategy">
+                     Our strategic plan
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/about/strategy/values-ethos">
+                     Our values and ethos
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/flinders-village">
+                     Flinders Village
+                    </a>
+                   </li>
+                  </ul>
+                 </div>
+                 <div class="col-lg-3 dropmenu_section">
+                  <p class="head_list_heading">
+                   <a aria-expanded="false" data-toggle="dropdown" href="#" role="button">
+                    Governance and leadership
+                   </a>
+                  </p>
+                  <ul class="dropdown_menu__list dropdown-menu">
+                   <li>
+                    <a href="/about/governance/university-council">
+                     University Council
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/about/governance/university-council/chancellor">
+                     Chancellor
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/about/structure/vice-chancellor">
+                     Vice-Chancellor
+                    </a>
+                   </li>
+                  </ul>
+                 </div>
+                 <div class="col-lg-3 dropmenu_section dropmenu_section">
+                  <p class="head_list_heading">
+                   <a aria-expanded="false" data-toggle="dropdown" href="#" role="button">
+                    Our organisation
+                   </a>
+                  </p>
+                  <ul class="dropdown_menu__list dropdown-menu">
+                   <li>
+                    <a href="/about/structure/colleges">
+                     Colleges
+                    </a>
+                   </li>
+                   <li>
+                    <a href="http://www.flinders.edu.au/library/">
+                     Library
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/about/structure/professional-services">
+                     Professional services
+                    </a>
+                   </li>
+                   <li>
+                    <a href="http://www.flinders.edu.au/directory/main-display-search-form.cfm">
+                     Staff directory
+                    </a>
+                   </li>
+                  </ul>
+                 </div>
+                 <div class="col-lg-3 dropmenu_section dropmenu_section gray_light_container-d1">
+                  <p class="head_list_heading">
+                   <a aria-expanded="false" data-toggle="dropdown" href="#" role="button">
+                    Campus and locations
+                   </a>
+                  </p>
+                  <ul class="dropdown_menu__list dropdown-menu">
+                   <li>
+                    <a href="/campus/bedford-park">
+                     Bedford Park
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/campus/tonsley">
+                     Tonsley
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/campus/victoria-square">
+                     Victoria Square
+                    </a>
+                   </li>
+                   <li>
+                    <a href="/flinders-nt">
+                     Flinders in the NT
+                    </a>
+                   </li>
+                  </ul>
+                 </div>
+                 <div class="col-lg-12 dropdown_buttons_line">
+                  <div class="row">
+                   <div class="col-lg-3">
+                    <a class="black_transparent_button col-lg-12" href="/about/fast-facts">
+                     Fast facts
+                    </a>
+                   </div>
+                   <div class="col-lg-3">
+                    <a class="black_transparent_button col-lg-12" href="/about/history">
+                     History
+                    </a>
+                   </div>
+                   <div class="col-lg-3">
+                    <a class="black_transparent_button col-lg-12" href="/about/structure">
+                     Structure
+                    </a>
+                   </div>
+                   <div class="col-lg-3">
+                    <a class="black_transparent_button col-lg-12" href="/about/contact-us">
+                     Contact us
+                    </a>
+                   </div>
+                  </div>
+                 </div>
+                </div>
+               </div>
+              </li>
+             </ul>
+             <!-- Start for site links-->
+             <ul class="ulSiteLink nav navbar-nav top_main_navigation js-menu-aim">
+              <li class="nav-item dropdown">
+               <a class="nav_top_link" href="http://staff.flinders.edu.au">
+                Staff
+               </a>
+               <svg class="tick" height="20px" viewbox="0 0 24 24" width="20px" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z">
+                </path>
+               </svg>
+              </li>
+             </ul>
+             <ul class="ulSiteLink nav navbar-nav top_main_navigation js-menu-aim">
+              <li class="nav-item dropdown">
+               <a class="nav_top_link" href="http://students.flinders.edu.au">
+                Students
+               </a>
+               <svg class="tick" height="20px" viewbox="0 0 24 24" width="20px" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z">
+                </path>
+               </svg>
+              </li>
+             </ul>
+             <ul class="ulSiteLink nav navbar-nav top_main_navigation js-menu-aim">
+              <li class="nav-item dropdown">
+               <a class="nav_top_link" href="http://library.flinders.edu.au">
+                Library
+               </a>
+               <svg class="tick" height="20px" viewbox="0 0 24 24" width="20px" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z">
+                </path>
+               </svg>
+              </li>
+             </ul>
+             <!-- End for site links-->
+             <!-- menu items for dom/Int toggle -->
+             <ul class="nav navbar-nav top_main_navigation js-menu-aim" id="domStudent">
+              <li class="nav-item dropdown" id="domNavMobile" style="line-height: 0px;">
+               <a class="nav_top_link" style="padding-top: 25px;padding-bottom: 5px;">
+                I am a Domestic Student
+               </a>
+               <svg class="aus-map svgDomIntlsm" height="20px" viewbox="0 0 24 24" width="20px" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.8 23.2c-.3 0-.5-.1-.7-.2-.8-.6-1.6-1.3-2.2-2.2-.2-.3-.3-.7-.1-1 .2-.3.5-.5.9-.5h2.8c.3 0 .6.1.7.4.2.2.3.5.2.8l-.4 1.7c-.1.4-.4.8-.8.9-.1.1-.2.1-.4.1zm-1-2.5l.8.8.2-.8h-1zm1.7-2.7H16c-.1 0-.3 0-.4-.1-.4-.2-1.3-1.4-1.8-2.6l-.1.1c-.2.2-.5.4-.9.4-.5 0-.9-.3-1-.8-.1-.6-.4-1.3-1.5-1.3-.5 0-1.5.1-3.5.7 0 0-1.3.4-2.2 1.6-.2.2-.5.4-.8.4h-.7-.2c-.2 0-.4-.2-.6-.4-.2-.2-.2-.5-.2-.7.2-1.2-.4-2.5-1-3.6l-.2-.5c-.2-.4-.4-.7-.5-1-.2-.3-.2-.5-.1-.8l.4-1.7c.1-.4.4-.8.8-.9C3.4 6.2 4.9 5.4 5 4.7c0-.2.1-.4.3-.5l2.4-2.3c.2-.2.4-.3.7-.2.2 0 .4.1.6.3 0 .1.1.2.2.3 0-.1.1-.1.2-.2l1.1-1c.2-.1.4-.2.6-.2h3.4c.3 0 .7.2.8.5.1.3.1.7-.1.9l-.7.7L16 4c.1-.3.2-.9.3-1.7 0-.1 0-.3.1-.3l.5-1.2c.1-.2.2-.3.4-.4.4-.3 1-.1 1.2.3.2.4.5 1 .7 1.7.1.1.2.1.3.3l.5.6c.1.2.2.4.2.6 0 .3-.1 1.7 1.1 2.2.2.1.4.3.4.4l2 4c.1.1.1.3.1.4v1.7c0 .5-.2.9-.6 1.2-1.6 1.4-2.7 2.7-2.8 3.4 0 .5-.4.8-.9.8zm0-1.5zm-3.3 0H19c.4-1.3 1.9-2.8 3.1-3.9V11l-1.9-3.7C19 6.6 18.5 5.2 18.6 4c-.2 0-.3 0-.5-.1s-.3-.2-.4-.4l-.3 1.2c-.2.4-.4.6-.8.8s-.7.1-1.1 0c-.1 0-.1-.1-.2-.1L13.1 4c-.2-.1-.3-.3-.4-.6-.1-.2 0-.5.1-.7 0 0 0-.1.1-.1l.2-.3h-1.8l-.5.4c.1.2.1.3.1.5-.1.3-.2.5-.5.5-.8.4-1.5.2-2.1-.3L6.4 5.2c-.5 1.6-2.8 2.5-4.3 3l-.3 1.4c.1.3.3.6.5.9l.2.5c.6 1.2 1.2 2.5 1.2 3.8 1.2-1.5 2.7-1.9 2.8-1.9 1.8-.5 3.1-.8 3.9-.8 1.4 0 2.3.8 2.7 1.7l.3-.3c.2-.3.6-.3.9-.2.3.1.6.4.6.7.2 1 1 2.1 1.3 2.5zM3.9 14.9zm9.4-.2s.1 0 0 0c.1 0 0 0 0 0zM2 8.2zm17.1-4.5zm-8.7-.5zm3.5-.6zm-2.4-.5z">
+                </path>
+               </svg>
+               <svg class="tick" height="20px" viewbox="0 0 24 24" width="20px" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z">
+                </path>
+               </svg>
+              </li>
+             </ul>
+             <ul class="nav navbar-nav top_main_navigation js-menu-aim" id="intlStudent">
+              <li class="nav-item dropdown" id="intlNavMobile" style="line-height: 0px;">
+               <a class="nav_top_link" style="padding-top: 25px;padding-bottom: 5px;">
+                I am an International Student
+               </a>
+               <svg class="globe svgDomIntlsm" height="20px" viewbox="0 0 24 24" width="20px" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16.8 1C13.4-.5 9.5-.3 6.3 1.5 2.1 3.7-.4 8.4.1 13.1c.6 6.5 6.5 11.4 13 10.8 6.1-.5 11-5.8 11-11.9-.1-4.7-3-9.1-7.3-11zm.1 1.7c.6.3 1.3.8 1.8 1.2-.5.6-2.5 1-3 .2.2-.5.7-1.1 1.2-1.4zm-4.6-1.2c.4 0 .8 0 1.2.1-.1.1-.8.9-.8.8-.4 0-.4-.6-.4-.9zm-3.1.4c0 .6 0 1.1.3 1.6.2.4.8.9.7 1.4-.5.8-1 .2-1.7.1-1-.1-.9.8-1.1 1.5-.9 0-2.7-.6-2.8.9 0 .8.8 1.6 1.5 2 .6.3 1.3.4 2 .4.4 0 .8-.2 1.1.1.3.3.1 1 .2 1.4.2.6.6.7 1.2.6.6-.1 1.1-.6 1.7-.5.4.1 1 .6 1 1.1.2 1.4-1.2 1.3-1.9 2.1-.3.4-.3.8-.5 1.3-.1.6-.4.8-.9 1.2-.9.6-1.3 1.6-1.1 2.8-.4-.3-.1-2.5-.2-3.1-.3-.9-.4-2.2-1-3-.4-.5-.9-.7-1.3-1.1-.4-.3-.3-.5-.4-1-.1-1-.4-2-1.3-2.6C3.9 8.5 3 7.9 3 6.6c1.4-2.3 3.6-4 6.2-4.7zm-3 18.8c-4-2.7-5.7-7.9-4-12.5.8 1.4 2.6 1.8 2.7 3.5.1.8.1 1.3.7 1.9.6.5 1.2.7 1.4 1.4.5 1.5.6 2.8.6 4.4 0 .8.3 1.4 1 1.7.7.3 1.5 0 1.6-.8.1-.5-.2-1 0-1.5.2-.6.6-.6 1.1-1.1.6-.6.7-1.1.9-1.9.2-.7.8-.7 1.3-1.1.9-.6 1.3-2.3.7-3.3-.3-.5-.9-1-1.5-1.3-.8-.3-1.5.1-2.3.3-.1-1-.4-2-1.5-2.1-.6-.1-1.2.1-1.8 0-.1.1-.5-.2-.6-.2-.2-.1-.4-.3-.5-.5 1.2 0 2.5.5 2.7-1.2 1.2.5 3-.4 2.8-1.9-.2-1.2-1.1-1.7-1-3 .2 0 .4-.1.5-.1-.1 1 .5 2 1.5 2.2 1 .1 1.9-1.1 2.4-1.8.2.1.5.1.7.2-1.1 1.1-1.7 2.8 0 3.5.7.3 1.4.1 2.1 0 .8-.1 1.4-.2 1.9-.9.4.4.8.9 1.1 1.4-1.3.1-2.5 0-3.7.6-.7.3-1.3.7-1.4 1.5 0 .8.5 1.4 1.1 1.7.2 1 .4 1.8 1.5 2.1.2 0 .4 0 .6.1.3.2.1.3.2.6.1.5.5.7 1 .9-.8.6-1.3 1.1-1.3 2.2 0 .8-.4 2 0 2.7.1.3.4.7.8.9-3.5 3.6-9.2 4.2-13.3 1.4zm14.2-2.4c-.3 0-.5-.2-.6-.5.4-1.1-.2-2.3.8-3.1.5-.4 1.4-.9 1.2-1.6-.2-.6-.9-.6-1.4-.8 0-.6-.4-1.2-1-1.4-.3-.1-.8 0-1.1-.2-.4-.3-.2-1.1-.5-1.5-.2-.3-.7-.3-.8-.6-.8-1.4 4.2-1 4.5-1 1.6 3.4 1.2 7.6-1.1 10.7z">
+                </path>
+               </svg>
+               <svg class="tick" height="20px" viewbox="0 0 24 24" width="20px" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z">
+                </path>
+               </svg>
+              </li>
+             </ul>
+            </div>
+           </div>
+          </nav>
+          <div class="pull-right">
+           <span class="course_bookmark_menu_container" id="course-bookmark-menu" style="display:none">
+            <ul class="header_quicklink_section d-inline-block js-menu-aim" data-role="save_course">
+             <li id="sc">
+              <a aria-expanded="false" aria-haspopup="true" class="header_quicklink" data-toggle="dropdown" href="javascript: void(0);" role="button" title="">
+               <svg class="save-course material-icons" height="29" viewbox="0 0 29 29" width="29">
+                <g fill="none">
+                 <path class="Heart" d="M17.3 7.5C15.2 7.5 13.3 8.4 12 9.9 10.7 8.4 8.8 7.5 6.8 7.5 3.2 7.5 0.3 10.3 0.3 13.9 0.3 18.3 4.3 21.9 10.3 27.4L12 28.9 13.7 27.4C19.7 21.9 23.7 18.3 23.7 13.9 23.7 10.3 20.8 7.5 17.3 7.5ZM12.1 25.6L12 25.8 11.9 25.6C6.3 20.6 2.7 17.3 2.7 13.9 2.7 11.6 4.4 9.8 6.8 9.8 8.5 9.8 10.3 11 10.9 12.6L13.1 12.6C13.7 11 15.5 9.8 17.3 9.8 19.6 9.8 21.3 11.6 21.3 13.9 21.3 17.3 17.7 20.6 12.1 25.6Z" fill="#FFF">
+                 </path>
+                 <circle class="Oval" cx="22" cy="7" fill="#FFD300" r="7">
+                 </circle>
+                </g>
+               </svg>
+              </a>
+              <div aria-labelledby="menu-option0" class="savecoursePopup dropdown-menu col-sm-12" id="savecourseDropDown">
+               <div class="dropmenu_section_wrapper inline_block margin_top_70--md_down">
+                <div class="courseBookmarkSectionEmpty col-lg-12 dropmenu_section course_bookmark_menu_list_container_empty" id="courseBookmarkSectionEmptyMenu" style="display:none">
+                 <div class="row">
+                  <div id="course-bookmarks">
+                   <p class="head_list_heading">
+                    <a aria-expanded="false" data-toggle="dropdown" href="#" role="button">
+                     You have no saved courses.
+                    </a>
+                   </p>
+                  </div>
+                 </div>
+                 <div class="row">
+                  <div class="col-sm-8 col-md-10">
+                   <p class="head_list_heading">
+                    Continue to explore your course options.
+                   </p>
+                  </div>
+                 </div>
+                 <div class="row">
+                  <div class="col-xs-12 dropdown_buttons_line">
+                   <div class="row bookmark_row">
+                    <div class="col-lg-6">
+                     <a class="black_transparent_button fixed_width bookmark_row" href="/study/courses">
+                      Explore our courses
+                     </a>
+                    </div>
+                   </div>
+                  </div>
+                 </div>
+                </div>
+                <div class="container-fluid course_bookmark_menu_list_container" id="courseBookmarkSectionMenu" style="display:none">
+                 <div class="row">
+                  <div class="col-lg-12 dropmenu_section" id="course-bookmarks">
+                   <p class="head_list_heading">
+                    <a aria-expanded="false" data-toggle="dropdown" href="#" role="button">
+                     Your saved courses
+                    </a>
+                   </p>
+                  </div>
+                 </div>
+                 <div class="row saveCourseContent">
+                  <div class="courseBookmarkTarget" id="courseBookmarkTargetMenu">
+                  </div>
+                  <div class="hidden" id="courseBookmarkBaseMenu">
+                   <div class="bookmark_container courseBookmarkRow{{courseId}} container-fluid scRowStyle courseBookmarkMenu flex-container">
+                    <div class="col-xs-10 col-sm-10 col-md-10 flex-container courseBookmarkName">
+                     <a href="javascript:void(0);" onclick="javascript:window.location.href ='{{courseLink}}';" tabindex="0">
+                      {{{courseName}}}
+                     </a>
+                    </div>
+                    <div class="col-xs-2 col-md-1 text-center hidden-sm-down flex-container flex-justify-center">
+                     <a class="flex-vertical-align-middle" href="javascript:void(0);" onclick="javascript:window.location.href ='{{courseLink}}#enquiry';" tabindex="0">
+                      <i class="material-icons vertical-align-middle">
+                       mail_outline
+                      </i>
+                     </a>
+                    </div>
+                    <div class="col-xs-2 col-sm-2 col-md-1 text-center deleteCourseBookmark flex-container flex-justify-center" data-course-id="{{courseId}}" tabindex="0">
+                     <span class="flex-vertical-align-middle">
+                      <i class="material-icons vertical-align-middle">
+                       delete
+                      </i>
+                     </span>
+                    </div>
+                   </div>
+                  </div>
+                  <script src="/etc.clientlibs/flinders/clientlibs/course-bookmark-template.min.a9e43f3f4f06de7e3cdff1611832d2ee.js" type="text/javascript">
+                  </script>
+                 </div>
+                 <div class="row">
+                  <div class="col-xs-12 dropdown_buttons_line">
+                   <div class="row bookmark_row">
+                    <div class="col-lg-6">
+                     <a class="black_transparent_button fixed_width bookmark_row" href="/study/courses/saved-courses">
+                      View all saved courses
+                     </a>
+                    </div>
+                   </div>
+                  </div>
+                 </div>
+                </div>
+                <input id="courseBookmarkId" type="hidden" value=""/>
+               </div>
+              </div>
+             </li>
+            </ul>
+           </span>
+           <ul class="header_quicklink_section d-inline-block js-menu-aim" data-role="location_switch">
+            <li class="dropdown mini_mega_menu quicklink_section_mv">
+             <a aria-expanded="false" aria-haspopup="true" class="header_quicklink" data-toggle="dropdown" href="javascript: void(0);" role="button" title="">
+              <i class="material-icons domIntIcons" data-custom-class="domIntlToolTip" data-html="true" data-toggle="tooltip" id="dom_int_icon_container" title="">
+               <!-- domestic and world icon -->
+               <svg class="aus-map" height="20px" style="display:none" viewbox="0 0 24 24" width="20px" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.8 23.2c-.3 0-.5-.1-.7-.2-.8-.6-1.6-1.3-2.2-2.2-.2-.3-.3-.7-.1-1 .2-.3.5-.5.9-.5h2.8c.3 0 .6.1.7.4.2.2.3.5.2.8l-.4 1.7c-.1.4-.4.8-.8.9-.1.1-.2.1-.4.1zm-1-2.5l.8.8.2-.8h-1zm1.7-2.7H16c-.1 0-.3 0-.4-.1-.4-.2-1.3-1.4-1.8-2.6l-.1.1c-.2.2-.5.4-.9.4-.5 0-.9-.3-1-.8-.1-.6-.4-1.3-1.5-1.3-.5 0-1.5.1-3.5.7 0 0-1.3.4-2.2 1.6-.2.2-.5.4-.8.4h-.7-.2c-.2 0-.4-.2-.6-.4-.2-.2-.2-.5-.2-.7.2-1.2-.4-2.5-1-3.6l-.2-.5c-.2-.4-.4-.7-.5-1-.2-.3-.2-.5-.1-.8l.4-1.7c.1-.4.4-.8.8-.9C3.4 6.2 4.9 5.4 5 4.7c0-.2.1-.4.3-.5l2.4-2.3c.2-.2.4-.3.7-.2.2 0 .4.1.6.3 0 .1.1.2.2.3 0-.1.1-.1.2-.2l1.1-1c.2-.1.4-.2.6-.2h3.4c.3 0 .7.2.8.5.1.3.1.7-.1.9l-.7.7L16 4c.1-.3.2-.9.3-1.7 0-.1 0-.3.1-.3l.5-1.2c.1-.2.2-.3.4-.4.4-.3 1-.1 1.2.3.2.4.5 1 .7 1.7.1.1.2.1.3.3l.5.6c.1.2.2.4.2.6 0 .3-.1 1.7 1.1 2.2.2.1.4.3.4.4l2 4c.1.1.1.3.1.4v1.7c0 .5-.2.9-.6 1.2-1.6 1.4-2.7 2.7-2.8 3.4 0 .5-.4.8-.9.8zm0-1.5zm-3.3 0H19c.4-1.3 1.9-2.8 3.1-3.9V11l-1.9-3.7C19 6.6 18.5 5.2 18.6 4c-.2 0-.3 0-.5-.1s-.3-.2-.4-.4l-.3 1.2c-.2.4-.4.6-.8.8s-.7.1-1.1 0c-.1 0-.1-.1-.2-.1L13.1 4c-.2-.1-.3-.3-.4-.6-.1-.2 0-.5.1-.7 0 0 0-.1.1-.1l.2-.3h-1.8l-.5.4c.1.2.1.3.1.5-.1.3-.2.5-.5.5-.8.4-1.5.2-2.1-.3L6.4 5.2c-.5 1.6-2.8 2.5-4.3 3l-.3 1.4c.1.3.3.6.5.9l.2.5c.6 1.2 1.2 2.5 1.2 3.8 1.2-1.5 2.7-1.9 2.8-1.9 1.8-.5 3.1-.8 3.9-.8 1.4 0 2.3.8 2.7 1.7l.3-.3c.2-.3.6-.3.9-.2.3.1.6.4.6.7.2 1 1 2.1 1.3 2.5zM3.9 14.9zm9.4-.2s.1 0 0 0c.1 0 0 0 0 0zM2 8.2zm17.1-4.5zm-8.7-.5zm3.5-.6zm-2.4-.5z">
+                </path>
+               </svg>
+               <svg class="globe" height="20px" style="display:none" viewbox="0 0 24 24" width="20px" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16.8 1C13.4-.5 9.5-.3 6.3 1.5 2.1 3.7-.4 8.4.1 13.1c.6 6.5 6.5 11.4 13 10.8 6.1-.5 11-5.8 11-11.9-.1-4.7-3-9.1-7.3-11zm.1 1.7c.6.3 1.3.8 1.8 1.2-.5.6-2.5 1-3 .2.2-.5.7-1.1 1.2-1.4zm-4.6-1.2c.4 0 .8 0 1.2.1-.1.1-.8.9-.8.8-.4 0-.4-.6-.4-.9zm-3.1.4c0 .6 0 1.1.3 1.6.2.4.8.9.7 1.4-.5.8-1 .2-1.7.1-1-.1-.9.8-1.1 1.5-.9 0-2.7-.6-2.8.9 0 .8.8 1.6 1.5 2 .6.3 1.3.4 2 .4.4 0 .8-.2 1.1.1.3.3.1 1 .2 1.4.2.6.6.7 1.2.6.6-.1 1.1-.6 1.7-.5.4.1 1 .6 1 1.1.2 1.4-1.2 1.3-1.9 2.1-.3.4-.3.8-.5 1.3-.1.6-.4.8-.9 1.2-.9.6-1.3 1.6-1.1 2.8-.4-.3-.1-2.5-.2-3.1-.3-.9-.4-2.2-1-3-.4-.5-.9-.7-1.3-1.1-.4-.3-.3-.5-.4-1-.1-1-.4-2-1.3-2.6C3.9 8.5 3 7.9 3 6.6c1.4-2.3 3.6-4 6.2-4.7zm-3 18.8c-4-2.7-5.7-7.9-4-12.5.8 1.4 2.6 1.8 2.7 3.5.1.8.1 1.3.7 1.9.6.5 1.2.7 1.4 1.4.5 1.5.6 2.8.6 4.4 0 .8.3 1.4 1 1.7.7.3 1.5 0 1.6-.8.1-.5-.2-1 0-1.5.2-.6.6-.6 1.1-1.1.6-.6.7-1.1.9-1.9.2-.7.8-.7 1.3-1.1.9-.6 1.3-2.3.7-3.3-.3-.5-.9-1-1.5-1.3-.8-.3-1.5.1-2.3.3-.1-1-.4-2-1.5-2.1-.6-.1-1.2.1-1.8 0-.1.1-.5-.2-.6-.2-.2-.1-.4-.3-.5-.5 1.2 0 2.5.5 2.7-1.2 1.2.5 3-.4 2.8-1.9-.2-1.2-1.1-1.7-1-3 .2 0 .4-.1.5-.1-.1 1 .5 2 1.5 2.2 1 .1 1.9-1.1 2.4-1.8.2.1.5.1.7.2-1.1 1.1-1.7 2.8 0 3.5.7.3 1.4.1 2.1 0 .8-.1 1.4-.2 1.9-.9.4.4.8.9 1.1 1.4-1.3.1-2.5 0-3.7.6-.7.3-1.3.7-1.4 1.5 0 .8.5 1.4 1.1 1.7.2 1 .4 1.8 1.5 2.1.2 0 .4 0 .6.1.3.2.1.3.2.6.1.5.5.7 1 .9-.8.6-1.3 1.1-1.3 2.2 0 .8-.4 2 0 2.7.1.3.4.7.8.9-3.5 3.6-9.2 4.2-13.3 1.4zm14.2-2.4c-.3 0-.5-.2-.6-.5.4-1.1-.2-2.3.8-3.1.5-.4 1.4-.9 1.2-1.6-.2-.6-.9-.6-1.4-.8 0-.6-.4-1.2-1-1.4-.3-.1-.8 0-1.1-.2-.4-.3-.2-1.1-.5-1.5-.2-.3-.7-.3-.8-.6-.8-1.4 4.2-1 4.5-1 1.6 3.4 1.2 7.6-1.1 10.7z">
+                </path>
+               </svg>
+              </i>
+             </a>
+             <div class="dropdown-menu" style="background-color:transparent;">
+              <div class="container loc">
+               <div class="row">
+                <div class="col-sm-6 internationalSwitch dom_int_toggle" id="dom_int_toggle_international" style="width:300px;height:320px;">
+                 <div style="text-align: center;padding-top: 20px;">
+                  <svg class="globe" height="20px" viewbox="0 0 24 24" width="20px" xmlns="http://www.w3.org/2000/svg">
+                   <path d="M16.8 1C13.4-.5 9.5-.3 6.3 1.5 2.1 3.7-.4 8.4.1 13.1c.6 6.5 6.5 11.4 13 10.8 6.1-.5 11-5.8 11-11.9-.1-4.7-3-9.1-7.3-11zm.1 1.7c.6.3 1.3.8 1.8 1.2-.5.6-2.5 1-3 .2.2-.5.7-1.1 1.2-1.4zm-4.6-1.2c.4 0 .8 0 1.2.1-.1.1-.8.9-.8.8-.4 0-.4-.6-.4-.9zm-3.1.4c0 .6 0 1.1.3 1.6.2.4.8.9.7 1.4-.5.8-1 .2-1.7.1-1-.1-.9.8-1.1 1.5-.9 0-2.7-.6-2.8.9 0 .8.8 1.6 1.5 2 .6.3 1.3.4 2 .4.4 0 .8-.2 1.1.1.3.3.1 1 .2 1.4.2.6.6.7 1.2.6.6-.1 1.1-.6 1.7-.5.4.1 1 .6 1 1.1.2 1.4-1.2 1.3-1.9 2.1-.3.4-.3.8-.5 1.3-.1.6-.4.8-.9 1.2-.9.6-1.3 1.6-1.1 2.8-.4-.3-.1-2.5-.2-3.1-.3-.9-.4-2.2-1-3-.4-.5-.9-.7-1.3-1.1-.4-.3-.3-.5-.4-1-.1-1-.4-2-1.3-2.6C3.9 8.5 3 7.9 3 6.6c1.4-2.3 3.6-4 6.2-4.7zm-3 18.8c-4-2.7-5.7-7.9-4-12.5.8 1.4 2.6 1.8 2.7 3.5.1.8.1 1.3.7 1.9.6.5 1.2.7 1.4 1.4.5 1.5.6 2.8.6 4.4 0 .8.3 1.4 1 1.7.7.3 1.5 0 1.6-.8.1-.5-.2-1 0-1.5.2-.6.6-.6 1.1-1.1.6-.6.7-1.1.9-1.9.2-.7.8-.7 1.3-1.1.9-.6 1.3-2.3.7-3.3-.3-.5-.9-1-1.5-1.3-.8-.3-1.5.1-2.3.3-.1-1-.4-2-1.5-2.1-.6-.1-1.2.1-1.8 0-.1.1-.5-.2-.6-.2-.2-.1-.4-.3-.5-.5 1.2 0 2.5.5 2.7-1.2 1.2.5 3-.4 2.8-1.9-.2-1.2-1.1-1.7-1-3 .2 0 .4-.1.5-.1-.1 1 .5 2 1.5 2.2 1 .1 1.9-1.1 2.4-1.8.2.1.5.1.7.2-1.1 1.1-1.7 2.8 0 3.5.7.3 1.4.1 2.1 0 .8-.1 1.4-.2 1.9-.9.4.4.8.9 1.1 1.4-1.3.1-2.5 0-3.7.6-.7.3-1.3.7-1.4 1.5 0 .8.5 1.4 1.1 1.7.2 1 .4 1.8 1.5 2.1.2 0 .4 0 .6.1.3.2.1.3.2.6.1.5.5.7 1 .9-.8.6-1.3 1.1-1.3 2.2 0 .8-.4 2 0 2.7.1.3.4.7.8.9-3.5 3.6-9.2 4.2-13.3 1.4zm14.2-2.4c-.3 0-.5-.2-.6-.5.4-1.1-.2-2.3.8-3.1.5-.4 1.4-.9 1.2-1.6-.2-.6-.9-.6-1.4-.8 0-.6-.4-1.2-1-1.4-.3-.1-.8 0-1.1-.2-.4-.3-.2-1.1-.5-1.5-.2-.3-.7-.3-.8-.6-.8-1.4 4.2-1 4.5-1 1.6 3.4 1.2 7.6-1.1 10.7z">
+                   </path>
+                  </svg>
+                  <div>
+                   <p>
+                    I am an
+                    <br/>
+                    International Student
+                   </p>
+                   <p>
+                    I am not a citizen of
+                    <br/>
+                    Australia or New Zealand
+                    <br/>
+                    <br/>
+                    <br/>
+                   </p>
+                   <p class="component_section_d1 padding_top_none padding_bottom_none" id="internationalButton" style="font-style: italic;">
+                    <a class="locationswitch_yellow_button fixed_width btn__icons dom_int_toggle" tabindex="0" title="">
+                     Switch to International
+                     <span>
+                      <i>
+                      </i>
+                     </span>
+                    </a>
+                   </p>
+                   <div id="tickImage1" style="text-align: center;">
+                    <svg class="tick" height="20px" viewbox="0 0 24 24" width="20px" xmlns="http://www.w3.org/2000/svg">
+                     <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z">
+                     </path>
+                    </svg>
+                   </div>
+                  </div>
+                 </div>
+                </div>
+                <div class="col-sm-6 domesticSwitch dom_int_toggle" id="dom_int_toggle_domestic" style="width:300px;height:320px;">
+                 <div style="text-align: center;padding-top: 20px;">
+                  <svg class="aus-map" height="20px" viewbox="0 0 24 24" width="20px" xmlns="http://www.w3.org/2000/svg">
+                   <path d="M18.8 23.2c-.3 0-.5-.1-.7-.2-.8-.6-1.6-1.3-2.2-2.2-.2-.3-.3-.7-.1-1 .2-.3.5-.5.9-.5h2.8c.3 0 .6.1.7.4.2.2.3.5.2.8l-.4 1.7c-.1.4-.4.8-.8.9-.1.1-.2.1-.4.1zm-1-2.5l.8.8.2-.8h-1zm1.7-2.7H16c-.1 0-.3 0-.4-.1-.4-.2-1.3-1.4-1.8-2.6l-.1.1c-.2.2-.5.4-.9.4-.5 0-.9-.3-1-.8-.1-.6-.4-1.3-1.5-1.3-.5 0-1.5.1-3.5.7 0 0-1.3.4-2.2 1.6-.2.2-.5.4-.8.4h-.7-.2c-.2 0-.4-.2-.6-.4-.2-.2-.2-.5-.2-.7.2-1.2-.4-2.5-1-3.6l-.2-.5c-.2-.4-.4-.7-.5-1-.2-.3-.2-.5-.1-.8l.4-1.7c.1-.4.4-.8.8-.9C3.4 6.2 4.9 5.4 5 4.7c0-.2.1-.4.3-.5l2.4-2.3c.2-.2.4-.3.7-.2.2 0 .4.1.6.3 0 .1.1.2.2.3 0-.1.1-.1.2-.2l1.1-1c.2-.1.4-.2.6-.2h3.4c.3 0 .7.2.8.5.1.3.1.7-.1.9l-.7.7L16 4c.1-.3.2-.9.3-1.7 0-.1 0-.3.1-.3l.5-1.2c.1-.2.2-.3.4-.4.4-.3 1-.1 1.2.3.2.4.5 1 .7 1.7.1.1.2.1.3.3l.5.6c.1.2.2.4.2.6 0 .3-.1 1.7 1.1 2.2.2.1.4.3.4.4l2 4c.1.1.1.3.1.4v1.7c0 .5-.2.9-.6 1.2-1.6 1.4-2.7 2.7-2.8 3.4 0 .5-.4.8-.9.8zm0-1.5zm-3.3 0H19c.4-1.3 1.9-2.8 3.1-3.9V11l-1.9-3.7C19 6.6 18.5 5.2 18.6 4c-.2 0-.3 0-.5-.1s-.3-.2-.4-.4l-.3 1.2c-.2.4-.4.6-.8.8s-.7.1-1.1 0c-.1 0-.1-.1-.2-.1L13.1 4c-.2-.1-.3-.3-.4-.6-.1-.2 0-.5.1-.7 0 0 0-.1.1-.1l.2-.3h-1.8l-.5.4c.1.2.1.3.1.5-.1.3-.2.5-.5.5-.8.4-1.5.2-2.1-.3L6.4 5.2c-.5 1.6-2.8 2.5-4.3 3l-.3 1.4c.1.3.3.6.5.9l.2.5c.6 1.2 1.2 2.5 1.2 3.8 1.2-1.5 2.7-1.9 2.8-1.9 1.8-.5 3.1-.8 3.9-.8 1.4 0 2.3.8 2.7 1.7l.3-.3c.2-.3.6-.3.9-.2.3.1.6.4.6.7.2 1 1 2.1 1.3 2.5zM3.9 14.9zm9.4-.2s.1 0 0 0c.1 0 0 0 0 0zM2 8.2zm17.1-4.5zm-8.7-.5zm3.5-.6zm-2.4-.5z">
+                   </path>
+                  </svg>
+                  <div>
+                   <p>
+                    I am a
+                    <br/>
+                    Domestic Student
+                   </p>
+                   <p>
+                    I am an Australian or New Zealand Citizen
+                   </p>
+                   <p>
+                    I am an Australian Permanent Resident
+                    <br/>
+                    (including Humanitarian Visa holders)
+                   </p>
+                   <p class="component_section_d1 padding_top_none padding_bottom_none" id="domesticButton" style="font-style: italic;">
+                    <a class="locationswitch_yellow_button fixed_width btn__icons dom_int_toggle" tabindex="0">
+                     Switch to Domestic
+                     <span>
+                      <i>
+                      </i>
+                     </span>
+                    </a>
+                   </p>
+                   <div id="tickImage2" style="text-align: center;">
+                    <svg class="tick" height="20px" viewbox="0 0 24 24" width="20px" xmlns="http://www.w3.org/2000/svg">
+                     <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z">
+                     </path>
+                    </svg>
+                   </div>
+                  </div>
+                 </div>
+                </div>
+               </div>
+              </div>
+             </div>
+            </li>
+           </ul>
+           <ul class="header_quicklink_section d-inline-block js-menu-aim" data-role="quicklink_nav">
+            <li class="dropdown mini_mega_menu quicklink_section_mv">
+             <a aria-expanded="false" aria-haspopup="true" class="header_quicklink" data-toggle="dropdown" href="javascript: void(0);" role="button" title="">
+              <span>
+               Quick links
+              </span>
+              <i class="material-icons">
+               
+              </i>
+             </a>
+             <div aria-labelledby="header_quicklinks" class="dropdown-menu">
+              <div class="col-lg-12 dropmenu_section">
+               <ul class="dropdown_menu__list">
+                <li>
+                 <a href="http://students.flinders.edu.au">
+                  Current students
+                 </a>
+                </li>
+                <li>
+                 <a href="http://staff.flinders.edu.au">
+                  Staff
+                 </a>
+                </li>
+                <li>
+                 <a href="http://library.flinders.edu.au">
+                  Library
+                 </a>
+                </li>
+                <li>
+                 <a href="https://okta.flinders.edu.au/">
+                  Flinders dashboard (Okta)
+                 </a>
+                </li>
+                <li>
+                 <a href="https://askflinders.microsoftcrmportals.com/">
+                  Ask Flinders
+                 </a>
+                </li>
+                <li>
+                 <a href="https://flo.flinders.edu.au/">
+                  Flinders Learning Online (FLO)
+                 </a>
+                </li>
+                <li>
+                 <a href="/campus/bedford-park/parking">
+                  Parking
+                 </a>
+                </li>
+                <li>
+                 <a href="https://www.flinders.edu.au/content/dam/documents/campus/maps/campus-map.pdf">
+                  Campus map: Bedford Park
+                 </a>
+                </li>
+                <li>
+                 <a href="http://staff.flinders.edu.au/staff-directory">
+                  Staff directory
+                 </a>
+                </li>
+                <li>
+                 <a href="/employment">
+                  Jobs at Flinders
+                 </a>
+                </li>
+               </ul>
+              </div>
+             </div>
+            </li>
+           </ul>
+           <div class="header_search_top d-inline-block" tabindex="0">
+            <a href="javascript:void(0);">
+             <i class="material-icons">
+              
+             </i>
+            </a>
+           </div>
+           <button class="navbar-toggle collapsed hidden-lg-up header_burger d-inline-block" data-target="#navbar-main-top-collapse" data-toggle="collapse" type="button">
+            <span class="sr-only">
+             Toggle navigation
+            </span>
+            <span class="icon-bar">
+            </span>
+            <span class="icon-bar">
+            </span>
+            <span class="icon-bar">
+            </span>
+            <i class="material-icons">
+             
+            </i>
+           </button>
+          </div>
+         </div>
+        </div>
+       </div>
+       <form action="/search" class="header_global_search_form" id="header_global_search_form" method="get">
+        <div class="container">
+         <span class="header_global_search_insert">
+          <div id="___gcse_0">
+           <div class="gsc-control-searchbox-only gsc-control-searchbox-only-en" dir="ltr">
+            <div accept-charset="utf-8" class="gsc-search-box">
+             <table cellpadding="0" cellspacing="0" class="gsc-search-box">
+              <tbody>
+               <tr>
+                <td class="gsc-input">
+                 <input autocomplete="off" class="gsc-input" dir="ltr" id="gsc-i-id1" lang="en" name="q" size="10" spellcheck="false" style="outline: medium none;" title="search" type="text" x-webkit-grammar="builtin:search" x-webkit-speech=""/>
+                </td>
+                <td class="gsc-search-button">
+                 <input class="gsc-search-button" onclick="javascript:$('#header_global_search_form').submit();" title="search" type="button" value="Search"/>
+                </td>
+                <td class="gsc-clear-button">
+                 <div class="gsc-clear-button" title="clear results">
+                 </div>
+                </td>
+               </tr>
+              </tbody>
+             </table>
+            </div>
+           </div>
+          </div>
+         </span>
+        </div>
+       </form>
+      </div>
+     </div>
+    </div>
+    <input id="dom_int_toggle_show_input" name="dom_int_toggle_show_input" type="hidden" value="true"/>
+   </header>
+   <div>
+   </div>
+   <div class="header-tail">
+   </div>
+   <section>
+    <div>
+     <div class="iframe-component parbase">
+      <!-- Start of iframe component -->
+      <div class="iframe-ratio iframe-ratio__largeslider" id="heightOnDevices_1061055943">
+       <iframe frameborder="0" scrolling="no" src="https://slider.flinders.edu.au/flinders-home-slider/">
+       </iframe>
+      </div>
+      <!-- End of iframe component -->
+     </div>
+     <div class="section">
+      <div class="component_section white_container white_container_featured section_component_updated padding_top_none padding_bottom_none padding_left_none padding_right_none transparency_none viewport_auto col_1_section" data-content-tag-mode="disabled" style=";">
+       <div class="container_fullwidth vertical-align-height-fix">
+        <div class="row display-flex default">
+         <div class="col-lg-12">
+          <div class="component_in_section_wrapper">
+           <div class="spacer parbase">
+            <div class="spacer-component">
+             <div class="spacer-component__height-box spacer-component__height-box--desktop" style="height:4px;">
+             </div>
+             <div class="spacer-component__height-box spacer-component__height-box--tablet" style="height:4px;">
+             </div>
+             <div class="spacer-component__height-box spacer-component__height-box--mobile" style="height:4px;">
+             </div>
+            </div>
+           </div>
+           <div class="section">
+           </div>
+           <div class="section">
+           </div>
+           <div class="spacer parbase">
+            <div class="spacer-component">
+             <div class="spacer-component__height-box spacer-component__height-box--desktop" style="height:4px;">
+             </div>
+             <div class="spacer-component__height-box spacer-component__height-box--tablet" style="height:4px;">
+             </div>
+             <div class="spacer-component__height-box spacer-component__height-box--mobile" style="height:4px;">
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="section">
+      <div class="component_section gray_light_container gray_light_container_featured section_component_updated padding_top_none padding_bottom_none padding_left_none padding_right_none transparency_none viewport_auto international_content col_2_section" style="display:none;">
+       <div class="container_fullwidth vertical-align-height-fix">
+        <div class="row hide_two_col_gap display-flex content_middle">
+         <div class="col-lg-6">
+          <div class="component_in_section_wrapper">
+           <div class="section">
+            <div class="component_section gray_light_container gray_light_container_featured section_component_updated padding_top_none padding_bottom_none padding_left_25 padding_right_25 transparency_none viewport_auto col_1_section" style=";">
+             <div class="container">
+              <div class="row">
+               <div class="col-lg-12">
+                <div class="component_in_section_wrapper">
+                 <div class="spacer parbase">
+                  <div class="spacer-component">
+                   <div class="spacer-component__height-box spacer-component__height-box--desktop" style="height:50px;">
+                   </div>
+                   <div class="spacer-component__height-box spacer-component__height-box--tablet" style="height:50px;">
+                   </div>
+                   <div class="spacer-component__height-box spacer-component__height-box--mobile" style="height:50px;">
+                   </div>
+                  </div>
+                 </div>
+                 <div class="rte text">
+                  <div class="cmp-text">
+                   <h2>
+                    <a href="/study">
+                     Want to study with us?
+                    </a>
+                   </h2>
+                   <p>
+                    <span class="text_size_large">
+                     Go Beyond with Flinders University.
+                    </span>
+                   </p>
+                  </div>
+                 </div>
+                 <div class="spacer parbase">
+                  <div class="spacer-component">
+                   <div class="spacer-component__height-box spacer-component__height-box--desktop" style="height:25px;">
+                   </div>
+                   <div class="spacer-component__height-box spacer-component__height-box--tablet" style="height:25px;">
+                   </div>
+                   <div class="spacer-component__height-box spacer-component__height-box--mobile" style="height:25px;">
+                   </div>
+                  </div>
+                 </div>
+                 <div class="quick-search">
+                  <div class="quicksearch" data-max-height-pixel-value="select2-dropdown__height--500" data-open-in-new-tab="no" data-placeholder-text="Search or select a course" data-query-parameter="source" data-query-value="ecs-int-home" data-recent-items-limit="5" data-show-cricos-codes="no" data-show-midyear-indicator="no" data-show-recent-items="yes" data-show-satac-codes="no" style="display: none;">
+                   <span id="quick-search-dropdown-int__midyear_icon" style="display:none">
+                    <svg class="midyear quicksearch__midyear-icon" height="20px" viewbox="0 0 24 24" width="20px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                     <title>
+                      Midyear entry
+                     </title>
+                     <defs>
+                      <path d="M15.872 9.384l-3.064 8.457h-1.646L8.029 9.178l.24 5.483v3.18H5.872V6.206h3.132l2.99 8.439L14.333 8h1.538v1.384zm.04.616h2.203v7.841h-2.406v-3.18L15.913 10zM19 5h2v2h-2v2h-2V7h-2V5h2V3h2v2z" id="a">
+                      </path>
+                     </defs>
+                     <g fill="none" fill-rule="evenodd">
+                      <mask fill="" id="b">
+                       <use xlink:href="#a">
+                       </use>
+                      </mask>
+                      <use fill="#ff7800" xlink:href="#a">
+                      </use>
+                      <g fill="" mask="url(#b)">
+                       <path d="M0 0H24V24H0z">
+                       </path>
+                      </g>
+                     </g>
+                    </svg>
+                   </span>
+                   <label class="quicksearch__label" for="quick-search-dropdown-int">
+                    Search for courses
+                   </label>
+                   <select class="quicksearch__select" id="quick-search-dropdown-int" multiple="multiple" name="courses">
+                   </select>
+                   <div class="quicksearch__button">
+                    <a class="quicksearch_icon" href="#">
+                     <i class="material-icons">
+                      
+                     </i>
+                    </a>
+                   </div>
+                  </div>
+                  <script>
+                   $(function() {
+        initQuickSearch("flinders:course\/availability\/international",
+            "and",
+            "quick\u002Dsearch\u002Ddropdown\u002Dint"
+        );
+    });
+                  </script>
+                 </div>
+                </div>
+               </div>
+              </div>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+         <div class="col-lg-6">
+          <div class="component_in_section_wrapper">
+           <div class="section">
+            <div class="component_section secton_color__black secton_background__left_position padding_top_100 padding_bottom_100 padding_left_25 padding_right_25 viewport_auto section_component_updated col_1_section" data-enllax-ratio="0.2" style="background-image: url('/content/dam/images/home/feature-content/homepage-study-2019.jpg');;">
+             <div class="container vertical-align-height-fix">
+              <div class="row display-flex content_middle">
+               <div class="col-lg-12">
+                <div class="component_in_section_wrapper">
+                 <div class="section">
+                  <div class="component_section white_container white_container_featured section_component_updated padding_top_none padding_bottom_none padding_left_none padding_right_none transparency_none viewport_auto col_2_section" style=";">
+                   <div class="container vertical-align-height-fix">
+                    <div class="row display-flex content_middle">
+                     <div class="col-lg-6">
+                      <div class="component_in_section_wrapper">
+                       <div class="spacer parbase">
+                        <div class="spacer-component">
+                         <div class="spacer-component__height-box spacer-component__height-box--desktop" style="height:300px;">
+                         </div>
+                         <div class="spacer-component__height-box spacer-component__height-box--tablet" style="height:300px;">
+                         </div>
+                         <div class="spacer-component__height-box spacer-component__height-box--mobile" style="height:300px;">
+                         </div>
+                        </div>
+                       </div>
+                      </div>
+                     </div>
+                     <div class="col-lg-6">
+                      <div class="component_in_section_wrapper">
+                       <div class="rte text">
+                        <div class="cmp-text">
+                         <h2>
+                          <span class="text_color_flinders_gold">
+                           What will you explore?
+                           <br/>
+                          </span>
+                         </h2>
+                         <p>
+                          <span class="text_size_large">
+                           <span class="text_color_flinders_white">
+                            Study in 2021
+                           </span>
+                          </span>
+                          <br/>
+                         </p>
+                        </div>
+                       </div>
+                       <div class="cta-button">
+                        <!-- Start of cta-button component -->
+                        <p class="component_section_d1 padding_bottom_none cta_text_alignment_left">
+                         <a class="classic_yellow_button_transform btn__icons" href="/international" title="">
+                          Find out more
+                          <span>
+                           <i class="fa fa-chevron-right">
+                           </i>
+                          </span>
+                         </a>
+                         <!-- BACK BUTTON -->
+                        </p>
+                        <!-- End of cta-button component -->
+                       </div>
+                      </div>
+                     </div>
+                    </div>
+                   </div>
+                  </div>
+                 </div>
+                </div>
+               </div>
+              </div>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="section">
+      <div class="component_section gray_light_container gray_light_container_featured section_component_updated padding_top_none padding_bottom_none padding_left_none padding_right_none transparency_none viewport_auto domestic_content col_2_section" style=";">
+       <div class="container_fullwidth vertical-align-height-fix">
+        <div class="row hide_two_col_gap display-flex content_middle">
+         <div class="col-lg-6">
+          <div class="component_in_section_wrapper">
+           <div class="section">
+            <div class="component_section gray_light_container gray_light_container_featured section_component_updated padding_top_none padding_bottom_25 padding_left_25 padding_right_25 transparency_none viewport_auto col_1_section" style=";">
+             <div class="container">
+              <div class="row">
+               <div class="col-lg-12">
+                <div class="component_in_section_wrapper">
+                 <div class="spacer parbase">
+                  <div class="spacer-component">
+                   <div class="spacer-component__height-box spacer-component__height-box--desktop" style="height:50px;">
+                   </div>
+                   <div class="spacer-component__height-box spacer-component__height-box--tablet" style="height:50px;">
+                   </div>
+                   <div class="spacer-component__height-box spacer-component__height-box--mobile" style="height:50px;">
+                   </div>
+                  </div>
+                 </div>
+                 <div class="rte text">
+                  <div class="cmp-text">
+                   <h2>
+                    <a href="/study">
+                     Want to study with us?
+                    </a>
+                   </h2>
+                   <p>
+                    <span class="text_size_large">
+                     Go Beyond with Flinders University.
+                    </span>
+                   </p>
+                  </div>
+                 </div>
+                 <div class="spacer parbase">
+                  <div class="spacer-component">
+                   <div class="spacer-component__height-box spacer-component__height-box--desktop" style="height:25px;">
+                   </div>
+                   <div class="spacer-component__height-box spacer-component__height-box--tablet" style="height:25px;">
+                   </div>
+                   <div class="spacer-component__height-box spacer-component__height-box--mobile" style="height:25px;">
+                   </div>
+                  </div>
+                 </div>
+                 <div class="quick-search">
+                  <div class="quicksearch" data-max-height-pixel-value="select2-dropdown__height--500" data-open-in-new-tab="no" data-placeholder-text="Search or select a course" data-query-parameter="source" data-query-value="ecs-dom-home" data-recent-items-limit="5" data-show-cricos-codes="no" data-show-midyear-indicator="no" data-show-recent-items="yes" data-show-satac-codes="no" style="display: none;">
+                   <span id="quick-search-dropdown-dom__midyear_icon" style="display:none">
+                    <svg class="midyear quicksearch__midyear-icon" height="20px" viewbox="0 0 24 24" width="20px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                     <title>
+                      Midyear entry
+                     </title>
+                     <defs>
+                      <path d="M15.872 9.384l-3.064 8.457h-1.646L8.029 9.178l.24 5.483v3.18H5.872V6.206h3.132l2.99 8.439L14.333 8h1.538v1.384zm.04.616h2.203v7.841h-2.406v-3.18L15.913 10zM19 5h2v2h-2v2h-2V7h-2V5h2V3h2v2z" id="a">
+                      </path>
+                     </defs>
+                     <g fill="none" fill-rule="evenodd">
+                      <mask fill="" id="b">
+                       <use xlink:href="#a">
+                       </use>
+                      </mask>
+                      <use fill="#ff7800" xlink:href="#a">
+                      </use>
+                      <g fill="" mask="url(#b)">
+                       <path d="M0 0H24V24H0z">
+                       </path>
+                      </g>
+                     </g>
+                    </svg>
+                   </span>
+                   <label class="quicksearch__label" for="quick-search-dropdown-dom">
+                    Search for courses
+                   </label>
+                   <select class="quicksearch__select" id="quick-search-dropdown-dom" multiple="multiple" name="courses">
+                   </select>
+                   <div class="quicksearch__button">
+                    <a class="quicksearch_icon" href="#">
+                     <i class="material-icons">
+                      
+                     </i>
+                    </a>
+                   </div>
+                  </div>
+                  <script>
+                   $(function() {
+        initQuickSearch("flinders:course\/availability\/domestic",
+            "and",
+            "quick\u002Dsearch\u002Ddropdown\u002Ddom"
+        );
+    });
+                  </script>
+                 </div>
+                 <div class="spacer parbase">
+                  <div class="spacer-component">
+                   <div class="spacer-component__height-box spacer-component__height-box--desktop" style="height:25px;">
+                   </div>
+                   <div class="spacer-component__height-box spacer-component__height-box--tablet" style="height:25px;">
+                   </div>
+                   <div class="spacer-component__height-box spacer-component__height-box--mobile" style="height:25px;">
+                   </div>
+                  </div>
+                 </div>
+                </div>
+               </div>
+              </div>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+         <div class="col-lg-6">
+          <div class="component_in_section_wrapper">
+           <div class="section">
+            <div class="component_section secton_color__black secton_background none padding_top_100 padding_bottom_75 padding_left_25 padding_right_25 viewport_auto component_section--hidden-mobile section_component_updated col_1_section" data-content-tag-mode="disabled" data-enllax-ratio=".1" style="background-image: url('/content/dam/images/study/campaigns/s1-2021/study-areas/Education.jpg');;">
+             <div class="container_fullwidth vertical-align-height-fix">
+              <div class="row display-flex content_middle">
+               <div class="col-lg-12">
+                <div class="component_in_section_wrapper">
+                 <div class="spacer parbase">
+                  <div class="spacer-component">
+                   <div class="spacer-component__height-box spacer-component__height-box--mobile" style="height:200px;">
+                   </div>
+                  </div>
+                 </div>
+                 <div class="section">
+                  <div class="component_section white_container white_container_featured section_component_updated padding_top_none padding_bottom_none padding_left_25 padding_right_25 transparency_none viewport_auto col_2_section" data-content-tag-mode="disabled" style=";">
+                   <div class="container vertical-align-height-fix">
+                    <div class="row hide_two_col_gap display-flex default">
+                     <div class="col-lg-6">
+                      <div class="component_in_section_wrapper">
+                       <div class="adaptive-image">
+                        <div class="component_section_d1 padding_top_none image_align_center image_width_100">
+                         <picture>
+                          <source media="(min-width: 1600px)" srcset="/content/dam/images/study/campaigns/s1-2021/step-into-long-lockup.png/jcr:content/renditions/4000.png 2x"/>
+                          <source media="(min-width: 1600px)" srcset="/content/dam/images/study/campaigns/s1-2021/step-into-long-lockup.png/jcr:content/renditions/2400.png 1x"/>
+                          <source media="(min-width: 1170px)" srcset="/content/dam/images/study/campaigns/s1-2021/step-into-long-lockup.png/jcr:content/renditions/3200.png 2x"/>
+                          <source media="(min-width: 1170px)" srcset="/content/dam/images/study/campaigns/s1-2021/step-into-long-lockup.png/jcr:content/renditions/1940.png 1x"/>
+                          <source media="(min-width: 970px)" srcset="/content/dam/images/study/campaigns/s1-2021/step-into-long-lockup.png/jcr:content/renditions/2400.png 2x"/>
+                          <source media="(min-width: 970px)" srcset="/content/dam/images/study/campaigns/s1-2021/step-into-long-lockup.png/jcr:content/renditions/1200.png 1x"/>
+                          <source media="(min-width: 680px)" srcset="/content/dam/images/study/campaigns/s1-2021/step-into-long-lockup.png/jcr:content/renditions/2200.png 2x"/>
+                          <source media="(min-width: 680px)" srcset="/content/dam/images/study/campaigns/s1-2021/step-into-long-lockup.png/jcr:content/renditions/1100.png 1x"/>
+                          <source media="(min-width: 480px)" srcset="/content/dam/images/study/campaigns/s1-2021/step-into-long-lockup.png/jcr:content/renditions/1530.png 2x"/>
+                          <source media="(min-width: 480px)" srcset="/content/dam/images/study/campaigns/s1-2021/step-into-long-lockup.png/jcr:content/renditions/765.png 1x"/>
+                          <img alt="step-into-long-lockup.png" class="img-fluid" src="/content/dam/images/study/campaigns/s1-2021/step-into-long-lockup.png/_jcr_content/renditions/970.png"/>
+                         </picture>
+                        </div>
+                       </div>
+                       <div class="spacer parbase">
+                        <div class="spacer-component">
+                         <div class="spacer-component__height-box spacer-component__height-box--desktop" style="height:8px;">
+                         </div>
+                         <div class="spacer-component__height-box spacer-component__height-box--tablet" style="height:8px;">
+                         </div>
+                         <div class="spacer-component__height-box spacer-component__height-box--mobile" style="height:8px;">
+                         </div>
+                        </div>
+                       </div>
+                       <div class="cta-button">
+                        <!-- Start of cta-button component -->
+                        <p class="component_section_d1 padding_top_none padding_bottom_none cta_text_alignment_left">
+                         <a class="classic_white_button_navy_text fixed_width btn__icons" href="/study" title="">
+                          Apply for 2021
+                          <span>
+                           <i class="fa fa-chevron-right">
+                           </i>
+                          </span>
+                         </a>
+                         <!-- BACK BUTTON -->
+                        </p>
+                        <!-- End of cta-button component -->
+                       </div>
+                      </div>
+                     </div>
+                     <div class="col-lg-6">
+                      <div class="component_in_section_wrapper">
+                      </div>
+                     </div>
+                    </div>
+                   </div>
+                  </div>
+                 </div>
+                </div>
+               </div>
+              </div>
+             </div>
+            </div>
+           </div>
+           <div class="section">
+            <div class="component_section secton_color__black secton_background__left_position none transparent_layer layer_colour_black_80 padding_top_100 padding_bottom_75 padding_left_25 padding_right_25 viewport_auto component_section--hidden-desktop component_section--hidden-tablet section_component_updated col_1_section" data-content-tag-mode="disabled" data-enllax-ratio=".1" style="background-image: url('/content/dam/images/study/campaigns/s1-2021/study-areas/Education.jpg');;">
+             <div class="container_fullwidth vertical-align-height-fix">
+              <div class="row display-flex content_middle">
+               <div class="col-lg-12">
+                <div class="component_in_section_wrapper">
+                 <div class="section">
+                  <div class="component_section white_container white_container_featured section_component_updated padding_top_none padding_bottom_none padding_left_25 padding_right_25 transparency_none viewport_auto col_2_section" data-content-tag-mode="disabled" style=";">
+                   <div class="container vertical-align-height-fix">
+                    <div class="row hide_two_col_gap display-flex default">
+                     <div class="col-lg-6">
+                      <div class="component_in_section_wrapper">
+                       <div class="adaptive-image">
+                        <div class="component_section_d1 padding_top_none image_align_center image_width_100">
+                         <picture>
+                          <source media="(min-width: 1600px)" srcset="/content/dam/images/study/campaigns/s1-2021/need-help-text-sub.png/jcr:content/renditions/4000.png 2x"/>
+                          <source media="(min-width: 1600px)" srcset="/content/dam/images/study/campaigns/s1-2021/need-help-text-sub.png/jcr:content/renditions/2400.png 1x"/>
+                          <source media="(min-width: 1170px)" srcset="/content/dam/images/study/campaigns/s1-2021/need-help-text-sub.png/jcr:content/renditions/3200.png 2x"/>
+                          <source media="(min-width: 1170px)" srcset="/content/dam/images/study/campaigns/s1-2021/need-help-text-sub.png/jcr:content/renditions/1940.png 1x"/>
+                          <source media="(min-width: 970px)" srcset="/content/dam/images/study/campaigns/s1-2021/need-help-text-sub.png/jcr:content/renditions/2400.png 2x"/>
+                          <source media="(min-width: 970px)" srcset="/content/dam/images/study/campaigns/s1-2021/need-help-text-sub.png/jcr:content/renditions/1200.png 1x"/>
+                          <source media="(min-width: 680px)" srcset="/content/dam/images/study/campaigns/s1-2021/need-help-text-sub.png/jcr:content/renditions/2200.png 2x"/>
+                          <source media="(min-width: 680px)" srcset="/content/dam/images/study/campaigns/s1-2021/need-help-text-sub.png/jcr:content/renditions/1100.png 1x"/>
+                          <source media="(min-width: 480px)" srcset="/content/dam/images/study/campaigns/s1-2021/need-help-text-sub.png/jcr:content/renditions/1530.png 2x"/>
+                          <source media="(min-width: 480px)" srcset="/content/dam/images/study/campaigns/s1-2021/need-help-text-sub.png/jcr:content/renditions/765.png 1x"/>
+                          <img alt="need-help-text-sub.png" class="img-fluid" src="/content/dam/images/study/campaigns/s1-2021/need-help-text-sub.png/_jcr_content/renditions/970.png"/>
+                         </picture>
+                        </div>
+                       </div>
+                       <div class="spacer parbase">
+                        <div class="spacer-component">
+                         <div class="spacer-component__height-box spacer-component__height-box--desktop" style="height:8px;">
+                         </div>
+                         <div class="spacer-component__height-box spacer-component__height-box--tablet" style="height:8px;">
+                         </div>
+                         <div class="spacer-component__height-box spacer-component__height-box--mobile" style="height:8px;">
+                         </div>
+                        </div>
+                       </div>
+                       <div class="cta-button">
+                        <!-- Start of cta-button component -->
+                        <p class="component_section_d1 padding_top_none padding_bottom_none cta_text_alignment_left">
+                         <a class="classic_white_button_navy_text d-block btn__icons" href="/study/first" title="">
+                          Get in touch
+                          <span>
+                           <i class="fa fa-chevron-right">
+                           </i>
+                          </span>
+                         </a>
+                         <!-- BACK BUTTON -->
+                        </p>
+                        <!-- End of cta-button component -->
+                       </div>
+                      </div>
+                     </div>
+                     <div class="col-lg-6">
+                      <div class="component_in_section_wrapper">
+                      </div>
+                     </div>
+                    </div>
+                   </div>
+                  </div>
+                 </div>
+                </div>
+               </div>
+              </div>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="section">
+      <div class="component_section white_container white_container_featured section_component_updated col_1_section" style=";">
+       <div class="container">
+        <div class="row">
+         <div class="col-lg-12">
+          <div class="component_in_section_wrapper">
+           <div class="news-feed-v2">
+            <!-- Start of News feed component -->
+            <div class="component_section padding_bottom_50 padding_top_50">
+             <a class="classic_white_button_navy_border pull-right one" href="https://news.flinders.edu.au/" rel="noopener noreferrer" title="">
+              See all news
+             </a>
+             <h2>
+              Latest news
+             </h2>
+             <div class="row clearfix clear newsList padding_top_25 showFeature">
+              <input class="sourceUrl" type="hidden" value="https://news.flinders.edu.au/"/>
+              <input class="articleCount" type="hidden" value="3"/>
+              <input class="showFeatureImage" type="hidden" value="showFeature"/>
+              <input class="articleLayout" type="hidden" value="standardLayout"/>
+              <input class="showExcerpt" type="hidden"/>
+              <input class="hideArticleDate" type="hidden"/>
+             </div>
+            </div>
+            <script class="newsStandard" type="text/x-dot-template">
+             <div class="{{=it.column_layout}} component_section_item">
+        <div class="news-standard-layout">
+            <a href="{{=it.newsUrl}}" title="">
+                <div class="news_image" style="background:url({{=it.bgImage}}) no-repeat 50% 30%; background-size:cover;"></div>
+            </a>
+            <div class="flex-container component_section_news_wrap">
+                <div class="component_section_news_inner_wrap">
+                    <div class="news_date clearfix {{=it.hide_date}}">
+                       <span class="news_date_month">{{=it.date_day}} <i>{{=it.date_month}} </i></span>
+                    </div>
+                    <div class="news_title">
+                        <h3>{{=it.news_title}}</h3>
+                    </div>
+                    <div class="news_excerpts_line">
+                        {{=it.news_excerpt}}
+                    </div>
+                    <div class="news_details">
+                        <a href="{{=it.newsUrl}}" title=""  rel="noopener noreferrer" class="{{=it.buttonStyle}}">Read more</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+            </script>
+            <script class="newsOverlay" type="text/x-dot-template">
+             <div class="{{=it.column_layout}} component_section_item">
+        <div class="news-overlay-layout">
+            <div style="background:url({{=it.bgImage}}) no-repeat 50% 30%; background-size:cover;">
+                <div class="component_section_news_wrap {{=it.overlay}}">
+                    <div class="component_section_news_inner_wrap flex-container news_image">
+                        <div class="news_date clearfix {{=it.hide_date}}">
+                            <span class="news_date_month">{{=it.date_day}} <i>{{=it.date_month}} </i></span>
+                        </div>
+                        <div class="news_title">
+                            <h3>{{=it.title}}</h3>
+                        </div>
+                        <div class="news_overlay_excerpts_line {{=it.show_excerpt}}">
+                            {{=it.news_excerpt}}
+                        </div>
+                        <div class="news_details">
+                            <a href="{{=it.newsUrl}}" title=""  rel="noopener noreferrer" class="{{=it.buttonStyle}}">Read more</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+            </script>
+            <!-- End of News feed component -->
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="reference parbase">
+      <div class="cq-dd-paragraph">
+       <div class="section_418386510 section">
+        <div class="component_section gold_container gold_container_featured section_component_updated padding_top_25 padding_bottom_25 padding_left_25 padding_right_25 transparency_none viewport_auto col_1_section" style=";">
+         <a id="village" name="village">
+         </a>
+         <div class="container_fullwidth">
+          <div class="row">
+           <div class="col-lg-12">
+            <div class="component_in_section_wrapper">
+             <div class="section">
+              <div class="component_section secton_color__white secton_background parallax_section transparent_layer layer_colour_black_60 padding_top_75 padding_bottom_none padding_left_none padding_right_none viewport_auto section_component_updated col_2_section" data-enllax-ratio=".2" style="background-image: url('/content/dam/images/flinders-village/Village-header-still-01_v008.jpg');;">
+               <div class="container">
+                <div class="row">
+                 <div class="col-lg-8">
+                  <div class="component_in_section_wrapper">
+                   <div class="adaptive-image">
+                    <div class="component_section_d1 padding_top_none padding_bottom_none image_align_left image_width_50">
+                     <picture>
+                      <source media="(min-width: 1600px)" srcset="/content/dam/images/flinders-village/village-revised-lockup-2.png.flinders-image.4000.low.png 2x"/>
+                      <source media="(min-width: 1600px)" srcset="/content/dam/images/flinders-village/village-revised-lockup-2.png.flinders-image.2400.low.png 1x"/>
+                      <source media="(min-width: 1170px)" srcset="/content/dam/images/flinders-village/village-revised-lockup-2.png.flinders-image.3200.low.png 2x"/>
+                      <source media="(min-width: 1170px)" srcset="/content/dam/images/flinders-village/village-revised-lockup-2.png.flinders-image.1940.low.png 1x"/>
+                      <source media="(min-width: 970px)" srcset="/content/dam/images/flinders-village/village-revised-lockup-2.png.flinders-image.2400.low.png 2x"/>
+                      <source media="(min-width: 970px)" srcset="/content/dam/images/flinders-village/village-revised-lockup-2.png.flinders-image.1200.low.png 1x"/>
+                      <source media="(min-width: 680px)" srcset="/content/dam/images/flinders-village/village-revised-lockup-2.png.flinders-image.2200.low.png 2x"/>
+                      <source media="(min-width: 680px)" srcset="/content/dam/images/flinders-village/village-revised-lockup-2.png.flinders-image.1100.low.png 1x"/>
+                      <source media="(min-width: 480px)" srcset="/content/dam/images/flinders-village/village-revised-lockup-2.png.flinders-image.1530.low.png 2x"/>
+                      <source media="(min-width: 480px)" srcset="/content/dam/images/flinders-village/village-revised-lockup-2.png.flinders-image.765.low.png 1x"/>
+                      <img alt="village-revised-lockup-2.png" class="img-fluid" src="/content/dam/images/flinders-village/village-revised-lockup-2.png.flinders-image.970.low.png"/>
+                     </picture>
+                    </div>
+                   </div>
+                   <div class="spacer parbase">
+                    <div class="spacer-component">
+                     <div class="spacer-component__height-box spacer-component__height-box--desktop" style="height:25px;">
+                     </div>
+                     <div class="spacer-component__height-box spacer-component__height-box--tablet" style="height:25px;">
+                     </div>
+                     <div class="spacer-component__height-box spacer-component__height-box--mobile" style="height:25px;">
+                     </div>
+                    </div>
+                   </div>
+                   <div class="rte text">
+                    <div class="cmp-text">
+                     <p>
+                      <span class="text_size_large">
+                       Enabling our future growth and providing a great campus experience in a globally competitive precinct.
+                      </span>
+                     </p>
+                    </div>
+                   </div>
+                   <div class="section">
+                    <div class="component_section white_container white_container_featured section_component_updated padding_top_25 padding_bottom_25 padding_left_none padding_right_none transparency_none viewport_auto col_2_section" style=";">
+                     <div class="container_fullwidth">
+                      <div class="row">
+                       <div class="col-lg-6">
+                        <div class="component_in_section_wrapper">
+                         <div class="cta-button">
+                          <!-- Start of cta-button component -->
+                          <p class="component_section_d1 padding_top_none padding_bottom_none cta_text_alignment_left">
+                           <a class="classic_yellow_button_transform d-block btn__icons" href="/flinders-village" title="">
+                            View our bold vision
+                            <span>
+                             <i class="fa fa-chevron-right">
+                             </i>
+                            </span>
+                           </a>
+                           <!-- BACK BUTTON -->
+                          </p>
+                          <!-- End of cta-button component -->
+                         </div>
+                        </div>
+                       </div>
+                       <div class="col-lg-6">
+                        <div class="component_in_section_wrapper">
+                        </div>
+                       </div>
+                      </div>
+                     </div>
+                    </div>
+                   </div>
+                   <div class="rte text">
+                    <div class="cmp-text">
+                     <h6>
+                      Artist's impression only
+                     </h6>
+                    </div>
+                   </div>
+                  </div>
+                 </div>
+                 <div class="col-lg-4">
+                  <div class="component_in_section_wrapper">
+                   <div class="spacer parbase">
+                    <div class="spacer-component">
+                     <div class="spacer-component__height-box spacer-component__height-box--desktop" style="height:50px;">
+                     </div>
+                    </div>
+                   </div>
+                   <div class="spacer parbase">
+                    <div class="spacer-component">
+                     <div class="spacer-component__height-box spacer-component__height-box--desktop" style="height:350px;">
+                     </div>
+                    </div>
+                   </div>
+                  </div>
+                 </div>
+                </div>
+               </div>
+              </div>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="section">
+      <div class="component_section white_container white_container_featured section_component_updated padding_top_50 padding_bottom_50 padding_left_none padding_right_none transparency_none viewport_auto col_1_section" data-content-tag-mode="disabled" style=";">
+       <div class="container vertical-align-height-fix">
+        <div class="row display-flex default">
+         <div class="col-lg-12">
+          <div class="component_in_section_wrapper">
+           <div class="section">
+            <div class="component_section white_container white_container_featured section_component_updated padding_top_none padding_bottom_none padding_left_none padding_right_none transparency_none viewport_auto col_2_section" data-content-tag-mode="disabled" style=";">
+             <div class="container vertical-align-height-fix">
+              <div class="row display-flex content_middle">
+               <div class="col-lg-9">
+                <div class="component_in_section_wrapper">
+                 <div class="rte text">
+                  <div class="cmp-text">
+                   <h2>
+                    Events
+                   </h2>
+                  </div>
+                 </div>
+                </div>
+               </div>
+               <div class="col-lg-3">
+                <div class="component_in_section_wrapper">
+                 <div class="cta-button">
+                  <!-- Start of cta-button component -->
+                  <p class="component_section_d1 cta_text_alignment_left">
+                   <a class="classic_white_button_navy_border d-block btn__icons" href="https://events.flinders.edu.au/home/event-list/" title="">
+                    More events
+                    <span>
+                     <i class="fa fa-chevron-right">
+                     </i>
+                    </span>
+                   </a>
+                   <!-- BACK BUTTON -->
+                  </p>
+                  <!-- End of cta-button component -->
+                 </div>
+                </div>
+               </div>
+              </div>
+             </div>
+            </div>
+           </div>
+           <div class="eventon-feed-v2">
+            <!-- Start of events feed component -->
+            <div class="component_section no-component-padding">
+             <span class="moreBtn">
+             </span>
+             <span class="moreBtn">
+             </span>
+             <div class="row clearfix clear component_section padding_top_d1 eventList showFeature">
+              <input class="categoryType" type="hidden" value="event-type"/>
+              <input class="eventCategory" type="hidden" value="feature"/>
+              <input class="articleLayout" type="hidden" value="overlayLayout"/>
+              <input class="showFeatureImage" type="hidden" value="showFeature"/>
+              <input class="removeGutter" type="hidden"/>
+              <input class="removeBorder" type="hidden"/>
+              <input class="eventCount" type="hidden" value="3"/>
+              <input class="showExcerpt" type="hidden"/>
+              <input class="eventBtnText" type="hidden"/>
+             </div>
+            </div>
+            <!-- Events standard layout view -->
+            <script class="noEvents" type="text/x-dot-template">
+             <div class="col-md-12 component_section_item">
+            <p>Currently there are no events scheduled.</p>
+            <p class="component_section_d1   cta_text_alignment_left">
+                <a href="https://events.flinders.edu.au" title="See all Flinders events" class="classic_yellow_button_transform fixed_width btn__icons   ">
+                    See all Flinders events
+                    <span>
+                        <i class="fa fa-angle-double-right"></i>
+                    </span>
+                </a>
+            </p>
+    </div>
+            </script>
+            <!-- Events standard layout view -->
+            <!-- Events overlay layout view -->
+            <script class="eventsOverlayLayout" type="text/x-dot-template">
+             <div class="{{=it.column_layout}} component_section_item {{=it.articleRowSpacing}}">
+            <div class="events-overlay-layout {{=it.articleBorder}}">
+                <div class="events-background-image" style="background-image: url({{=it.bgImage}});">
+                    <div class="component_section_events_wrap {{=it.overlay}}">
+                        <div class="component_section_events_inner_wrap flex-container events_image">
+                            <div class="events_date clearfix">
+                               <span class="event_startDate_month">{{=it.startDate_day}} <i>{{=it.startDate_month}} </i></span>
+                               <span class="event_date_dash {{=it.multipleDateHidden}}"><i> - </i></span>
+                               <span class="event_endDate_month {{=it.multipleDateHidden}}">{{=it.endDate_day}} <i>{{=it.endDate_month}} </i></span>
+                            </div>
+                            <div class="events_title">
+                                <h3>{{=it.title}}</h3>
+                            </div>
+                            <div class="events_overlay_excerpts_line {{=it.show_excerpt}}">
+                                {{=it.event_excerpt}}
+                            </div>
+                            <div class="event_actions">
+                            <div class="events_details">
+                                <span>{{=it.startDate_time}}</span><br />
+                                <span class="eventon_place">{{=it.location}}</span>
+                            </div>
+                            <div><a href="{{=it.eventUrl}}" title="{{=it.eventBtnDetails}}"  rel="noopener noreferrer" class="{{=it.buttonStyle}} pull-right">{{=it.eventBtnDetails}}</a></div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            </script>
+            <!-- Events list layout view -->
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="section">
+      <div class="component_section section_container-full_width gray_light_container gray_light_container_featured section_component_updated padding_top_50 padding_bottom_50 col_1_section" style=";">
+       <div class="container">
+        <div class="row">
+         <div class="col-lg-12">
+          <div class="component_in_section_wrapper">
+           <div class="twitter-feed">
+            <div class="twitter-feed testimonials" data-feed="flinders" data-limit="5">
+             <div class="row">
+              <div class="testimonials-wrapper">
+               <h2>
+                What we're talking about
+               </h2>
+               <div class="testimonials-arrows">
+                <button class="testimonials-arrows__angle testimonials-arrows__angle_left slick-disabled">
+                 <i class="fa fa-2x fa-angle-left">
+                 </i>
+                </button>
+                <button class="testimonials-arrows__angle testimonials-arrows__angle_right slick-disabled">
+                 <i class="fa fa-2x fa-angle-right">
+                 </i>
+                </button>
+               </div>
+              </div>
+              <div class="testimonials-slider" data-slick='{"slidesToScroll": 1, "adaptiveHeight": false}'>
+              </div>
+             </div>
+            </div>
+            <script id="twitter-post" type="text/x-dot-template">
+             <div class="testimonials-slider__slide testimonials-slider-slide">
+        <div class="testimonials-slider-slide__quote">
+            <span class="testimonials-slider-slide__quotation"><i class="fa fa-twitter"></i></span>
+            <span class="pull-right testimonials-slider-slide__time">{{=it.posted}}</span>
+            <p class="testimonials-slider-slide__text">
+                {{? it.postImage }}
+                <a href="{{=it.postLink}}" target="_blank">
+                    <img src="{{=it.postImage}}" alt=""class="float-sm-right">
+                </a>
+                {{?}}
+                {{=it.text}}
+            </p>
+        </div>
+        <div class="testimonials-slider-slide__user testimonials-slider-slide-user clearfix">
+            <img src="{{=it.userPhoto}}"
+                 alt=""
+                 class="float-xs-left">
+            <div class="testimonials-slider-slide-user__text">
+                <span class="testimonials-slider-slide-user__text-top">{{=it.name}}</span>
+                <span class="testimonials-slider-slide-user__text-bottom">@{{=it.feedName}}</span>
+            </div>
+        </div>
+    </div>
+            </script>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="section">
+      <div class="component_section secton_color__black secton_background__left_position padding_top_none padding_bottom_none padding_left_none padding_right_none viewport_auto section_component_updated col_2_section" data-enllax-ratio=".2" style="background-image: url('/content/dam/images/study/course-pages/Letters-Languages-CPImage.jpg');;">
+       <div class="container_fullwidth vertical-align-height-fix">
+        <div class="row hide_two_col_gap display-flex content_middle">
+         <div class="col-lg-6">
+          <div class="component_in_section_wrapper">
+          </div>
+         </div>
+         <div class="col-lg-6">
+          <div class="component_in_section_wrapper">
+           <div class="section">
+            <div class="component_section black_container black_container_featured section_component_updated padding_top_200 padding_bottom_200 padding_left_25 padding_right_25 transparency_60 viewport_auto col_1_section" style=";">
+             <div class="container">
+              <div class="row">
+               <div class="col-lg-12">
+                <div class="component_in_section_wrapper">
+                 <div class="rte text">
+                  <div class="cmp-text">
+                   <h3>
+                    <span class="text_color_flinders_white">
+                     Our campus and locations
+                    </span>
+                   </h3>
+                   <p>
+                    <span class="text_color_flinders_white">
+                     Whether you are enjoying the leafy surrounds of the Bedford Park campus, immersed in the CBD at Victoria Square, or contemplating the industries of the future at our state-of-the-art Tonsley facility, Flinders prides itself on offering students a great on-campus experience.
+                    </span>
+                   </p>
+                  </div>
+                 </div>
+                 <div class="cta-button">
+                  <!-- Start of cta-button component -->
+                  <p class="component_section_d1 padding_bottom_none cta_text_alignment_left">
+                   <a class="classic_yellow_button_transform fixed_width btn__icons" href="/campus" title="">
+                    Explore Flinders
+                    <span>
+                     <i class="fa fa-chevron-right">
+                     </i>
+                    </span>
+                   </a>
+                   <!-- BACK BUTTON -->
+                  </p>
+                  <!-- End of cta-button component -->
+                 </div>
+                </div>
+               </div>
+              </div>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="footer">
+    <div class="footer_main" data-sj-ignore="">
+     <div class="container">
+      <div class="row">
+       <div class="col-sm-4 col-lg-4 footer_contacts">
+        <p class="footer_logo_wrap">
+         <img alt="Flinders University Logo" height="49" src="/etc.clientlibs/flinders/clientlibs/clientlib-site/resources/images/flinderuni_main_logo_black.png" width="130"/>
+        </p>
+        <div>
+         <div class="cmp-text">
+          <p>
+           Sturt Rd, Bedford Park
+           <br/>
+           South Australia 5042
+          </p>
+          <p>
+           South Australia | Northern Territory
+           <br/>
+           Global | Online
+          </p>
+         </div>
+        </div>
+       </div>
+       <div class="col-sm-4 col-lg-4 footer_list">
+        <div>
+         <h3>
+          Information for
+         </h3>
+         <ul class="nav navbar-nav footer_nav">
+          <li>
+           <a href="/study">
+            Future students
+           </a>
+          </li>
+          <li>
+           <a href="/alumni">
+            Alumni
+           </a>
+          </li>
+          <li>
+           <a href="https://news.flinders.edu.au">
+            Media
+           </a>
+          </li>
+          <li>
+           <a href="/engage">
+            Business and community
+           </a>
+          </li>
+          <li>
+           <a href="https://students.flinders.edu.au/">
+            Current students
+           </a>
+          </li>
+          <li>
+           <a href="https://staff.flinders.edu.au/">
+            Staff
+           </a>
+          </li>
+          <li>
+           <a href="https://staff.flinders.edu.au/workplace-support/contractor-safety">
+            External contractors
+           </a>
+          </li>
+         </ul>
+        </div>
+       </div>
+       <div class="col-sm-4 col-lg-4 footer_list">
+        <div>
+         <h3>
+          Directories
+         </h3>
+         <ul class="nav navbar-nav footer_nav">
+          <li>
+           <a href="/about/contact-us">
+            Contact us
+           </a>
+          </li>
+          <li>
+           <a href="/campus">
+            Campus and locations
+           </a>
+          </li>
+          <li>
+           <a href="https://www.flinders.edu.au/directory/">
+            Staff directory
+           </a>
+          </li>
+          <li>
+           <a href="/about/structure/colleges">
+            Colleges
+           </a>
+          </li>
+          <li>
+           <a href="https://www.flinders.edu.au/library/">
+            Library
+           </a>
+          </li>
+          <li>
+           <a href="/research/centres-institutes">
+            Research Institutes and Centres
+           </a>
+          </li>
+         </ul>
+        </div>
+        <div>
+         <h4>
+          Follow Flinders
+         </h4>
+         <p class="footer_socials">
+          <a href="https://www.facebook.com/FlindersUniversity/" target="_blank">
+           <img alt="Facebook - Flinders University" src="/content/dam/images/logos/facebook-icon.png"/>
+          </a>
+          <a href="https://twitter.com/flinders" target="_blank">
+           <img alt="Twitter - Flinders University" src="/content/dam/images/logos/twitter-icon.png"/>
+          </a>
+          <a href="https://www.youtube.com/flindersuniversity" target="_blank">
+           <img alt="YouTube - Flinders University" src="/content/dam/images/logos/youtube-icon.png"/>
+          </a>
+          <a href="https://www.instagram.com/flindersuniversity/" target="_blank">
+           <img alt="Instagram - Flinders University" src="/content/dam/images/logos/instagram-icon.png"/>
+          </a>
+          <a href="https://au.linkedin.com/school/flinders-university/" target="_blank">
+           <img alt="LinkedIn - Flinders University" src="/content/dam/images/logos/linkedin-icon1.png"/>
+          </a>
+         </p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="sub-footer">
+    <div class="footer_copyright" data-sj-ignore="">
+     <div class="container">
+      <div>
+       <div class="footer_support_logos clearfix">
+        <a href="https://southaustralia.com/" target="true" title="">
+         <img alt="Brand SA logo" src="/etc.clientlibs/flinders/clientlibs/clientlib-site/resources/images/logo-bsa.png"/>
+        </a>
+        <a href="http://www.iru.edu.au/" target="true" title="">
+         <img alt="Innovative Research University logo" src="/etc.clientlibs/flinders/clientlibs/clientlib-site/resources/images/innovative_research_universities.png"/>
+        </a>
+        <a href="/about/indigenous-commitment" title="">
+         <img alt="Indigenous communities" src="/etc.clientlibs/flinders/clientlibs/clientlib-site/resources/images/indigenous.png"/>
+        </a>
+       </div>
+      </div>
+      <div class="row">
+       <div class="col-lg-8 col-md-12">
+        <div class="footer_copyright_line">
+         <div class="row text-left">
+          <div class="col-md-3">
+           <div>
+            <div class="cmp-text">
+             <p>
+              <a href="/website-feedback" title="Website feedback">
+               Website feedback
+              </a>
+              <br/>
+             </p>
+            </div>
+           </div>
+          </div>
+          <div class="col-md-3">
+           <div>
+            <div class="cmp-text">
+             <p>
+              <a href="/copyright-disclaimer" title="Copyright and disclaimer">
+               Disclaimer
+              </a>
+              <br/>
+             </p>
+            </div>
+           </div>
+          </div>
+          <div class="col-md-3">
+           <div>
+            <div class="cmp-text">
+             <p>
+              <a href="/accessibility" title="Accessibility">
+               Accessibility
+              </a>
+              <br/>
+             </p>
+            </div>
+           </div>
+          </div>
+          <div class="col-md-3">
+           <div>
+            <div class="cmp-text">
+             <p>
+              <a href="/privacy" title="Privacy">
+               Privacy
+              </a>
+             </p>
+            </div>
+           </div>
+          </div>
+         </div>
+         <div>
+          <div class="cmp-text">
+           <p>
+            CRICOS Provider: 00114A
+            <br/>
+           </p>
+          </div>
+         </div>
+         <div class="footer-last-updated">
+          Last Updated: 04 Mar 2021
+         </div>
+        </div>
+       </div>
+       <div class="col-lg-4 col-md-12 col-sm-12 text-right footer_slogan">
+        <img alt="Inspiring achievemnt logo" height="24" src="/etc.clientlibs/flinders/clientlibs/clientlib-site/resources/images/footer_slogan.png" width="270"/>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <div>
+   <!-- Start of gdpr component -->
+   <div id="gdpr_notification_container" style="display: none;">
+    <div class="gdpr-notification" data-sj-ignore="">
+     <div class="gdpr-notification__container">
+      <div class="gdpr-notification__content">
+       <h3 class="gdpr-notification__title">
+        This website uses cookies
+       </h3>
+       <p class="gdpr-notification__description">
+        <span>
+         Flinders University uses cookies to ensure website functionality, personalisation, and for a variety of purposes described in the website privacy statement. For details about these cookies and how to set your cookie preferences, refer to our website
+         <a href="https://www.flinders.edu.au/privacy">
+          privacy statement
+         </a>
+         .
+        </span>
+       </p>
+       <p class="gdpr-notification__description">
+        <span>
+         You consent to the use of our cookies if you proceed.
+        </span>
+       </p>
+       <div class="gdpr-notification__cta cta-button" style="text-align: left;">
+        <div class="cta_text_alignment_left">
+         <a class="classic_yellow_button_transform btn__icons" href="#" id="gdpr_accept_button" title="Accept and continue">
+          Accept and continue
+          <span>
+           <i class="fa fa-chevron-right">
+           </i>
+          </span>
+         </a>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="gdpr-notification__divider">
+     </div>
+    </div>
+   </div>
+   <!-- End of gdpr component -->
+  </div>
+  <div class="cloudservice sitecatalyst">
+   <script src="/etc.clientlibs/cq/analytics/clientlibs/sitecatalyst/sitecatalyst.min.e8336d0b66ca20176e6eb7b353c4378a.js" type="text/javascript">
+   </script>
+   <link href="/etc.clientlibs/cq/analytics/clientlibs/sitecatalyst/tracking.min.d41d8cd98f00b204e9800998ecf8427e.css" rel="stylesheet" type="text/css"/>
+   <script src="/etc.clientlibs/cq/analytics/clientlibs/sitecatalyst/tracking.min.0625703d36e7ae06ebff6141e032e7d9.js" type="text/javascript">
+   </script>
+   <script src="/etc.clientlibs/cq/analytics/clientlibs/sitecatalyst/util.min.c826f4f7f74cfe954173551d2a5c7747.js" type="text/javascript">
+   </script>
+   <script src="/_jcr_content/analytics.sitecatalyst.js" type="text/javascript">
+   </script>
+   <script src="/etc.clientlibs/cq/analytics/clientlibs/sitecatalyst/plugins.min.89ac010351f76935ddf01f1c2133b65a.js" type="text/javascript">
+   </script>
+   <script src="/_jcr_content/analytics.config.js" type="text/javascript">
+   </script>
+   <span data-tracking="{event:'pageView', values:{}, componentPath:'foundation/components/page'}">
+   </span>
+   <script type="text/javascript">
+    CQ_Analytics.Sitecatalyst.frameworkComponents = [''];
+/**
+ * Sets SiteCatalyst variables accordingly to mapped components. If <code>options</code>
+ * object is provided only variables matching the options.componentPath are set.
+ *
+ * @param {Object} options Parameter object from CQ_Analytics.record() call. Optional.
+ */
+CQ_Analytics.Sitecatalyst.updateEvars = function(options) {
+    this.frameworkMappings = [];
+    for (var i=0; i<this.frameworkMappings.length; i++){
+        var m = this.frameworkMappings[i];
+        if (!options || options.compatibility || (options.componentPath == m.resourceType)) {
+            CQ_Analytics.Sitecatalyst.setEvar(m);
+        }
+    }
+}
+
+CQ_Analytics.Sitecatalyst.doPageTrack = function() {
+    var collect = true;
+    var lte = s.linkTrackEvents;
+    var afterCollectEvent = document.createEvent("Event");
+    s.pageName="content:flinders:en";
+    s.contextData['AEM.pagename'] = s.pageName;
+    s.contextData['AEM.site'] = "content:flinders";
+    
+
+    CQ_Analytics.Sitecatalyst.collect(collect);
+    if (collect) {
+        CQ_Analytics.Sitecatalyst.updateEvars();
+        /************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
+        var s_code=s.t();if(s_code)document.write(s_code);
+        s.linkTrackEvents = lte;
+        if (s.linkTrackVars.indexOf('events')==-1){ delete s.events };
+        afterCollectEvent.initEvent("sitecatalystAfterCollect", true, true);
+        document.dispatchEvent(afterCollectEvent);
+    }
+};
+
+CQ_Analytics.DataProvider.onReady(function() {
+    CQ_Analytics.Sitecatalyst.doPageTrack();
+});
+   </script>
+   <noscript>
+    <img alt="" border="0" height="1" src="http://flindersuniversity.sc.omtrdc.net/b/ss/flindersaem.esntls/1/H.27.5--NS/1616380238422?cdp=3&amp;gn=content%3Aflinders%3Aen" width="1"/>
+   </noscript>
+  </div>
+  <div class="cloudservice testandtarget">
+   <script type="text/javascript">
+    CQ_Analytics.TestTarget.maxProfileParams = 11;
+
+    if (CQ_Analytics.CCM) {
+        if (CQ_Analytics.CCM.areStoresInitialized) {
+            CQ_Analytics.TestTarget.registerMboxUpdateCalls();
+        } else {
+            CQ_Analytics.CCM.addListener("storesinitialize", function (e) {
+                CQ_Analytics.TestTarget.registerMboxUpdateCalls();
+            });
+        }
+    } else {
+        // client context not there, still register calls
+        CQ_Analytics.TestTarget.registerMboxUpdateCalls();
+    }
+   </script>
+  </div>
+  <!--  begin of custom footer scripts-->
+  <script src="/etc.clientlibs/clientlibs/granite/handlebars.min.5c3285ee5078da3ca05f8e12b877a647.js" type="text/javascript">
+  </script>
+  <script src="/etc.clientlibs/flinders/clientlibs/author-bar-publisher.min.832efbe774dfa8aa5f06d63b11d9e5eb.js" type="text/javascript">
+  </script>
+  <script src="/etc.clientlibs/flinders/clientlibs/flinders-polyfills/object-assign.min.7907914666ebfd21efa9769b94879e99.js" type="text/javascript">
+  </script>
+  <script src="/etc.clientlibs/flinders/clientlibs/flinders-polyfills/promise.min.a0c22189d0c878af77c9ef5990b378a6.js" type="text/javascript">
+  </script>
+  <script src="/etc.clientlibs/flinders/clientlibs/clientlib-site.min.af708ca3554ce6973f07961ccd46257b.js" type="text/javascript">
+  </script>
+  <!--  end of custom footer scripts-->
+  <script src="/etc.clientlibs/asset-share-commons/clientlibs/clientlib-base.min.046e463b6ab937faa248e738d8d35420.js" type="text/javascript">
+  </script>
+  <script src="/etc.clientlibs/asset-share-commons/clientlibs/clientlib-contexthub/cart.min.64c42735859b609fb13e3089fb4aaf9f.js" type="text/javascript">
+  </script>
+  <script src="/etc.clientlibs/asset-share-commons/clientlibs/clientlib-theme/semanticui-light.min.1e97c4bb7dfd8c179d25dcecaacaca24.js" type="text/javascript">
+  </script>
+  <script src="/etc.clientlibs/asset-share-commons/clientlibs/vendor/moment.min.a964414fda4ac1ab296ed8ac28e8543c.js" type="text/javascript">
+  </script>
+  <!--  end of custom footer scripts for asset share-->
+  <!--<sly data-sly-call=""></sly>-->
+ </body>
+</html>

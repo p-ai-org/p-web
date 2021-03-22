@@ -1,0 +1,79 @@
+/**
+ * @file
+ */
+
+/* Credit: https://github.com/tobiasahlin/SpinKit */
+@-webkit-keyframes rotateplane {
+  0% {
+    -webkit-transform: perspective(120px);
+    transform: perspective(120px);
+  }
+  50% {
+    -webkit-transform: perspective(120px) rotateY(180deg);
+    transform: perspective(120px) rotateY(180deg);
+  }
+  100% {
+    -webkit-transform: perspective(120px) rotateY(180deg) rotateX(180deg);
+    transform: perspective(120px) rotateY(180deg) rotateX(180deg);
+  }
+}
+
+@keyframes rotateplane {
+  0% {
+    transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+  }
+  50% {
+    transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+  }
+  100% {
+    transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+  }
+}
+
+.media--loading {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  position: relative;
+  min-height: 30px;
+}
+
+.media--loading::before {
+  content: '';
+  display: none;
+  width: 30px;
+  height: 30px;
+  max-width: 30px;
+  background: #2eaae0;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -15px;
+  margin-top: -15px;
+  font-size: 0;
+  z-index: 22;
+  -webkit-animation: rotateplane 1.2s infinite ease-in-out;
+  animation: rotateplane 1.2s infinite ease-in-out;
+}
+
+/**
+ * With JS being disabled, the NOSCRIPT tag is replaced by SPAN.
+ * No worries about video iframes, they are broken without JS anyway.
+ */
+.blazy--on .media--loading::before {
+  display: block;
+}
+
+/** Hide JS stuffs when being disabled. Ensures to not mess up JS users.
+.media--loading.media--player &gt; span ~ .media__icon, */
+.media--loading &gt; span + .b-lazy,
+.media--loading &gt; span + picture,
+.media--loading &gt; span + a,
+.media--loading.media--player &gt; span ~ .b-lazy {
+  display: none;
+}
+
+/* Must blur to avoid artifacts from showing regardless animation name.
+.b-bg.media--loading[data-animation], */
+.media--loading[data-animation] img {
+  filter: blur(6px);
+}

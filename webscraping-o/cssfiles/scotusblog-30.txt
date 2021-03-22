@@ -1,0 +1,293 @@
+/*!
+ * Off-Canvas Sidebars plugin
+ *
+ * @author  Jory Hogeveen <info>
+ * @package Off_Canvas_Sidebars
+ * @since   0.2.0
+ * @version 0.5.7
+ * @preserve
+ */
+
+/**
+ * Slidebar CSS overwrites
+ */
+
+html,
+html.ocs-initialized {
+	overflow: hidden;
+	overflow-y: auto;
+}
+
+body,
+[data-canvas=container],
+.ocs-initialized [data-canvas=container] {
+	overflow: initial; /* Reset Slidebars param for position sticky */
+	height: auto;
+	min-height: 100vh;
+}
+
+/* Scroll lock */
+html.ocs-scroll-lock {
+	overflow-y: hidden;
+}
+html.ocs-scroll-lock.ocs-scroll-fixed {
+	position: fixed;
+	overflow-y: scroll;
+}
+html.ocs-scroll-lock.ocs-scroll-fixed body {
+	position: relative;
+}
+
+/* Admin bar compatibility. */
+.admin-bar [data-canvas=container] {
+	min-height: -webkit-calc( 100vh - 32px );
+	min-height: -moz-calc( 100vh - 32px );
+	min-height: calc( 100vh - 32px );
+}
+@media screen and (max-width: 782px) {
+	.admin-bar [data-canvas=container] {
+		min-height: -webkit-calc( 100vh - 46px );
+		min-height: -moz-calc( 100vh - 46px );
+		min-height: calc( 100vh - 46px );
+	}
+}
+@media screen and (max-width: 600px) {
+	html.ocs-sidebar-active #wpadminbar {
+		display: none;
+		height: 0;
+	}
+}
+
+/* Legacy CSS animations */
+.ocs-legacy [data-canvas] {top: 0; right: 0; bottom: 0; left: 0;}
+.ocs-legacy [data-canvas],
+.ocs-legacy [data-off-canvas] {
+	-webkit-transform: none;
+	-moz-transform: none;
+	-ms-transform: none;
+	-o-transform: none;
+	transform: none;
+	-webkit-transition: -webkit-transform 300ms, -webkit-filter 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms, clip-path 0ms;
+	-moz-transition: -moz-transform 300ms, filter 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms, clip-path 0ms;
+	-o-transition: -o-transform 300ms, filter 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms, clip-path 0ms;
+	transition: transform 300ms, filter 300ms, top 300ms, bottom 300ms, left 300ms, right 300ms, clip-path 0ms;
+}
+
+/* https://stackoverflow.com/questions/14795944/jquery-click-events-not-working-in-ios */
+.ocs-trigger {cursor: pointer;}
+
+/* Do not scroll canvas container when scrolling off-canvas */
+[data-off-canvas] {
+	overscroll-behavior: contain;
+	-ms-scroll-chaining: none;
+}
+
+/* @todo fix support for top and bottom */
+[data-off-canvas*=" top"][data-off-canvas*=" reveal"],
+[data-off-canvas*=" top"][data-off-canvas*=" shift"],
+[data-off-canvas*=" bottom"][data-off-canvas*=" reveal"],
+[data-off-canvas*=" bottom"][data-off-canvas*=" shift"] {
+	z-index: 1;
+}
+
+/**
+ * Sidebar Widths (patched from older version of Slidebars)
+ */
+
+/* Slidebar widths for browsers/devices that don't support media queries. */
+.ocs-size-default.ocs-location-left,
+.ocs-size-default.ocs-location-right {
+	width: 30%;
+}
+
+.ocs-size-small.ocs-location-left,
+.ocs-size-small.ocs-location-right {
+	width: 15%;
+}
+
+.ocs-size-large.ocs-location-left,
+.ocs-size-large.ocs-location-right {
+	width: 45%;
+}
+
+.ocs-size-default.ocs-location-top,
+.ocs-size-default.ocs-location-bottom {
+	height: 30%;
+}
+
+.ocs-size-small.ocs-location-top,
+.ocs-size-small.ocs-location-bottom {
+	height: 15%;
+}
+
+.ocs-size-large.ocs-location-top,
+.ocs-size-large.ocs-location-bottom {
+	height: 45%;
+}
+
+@media (max-width: 480px) { /* Slidebar widths on extra small screens. */
+
+	.ocs-size-default.ocs-location-left,
+	.ocs-size-default.ocs-location-right {
+		width: 60%;
+	}
+
+	.ocs-size-small.ocs-location-left,
+	.ocs-size-small.ocs-location-right {
+		width: 35%;
+	}
+
+	.ocs-size-large.ocs-location-left,
+	.ocs-size-large.ocs-location-right {
+		width: 85%;
+	}
+
+	.ocs-size-default.ocs-location-top,
+	.ocs-size-default.ocs-location-bottom {
+		height: 40%;
+	}
+
+	.ocs-size-small.ocs-location-top,
+	.ocs-size-small.ocs-location-bottom {
+		height: 20%;
+	}
+
+	.ocs-size-large.ocs-location-top,
+	.ocs-size-large.ocs-location-bottom {
+		height: 60%;
+	}
+}
+
+@media (min-width: 481px) { /* Slidebar widths on small screens. */
+
+	.ocs-size-default.ocs-location-left,
+	.ocs-size-default.ocs-location-right {
+		width: 50%;
+	}
+
+	.ocs-size-small.ocs-location-left,
+	.ocs-size-small.ocs-location-right {
+		width: 30%;
+	}
+
+	.ocs-size-large.ocs-location-left,
+	.ocs-size-large.ocs-location-right {
+		width: 70%;
+	}
+
+	.ocs-size-default.ocs-location-top,
+	.ocs-size-default.ocs-location-bottom {
+		height: 40%;
+	}
+
+	.ocs-size-small.ocs-location-top,
+	.ocs-size-small.ocs-location-bottom {
+		height: 20%;
+	}
+
+	.ocs-size-large.ocs-location-top,
+	.ocs-size-large.ocs-location-bottom {
+		height: 60%;
+	}
+}
+
+@media (min-width: 768px) { /* Slidebar widths on medium screens. */
+
+	.ocs-size-default.ocs-location-left,
+	.ocs-size-default.ocs-location-right {
+		width: 40%;
+	}
+
+	.ocs-size-small.ocs-location-left,
+	.ocs-size-small.ocs-location-right {
+		width: 25%;
+	}
+
+	.ocs-size-large.ocs-location-left,
+	.ocs-size-large.ocs-location-right {
+		width: 55%;
+	}
+
+	.ocs-size-default.ocs-location-top,
+	.ocs-size-default.ocs-location-bottom {
+		height: 35%;
+	}
+
+	.ocs-size-small.ocs-location-top,
+	.ocs-size-small.ocs-location-bottom {
+		height: 20%;
+	}
+
+	.ocs-size-large.ocs-location-top,
+	.ocs-size-large.ocs-location-bottom {
+		height: 55%;
+	}
+}
+
+@media (min-width: 992px) { /* Slidebar widths on large screens. */
+
+	.ocs-size-default.ocs-location-left,
+	.ocs-size-default.ocs-location-right {
+		width: 30%;
+	}
+
+	.ocs-size-small.ocs-location-left,
+	.ocs-size-small.ocs-location-right {
+		width: 15%;
+	}
+
+	.ocs-size-large.ocs-location-left,
+	.ocs-size-large.ocs-location-right {
+		width: 45%;
+	}
+
+	.ocs-size-default.ocs-location-top,
+	.ocs-size-default.ocs-location-bottom {
+		height: 30%;
+	}
+
+	.ocs-size-small.ocs-location-top,
+	.ocs-size-small.ocs-location-bottom {
+		height: 15%;
+	}
+
+	.ocs-size-large.ocs-location-top,
+	.ocs-size-large.ocs-location-bottom {
+		height: 45%;
+	}
+}
+
+@media (min-width: 1200px) { /* Slidebar widths on extra large screens. */
+
+	.ocs-size-default.ocs-location-left,
+	.ocs-size-default.ocs-location-right {
+		width: 25%;
+	}
+
+	.ocs-size-small.ocs-location-left,
+	.ocs-size-small.ocs-location-right {
+		width: 10%;
+	}
+
+	.ocs-size-large.ocs-location-left,
+	.ocs-size-large.ocs-location-right {
+		width: 40%;
+	}
+
+
+	.ocs-size-default.ocs-location-top,
+	.ocs-size-default.ocs-location-bottom {
+		height: 25%;
+	}
+
+	.ocs-size-small.ocs-location-top,
+	.ocs-size-small.ocs-location-bottom {
+		height: 10%;
+	}
+
+	.ocs-size-large.ocs-location-top,
+	.ocs-size-large.ocs-location-bottom {
+		height: 40%;
+	}
+}
+</info>

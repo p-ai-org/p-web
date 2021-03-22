@@ -1,0 +1,222 @@
+@charset "UTF-8";
+.fc {
+  direction: ltr;
+  text-align: left;
+}
+
+.fc-rtl {
+  text-align: right;
+}
+
+body .fc {
+  /* extra precedence to overcome jqui */
+  font-size: 1em;
+}
+
+/* Colors
+--------------------------------------------------------------------------------------------------*/
+.fc-highlight {
+  /* when user is selecting cells */
+  background: #bce8f1;
+  opacity: 0.3;
+}
+
+.fc-bgevent {
+  /* default look for background events */
+  background: #8fdf82;
+  opacity: 0.3;
+}
+
+.fc-nonbusiness {
+  /* default look for non-business-hours areas */
+  /* will inherit .fc-bgevent's styles */
+  background: #d7d7d7;
+}
+
+/* Popover
+--------------------------------------------------------------------------------------------------*/
+.fc-popover {
+  position: absolute;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.fc-popover .fc-header {
+  /* TODO: be more consistent with fc-head/fc-body */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 4px;
+}
+
+.fc-rtl .fc-popover .fc-header {
+  flex-direction: row-reverse;
+}
+
+.fc-popover .fc-header .fc-title {
+  margin: 0 2px;
+}
+
+.fc-popover .fc-header .fc-close {
+  cursor: pointer;
+  opacity: 0.65;
+  font-size: 1.1em;
+}
+
+/* Misc Reusable Components
+--------------------------------------------------------------------------------------------------*/
+.fc-divider {
+  border-style: solid;
+  border-width: 1px;
+}
+
+hr.fc-divider {
+  height: 0;
+  margin: 0;
+  padding: 0 0 2px;
+  /* height is unreliable across browsers, so use padding */
+  border-width: 1px 0;
+}
+
+.fc-bg,
+.fc-bgevent-skeleton,
+.fc-highlight-skeleton,
+.fc-mirror-skeleton {
+  /* these element should always cling to top-left/right corners */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.fc-bg {
+  bottom: 0;
+  /* strech bg to bottom edge */
+}
+
+.fc-bg table {
+  height: 100%;
+  /* strech bg to bottom edge */
+}
+
+/* Tables
+--------------------------------------------------------------------------------------------------*/
+.fc table {
+  width: 100%;
+  box-sizing: border-box;
+  /* fix scrollbar issue in firefox */
+  table-layout: fixed;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-size: 1em;
+  /* normalize cross-browser */
+}
+
+.fc th {
+  text-align: center;
+}
+
+.fc th,
+.fc td {
+  border-style: solid;
+  border-width: 1px;
+  padding: 0;
+  vertical-align: top;
+}
+
+.fc td.fc-today {
+  border-style: double;
+  /* overcome neighboring borders */
+}
+
+/* Internal Nav Links
+--------------------------------------------------------------------------------------------------*/
+a[data-goto] {
+  cursor: pointer;
+}
+
+a[data-goto]:hover {
+  text-decoration: underline;
+}
+
+/* Fake Table Rows
+--------------------------------------------------------------------------------------------------*/
+.fc .fc-row {
+  /* extra precedence to overcome themes forcing a 1px border */
+  /* no visible border by default. but make available if need be (scrollbar width compensation) */
+  border-style: solid;
+  border-width: 0;
+}
+
+.fc-row table {
+  /* don't put left/right border on anything within a fake row.
+     the outer tbody will worry about this */
+  border-left: 0 hidden transparent;
+  border-right: 0 hidden transparent;
+  /* no bottom borders on rows */
+  border-bottom: 0 hidden transparent;
+}
+
+.fc-row:first-child table {
+  border-top: 0 hidden transparent;
+  /* no top border on first row */
+}
+
+/* Day Row (used within the header and the DayGrid)
+--------------------------------------------------------------------------------------------------*/
+.fc-row {
+  position: relative;
+}
+
+.fc-row .fc-bg {
+  z-index: 1;
+}
+
+/* highlighting cells &amp; background event skeleton */
+.fc-row .fc-bgevent-skeleton,
+.fc-row .fc-highlight-skeleton {
+  bottom: 0;
+  /* stretch skeleton to bottom of row */
+}
+
+.fc-row .fc-bgevent-skeleton table,
+.fc-row .fc-highlight-skeleton table {
+  height: 100%;
+  /* stretch skeleton to bottom of row */
+}
+
+.fc-row .fc-highlight-skeleton td,
+.fc-row .fc-bgevent-skeleton td {
+  border-color: transparent;
+}
+
+.fc-row .fc-bgevent-skeleton {
+  z-index: 2;
+}
+
+.fc-row .fc-highlight-skeleton {
+  z-index: 3;
+}
+
+/*
+row content (which contains day/week numbers and events) as well as "mirror" (which contains
+temporary rendered events).
+*/
+.fc-row .fc-content-skeleton {
+  position: relative;
+  z-index: 4;
+  padding-bottom: 2px;
+  /* matches the space above the events */
+}
+
+.fc-row .fc-mirror-skeleton {
+  z-index: 5;
+}
+
+.fc .fc-row .fc-content-skeleton table,
+.fc .fc-row .fc-content-skeleton td,
+.fc .fc-row .fc-mirror-skeleton td {
+  /* see-through to the background below */
+  /* extra precedence to prevent theme-provided backgrounds */
+  background: none;
+  /* in case 

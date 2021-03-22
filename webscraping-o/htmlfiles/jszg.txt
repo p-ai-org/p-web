@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8"/>
+  <style>
+   body{ background:#fff; font-family: microsoft yahei; color:#969696; font-size:14px;}
+.online-desc-con { text-align:center; }
+.r-tip01 { color: #333; font-size: 18px; display: block; text-align: center; width: 500px; padding: 0 10px; overflow: hidden; text-overflow: ellipsis; margin: 0 auto 15px; }
+.r-tip02 { color: #585858; font-size: 14px; display: block; margin-top: 20px; margin-bottom: 20px; }
+#notice-jiasule {
+  word-wrap: break-word;
+  word-break: normal;
+  color:#585858;
+  border:1px solid #ddd;
+  padding:0px 20px 0px 20px
+}
+img { border: 0; }
+.u-ico{ vertical-align: middle; margin-right: 12px;}
+.btn{ padding: 8px 22px; border-radius: 3px; border: 0; display: inline-block;vertical-align: middle;text-decoration: none;}
+.btn-g{ background-color: #61b25e; color: #fff;}
+.report {color: #858585; text-decoration: none;}
+.report:hover {text-decoration: underline; color: #0088CC;}
+hr{ border-top: 1px dashed #ddd;}
+center{ line-height: 48px; color: #919191;}
+  </style>
+  <script id="content_tpl" type="text/template">
+   <span class="r-tip01"><%= error_403 %></span>
+    <div id='notice-jiasule'>
+        <p>当前网址：<%- url %></p>
+        <p>客户端特征：<%- user_agent %></p>
+        <p>拦截时间：<%- now %>&nbsp;&nbsp;本次事件ID&nbsp;<%- rule_id %></p>
+    </div>
+    <span class='r-tip02'>
+        <img class='u-ico' alt='' src='/cdn-cgi/image/guest.png' />如果您是网站管理员，请登录知道创宇云防御&nbsp;
+        <a class='btn btn-g' href='http://help.yunaq.com/feedback.html?from=<%- from %>&rule_id=<%- rule_id %>&client_ip=<%- client_ip %>&referrer=<%- ref %>#pus' target='_blank'>查看详情</a>
+        &nbsp;或者&nbsp;
+        <a class='report' href='http://help.yunaq.com/feedback.html?from=<%- from %>&rule_id=<%- rule_id %>&client_ip=<%- client_ip %>&referrer=<%- ref %>#hus' target='_blank'>反馈误报</a>
+    </span>
+  </script>
+  <script src="/cdn-cgi/js/underscore_min_1.8.3.js" type="text/javascript">
+  </script>
+ </head>
+ <body>
+  <div class="online-desc-con" style="width:640px;padding-top:15px;margin:34px auto;">
+   <img alt="" id="wafblock" style="margin: 0 auto 17px auto;"/>
+   <script type="text/javascript">
+    var pic = '' || 'hacker';
+        document.getElementById("wafblock").src = '/cdn-cgi/image/' + pic + '.png';
+   </script>
+   <div id="content_rendered">
+   </div>
+   <hr/>
+   <center>
+    client: 76.247.181.241, server: 57d9dfd, time: 23/Mar/2021:02:09:49 +0800
+   </center>
+  </div>
+  <script>
+   void(function fuckie6(){if(location.hash && /MSIE 6/.test(navigator.userAgent) && !/jsl_sec/.test(location.href)){location.href = location.href.split('#')[0] + '&jsl_sec' + location.hash}})();
+var content = _.template(document.getElementById('content_tpl').innerHTML)({
+    error_403: '' || '当前访问疑似黑客攻击，已被网站管理员设置为拦截',
+    url: document.URL.replace(/\</g,"%3C").replace(/\>/g,"%3E"),
+    user_agent: navigator.userAgent,
+    now: new Date(new Date() - -8 * 3600000).toISOString().substr(0, 19).replace('T', ' '),
+    rule_id: parseInt('[80001]'.replace(/\[|\]/g, '')) || '',
+    from: encodeURIComponent(document.referrer.substr(0, 1024)),
+    client_ip: '76.247.181.241',
+    ref: encodeURIComponent(document.URL.substr(0, 1024))
+});
+document.getElementById('content_rendered').innerHTML = content;
+  </script>
+ </body>
+</html>

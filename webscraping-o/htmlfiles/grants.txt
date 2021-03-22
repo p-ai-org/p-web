@@ -1,0 +1,2356 @@
+<!DOCTYPE html>
+<html class="ltr" dir="ltr" lang="en-US">
+ <head>
+  <title>
+   Home    | GRANTS.GOV
+  </title>
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="kPjwyMVli3qwJHGAAJ3VE5kOOczH9D4BjOuoy8_gKAI" name="google-site-verification"/>
+  <meta content="summary" name="twitter:card"/>
+  <meta content="@grantsdotgov" name="twitter:site"/>
+  <meta content="GRANTS.GOV | Find. Apply. Succeed." name="twitter:title"/>
+  <meta content="The government website where federal agencies post discretionary funding opportunities and grantees find and apply for them" name="twitter:description"/>
+  <meta content="https://www.grants.gov/o/grants-blue-theme/images/grants/grants-gov-twitter-card-logo.png" name="twitter:image"/>
+  <meta content="initial-scale=1.0, width=device-width" name="viewport"/>
+  <script src="https://www.grants.gov/o/grants-blue-theme/js/jquery-1.8.3.js" type="text/javascript">
+  </script>
+  <script src="https://www.grants.gov/o/grants-blue-theme/js/ui/1.10.3/jquery-ui.js" type="text/javascript">
+  </script>
+  <link href="https://www.grants.gov/o/grants-blue-theme/js/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css"/>
+  <script src="https://www.grants.gov/o/grants-blue-theme/js/jkmegamenu.js" type="text/javascript">
+  </script>
+  <link href="https://www.grants.gov/o/grants-blue-theme/css/font-awesome-4.5.0/css/font-awesome.css" rel="stylesheet" type="text/css"/>
+  <style id="xxClick">
+   body{display:none !important;}
+  </style>
+  <script type="text/javascript">
+   if (self === top) {
+        var xxClick = document.getElementById("xxClick");
+        xxClick.parentNode.removeChild(xxClick);
+    } else {
+        top.location = self.location;
+    }
+  </script>
+  <script type="text/javascript">
+   function log( msg ) {
+			/* comment out when deploying */
+			/* console.log( msg ); */
+		}
+		
+		function getGGUserProfileUID() {
+		    var ggUserProfileUid = "";
+			if ( ggUserProfileUid.substring( 0, 1 ) == "$" ) {
+				return "";
+			} else {
+				return ggUserProfileUid;
+			}
+		}
+		
+		function displayHelp() {
+			window.open( '/custom/spoExit.jsp?p=/help/html/help/index.htm&callingApp=custom','_blank','dependent=yes, scrollbars=yes, menubar=yes, resizable=yes, location=no, titlebar=yes, status=yes, height=528px, width=1298px');
+		}
+		
+		var jq = jQuery.noConflict();/* '$' is reserved for velocity templates */
+		var spoExitUrlPrefix = '/custom/spoExit.jsp?';
+		var switchProfileMenu = {};
+		
+		jq(function() {
+			var fn = "topnav.documentReady() ";
+			log( fn );
+			initSwitchProfileMenu();
+	        
+		 });
+		
+	    function initSwitchProfileMenu() {
+	        var fn = "initSwitchProfileMenu() ";
+	        log( fn );
+	        
+	        var switchProfileMenuLinkObj = jq( "#switchProfileMenuLink" );
+	        
+	        if ( displaySwitchProfileMenu() ) {
+	            
+	        }
+	        else
+	        {
+	        
+	        log( fn + "hide switch profile menu link" );
+	            switchProfileMenuLinkObj.hide();
+	            return;
+	        }
+	
+	        
+	        log( fn + "show switch profile menu link" );
+	        switchProfileMenuLinkObj.show();
+	        
+	        var switchProfileMenuObj = jq( "#switchProfilePanel" );
+	        var menuStr = '';
+	
+	        log( fn + "switch profile menu: " + JSON.stringify( switchProfileMenu ) );
+	        log( fn + "has current profile: " + switchProfileMenu.hasOwnProperty( "currentProfile" ) );
+	        if ( switchProfileMenu.hasOwnProperty( "currentProfile" ) ) {
+	            var currentProfile = switchProfileMenu.currentProfile;
+	            menuStr += '<span onclick="toggleSwitchProfileMenu();" class="switchProfileMenuCurrent">';
+	            menuStr += '<strong>';
+	            menuStr += currentProfile.name;
+	
+	            if ( currentProfile.hasOwnProperty( "duns" ) ) {
+	                menuStr += ' (' + currentProfile.duns + ')';
+	            } else if ( currentProfile.hasOwnProperty( "agencyCode" ) ) {
+	                menuStr += ' (' + currentProfile.agencyCode + ')';
+	            }
+	
+	            menuStr += ' - Current';
+	            menuStr += '</strong>';
+	            menuStr += '</span>';
+	        }
+	        
+	        if ( switchProfileMenu.hasOwnProperty( "otherProfiles" ) ) {
+	            var otherProfiles = switchProfileMenu.otherProfiles;
+	            var otherProfile = {};
+	            for ( var i = 0; i < otherProfiles.length; i++ ) {
+	                otherProfile = otherProfiles[i];
+	                menuStr += '<br />';
+	                menuStr += '<a href="javascript:switchGGProfile(';
+	                menuStr += otherProfile.id;
+	                menuStr += ');"';
+	                menuStr += '>';
+	                menuStr += otherProfile.name;
+	
+	                if ( otherProfile.hasOwnProperty( "duns" ) ) {
+	                    menuStr += ' (' + otherProfile.duns + ')';
+	                } else if ( otherProfile.hasOwnProperty( "agencyCode" ) ) {
+	                    menuStr += ' (' + otherProfile.agencyCode + ')';
+	                }
+	                
+	                menuStr += '</a>';
+	            }
+	        }
+	
+	        if ( menuStr.length > 0 ) {
+	            switchProfileMenuObj.html( menuStr );
+	        }
+	        
+	        switchProfileMenuObj.dialog({
+	            autoOpen: false,
+	            position: { my: "right top", at: "right bottom+10", of: switchProfileMenuLink },
+	            title: "Visible Profiles",
+	            maxHeight: 225,
+	            minHeight: "auto",
+	            minWidth: "auto",
+	            resizable: false,
+	            draggable: false,
+	            modal: true,
+	            open: function(){
+	                jq('.ui-widget-overlay').bind('click',function(){
+	                    switchProfileMenuObj.dialog('close');
+	                })
+	            },
+	        });
+	        
+            /*
+             * remove title bar
+             */
+	        switchProfileMenuObj.siblings('.ui-dialog-titlebar').remove();
+	        
+	    }/* initSwitchProfileMenu */
+        
+        
+	    function displaySwitchProfileMenu() {
+	        var fn = "displaySwitchProfileMenu() ";
+	        log( fn );
+	        var hasMenu = switchProfileMenu.hasOwnProperty( "otherProfiles" ) ? true : false;
+	        log( fn + "display switch profile menu: " + hasMenu );
+	        return hasMenu;
+	    }/* displaySwitchProfileMenu */
+	
+	    function updateSwitchProfileMenu( menuJson ) {
+	        var fn = "updateSwitchProfileMenu() ";
+	        log( fn + "menu json: " + menuJson );
+	        
+	        if ( typeof menuJson == "object" ) {
+	            log( fn + "menu json is object" );
+	            switchProfileMenu = menuJson;
+	        } else {
+	            log( fn + "menu json is string" );
+	            switchProfileMenu = JSON.parse( menuJson );
+	        }
+	        
+	        log( fn + "menu: " + JSON.stringify( switchProfileMenu ) );
+	        initSwitchProfileMenu();
+	    }/* updateSwitchProfileMenu */
+	    
+	
+		function switchGGProfile( profileId ) {
+			var fn = "switchGGProfile() ";
+	        log( fn + "switch to profile id: " + profileId );
+	        toggleSwitchProfileMenu();
+	        var url = spoExitUrlPrefix + 'profileId=' + profileId + '&p=/apply/landingPage.faces';
+	        log( fn + "forward url: " + url );
+	        window.location = url;
+		}/* switchGGProfile */
+	
+	    function toggleSwitchProfileMenu() {
+	        var switchProfileMenuObj = jq( "#switchProfilePanel" );
+	        if ( switchProfileMenuObj.dialog( "isOpen" ) ) {
+	            switchProfileMenuObj.dialog( "close" );
+	        } else {
+	            switchProfileMenuObj.dialog( "open" );
+	        }
+	    }/* toggleSwitchProfileMenu */
+	    
+	    
+		jq(window).resize(function() {
+	        var switchProfileMenuObj = jq( "#switchProfilePanel" );
+	        if( switchProfileMenuObj.dialog( "isOpen" ) ) {
+	            switchProfileMenuObj.dialog( "close" );
+	            switchProfileMenuObj.dialog( "open" );
+	        }
+	    });
+	    
+	    
+	    jq(document).ready(function () {
+        	jq("a").click(function (e) {
+         		updateSessionTimeout(false);
+        		return true;
+        	})
+    	});
+  </script>
+  <style>
+   /*
+	These styles override the jquery-ui css (v1.10.2) for the dialog box
+*/
+	.ui-dialog {
+		border: solid 5px;
+		border-color:dodgerblue;
+		box-shadow: rgba(0,0,0,0.35) 0 1px 3px; 
+		-webkit-box-shadow: rgba(0,0,0,0.35) 0 1px 3px; 
+		-moz-box-shadow: rgba(0,0,0,0.35) 0 1px 3px;
+	}
+	
+	
+	.ui-dialog-titlebar {
+		background-image: url(images/alert.png); 
+		background-repeat:no-repeat; 
+		background-position: 1% 50%; 
+		padding: 2px 8px 2px 25px !important;
+		background-color:dodgerblue;
+		color:white;
+		border:dodgerblue solid 1px;
+	}
+	
+	
+	/* display 'x' on close button */
+	.ui-dialog-titlebar-close:before {
+		content:"x";
+		color:white;
+	}
+	
+	
+	.ui-dialog-titlebar-close {
+		background:dodgerblue !important;
+		border:dodgerblue solid 1px !important;
+		color:white;
+		text-decoration:none;/* remove underline from 'x' */
+	}
+	
+	.ui-dialog .ui-dialog-titlebar-close span { display: block; margin: 1px; }
+	
+	
+	.ui-dialog-titlebar-close:hover {
+		background:dodgerblue;
+		border:dodgerblue solid 1px;
+	}
+	
+	
+	/* remove default close button icon */
+	.ui-widget-header .ui-icon {
+		background-image: none;
+	}
+  </style>
+  <script type="text/javascript">
+   window.onfocus = function() { updateSessionTimeout(true); }
+	
+	/* need to create alias because of jkmegamenu */
+	var $jq = jQuery.noConflict();
+	
+	$jq(function($jq) {       
+		$jq('<div id="sessionTimeoutDiv" title="Session Timeout"></div>').appendTo('body');
+		
+		$jq( "#sessionTimeoutDiv" ).dialog({
+	        autoOpen: false,
+	        show: "fade",
+	        hide: "fade",
+	        position: {my: "center", at: "top+30%"},
+	        modal: true,
+	        close: function() {
+	        	sessionTimeoutContinue();
+	        }
+		});
+		
+		updateSessionTimeout(false);
+		
+	});
+	
+	
+ 	function showTimeoutMsg() {
+		
+		var msg = 'Your session will expire in 3 minutes. ' +
+			'To continue working, click on the "OK" button below. <br /><br />' +
+    		'Note:<br />' + 
+   			'This is being done to protect your privacy. Unsaved changes will be lost.'
+   			
+		msg += '<br /><br />' +
+			'<div align="center">' +
+			'<input type="button" value="  OK  " onclick="sessionTimeoutContinue();" />' +
+			'</div>';
+		
+		document.getElementById( "sessionTimeoutDiv" ).innerHTML = msg;
+		$jq( "#sessionTimeoutDiv" ).dialog( "open" );
+		return false;
+	}
+	
+	
+	function updateSessionTimeout( check ) {
+		var url = top.location.href;
+		var skipUpdate = ( ( url.match( /search-grants\.html/ ) != null ) || ( url.match( /view-opportunity\.html/ ) != null ) );
+		/* console.log( "grants theme - skip session timeout update: " + skipUpdate ); */
+		
+		var id = getGGUserProfileUID();
+		if ( id == "" || skipUpdate ) { return; }
+		/* var queryStr = 'jp={"id":"' + id + '"'; */
+		var queryStr = 'jp={"id":"' + encodeURIComponent( id ) + '"';
+		if ( check == false ) { queryStr += ',"check":false'; }
+		queryStr += '}';
+		
+		$jq.ajax({
+			"url": "https://www.grants.gov/grantsws/SessionTimeout",
+			"data": queryStr,
+			"dataType": "jsonp",
+			"error": function( error ) {},
+			"success": function( data ) {
+				var id = data.id;
+				var timeRemainingInMillis = data.timeRemainingInMillis;
+				
+				if ( timeRemainingInMillis == 0 ) {
+					sessionTimeoutLogin();
+				} else {
+					updateSessionTimer( timeRemainingInMillis );
+				}
+			}
+		});	
+	}
+	
+	
+	var sessionTimeoutTimerObj;
+	
+	function updateSessionTimer( timeInMillis ) {
+		clearTimeout( sessionTimeoutTimerObj );
+		var sessionTimeoutWarningInMillis = 3 * 60 * 1000;
+		if ( timeInMillis > sessionTimeoutWarningInMillis ) {
+			var timeToWarningInMillis = timeInMillis - sessionTimeoutWarningInMillis;
+			/* set difference to display warning */
+			sessionTimeoutTimerObj = setTimeout( "updateSessionTimeout(true)", timeToWarningInMillis );
+			$jq( "#sessionTimeoutDiv" ).dialog( "close" );
+		} else {
+			sessionTimeoutTimerObj = setTimeout( "updateSessionTimeout(true)", timeInMillis );
+			showTimeoutMsg();
+		}/* if-else */
+		
+	}
+	
+	
+	function sessionTimeoutContinue() {
+		updateSessionTimeout( false );
+		$jq( "#sessionTimeoutDiv" ).dialog( "close" );
+	}
+	
+	
+	function sessionTimeoutLogin() {
+		top.location.href = "/custom/spoeeLogout.jsp";
+	}
+  </script>
+  <!-- link rel="stylesheet" href="/grants-blue-theme/js/ui/1.10.3/themes/smoothness/jquery-ui.css" / -->
+  <!-- script type="text/javascript" src="/grants-blue-theme/js/ui/1.10.3/jquery-ui.js"></script -->
+  <script type="text/javascript">
+   /* need to create alias because of jkmegamenu */
+  var $jq = jQuery.noConflict();  
+  
+  $jq(function() {
+	  
+	    $jq("input#keywords").autocomplete({
+	    	
+	    	delay: 500,
+	    	minLength: 1,
+	    	
+	    	source: function( request, response ) {
+	    	
+		    	var searchType = document.getElementById("jumpMenu").value;
+		    	
+		    	var data = new Object();
+		    	data.keyword = request.term.toLowerCase();
+		    	data.siteSearch = (searchType == "search-site") ? "true" : "false";
+		    	
+		    	var queryStr = "jp=" + JSON.stringify(data);
+				
+		        $jq.ajax({
+		          url: "https://www.grants.gov/grantsws/Suggest",
+		          dataType: "jsonp",
+		          data: queryStr,
+		          success: function( data ) {
+		            response(data.suggestions);
+		          }
+		        });
+	      	},
+	      
+	      	select: function( event, ui ) {
+	      		$jq(this).val(ui.item.value);
+	        	search();
+	      	}
+	    });
+	});
+  </script>
+  <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+  <link href="https://www.grants.gov/o/dynamic-data-mapping-form-renderer/css/main.css?browserId=other&amp;themeId=grantsblue_WAR_grantsbluetheme&amp;languageId=en_US&amp;b=7010&amp;t=1616239916319" rel="stylesheet" type="text/css"/>
+  <link href="https://www.grants.gov/o/mentions-web/css/mentions.css?browserId=other&amp;themeId=grantsblue_WAR_grantsbluetheme&amp;languageId=en_US&amp;b=7010&amp;t=1616239916319" rel="stylesheet" type="text/css"/>
+  <link href="https://www.grants.gov/o/grants-blue-theme/images/favicon.ico" rel="icon"/>
+  <link data-senna-track="temporary" href="https://www.grants.gov" rel="canonical"/>
+  <link class="lfr-css-file" data-senna-track="temporary" href="https://www.grants.gov/o/grants-blue-theme/css/aui.css?browserId=other&amp;themeId=grantsblue_WAR_grantsbluetheme&amp;languageId=en_US&amp;b=7010&amp;t=1616239916319" id="liferayAUICSS" rel="stylesheet" type="text/css"/>
+  <link data-senna-track="temporary" href="/o/frontend-css-web/main.css?browserId=other&amp;themeId=grantsblue_WAR_grantsbluetheme&amp;languageId=en_US&amp;b=7010&amp;t=1595047999391" id="liferayPortalCSS" rel="stylesheet" type="text/css"/>
+  <link data-senna-track="temporary" href="https://www.grants.gov/o/journal-content-web/css/main.css?browserId=other&amp;themeId=grantsblue_WAR_grantsbluetheme&amp;languageId=en_US&amp;b=7010&amp;t=1589928686000" id="31fa2b1a" rel="stylesheet" type="text/css"/>
+  <link data-senna-track="temporary" href="https://www.grants.gov/o/staging-bar-web/css/main.css?browserId=other&amp;themeId=grantsblue_WAR_grantsbluetheme&amp;languageId=en_US&amp;b=7010&amp;t=1589928690000" id="f3e2eff" rel="stylesheet" type="text/css"/>
+  <link data-senna-track="temporary" href="https://www.grants.gov/o/product-navigation-product-menu-web/css/main.css?browserId=other&amp;themeId=grantsblue_WAR_grantsbluetheme&amp;languageId=en_US&amp;b=7010&amp;t=1589928688000" id="46b6a1ad" rel="stylesheet" type="text/css"/>
+  <script data-senna-track="temporary" type="text/javascript">
+   // <![CDATA[
+		var Liferay = Liferay || {};
+
+		Liferay.Browser = {
+			acceptsGzip: function() {
+				return false;
+			},
+
+			
+
+			getMajorVersion: function() {
+				return 0;
+			},
+
+			getRevision: function() {
+				return '';
+			},
+			getVersion: function() {
+				return '';
+			},
+
+			
+
+			isAir: function() {
+				return false;
+			},
+			isChrome: function() {
+				return false;
+			},
+			isEdge: function() {
+				return false;
+			},
+			isFirefox: function() {
+				return false;
+			},
+			isGecko: function() {
+				return false;
+			},
+			isIe: function() {
+				return false;
+			},
+			isIphone: function() {
+				return false;
+			},
+			isLinux: function() {
+				return false;
+			},
+			isMac: function() {
+				return false;
+			},
+			isMobile: function() {
+				return false;
+			},
+			isMozilla: function() {
+				return false;
+			},
+			isOpera: function() {
+				return false;
+			},
+			isRtf: function() {
+				return false;
+			},
+			isSafari: function() {
+				return false;
+			},
+			isSun: function() {
+				return false;
+			},
+			isWebKit: function() {
+				return false;
+			},
+			isWindows: function() {
+				return false;
+			}
+		};
+
+		Liferay.Data = Liferay.Data || {};
+
+		Liferay.Data.ICONS_INLINE_SVG = true;
+
+		Liferay.Data.NAV_SELECTOR = '#navigation';
+
+		Liferay.Data.NAV_SELECTOR_MOBILE = '#navigationCollapse';
+
+		Liferay.Data.isCustomizationView = function() {
+			return false;
+		};
+
+		Liferay.Data.notices = [
+			null
+
+			
+
+			
+		];
+
+		Liferay.PortletKeys = {
+			DOCUMENT_LIBRARY: 'com_liferay_document_library_web_portlet_DLPortlet',
+			DYNAMIC_DATA_MAPPING: 'com_liferay_dynamic_data_mapping_web_portlet_DDMPortlet',
+			ITEM_SELECTOR: 'com_liferay_item_selector_web_portlet_ItemSelectorPortlet'
+		};
+
+		Liferay.PropsValues = {
+			JAVASCRIPT_SINGLE_PAGE_APPLICATION_TIMEOUT: 0,
+			NTLM_AUTH_ENABLED: false,
+			UPLOAD_SERVLET_REQUEST_IMPL_MAX_SIZE: 19072000
+		};
+
+		Liferay.ThemeDisplay = {
+
+			
+
+			
+				getLayoutId: function() {
+					return '474';
+				},
+
+				
+
+				getLayoutRelativeControlPanelURL: function() {
+					return '/group/grants/~/control_panel/manage';
+				},
+
+				getLayoutRelativeURL: function() {
+					return '/web/grants/home.html';
+				},
+				getLayoutURL: function() {
+					return 'https://www.grants.gov/web/grants/home.html';
+				},
+				getParentLayoutId: function() {
+					return '0';
+				},
+				isControlPanel: function() {
+					return false;
+				},
+				isPrivateLayout: function() {
+					return 'false';
+				},
+				isVirtualLayout: function() {
+					return false;
+				},
+			
+
+			getBCP47LanguageId: function() {
+				return 'en-US';
+			},
+			getCanonicalURL: function() {
+
+				
+
+				return 'https\x3a\x2f\x2fwww\x2egrants\x2egov';
+			},
+			getCDNBaseURL: function() {
+				return 'https://www.grants.gov';
+			},
+			getCDNDynamicResourcesHost: function() {
+				return '';
+			},
+			getCDNHost: function() {
+				return '';
+			},
+			getCompanyGroupId: function() {
+				return '10157';
+			},
+			getCompanyId: function() {
+				return '1';
+			},
+			getDefaultLanguageId: function() {
+				return 'en_US';
+			},
+			getDoAsUserIdEncoded: function() {
+				return '';
+			},
+			getLanguageId: function() {
+				return 'en_US';
+			},
+			getParentGroupId: function() {
+				return '19';
+			},
+			getPathContext: function() {
+				return '';
+			},
+			getPathImage: function() {
+				return '/image';
+			},
+			getPathJavaScript: function() {
+				return '/o/frontend-js-web';
+			},
+			getPathMain: function() {
+				return '/c';
+			},
+			getPathThemeImages: function() {
+				return 'https://www.grants.gov/o/grants-blue-theme/images';
+			},
+			getPathThemeRoot: function() {
+				return '/o/grants-blue-theme';
+			},
+			getPlid: function() {
+				return '27260';
+			},
+			getPortalURL: function() {
+				return 'https://www.grants.gov';
+			},
+			getScopeGroupId: function() {
+				return '19';
+			},
+			getScopeGroupIdOrLiveGroupId: function() {
+				return '19';
+			},
+			getSessionId: function() {
+				return '';
+			},
+			getSiteAdminURL: function() {
+				return 'https://www.grants.gov/group/grants/~/control_panel/manage?p_p_lifecycle=0&p_p_state=maximized&p_p_mode=view';
+			},
+			getSiteGroupId: function() {
+				return '19';
+			},
+			getURLControlPanel: function() {
+				return '/group/control_panel?refererPlid=27260';
+			},
+			getURLHome: function() {
+				return 'https\x3a\x2f\x2fwww\x2egrants\x2egov\x2fweb\x2fgrants\x2fhome\x2ehtml';
+			},
+			getUserEmailAddress: function() {
+				return '';
+			},
+			getUserId: function() {
+				return '5';
+			},
+			getUserName: function() {
+				return '';
+			},
+			isAddSessionIdToURL: function() {
+				return false;
+			},
+			isFreeformLayout: function() {
+				return false;
+			},
+			isImpersonated: function() {
+				return false;
+			},
+			isSignedIn: function() {
+				return false;
+			},
+			isStateExclusive: function() {
+				return false;
+			},
+			isStateMaximized: function() {
+				return false;
+			},
+			isStatePopUp: function() {
+				return false;
+			}
+		};
+
+		var themeDisplay = Liferay.ThemeDisplay;
+
+		Liferay.AUI = {
+
+			
+
+			getAvailableLangPath: function() {
+				return 'available_languages.jsp?browserId=other&themeId=grantsblue_WAR_grantsbluetheme&colorSchemeId=01&minifierType=js&languageId=en_US&b=7010&t=1616239797231';
+			},
+			getCombine: function() {
+				return true;
+			},
+			getComboPath: function() {
+				return '/combo/?browserId=other&minifierType=&languageId=en_US&b=7010&t=1595048001114&';
+			},
+			getDateFormat: function() {
+				return '%m/%d/%Y';
+			},
+			getEditorCKEditorPath: function() {
+				return '/o/frontend-editor-ckeditor-web';
+			},
+			getFilter: function() {
+				var filter = 'raw';
+
+				
+					
+						filter = 'min';
+					
+					
+
+				return filter;
+			},
+			getFilterConfig: function() {
+				var instance = this;
+
+				var filterConfig = null;
+
+				if (!instance.getCombine()) {
+					filterConfig = {
+						replaceStr: '.js' + instance.getStaticResourceURLParams(),
+						searchExp: '\\.js$'
+					};
+				}
+
+				return filterConfig;
+			},
+			getJavaScriptRootPath: function() {
+				return '/o/frontend-js-web';
+			},
+			getLangPath: function() {
+				return 'aui_lang.jsp?browserId=other&themeId=grantsblue_WAR_grantsbluetheme&colorSchemeId=01&minifierType=js&languageId=en_US&b=7010&t=1595048001114';
+			},
+			getPortletRootPath: function() {
+				return '/html/portlet';
+			},
+			getStaticResourceURLParams: function() {
+				return '?browserId=other&minifierType=&languageId=en_US&b=7010&t=1595048001114';
+			}
+		};
+
+		Liferay.authToken = 'usUmeavt';
+
+		
+
+		Liferay.currentURL = '\x2f';
+		Liferay.currentURLEncoded = '\x252F';
+	// ]]>
+  </script>
+  <script src="/o/js_loader_modules?t=1616239916319" type="text/javascript">
+  </script>
+  <script src="/o/frontend-js-web/barebone.jsp?browserId=other&amp;themeId=grantsblue_WAR_grantsbluetheme&amp;colorSchemeId=01&amp;minifierType=js&amp;minifierBundleId=javascript.barebone.files&amp;languageId=en_US&amp;b=7010&amp;t=1595048001114" type="text/javascript">
+  </script>
+  <script data-senna-track="temporary" src="/o/js_bundle_config?t=1616239920397" type="text/javascript">
+  </script>
+  <script data-senna-track="temporary" type="text/javascript">
+   // <![CDATA[
+		
+			
+				
+		
+
+		
+
+		
+	// ]]>
+  </script>
+  <script data-senna-track="temporary" src="/combo?browserId=other&amp;minifierType=&amp;themeId=grantsblue_WAR_grantsbluetheme&amp;languageId=en_US&amp;b=7010&amp;com_liferay_staging_bar_web_portlet_StagingBarPortlet:%2Fjs%2Fstaging.js&amp;com_liferay_staging_bar_web_portlet_StagingBarPortlet:%2Fjs%2Fstaging_branch.js&amp;com_liferay_staging_bar_web_portlet_StagingBarPortlet:%2Fjs%2Fstaging_version.js&amp;t=1610858620000" type="text/javascript">
+  </script>
+  <link class="lfr-css-file" data-senna-track="temporary" href="https://www.grants.gov/o/grants-blue-theme/css/main.css?browserId=other&amp;themeId=grantsblue_WAR_grantsbluetheme&amp;languageId=en_US&amp;b=7010&amp;t=1616239916319" id="liferayThemeCSS" rel="stylesheet" type="text/css"/>
+  <style data-senna-track="temporary" type="text/css">
+   #breadcrumbs,.page-title {display:none;}
+#content {padding:0;}
+.portlet-column-content {padding:0px;}
+
+#p_p_id_56_INSTANCE_IN7bcUrRbCPm_  {padding:0 !important; margin:0 !important;}
+
+/***** BANNER BAR STYLES *****/
+			#bannerbar {background-color:#212121; /* background:url(/documents/19/18241/banner-home-workspace-option-0.jpg); */ height:500px; background-position: 50% 50%; background-repeat:no-repeat; background-size:auto;}
+			#bannerbar div {float:left; margin:25px; padding:0; width:400px; color:white;}
+			#bannerbar h2 {color:white; font-size:48px; padding:0; text-shadow:0px 1px 1px #000}
+			#bannerbar p {color:white; font-size:24px; line-height:36px; padding:0; text-shadow:0px 1px 1px #000}
+			#bannerbar .actionbutton {font-weight:bold; width:100% !important; background-image:none; font-size:18px;}
+
+/***** ALERT BAR STYLES *****/
+			#alertbar {background-color:#a30000; height:80px; padding:0; color:white;}
+			#alertbar div {height:80px; width:100%; }
+			#alertbar p {color:white; font-size:18px; padding:10px 25px 10px 0; }
+			#alertbar .fa {color:white; font-size:60px !important; padding:7px 25px; float:left;}
+			
+			/***** ICON BAR STYLES *****/
+			#iconbar {background-color:#212121; text-align:center; height:80px; padding:0; color:white; overflow:hidden;}
+			#iconbar .fa {color:white; font-size:30px !important; padding-bottom:7px; padding-top:7px;}
+			#iconbar div {height:80px; text-align:center; float:left; width:10%; text-transform:uppercase; }
+			#iconbar a:link, #iconbar a:visited {height:80px; color:white; }
+			#iconbar div:hover a 	{background-color:white; color:navy; display:block;}
+			#iconbar div:hover i	{color:navy;}
+			
+			#iconbar .communityblog:hover a, #iconbar .communityblog:hover i  {color: #F60;}
+			#iconbar .twitterfeed:hover a, #iconbar .twitterfeed:hover i  {color:#00aced;}
+			#iconbar .youtubevideo:hover a, #iconbar .youtubevideo:hover i  {color:#C00;}
+			
+			/***** PANEL BLOCK STYLES *****/
+			#panelblocks {padding:25px 25px 0 25px;}
+			
+			.panelblock {float:left; padding:0 0px 25px 0; margin:0; width:33.5%;}
+			.panelblock-lastcolumn {width:33%;}
+			.panelblock div {margin: 0 25px 0 0; background-color:#fafbfd !important; }
+			.panelblock-lastcolumn div {margin: 0 0 0 0; }
+			
+			#panelblocks a {
+					height:350px;
+					padding: 130px 10px 10px 10px;
+					display:block;
+					overflow:hidden;
+					background: silver; 
+					background: -webkit-linear-gradient(transparent, transparent, #212121, #212121); 
+					background: -o-linear-gradient(transparent, transparent, #212121, #212121); 
+					background: -moz-linear-gradient(transparent, transparent, #212121, #212121); 
+					background: linear-gradient(transparent,transparent,  #212121, #212121); 
+			}
+			#panelblocks h3, #panelblocks .pb-h3 {color:white; font-size:24px; font-weight:bold; text-shadow:0px 1px 1px #000}
+			#panelblocks h4, #panelblocks .pb-h4 {color:white; font-size:12px; font-weight:bold; text-shadow:0px 1px 1px #000}
+			#panelblocks p, #panelblocks .pb-p {color:white;}
+			#panelblocks a:hover {
+					padding: 10px;
+					background-color:#212121;
+					background: silver; 
+					background: -webkit-linear-gradient(transparent, #212121, #212121, #212121); 
+					background: -o-linear-gradient(transparent, #212121, #212121, #212121); 
+					background: -moz-linear-gradient(transparent, #212121, #212121, #212121); 
+					background: linear-gradient(transparent, #212121,  #212121, #212121); 
+			}
+  </style>
+  <style data-senna-track="temporary" type="text/css">
+   #p_p_id_com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_6jlwk8DunzMH_ .portlet-content {
+
+}
+#portlet_com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_6jlwk8DunzMH {
+	margin-bottom:0px !important;
+}
+
+
+
+
+				
+
+			
+
+		
+
+			
+
+				
+
+					
+
+#p_p_id_com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_qOlVfuJmEa5E_ .portlet-content {
+
+}
+
+
+
+
+				
+
+			
+
+		
+
+			
+
+				
+
+					
+
+#p_p_id_com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_o0ery4smkeWV_ .portlet-content {
+
+}
+  </style>
+  <link data-senna-track="permanent" href="https://www.grants.gov/o/product-navigation-simulation-theme-contributor/css/simulation_panel.css?browserId=other&amp;themeId=grantsblue_WAR_grantsbluetheme&amp;languageId=en_US&amp;b=7010&amp;t=1595047971428" rel="stylesheet" type="text/css"/>
+  <link data-senna-track="permanent" href="https://www.grants.gov/o/product-navigation-product-menu-dxp-theme-contributor/product_navigation_product_menu.css?browserId=other&amp;themeId=grantsblue_WAR_grantsbluetheme&amp;languageId=en_US&amp;b=7010&amp;t=1595047971428" rel="stylesheet" type="text/css"/>
+  <link data-senna-track="permanent" href="https://www.grants.gov/o/product-navigation-control-menu-dxp-theme-contributor/product_navigation_control_menu.css?browserId=other&amp;themeId=grantsblue_WAR_grantsbluetheme&amp;languageId=en_US&amp;b=7010&amp;t=1595047971428" rel="stylesheet" type="text/css"/>
+  <script data-senna-track="permanent" src="https://www.grants.gov/combo?browserId=other&amp;minifierType=js&amp;languageId=en_US&amp;b=7010&amp;t=1595047971428&amp;/o/product-navigation-control-menu-dxp-theme-contributor/product_navigation_control_menu.js" type="text/javascript">
+  </script>
+  <script type="text/javascript">
+   // <![CDATA[
+Liferay.on(
+	'ddmFieldBlur', function(event) {
+		if (window.Analytics) {
+			Analytics.send(
+				'fieldBlurred',
+				'Form',
+				{
+					fieldName: event.fieldName,
+					focusDuration: event.focusDuration,
+					formId: event.formId,
+					page: event.page - 1
+				}
+			);
+		}
+	}
+);
+
+Liferay.on(
+	'ddmFieldFocus', function(event) {
+		if (window.Analytics) {
+			Analytics.send(
+				'fieldFocused',
+				'Form',
+				{
+					fieldName: event.fieldName,
+					formId: event.formId,
+					page: event.page - 1
+				}
+			);
+		}
+	}
+);
+
+Liferay.on(
+	'ddmFormPageShow', function(event) {
+		if (window.Analytics) {
+			Analytics.send(
+				'pageViewed',
+				'Form',
+				{
+					formId: event.formId,
+					page: event.page,
+					title: event.title
+				}
+			);
+		}
+	}
+);
+
+Liferay.on(
+	'ddmFormSubmit', function(event) {
+		if (window.Analytics) {
+			Analytics.send(
+				'formSubmitted',
+				'Form',
+				{
+					formId: event.formId
+				}
+			);
+		}
+	}
+);
+
+Liferay.on(
+	'ddmFormView', function(event) {
+		if (window.Analytics) {
+			Analytics.send(
+				'formViewed',
+				'Form',
+				{
+					formId: event.formId,
+					title: event.title
+				}
+			);
+		}
+	}
+);
+// ]]>
+  </script>
+  <script data-senna-track="temporary" type="text/javascript">
+   if (window.Analytics) {
+		window._com_liferay_document_library_analytics_isViewFileEntry = false;
+	}
+  </script>
+  <script type="text/javascript">
+   var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-4640997-1']);
+		_gaq.push(['_setDomainName', 'grants.gov']);
+		_gaq.push(['_trackPageview']);
+		
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; 
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; 
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+  </script>
+  <script type="text/javascript">
+   // Instructions: please embed this snippet directly into every page in your website template.
+	    // For optimal performance, this must be embedded directly into the template, not referenced
+	    // as an external file.
+	
+	    // ForeSee Embed Script v2.01
+	    // DO NOT MODIFY BELOW THIS LINE *****************************************
+	    ;(function (g) {
+	      var d = document, am = d.createElement("script"), h = d.head || d.getElementsByTagName("head")[0], fsr = "fsReady",
+	        aex = {
+	          "src": "https://www.grants.gov/foresee/gateway.min.js",
+	          "type": "text/javascript",
+	          "async": "true",
+	          "data-vendor": "fs",
+	          "data-mode": "selfhost",
+	          "data-environment": "production",
+	          "data-hasssl": "true",
+	          "data-client": "grants-gov",
+	          "data-codelocation": "https://www.grants.gov/foresee/foresee_assets/code/19.10.2/",
+	          "data-isselfhosted": "true",
+	          "data-product-assets": "https://www.grants.gov/foresee/foresee_assets/product_assets/",
+	          "data-role": "gateway"
+	        };
+	      for (var attr in aex){am.setAttribute(attr, aex[attr]);}h.appendChild(am); g[fsr] || (g[fsr] = function () {var aT = "__" + fsr + "_stk__";g[aT] = g[aT] || [];g[aT].push(arguments);});
+	    })(window);
+	    // DO NOT MODIFY ABOVE THIS LINE *****************************************
+  </script>
+ </head>
+ <body class="controls-visible yui3-skin-sam guest-site signed-out public-page site">
+  <div id="wrapper">
+   <header id="banner" role="banner">
+    <div id="logo">
+     <a class="logo custom-logo" href="https://www.grants.gov/web/grants" title="Go to GRANTS.GOV">
+      <img alt="GRANTS.GOV" src="https://www.grants.gov/o/grants-blue-theme/images/grants/grants-gov-logo.png"/>
+     </a>
+    </div>
+    <div id="globalwidget">
+     <div id="globalnav">
+      <ul>
+       <li>
+        <a href="javascript:displayHelp();" title="Click for Help">
+         Help
+        </a>
+        |
+       </li>
+       <li>
+        <a href="/web/grants/register.html" title="Click to Register">
+         Register
+        </a>
+        |
+       </li>
+       <li>
+        <a href="/custom/spoExit.jsp?p=/apply/login.faces&amp;userType=applicant&amp;cleanSession=1" title="Click to Login">
+         Login
+        </a>
+       </li>
+      </ul>
+     </div>
+     <div class="gridscrollable" id="switchProfilePanel" style="display: none;">
+     </div>
+     <form id="globalsearch" name="globalsearch">
+      <table cellpadding="0" cellspacing="0">
+       <tr>
+        <td>
+         <span>
+          <label for="jumpMenu" style="font-weight:normal;">
+           Search:
+          </label>
+         </span>
+        </td>
+        <td>
+         <select id="jumpMenu" name="jumpMenu" title="Select type of search">
+          <option value="search-grants">
+           Grant Opportunities
+          </option>
+          <option value="search-site">
+           Site Content
+          </option>
+         </select>
+        </td>
+        <td>
+         <label for="keywords" style="display: none;">
+          Keywords
+         </label>
+         <input autocomplete="off" id="keywords" maxlength="100" name="keyword" onblur="clickrecall(this,'Enter Keyword...')" onclick="this.value=''; clickclear(this, 'Enter Keyword...');" onkeypress="if(event.keyCode == 13) {search(); return false;}" type="text" value="Enter Keyword..."/>
+        </td>
+        <td>
+         <input id="go_button" name="go_button" onclick="search();" type="button" value="Go"/>
+        </td>
+       </tr>
+      </table>
+     </form>
+    </div>
+   </header>
+   <div id="topnav">
+    <script type="text/javascript">
+     /********************* GG NAVIGATION JAVASCRIPT GENERATED ********************************************/
+			
+		
+		
+		jkmegamenu.definemenu("LearnGrants-tab", "LearnGrants-menu", "mouseover");
+		
+		
+		
+		jkmegamenu.definemenu("Applicants-tab", "Applicants-menu", "mouseover");
+		
+		
+		jkmegamenu.definemenu("Grantors-tab", "Grantors-menu", "mouseover");
+		
+		
+		jkmegamenu.definemenu("System-to-System-tab", "System-to-System-menu", "mouseover");
+		
+		
+		jkmegamenu.definemenu("Forms-tab", "Forms-menu", "mouseover");
+		
+		
+		jkmegamenu.definemenu("Connect-tab", "Connect-menu", "mouseover");
+		
+		
+		jkmegamenu.definemenu("Support-tab", "Support-menu", "mouseover");
+/********************* GG END NAVIGATION JAVASCRIPT GENERATED ****************************************/
+    </script>
+    <ul>
+     <li class="selected" id="Home-tab">
+      <a href="https://www.grants.gov/web/grants/home.html">
+       Home
+      </a>
+     </li>
+     <li id="LearnGrants-tab">
+      <a class="parent" href="https://www.grants.gov/web/grants/learn-grants.html">
+       Learn Grants
+      </a>
+      <div class="gg-megamenu" id="LearnGrants-menu">
+       <div class="column">
+        <h3>
+         Grants Learning Center
+        </h3>
+        <style>
+         .gig-nav li {float:left; width:50%; white-space:nowrap;}
+        </style>
+        <ul class="gig-nav">
+         <li>
+          <a href="https://www.grants.gov/web/grants/learn-grants/grants-101.html" title="Click for Grants 101">
+           Grants 101
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/learn-grants/grant-policies.html" title="Click for Grant Policies">
+           Grant Policies
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/learn-grants/grant-eligibility.html" title="Click for Grant Eligibility">
+           Grant Eligibility
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/learn-grants/grant-terminology.html" title="Click for Grant Terminology">
+           Grant Terminology
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/learn-grants/grant-making-agencies.html" title="Click for Grant-Making Agencies">
+           Grant-Making Agencies
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/learn-grants/grant-systems.html" title="Click for Grant Systems">
+           Grant Systems
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/learn-grants/grant-programs.html" title="Click for Grant Programs">
+           Grant Programs
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/learn-grants/grant-careers.html" title="Click for Grant Careers">
+           Grant Careers
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/learn-grants/grant-reporting.html" title="Click for Grant Reporting">
+           Grant Reporting
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/learn-grants/grant-fraud.html" title="Click for Grant Fraud">
+           Grant Fraud
+          </a>
+         </li>
+        </ul>
+       </div>
+      </div>
+     </li>
+     <li id="SearchGrants-tab">
+      <a href="https://www.grants.gov/web/grants/search-grants.html">
+       Search Grants
+      </a>
+     </li>
+     <li id="Applicants-tab">
+      <a class="parent" href="https://www.grants.gov/web/grants/applicants.html">
+       Applicants
+      </a>
+      <div class="gg-megamenu" id="Applicants-menu">
+       <div class="column">
+        <h3>
+         Grant Applications
+        </h3>
+        <ul>
+         <li>
+          <a href="/web/grants/applicants/apply-for-grants.html" title="Click to Apply for Grants">
+           How to Apply for Grants
+          </a>
+         </li>
+         <li>
+          <a href="/web/grants/applicants/track-my-application.html" title="Click to Track My Application">
+           Track My Application
+          </a>
+         </li>
+        </ul>
+       </div>
+       <div class="column">
+        <h3>
+         Applicant Resources
+        </h3>
+        <ul>
+         <li>
+          <a href="https://www.grants.gov/web/grants/applicants/workspace-overview.html" title="Click for Workspace Overview">
+           Workspace Overview
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/applicants/applicant-eligibility.html" title="Click for Applicant Eligibility">
+           Applicant Eligibility
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/applicants/organization-registration.html" title="Click for Organization Registration">
+           Organization Registration
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/applicants/registration.html" title="Click for Applicant Registration">
+           Applicant Registration
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/applicants/applicant-training.html" title="Click for Applicant Training">
+           Applicant Training
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/applicants/applicant-faqs.html" title="Click for Applicant FAQs">
+           Applicant FAQs
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/applicants/adobe-software-compatibility.html" title="Click for Adobe Software Compatibility">
+           Adobe Software Compatibility
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/applicants/submitting-utf-8-special-characters.html" title="Click for Submitting UTF-8 Special Characters">
+           Submitting UTF-8 Special Characters
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/applicants/encountering-error-messages.html" title="Click for Encountering Error Messages">
+           Encountering Error Messages
+          </a>
+         </li>
+        </ul>
+       </div>
+      </div>
+     </li>
+     <li id="Grantors-tab">
+      <a class="parent" href="https://www.grants.gov/web/grants/grantors.html">
+       Grantors
+      </a>
+      <div class="gg-megamenu" id="Grantors-menu">
+       <div class="column">
+        <h3>
+         Grantor Resources
+        </h3>
+        <ul>
+         <li>
+          <a href="https://www.grants.gov/web/grants/grantors/grantor-registration.html" title="Click for Grantor Registration">
+           Grantor Registration
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/grantors/grantor-tools-and-tips.html" title="Click for Grantor Tools &amp; Tips">
+           Grantor Tools &amp; Tips
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/grantors/grantor-faqs.html" title="Click for Grantor FAQs">
+           Grantor FAQs
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/grantors/grantor-standard-language.html" title="Click for Grantor Standard Language">
+           Grantor Standard Language
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/grantors/submitting-utf-8-special-characters.html" title="Click for Submitting UTF-8 Special Characters">
+           Submitting UTF-8 Special Characters
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/grantors/grantor-help.html" title="Click for Grantor Help">
+           Grantor Help
+          </a>
+         </li>
+        </ul>
+       </div>
+      </div>
+     </li>
+     <li id="System-to-System-tab">
+      <a class="parent" href="https://www.grants.gov/web/grants/system-to-system.html">
+       System-to-System
+      </a>
+      <div class="gg-megamenu" id="System-to-System-menu">
+       <div class="column">
+        <h3>
+         <a href="https://www.grants.gov/web/grants/s2s/applicant-system-to-system.html" title="Click for Applicant System-to-System">
+          Applicant System-to-System
+         </a>
+        </h3>
+        <ul>
+         <li>
+          <a href="https://www.grants.gov/web/grants/s2s/applicant/versions-wsdls.html" title="Click for Versions &amp; WSDLs">
+           Versions &amp; WSDLs
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/s2s/applicant/web-services.html" title="Click for Web Services">
+           Web Services
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/s2s/applicant/schemas.html" title="Click for Schemas">
+           Schemas
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/s2s/applicant/hashing.html" title="Click for Hashing">
+           Hashing
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/s2s/applicant/certificates.html" title="Click for Certificates">
+           Certificates
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/s2s/applicant/testing.html" title="Click for Testing">
+           Testing
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/s2s/applicant/reference-implementation.html" title="Click for Reference Implementation">
+           Reference Implementation
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/s2s/applicant/listserv.html" title="Click for Listserv">
+           Listserv
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/s2s/applicant/troubleshooting.html" title="Click for Troubleshooting">
+           Troubleshooting
+          </a>
+         </li>
+        </ul>
+       </div>
+       <div class="column">
+        <h3>
+         <a href="https://www.grants.gov/web/grants/s2s/grantor/grantor-system-to-system.html" title="Click for Grantor System-to-System">
+          Grantor System-to-System
+         </a>
+        </h3>
+        <ul>
+         <li>
+          <a href="https://www.grants.gov/web/grants/s2s/grantor/versions-wsdls.html" title="Click for Versions &amp; WSDLs">
+           Versions &amp; WSDLs
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/s2s/grantor/web-services.html" title="Click for Web Services">
+           Web Services
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/s2s/grantor/schemas.html" title="Click for Schemas">
+           Schemas
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/s2s/grantor/certificates.html" title="Click for Certificates">
+           Certificates
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/s2s/grantor/testing.html" title="Click for Testing">
+           Testing
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/s2s/grantor/reference-implementation.html" title="Click for Reference Implementation">
+           Reference Implementation
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/s2s/grantor/listserv.html" title="Click for Listserv">
+           Listserv
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/s2s/grantor/troubleshooting.html" title="Click for Troubleshooting">
+           Troubleshooting
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/s2s/grantor/restful-apis.html" title="Click for RESTful APIs">
+           RESTful APIs
+          </a>
+         </li>
+        </ul>
+       </div>
+      </div>
+     </li>
+     <li id="Forms-tab">
+      <a class="parent" href="https://www.grants.gov/web/grants/forms.html">
+       Forms
+      </a>
+      <div class="gg-megamenu" id="Forms-menu">
+       <div class="column">
+        <h3>
+         <a href="https://www.grants.gov/web/grants/forms/forms-repository.html" title="Click for Forms Repository">
+          Forms Repository
+         </a>
+        </h3>
+        <ul>
+         <li>
+          <a href="https://www.grants.gov/web/grants/forms/r-r-family.html" title="Click for R&amp;R Family">
+           R&amp;R Family
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/forms/sf-424-family.html" title="Click for SF-424 Family">
+           SF-424 Family
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/forms/sf-424-individual-family.html" title="Click for SF-424 Individual Family">
+           SF-424 Individual Family
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/forms/sf-424-mandatory-family.html" title="Click for SF-424 Mandatory Family">
+           SF-424 Mandatory Family
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/forms/sf-424-short-organization-family.html" title="Click for SF-424 Short Organization Family">
+           SF-424 Short Organization Family
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/forms/post-award-reporting-forms.html" title="Click for Post-Award Reporting Forms">
+           Post-Award Reporting Forms
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/forms/retired-forms.html" title="Click for Retired Forms">
+           Retired Forms
+          </a>
+         </li>
+        </ul>
+        <h3>
+         <a href="https://www.grants.gov/web/grants/forms/forms-development.html" title="Click for Forms Development">
+          Forms Development
+         </a>
+        </h3>
+        <ul>
+         <li>
+          <a href="https://www.grants.gov/web/grants/forms/forms-status-report.html" title="Click for Forms Status Report">
+           Forms Status Report
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/forms/forms-process.html" title="Click for Forms Process">
+           Forms Process
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/forms/forms-request.html" title="Click for Forms Request">
+           Forms Request
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/forms/planned-country-and-state-lists.html" title="Click for Country and State Lists Updates">
+           Country and State Lists Updates
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/forms/planned-uei-updates.html" title="Click for Planned UEI Updates">
+           Planned UEI Updates
+          </a>
+         </li>
+        </ul>
+       </div>
+      </div>
+     </li>
+     <li id="Connect-tab">
+      <a class="parent" href="https://www.grants.gov/web/grants/connect.html">
+       Connect
+      </a>
+      <div class="gg-megamenu" id="Connect-menu">
+       <div class="column">
+        <h3>
+         <a href="https://www.grants.gov/web/grants/manage-subscriptions.html" title="Click for Manage Subscriptions">
+          Manage Subscriptions
+         </a>
+        </h3>
+        <ul>
+         <li>
+          <a href="https://www.grants.gov/web/grants/connect/newsletter-archive.html" title="Click for Newsletter Archive">
+           Newsletter Archive
+          </a>
+         </li>
+        </ul>
+       </div>
+       <div class="column">
+        <h3>
+         <a href="https://www.grants.gov/web/grants/connect/social-media.html" title="Click for Social Media">
+          Social Media
+         </a>
+        </h3>
+        <ul>
+        </ul>
+       </div>
+      </div>
+     </li>
+     <li id="Support-tab">
+      <a class="parent" href="https://www.grants.gov/web/grants/support.html">
+       Support
+      </a>
+      <div class="gg-megamenu" id="Support-menu">
+       <div class="column">
+        <h3>
+         Support Resources
+        </h3>
+        <ul>
+         <li>
+          <a href="https://www.grants.gov/web/grants/support/about-grants-gov.html" title="Click for About Grants.gov">
+           About Grants.gov
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/support/program-management-office.html" title="Click for Program Management Office">
+           Program Management Office
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/support/grants-gov-notices.html" title="Click for Grants.gov Notices">
+           Grants.gov Notices
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/support/calendar.html" title="Click for Grants.gov Maintenance Calendar">
+           Grants.gov Maintenance Calendar
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/support/releases.html" title="Click for Grants.gov Releases">
+           Grants.gov Releases
+          </a>
+         </li>
+         <li>
+          <a href="https://www.grants.gov/web/grants/support/grants-gov-logo-usage.html" title="Click for Grants.gov Logo Usage">
+           Grants.gov Logo Usage
+          </a>
+         </li>
+        </ul>
+       </div>
+      </div>
+     </li>
+    </ul>
+   </div>
+   <nav id="breadcrumbs">
+    <div class="portlet-boundary portlet-boundary_com_liferay_site_navigation_breadcrumb_web_portlet_SiteNavigationBreadcrumbPortlet_ portlet-static portlet-static-end portlet-barebone portlet-breadcrumb" id="p_p_id_com_liferay_site_navigation_breadcrumb_web_portlet_SiteNavigationBreadcrumbPortlet_">
+     <span id="p_com_liferay_site_navigation_breadcrumb_web_portlet_SiteNavigationBreadcrumbPortlet">
+     </span>
+     <section class="portlet" id="portlet_com_liferay_site_navigation_breadcrumb_web_portlet_SiteNavigationBreadcrumbPortlet">
+      <div class="portlet-content">
+       <div class="portlet-content-container">
+        <div class="portlet-body">
+         <div id="_com_liferay_site_navigation_breadcrumb_web_portlet_SiteNavigationBreadcrumbPortlet_breadcrumbs-defaultScreen">
+          <ul class="breadcrumbs breadcrumbs-horizontal">
+           <li class="">
+            <a href="/web/grants">
+             GRANTS.GOV
+            </a>
+           </li>
+           <li class="last">
+            Home
+           </li>
+          </ul>
+         </div>
+        </div>
+       </div>
+      </div>
+     </section>
+    </div>
+   </nav>
+   <section class="container-fluid-1280" id="content">
+    <h1 class="page-title">
+     Home
+    </h1>
+    <div class="columns-1" id="main-content" role="main">
+     <div class="portlet-layout row">
+      <div class="col-md-12 portlet-column portlet-column-only" id="column-1">
+       <div class="portlet-dropzone portlet-column-content portlet-column-content-only" id="layout-column_column-1">
+        <div class="portlet-boundary portlet-boundary_com_liferay_journal_content_web_portlet_JournalContentPortlet_ portlet-static portlet-static-end portlet-barebone portlet-journal-content" id="p_p_id_com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_6jlwk8DunzMH_">
+         <span id="p_com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_6jlwk8DunzMH">
+         </span>
+         <section class="portlet" id="portlet_com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_6jlwk8DunzMH">
+          <div class="portlet-content">
+           <div class="portlet-content-container">
+            <div class="portlet-body">
+             <div class="text-right user-tool-asset-addon-entries">
+             </div>
+             <div class="clearfix journal-content-article" data-analytics-asset-id="292358" data-analytics-asset-title="Home Banner Bar" data-analytics-asset-type="web-content">
+              <script async="" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=HHS&amp;subagency=ASFR&amp;sdor=grants.gov" type="text/javascript">
+              </script>
+              <!--?xml version="1.0"?-->
+              <!--?xml version="1.0"?-->
+              <!--?xml version="1.0"?-->
+              <style type="text/css">
+               #alertbar2 body {color: white;} #alertbar2 {background-image: linear-gradient(to bottom right, #fdb81e, #fdb81e);} #alertbar2 body {color:white} #alertbar2 {padding-top: 10px; padding-bottom: 10px; padding-left: 15px; padding-right: 15px}
+              </style>
+              <!--?xml version="1.0"?-->
+              <!--?xml version="1.0"?-->
+              <!--?xml version="1.0"?-->
+              <div id="alertbar2">
+               <div>
+                <h3 style="color:black;">
+                 <strong>
+                  Reminder:
+                 </strong>
+                 Federal agencies do not publish personal financial assistance opportunities on Grants.gov. Federal funding opportunities published on Grants.gov are for organizations and entities supporting the development and management of government-funded programs and projects. For more information about personal financial assistance benefits, please visit Benefits.gov.
+                </h3>
+               </div>
+              </div>
+              <div id="bannerbar" style="background:url(/documents/19/18241/banner-home-mobileappscreenr163.png/73d52d02-c642-f211-9fa7-beb2eb6bab6c?t=1538135354281);">
+               <div>
+                <h2>
+                 Convenience Comes to Federal Grants
+                </h2>
+                <p>
+                 Download the Grants.gov Mobile App to search and submit on the go.
+                </p>
+                <p>
+                 <a href="https://itunes.apple.com/us/app/grants-gov/id1312983000?mt=8&amp;ign-mpt=uo%3D4" target="_blank">
+                  <img alt="Download on the App Store" src="/documents/19/136502/apple-appbadge.png/3f3ca5f4-6ed2-59e7-96e5-13f0794d7c13?t=1522872191937"/>
+                 </a>
+                 <a href="https://play.google.com/store/apps/details?id=com.mobile_grants" target="_blank">
+                  <img alt="Get it on Google Play" src="/documents/19/136502/googleplay-appbadge.png/c926b101-52ce-50b0-41fa-5c8b2e3df6c7?t=1522872213709"/>
+                 </a>
+                 <a href="/web/grants/exit-disclaimer.html" target="_blank">
+                  <img alt="Click to View Exit Disclaimer" height="12" src="/o/grants-blue-theme/images/grants/icon-footer-exit.png" width="12"/>
+                 </a>
+                </p>
+               </div>
+              </div>
+             </div>
+             <div class="content-metadata-asset-addon-entries">
+             </div>
+            </div>
+           </div>
+          </div>
+         </section>
+        </div>
+        <div class="portlet-boundary portlet-boundary_com_liferay_journal_content_web_portlet_JournalContentPortlet_ portlet-static portlet-static-end portlet-barebone portlet-journal-content" id="p_p_id_com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_qOlVfuJmEa5E_">
+         <span id="p_com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_qOlVfuJmEa5E">
+         </span>
+         <section class="portlet" id="portlet_com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_qOlVfuJmEa5E">
+          <div class="portlet-content">
+           <div class="portlet-content-container">
+            <div class="portlet-body">
+             <div class="text-right user-tool-asset-addon-entries">
+             </div>
+             <div class="clearfix journal-content-article" data-analytics-asset-id="292374" data-analytics-asset-title="Home Icon Bar" data-analytics-asset-type="web-content">
+              <div id="iconbar">
+               <div>
+                <a href="/web/grants/search-grants.html" title="Click to Search our Grant Opportunities">
+                 <i class="fa fa-binoculars">
+                  <!-- ICON -->
+                 </i>
+                 <br/>
+                 Search
+                 <br/>
+                 Grants
+                </a>
+               </div>
+               <div>
+                <a href="/web/grants/applicants/apply-for-grants.html" title="Click to Get Started">
+                 <i class="fa fa-check-square">
+                  <!-- ICON -->
+                 </i>
+                 <br/>
+                 Get
+                 <br/>
+                 Started
+                </a>
+               </div>
+               <div>
+                <a href="/web/grants/learn-grants/grant-policies.html" title="Click to Learn More about Grant Policies in Learn Grants">
+                 <i class="fa fa-balance-scale">
+                  <!-- ICON -->
+                 </i>
+                 <br/>
+                 Grant
+                 <br/>
+                 Policies
+                </a>
+               </div>
+               <div>
+                <a href="/web/grants/learn-grants/grant-making-agencies.html" title="Click to Explore Grant-Making Agencies in Learn Grants">
+                 <i class="fa fa-institution">
+                  <!-- ICON -->
+                 </i>
+                 <br/>
+                 Grant-Making
+                 <br/>
+                 Agencies
+                </a>
+               </div>
+               <div>
+                <a href="/web/grants/learn-grants/grant-fraud.html" title="Click to Get Information on Preventing Scams or Reporting Fraud">
+                 <i class="fa fa-shield">
+                  <!-- ICON -->
+                 </i>
+                 <br/>
+                 Prevent
+                 <br/>
+                 Scams
+                </a>
+               </div>
+               <div class="communityblog">
+                <a href="https://grantsgovprod.wordpress.com" target="_blank" title="Click to Visit our Community Blog">
+                 <i class="fa fa-rss-square">
+                  <!-- ICON -->
+                 </i>
+                 <br/>
+                 Community
+                 <br/>
+                 Blog
+                </a>
+               </div>
+               <div class="twitterfeed">
+                <a href="https://twitter.com/grantsdotgov" target="_blank" title="Click to Visit our Twitter Feed that is Everything Grants">
+                 <i class="fa fa-twitter">
+                  <!-- ICON -->
+                 </i>
+                 <br/>
+                 Twitter
+                 <br/>
+                 Feed
+                </a>
+               </div>
+               <div class="youtubevideo">
+                <a href="https://www.youtube.com/user/GrantsGovUS" target="_blank" title="Click to Visit our YouTube Channel to Access our Training Videos">
+                 <i class="fa fa-youtube-play">
+                  <!-- ICON -->
+                 </i>
+                 <br/>
+                 YouTube
+                 <br/>
+                 Videos
+                </a>
+               </div>
+               <div>
+                <a href="javascript:displayHelp();" title="Click to Get Help and Find Answers on our Online User Guide">
+                 <i class="fa fa-book">
+                  <!-- ICON -->
+                 </i>
+                 <br/>
+                 User
+                 <br/>
+                 Guide
+                </a>
+               </div>
+               <div>
+                <a href="/web/grants/support.html" title="Click for Support">
+                 <i class="fa fa-question-circle">
+                  <!-- ICON -->
+                 </i>
+                 <br/>
+                 Support
+                 <br/>
+                 Center
+                </a>
+               </div>
+              </div>
+             </div>
+             <div class="content-metadata-asset-addon-entries">
+             </div>
+            </div>
+           </div>
+          </div>
+         </section>
+        </div>
+        <div class="portlet-boundary portlet-boundary_com_liferay_journal_content_web_portlet_JournalContentPortlet_ portlet-static portlet-static-end portlet-barebone portlet-journal-content" id="p_p_id_com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_o0ery4smkeWV_">
+         <span id="p_com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_o0ery4smkeWV">
+         </span>
+         <section class="portlet" id="portlet_com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_o0ery4smkeWV">
+          <div class="portlet-content">
+           <div class="portlet-content-container">
+            <div class="portlet-body">
+             <div class="text-right user-tool-asset-addon-entries">
+             </div>
+             <div class="clearfix journal-content-article" data-analytics-asset-id="295734" data-analytics-asset-title="Home Panel Blocks" data-analytics-asset-type="web-content">
+              <div id="panelblocks">
+               <div class="panelblock">
+                <div style="background:url(/documents/19/18241/banner-monitor-ws.png/d72aaaa1-f5c1-5ff1-6515-6a8e07b51246?t=1523451082185); height:200px; background-position: 50% 50%; background-repeat:no-repeat; background-size:auto; overflow:hidden;">
+                 <a href="/web/grants/applicants/workspace-overview.html" rel="nofollow" target="_self" title="Click for Workspace Overview">
+                  <span class="pb-h3">
+                   Apply for Grants as a Team
+                  </span>
+                  <br/>
+                  <span class="pb-p">
+                   Easily collaborate on your federal grant applications
+                  </span>
+                 </a>
+                </div>
+               </div>
+               <div class="panelblock">
+                <div style="background:url(/documents/19/18241/chatbot.png); height:200px; background-position: 50% 50%; background-repeat:no-repeat; background-size:auto; overflow:hidden;">
+                 <a href="https://chatwidget.grantsgovservices.com" rel="nofollow" target="_blank" title="Learn more">
+                  <span class="pb-h3">
+                   New Grants.gov Chatbot
+                  </span>
+                  <br/>
+                  <span class="pb-p">
+                   Grant, the Grants.gov help chatbot, was created to answer users' most frequently asked questions (FAQs).
+                  </span>
+                 </a>
+                </div>
+               </div>
+               <div class="panelblock panelblock-lastcolumn">
+                <div style="background:url(/documents/19/18241/banner-home-calendar.png/9c474c42-0277-40e5-a72c-9ea875955fc2?t=1486070434222); height:200px; background-position: 50% 50%; background-repeat:no-repeat; background-size:auto; overflow:hidden;">
+                 <a href="/web/grants/support/calendar.html" rel="nofollow" title="Click for Calendar">
+                  <span class="pb-h3">
+                   Next Maintenance: April 17-19, 2021
+                  </span>
+                  <br/>
+                  <span class="pb-p">
+                   Software releases bring users new features and fixes
+                  </span>
+                 </a>
+                </div>
+               </div>
+               <!-- ROW 2 -->
+               <div class="panelblock">
+                <div style="background:url(/documents/19/18241/grant-writing.png); height:200px; background-position: 50% 50%; background-repeat:no-repeat; background-size:auto; overflow:hidden;">
+                 <a href="https://grantsgovprod.wordpress.com/category/learngrants/grant-writing-basics/" rel="nofollow" target="_blank" title="Click for Blog Series">
+                  <span class="pb-h3">
+                   Grant Writing Tips
+                  </span>
+                  <br/>
+                  <span class="pb-h4">
+                   Principles and examples of good federal grant-writing
+                  </span>
+                 </a>
+                </div>
+               </div>
+               <div class="panelblock">
+                <div style="height:200px;overflow:hidden;background-color:silver">
+                 <iframe allowfullscreen="" frameborder="0" height="200" src="https://www.youtube.com/embed/fIZZH74021I?rel=0" title="Intro to Applying for Federal Grants with Grants.gov" width="380">
+                 </iframe>
+                </div>
+               </div>
+               <div class="panelblock panelblock-lastcolumn">
+                <div style="background:url(/documents/19/18241/banner-home-ueiformupdates.png); height:200px; background-position: 50% 50%; background-repeat:no-repeat; background-size:auto; overflow:hidden;">
+                 <a href="/web/grants/forms/planned-uei-updates.html" rel="nofollow" title="Learn more">
+                  <span class="pb-h3">
+                   Planned UEI Form Updates
+                  </span>
+                  <br/>
+                  <span class="pb-p">
+                   Grants.gov's timeline for New Form Versions with UEI Fields
+                  </span>
+                 </a>
+                </div>
+               </div>
+               <!-- ROW 3 -->
+               <div class="panelblock">
+                <div style="background:url(/documents/19/18241/banner-home-learn-grants.png/a3f1fadb-eaf6-4fa2-acfe-8c9e7185a276?t=1486070507045); height:200px; background-position: 50% 50%; background-repeat:no-repeat; background-size:auto; overflow:hidden;">
+                 <a href="/web/grants/learn-grants.html" rel="nofollow" title="Click for Learn Grants">
+                  <span class="pb-h3">
+                   Grants Learning Center
+                  </span>
+                  <br/>
+                  <span class="pb-h4">
+                   Your gateway to the federal grants world
+                  </span>
+                  <br/>
+                  <br/>
+                  <span class="pb-p">
+                   Grants Learning Center is where you can learn more about the federal grants lifecycle, policies on grants management, and profiles on grant-making agencies.
+                  </span>
+                 </a>
+                </div>
+               </div>
+               <div class="panelblock">
+                <div style="background:url(/documents/19/18241/banner-home-what-is-blog-series.png); height:200px; background-position: 50% 50%; background-repeat:no-repeat; background-size:auto; overflow:hidden;">
+                 <a href="https://grantsgovprod.wordpress.com/category/learngrants/what-is-a-grant/" rel="nofollow" target="_blank" title="Click for Workspace Overview">
+                  <span class="pb-h3">
+                   "What Is...?" Blog Series
+                  </span>
+                  <br/>
+                  <span class="pb-p">
+                   Get smart about the world of federal grants
+                  </span>
+                 </a>
+                </div>
+               </div>
+               <div class="panelblock panelblock-lastcolumn">
+                <div style="background:url(/documents/19/18241/banner-home-notices.png/6dc701c5-6acd-48b9-9597-8373588d9a6d?t=1486070532221); height:200px; background-position: 50% 50%; background-repeat:no-repeat; background-size:auto; overflow:hidden;">
+                 <a href="/web/grants/support/grants-gov-notices.html" rel="nofollow" title="Click for Notices">
+                  <span class="pb-h3">
+                   Upcoming User Impacts
+                  </span>
+                  <br/>
+                  <span class="pb-p">
+                   Notices of upcoming system changes to Grants.gov
+                  </span>
+                 </a>
+                </div>
+               </div>
+              </div>
+             </div>
+             <div class="content-metadata-asset-addon-entries">
+             </div>
+            </div>
+           </div>
+          </div>
+         </section>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+    <form action="#" class="hide" id="hrefFm" method="post" name="hrefFm">
+     <span>
+     </span>
+     <input hidden="" type="submit"/>
+    </form>
+   </section>
+   <footer id="footer" role="contentinfo">
+    <div id="footnav">
+     <ul>
+      <li class="first">
+       CONNECT WITH US:
+      </li>
+      <li>
+       <a class="newbloglink" href="http://blog.grants.gov" target="_blank" title="Click for Grants.gov Community Blog">
+        Blog
+       </a>
+      </li>
+      <li>
+       <a class="twitterlink" href="https://twitter.com/grantsdotgov" target="_blank" title="Click for Grants.gov Twitter Page.">
+        Twitter
+       </a>
+      </li>
+      <li>
+       <a class="youtubelink" href="https://www.youtube.com/user/GrantsGovUS" target="_blank" title="Click for Grants.gov YouTube Page.">
+        YouTube
+       </a>
+      </li>
+      <li>
+       <a class="bloglink" href="http://grants-gov.blogspot.com" target="_blank" title="Click for Grants.gov Alerts">
+        Alerts
+       </a>
+      </li>
+      <li>
+       <a class="rsslink" href="/web/grants/rss.html" title="Click for Grants.gov RSS Feeds Page">
+        RSS
+       </a>
+       |
+      </li>
+      <li>
+       <a class="xmllink" href="/web/grants/xml-extract.html" title="Click for Grants.gov XML Extract">
+        XML Extract
+       </a>
+      </li>
+      <li class="last">
+       <a class="pdflink" href="http://get.adobe.com/reader/otherversions/" style="padding-right:4px !important;" target="_blank" title="Click to Get Adobe Reader. NOTE: Please see Exit Disclaimer.">
+        Get Adobe Reader
+       </a>
+       <a href="/web/grants/exit-disclaimer.html">
+        <img alt="Click to View Exit Disclaimer" src="https://www.grants.gov/o/grants-blue-theme/images/grants/icon-footer-exit.png"/>
+       </a>
+      </li>
+     </ul>
+     <ul>
+      <li class="first">
+       HEALTH &amp; HUMAN SERVICES:
+      </li>
+      <li>
+       <a href="http://www.hhs.gov" target="_blank" title="Click for U.S. Department of Health &amp; Human Services">
+        HHS.gov
+       </a>
+       |
+      </li>
+      <li>
+       <a href="http://www.eeoc.gov/index.cfm" target="_blank" title="Click for EEOC / No Fear Act">
+        EEOC / No Fear Act
+       </a>
+       |
+      </li>
+      <li>
+       <a href="/web/grants/accessibility-compliance.html" title="Click for Accessibility Compliance">
+        Accessibility
+       </a>
+       |
+      </li>
+      <li>
+       <a href="/web/grants/privacy.html" title="Click for Privacy Policy">
+        Privacy
+       </a>
+       |
+      </li>
+      <li>
+       <a href="/web/grants/exit-disclaimer.html" title="Click for Grants.gov Disclaimers">
+        Disclaimers
+       </a>
+       |
+      </li>
+      <li class="last">
+       <a href="/web/grants/site-map.html" title="Click for GRANTS.GOV Site Map">
+        Site Map
+       </a>
+      </li>
+     </ul>
+     <ul>
+      <li class="first">
+       COMMUNITY:
+      </li>
+      <li>
+       <a href="http://www.usa.gov" target="_blank" title="Click for USA.gov">
+        USA.gov
+       </a>
+       |
+      </li>
+      <li>
+       <a href="http://www.whitehouse.gov" target="_blank" title="Click for WhiteHouse.gov">
+        WhiteHouse.gov
+       </a>
+       |
+      </li>
+      <li>
+       <a href="http://www.usaspending.gov" target="_blank" title="Click for USAspending.gov">
+        USAspending.gov
+       </a>
+       |
+      </li>
+      <li>
+       <a href="http://www.sba.gov" target="_blank" title="Click for U.S. Small Business Administration">
+        SBA.gov
+       </a>
+       |
+      </li>
+      <li>
+       <a href="http://www.cfda.gov" target="_blank" title="Click for CFDA.gov">
+        CFDA.gov
+       </a>
+       |
+      </li>
+      <li>
+       <a href="https://www.sam.gov" target="_blank" title="Click for System for Award Management">
+        SAM.gov
+       </a>
+       |
+      </li>
+      <li>
+       <a href="http://fedgov.dnb.com/webform" target="_blank" title="Click for D&amp;B DUNS Request Service for U.S. Federal Government Contractors and Grantees. NOTE: Please see Exit Disclaimer.">
+        DUNS Request
+       </a>
+       <a href="/web/grants/exit-disclaimer.html">
+        <img alt="Click to View Exit Disclaimer" src="https://www.grants.gov/o/grants-blue-theme/images/grants/icon-footer-exit.png"/>
+       </a>
+       |
+      </li>
+      <li class="last">
+       <a href="http://www.ignet.gov/node/207" target="_blank" title="Click for Report Fraud">
+        Report Fraud
+       </a>
+      </li>
+     </ul>
+    </div>
+    <div id="footbrand">
+     <br/>
+     <a class="footnavlink" href="https://grants-portal.psc.gov/" style="font-size:12px" target="_blank" title="Click for Frequently Asked Questions">
+      Frequently Asked Questions
+     </a>
+     <a href="/web/grants/exit-disclaimer.html">
+      <img alt="Click to View Exit Disclaimer" src="https://www.grants.gov/o/grants-blue-theme/images/grants/icon-footer-exit.png"/>
+     </a>
+    </div>
+   </footer>
+  </div>
+ </body>
+ <script type="text/javascript">
+  // <![CDATA[
+
+	
+		
+
+			
+
+			
+		
+	
+
+	Liferay.BrowserSelectors.run();
+
+// ]]>
+ </script>
+ <script type="text/javascript">
+  // <![CDATA[
+
+		
+
+		Liferay.currentURL = '\x2f';
+		Liferay.currentURLEncoded = '\x252F';
+
+	// ]]>
+ </script>
+ <script type="text/javascript">
+  // <![CDATA[
+			
+
+			
+		// ]]>
+ </script>
+ <script type="text/javascript">
+  // <![CDATA[
+
+	if (Liferay.Data.ICONS_INLINE_SVG) {
+		svg4everybody(
+			{
+				attributeName: 'data-href',
+				polyfill: true
+			}
+		);
+	}
+
+	
+		Liferay.Portlet.register('com_liferay_site_navigation_breadcrumb_web_portlet_SiteNavigationBreadcrumbPortlet');
+	
+
+	Liferay.Portlet.onLoad(
+		{
+			canEditTitle: false,
+			columnPos: 0,
+			isStatic: 'end',
+			namespacedId: 'p_p_id_com_liferay_site_navigation_breadcrumb_web_portlet_SiteNavigationBreadcrumbPortlet_',
+			portletId: 'com_liferay_site_navigation_breadcrumb_web_portlet_SiteNavigationBreadcrumbPortlet',
+			refreshURL: '\x2fc\x2fportal\x2frender_portlet\x3fp_l_id\x3d27260\x26p_p_id\x3dcom_liferay_site_navigation_breadcrumb_web_portlet_SiteNavigationBreadcrumbPortlet\x26p_p_lifecycle\x3d0\x26p_t_lifecycle\x3d0\x26p_p_state\x3dnormal\x26p_p_mode\x3dview\x26p_p_col_id\x3dnull\x26p_p_col_pos\x3dnull\x26p_p_col_count\x3dnull\x26p_p_static\x3d1\x26p_p_isolated\x3d1\x26currentURL\x3d\x252F\x26settingsScope\x3dportletInstance',
+			refreshURLData: {}
+		}
+	);
+
+	
+		Liferay.Portlet.register('com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_qOlVfuJmEa5E');
+	
+
+	Liferay.Portlet.onLoad(
+		{
+			canEditTitle: false,
+			columnPos: 1,
+			isStatic: 'end',
+			namespacedId: 'p_p_id_com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_qOlVfuJmEa5E_',
+			portletId: 'com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_qOlVfuJmEa5E',
+			refreshURL: '\x2fc\x2fportal\x2frender_portlet\x3fp_l_id\x3d27260\x26p_p_id\x3dcom_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_qOlVfuJmEa5E\x26p_p_lifecycle\x3d0\x26p_t_lifecycle\x3d0\x26p_p_state\x3dnormal\x26p_p_mode\x3dview\x26p_p_col_id\x3dcolumn-1\x26p_p_col_pos\x3d1\x26p_p_col_count\x3d3\x26p_p_isolated\x3d1\x26currentURL\x3d\x252F',
+			refreshURLData: {}
+		}
+	);
+
+	
+		Liferay.Portlet.register('com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_6jlwk8DunzMH');
+	
+
+	Liferay.Portlet.onLoad(
+		{
+			canEditTitle: false,
+			columnPos: 0,
+			isStatic: 'end',
+			namespacedId: 'p_p_id_com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_6jlwk8DunzMH_',
+			portletId: 'com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_6jlwk8DunzMH',
+			refreshURL: '\x2fc\x2fportal\x2frender_portlet\x3fp_l_id\x3d27260\x26p_p_id\x3dcom_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_6jlwk8DunzMH\x26p_p_lifecycle\x3d0\x26p_t_lifecycle\x3d0\x26p_p_state\x3dnormal\x26p_p_mode\x3dview\x26p_p_col_id\x3dcolumn-1\x26p_p_col_pos\x3d0\x26p_p_col_count\x3d3\x26p_p_isolated\x3d1\x26currentURL\x3d\x252F',
+			refreshURLData: {}
+		}
+	);
+
+	
+		Liferay.Portlet.register('com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_o0ery4smkeWV');
+	
+
+	Liferay.Portlet.onLoad(
+		{
+			canEditTitle: false,
+			columnPos: 2,
+			isStatic: 'end',
+			namespacedId: 'p_p_id_com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_o0ery4smkeWV_',
+			portletId: 'com_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_o0ery4smkeWV',
+			refreshURL: '\x2fc\x2fportal\x2frender_portlet\x3fp_l_id\x3d27260\x26p_p_id\x3dcom_liferay_journal_content_web_portlet_JournalContentPortlet_INSTANCE_o0ery4smkeWV\x26p_p_lifecycle\x3d0\x26p_t_lifecycle\x3d0\x26p_p_state\x3dnormal\x26p_p_mode\x3dview\x26p_p_col_id\x3dcolumn-1\x26p_p_col_pos\x3d2\x26p_p_col_count\x3d3\x26p_p_isolated\x3d1\x26currentURL\x3d\x252F',
+			refreshURLData: {}
+		}
+	);
+Liferay.Loader.require('metal-dom/src/all/dom', 'metal-uri/src/Uri', function(metalDomSrcAllDom, metalUriSrcUri) {
+(function(){
+var dom = metalDomSrcAllDom;
+var metalUriSrcUri1 = metalUriSrcUri;
+(function() {var $ = AUI.$;var _ = AUI._;
+	var Uri = metalUriSrcUri.default;
+	var pathnameRegexp = /\/documents\/(\d+)\/(\d+)\/(.+)\/(.+)/;
+
+	var downloadClickHandler = dom.delegate(
+		document.body,
+		'click',
+		'a',
+		function(event) {
+			if (window.Analytics) {
+				var anchor = event.delegateTarget;
+				var uri = new Uri(anchor.href);
+
+				var match = pathnameRegexp.exec(uri.getPathname());
+
+				if (match) {
+					Analytics.send(
+						'documentDownloaded',
+						'Document',
+						{
+							groupId: match[1],
+							fileEntryUUID: match[4],
+							preview: !!window._com_liferay_document_library_analytics_isViewFileEntry,
+							title: decodeURIComponent(match[3].replace(/\+/ig, ' ')),
+							version: uri.getParameterValue('version')
+						}
+					);
+				}
+			}
+		}
+	);
+
+	var onDestroyPortlet = function() {
+		downloadClickHandler.removeListener()
+		Liferay.detach('destroyPortlet', onDestroyPortlet);
+	}
+
+	Liferay.on('destroyPortlet', onDestroyPortlet);
+})();})();
+},
+function(error) {
+console.error(error);
+});AUI().use('aui-tooltip', 'liferay-menu', 'liferay-notice', 'aui-base', 'liferay-session', 'liferay-poller', function(A) {(function() {var $ = AUI.$;var _ = AUI._;
+	if (A.UA.mobile) {
+		Liferay.Util.addInputCancel();
+	}
+})();(function() {var $ = AUI.$;var _ = AUI._;
+	if (!Liferay.Data.LFR_PORTAL_TOOLTIP) {
+		var triggerShowEvent = ['mouseenter', 'MSPointerDown', 'touchstart'];
+
+		if (A.UA.ios) {
+			triggerShowEvent = ['touchstart'];
+		}
+
+		Liferay.Data.LFR_PORTAL_TOOLTIP = new A.TooltipDelegate(
+			{
+				constrain: true,
+				opacity: 1,
+				trigger: '.lfr-portal-tooltip',
+				triggerHideEvent: ['click', 'mouseleave', 'MSPointerUp', 'touchend'],
+				triggerShowEvent: triggerShowEvent,
+				visible: false,
+				zIndex: Liferay.zIndex.TOOLTIP
+			}
+		);
+	}
+})();(function() {var $ = AUI.$;var _ = AUI._;
+	new Liferay.Menu();
+
+	var liferayNotices = Liferay.Data.notices;
+
+	for (var i = 1; i < liferayNotices.length; i++) {
+		new Liferay.Notice(liferayNotices[i]);
+	}
+
+	
+})();(function() {var $ = AUI.$;var _ = AUI._;
+			Liferay.Session = new Liferay.SessionBase(
+				{
+					autoExtend: true,
+					redirectOnExpire: false,
+					redirectUrl: 'https\x3a\x2f\x2fwww\x2egrants\x2egov\x2fweb\x2fgrants\x2fhome\x2ehtml',
+					sessionLength: 900,
+					warningLength: 0
+				}
+			);
+
+			
+		})();});
+// ]]>
+ </script>
+ <script src="https://www.grants.gov/o/grants-blue-theme/js/main.js?browserId=other&amp;minifierType=js&amp;languageId=en_US&amp;b=7010&amp;t=1616239916319" type="text/javascript">
+ </script>
+ <script type="text/javascript">
+  // <![CDATA[
+		AUI().use(
+			'aui-base',
+			function(A) {
+				var frameElement = window.frameElement;
+
+				if (frameElement && frameElement.getAttribute('id') === 'simulationDeviceIframe') {
+					A.getBody().addClass('lfr-has-simulation-panel');
+				}
+			}
+		);
+	// ]]>
+ </script>
+ <script>
+  var PATH_PORTLET_CONFIGURATION_CSS_WEB = '/o/portlet-configuration-css-web';
+
+	AUI().applyConfig(
+		{
+			groups: {
+				portlet_css: {
+					base: PATH_PORTLET_CONFIGURATION_CSS_WEB + '/js/',
+					modules: {
+						'liferay-look-and-feel': {
+							path: 'look_and_feel.js',
+							requires: [
+								'aui-color-picker-popover',
+								'aui-io-plugin-deprecated',
+								'aui-io-request',
+								'aui-tabview',
+								'liferay-portlet-url',
+								'liferay-util-window',
+								'liferay-widget-zindex'
+							]
+						}
+					},
+					root: PATH_PORTLET_CONFIGURATION_CSS_WEB + '/js/'
+				}
+			}
+		}
+	);
+
+	Liferay.provide(
+		Liferay.Portlet,
+		'loadCSSEditor',
+		function(portletId, baseActionURL, baseRenderURL, baseResourceURL) {
+			Liferay.PortletCSS.init(portletId, baseActionURL, baseRenderURL, baseResourceURL);
+		},
+		['liferay-look-and-feel']
+	);
+ </script>
+</html>

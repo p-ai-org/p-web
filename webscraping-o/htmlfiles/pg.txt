@@ -1,0 +1,380 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <title>
+  </title>
+  <script type="text/javascript">
+   function setCookie(c_name, value, exdays) {
+var exdate = new Date();
+exdate.setDate(exdate.getDate() + exdays);
+var c_value = escape(value)
++ ((exdays == null) ? "" : "; expires=" + exdate.toUTCString());
+document.cookie = c_name + "=" + c_value+";path=/";
+}
+
+/*
+ * Get Cookie from Client's System to check if video is already viewed by
+ * current user.
+ */
+function getCookie(c_name)
+{
+//alert("cookie::"+document.cookie);
+var i,x,y,ARRcookies=document.cookie.split(";");
+for (i=0;i<ARRcookies.length;i++)
+{
+x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+x=x.replace(/^\s+|\s+$/g,"");
+if (x==c_name)
+{
+return unescape(y);
+}
+}
+return 'null';
+}
+
+var countryCode='';
+function getLang()
+{
+//alert("From IP Locator --\> "+countryCode);
+
+if(countryCode=="US" || countryCode=="" || countryCode=="--")
+	{
+		countryCode=getBrowserLang();
+	}
+
+if(getCookie("localePGCOM")=='null' || !getCookie("localePGCOM"))
+{
+		switch(countryCode)
+		{
+		case "BR" : countryCode="BR";break;
+		case "pt-BR" : countryCode="BR";break;
+		case "pt" : countryCode="BR";break;
+		
+		case "FR" : countryCode="FR";break;
+		case "fr" : countryCode="FR";break;
+		case "fr-FR" : countryCode="FR";break;
+		case "FX" : countryCode="FR";break;
+		
+		
+		case "DE" : countryCode="DE";break;
+		case "de-DE" : countryCode="DE";break;
+		case "de" : countryCode="DE";break;
+		
+		
+		case "it-IT" : countryCode="IT";break;
+		case "IT" : countryCode="IT";break;
+		case "it" : countryCode="IT";break;
+		
+		
+		case "zh-CN" : countryCode="CN";break;
+		case "zh" : countryCode="CN";break;
+		case "CN" : countryCode="CN";break;
+		
+		
+		case "zh-HK" : countryCode="HK";break;//Hong Kong
+		case "HK" : countryCode="HK";break;//Hong Kong
+		
+		
+		case "en-ZA" : countryCode="ZA";break;
+		case "ZA" : countryCode="ZA";break;
+		
+		case "fr-CH" : countryCode="CH";break;
+		case "CH" : countryCode="CH";break;
+		case "de-CH" : countryCode="CH";break;
+		
+		case "en-GB" : countryCode="UK";break;
+		case "GB" : countryCode="UK";break;
+		case "en-gb" : countryCode="UK";break;
+		case "IE" : countryCode="UK";break;//Ireland
+        case "en-IE" : countryCode="UK";break;
+		case "ga-IE" : countryCode="UK";break;
+		
+		case "IN" : countryCode="IN";break;
+		case "hi-IN" : countryCode="IN";break;
+		case "en-IN" : countryCode="IN";break;
+		
+		case "AL" : countryCode="AL";break;
+		case "sq-AL" : countryCode="AL";break;
+		case "sq" : countryCode="AL";break;
+		
+		
+		case "AR" : countryCode="AR";break;
+		case "es-ar" : countryCode="AR";break;
+		case "es-AR" : countryCode="AR";break;
+		
+		
+		case "BE" : countryCode="BE";break;
+		case "fr-be" : countryCode="BE";break;
+		case "fr-BE" : countryCode="BE";break;
+		
+		case "BA" : countryCode="BA";break;
+		case "sr-BA" : countryCode="BA";break;
+		case "bs" : countryCode="BA";break;
+		case "bs-Cyrl" : countryCode="BA";break;
+		case "bs-Cyrl-BA" : countryCode="BA";break;
+		case "bs-Latn" : countryCode="BA";break;
+		case "bs-Latn-BA" : countryCode="BA";break;
+		
+		case "BG" : countryCode="BG";break;
+		case "bg" : countryCode="BG";break;
+		case "bg-BG" : countryCode="BG";break;
+		
+		case "CA" : countryCode="CA";break;
+		case "fr-CA" : countryCode="CA";break;
+		case "en-CA" : countryCode="CA";break;
+		
+		case "CR" : countryCode="CR";break;
+		case "es-CR" : countryCode="CR";break;
+		
+		case "CZ" : countryCode="CZ";break;
+		case "cs-CZ" : countryCode="CZ";break;
+		
+		case "hu" : countryCode="HU";break;
+		case "hu_HU" : countryCode="HU";break;
+		
+		case "DK" : countryCode="DK";break;
+		case "da-DK" : countryCode="DK";break;
+		case "da" : countryCode="DK";break;
+		
+		case "EG" : countryCode="EG";break;
+		case "ar-EG" : countryCode="EG";break;
+		case "ar-eg" : countryCode="EG";break;
+		
+		case "EE" : countryCode="EE";break;
+		case "et-EE" : countryCode="EE";break;
+		case "et" : countryCode="EE";break;
+		
+		
+		case "FI" : countryCode="FI";break;
+		case "fi-FI" : countryCode="FI";break;
+		case "fi" : countryCode="FI";break;
+		case "sv-FI" : countryCode="FI";break;
+		
+		case "JP" : countryCode="JP";break;
+		case "ja-JP" : countryCode="JP";break;
+		case "ja-JP-JP" : countryCode="JP";break;
+		case "ja" : countryCode="JP";break;
+		
+		case "KP" : countryCode="KR";break;
+		case "KR" : countryCode="KR";break;
+		case "ko" : countryCode="KR";break;
+		case "ko-KR" : countryCode="KR";break;
+		case "ko-kr" : countryCode="KR";break;
+		case "ko-kp" : countryCode="KR";break;
+		
+		case "LV" : countryCode="LV";break;
+		case "lv" : countryCode="LV";break;
+		case "lv-LV" : countryCode="LV";break;
+		
+		case "LB" : countryCode="LB";break;
+		case "ar-LB" : countryCode="LB";break;
+		case "ar-lb" : countryCode="LB";break;
+		
+		case "LT" : countryCode="LT";break;
+		case "lt" : countryCode="LT";break;
+		case "lt-LT" : countryCode="LT";break;
+		
+		case "MX" : countryCode="MX";break;
+		case "es-MX" : countryCode="MX";break;
+		case "es-mx" : countryCode="MX";break;
+		
+		case "MD" : countryCode="MD";break;
+		case "ro-md" : countryCode="MD";break;
+		case "ro-MD" : countryCode="MD";break;
+		
+		case "ME" : countryCode="ME";break;
+		case "sr-Cyrl-ME" : countryCode="ME";break;
+		case "sr-Latn-ME" : countryCode="ME";break;
+		
+		case "MA" : countryCode="MA";break;
+		
+		case "AN" : countryCode="NL";break;
+		case "nl-NL" : countryCode="NL";break;
+		case "NL" : countryCode="NL";break;
+		
+		case "NO" : countryCode="NO";break;
+		case "nb-NO" : countryCode="NO";break;
+		case "no" : countryCode="NO";break;
+		case "nb" : countryCode="NO";break;
+		case "nn" : countryCode="NO";break;
+		
+		case "PK" : countryCode="PK";break;
+		
+		case "PH" : countryCode="PH";break;
+		case "en-PH" : countryCode="PH";break;
+		
+		case "PL" : countryCode="PL";break;
+		case "pl-PL" : countryCode="PL";break;
+		case "pl" : countryCode="PL";break;
+		
+		case "MK" : countryCode="MK";break;
+		case "mk-MK" : countryCode="MK";break;
+		case "mk" : countryCode="MK";break;
+		
+		case "RU" : countryCode="RU";break;
+		case "ru-RU" : countryCode="RU";break;
+		case "ru" : countryCode="RU";break;
+		
+		
+		case "RS" : countryCode="RS";break;
+		case "sr-BA" : countryCode="RS";break;
+		case "sr" : countryCode="RS";break;
+		
+		case "ES" : countryCode="ES";break;
+		case "es-ES" : countryCode="ES";break;
+		case "ca-ES" : countryCode="ES";break;
+		
+		case "SE" : countryCode="SE";break;
+		case "sv-SE" : countryCode="SE";break;
+		case "sv-se" : countryCode="SE";break;
+		
+		case "TW" : countryCode="TW";break;
+		case "zh-TW" : countryCode="TW";break;
+		case "zh-tw" : countryCode="TW";break;
+		
+		case "TR" : countryCode="TR";break;
+		case "tr-TR" : countryCode="TR";break;
+		case "tr" : countryCode="TR";break;
+		
+		case "UA" : countryCode="UA";break;
+		case "uk-UA" : countryCode="UA";break;
+		case "uk" : countryCode="UA";break;
+		
+		case "DZ" : countryCode="DZ";break;
+		case "ar-DZ" : countryCode="DZ";break;
+		case "ar-dz" : countryCode="DZ";break;
+		
+		case "IL" : countryCode="IL";break;
+		case "he-IL" : countryCode="IL";break;
+		
+		case "RO" : countryCode="RO";break;
+		case "ro-RO" : countryCode="RO";break;
+		case "ro" : countryCode="RO";break;
+		case "rm" : countryCode="RO";break;
+		case "ro-mo" : countryCode="RO";break;
+		
+		case "AT" : countryCode="AT";break;
+		case "de-AT" : countryCode="AT";break;
+		case "de-at" : countryCode="AT";break;
+		
+		case "el_CY" : countryCode="EL";break;
+		case "el_GR" : countryCode="EL";break;
+		case "el" : countryCode="EL";break;
+		
+		case "pt_PT" : countryCode="PT";break;
+		
+		case "CO" : countryCode="CO";break;
+		case "co" : countryCode="CO";break;
+		
+		case "es-PY" : countryCode="PY";break;
+		
+		
+		default: countryCode="US";break;
+		}	
+
+		setCookie("localePGCOM", countryCode, 7);
+}else
+{
+countryCode=getCookie("localePGCOM");
+}
+//alert("From cookie --\> "+getCookie("localePGCOM"));
+switch(countryCode)
+{
+	case "BR": window.location="http://www.pg.com/pt_BR/";break;
+	case "FR": window.location="http://www.fr.pg.com/";break;
+	case "DE": window.location="http://www.pg.com/de_DE/";break;
+	case "IT": window.location="http://www.pg.com/it_IT/";break;
+	case "CN": window.location="http://www.pg.com.cn/";break;
+	case "ZA": window.location="http://za.pg.com/";break;
+	case "CH": window.location="http://www.pg.com/fr_DE/";break;
+	case "UK": window.location="http://www.pg.com/en_UK/";break;
+	case "IN": window.location="http://www.pg.com/en_IN/";break;
+	case "HK": window.location="http://www.pghongkong.com/zh-HK/";break;
+	case "AL": window.location="http://www.pgbalkans.com/";break;	
+	case "AR": window.location="http://www.pg.com/es_AR/";break;
+	case "BA": window.location="http://www.pgbalkans.com/";break;
+	//case "BG": window.location="http://www.pgbalkans.com/";break;
+	case "BG": window.location="http://www.pgbalkans.com/";break;
+	case "CA": window.location="http://www.pg.com/en_CA/index.shtml";break;
+	case "CR": window.location="http://www.pg.com/es_MX/";break;
+	case "DK": window.location="http://www.dk.pg.com/";break;
+	case "EG": window.location="http://www.pg.com/en_EG/";break;
+	case "EE": window.location="http://www.pg.com/et_EE/";break;
+	case "FI": window.location="http://www.fi.pg.com/";break;
+	case "JP": window.location="http://jp.pg.com/";break;
+	case "KR": window.location="http://us.pg.com/";break;
+	case "LV": window.location="http://www.pg.com/lv_LV/";break;
+	case "LB": window.location="http://www.pg.com/en_LB/";break;
+	case "LT": window.location="http://www.pg.com/lt_LT/";break;
+	case "MX": window.location="http://www.pg.com/es_MX/";break;
+	case "MD": window.location="http://www.pgbalkans.com/";break;
+	case "ME": window.location="http://www.pgbalkans.com/";break;
+	case "NL": window.location="http://www.pg.com/nl_NL/";break;
+	case "NO": window.location="http://www.no.pg.com/";break;
+	case "PK": window.location="http://www.pg.com/en_PK/";break;
+	case "PH": window.location="http://philippines.experiencepg.com/";break;
+	case "PL": window.location="http://www.pg.com/pl_PL/";break;
+	case "MK": window.location="http://www.pgbalkans.com/";break;
+	case "RU": window.location="http://www.pg.com/ru_RU/";break;
+	//case "RS": window.location="http://www.pgbalkans.com/";break;
+	case "RS": window.location="http://www.pgbalkans.com/";break;
+	case "ES": window.location="http://www.pg.com/es_ES/";break;
+	case "SE": window.location="http://se.pg.com/";break;
+	case "TW": window.location="http://www.pgtaiwan.com.tw/";break;
+	case "TR": window.location="http://www.pg.com.tr/procter/index.htm";break;
+	case "UA": window.location="http://www.pg.com.ua/";break;
+	case "IL": window.location="http://www.pgisrael.co.il/";break;
+	//case "RO": window.location="http://www.pgbalkans.com/";break;
+	case "RO": window.location="http://www.pgbalkans.com/";break;
+	
+	case "AT": window.location="http://www.pg.com/de_DE/";break;
+	case "CZ": window.location="http://www.Dekujimaminko.pg.com/";break;
+	case "HU": window.location="http://www.Koszianya.pg.com/";break;
+	case "EL": window.location="http://www.eyxaristwmama.pg.com/";break;
+	case "PT": window.location="http://www.obrigadomae.pg.com/";break;
+	case "CO": window.location="http://www.pg.com/es_LATAM/CO/";break;
+	case "PY": window.location="http://www.pg.com/es_LATAM/";break;
+			
+	default: window.location="http://us.pg.com/";break;
+}
+
+}
+
+function getBrowserLang()
+{
+	
+if ( navigator ) {
+    if ( navigator.language ) {
+        return navigator.language;
+    }
+    else if ( navigator.browserLanguage ) {
+        return navigator.browserLanguage;
+    }
+    else if ( navigator.systemLanguage ) {
+        return navigator.systemLanguage;
+    }
+    else if ( navigator.userLanguage ) {
+        return navigator.userLanguage;
+    }
+}
+}
+  </script>
+  <script>
+   (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PW4NS3V');
+  </script>
+ </head>
+ <body>
+  <noscript>
+   <iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-PW4NS3V" style="display:none;visibility:hidden" width="0">
+   </iframe>
+  </noscript>
+  <script type="text/javascript">
+   countryCode='US';
+  </script>
+  <script type="text/javascript">
+   getLang();
+  </script>
+ </body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+ <head>
+  <meta charset="utf-8"/>
+  <title>
+   多图片上传
+  </title>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <meta content="简单图床,无数据库图床,PHP多图长传程序,自适应页面,HTML5,markdown,bbscode,一键复制" name="keywords"/>
+  <meta content="简单图床是一款支持多文件上传的无数据库图床,可以完美替代PHP多图上传程序，最新html5自适应页面兼容手机电脑，上传后返回图片直链，markdown图片，论坛贴图bbscode链接，简单方便支持一键复制，支持多域名，api上传。" name="description"/>
+  <link href="../public/static/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../public/static/zui/css/zui.min.css?v1.8.1" rel="stylesheet"/>
+  <link href="../public/static/zui/lib/uploader/zui.uploader.min.css?v1.8.1" rel="stylesheet"/>
+  <script src="../public/static/jquery.min.js?v3.3.1">
+  </script>
+  <script src="../public/static/zui/js/zui.min.js?v1.8.1">
+  </script>
+  <script src="../public/static/zui/lib/uploader/zui.uploader.min.js?v1.8.1">
+  </script>
+  <script src="../public/static/qrcode.min.js?v1.0">
+  </script>
+  <script src="../public/static/clipboard.min.js?v2.0.4">
+  </script>
+  <style>
+   .uploader-files{
+            min-height:160px;
+            border-style:dashed;
+        }
+  </style>
+ </head>
+ <body class="container">
+  <div class="md-lg-12 header-dividing">
+   <ul class="nav nav-pills">
+    <li>
+     <a class="dropdown-toggle hidden-xs" data-toggle="dropdown" href="#">
+      二维码
+      <span class="caret">
+      </span>
+     </a>
+     <ul class="dropdown-menu">
+      <input id="text" type="hidden" value=""/>
+      <li id="qrcode" style="width:100%;">
+       扫描二维码使用手机上传
+      </li>
+     </ul>
+    </li>
+   </ul>
+  </div>
+  <!-- 顶部导航栏END -->
+  <div class="container">
+   <div class="col-md-12">
+    <ul style="list-style: none;margin:1px 1px 30px 1px;">
+     <li class="icon icon-dot-circle text-muted">
+      单个图片限制50M，每次最多上传100张图片
+     </li>
+    </ul>
+    <div class="uploader col-md-10 col-md-offset-1" data-ride="uploader" data-url="file.php" id="upShowID">
+     <div class="uploader-message text-center">
+      <div class="content">
+      </div>
+      <button class="close" type="button">
+       ×
+      </button>
+     </div>
+     <div class="uploader-files file-list file-list-lg" data-drag-placeholder="Ctrl+V粘贴/选择文件/将图片直接拖拽至此处">
+     </div>
+     <div class="uploader-actions">
+      <div class="uploader-status pull-right text-muted">
+      </div>
+      <button class="btn btn-link uploader-btn-browse" type="button">
+       <i class="icon icon-plus">
+       </i>
+       选择文件
+      </button>
+      <button class="btn btn-link uploader-btn-start" type="button">
+       <i class="icon icon-cloud-upload">
+       </i>
+       开始上传
+      </button>
+      <button class="btn btn-link uploader-btn-stop" type="button">
+       <i class="icon icon-pause">
+       </i>
+       暂停上传
+      </button>
+     </div>
+    </div>
+    <div class="col-md-8 col-md-offset-2">
+     <ul class="nav nav-tabs">
+      <li class="active">
+       <a data-target="#tab2Content1" data-toggle="tab" href="#">
+        论坛代码
+       </a>
+      </li>
+      <li>
+       <a data-target="#tab2Content2" data-toggle="tab" href="#">
+        直链
+       </a>
+      </li>
+      <li>
+       <a data-target="#tab2Content3" data-toggle="tab" href="#">
+        MarkDown
+       </a>
+      </li>
+      <li>
+       <a data-target="#tab2Content4" data-toggle="tab" href="#">
+        HTML
+       </a>
+      </li>
+     </ul>
+     <div align="right" class="tab-content">
+      <div class="tab-pane fade active in" id="tab2Content1">
+       <textarea class="form-control" id="bbscode" readonly="" style="text-align: center;min-height: 100px;"></textarea>
+       <button class="btn copyBtn1" data-loading-text="已经复制链接..." id="btnBbscode" style="margin-top:10px;">
+        <i class="icon icon-copy">
+        </i>
+        复制
+       </button>
+      </div>
+      <div class="tab-pane fade" id="tab2Content2">
+       <textarea class="form-control" id="links" readonly="" style="text-align: center;min-height: 100px;"></textarea>
+       <button class="btn copyBtn2" data-loading-text="已经复制链接..." id="btnLinks" style="margin-top:10px;">
+        <i class="icon icon-copy">
+        </i>
+        复制
+       </button>
+      </div>
+      <div class="tab-pane fade" id="tab2Content3">
+       <textarea class="form-control" id="markdown" readonly="" style="text-align: center;min-height: 100px;"></textarea>
+       <button class="btn copyBtn3" data-loading-text="已经复制链接..." id="btnMarkDown" style="margin-top:10px;">
+        <i class="icon icon-copy">
+        </i>
+        复制
+       </button>
+      </div>
+      <div class="tab-pane fade" id="tab2Content4">
+       <textarea class="form-control" id="html" readonly="" style="text-align: center;min-height: 100px;"></textarea>
+       <button class="btn copyBtn4" data-loading-text="已经复制链接..." id="btnHtml" style="margin-top:10px;">
+        <i class="icon icon-copy">
+        </i>
+        复制
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script src="public/static/paste.js">
+  </script>
+  <script src="public/static/copy_btn.js">
+  </script>
+  <script>
+   $('#upShowID').uploader({
+            // 当选择文件后立即自动进行上传操作
+            autoUpload: false,
+            // 文件上传提交地址
+            url: 'file.php',
+            // 最大支持的上传文件
+            max_file_size: 52428800 ,
+            // 是否分片上传 0为不分片 经测试分片容易使图片上传失败
+            chunk_size: 0,
+            //点击文件列表上传文件
+            browseByClickList: true,
+            // 上传格式过滤
+            filters: { // 只允许上传图片或图标（.ico）
+                mime_types: [{
+                    title: '图片',
+                    extensions: 'bmp,jpg,png,tif,gif,pcx,tga,svg,webp,jpeg,tga,svg,ico'
+                }, {
+                    title: '图标',
+                    extensions: 'ico'
+                }],
+                prevent_duplicates: true
+            },
+            // 限制文件上传数目
+            limitFilesCount: 100 ,
+            // 自动上传失败的文件
+            autoResetFails: true,
+
+            responseHandler: function (responseObject, file) {
+                // 当服务器返回的文本内容包含 `'success'` 文件上传成功
+                if (responseObject.response.indexOf('success')) {
+                    console.log(responseObject.response);
+                    var obj = JSON.parse(responseObject.response); //由JSON字符串转换为JSON对象
+                    var links = document.getElementById("links");
+                    links.innerHTML += obj.url + "\n";
+
+                    var bbscode = document.getElementById("bbscode");
+                    bbscode.innerHTML += "[url=" +obj.url3 +"/x/?i=" + obj.url2 + "]"+ "[img]" + obj.url + "[/img][/url]\n";
+
+                    var markdown = document.getElementById("markdown");
+                    markdown.innerHTML += "![](" + obj.url + ")\n";
+
+                    var html = document.getElementById("html");
+                    html.innerHTML += "&lt;img src=\"" + obj.url + "\" /&#62;\n";
+                } else {
+                    return '上传失败。服务器返回了一个错误：' + responseObject.response;
+                }
+            }
+        });
+  </script>
+  <script>
+   // js二维码 获取当前网址并赋值给id=text的value
+        document.getElementById("text").value = window.location.href;
+        var qrcode = new QRCode(document.getElementById("qrcode"), {
+            width: 150,
+            height: 150
+        });
+
+        function makeCode() {
+            var elText = document.getElementById("text");
+            if (!elText.value) {
+                alert("Input a text");
+                elText.focus();
+                return;
+            }
+            qrcode.makeCode(elText.value);
+        }
+        makeCode();
+        $("#text").on("blur",
+            function () {
+                makeCode();
+            }).on("keydown",
+            function (e) {
+                if (e.keyCode==13) {
+                    makeCode();
+                }
+            });
+        
+    // 百度统计
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+  </script>
+  <footer class="text-muted small col-md-12" style="text-align: center">
+   <hr/>
+   Copyright © 2018-2021
+   <a href="/" target="_blank">
+   </a>
+  </footer>
+ </body>
+</html>

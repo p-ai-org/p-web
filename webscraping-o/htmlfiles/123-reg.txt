@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>
+  </title>
+  <base href="/"/>
+  <meta charset="utf-8" content="width=device-width,initial-scale=1" name="viewport"/>
+  <link href="https://cdn.heg-cp.com/bootstrap@4.3.1/dist/css/bootstrap-reboot.min.css" rel="stylesheet"/>
+  <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,Intl,Promise,Array.from,Array.prototype.@@iterator,String.fromCodePoint,Number.isInteger,performance.now,navigator.sendBeacon,Symbol,Symbol.toStringTag,String.prototype.startsWith">
+  </script>
+  <link href="data:;base64,=" rel="icon"/>
+  <link crossorigin="" href="https://www.google-analytics.com" rel="preconnect"/>
+  <link crossorigin="" href="https://tags.tiqcdn.com" rel="preconnect"/>
+  <link crossorigin="" href="https://img1.wsimg.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://green.lexicon.api.heg-cp.com" rel="preconnect"/>
+  <link crossorigin="" href="https://paintbrush.heg-cp.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <script>
+   (function() {
+            var cradleUrl = '/api/cradle/log';
+            var _fetch = window.fetch;
+            window.fetch = function() {
+              var start = performance.now();
+              var args = Array.prototype.slice.call(arguments);
+              return _fetch.apply(null, args).then(function(response) {
+                if (response.ok) {
+                  return response;
+                }
+          
+                try {
+                  var url = response.url;
+                  var status = response.status;
+                  var duration = performance.now() - start;
+                  var poweredBy = response.headers.get('X-Powered-By');
+                  var xray = args[1] && args[1].headers && args[1].headers['X-Ray-Id'];
+                  var attempt = args[1] && args[1].headers && args[1].headers['X-Attempt'];
+                  
+                  var beacon = {
+                    level: 'critical',
+                    code: status,
+                    url: window.location.origin + window.location.pathname,
+                    msg: JSON.stringify({
+                      url: url,
+                      status: status,
+                      xray: xray,
+                      duration: duration,
+                      poweredBy: poweredBy,
+                      attempt: attempt,
+                      referrer: document.referrer,
+                    })
+                  };
+          
+                  window.navigator.sendBeacon(cradleUrl, JSON.stringify(beacon));
+                } catch (e) {
+                  // fail silently
+                  console.error(e);
+                }
+          
+                return response;
+              });
+            };
+          }())
+  </script>
+  <script>
+   (function() {
+          var url = '/api/hug/api/v1/bootstrap';
+          var query = {"brandPilot[apps][0]":"brand","brandPilot[apps][1]":"usf","brandPilot[apps][2]":"bks","brandPilot[apps][3]":"dst","lexicon[scopes][0]":"brand","lexicon[scopes][1]":"usf","lexicon[scopes][2]":"bks","lexicon[scopes][3]":"cookie","lexicon[scopes][4]":"dst","lexicon[scopes][5]":"ux","lexicon[scopes][6]":"country"};
+          query.referrer = document.referrer;
+          query.url = window.location.href;
+          query = Object.keys(query).reduce(function(acc, key) {
+            return acc.concat(key.replace(/\[\d\]/, '[]') + '=' + encodeURIComponent(query[key]));
+          }, []).join('&');
+          url = url + '?' + query;
+          window.hugPromise = window.fetch(url)
+            .then(function(response) {
+              return response.json();
+            })
+            .then(function(data) {
+              window.hugBootstrap = data;
+            });
+        })();
+  </script>
+  <link as="script" href="/pex-static/10/11.be6b13dfacb3f2494af4.chunk.js" rel="preload"/>
+  <link as="script" href="/pex-static/10/15.e88f60e75b6533da0235.chunk.js" rel="preload"/>
+  <link as="script" href="/pex-static/10/16.30421b974b4a0ca6991b.chunk.js" rel="preload"/>
+  <link as="script" href="/pex-static/10/19.66c5835a515eaaea7f93.chunk.js" rel="preload"/>
+  <link as="script" href="/pex-static/10/25.ed2145a7112f69ea7e44.chunk.js" rel="preload"/>
+  <link as="script" href="/pex-static/10/30.36116fe32848588895ba.chunk.js" rel="preload"/>
+  <link as="script" href="/pex-static/10/34.89beaaca649d73c0b5e2.chunk.js" rel="preload"/>
+  <link as="script" href="/pex-static/10/38.939f8e257077309fc207.chunk.js" rel="preload"/>
+  <link as="script" href="/pex-static/10/5.fe596f55e385b4a2bc59.chunk.js" rel="preload"/>
+ </head>
+ <body>
+  <div id="root">
+  </div>
+  <script>
+   var utag_data = {}
+  </script>
+  <script crossorigin="anonymous" src="/cradleError.js" type="text/javascript">
+  </script>
+  <script crossorigin="anonymous" src="/pex-static/config.js?fffdb2c129142d95618e" type="text/javascript">
+  </script>
+  <script crossorigin="anonymous" src="/pex-static/10/runtime.72472958669a06e02b84.bundle.js" type="text/javascript">
+  </script>
+  <script crossorigin="anonymous" src="/pex-static/10/57.f3790cdc1dec810eedd8.chunk.js" type="text/javascript">
+  </script>
+  <script crossorigin="anonymous" src="/pex-static/10/43.d89ecbc2a4ec722bd2f0.chunk.js" type="text/javascript">
+  </script>
+  <script crossorigin="anonymous" src="/pex-static/10/42.e2887aa5ed237c4b6772.chunk.js" type="text/javascript">
+  </script>
+  <script crossorigin="anonymous" src="/pex-static/10/41.a026d4945eec2a0fb01e.chunk.js" type="text/javascript">
+  </script>
+  <script crossorigin="anonymous" src="/pex-static/10/33.6d903f545eb8e0615e93.chunk.js" type="text/javascript">
+  </script>
+ </body>
+</html>

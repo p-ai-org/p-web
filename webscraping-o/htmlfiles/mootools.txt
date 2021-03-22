@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>
+   MooTools
+  </title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:200,300,400,600,700,200italic,300italic,400italic,600italic,700italic" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700" rel="stylesheet"/>
+  <link href="/css/style.css" rel="stylesheet"/>
+  <link href="/images/favicon/mootools.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="/images/favicon/mootools.png" rel="icon" type="image/png"/>
+  <meta content="width=device-width, user-scalable=no" name="viewport"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/mootools/1.5.2/mootools-nocompat.min.js">
+  </script>
+  <script src="/js/main.js">
+  </script>
+  <script>
+   // Google Analytics
+(function(i, s, o, g, r, a, m){
+ i['GoogleAnalyticsObject'] = r;
+ i[r] = i[r] || function(){
+  (i[r].q = i[r].q || []).push(arguments)
+ }, i[r].l = 1 * new Date();
+ a = s.createElement(o),
+ m = s.getElementsByTagName(o)[0];
+ a.async = 1;
+ a.src = g;
+ m.parentNode.insertBefore(a, m);
+})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+  </script>
+ </head>
+ <body class="mootools">
+  <header id="header" role="banner">
+   <div class="clearfix" id="global-bar">
+    <div class="clearfix wrapper">
+     <div id="logo">
+      <h1>
+       <a href="/">
+        <img alt="MooTools" src="/images/logo/mootools-payoff.png"/>
+       </a>
+      </h1>
+      <p class="visually-hidden">
+       Your resources for every-day JavaScripting
+      </p>
+     </div>
+     <div class="right clearfix" id="main-header">
+      <ul>
+       <li>
+        <a href="/core/">
+         Core
+        </a>
+       </li>
+       <li>
+        <a href="/more/">
+         More
+        </a>
+       </li>
+       <li>
+        <a href="/blog">
+         Blog
+        </a>
+       </li>
+       <li>
+        <a href="/forge">
+         Forge
+        </a>
+       </li>
+       <li>
+        <a href="http://github.com/mootools/mootools-core#contribute">
+         Contribute
+        </a>
+       </li>
+      </ul>
+      <form action="/search" id="search" method="get" role="search">
+       <label for="search-field">
+        <span aria-hidden="true" class="icon search">
+        </span>
+        <input id="search-field" name="q" placeholder="Search in the site" type="search"/>
+       </label>
+      </form>
+     </div>
+    </div>
+   </div>
+  </header>
+  <div class="main clearfix" role="main">
+   <div class="about">
+    <div class="clearfix wrapper">
+     <div class="introduction">
+      <p>
+       MooTools is a collection of JavaScript utilities designed for the intermediate to advanced JavaScript developer. It allows you to write powerful and flexible code with its elegant, well documented, and coherent APIs.
+      </p>
+      <p>
+       MooTools code is extensively documented and easy to read, enabling you to extend the functionality to match your requirements.
+      </p>
+     </div>
+     <div class="license">
+      <h2>
+       Open Source License
+      </h2>
+      <p>
+       MooTools libraries are released under the
+       <a href="http://opensource.org/licenses/MIT">
+        Open Source MIT license
+       </a>
+       which gives you the possibility to use them and modify them in every circumstance.
+      </p>
+     </div>
+    </div>
+   </div>
+   <hr/>
+   <div class="clearfix wrapper examples modules">
+    <section>
+     <h1>
+      How to use?
+     </h1>
+     <div>
+      <h3>
+       <span class="command">
+        MooTools Selectors
+       </span>
+      </h3>
+      <p>
+       Selectors for DOM Elements
+      </p>
+      <pre><code class="javascript"><span class="comment">// get elements by class</span>
+$$(<span class="string">'.foo'</span>); <span class="comment">// or even: document.getElements('.foo');</span>
+
+<span class="comment">// selector with different elements</span>
+$$(<span class="string">'div.foo, div.bar, div.bar a'</span>);
+
+<span class="comment">// get a single element</span>
+document.getElement(<span class="string">'div.foo'</span>);</code></pre>
+     </div>
+     <div>
+      <h3>
+       <span class="command">
+        Ajax!
+       </span>
+      </h3>
+      <p>
+       MooTools uses a Class called Request.
+      </p>
+      <pre><code class="javascript"><span class="comment">// create a new Class instance</span>
+<span class="keyword">var</span> myRequest = <span class="keyword">new</span> Request({
+    url: <span class="string">'getMyText.php'</span>,
+    method: <span class="string">'get'</span>,
+    onRequest: <span class="keyword">function</span>(){
+        myElement.set(<span class="string">'text'</span>, <span class="string">'loading...'</span>);
+    },
+    onSuccess: <span class="keyword">function</span>(responseText){
+        myElement.set(<span class="string">'text'</span>, responseText);
+    },
+    onFailure: <span class="keyword">function</span>(){
+        myElement.set(<span class="string">'text'</span>, <span class="string">'Sorry, your request failed :('</span>);
+    }
+});
+
+<span class="comment">// and to send it:</span>
+myRequest.send(data);</code></pre>
+      <p>
+       To send a form it can be even more simple!
+      </p>
+      <pre><code class="javascript">myForm.send();
+<span class="comment">// optionally you can add/change the form properties</span>
+myForm.set(<span class="string">'send'</span>, {url: <span class="string">'contact.php'</span>, method: <span class="string">'get'</span>});</code></pre>
+     </div>
+     <div>
+      <h3>
+       <span class="command">
+        How to create new DOM elements
+       </span>
+      </h3>
+      <p>
+       A simple MooTools Element example.
+      </p>
+      <pre><code class="javascript"><span class="comment">// the short way</span>
+<span class="keyword">new</span> Element(<span class="string">'div#bar.foo'</span>);
+
+<span class="comment">// using the element constructor</span>
+<span class="keyword">new</span> Element(<span class="string">'div'</span>, {
+    <span class="string">'class'</span>: <span class="string">'foo'</span>,
+    id: <span class="string">'bar'</span>
+});</code></pre>
+     </div>
+    </section>
+    <section>
+     <div>
+      <h3>
+       <span class="command">
+        Event handlers
+       </span>
+      </h3>
+      <p>
+       Attach events to be updated on what's happening!
+      </p>
+      <pre><code class="javascript"><span class="comment">// attach a click event o a element</span>
+myElement.addEvent(<span class="string">'click'</span>, <span class="keyword">function</span>(){
+    alert(<span class="string">'clicked!'</span>);
+});
+
+<span class="comment">// attach several events at a time</span>
+myElement.addEvents({
+    mouseover: <span class="keyword">function</span>(){
+        alert(<span class="string">'mouseover'</span>);
+    },
+    click: <span class="keyword">function</span>(){
+        alert(<span class="string">'click'</span>);
+    }
+});</code></pre>
+      <p>
+       You can also remove, fire or clone events!
+      </p>
+      <pre><code class="javascript"><span class="comment">// remove a event</span>
+myElement.removeEvent(type, fn);</code></pre>
+     </div>
+     <div>
+      <h3>
+       <span class="command">
+        MooTools Class
+       </span>
+      </h3>
+      <p>
+       A simple MooTools Class example.
+      </p>
+      <pre><code class="javascript"><span class="keyword">var</span> Animal = <span class="keyword">new</span> Class({
+    initialize: <span class="keyword">function</span>(age){
+        <span class="keyword">this</span>.age = age;
+    }
+});
+
+<span class="keyword">var</span> Cat = <span class="keyword">new</span> Class({
+    Extends: Animal,
+    initialize: <span class="keyword">function</span>(name, age){
+        <span class="comment">// calls initalize method of Animal class</span>
+        <span class="keyword">this</span>.parent(age);
+        <span class="keyword">this</span>.name = name;
+    }
+});
+
+<span class="keyword">var</span> myCat = <span class="keyword">new</span> Cat(<span class="string">'Micia'</span>, <span class="number">20</span>);
+alert(myCat.name); <span class="comment">// alerts 'Micia'.</span>
+alert(myCat.age); <span class="comment">// alerts 20.</span></code></pre>
+     </div>
+    </section>
+   </div>
+   <hr/>
+   <div class="updates">
+    <div class="clearfix wrapper">
+     <section>
+      <div class="box">
+       <h3>
+        Blog Entries
+       </h3>
+       <h4>
+        <strong>
+         <a href="/blog/2016/01/14/mootools-1-6-0-release">
+          1.6.0 is out!
+         </a>
+        </strong>
+       </h4>
+       <p>
+       </p>
+       <p>
+        Today marks the release of MooTools Core and More versions
+        <code>
+         1.6.0
+        </code>
+        . This is a
+        <em>
+         minor
+        </em>
+        revision that delivers a number of bug fixes as well as the introduction of new features.
+       </p>
+       <p>
+        The main new adition is Class.Thenab...
+       </p>
+      </div>
+     </section>
+     <section class="box">
+      <div class="box">
+       <h3>
+        <span aria-hidden="true" class="github">
+        </span>
+        GitHub Activity
+       </h3>
+       <website>
+       </website>
+       <p>
+        <a href="https://github.com/linesean777">
+         linesean777:
+        </a>
+        commented on
+        <a href="https://github.com/mootools/website/commit/c291731d16d79b97af9ebb71290fdfadb00f6c74#commitcomment-48481689">
+         website@c29173
+        </a>
+       </p>
+       <website>
+       </website>
+       <p>
+        <a href="https://github.com/linesean666">
+         linesean666:
+        </a>
+        commented on
+        <a href="https://github.com/mootools/website/commit/c291731d16d79b97af9ebb71290fdfadb00f6c74#commitcomment-48478285">
+         website@c29173
+        </a>
+       </p>
+       <website>
+       </website>
+       <p>
+        <a href="https://github.com/linesean888">
+         linesean888:
+        </a>
+        commented on
+        <a href="https://github.com/mootools/website/commit/c291731d16d79b97af9ebb71290fdfadb00f6c74#commitcomment-48436923">
+         website@c29173
+        </a>
+       </p>
+       <slick>
+       </slick>
+       <mootools-more>
+       </mootools-more>
+       <mootools-core>
+       </mootools-core>
+       <mootools-core>
+       </mootools-core>
+       <mootools-core>
+       </mootools-core>
+       <p>
+        <a href="https://github.com/anticomputer">
+         anticomputer:
+        </a>
+        opened issue
+        <a href="https://github.com/mootools/mootools-core/issues/2827">
+         mootools-core#2827
+        </a>
+       </p>
+       <mootools-more>
+       </mootools-more>
+       <milk>
+       </milk>
+       <mootools-core>
+       </mootools-core>
+       <slick>
+       </slick>
+       <mootools-core>
+       </mootools-core>
+       <mootools-core>
+       </mootools-core>
+       <mootools-core>
+       </mootools-core>
+       <mootools-core>
+       </mootools-core>
+       <mootools-core>
+       </mootools-core>
+       <mootools-core>
+       </mootools-core>
+       <mootools-core>
+       </mootools-core>
+       <p>
+        <a href="https://github.com/AsenVelev">
+         AsenVelev:
+        </a>
+        opened issue
+        <a href="https://github.com/mootools/mootools-core/issues/2826">
+         mootools-core#2826
+        </a>
+       </p>
+       <mootools-core>
+       </mootools-core>
+       <mootools-core>
+       </mootools-core>
+       <mootools-core>
+       </mootools-core>
+       <mootools-core>
+       </mootools-core>
+       <mootools-core>
+       </mootools-core>
+       <mootools-core>
+       </mootools-core>
+       <mootools-core>
+       </mootools-core>
+       <mootools-core>
+       </mootools-core>
+      </div>
+     </section>
+     <section class="box">
+      <div class="box">
+       <h3>
+        <span aria-hidden="true" class="twitter">
+        </span>
+        Latest Tweets
+       </h3>
+       <p>
+        <a href="https://twitter.com/mootools/status/690245367066161152">
+         RT @ryanflorence: Thankful for @mootools for providing an amazing code base that taught me how to program
+        </a>
+       </p>
+       <p>
+        <a href="https://twitter.com/mootools/status/690244895982886912">
+         MooTools 1.6.0 released! More info at https://t.co/W9WpILSKs6
+        </a>
+       </p>
+       <p>
+        <a href="https://twitter.com/mootools/status/643062716912017408">
+         @Xunnamius yeah, it went down and soon later back up. Thanks for the heads up!
+        </a>
+       </p>
+      </div>
+     </section>
+    </div>
+   </div>
+   <hr/>
+   <nav id="menu" role="navigation">
+    <div class="clearfix wrapper">
+     <h2 class="visually-hidden">
+      Projects
+     </h2>
+     <ul>
+      <li class="core">
+       <a href="/core">
+        <img alt="Core" src="/images/logo/core.png"/>
+       </a>
+      </li>
+      <li class="more">
+       <a href="/more">
+        <img alt="More" src="/images/logo/more.png"/>
+       </a>
+      </li>
+     </ul>
+    </div>
+   </nav>
+  </div>
+  <hr/>
+  <footer class="clearfix wrapper" id="footer">
+   <nav id="sitemap" role="navigation">
+    <div>
+     <h3>
+      About
+      <span aria-hidden="true" class="slider">
+      </span>
+     </h3>
+     <ul>
+      <li>
+       <a href="/blog">
+        Blog
+       </a>
+      </li>
+      <li>
+       <a href="/books">
+        Books
+       </a>
+      </li>
+      <li>
+       <a href="/developers">
+        Developers
+       </a>
+      </li>
+      <li>
+       <a href="http://mad4milk.spreadshirt.net/" target="_blank">
+        Merchandising
+       </a>
+      </li>
+     </ul>
+    </div>
+    <div>
+     <h3>
+      Support
+      <span aria-hidden="true" class="slider">
+      </span>
+     </h3>
+     <ul>
+      <li>
+       <a href="irc://irc.freenode.net/#mootools" target="_blank">
+        IRC Channel
+       </a>
+      </li>
+      <li>
+       <a href="http://groups.google.com/group/mootools-users" target="_blank">
+        User Group
+       </a>
+      </li>
+      <li>
+       <a href="http://mootorial.com" target="_blank">
+        The MooTorial
+       </a>
+      </li>
+      <li>
+       <a href="http://stackoverflow.com/questions/tagged/mootools" target="_blank">
+        Stack Overflow
+       </a>
+      </li>
+     </ul>
+    </div>
+    <div>
+     <h3>
+      Connect with us
+      <span aria-hidden="true" class="slider">
+      </span>
+     </h3>
+     <ul>
+      <li>
+       <a href="http://github.com/mootools" target="_blank">
+        <span aria-hidden="true" class="icon github">
+        </span>
+        GitHub
+       </a>
+      </li>
+      <li>
+       <a href="http://twitter.com/mootools" target="_blank">
+        <span aria-hidden="true" class="icon twitter">
+        </span>
+        Twitter
+       </a>
+      </li>
+      <li>
+       <a href="https://www.facebook.com/mootools" target="_blank">
+        <span aria-hidden="true" class="icon facebook">
+        </span>
+        Facebook
+       </a>
+      </li>
+      <li>
+       <a href="https://plus.google.com/u/0/117731876964599459921/posts" target="_blank">
+        <span aria-hidden="true" class="icon googleplus">
+        </span>
+        Google+
+       </a>
+      </li>
+     </ul>
+    </div>
+    <div>
+     <h3>
+      Documentation
+      <span aria-hidden="true" class="slider">
+      </span>
+     </h3>
+     <ul>
+      <li>
+       <a href="/core/docs">
+        MooTools Core
+       </a>
+      </li>
+      <li>
+       <a href="/more/docs">
+        MooTools More
+       </a>
+      </li>
+     </ul>
+    </div>
+    <script>
+     // analytics
+if (document.domain && typeof document.domain == 'string' && document.domain.indexOf('mootools.net') > -1){
+ ga('create', 'UA-112611-7', 'auto');
+ ga('send', 'pageview');
+}
+    </script>
+   </nav>
+   <div id="credits" role="contentinfo">
+    <p>
+     <a href="/">
+      <img alt="MooTools" class="mootools" src="/images/logo/mootools.png"/>
+     </a>
+    </p>
+    <p>
+     Copyright Â© 2006-2021
+     <br/>
+     Valerio Proietti &amp; MooTools Developers
+    </p>
+    <p class="mediatemple">
+     <a href="http://mediatemple.net">
+      Web Hosting by Media Temple
+     </a>
+    </p>
+   </div>
+  </footer>
+ </body>
+</html>

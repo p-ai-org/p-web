@@ -1,0 +1,3446 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en" prefix="og: https://ogp.me/ns#">
+ <head>
+  <script>
+   /* -------------------------------------------------------------- */
+    /*                          Constants                             */
+    /* -------------------------------------------------------------- */
+
+    // Global days until the cookie consent decision expires
+    window.EWSCookieConsentDurationInDays = 365;
+
+    // Global name of the consent cookie
+    window.EWSCookieConsentName = "EWSCookieConsent";
+
+    // Global website ID to retrieve the cookie list
+    window.EWSCookieWebsiteID = "7ef9413a-7b58-46f6-bca5-4d7cddf6a5fe";
+
+    // Global cookie consent value to deny all cookies
+    window.EWSCookieConsentDenyAllValue = "denyAll";
+
+    // Global cookie consent value to allow all cookies
+    window.EWSCookieConsentAllowAllValue = "allowAll";
+
+    // Global cookie consent value to allow all cookies
+    window.EWSCookieConsentCustomValue = "custom";
+
+    /* -------------------------------------------------------------- */
+    /*                      Global Variables                          */
+    /* -------------------------------------------------------------- */
+
+    // Global queue to store cookies until consent decision was made
+    window.EWSCookieConsentQueue = [];
+
+    // Global queue to store cookies until cookie list is loaded
+    window.EWSCookieLoadingQueue = [];
+
+    // Global dictionary of cookie categories and the cookies in them
+    window.EWSCookieCategories = null;
+
+
+    /* -------------------------------------------------------------- */
+    /*                     Convenience Functions                      */
+    /* -------------------------------------------------------------- */
+
+    // Get the name of a cookie from the document.cookie "cookie set" call
+    function EWSGetCookieName(cookie) {
+        return cookie.split("=")[0];
+    }
+
+    // Get the value of a cookie
+    function EWSGetCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return null;
+    }
+
+    // Set a cookie
+    function EWSSetCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toUTCString();
+        var setCookieString = cname + "=" + cvalue + ";" + expires + ";path=/;SameSite=Lax";
+        if(location.protocol === 'https:') {
+            setCookieString += ";secure";
+        }
+        document.cookie = setCookieString;
+    }
+
+    /* -------------------------------------------------------------- */
+    /*                        Main Functions                          */
+    /* -------------------------------------------------------------- */
+
+    // Replace document.cookie
+    function EWSProxyDocumentCookie() {
+        // Proxy document.cookie to delay/prevent settings of cookies
+        var cookieDesc = Object.getOwnPropertyDescriptor(Document.prototype, 'cookie');
+        if (cookieDesc && cookieDesc.configurable) {
+            Object.defineProperty(document, 'cookie', {
+                get: function () {
+                    return cookieDesc.get.call(document);
+                },
+                set: function (val) {
+                    // Queue cookie request until cookie list is fetched
+                    if(window.EWSCookieCategories === null) {
+                        window.EWSCookieLoadingQueue.push(val);
+                        return;
+                    }
+
+                    // Check if we are allowed to set the cookie
+                    if(EWSCheckCookieForPermission(val)) {
+                        // If so set the cookie
+                        cookieDesc.set.call(document, val);
+                    }
+                }
+            });
+        }
+    }
+
+    // Check if a cookie is allowed to be set
+    function EWSCheckCookieForPermission(cookieToSet) {
+        // Extract the cookie name
+        let cookieNameToSet = EWSGetCookieName(cookieToSet);
+
+        // Iterate over all categories
+        for(var categoryID in window.EWSCookieCategories) {
+            // Iterate over all cookies
+            for(var i = 0; i < window.EWSCookieCategories[categoryID]["cookies"].length; i++) {
+                // Get the cookie name
+                let cookieName = window.EWSCookieCategories[categoryID]["cookies"][i];
+
+                // Check if the cookie to be set matches the cookie in this category
+                if(EWSCompareCookieNames(cookieNameToSet, cookieName)) {
+                    // Check if this cookie is part of a blocked category
+                    if(window.EWSCookieCategories[categoryID].blocked === true) {
+                        return false;
+                    }
+
+                    // Check if the user made already a cookie consent decision
+                    if(EWSGetCookie(window.EWSCookieConsentName) !== null) {
+                        // The user made aleady a cookie consent decision
+                        if(EWSGetCookie(window.EWSCookieConsentName) === window.EWSCookieConsentAllowAllValue) {
+                            // The user agreed to all cookies
+                            return true;
+                        }
+                        else if(EWSGetCookie(window.EWSCookieConsentName) === window.EWSCookieConsentDenyAllValue) {
+                            // The user denied all cookies
+                            if(window.EWSCookieCategories[categoryID].required === true) {
+                                // Set it anyways if it is required
+                                return true;
+                            }
+                            else {
+                                // Do not set cookie since the user denied all cookies
+                                return false;
+                            }
+                        }
+                        else {
+                            // Return custom cookie policy
+                            let cookiePolicy = JSON.parse(EWSGetCookie(window.EWSCookieConsentName));
+                            return cookiePolicy[categoryID];
+                        }
+                    }
+                    else {
+                        // If the user did not make a cookie consent decision yet
+                        // Check if this cookie is required
+                        if(window.EWSCookieCategories[categoryID].required === true) {
+                            return true;
+                        }
+                        else {
+                            // If this cookie is not required
+                            // Queue cookie request until user made a cookie decision
+                            window.EWSCookieConsentQueue.push(cookieToSet);
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+
+        // The cookie was not part of the cookie list
+        // Submit new cookie to the backend
+        EWSSubmitNewCookie(cookieNameToSet);
+
+        // If an unexpected cookie was found, allow it for now until it was categorized
+        return true;
+    }
+
+    // Compare a cookie name to a regex describing a cookie name
+    function EWSCompareCookieNames(cookieName, regexStr) {
+        let matchedName = cookieName.match(RegExp(regexStr));
+        return matchedName == cookieName;
+    }
+
+
+    /* -------------------------------------------------------------- */
+    /*                        Fetch Cookie List                       */
+    /* -------------------------------------------------------------- */
+
+    // Fetch the cookie list
+    function EWSFetchCookieList() {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                let cookieDictionary = JSON.parse(xhr.responseText);
+
+                // Save fetched cookies list
+                window.EWSCookieCategories = cookieDictionary.categories;
+
+                // Set all cookies that were queued until the cookie list was fetched
+                while(window.EWSCookieLoadingQueue.length > 0) {
+                    let cookie = window.EWSCookieLoadingQueue.pop();
+                    document.cookie = cookie;
+                }
+            }
+        };
+        xhr.open("GET", "https://cookie-edge.elgato.com/websites/catalogs/" + window.EWSCookieWebsiteID + ".json", true);
+        xhr.send();
+    }
+
+    // Submit a new cookie to the backend
+    function EWSSubmitNewCookie(name) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "https://cookie.elgato.com/api/website/" + window.EWSCookieWebsiteID + "/create-cookie/", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        let data = {"name": name};
+        xhr.send(JSON.stringify(data));
+    }
+
+
+    /* -------------------------------------------------------------- */
+    /*                           Executions                           */
+    /* -------------------------------------------------------------- */
+
+    // User custom document.cookie method
+    EWSProxyDocumentCookie();
+
+    // Fetch cookie list
+    EWSFetchCookieList();
+  </script>
+  <!-- Google Tag Manager -->
+  <script>
+   (function (w, d, s, l, i) {
+                w[l] = w[l] || [];
+                w[l].push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
+                var f = d.getElementsByTagName(s)[0],
+                    j = d.createElement(s),
+                    dl = l != 'dataLayer' ? '&l=' + l : '';
+                j.async = true;
+                j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+                f.parentNode.insertBefore(j, f);
+            })(window, document, 'script', 'dataLayer', 'GTM-TRZS');
+  </script>
+  <!-- End Google Tag Manager -->
+  <meta charset="utf-8"/>
+  <script>
+   (function(i,s,o,g,r,a,m){i["GoogleAnalyticsObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,"script","https://www.google-analytics.com/analytics.js","ga");ga("create", "UA-5977677-1", {"cookieDomain":"auto"});ga("set", "anonymizeIp", true);// Set to the same value as the web property used on the site
+ var gaProperty = 'UA-5977677-1';
+// Disable tracking if the opt-out cookie exists.
+ var disableStr = 'ga-disable-' + gaProperty;
+ if (document.cookie.indexOf(disableStr + '=true') > -1) {
+ window[disableStr] = true;
+ }
+// Opt-out function
+ function gaOptout() {
+ document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+ window[disableStr] = true;
+ }ga("send", "pageview");
+  </script>
+  <link href="https://www.elgato.com/en/gaming" rel="shortlink"/>
+  <link href="https://www.elgato.com/en/gaming" rel="canonical"/>
+  <meta content="summary_large_image" name="twitter:card"/>
+  <meta content="Elgato | elgato.com" name="twitter:title"/>
+  <meta content="website" property="og:type"/>
+  <meta content="Empowering Content Creators." name="description"/>
+  <meta content="https://www.elgato.com/" property="og:url"/>
+  <meta content="Elgato | elgato.com" property="og:title"/>
+  <meta content="Empowering Content Creators." property="og:description"/>
+  <meta content="https://www.elgato.com/themes/custom/smalcode/image/general/social_media.jpg" name="twitter:image"/>
+  <meta content="https://elgato.com/drupal/themes/custom/smalcode/image/general/social_media.jpg" property="og:image"/>
+  <meta content="https://www.elgato.com/themes/custom/smalcode/image/general/social_media.jpg" property="og:image:url"/>
+  <meta content="width" name="MobileOptimized"/>
+  <meta content="true" name="HandheldFriendly"/>
+  <meta content="initial-scale=1, viewport-fit=cover" name="viewport"/>
+  <link href="/themes/custom/smalcode/image/general/favicon-gaming.png" rel="shortcut icon" type="image/png"/>
+  <link href="https://www.elgato.com/en/gaming" hreflang="en" rel="alternate"/>
+  <link href="https://www.elgato.com/de/gaming" hreflang="de" rel="alternate"/>
+  <link href="https://www.elgato.com/fr/gaming" hreflang="fr" rel="alternate"/>
+  <link href="https://www.elgato.com/it/gaming" hreflang="it" rel="alternate"/>
+  <link href="https://www.elgato.com/es/gaming" hreflang="es" rel="alternate"/>
+  <link href="https://www.elgato.com/nl/gaming" hreflang="nl" rel="alternate"/>
+  <link href="https://www.elgato.com/sv/gaming" hreflang="sv" rel="alternate"/>
+  <link href="https://www.elgato.com/ru/gaming" hreflang="ru" rel="alternate"/>
+  <link href="https://www.elgato.com/ja/gaming" hreflang="ja" rel="alternate"/>
+  <link href="https://www.elgato.com/zh-CN/gaming" hreflang="zh-CN" rel="alternate"/>
+  <link href="https://www.elgato.com/pl/gaming" hreflang="pl" rel="alternate"/>
+  <link href="https://www.elgato.com/en/gaming" rel="revision"/>
+  <title>
+   Elgato | elgato.com
+  </title>
+  <link href="/sites/default/files/css/css_pN_aNY_1eLt0WlUbmimNvK8eF4lkcIrV3SSIjBt5NlA.css" media="all" rel="stylesheet"/>
+  <link href="/sites/default/files/css/css_uoFMnRzA1OR5RHeXNxh1Ts4v6HSnIYauvtrd71NPZP4.css" media="all" rel="stylesheet"/>
+  <!--[if lte IE 8]>
+<script src="/sites/default/files/js/js_VtafjXmRvoUgAzqzYTA3Wrjkx9wcWhjP0G4ZnnqRamA.js"></script>
+<![endif]-->
+  <script src="/core/assets/vendor/modernizr/modernizr.min.js?v=3.3.1">
+  </script>
+  <script src="/themes/custom/smalcode/js/vendor/js.cookie.js">
+  </script>
+ </head>
+ <body class="page-node-21 page-type-page-landing gaming has-above-navi-banner">
+  <!-- Google Tag Manager (noscript) -->
+  <noscript>
+   <iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-TRZS" style="display:none;visibility:hidden" width="0">
+   </iframe>
+  </noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <!-- klarna -->
+  <script async="" data-client-id="c3476aca-5047-5cd9-bd43-df947f6c1e64" src="https://na-library.klarnaservices.com/lib.js">
+  </script>
+  <!-- klarna -->
+  <script>
+   (function () {Grin = window.Grin || (window.Grin = []);var s = document.createElement('script');s.type = 'text/javascript';s.async = true;s.src = 'https://d38xvr37kwwhcm.cloudfront.net/js/grin-sdk.js';var x = document.getElementsByTagName('script')[0];x.parentNode.insertBefore(s, x);})();
+  </script>
+  <script type="text/javascript">
+   window.current_lang = 'en';
+  </script>
+  <div id="grid">
+   <div class="wrap">
+    <div class="row">
+     <div class="col-1">
+     </div>
+     <div class="col-1">
+     </div>
+     <div class="col-1">
+     </div>
+     <div class="col-1">
+     </div>
+     <div class="col-1">
+     </div>
+     <div class="col-1">
+     </div>
+     <div class="col-1">
+     </div>
+     <div class="col-1">
+     </div>
+     <div class="col-1">
+     </div>
+     <div class="col-1">
+     </div>
+     <div class="col-1">
+     </div>
+     <div class="col-1">
+     </div>
+    </div>
+   </div>
+  </div>
+  <div class="dialog-off-canvas-main-canvas" data-off-canvas-main-canvas="">
+   <div class="layout-container">
+    <header role="banner">
+    </header>
+    <div>
+     <div class="js-view-dom-id-88906327b09cd7868a0e2c133bee3fdf73e62d8d24a096d707e724bf5e6c01d7 view-wrap">
+      <div class="views-row">
+       <div class="banner-above-navigation">
+        <div class="inner-wrap">
+         <div class="left-items">
+          <a class="corsair" href="https://www.corsair.com/" target="_blank">
+           <img class="black" src="/themes/custom/smalcode/image/banner_above_navi/corsair.png"/>
+           <img class="white" src="/themes/custom/smalcode/image/banner_above_navi/corsair-white.png" style="display:none;"/>
+          </a>
+          <a class="scuf" href="https://scufgaming.com/" target="_blank">
+           <img class="black" src="/themes/custom/smalcode/image/banner_above_navi/scuf.png"/>
+           <img class="white" src="/themes/custom/smalcode/image/banner_above_navi/scuf-white.png" style="display:none;"/>
+          </a>
+          <a class="impulse last" href="https://visualsbyimpulse.com/" target="_blank">
+           <img class="black" src="/themes/custom/smalcode/image/banner_above_navi/vbi-lockup-black.svg"/>
+           <img class="white" src="/themes/custom/smalcode/image/banner_above_navi/vbi-lockup-white.svg" style="display:none;"/>
+          </a>
+         </div>
+         <div class="right-items">
+          <div class="menu-point menu-point-newsletter mobile">
+           Newsletter
+          </div>
+          <div class="menu-point">
+           <div class="text">
+            <a href="/en/create-your-space/workstation">
+             Create Your Space
+            </a>
+           </div>
+           <div class="border-bottom">
+           </div>
+          </div>
+          <div class="menu-point">
+           <div class="text">
+            <a href="/en/pipeline">
+             Streamer Bundle
+            </a>
+           </div>
+           <div class="border-bottom">
+           </div>
+          </div>
+          <div class="menu-point menu-point-newsletter desktop">
+           Newsletter
+          </div>
+         </div>
+        </div>
+       </div>
+       <div class="banner-above-navigation-newsletter">
+        <img class="popup-close popup-close-black" src="/themes/custom/smalcode/image/banner_above_navi/close.png"/>
+        <img class="popup-close popup-close-white" src="/themes/custom/smalcode/image/banner_above_navi/close-white.png"/>
+        <div class="popup-title">
+         Tech news, special deals and more delivered to your inbox.
+        </div>
+        <div class="form-outer-wrap">
+         <form>
+          <input name="" placeholder="Email Address" required="" type="email"/>
+          <input class="btn" type="submit" value="I'M IN"/>
+         </form>
+         <div class="mce-error-response-2" style="display:none;">
+         </div>
+         <div class="mce-success-response-2" style="display:none;">
+         </div>
+        </div>
+       </div>
+       <div class="banner-above-navigation-newsletter-popup-bg mobile">
+       </div>
+      </div>
+     </div>
+    </div>
+    <div>
+     <div class="js-view-dom-id-155ccfb277cde79af65379d3a61a48ae6ec16be06aab06d345aa318e089ce63b view-wrap">
+      <div class="views-row">
+       <nav class="gaming-navigation" id="main-nav">
+        <div class="rel">
+         <div class="main-menu rel">
+          <a href="/en/gaming">
+           <div class="logo-wrap clearfix">
+            <img class="full-logo" src="/themes/custom/smalcode/image/menu-logos/elgato_full_logo.png?v=2"/>
+            <img class="logo-text v19-white" src="/themes/custom/smalcode/image/menu-logos/elgato_logo_text.png?v=2"/>
+            <img class="logo-icon v19-white" src="/themes/custom/smalcode/image/menu-logos/elgato_logo_icon.png?v=2"/>
+            <img class="logo-text v19-black" src="/themes/custom/smalcode/v19-img/general/navigation/black/elgato_logo_text-black.png" style="display:none;"/>
+            <img class="logo-icon v19-black" src="/themes/custom/smalcode/v19-img/general/navigation/black/elgato_logo_icon-black.png" style="display:none;"/>
+           </div>
+          </a>
+          <div class="menu-points menu-font">
+           <div class="menu-point submenu-trigger" data-submenu-trigger-id="6">
+            <div class="text">
+             AUDIO
+            </div>
+            <div class="border-bottom">
+            </div>
+           </div>
+           <div class="menu-point submenu-trigger" data-submenu-trigger-id="1">
+            <div class="text">
+             CAPTURE
+            </div>
+            <div class="border-bottom">
+            </div>
+           </div>
+           <div class="menu-point submenu-trigger" data-submenu-trigger-id="2">
+            <div class="text">
+             STREAM DECK
+            </div>
+            <div class="border-bottom">
+            </div>
+           </div>
+           <div class="menu-point submenu-trigger" data-submenu-trigger-id="5">
+            <div class="text">
+             LIGHTING
+            </div>
+            <div class="border-bottom">
+            </div>
+           </div>
+           <div class="menu-point submenu-trigger" data-submenu-trigger-id="4">
+            <div class="text">
+             GREEN SCREEN
+            </div>
+            <div class="border-bottom">
+            </div>
+           </div>
+           <div class="menu-point submenu-trigger" data-submenu-trigger-id="7">
+            <div class="text">
+             MULTI MOUNT
+            </div>
+            <div class="border-bottom">
+            </div>
+           </div>
+           <div class="menu-point submenu-trigger" data-submenu-trigger-id="3">
+            <div class="text">
+             DOCK
+            </div>
+            <div class="border-bottom">
+            </div>
+           </div>
+          </div>
+          <div class="right-items menu-font">
+           <div class="menu-point">
+            <div class="text">
+             <a href="/en/downloads">
+              Downloads
+             </a>
+            </div>
+            <div class="border-bottom">
+            </div>
+           </div>
+           <div class="menu-point last-real-menu-point">
+            <div class="text">
+             <a href="https://help.elgato.com/" target="_blank">
+              Support
+             </a>
+            </div>
+            <div class="border-bottom">
+            </div>
+           </div>
+           <div class="menu-point mini-shopping-cart">
+            <img class="v19-white" src="/themes/custom/smalcode/image/general/shopping-bag-white.png"/>
+            <img class="v19-black" src="/themes/custom/smalcode/v19-img/general/navigation/black/shopping-bag-black.png" style="display:none;"/>
+            <div class="item-count">
+            </div>
+           </div>
+          </div>
+         </div>
+         <div class="submenu capture-content" data-submenu-content="1">
+          <div class="submenu-inner">
+           <div class="clearfix top-area">
+            <div>
+             <div class="js-view-dom-id-dc8dda55e0713f47c99b1993f4920d035e713d06eeba547bd3067f55d6cc9131 view-wrap">
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="HD60 S" href="/en/game-capture-hd60-s">
+                 <div class="img-wrap">
+                  <img alt="Elgato Game Capture HD60S Stream, record and share your gameplay in 1080p60." height="294" src="/sites/default/files/styles/menu_product_image/public/2019-05/menu_HD60s_0_0.png?itok=aZzfd45y" width="354"/>
+                 </div>
+                 <div class="product-logo">
+                  HD60 S
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="HD60 S+" href="/en/game-capture-hd60-s-plus">
+                 <div class="img-wrap">
+                  <img alt="" height="294" src="/sites/default/files/2019-12/HD60%20S%2B%20%28New%20Menu%29.png" width="354"/>
+                 </div>
+                 <div class="product-logo">
+                  HD60 S+
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="4K60 S+" href="/en/game-capture-4k60-s-plus">
+                 <div class="img-wrap">
+                  <img alt="" height="294" src="/sites/default/files/2019-11/menu-4k60splus.png" width="354"/>
+                 </div>
+                 <div class="product-logo">
+                  4K60 S+
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="HD60 PRO" href="/en/game-capture-hd60-pro">
+                 <div class="img-wrap">
+                  <img alt="Elgato Game Capture HD60 Pro Stream, record and share your gameplay in 1080p60 - without compromise." height="294" src="/sites/default/files/styles/menu_product_image/public/2019-05/menu_HD60Pro_0_0.png?itok=t352PRUi" width="354"/>
+                 </div>
+                 <div class="product-logo">
+                  HD60 Pro
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="4K60 PRO" href="/en/game-capture-4k60-pro">
+                 <div class="img-wrap">
+                  <img alt="" height="294" src="/sites/default/files/2019-08/menu-4k-60pro.png" width="354"/>
+                 </div>
+                 <div class="product-logo">
+                  4K60 PRO
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="CAM LINK 4K" href="/en/cam-link-4k">
+                 <div class="img-wrap">
+                  <img alt="Elgato Cam Link 4K — Compact HDMI capture for live streaming and recording via DSLR, camcorder, or action cam." height="294" src="/sites/default/files/2019-05/Cam_Link_4K_Device_01_0.png" width="354"/>
+                 </div>
+                 <div class="product-logo">
+                  cam link 4k
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="EPOCCAM" href="/en/epoccam">
+                 <div class="img-wrap">
+                  <img alt="" height="294" src="/sites/default/files/2020-10/epoc.png" width="354"/>
+                 </div>
+                 <div class="product-logo">
+                  EPOCCAM
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="SCREEN LINK" href="/en/screen-link">
+                 <div class="img-wrap">
+                  <img alt="" height="294" src="/sites/default/files/2020-10/screenlink.png" width="354"/>
+                 </div>
+                 <div class="product-logo">
+                  Screen Link
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="Video Capture" href="/en/video-capture">
+                 <div class="img-wrap">
+                  <img alt="video capture" height="294" src="/sites/default/files/2019-05/menu-video-capture_5.png" width="354"/>
+                 </div>
+                 <div class="product-logo">
+                  Video Capture
+                 </div>
+                </a>
+               </div>
+              </div>
+             </div>
+            </div>
+           </div>
+           <div class="bottom-area">
+            <div class="clearfix bottom-inner">
+             <div class="left-content">
+              <div class="flex-wrap">
+               <a class="clearfix" data-name="Accessories" href="/en/gaming-accessories">
+                <div class="bottom-product-image">
+                 <img src="/themes/custom/smalcode/image/menu/menu-accessories-image.png?v=1"/>
+                </div>
+                <div class="bottom-product-title">
+                 Accessories
+                </div>
+               </a>
+               <a class="clearfix" data-name="Software" href="/en/game-capture-software">
+                <div class="bottom-product-image">
+                 <img src="/themes/custom/smalcode/image/menu/menu-software-image.png?v=1"/>
+                </div>
+                <div class="bottom-product-title">
+                 Software
+                </div>
+               </a>
+              </div>
+             </div>
+             <div class="right-content">
+              <div class="flex-wrap">
+               <a class="clearfix" data-name="Find Gear" href="/en/capture-card-selector">
+                <div class="bottom-product-image">
+                 <img src="/themes/custom/smalcode/image/menu/menu-icon-gear.png?v=1"/>
+                </div>
+                <div class="bottom-product-title">
+                 FIND YOUR FIT
+                </div>
+               </a>
+              </div>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+         <div class="submenu streamdeck-content" data-submenu-content="2">
+          <div class="submenu-inner">
+           <div class="clearfix top-area">
+            <div>
+             <div class="js-view-dom-id-d9b31820862884b532e2d2c7376b874af44bb45706be4fe24826125b0f9947f1 view-wrap">
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="STREAM DECK XL" href="/en/stream-deck-xl">
+                 <div class="img-wrap">
+                  <img alt="Elgato Stream Deck XL - Evolve your content" height="294" src="/sites/default/files/2019-05/menu-img-new_0.png" width="354"/>
+                 </div>
+                 <div class="product-logo">
+                  STREAM DECK XL
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="STREAM DECK" href="/en/stream-deck">
+                 <div class="img-wrap">
+                  <img alt="Geef je content een nieuwe dimensie" height="294" src="/sites/default/files/styles/menu_product_image/public/2019-05/classic.png?itok=tqdTKSvj" width="354"/>
+                 </div>
+                 <div class="product-logo">
+                  Stream Deck
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="STREAM DECK MINI" href="/en/stream-deck-mini">
+                 <div class="img-wrap">
+                  <img alt="" height="294" src="/sites/default/files/styles/menu_product_image/public/2019-05/mini_3.png?itok=JHg7jNju" width="354"/>
+                 </div>
+                 <div class="product-logo">
+                  Stream Deck Mini
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="STREAM DECK MOBILE" href="/en/stream-deck-mobile">
+                 <div class="img-wrap">
+                  <img alt="" height="294" src="/sites/default/files/2019-05/mobile_3.png" width="354"/>
+                 </div>
+                 <div class="product-logo">
+                  STREAM DECK MOBILE
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="Software" href="/en/downloads">
+                 <div class="img-wrap">
+                  <img alt="" height="294" src="/sites/default/files/2020-07/software-new_0.png" width="354"/>
+                 </div>
+                 <div class="product-logo">
+                  Software
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="Get Started" href="/en/welcome-to-stream-deck">
+                 <div class="img-wrap">
+                  <img alt="" height="294" src="/sites/default/files/2020-12/menu-stream-deck-welcome.png" width="354"/>
+                 </div>
+                 <div class="product-logo">
+                  Get Started
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="SDK" href="https://developer.elgato.com/documentation/stream-deck">
+                 <div class="img-wrap">
+                  <img alt="" height="294" src="/sites/default/files/2018-12/menu_Streamdeck_sdk.png" width="354"/>
+                 </div>
+                 <div class="product-logo">
+                  SDK
+                 </div>
+                </a>
+               </div>
+              </div>
+             </div>
+            </div>
+           </div>
+           <div class="bottom-area">
+            <div class="clearfix bottom-inner">
+             <h4 class="submenu-title">
+              Take your content to the next level.
+             </h4>
+            </div>
+           </div>
+          </div>
+         </div>
+         <div class="submenu thunderbold-content" data-submenu-content="3">
+          <div class="submenu-inner">
+           <div class="clearfix top-area">
+            <div>
+             <div class="js-view-dom-id-6925a5fc871137fb28107e3b0677e8800ffdaf0279ddfa530d44a0feb191f9e8 view-wrap">
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="THUNDERBOLT 3 PRO DOCK" href="/en/dock/thunderbolt-3-pro">
+                 <div class="img-wrap">
+                  <img alt="" height="294" src="/sites/default/files/styles/menu_product_image/public/2019-01/thunderbolt_3-pro.png?itok=hT10OUNE" width="354"/>
+                 </div>
+                 <div class="product-logo">
+                  THUNDERBOLT 3 PRO DOCK
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="THUNDERBOLT 3 DOCK" href="/en/dock/thunderbolt-3">
+                 <div class="img-wrap">
+                  <img alt="" height="265" src="/sites/default/files/styles/menu_product_image/public/2019-01/thunderbolt_dock_2_0.png?itok=ByJBk7lg" width="319"/>
+                 </div>
+                 <div class="product-logo">
+                  THUNDERBOLT 3 DOCK
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="THUNDERBOLT 3 MINI DOCK" href="/en/dock/thunderbolt-3-mini">
+                 <div class="img-wrap">
+                  <img alt="" height="294" src="/sites/default/files/styles/menu_product_image/public/2018-12/thunderbolt_mini.png?itok=cxzxuyMD" width="354"/>
+                 </div>
+                 <div class="product-logo">
+                  THUNDERBOLT 3 MINI DOCK
+                 </div>
+                </a>
+               </div>
+              </div>
+             </div>
+            </div>
+           </div>
+           <div class="bottom-area">
+            <div class="clearfix bottom-inner">
+             <h4 class="submenu-title">
+              One cable and you’re all set.
+             </h4>
+            </div>
+           </div>
+          </div>
+         </div>
+         <div class="submenu greenscreen-content" data-submenu-content="4">
+          <div class="submenu-inner">
+           <div class="clearfix top-area">
+            <div>
+             <div class="js-view-dom-id-0e7248605d8558a4354567fa3cf6040d23759dfd5398bd7769aa86cdec6a1266 view-wrap">
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="" href="/en/green-screen-mt">
+                 <div class="img-wrap">
+                  <img alt="" height="332" src="/sites/default/files/2019-06/190527_Green-Screen-MT.png" width="400"/>
+                 </div>
+                 <div class="product-logo">
+                  Green Screen MT
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="GREEN SCREEN" href="/en/green-screen">
+                 <div class="img-wrap">
+                  <img alt="Green Screen - 易拉式色键抠像绿幕" height="332" src="/sites/default/files/2019-06/190527_Green-Screen_0.png" width="400"/>
+                 </div>
+                 <div class="product-logo">
+                  green screen
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="GREEN SCREEN MOUSE MAT" href="/en/green-screen-mouse-mat">
+                 <div class="img-wrap">
+                  <img alt="" height="664" src="/sites/default/files/2021-02/Green-Screen-Mouse-Mat-Nav-min.png" width="800"/>
+                 </div>
+                 <div class="product-logo">
+                  GREEN SCREEN MOUSE MAT
+                 </div>
+                </a>
+               </div>
+              </div>
+             </div>
+            </div>
+           </div>
+           <div class="bottom-area">
+            <div class="clearfix bottom-inner">
+             <h4 class="submenu-title">
+              Professional chroma keying made easy.
+             </h4>
+            </div>
+           </div>
+          </div>
+         </div>
+         <div class="submenu greenscreen-content" data-submenu-content="5">
+          <div class="submenu-inner">
+           <div class="clearfix top-area">
+            <div>
+             <div class="js-view-dom-id-5df5545ee7b4a71ccc74a97c0a978238d9d3942d9288201d80b3a4e985378573 view-wrap">
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="Ring Light" href="/en/ring-light">
+                 <div class="img-wrap">
+                  <img alt="" height="664" src="/sites/default/files/2020-09/ring-light-menu_0.png" width="800"/>
+                 </div>
+                 <div class="product-logo">
+                  Ring Light
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="Key Light Air" href="/en/key-light-air">
+                 <div class="img-wrap">
+                  <img alt="" height="664" src="/sites/default/files/2020-09/key-light-menu.png" width="800"/>
+                 </div>
+                 <div class="product-logo">
+                  Key Light Air
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="" href="/en/key-light">
+                 <div class="img-wrap">
+                  <img alt="" height="664" src="/sites/default/files/2020-09/key-light-air-menu.png" width="800"/>
+                 </div>
+                 <div class="product-logo">
+                  Key Light
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="Light Strip" href="/en/light-strip">
+                 <div class="img-wrap">
+                  <img alt="" height="664" src="/sites/default/files/2021-01/Light%20Strip-Nav%20%281%29.png" width="800"/>
+                 </div>
+                 <div class="product-logo">
+                  Light Strip
+                 </div>
+                </a>
+               </div>
+              </div>
+             </div>
+            </div>
+           </div>
+           <div class="bottom-area">
+            <div class="clearfix bottom-inner">
+             <h4 class="submenu-title">
+              Get your camera feed looking professional.
+             </h4>
+            </div>
+           </div>
+          </div>
+         </div>
+         <div class="submenu audio-submenu" data-submenu-content="6">
+          <div class="submenu-inner">
+           <div class="clearfix top-area">
+            <div>
+             <div class="js-view-dom-id-4f1883e901b4bfedc8e7c5c9a90040b4d0236e0cc29b2f4dd04ac2d13814066e view-wrap">
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="WAVE:1" href="/en/wave-1">
+                 <div class="img-wrap">
+                  <img alt="" height="664" src="/sites/default/files/2020-06/wave1-menu%20%282%29.png" width="800"/>
+                 </div>
+                 <div class="product-logo">
+                  WAVE:1
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="WAVE:3" href="/en/wave-3">
+                 <div class="img-wrap">
+                  <img alt="" height="664" src="/sites/default/files/2020-06/wave3-menu%20%282%29.png" width="800"/>
+                 </div>
+                 <div class="product-logo">
+                  WAVE:3
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="Pop Filter" href="/en/wave-pop-filter">
+                 <div class="img-wrap">
+                  <img alt="" height="664" src="/sites/default/files/2020-06/pop%20filter%20-%20menu%20%282%29.png" width="800"/>
+                 </div>
+                 <div class="product-logo">
+                  Pop Filter
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="Shock Mount" href="/en/wave-shock-mount">
+                 <div class="img-wrap">
+                  <img alt="" height="664" src="/sites/default/files/2020-06/shock%20mount%20-%20menu%20%282%29.png" width="800"/>
+                 </div>
+                 <div class="product-logo">
+                  Shock Mount
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="Extension Rods" href="/en/wave-extension-rods">
+                 <div class="img-wrap">
+                  <img alt="" height="664" src="/sites/default/files/2020-06/Rod%20-%20menu%20%282%29.png" width="800"/>
+                 </div>
+                 <div class="product-logo">
+                  Extension Rods
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="Wave Panels" href="/en/wave-panels">
+                 <div class="img-wrap">
+                  <img alt="" height="744" src="/sites/default/files/2021-01/Wave-Panels-Nav%20%282%29%20%281%29.png" width="880"/>
+                 </div>
+                 <div class="product-logo">
+                  Wave Panels
+                 </div>
+                </a>
+               </div>
+              </div>
+             </div>
+            </div>
+           </div>
+           <div class="bottom-area">
+            <div class="clearfix bottom-inner">
+             <h4 class="submenu-title">
+              Your audio will never be the same.
+             </h4>
+            </div>
+           </div>
+          </div>
+         </div>
+         <div class="submenu multi-mount-submenu" data-submenu-content="7">
+          <div class="submenu-inner">
+           <div class="clearfix top-area">
+            <div>
+             <div class="js-view-dom-id-a739e00dbab5f0f761052a0b2be4ede557f3802536fcd1726f72ee3a6e8e7e41 view-wrap">
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="Multi Mount System" href="/en/multi-mount-system">
+                 <div class="img-wrap">
+                  <img alt="" height="332" src="/sites/default/files/2020-08/multi%20mount%20system%20-%20icon%20%283%29.png" width="400"/>
+                 </div>
+                 <div class="product-logo">
+                  Multi Mount System
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div class="menu-tile-n-2309" role="article">
+                <a class="submenu-item" data-name="Configurator" href="/en/multi-mount-system#configurator">
+                 <div class="img-wrap">
+                  <img alt="" height="332" src="/sites/default/files/2020-08/configurator-icon%20%281%29.png" width="400"/>
+                 </div>
+                 <div class="product-logo">
+                  Configurator
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="Master Mount" href="/en/master-mount">
+                 <div class="img-wrap">
+                  <img alt="" height="332" src="/sites/default/files/2020-07/menu-master-mount.png" width="400"/>
+                 </div>
+                 <div class="product-logo">
+                  Master Mount
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="Flex Arm" href="/en/flex-arm">
+                 <div class="img-wrap">
+                  <img alt="" height="294" src="/sites/default/files/2020-08/flex-arm-menu.png" width="354"/>
+                 </div>
+                 <div class="product-logo">
+                  Flex Arm
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="Solid Arm" href="/en/solid-arm">
+                 <div class="img-wrap">
+                  <img alt="" height="332" src="/sites/default/files/2020-07/menu-solid-arm.png" width="400"/>
+                 </div>
+                 <div class="product-logo">
+                  Solid Arm
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="Heavy Base" href="/en/heavy-base">
+                 <div class="img-wrap">
+                  <img alt="" height="294" src="/sites/default/files/2020-08/base.png" width="354"/>
+                 </div>
+                 <div class="product-logo">
+                  Heavy Base
+                 </div>
+                </a>
+               </div>
+              </div>
+              <div class="views-row">
+               <div role="article">
+                <a class="submenu-item" data-name="Phone Grip" href="/en/phone-grip">
+                 <div class="img-wrap">
+                  <img alt="" height="294" src="/sites/default/files/2020-08/phone-grip%20%281%29.png" width="354"/>
+                 </div>
+                 <div class="product-logo">
+                  Phone Grip
+                 </div>
+                </a>
+               </div>
+              </div>
+             </div>
+            </div>
+           </div>
+           <div class="bottom-area">
+            <div class="clearfix bottom-inner">
+             <h4 class="submenu-title">
+              Streamline your workspace.
+             </h4>
+            </div>
+           </div>
+          </div>
+         </div>
+         <div id="subnav-overlay">
+         </div>
+        </div>
+       </nav>
+       <nav class="gaming-navigation" id="mobile-nav">
+        <div class="outer-wrap">
+         <div class="outer">
+          <div class="rel">
+           <div class="clearfix">
+            <div class="left-menu">
+             <a href="/">
+              <img class="full-logo v19-white" src="/themes/custom/smalcode/image/menu-logos/elgato_full_logo.png"/>
+              <img class="full-logo v19-black" src="/themes/custom/smalcode/v19-img/general/navigation/black/elgato_full_logo-black.png" style="display:none;"/>
+             </a>
+            </div>
+            <div class="menu-point mini-shopping-cart">
+             <img class="v19-white" src="/themes/custom/smalcode/image/general/shopping-bag-white.png"/>
+             <img class="v19-black" src="/themes/custom/smalcode/v19-img/general/navigation/black/shopping-bag-black.png" style="display:none;"/>
+             <div class="item-count">
+             </div>
+            </div>
+            <div id="mobile-overlay-trigger">
+             <div class="inner">
+              <span>
+              </span>
+              <span>
+              </span>
+              <span>
+              </span>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </nav>
+       <div class="gaming-navigation" id="mobile-overlay-navi">
+        <div class="rel">
+         <div class="inner-overlay">
+          <div class="menu-points main-points clearfix menu-font">
+           <div class="menu-point collapsable" data-id="6">
+            <div class="inner-point">
+             <span>
+              AUDIO
+             </span>
+            </div>
+           </div>
+          </div>
+          <div class="submenu-wrap">
+           <div class="submenu" data-id="6" style="display:none;">
+            <div class="submenu-inner">
+             <div>
+              <div class="js-view-dom-id-5bfc2b6ab8282daa835f8293be40799ad5ca946acd5b1c7ab54db4cfabdef905 view-wrap">
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="WAVE:1" href="/en/wave-1">
+                  <div class="img-wrap">
+                   <img alt="" height="664" src="/sites/default/files/2020-06/wave1-menu%20%282%29.png" width="800"/>
+                  </div>
+                  <div class="product-logo">
+                   WAVE:1
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="WAVE:3" href="/en/wave-3">
+                  <div class="img-wrap">
+                   <img alt="" height="664" src="/sites/default/files/2020-06/wave3-menu%20%282%29.png" width="800"/>
+                  </div>
+                  <div class="product-logo">
+                   WAVE:3
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="Pop Filter" href="/en/wave-pop-filter">
+                  <div class="img-wrap">
+                   <img alt="" height="664" src="/sites/default/files/2020-06/pop%20filter%20-%20menu%20%282%29.png" width="800"/>
+                  </div>
+                  <div class="product-logo">
+                   Pop Filter
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="Shock Mount" href="/en/wave-shock-mount">
+                  <div class="img-wrap">
+                   <img alt="" height="664" src="/sites/default/files/2020-06/shock%20mount%20-%20menu%20%282%29.png" width="800"/>
+                  </div>
+                  <div class="product-logo">
+                   Shock Mount
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="Extension Rods" href="/en/wave-extension-rods">
+                  <div class="img-wrap">
+                   <img alt="" height="664" src="/sites/default/files/2020-06/Rod%20-%20menu%20%282%29.png" width="800"/>
+                  </div>
+                  <div class="product-logo">
+                   Extension Rods
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="Wave Panels" href="/en/wave-panels">
+                  <div class="img-wrap">
+                   <img alt="" height="744" src="/sites/default/files/2021-01/Wave-Panels-Nav%20%282%29%20%281%29.png" width="880"/>
+                  </div>
+                  <div class="product-logo">
+                   Wave Panels
+                  </div>
+                 </a>
+                </div>
+               </div>
+              </div>
+             </div>
+            </div>
+            <div class="submenu-bottom-area">
+             <div class="submenu-title best-gear">
+              <h4>
+               Your audio will never be the same.
+              </h4>
+             </div>
+            </div>
+           </div>
+          </div>
+          <div class="menu-points main-points clearfix menu-font">
+           <div class="menu-point collapsable" data-id="1">
+            <div class="inner-point">
+             <span>
+              CAPTURE
+             </span>
+            </div>
+           </div>
+          </div>
+          <div class="submenu-wrap">
+           <div class="submenu" data-id="1" style="display:none;">
+            <div class="submenu-inner">
+             <div>
+              <div class="js-view-dom-id-dc8dda55e0713f47c99b1993f4920d035e713d06eeba547bd3067f55d6cc9131 view-wrap">
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="HD60 S" href="/en/game-capture-hd60-s">
+                  <div class="img-wrap">
+                   <img alt="Elgato Game Capture HD60S Stream, record and share your gameplay in 1080p60." height="294" src="/sites/default/files/styles/menu_product_image/public/2019-05/menu_HD60s_0_0.png?itok=aZzfd45y" width="354"/>
+                  </div>
+                  <div class="product-logo">
+                   HD60 S
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="HD60 S+" href="/en/game-capture-hd60-s-plus">
+                  <div class="img-wrap">
+                   <img alt="" height="294" src="/sites/default/files/2019-12/HD60%20S%2B%20%28New%20Menu%29.png" width="354"/>
+                  </div>
+                  <div class="product-logo">
+                   HD60 S+
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="4K60 S+" href="/en/game-capture-4k60-s-plus">
+                  <div class="img-wrap">
+                   <img alt="" height="294" src="/sites/default/files/2019-11/menu-4k60splus.png" width="354"/>
+                  </div>
+                  <div class="product-logo">
+                   4K60 S+
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="HD60 PRO" href="/en/game-capture-hd60-pro">
+                  <div class="img-wrap">
+                   <img alt="Elgato Game Capture HD60 Pro Stream, record and share your gameplay in 1080p60 - without compromise." height="294" src="/sites/default/files/styles/menu_product_image/public/2019-05/menu_HD60Pro_0_0.png?itok=t352PRUi" width="354"/>
+                  </div>
+                  <div class="product-logo">
+                   HD60 Pro
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="4K60 PRO" href="/en/game-capture-4k60-pro">
+                  <div class="img-wrap">
+                   <img alt="" height="294" src="/sites/default/files/2019-08/menu-4k-60pro.png" width="354"/>
+                  </div>
+                  <div class="product-logo">
+                   4K60 PRO
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="CAM LINK 4K" href="/en/cam-link-4k">
+                  <div class="img-wrap">
+                   <img alt="Elgato Cam Link 4K — Compact HDMI capture for live streaming and recording via DSLR, camcorder, or action cam." height="294" src="/sites/default/files/2019-05/Cam_Link_4K_Device_01_0.png" width="354"/>
+                  </div>
+                  <div class="product-logo">
+                   cam link 4k
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="EPOCCAM" href="/en/epoccam">
+                  <div class="img-wrap">
+                   <img alt="" height="294" src="/sites/default/files/2020-10/epoc.png" width="354"/>
+                  </div>
+                  <div class="product-logo">
+                   EPOCCAM
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="SCREEN LINK" href="/en/screen-link">
+                  <div class="img-wrap">
+                   <img alt="" height="294" src="/sites/default/files/2020-10/screenlink.png" width="354"/>
+                  </div>
+                  <div class="product-logo">
+                   Screen Link
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="Video Capture" href="/en/video-capture">
+                  <div class="img-wrap">
+                   <img alt="video capture" height="294" src="/sites/default/files/2019-05/menu-video-capture_5.png" width="354"/>
+                  </div>
+                  <div class="product-logo">
+                   Video Capture
+                  </div>
+                 </a>
+                </div>
+               </div>
+              </div>
+             </div>
+            </div>
+            <div class="submenu-bottom-area">
+             <div class="perfect-device">
+              <div class="device-wrap">
+               <div class="left-content">
+                <div class="flex-wrap">
+                 <a class="clearfix" data-name="Accessories" href="/en/gaming-accessories">
+                  <div class="bottom-product-image">
+                   <img src="/themes/custom/smalcode/image/menu/menu-accessories-image.png?v=1"/>
+                  </div>
+                  <div class="bottom-product-title">
+                   Accessories
+                  </div>
+                 </a>
+                 <a class="clearfix" data-name="Software" href="/en/game-capture-software">
+                  <div class="bottom-product-image">
+                   <img src="/themes/custom/smalcode/image/menu/menu-software-image.png?v=1"/>
+                  </div>
+                  <div class="bottom-product-title">
+                   Software
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="right-content">
+                <div class="flex-wrap">
+                 <a class="clearfix" data-name="Find Gear" href="/en/capture-card-selector">
+                  <div class="bottom-product-image">
+                   <img src="/themes/custom/smalcode/image/menu/menu-icon-gear.png?v=1"/>
+                  </div>
+                  <div class="bottom-product-title">
+                   FIND YOUR FIT
+                  </div>
+                 </a>
+                </div>
+               </div>
+              </div>
+             </div>
+            </div>
+           </div>
+          </div>
+          <div class="menu-points main-points clearfix menu-font">
+           <div class="menu-point collapsable" data-id="2">
+            <div class="inner-point">
+             <span>
+              STREAM DECK
+             </span>
+            </div>
+           </div>
+          </div>
+          <div class="submenu-wrap">
+           <div class="submenu" data-id="2" style="display:none;">
+            <div class="submenu-inner">
+             <div>
+              <div class="js-view-dom-id-00fcdeb1ae5c425b4da06f795169a17f5651618d8605a003788ffea6e15b0194 view-wrap">
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="STREAM DECK XL" href="/en/stream-deck-xl">
+                  <div class="img-wrap">
+                   <img alt="Elgato Stream Deck XL - Evolve your content" height="294" src="/sites/default/files/2019-05/menu-img-new_0.png" width="354"/>
+                  </div>
+                  <div class="product-logo">
+                   STREAM DECK XL
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="STREAM DECK" href="/en/stream-deck">
+                  <div class="img-wrap">
+                   <img alt="Geef je content een nieuwe dimensie" height="294" src="/sites/default/files/styles/menu_product_image/public/2019-05/classic.png?itok=tqdTKSvj" width="354"/>
+                  </div>
+                  <div class="product-logo">
+                   Stream Deck
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="STREAM DECK MINI" href="/en/stream-deck-mini">
+                  <div class="img-wrap">
+                   <img alt="" height="294" src="/sites/default/files/styles/menu_product_image/public/2019-05/mini_3.png?itok=JHg7jNju" width="354"/>
+                  </div>
+                  <div class="product-logo">
+                   Stream Deck Mini
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="STREAM DECK MOBILE" href="/en/stream-deck-mobile">
+                  <div class="img-wrap">
+                   <img alt="" height="294" src="/sites/default/files/2019-05/mobile_3.png" width="354"/>
+                  </div>
+                  <div class="product-logo">
+                   STREAM DECK MOBILE
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="Software" href="/en/downloads">
+                  <div class="img-wrap">
+                   <img alt="" height="294" src="/sites/default/files/2020-07/software-new_0.png" width="354"/>
+                  </div>
+                  <div class="product-logo">
+                   Software
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="Get Started" href="/en/welcome-to-stream-deck">
+                  <div class="img-wrap">
+                   <img alt="" height="294" src="/sites/default/files/2020-12/menu-stream-deck-welcome.png" width="354"/>
+                  </div>
+                  <div class="product-logo">
+                   Get Started
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="SDK" href="https://developer.elgato.com/documentation/stream-deck">
+                  <div class="img-wrap">
+                   <img alt="" height="294" src="/sites/default/files/2018-12/menu_Streamdeck_sdk.png" width="354"/>
+                  </div>
+                  <div class="product-logo">
+                   SDK
+                  </div>
+                 </a>
+                </div>
+               </div>
+              </div>
+             </div>
+            </div>
+            <div class="submenu-bottom-area">
+             <div class="submenu-title best-gear">
+              <h4>
+               Take your content to the next level.
+              </h4>
+             </div>
+            </div>
+           </div>
+          </div>
+          <div class="menu-points main-points clearfix menu-font">
+           <div class="menu-point collapsable" data-id="5">
+            <div class="inner-point">
+             <span>
+              LIGHTING
+             </span>
+            </div>
+           </div>
+          </div>
+          <div class="submenu-wrap">
+           <div class="submenu" data-id="5" style="display:none;">
+            <div class="submenu-inner">
+             <div>
+              <div class="js-view-dom-id-f3527fc95118d30cf0c0e0954d93b5e8f09644d92484bf8266424cf42eb76c9b view-wrap">
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="Ring Light" href="/en/ring-light">
+                  <div class="img-wrap">
+                   <img alt="" height="664" src="/sites/default/files/2020-09/ring-light-menu_0.png" width="800"/>
+                  </div>
+                  <div class="product-logo">
+                   Ring Light
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="Key Light Air" href="/en/key-light-air">
+                  <div class="img-wrap">
+                   <img alt="" height="664" src="/sites/default/files/2020-09/key-light-menu.png" width="800"/>
+                  </div>
+                  <div class="product-logo">
+                   Key Light Air
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="" href="/en/key-light">
+                  <div class="img-wrap">
+                   <img alt="" height="664" src="/sites/default/files/2020-09/key-light-air-menu.png" width="800"/>
+                  </div>
+                  <div class="product-logo">
+                   Key Light
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="Light Strip" href="/en/light-strip">
+                  <div class="img-wrap">
+                   <img alt="" height="664" src="/sites/default/files/2021-01/Light%20Strip-Nav%20%281%29.png" width="800"/>
+                  </div>
+                  <div class="product-logo">
+                   Light Strip
+                  </div>
+                 </a>
+                </div>
+               </div>
+              </div>
+             </div>
+            </div>
+            <div class="submenu-bottom-area">
+             <div class="submenu-title best-gear">
+              <h4>
+               Get your camera feed looking professional.
+              </h4>
+             </div>
+            </div>
+           </div>
+          </div>
+          <div class="menu-points main-points clearfix menu-font">
+           <div class="menu-point collapsable" data-id="4">
+            <div class="inner-point">
+             <span>
+              GREEN SCREEN
+             </span>
+            </div>
+           </div>
+          </div>
+          <div class="submenu-wrap">
+           <div class="submenu" data-id="4" style="display:none;">
+            <div class="submenu-inner">
+             <div>
+              <div class="js-view-dom-id-5acae119865d1047568fb172693aa2a384f222eb2f919dcc1269f7a1d94170ee view-wrap">
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="" href="/en/green-screen-mt">
+                  <div class="img-wrap">
+                   <img alt="" height="332" src="/sites/default/files/2019-06/190527_Green-Screen-MT.png" width="400"/>
+                  </div>
+                  <div class="product-logo">
+                   Green Screen MT
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="GREEN SCREEN" href="/en/green-screen">
+                  <div class="img-wrap">
+                   <img alt="Green Screen - 易拉式色键抠像绿幕" height="332" src="/sites/default/files/2019-06/190527_Green-Screen_0.png" width="400"/>
+                  </div>
+                  <div class="product-logo">
+                   green screen
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="GREEN SCREEN MOUSE MAT" href="/en/green-screen-mouse-mat">
+                  <div class="img-wrap">
+                   <img alt="" height="664" src="/sites/default/files/2021-02/Green-Screen-Mouse-Mat-Nav-min.png" width="800"/>
+                  </div>
+                  <div class="product-logo">
+                   GREEN SCREEN MOUSE MAT
+                  </div>
+                 </a>
+                </div>
+               </div>
+              </div>
+             </div>
+            </div>
+            <div class="submenu-bottom-area">
+             <div class="submenu-title best-gear">
+              <h4>
+               Professional chroma keying made easy.
+              </h4>
+             </div>
+            </div>
+           </div>
+          </div>
+          <div class="menu-points main-points clearfix menu-font">
+           <div class="menu-point collapsable" data-id="7">
+            <div class="inner-point">
+             <span>
+              MULTI MOUNT
+             </span>
+            </div>
+           </div>
+          </div>
+          <div class="submenu-wrap">
+           <div class="submenu" data-id="7" style="display:none;">
+            <div class="submenu-inner">
+             <div>
+              <div class="js-view-dom-id-a739e00dbab5f0f761052a0b2be4ede557f3802536fcd1726f72ee3a6e8e7e41 view-wrap">
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="Multi Mount System" href="/en/multi-mount-system">
+                  <div class="img-wrap">
+                   <img alt="" height="332" src="/sites/default/files/2020-08/multi%20mount%20system%20-%20icon%20%283%29.png" width="400"/>
+                  </div>
+                  <div class="product-logo">
+                   Multi Mount System
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div class="menu-tile-n-2309" role="article">
+                 <a class="submenu-item" data-name="Configurator" href="/en/multi-mount-system#configurator">
+                  <div class="img-wrap">
+                   <img alt="" height="332" src="/sites/default/files/2020-08/configurator-icon%20%281%29.png" width="400"/>
+                  </div>
+                  <div class="product-logo">
+                   Configurator
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="Master Mount" href="/en/master-mount">
+                  <div class="img-wrap">
+                   <img alt="" height="332" src="/sites/default/files/2020-07/menu-master-mount.png" width="400"/>
+                  </div>
+                  <div class="product-logo">
+                   Master Mount
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="Flex Arm" href="/en/flex-arm">
+                  <div class="img-wrap">
+                   <img alt="" height="294" src="/sites/default/files/2020-08/flex-arm-menu.png" width="354"/>
+                  </div>
+                  <div class="product-logo">
+                   Flex Arm
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="Solid Arm" href="/en/solid-arm">
+                  <div class="img-wrap">
+                   <img alt="" height="332" src="/sites/default/files/2020-07/menu-solid-arm.png" width="400"/>
+                  </div>
+                  <div class="product-logo">
+                   Solid Arm
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="Heavy Base" href="/en/heavy-base">
+                  <div class="img-wrap">
+                   <img alt="" height="294" src="/sites/default/files/2020-08/base.png" width="354"/>
+                  </div>
+                  <div class="product-logo">
+                   Heavy Base
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="Phone Grip" href="/en/phone-grip">
+                  <div class="img-wrap">
+                   <img alt="" height="294" src="/sites/default/files/2020-08/phone-grip%20%281%29.png" width="354"/>
+                  </div>
+                  <div class="product-logo">
+                   Phone Grip
+                  </div>
+                 </a>
+                </div>
+               </div>
+              </div>
+             </div>
+            </div>
+           </div>
+          </div>
+          <div class="menu-points main-points clearfix menu-font">
+           <div class="menu-point collapsable" data-id="3">
+            <div class="inner-point">
+             <span>
+              DOCK
+             </span>
+            </div>
+           </div>
+          </div>
+          <div class="submenu-wrap">
+           <div class="submenu" data-id="3" style="display:none;">
+            <div class="submenu-inner">
+             <div>
+              <div class="js-view-dom-id-c6734c5dd2453110c8683db9ec1f75b36ca5cccc2d27945b7b3260bf7a7e620a view-wrap">
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="THUNDERBOLT 3 PRO DOCK" href="/en/dock/thunderbolt-3-pro">
+                  <div class="img-wrap">
+                   <img alt="" height="294" src="/sites/default/files/styles/menu_product_image/public/2019-01/thunderbolt_3-pro.png?itok=hT10OUNE" width="354"/>
+                  </div>
+                  <div class="product-logo">
+                   THUNDERBOLT 3 PRO DOCK
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="THUNDERBOLT 3 DOCK" href="/en/dock/thunderbolt-3">
+                  <div class="img-wrap">
+                   <img alt="" height="265" src="/sites/default/files/styles/menu_product_image/public/2019-01/thunderbolt_dock_2_0.png?itok=ByJBk7lg" width="319"/>
+                  </div>
+                  <div class="product-logo">
+                   THUNDERBOLT 3 DOCK
+                  </div>
+                 </a>
+                </div>
+               </div>
+               <div class="views-row">
+                <div role="article">
+                 <a class="submenu-item" data-name="THUNDERBOLT 3 MINI DOCK" href="/en/dock/thunderbolt-3-mini">
+                  <div class="img-wrap">
+                   <img alt="" height="294" src="/sites/default/files/styles/menu_product_image/public/2018-12/thunderbolt_mini.png?itok=cxzxuyMD" width="354"/>
+                  </div>
+                  <div class="product-logo">
+                   THUNDERBOLT 3 MINI DOCK
+                  </div>
+                 </a>
+                </div>
+               </div>
+              </div>
+             </div>
+            </div>
+            <div class="submenu-bottom-area">
+             <div class="submenu-title best-gear">
+              <h4>
+               One cable and you’re all set.
+              </h4>
+             </div>
+            </div>
+           </div>
+          </div>
+          <div class="bottom-area">
+           <div class="menu-points-links menu-font">
+            <div class="divider">
+            </div>
+            <div class="menu-point downloads">
+             <div class="text">
+              <a href="/en/downloads">
+               Downloads
+              </a>
+             </div>
+            </div>
+            <div class="menu-point">
+             <div class="text">
+              <a href="https://help.elgato.com/" target="_blank">
+               Support
+              </a>
+             </div>
+            </div>
+           </div>
+          </div>
+          <div class="social-media-wrapper">
+           <div class="social-bar clearfix">
+            <div class="outer-social-wrap">
+             <a data-id="Twitter" href="https://twitter.com/elgato" target="_blank">
+              <div class="social-icon">
+               <img src="/themes/custom/smalcode/image/general/mobile-menu/twitter.png"/>
+              </div>
+             </a>
+            </div>
+            <div class="outer-social-wrap">
+             <a data-id="Youtube" href="https://www.youtube.com/elgatogaming" target="_blank">
+              <div class="social-icon">
+               <img src="/themes/custom/smalcode/image/general/mobile-menu/youtube.png"/>
+              </div>
+             </a>
+            </div>
+            <div class="outer-social-wrap">
+             <a data-id="Instagram" href="http://www.instagram.com/elgatogaming" target="_blank">
+              <div class="social-icon">
+               <img src="/themes/custom/smalcode/image/general/mobile-menu/Instagram.png"/>
+              </div>
+             </a>
+            </div>
+            <div class="outer-social-wrap">
+             <a data-id="Facebook" href="https://www.facebook.com/Elgato" target="_blank">
+              <div class="social-icon fb">
+               <img src="/themes/custom/smalcode/image/general/mobile-menu/facebook.png"/>
+              </div>
+             </a>
+            </div>
+            <div class="outer-social-wrap">
+             <a data-id="Discord" href="https://discord.gg/elgato" target="_blank">
+              <div class="social-icon">
+               <img src="/themes/custom/smalcode/image/general/mobile-menu/discord.png"/>
+              </div>
+             </a>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div>
+     <div class="js-view-dom-id-a4df9dd1c4426abc8b545e4cab87864a786bb045dd968ac8d325d43dcaa72a14 view-wrap">
+     </div>
+    </div>
+    <div class="user-warning">
+     <div class="user-warning-container">
+      <div class="user-warning-box">
+       <div class="user-warning-icon">
+        <img src="/themes/custom/smalcode/image/general/connection-issue.png"/>
+       </div>
+       <h2>
+        Connection Issues
+       </h2>
+       <p>
+        We are unable to fetch information from our download server. If you have an ad-blocker installed, please temporarily deactivate it.
+       </p>
+       <div class="user-warning-btn-container">
+        <div class="user-warning-btn-row">
+         <div class="user-warning-btn-cell">
+          <div class="btn user-warning-btn user-warning-btn-cancel">
+           Continue anyway
+          </div>
+         </div>
+         <div class="user-warning-btn-cell user-warning-btn-cell-right">
+          <div class="btn btn-white user-warning-btn" onclick="location.reload();">
+           Reload
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div style="display: none;">
+     <div id="cart-free-shipping-text">
+      Free Shipping
+     </div>
+     <div id="cart-free-shipping-over-message">
+      Free on orders over
+     </div>
+     <div id="cart-free-shipping-over-message-free">
+      Free
+     </div>
+     <div id="cart-shipping-default-text">
+      Shipping
+     </div>
+     <div id="cart-quantity-text">
+      Quantity
+     </div>
+     <div id="cart-item-total-text">
+      Item Total
+     </div>
+     <div id="cart-delete-text">
+      Delete
+     </div>
+     <div id="cart-subtotal-text">
+      Subtotal
+     </div>
+     <div id="cart-checkout-text">
+      Checkout
+     </div>
+     <div id="cart-review-cart-text">
+      Review Your Cart
+     </div>
+     <div id="cart-empty-text">
+      Your cart is empty
+     </div>
+     <img class="cart-control-plus-icon" src="/themes/custom/smalcode/image/cart-plus.png"/>
+     <img class="cart-control-minus-icon" src="/themes/custom/smalcode/image/cart-minus.png"/>
+     <div class="max-quantity-text-global">
+      Maximum quantity reached.
+     </div>
+    </div>
+    <div id="buy-now-banner" style="display:none;">
+     <div class="inner-banner">
+      <div class="product-logos">
+      </div>
+      <div class="btn-wrap">
+       <div class="btn btn-white">
+        Shop now
+       </div>
+      </div>
+      <div class="mobile expand-icon">
+       <img src="/themes/custom/smalcode/image/menu/arrow-down.png"/>
+      </div>
+     </div>
+    </div>
+    <div class="menu" id="buy-now-banner-expand-menu">
+    </div>
+    <div class="cookie-consent">
+     <div class="EWSCookieConsentOverlay">
+      <div class="EWSCookieConsentBox">
+       <div class="EWSCookieConsentContainer">
+        <div class="EWSCookieConsentQuestion">
+         <div class="EWSCookieConsentDescription">
+          <p>
+           In order to continuously improve design and offered services on our website we intend to evaluate your visit by using tracking cookies. Visit our
+           <a href="https://www.elgato.com/data-protection">
+            Privacy Policy
+           </a>
+           for information about the use of cookies and the processing of your personal data.
+           <a class="EWSCookieConsentButtonSettings" href="#">
+            Customize Settings
+           </a>
+          </p>
+         </div>
+         <div>
+          <p>
+           <button class="EWSCookieConsentButtonAllow">
+            Allow All
+           </button>
+           <button class="EWSCookieConsentButtonDecline">
+            Disable All
+           </button>
+          </p>
+         </div>
+        </div>
+        <div class="EWSCookieConsentSettings">
+         <h3>
+          Privacy Controls
+         </h3>
+         <p>
+          We use the following categories of cookies on our website. Set your personal preference below:
+         </p>
+         <div class="EWSCookieConsentCategories">
+         </div>
+         <button class="EWSCookieConsentButtonCancelSettings">
+          Cancel
+         </button>
+         <button class="EWSCookieConsentButtonSaveSettings">
+          Save
+         </button>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+    <main class="elgato-gaming-js-target" role="main">
+     <div class="hidden" data-drupal-messages-fallback="">
+     </div>
+     <article role="article">
+      <div class="hero-social-bar">
+       <div class="rel">
+        <div class="social-holder display-on-scroll">
+         <div class="share-icon">
+          <img class="default" src="/themes/custom/smalcode/image/general/mobile-menu/share.png"/>
+          <img class="color-change" src="/themes/custom/smalcode/image/general/mobile-menu/blue/share.png"/>
+         </div>
+        </div>
+        <div class="social-bar clearfix hide-on-scroll">
+         <div class="outer-social-wrap">
+          <a data-id="Twitter" href="https://twitter.com/elgato" target="_blank">
+           <div class="social-icon">
+            <img class="default" src="/themes/custom/smalcode/image/general/mobile-menu/twitter.png"/>
+            <img class="color-change" src="/themes/custom/smalcode/image/general/mobile-menu/blue/twitter.png"/>
+           </div>
+          </a>
+         </div>
+         <div class="outer-social-wrap">
+          <a data-id="Youtube" href="https://www.youtube.com/c/elgato" target="_blank">
+           <div class="social-icon">
+            <img class="default" src="/themes/custom/smalcode/image/general/mobile-menu/youtube.png"/>
+            <img class="color-change" src="/themes/custom/smalcode/image/general/mobile-menu/blue/youtube.png"/>
+           </div>
+          </a>
+         </div>
+         <div class="outer-social-wrap">
+          <a data-id="Instagram" href="https://www.instagram.com/elgato" target="_blank">
+           <div class="social-icon">
+            <img class="default" src="/themes/custom/smalcode/image/general/mobile-menu/Instagram.png"/>
+            <img class="color-change" src="/themes/custom/smalcode/image/general/mobile-menu/blue/Instagram.png"/>
+           </div>
+          </a>
+         </div>
+         <div class="outer-social-wrap">
+          <a data-id="Facebook" href="https://www.facebook.com/Elgato" target="_blank">
+           <div class="social-icon fb">
+            <img class="default" src="/themes/custom/smalcode/image/general/mobile-menu/facebook.png"/>
+            <img class="color-change" src="/themes/custom/smalcode/image/general/mobile-menu/blue/facebook.png"/>
+           </div>
+          </a>
+         </div>
+         <div class="outer-social-wrap">
+          <a data-id="Discord" href="https://discord.gg/elgato" target="_blank">
+           <div class="social-icon">
+            <img class="default" src="/themes/custom/smalcode/image/general/mobile-menu/discord.png"/>
+            <img class="color-change" src="/themes/custom/smalcode/image/general/mobile-menu/blue/discord.png"/>
+           </div>
+          </a>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div id="hero-panel">
+       <div id="hero-panel-slideshow">
+        <div class="v19-panel-landing-lightstrip-wav desktop hero-slide rel">
+         <div class="image-wrap rel">
+          <div class="bg-image bg-image-1 desktop" style="background-image:url('/themes/custom/smalcode/v19-img/pages/landing/lightstrip-desktop.jpg?v=4');">
+          </div>
+          <div class="bg-image bg-image-2 desktop" style="background-image:url('/themes/custom/smalcode/v19-img/pages/landing/wave-panels-desktop.jpg?v=4');">
+          </div>
+          <div class="top-title-wrap">
+           <div class="flex-wrap">
+            <div class="left-title-box">
+             <div class="center-wrap">
+              <div class="product-title">
+               <div class="inner-title new text-white">
+                WAVE PANELS
+               </div>
+              </div>
+             </div>
+             <h2 class="subtitle">
+              Acoustic Treatment Foam
+             </h2>
+             <div class="btn-pre-wrap">
+              <a href="/en/wave-panels">
+               Discover
+              </a>
+             </div>
+            </div>
+            <div class="right-title-box">
+             <div class="center-wrap">
+              <div class="product-title">
+               <div class="inner-title new text-white">
+                LIGHT STRIP
+               </div>
+              </div>
+             </div>
+             <h2 class="subtitle">
+              Illuminate on Command
+             </h2>
+             <div class="btn-pre-wrap">
+              <a href="/en/light-strip">
+               Discover
+              </a>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div class="v19-panel-landing-lightstrip-wav-mobile v19-panel-landing-lightstrip-wav-mobile-1 mobile hero-slide rel">
+         <div class="bg-image bg-image-2" style="background-image:url('/themes/custom/smalcode/v19-img/pages/landing/wave-panels-mobile.jpg?v=2');background-position:bottom right;">
+         </div>
+         <div class="center-wrap">
+          <div class="product-title">
+           <span class="new text-white">
+            WAVE PANELS
+           </span>
+           <h2 class="subtitle">
+            Acoustic Treatment Foam
+           </h2>
+          </div>
+          <div class="btn-pre-wrap">
+           <a href="/en/wave-panels">
+            Discover
+           </a>
+          </div>
+         </div>
+        </div>
+        <div class="v19-panel-landing-lightstrip-wav-mobile v19-panel-landing-lightstrip-wav-mobile-2 mobile hero-slide rel">
+         <div class="bg-image bg-image-1" style="background-image:url('/themes/custom/smalcode/v19-img/pages/landing/lightstrip-mobile.jpg?v=2');background-position:bottom left;">
+         </div>
+         <div class="center-wrap">
+          <div class="product-title">
+           <span class="new text-white">
+            LIGHT STRIP
+           </span>
+           <h2 class="subtitle">
+            Illuminate on Command
+           </h2>
+          </div>
+          <div class="btn-pre-wrap">
+           <a href="/en/light-strip">
+            Discover
+           </a>
+          </div>
+         </div>
+        </div>
+       </div>
+       <div id="hero-slider-get-mouse-over">
+       </div>
+       <div class="v19-landing-wave-slide hero-slide rel slide-2866 promo-is-active" data-n-id="2866" style="display:none;">
+        <div class="bg-layer-wave-promo desktop" style="background-image:url(/themes/custom/smalcode/v19-img/_4k60s-promo-landing/bg-desktop.jpg);">
+        </div>
+        <div class="bg-layer-wave-promo mobile" style="background-image:url(/themes/custom/smalcode/v19-img/_4k60s-promo-landing/bg-mobile.jpg);">
+        </div>
+        <div class="text-wrap">
+         <img class="wave-3-logo-promo" src="/themes/custom/smalcode/v19-img/_4k60s-promo-landing/logo.png"/>
+         <div class="promo-layer-banner">
+          <div class="inner-text">
+           <div class="left-wrap">
+            Save
+           </div>
+           <div class="right-wrap">
+            <div class="value-swap-locale others" style="display:none;">
+             $100
+            </div>
+            <div class="value-swap-locale europe" style="display:none;">
+            </div>
+            <div class="value-swap-locale jp" style="display:none;">
+            </div>
+            <div class="value-swap-locale cn" style="display:none;">
+            </div>
+            <div class="value-swap-locale uk" style="display:none;">
+            </div>
+           </div>
+          </div>
+          <div class="promo-code-text">
+           Promo code: 4K60SPLUS
+          </div>
+         </div>
+         <div class="center-wrap">
+          <div class="product-title">
+           <span class="new text-white">
+            4K60 S+
+           </span>
+           <h2>
+            Capture 4K HDR. Anywhere.
+           </h2>
+          </div>
+          <div class="btn-pre-wrap">
+           <a href="/en/game-capture-4k60-s-plus">
+            Discover
+           </a>
+          </div>
+         </div>
+         <div class="product-image">
+          <img class="big-screen" src="/themes/custom/smalcode/v19-img/_4k60s-promo-landing/product.png"/>
+          <img class="small-screen" src="/themes/custom/smalcode/v19-img/_4k60s-promo-landing/product.png"/>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="family-render-panel-outer-wrap">
+       <div class="panel-family-rendering-pre-section">
+        <div class="wrap maxWidth">
+         <div class="row">
+          <div class="col-12">
+           <h2 class="panel-title">
+            Explore Your Studio
+           </h2>
+          </div>
+         </div>
+        </div>
+       </div>
+       <div class="panel-family-rendering">
+        <div class="ratio-wrap">
+         <div class="abs-wrap">
+          <div class="rel">
+           <div class="layer-1">
+            <div class="background" style="background-image:url('/themes/custom/smalcode/image/family-render-panel/family-render-initial.jpg?v=4');">
+            </div>
+            <div class="open-indicators">
+             <img class="open-btn btn-1" data-id="d-wave3" src="/themes/custom/smalcode/image/family-render-panel/more.png"/>
+             <img class="open-btn btn-2" data-id="d-4k60s" src="/themes/custom/smalcode/image/family-render-panel/more.png"/>
+             <img class="open-btn btn-3" data-id="d-camlink4k" src="/themes/custom/smalcode/image/family-render-panel/more.png"/>
+             <img class="open-btn btn-4" data-id="d-streamdeck" src="/themes/custom/smalcode/image/family-render-panel/more.png"/>
+             <img class="open-btn btn-5" data-id="d-greenscreen" src="/themes/custom/smalcode/image/family-render-panel/more.png"/>
+             <img class="open-btn btn-6" data-id="d-keylight" src="/themes/custom/smalcode/image/family-render-panel/more.png"/>
+             <img class="open-btn btn-7" data-id="d-multimount" src="/themes/custom/smalcode/image/family-render-panel/more.png"/>
+             <img class="open-btn btn-8" data-id="d-lightstrip" src="/themes/custom/smalcode/image/family-render-panel/more.png"/>
+             <img class="open-btn btn-9" data-id="d-wavepanels" src="/themes/custom/smalcode/image/family-render-panel/more.png"/>
+            </div>
+           </div>
+           <div class="layer-2 slide-1" data-slide="slide-d-4k60pro">
+            <div class="rel inner-layer">
+             <img class="close-icon" src="/themes/custom/smalcode/image/family-render-panel/close-icon.png"/>
+             <div class="big-img-transition-wrap">
+              <div class="big-image">
+               <img class="inner-main-image desktop" src="/themes/custom/smalcode/image/family-render-panel/bak_family-render-large.jpg?v=4"/>
+               <img class="inner-main-image mobile" src="/themes/custom/smalcode/image/family-render-panel/family-render-large.jpg?v=4"/>
+               <img class="inner-zoom-image inner-zoom-image-camlink" src="/themes/custom/smalcode/image/family-render-panel/z-camlink.png?v=2"/>
+               <img class="inner-zoom-image inner-zoom-image-streamdeck" src="/themes/custom/smalcode/image/family-render-panel/z-stream-deck.png?v=2"/>
+               <img class="inner-zoom-image inner-zoom-image-4k60s" src="/themes/custom/smalcode/image/family-render-panel/z-4k60s.png?v=2"/>
+               <img class="inner-zoom-image inner-zoom-image-multimount" src="/themes/custom/smalcode/image/family-render-panel/z-multimount.png?v=2"/>
+               <div class="inner-zoom-image inner-zoom-image-keylight">
+               </div>
+               <div class="inner-zoom-image inner-zoom-image-4k60s-overlay">
+               </div>
+              </div>
+              <div class="mobile-green-screen-slide" style="background-image:url('/themes/custom/smalcode/image/family-render-panel/mobile-greenscreen-slide.jpg?v=4');">
+              </div>
+              <div class="desktop-green-screen-slide" style="background-image:url('/themes/custom/smalcode/image/family-render-panel/background-greenscree-desktop.jpg?v=4');">
+              </div>
+             </div>
+             <div class="navigation">
+              <div class="maxWidth appendTarget">
+              </div>
+             </div>
+             <div class="text-slides">
+              <div class="maxWidth">
+               <div class="rel">
+                <div class="text-slide active" data-id="d-wave3">
+                 <h1>
+                  WAVE:3
+                 </h1>
+                 <h2>
+                  Premium Microphone &amp; Digital Mixing Solution
+                 </h2>
+                 <p>
+                  Wave:3 is a premium microphone and digital mixing solution that fuses plug and play convenience with broadcast-grade circuitry.
+                 </p>
+                 <div class="btn-pre-wrap">
+                  <a href="/en/wave-3">
+                   DISCOVER
+                  </a>
+                 </div>
+                </div>
+                <div class="text-slide active" data-id="d-4k60 s">
+                 <h1>
+                  4K60 S+
+                 </h1>
+                 <h2>
+                  Capture 4K HDR. Anywhere.
+                 </h2>
+                 <p>
+                  4K60 S+ sports 4K60 HDR10 capture and zero-lag passthrough, an SD card slot for standalone recording, and compatibility with leading PC broadcasting software.
+                 </p>
+                 <div class="btn-pre-wrap">
+                  <a href="/en/game-capture-4k60-s-plus">
+                   DISCOVER
+                  </a>
+                 </div>
+                </div>
+                <div class="text-slide active" data-id="d-cam link 4k">
+                 <h1>
+                  CAM LINK 4K
+                 </h1>
+                 <h2>
+                  Unleash Your Camera
+                 </h2>
+                 <div class="desktop">
+                  <p>
+                   With Cam Link 4K, use your DSLR, camcorder or action cam as a webcam on your PC or Mac. And broadcast live via any platform.
+                  </p>
+                 </div>
+                 <div class="mobile">
+                  <p>
+                   With Cam Link 4K, use your DSLR, camcorder or action cam as a webcam on your PC or Mac. And broadcast live via any platform.
+                  </p>
+                 </div>
+                 <div class="btn-pre-wrap">
+                  <a href="/en/cam-link-4k">
+                   Discover
+                  </a>
+                 </div>
+                </div>
+                <div class="text-slide active" data-id="d-stream deck">
+                 <h1>
+                  STREAM DECK
+                 </h1>
+                 <h2>
+                  Evolve Your Content
+                 </h2>
+                 <div class="desktop">
+                  <p>
+                   Stream Deck features 15 customizable LCD keys that let you instantly trigger unlimited actions, so you can focus on what matters most: your audience.
+                  </p>
+                 </div>
+                 <div class="mobile">
+                  <p>
+                   Stream Deck features 15 customizable LCD keys that let you instantly trigger unlimited actions.
+                  </p>
+                 </div>
+                 <div class="btn-pre-wrap">
+                  <a href="/en/stream-deck">
+                   DISCOVER
+                  </a>
+                 </div>
+                </div>
+                <div class="text-slide active" data-id="d-green screen">
+                 <h1>
+                  GREEN SCREEN
+                 </h1>
+                 <h2>
+                  Collapsible Chroma Key Panel
+                 </h2>
+                 <p>
+                  With Green Screen, set the stage for truly immersive broadcasting in seconds.
+                 </p>
+                 <div class="btn-pre-wrap">
+                  <a href="/en/green-screen">
+                   DISCOVER
+                  </a>
+                 </div>
+                </div>
+                <div class="text-slide active" data-id="d-key light">
+                 <h1>
+                  KEY LIGHT
+                 </h1>
+                 <h2>
+                  Illuminate on command
+                 </h2>
+                 <p>
+                 </p>
+                 <p>
+                  Solid, space-saving and app-enabled, Elgato Key Light sets the bar for high-end studio lighting.
+                 </p>
+                 <div class="btn-pre-wrap">
+                  <a href="/en/key-light">
+                   Discover
+                  </a>
+                 </div>
+                </div>
+                <div class="text-slide active" data-id="d-multi mount">
+                 <h1>
+                  MULTI MOUNT
+                 </h1>
+                 <h2>
+                  Modular Rigging System
+                 </h2>
+                 <p>
+                  Multi Mount lets you position your camera, light or phone at any angle, while keeping your workspace tidy and your workflow optimal.
+                 </p>
+                 <div class="btn-pre-wrap">
+                  <a href="/en/multi-mount-system">
+                   Discover
+                  </a>
+                 </div>
+                </div>
+                <div class="text-slide active" data-id="d-light strip">
+                 <h1>
+                  Light Strip
+                 </h1>
+                 <h2>
+                  Illuminate on Command
+                 </h2>
+                 <p>
+                  Elgato Light Strip features ultra-bright RGBWW LEDs to provide maximum scope for color blending and warm to cold white you can work with.
+                 </p>
+                 <div class="btn-pre-wrap">
+                  <a href="/en/light-strip">
+                   DISCOVER
+                  </a>
+                 </div>
+                </div>
+                <div class="text-slide active" data-id="d-wave panels">
+                 <h1>
+                  Wave Panels
+                 </h1>
+                 <h2>
+                  Acoustic Treatment Foam
+                 </h2>
+                 <p>
+                  With dual density foam construction, proprietary EasyClick Frames and a modular design, Wave Panels transform any space into a professional acoustic environment.
+                 </p>
+                 <div class="btn-pre-wrap">
+                  <a href="/en/wave-panels">
+                   DISCOVER
+                  </a>
+                 </div>
+                </div>
+               </div>
+              </div>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div id="overview">
+      </div>
+      <section class="three-tiles-with-hover">
+       <div class="wrap clearfix">
+        <div class="item-wrap">
+         <a href="/en/game-capture-hd60-s">
+          <div class="image">
+           <img alt="" height="807" src="/sites/default/files/2019-01/hd60s.png" width="1176"/>
+          </div>
+          <div class="title-text-wrap">
+           <div class="title">
+            <h5>
+             HD60 S
+            </h5>
+           </div>
+           <div class="text">
+            <h4>
+            </h4>
+            <p>
+             Stream and Record. Instantly.
+            </p>
+           </div>
+          </div>
+         </a>
+        </div>
+        <div class="item-wrap">
+         <a href="/en/stream-deck">
+          <div class="image">
+           <img alt="" height="1176" src="/sites/default/files/2017-10/menu_Streamdeck_1200px-min.png" width="1600"/>
+          </div>
+          <div class="title-text-wrap">
+           <div class="title">
+            <h5>
+             STREAM DECK
+            </h5>
+           </div>
+           <div class="text">
+            <h4>
+            </h4>
+            <p>
+             Evolve Your Content
+            </p>
+           </div>
+          </div>
+         </a>
+        </div>
+        <div class="item-wrap">
+         <a href="/en/green-screen">
+          <div class="image">
+           <img alt="" height="789" src="/sites/default/files/2017-10/greenscreen_landingpage-min.png" width="1150"/>
+          </div>
+          <div class="title-text-wrap">
+           <div class="title">
+            <h5>
+             GREEN SCREEN
+            </h5>
+           </div>
+           <div class="text">
+            <h4>
+            </h4>
+            <p>
+             Collapsible Chroma Key Panel
+            </p>
+           </div>
+          </div>
+         </a>
+        </div>
+       </div>
+      </section>
+      <div class="panel panel-newsletter panel-newsletter-custom">
+       <div class="wrap maxWidth">
+        <div class="row">
+         <div class="col-12">
+          <h2 class="panel-title">
+           Stay ahead of the game
+          </h2>
+         </div>
+        </div>
+        <div class="row">
+         <div class="col-12">
+          <p class="panel-subtitle">
+           Get tech news and special deals delivered to your inbox.
+          </p>
+         </div>
+        </div>
+        <div class="mailchimp-newsletter-style-1">
+         <form id="mc-embedded-subscribe-form-2">
+          <div class="mc-field-wrapper" id="mc_embed_signup_scroll-2">
+           <div class="mc-field-group">
+            <input class="email" name="EMAIL" placeholder="Email Address" required="" type="email" value=""/>
+           </div>
+           <input class="button form-actions form-submit" id="mc-embedded-subscribe-2" name="subscribe" type="submit" value="I'M IN"/>
+          </div>
+         </form>
+         <div class="clear" id="mce-responses-2">
+          <div class="response" id="mce-error-response-2" style="display:none">
+          </div>
+          <div class="response" id="mce-success-response-2" style="display:none">
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="panel-2-slideshow">
+       <div id="slider">
+        <div role="article">
+         <div class="slide">
+          <div class="background" style="background-image:url('https://www.elgato.com/sites/default/files/styles/fullscreen/public/2017-02/Chaos.jpg?itok=Ngn3U7GJ'); background-position: right top;">
+          </div>
+          <div class="blue-background">
+          </div>
+          <div class="slider-text-container">
+           <div class="rel">
+            <div class="slide-text-box">
+             <h3 class="quote-text">
+             </h3>
+             <p>
+              “I've been with Elgato since Day 1. In my line of work, trusting your capture device is imperative and in my mind there is only one option. Elgato Game Capture.”
+             </p>
+             <div class="quote-caption">
+              - Chaosxsilencer -
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div role="article">
+         <div class="slide">
+          <div class="background" style="background-image:url('https://www.elgato.com/sites/default/files/styles/fullscreen/public/2017-02/ChuBoi2.jpg?itok=-PVMlgG5'); background-position: right top;">
+          </div>
+          <div class="blue-background">
+          </div>
+          <div class="slider-text-container">
+           <div class="rel">
+            <div class="slide-text-box">
+             <h3 class="quote-text">
+             </h3>
+             <p>
+              “I use the HD60 Pro daily and often forget it's there. That's a good thing. Great for streaming, great for recording, and no issues!”
+             </p>
+             <div class="quote-caption">
+              - ChuBoi -
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div role="article">
+         <div class="slide">
+          <div class="background" style="background-image:url('https://www.elgato.com/sites/default/files/styles/fullscreen/public/2017-04/Drift0r_Background.jpg?itok=X21_etTZ'); background-position: right top;">
+          </div>
+          <div class="blue-background">
+          </div>
+          <div class="slider-text-container">
+           <div class="rel">
+            <div class="slide-text-box">
+             <h3 class="quote-text">
+             </h3>
+             <p>
+              “I’ve used Elgato capture cards and software since 2010. They work great and are used for every single video on my channel.”
+             </p>
+             <div class="quote-caption">
+              - Drift0r -
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div role="article">
+         <div class="slide">
+          <div class="background" style="background-image:url('https://www.elgato.com/sites/default/files/styles/fullscreen/public/2017-02/lazarbeam.jpg?itok=U6Rlz2Mk'); background-position: left top;">
+          </div>
+          <div class="blue-background">
+          </div>
+          <div class="slider-text-container">
+           <div class="rel">
+            <div class="slide-text-box">
+             <h3 class="quote-text">
+             </h3>
+             <p>
+              “Honestly it’s pretty simple, if you want to be the best, you get an Elgato.”
+             </p>
+             <div class="quote-caption">
+              - Lazarbeam -
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div role="article">
+         <div class="slide">
+          <div class="background" style="background-image:url('https://www.elgato.com/sites/default/files/styles/fullscreen/public/2017-04/Tobijizzle_Background.jpg?itok=O0yu-oIE'); background-position: right top;">
+          </div>
+          <div class="blue-background">
+          </div>
+          <div class="slider-text-container">
+           <div class="rel">
+            <div class="slide-text-box">
+             <h3 class="quote-text">
+             </h3>
+             <p>
+              “If you want to have the best quality videos, there is no other choice.”
+             </p>
+             <div class="quote-caption">
+              - Tobijizzle -
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div role="article">
+         <div class="slide">
+          <div class="background" style="background-image:url('https://www.elgato.com/sites/default/files/styles/fullscreen/public/2017-08/FinalFantasy-optimezed-min.jpg?itok=u-EqJUNd'); background-position: center center;">
+          </div>
+          <div class="blue-background">
+          </div>
+          <div class="slider-text-container">
+           <div class="rel">
+            <div class="slide-text-box">
+             <h3 class="quote-text">
+             </h3>
+             <p>
+              “Elgato products and support have been instrumental in setting up our presence on Twitch and in expanding our collaboration with press and content creators.”
+             </p>
+             <div class="quote-caption">
+              - Square Enix -
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div role="article">
+         <div class="slide">
+          <div class="background" style="background-image:url('https://www.elgato.com/sites/default/files/styles/fullscreen/public/2017-03/bf1-review-screen-1.0.jpg?itok=ewjTUP5H'); background-position: center center;">
+          </div>
+          <div class="blue-background">
+          </div>
+          <div class="slider-text-container">
+           <div class="rel">
+            <div class="slide-text-box">
+             <h3 class="quote-text">
+             </h3>
+             <p>
+              “An incredibly smart and innovative product which paved the way for the explosion of gaming videos and livestreams.”
+             </p>
+             <div class="quote-caption">
+              - Markus Friske, Director of Content Creation, EA -
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div role="article">
+         <div class="slide">
+          <div class="background" style="background-image:url('https://www.elgato.com/sites/default/files/styles/fullscreen/public/2018-01/HollieBB-Background2.jpg?itok=-Bvu-FSj'); background-position: center center;">
+          </div>
+          <div class="blue-background">
+          </div>
+          <div class="slider-text-container">
+           <div class="rel">
+            <div class="slide-text-box">
+             <h3 class="quote-text">
+             </h3>
+             <p>
+              “To me, broadcasting is all about having those special little moments with your chat, and knowing how to enhance them for the best entertainment. With Stream Deck I don’t waste those moments by searching through my OBS to find my scenes; I just press a button already in front of me. Seamless.”
+             </p>
+             <div class="quote-caption">
+              - HollieBB -
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div role="article">
+         <div class="slide">
+          <div class="background" style="background-image:url('https://www.elgato.com/sites/default/files/styles/fullscreen/public/2018-01/Nagura-Background.jpg?itok=yPtEbLCx'); background-position: center center;">
+          </div>
+          <div class="blue-background">
+          </div>
+          <div class="slider-text-container">
+           <div class="rel">
+            <div class="slide-text-box">
+             <h3 class="quote-text">
+             </h3>
+             <p>
+              "Since I've picked up the Stream Deck, I don't think I can go back. Tons of features and shortcuts like on the fly overlay adjustments and chat macros make it an important tool in my setup. I'd recommend it to anyone who wants to take streaming a step further!"
+             </p>
+             <div class="quote-caption">
+              - Nagura -
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div role="article">
+         <div class="slide">
+          <div class="background" style="background-image:url('https://www.elgato.com/sites/default/files/styles/fullscreen/public/2017-02/CallofDuty.jpg?itok=V5d0bfOP'); background-position: center center;">
+          </div>
+          <div class="blue-background">
+          </div>
+          <div class="slider-text-container">
+           <div class="rel">
+            <div class="slide-text-box">
+             <h3 class="quote-text">
+             </h3>
+             <p>
+              “Elgato HD60 S has made our activations so much easier with a single device that's perfect for VOD capture and live streaming.”
+             </p>
+             <div class="quote-caption">
+              - Alan Johnson, Call of Duty Public Relations, Activison -
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div role="article">
+         <div class="slide">
+          <div class="background" style="background-image:url('https://www.elgato.com/sites/default/files/styles/fullscreen/public/2017-02/PS-VR1.jpg?itok=MG5cwkb9'); background-position: left bottom;">
+          </div>
+          <div class="blue-background">
+          </div>
+          <div class="slider-text-container">
+           <div class="rel">
+            <div class="slide-text-box">
+             <h3 class="quote-text">
+             </h3>
+             <p>
+              “If you're creating content or streaming from your PlayStation VR, you should have an Elgato capture card.”
+             </p>
+             <div class="quote-caption">
+              - Richard Devine, VRHeads.com -
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div role="article">
+         <div class="slide">
+          <div class="background" style="background-image:url('https://www.elgato.com/sites/default/files/styles/fullscreen/public/2017-04/TSquared_Background.jpg?itok=AZo6yeGj'); background-position: center center;">
+          </div>
+          <div class="blue-background">
+          </div>
+          <div class="slider-text-container">
+           <div class="rel">
+            <div class="slide-text-box">
+             <h3 class="quote-text">
+             </h3>
+             <p>
+              “Elgato has a great combination of performance, reliability &amp; they support Esports so you really can't ask for much more from a capture card company.”
+             </p>
+             <div class="quote-caption">
+              - TSquared -
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div role="article">
+         <div class="slide">
+          <div class="background" style="background-image:url('https://www.elgato.com/sites/default/files/styles/fullscreen/public/2017-04/AliA_Background.jpg?itok=6mcOw7UN'); background-position: right top;">
+          </div>
+          <div class="blue-background">
+          </div>
+          <div class="slider-text-container">
+           <div class="rel">
+            <div class="slide-text-box">
+             <h3 class="quote-text">
+             </h3>
+             <p>
+              “I’ve used the HD60 to record countless hours of gameplay for my YouTube channel. It’s an awesome tool that has been a key component of my setup for years now.”
+             </p>
+             <div class="quote-caption">
+              - AliA -
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div role="article">
+         <div class="slide">
+          <div class="background" style="background-image:url('https://www.elgato.com/sites/default/files/styles/fullscreen/public/2017-04/Vikkstar123_Background.jpg?itok=U5Lbrn3I'); background-position: left top;">
+          </div>
+          <div class="blue-background">
+          </div>
+          <div class="slider-text-container">
+           <div class="rel">
+            <div class="slide-text-box">
+             <h3 class="quote-text">
+             </h3>
+             <p>
+              “When people ask what equipment I recommend, the Elgato HD60 is always top of the list.”
+             </p>
+             <div class="quote-caption">
+              - Vikkstar123 -
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+       <div id="slider-navi-bottom">
+        <div id="slider-navi">
+         <div class="image-wrap" style="background-image:url('/sites/default/files/2016-12/photo_1.jpg');">
+          <img alt="" height="100" src="/sites/default/files/styles/slide_logo_200_width_/public/2016-12/photo_1.jpg?itok=P1w-BaRA" width="100"/>
+         </div>
+         <div class="image-wrap" style="background-image:url('/sites/default/files/2016-12/photo_2.jpg');">
+          <img alt="" height="100" src="/sites/default/files/styles/slide_logo_200_width_/public/2016-12/photo_2.jpg?itok=o5JICzQs" width="100"/>
+         </div>
+         <div class="image-wrap" style="background-image:url('/sites/default/files/2016-12/photo_3.jpg');">
+          <img alt="" height="100" src="/sites/default/files/styles/slide_logo_200_width_/public/2016-12/photo_3.jpg?itok=-3pUs4r8" width="100"/>
+         </div>
+         <div class="image-wrap" style="background-image:url('/sites/default/files/2016-12/photo_4.jpg');">
+          <img alt="" height="100" src="/sites/default/files/styles/slide_logo_200_width_/public/2016-12/photo_4.jpg?itok=-LWW5Ad3" width="100"/>
+         </div>
+         <div class="image-wrap" style="background-image:url('/sites/default/files/2016-12/photo_5.jpg');">
+          <img alt="" height="100" src="/sites/default/files/styles/slide_logo_200_width_/public/2016-12/photo_5.jpg?itok=3hBnmkjb" width="100"/>
+         </div>
+         <div class="image-wrap" style="background-image:url('/sites/default/files/2017-02/square%20enix_0.jpg');">
+          <img alt="" height="100" src="/sites/default/files/styles/slide_logo_200_width_/public/2017-02/square%20enix_0.jpg?itok=HtUK1bsn" width="100"/>
+         </div>
+         <div class="image-wrap" style="background-image:url('/sites/default/files/2017-04/EA-logo.jpg');">
+          <img alt="" height="100" src="/sites/default/files/styles/slide_logo_200_width_/public/2017-04/EA-logo.jpg?itok=hGrxXXF8" width="100"/>
+         </div>
+         <div class="image-wrap" style="background-image:url('/sites/default/files/2018-01/HollieBB_0.jpg');">
+          <img alt="" height="200" src="/sites/default/files/styles/slide_logo_200_width_/public/2018-01/HollieBB_0.jpg?itok=NmYpy5Hg" width="200"/>
+         </div>
+         <div class="image-wrap" style="background-image:url('/sites/default/files/2018-01/Nagura_0.jpg');">
+          <img alt="" height="192" src="/sites/default/files/styles/slide_logo_200_width_/public/2018-01/Nagura_0.jpg?itok=ZuWdICWF" width="200"/>
+         </div>
+         <div class="image-wrap" style="background-image:url('/sites/default/files/2017-02/call%20of%20duty.jpg');">
+          <img alt="" height="100" src="/sites/default/files/styles/slide_logo_200_width_/public/2017-02/call%20of%20duty.jpg?itok=j6fgS5b0" width="100"/>
+         </div>
+         <div class="image-wrap" style="background-image:url('/sites/default/files/2017-02/vr%20heads.jpg');">
+          <img alt="" height="100" src="/sites/default/files/styles/slide_logo_200_width_/public/2017-02/vr%20heads.jpg?itok=Suz2R-Fs" width="100"/>
+         </div>
+         <div class="image-wrap" style="background-image:url('/sites/default/files/2016-12/photo_6.jpg');">
+          <img alt="" height="100" src="/sites/default/files/styles/slide_logo_200_width_/public/2016-12/photo_6.jpg?itok=oFgGxmLy" width="100"/>
+         </div>
+         <div class="image-wrap" style="background-image:url('/sites/default/files/2016-12/photo.jpg');">
+          <img alt="" height="100" src="/sites/default/files/styles/slide_logo_200_width_/public/2016-12/photo.jpg?itok=cMfqV7y8" width="100"/>
+         </div>
+         <div class="image-wrap" style="background-image:url('/sites/default/files/2016-12/photo_7.jpg');">
+          <img alt="" height="100" src="/sites/default/files/styles/slide_logo_200_width_/public/2016-12/photo_7.jpg?itok=I50a1sAs" width="100"/>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="panel-connect-with-team-elgato panel bg-gradient-2">
+       <div class="bottom-wrap maxWidth">
+        <div class="wrap">
+         <div class="row">
+          <div class="col-12">
+           <h2 class="panel-title">
+            Connect with #TeamElgato
+           </h2>
+          </div>
+         </div>
+         <div class="row">
+          <div class="col-12">
+           <div class="social-icons clearfix">
+            <div class="floating-element">
+             <a data-id="Youtube" href="https://www.youtube.com/c/elgato" target="_blank">
+              <div class="icon-wrap">
+               <span class="icon-social-youtube">
+                <svg height="43" viewbox="0 0 60 43" width="60" xmlns="http://www.w3.org/2000/svg">
+                 <path d="M100.805711,37.8827342 L100.802951,21.0243301 L117.015214,29.4829022 L100.805711,37.8827342 Z M136.400792,18.1038319 C136.400792,18.1038319 135.814508,13.9691761 134.015593,12.1484098 C131.73401,9.75862818 129.176584,9.74682143 128.00378,9.60690255 C119.607649,9 107.013011,9 107.013011,9 L106.98693,9 C106.98693,9 94.3925864,9 85.9961613,9.60690255 C84.8232981,9.74682143 82.2668121,9.75862818 79.9844074,12.1484098 C78.1854336,13.9691761 77.60003,18.1038319 77.60003,18.1038319 C77.60003,18.1038319 77,22.9592285 77,27.8146838 L77,32.3666292 C77,37.221967 77.60003,42.0773636 77.60003,42.0773636 C77.60003,42.0773636 78.1854336,46.2120781 79.9844074,48.0328445 C82.2668121,50.4225674 85.264906,50.3470276 86.6001856,50.5974953 C91.4003078,51.0577826 107.000029,51.2002273 107.000029,51.2002273 C107.000029,51.2002273 119.607649,51.1811955 128.00378,50.574293 C129.176584,50.4344328 131.73401,50.4225674 134.015593,48.0328445 C135.814508,46.2120781 136.400792,42.0773636 136.400792,42.0773636 C136.400792,42.0773636 137,37.221967 137,32.3666292 L137,27.8146838 C137,22.9592285 136.400792,18.1038319 136.400792,18.1038319 L136.400792,18.1038319 Z" fill="#FFFFFF" fill-rule="evenodd" transform="translate(-77 -9)">
+                 </path>
+                </svg>
+               </span>
+              </div>
+             </a>
+            </div>
+            <div class="floating-element">
+             <a data-id="Facebook" href="https://www.facebook.com/Elgato/" target="_blank">
+              <div class="icon-wrap fb-icon">
+               <span class="icon-social-facebook">
+                <svg height="60" viewbox="0 0 31 60" width="31" xmlns="http://www.w3.org/2000/svg">
+                 <path d="M30.0923491,31.8455248 L19.0558185,31.8455248 L19.0558185,60 L7.80765189,60 L7.80765189,31.8455248 L0,31.8455248 L0,21.7074057 L7.80765189,21.7074057 L7.80765189,13.0495229 C7.80765189,6.24806906 12.4236043,0 23.0540227,0 C27.3553811,0 30.5413606,0.392548841 30.5413606,0.392548841 L30.2896854,9.85733757 C30.2896854,9.85733757 27.043647,9.8273512 23.5001742,9.8273512 C19.6678469,9.8273512 19.0558185,11.51204 19.0558185,14.3062244 L19.0558185,21.7074057 L30.5956996,21.7074057 L30.0923491,31.8455248 Z" fill="#FFFFFF" fill-rule="evenodd">
+                 </path>
+                </svg>
+               </span>
+              </div>
+             </a>
+            </div>
+            <div class="floating-element">
+             <a data-id="Twitch" href="https://www.twitch.tv/elgato" target="_blank">
+              <div class="icon-wrap">
+               <span class="icon-social-twitch">
+                <svg height="60" viewbox="0 0 58 60" width="58" xmlns="http://www.w3.org/2000/svg">
+                 <path d="M177.088423,0 L173.142857,10.4216901 L173.142857,52.1034566 L187.603412,52.1034566 L187.603412,59.9234694 L195.498174,59.9234694 L203.384869,52.1034566 L215.218543,52.1034566 L231,36.4778128 L231,0 L177.088423,0 Z M182.34501,5.20754923 L225.741195,5.20754923 L225.741195,33.8671469 L216.534,42.9872992 L202.071429,42.9872992 L194.18675,50.7965258 L194.18675,42.9872992 L182.34501,42.9872992 L182.34501,5.20754923 Z M195.905612,30.994898 L201.14131,30.994898 L201.14131,15.497449 L195.905612,15.497449 L195.905612,30.994898 Z M210.301221,30.994898 L215.535714,30.994898 L215.535714,15.497449 L210.301221,15.497449 L210.301221,30.994898 Z" fill="#FEFEFE" fill-rule="evenodd" transform="translate(-173)">
+                 </path>
+                </svg>
+               </span>
+              </div>
+             </a>
+            </div>
+            <div class="floating-element">
+             <a data-id="Twitter" href="https://twitter.com/elgato" target="_blank">
+              <div class="icon-wrap">
+               <span class="icon-social-twitter">
+                <svg height="49" viewbox="0 0 60 49" width="60" xmlns="http://www.w3.org/2000/svg">
+                 <path d="M320.893522,19.765121 C320.893522,36.0634674 308.511831,54.8571429 285.872188,54.8571429 C278.919123,54.8571429 272.448991,52.8165701 267,49.3155302 C267.965865,49.4292192 268.943367,49.4875213 269.938324,49.4875213 C275.704422,49.4875213 281.01377,47.516911 285.226338,44.208268 C279.84135,44.1091544 275.291311,40.5410672 273.726144,35.6436925 C274.479635,35.7865326 275.250582,35.8652404 276.041893,35.8652404 C277.164856,35.8652404 278.252909,35.713655 279.285687,35.4308899 C273.656323,34.2969144 269.411753,29.3150017 269.411753,23.3361234 L269.411753,23.1816229 C271.072925,24.1057109 272.969744,24.6595806 274.988751,24.7237129 C271.683863,22.5140641 269.513576,18.7390044 269.513576,14.4567167 C269.513576,12.1975111 270.118697,10.0782305 271.177657,8.25629049 C277.249224,15.7189567 286.320209,20.6309069 296.551978,21.1439652 C296.339604,20.240283 296.231963,19.3016195 296.231963,18.333805 C296.231963,11.521207 301.742048,6 308.540923,6 C312.081458,6 315.281614,7.49836345 317.527541,9.89457893 C320.33204,9.34070917 322.964895,8.31459257 325.344647,6.90076713 C324.42533,9.78088987 322.470326,12.1975111 319.933476,13.7250256 C322.420869,13.427685 324.794802,12.7630413 327,11.7835663 C325.350465,14.2584896 323.264546,16.4302421 320.858611,18.1676441 C320.881885,18.6952779 320.893522,19.2287419 320.893522,19.765121 Z" fill="#FFFFFF" fill-rule="evenodd" transform="translate(-267 -6)">
+                 </path>
+                </svg>
+               </span>
+              </div>
+             </a>
+            </div>
+            <div class="floating-element">
+             <a data-id="Instagram" href="https://www.instagram.com/elgato" target="_blank">
+              <div class="icon-wrap">
+               <span class="icon-social-insta">
+                <svg height="58" viewbox="0 0 58 58" width="58" xmlns="http://www.w3.org/2000/svg">
+                 <path d="M509.30934,16.6164829 C509.30934,17.8471839 508.309881,18.8465931 507.076264,18.8465931 L500.385604,18.8465931 C499.154842,18.8465931 498.155384,17.8471839 498.155384,16.6164829 L498.155384,9.92329657 C498.155384,8.69259551 499.154842,7.69318629 500.385604,7.69318629 L507.076264,7.69318629 C508.309881,7.69318629 509.30934,8.69259551 509.30934,9.92329657 L509.30934,16.6164829 Z M509.30934,50.0767034 C509.30934,51.3074045 508.309881,52.3039583 507.076264,52.3039583 L466.923736,52.3039583 C465.690119,52.3039583 464.69066,51.3074045 464.69066,50.0767034 L464.69066,25.536924 L469.742209,25.536924 C469.373837,26.9646514 469.153956,28.4580544 469.153956,30 C469.153956,39.8570303 477.143912,47.8437377 487.001428,47.8437377 C496.856088,47.8437377 504.846044,39.8570303 504.846044,30 C504.846044,28.4580544 504.629019,26.9646514 504.260647,25.536924 L509.30934,25.536924 L509.30934,50.0767034 Z M487.001428,18.8465931 C493.160947,18.8465931 498.155384,23.8379283 498.155384,30 C498.155384,36.1592162 493.160947,41.1534069 487.001428,41.1534069 C480.839053,41.1534069 475.847472,36.1592162 475.847472,30 C475.847472,23.8379283 480.839053,18.8465931 487.001428,18.8465931 L487.001428,18.8465931 Z M509.30934,1 L464.69066,1 C460.99552,1 458,3.99822765 458,7.69318629 L458,52.3039583 C458,56.0046278 460.99552,59 464.69066,59 L509.30934,59 C513.00448,59 516,56.0046278 516,52.3039583 L516,7.69318629 C516,3.99822765 513.00448,1 509.30934,1 L509.30934,1 Z" fill="#FFFFFF" fill-rule="evenodd" transform="translate(-458 -1)">
+                 </path>
+                </svg>
+               </span>
+              </div>
+             </a>
+            </div>
+            <div class="floating-element">
+             <a data-id="Reddit" href="https://www.reddit.com/r/elgato/" target="_blank">
+              <div class="icon-wrap">
+               <span class="icon-social-reddit">
+                <svg height="50" viewbox="0 0 60 50" width="60" xmlns="http://www.w3.org/2000/svg">
+                 <path d="M581.87517,54.6647566 C567.087522,54.6647566 555.058644,46.7383768 555.058644,36.9931283 C555.058644,36.3207125 555.115715,35.6534753 555.227235,34.9993836 C553.241446,33.7895929 552,31.6347155 552,29.2852438 C552,25.5853636 555.048964,22.5752275 558.793872,22.5752275 C560.467888,22.5752275 562.062852,23.1797245 563.296635,24.2596529 C567.948024,21.3112611 574.204461,19.4559433 581.105618,19.327276 L585.636614,5.66922897 L586.626383,5.89967478 C586.634046,5.90067066 586.64171,5.90286158 586.649373,5.90505251 L597.210134,8.36148135 C598.065191,6.38725589 600.049972,5 602.357618,5 C605.442479,5 607.951789,7.47933399 607.951789,10.5261184 C607.951789,13.5719069 605.442479,16.0500458 602.357618,16.0500458 C599.274774,16.0500458 596.768086,13.5762888 596.764658,10.5326912 L587.127721,8.29137164 L583.459244,19.3521729 C590.109732,19.6073165 596.116508,21.4692071 600.600516,24.3526677 C601.847407,23.2141818 603.477461,22.5762233 605.20512,22.5762233 C608.952246,22.5762233 612,25.5863595 612,29.2862396 C612,31.7526272 610.671032,33.9549084 608.547304,35.1324327 C608.644506,35.7444984 608.694922,36.3651286 608.694922,36.9931283 C608.692704,46.7383768 596.661607,54.6647566 581.87517,54.6647566 Z M557.525201,34.8988001 C557.376373,35.5843614 557.300749,36.2828692 557.300749,36.9931283 C557.300749,45.5176314 568.324733,52.4503257 581.87517,52.4503257 C595.425808,52.4503257 606.449591,45.5164364 606.449591,36.9931283 C606.449591,36.3165298 606.379613,35.6480975 606.245103,34.99301 C606.230583,34.9659222 606.219895,34.9398302 606.208803,34.9119457 C606.157379,34.7800916 606.133381,34.6436566 606.133381,34.5118025 C605.383391,31.6024491 603.337506,28.9619823 600.382719,26.8341927 C600.271198,26.7941584 600.164719,26.7358001 600.067517,26.6589184 C600.005001,26.6103196 599.951359,26.5563431 599.902152,26.4977856 C595.410481,23.4478144 588.992108,21.5351341 581.87517,21.5351341 C574.829419,21.5351341 568.466907,23.4099711 563.981891,26.4081567 C563.944583,26.4503819 563.90304,26.4904161 563.85827,26.5270644 C563.758648,26.6103196 563.647934,26.6740557 563.531977,26.7172768 C560.513868,28.8462614 558.415146,31.5038573 557.635713,34.4383068 C557.633495,34.5799205 557.602842,34.7247209 557.541536,34.8633469 C557.536091,34.8750982 557.531856,34.8882438 557.525201,34.8988001 Z M602.473777,25.6879389 C605.073634,27.742432 606.980573,30.1881053 607.956024,32.8717932 C609.077076,32.0380454 609.755879,30.7286671 609.755879,29.2852438 C609.755879,26.8071048 607.714026,24.7896583 605.202901,24.7896583 C604.204461,24.7896583 603.25321,25.109733 602.473777,25.6879389 Z M558.793872,24.7896583 C556.283755,24.7896583 554.242105,26.8071048 554.242105,29.2852438 C554.242105,30.6280836 554.847501,31.8759167 555.852395,32.7180299 C556.859709,30.0550563 558.787419,27.6287029 561.39615,25.594924 C560.639706,25.0760724 559.735443,24.7896583 558.793872,24.7896583 Z M581.996773,48.3632488 C577.50732,48.3632488 574.344618,47.3946594 572.326965,45.4019106 C571.89016,44.968306 571.89016,44.2686032 572.326965,43.8361937 C572.76498,43.4027882 573.475444,43.4027882 573.913257,43.8361937 C575.48866,45.390956 578.132278,46.1490171 581.996773,46.1490171 C585.861268,46.1490171 588.507105,45.390956 590.084524,43.8361937 C590.521329,43.4027882 591.230583,43.4027882 591.669606,43.8361937 C592.106412,44.2686032 592.106412,44.9693019 591.668598,45.4019106 C589.648929,47.3946594 586.487235,48.3632488 581.996773,48.3632488 Z M590.764679,29.7677857 C588.465556,29.7677857 586.53538,31.7395257 586.53538,34.0936034 C586.53538,36.4456031 588.465556,38.3529275 590.764679,38.3529275 C593.063802,38.3529275 594.925789,36.4456031 594.925789,34.0936034 C594.925789,31.7395257 593.062787,29.7677857 590.764679,29.7677857 Z M572.536684,29.7677857 C570.239793,29.7677857 568.31185,31.7418115 568.31185,34.0936034 C568.31185,36.4443563 570.238576,38.3529275 572.536684,38.3529275 C574.834793,38.3529275 576.697592,36.4443563 576.697592,34.0936034 C576.697592,31.7418115 574.833575,29.7677857 572.536684,29.7677857 Z" fill="#FFFFFF" fill-rule="evenodd" transform="translate(-552 -5)">
+                 </path>
+                </svg>
+               </span>
+              </div>
+             </a>
+            </div>
+            <div class="floating-element">
+             <a data-id="Discord" href="https://discord.gg/elgato" target="_blank">
+              <div class="icon-wrap">
+               <span class="icon-social-discord">
+                <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+                <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+                <svg height="100%" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;" version="1.1" viewbox="0 0 48 50" width="100%" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:serif="http://www.serif.com/" xmlns:xlink="http://www.w3.org/1999/xlink">
+                 <g id="surface1" transform="matrix(1.08718,0,0,1.06246,-2.10403,-0.45515)">
+                  <path d="M40,12C40,12 35.414,8.41 30,8L29.512,8.977C34.406,10.176 36.652,11.89 39,14C34.953,11.934 30.96,10 24,10C17.04,10 13.047,11.934 9,14C11.348,11.89 14.02,9.984 18.488,8.977L18,8C12.32,8.535 8,12 8,12C8,12 2.879,19.426 2,34C7.16,39.953 15,40 15,40L16.64,37.816C13.856,36.848 10.716,35.121 8,32C11.238,34.45 16.125,37 24,37C31.875,37 36.762,34.45 40,32C37.285,35.121 34.145,36.848 31.36,37.816L33,40C33,40 40.84,39.953 46,34C45.121,19.426 40,12 40,12ZM17.5,30C15.566,30 14,28.21 14,26C14,23.79 15.566,22 17.5,22C19.434,22 21,23.79 21,26C21,28.21 19.434,30 17.5,30ZM30.5,30C28.566,30 27,28.21 27,26C27,23.79 28.566,22 30.5,22C32.434,22 34,23.79 34,26C34,28.21 32.434,30 30.5,30Z" fill="#FFFFFF" style="fill-rule:nonzero;">
+                  </path>
+                 </g>
+                </svg>
+               </span>
+              </div>
+             </a>
+            </div>
+           </div>
+          </div>
+         </div>
+         <div class="row">
+          <div class="col-12">
+           <div data-bv-display-tag="homepage" data-bv-show="curations" data-bv-widget="bv-columns">
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </article>
+     <div>
+      <div class="js-view-dom-id-67e03ab2bdc2cf33e458fc21b85165a79319de1547921f252d62ef8b62547938 view-wrap">
+       <div class="views-row">
+        <div class="global-shop-warning-messages" style="display:none;">
+         <div class="ad-block-title error-title">
+          DISABLE AD BLOCKER
+         </div>
+         <div class="ad-block-text error-text">
+          <p>
+           Your ad blocker may be compromising the Elgato Store's performance. For the best shopping experience, please whitelist this site.
+          </p>
+         </div>
+         <div class="system-title error-title">
+          UNDER MAINTENANCE
+         </div>
+         <div class="system-text error-text">
+          <p>
+           The store will reopen shortly. Thanks for your patience.
+          </p>
+         </div>
+         <img class="shop-warning-img" src="/themes/custom/smalcode/image/shop-warning.png"/>
+        </div>
+       </div>
+      </div>
+     </div>
+    </main>
+    <footer id="footer">
+     <div>
+      <div class="js-view-dom-id-7e295b2e9b37efb556facc331449db63adae6653f6e9a9155826ff87608bc8ab view-wrap">
+       <div class="views-row">
+        <div class="wrap">
+         <div class="row">
+          <div class="col-3">
+           <div class="title-content-wrap">
+            <div class="title">
+             <div class="menu-title">
+              Products
+             </div>
+            </div>
+            <div class="content">
+             <div class="link">
+              <a href="/en/wave-3">
+               Audio
+              </a>
+             </div>
+             <div class="link">
+              <a href="/en/capture-card-selector">
+               Capture
+              </a>
+             </div>
+             <div class="link">
+              <a href="/en/stream-deck">
+               Stream Deck
+              </a>
+             </div>
+             <div class="link">
+              <a href="/en/ring-light">
+               Ring Light
+              </a>
+             </div>
+             <div class="link">
+              <a href="/en/green-screen">
+               Green Screen
+              </a>
+             </div>
+             <div class="link">
+              <a href="/en/multi-mount-system">
+               Multi Mount
+              </a>
+             </div>
+             <div class="link">
+              <a href="/en/dock/thunderbolt-3">
+               Dock
+              </a>
+             </div>
+            </div>
+           </div>
+          </div>
+          <div class="col-3">
+           <div class="title-content-wrap">
+            <div class="title">
+             <div class="menu-title">
+              Support
+             </div>
+            </div>
+            <div class="content">
+             <div class="link">
+              <a href="https://help.elgato.com/hc/search?query=popular%20topics%20faq">
+               FAQ
+              </a>
+             </div>
+             <div class="link">
+              <a href="/en/contact">
+               Contact
+              </a>
+             </div>
+             <div class="link">
+              <a href="/en/downloads">
+               Downloads
+              </a>
+             </div>
+             <div class="link">
+              <a href="/en/return-refund-policy">
+               Returns &amp; Refunds
+              </a>
+             </div>
+             <div class="link">
+              <a href="/en/terms-of-sale">
+               Terms of Sale
+              </a>
+             </div>
+             <div class="link">
+              <a href="/en/terms-of-use">
+               Terms of Use
+              </a>
+             </div>
+             <div class="link">
+              <a href="/en/oss">
+               Open Source
+              </a>
+             </div>
+            </div>
+           </div>
+          </div>
+          <div class="col-3">
+           <div class="title-content-wrap">
+            <div class="title">
+             <div class="menu-title">
+              Company
+             </div>
+            </div>
+            <div class="content">
+             <div class="link">
+              <a href="/en/about">
+               About
+              </a>
+             </div>
+             <div class="link">
+              <a href="/en/careers" target="_blank">
+               Careers
+              </a>
+             </div>
+             <div class="link">
+              <a href="/en/business-solutions" target="_blank">
+               B2B Inquiries
+              </a>
+             </div>
+             <div class="link">
+              <a href="/en/media-room">
+               Media Room
+              </a>
+             </div>
+             <div class="link">
+              <a href="https://www.corsair.com/ww/en/press?sort=DESC&amp;search=elgato" target="_blank">
+               Newsroom
+              </a>
+             </div>
+             <div class="link">
+              <a href="/en/environment" target="_blank">
+               Environment
+              </a>
+             </div>
+             <div class="link">
+              <a href="/en/imprint">
+               Imprint
+              </a>
+             </div>
+            </div>
+           </div>
+          </div>
+          <div class="col-3">
+           <div class="title-content-wrap">
+            <div class="title">
+             <div class="menu-title">
+              Connect
+             </div>
+            </div>
+            <div class="content">
+             <div class="link">
+              <a href="/en/partnerships">
+               Partnerships
+              </a>
+             </div>
+             <div class="social-wrapper clearfix">
+              <div class="social-link">
+               <a href="https://www.facebook.com/Elgato">
+                <img alt="" height="40" src="/sites/default/files/2017-11/facebook_0.png" width="40"/>
+               </a>
+              </div>
+              <div class="social-link">
+               <a href="http://www.twitter.com/elgato">
+                <img alt="" height="40" src="/sites/default/files/2017-11/twitter_0.png" width="40"/>
+               </a>
+              </div>
+              <div class="social-link">
+               <a href="https://www.youtube.com/c/elgato">
+                <img alt="" height="40" src="/sites/default/files/2017-11/youtube_0.png" width="40"/>
+               </a>
+              </div>
+              <div class="social-link">
+               <a href="https://www.instagram.com/elgato/">
+                <img alt="" height="40" src="/sites/default/files/2018-06/instg-logo.png" width="40"/>
+               </a>
+              </div>
+              <div class="social-link">
+               <a href="https://www.reddit.com/r/Elgato">
+                <img alt="" height="40" src="/sites/default/files/2018-06/reddit40.png" width="40"/>
+               </a>
+              </div>
+             </div>
+             <div class="newsletter-wrap">
+              <div class="link">
+               <a href="#" style="pointer-events:none;">
+                Newsletter
+               </a>
+              </div>
+              <form action="https://elgato.us4.list-manage.com/subscribe/post?u=c40191adb19eff7dbba18a6bc&amp;id=ec6a289c9c" class="validate" id="mc-embedded-subscribe-form" method="post" name="mc-embedded-subscribe-form" novalidate="" target="_blank">
+               <div id="mc_embed_signup_scroll">
+                <div class="input-wrap-newsletter">
+                 <div class="mc-field-group">
+                  <input class="email" name="EMAIL" placeholder="Your Email" required="" type="email" value=""/>
+                  <input class="button" id="mc-embedded-subscribe" name="subscribe" type="submit" value="Subscribe"/>
+                 </div>
+                </div>
+                <div class="clear" id="mce-responses">
+                 <div class="response" id="mce-error-response" style="display:none">
+                 </div>
+                 <div class="response" id="mce-success-response" style="display:none">
+                 </div>
+                </div>
+                <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                <div aria-hidden="true" style="position: absolute; left: -5000px;">
+                 <input name="b_c40191adb19eff7dbba18a6bc_ec6a289c9c" tabindex="-1" type="text" value=""/>
+                </div>
+               </div>
+               <script src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js" type="text/javascript">
+               </script>
+               <script type="text/javascript">
+                (function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';fnames[1]='FNAME';ftypes[1]='text';fnames[2]='LNAME';ftypes[2]='text';fnames[3]='ADDRESS';ftypes[3]='address';fnames[4]='PHONE';ftypes[4]='phone';fnames[5]='BIRTHDAY';ftypes[5]='birthday';}(jQuery));var $mcj = jQuery.noConflict(true);
+               </script>
+              </form>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+         <div class="bottom-row clearfix">
+          <div class="link">
+           <a href="/en/data-protection">
+            Privacy Policy
+           </a>
+          </div>
+          <div class="link lang-men-point">
+           <div class="lang-men-inner desktop">
+            <div class="text">
+             Languages
+            </div>
+            <div class="lang-sub">
+             <div class="submenu-inner">
+              <ul class="links">
+               <li class="en is-active" data-drupal-link-system-path="&lt;front&gt;" hreflang="en">
+                <a class="language-link is-active" data-drupal-link-system-path="&lt;front&gt;" href="/en" hreflang="en">
+                 EN
+                </a>
+               </li>
+               <li class="de" data-drupal-link-system-path="&lt;front&gt;" hreflang="de">
+                <a class="language-link" data-drupal-link-system-path="&lt;front&gt;" href="/de" hreflang="de">
+                 DE
+                </a>
+               </li>
+               <li class="fr" data-drupal-link-system-path="&lt;front&gt;" hreflang="fr">
+                <a class="language-link" data-drupal-link-system-path="&lt;front&gt;" href="/fr" hreflang="fr">
+                 FR
+                </a>
+               </li>
+               <li class="it" data-drupal-link-system-path="&lt;front&gt;" hreflang="it">
+                <a class="language-link" data-drupal-link-system-path="&lt;front&gt;" href="/it" hreflang="it">
+                 IT
+                </a>
+               </li>
+               <li class="es" data-drupal-link-system-path="&lt;front&gt;" hreflang="es">
+                <a class="language-link" data-drupal-link-system-path="&lt;front&gt;" href="/es" hreflang="es">
+                 ES
+                </a>
+               </li>
+               <li class="nl" data-drupal-link-system-path="&lt;front&gt;" hreflang="nl">
+                <a class="language-link" data-drupal-link-system-path="&lt;front&gt;" href="/nl" hreflang="nl">
+                 NL
+                </a>
+               </li>
+               <li class="sv" data-drupal-link-system-path="&lt;front&gt;" hreflang="sv">
+                <a class="language-link" data-drupal-link-system-path="&lt;front&gt;" href="/sv" hreflang="sv">
+                 SV
+                </a>
+               </li>
+               <li class="ru" data-drupal-link-system-path="&lt;front&gt;" hreflang="ru">
+                <a class="language-link" data-drupal-link-system-path="&lt;front&gt;" href="/ru" hreflang="ru">
+                 RU
+                </a>
+               </li>
+               <li class="ja" data-drupal-link-system-path="&lt;front&gt;" hreflang="ja">
+                <a class="language-link" data-drupal-link-system-path="&lt;front&gt;" href="/ja" hreflang="ja">
+                 日本
+                </a>
+               </li>
+               <li class="zh-cn" data-drupal-link-system-path="&lt;front&gt;" hreflang="zh-CN">
+                <a class="language-link" data-drupal-link-system-path="&lt;front&gt;" href="/zh-CN" hreflang="zh-CN">
+                 中国
+                </a>
+               </li>
+               <li class="pl" data-drupal-link-system-path="&lt;front&gt;" hreflang="pl">
+                <a class="language-link" data-drupal-link-system-path="&lt;front&gt;" href="/pl" hreflang="pl">
+                 Polish
+                </a>
+               </li>
+              </ul>
+             </div>
+            </div>
+           </div>
+           <div class="mobile-menu-point lang-select mobile">
+            <div class="inner-point">
+             <select id="language-switcher-mobile">
+             </select>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </footer>
+    <div class="newsletter-popup" style="display:none;">
+     <div class="inner-popup">
+      <div class="center-item">
+       <div class="close-wrap">
+        <img src="/themes/custom/smalcode/v19-img/panels/panel-product-hero/popup-close-white.png"/>
+       </div>
+       <div class="panel-outer-wrap">
+        <div>
+         <div class="js-view-dom-id-3f5ded781c10b29b70667b687e2847b98a18965c3490c4f8bab9f6649ba4fead view-wrap">
+          <div class="views-row">
+           <div class="panel panel-newsletter panel-newsletter-custom">
+            <div class="wrap maxWidth">
+             <div class="row">
+              <div class="col-12">
+               <h2 class="panel-title">
+                Stay ahead of the game
+               </h2>
+              </div>
+             </div>
+             <div class="row">
+              <div class="col-12">
+               <p class="panel-subtitle">
+                Get tech news and special deals delivered to your inbox.
+               </p>
+              </div>
+             </div>
+             <div class="mailchimp-newsletter-style-1">
+              <form id="mc-embedded-subscribe-form-2">
+               <div class="mc-field-wrapper" id="mc_embed_signup_scroll-2">
+                <div class="mc-field-group">
+                 <input class="email" name="EMAIL" placeholder="Email Address" required="" type="email" value=""/>
+                </div>
+                <input class="button form-actions form-submit" id="mc-embedded-subscribe-2" name="subscribe" type="submit" value="I'M IN"/>
+               </div>
+              </form>
+              <div class="clear" id="mce-responses-2">
+               <div class="response" id="mce-error-response-2" style="display:none">
+               </div>
+               <div class="response" id="mce-success-response-2" style="display:none">
+               </div>
+              </div>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="submenu-popup">
+    </div>
+   </div>
+  </div>
+  <script data-drupal-selector="drupal-settings-json" type="application/json">
+   {"path":{"baseUrl":"\/","scriptPath":null,"pathPrefix":"en\/","currentPath":"node\/21","currentPathIsAdmin":false,"isFront":true,"currentLanguage":"en"},"pluralDelimiter":"\u0003","suppressDeprecationErrors":true,"google_analytics":{"trackOutbound":true,"trackMailto":true,"trackDownload":true,"trackDownloadExtensions":"7z|aac|arc|arj|asf|asx|avi|bin|csv|doc(x|m)?|dot(x|m)?|exe|flv|gif|gz|gzip|hqx|jar|jpe?g|js|mp(2|3|4|e?g)|mov(ie)?|msi|msp|pdf|phps|png|ppt(x|m)?|pot(x|m)?|pps(x|m)?|ppam|sld(x|m)?|thmx|qtm?|ra(m|r)?|sea|sit|tar|tgz|torrent|txt|wav|wma|wmv|wpd|xls(x|m|b)?|xlt(x|m)|xlam|xml|z|zip"},"user":{"uid":0,"permissionsHash":"6ebad0feb951fd3c04bf7b37e76dd066948c72cc6df993a68bfae29bc38988a9"}}
+  </script>
+  <script src="/sites/default/files/js/js__EerAWcD9E3wD8L9VI470e2TeKRNqmoDug2FefDF7go.js">
+  </script>
+  <script src="https://cdn.ravenjs.com/3.17.0/raven.min.js">
+  </script>
+  <script src="/sites/default/files/js/js_iUzm2I7mC1SnqTVOTjaqO4NjgxOZCOwJuAQOlVERC6I.js">
+  </script>
+  <div id="miniCart">
+   <img class="close-icon" src="/themes/custom/smalcode/image/general/close-minicart.png"/>
+   <div class="inner-content">
+   </div>
+  </div>
+ </body>
+</html>

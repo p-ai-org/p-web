@@ -1,0 +1,2175 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <!--[if gt IE 9]><!-->
+  <script>
+   //common/scripts.isml
+  </script>
+  <script defer="" src="/on/demandware.static/Sites-SLP-NOAM-Site/-/en_US/v1616388087743/js/commons.js" type="text/javascript">
+  </script>
+  <script defer="" src="/on/demandware.static/Sites-SLP-NOAM-Site/-/en_US/v1616388087743/js/header.js" type="text/javascript">
+  </script>
+  <script defer="" src="/on/demandware.static/Sites-SLP-NOAM-Site/-/en_US/v1616388087743/js/footer.js" type="text/javascript">
+  </script>
+  <script defer="" src="/on/demandware.static/Sites-SLP-NOAM-Site/-/en_US/v1616388087743/js/home.js" type="text/javascript">
+  </script>
+  <!--<![endif]-->
+  <script>
+   const helpers = {
+hidden: function(element) {
+element.classList.add("u-hidden");
+},
+display: function(element) {
+element.classList.remove("u-hidden");
+},
+checkForExistence: function(element, errorType) {
+if (element) {
+return element;
+} else {
+throw errorMessages[errorType];
+}
+}
+};
+const errorMessages = {
+behaviorMsg: 'No data-behavior defined on the openChatContainer element.',
+availableMsg: 'No available msg defined, please add openChatLabel-available ID on the available label.',
+unavailableMsg: 'No unavailable msg defined, please add openChatLabel-unavailable ID on the unavailable label.',
+chatButton: 'No chat button defined, please add openChatButton.'
+}
+const behaviors = {
+hide: function(container, msgToDisplay, msgToHide) {
+helpers.hidden(msgToHide);
+helpers.display(msgToDisplay);
+helpers.hidden(container);
+},
+visible: function(msgToDisplay, msgToHide) {
+helpers.hidden(msgToHide);
+helpers.display(msgToDisplay);
+}
+}
+function unavailableBehaviors(behavior, container, msgToDisplay, msgToHide, chatButton) {
+switch (behavior) {
+case 'hide':
+behaviors.hide(container, msgToDisplay, msgToHide);
+helpers.hidden(chatButton); // For accessibility purpose.
+break;
+case 'visible':
+behaviors.visible(msgToDisplay, msgToHide);
+chatButton.setAttribute("disabled", "");
+break;
+default:
+// Use visible behavior by default.
+behaviors.visible(msgToDisplay, msgToHide);
+chatButton.setAttribute("disabled", "");
+break;
+}
+}
+function liveChatButtonBehavior(available) {
+try {
+var container = document.querySelectorAll(".powerfrontlivechatcontainer")
+if (container && container.length) {
+container.forEach(listContainer => {
+if (listContainer) {
+var availableMsg = helpers.checkForExistence(listContainer.querySelector(".powerfrontlivechatavailable"), 'availableMsg');
+var unavailableMsg = helpers.checkForExistence(listContainer.querySelector(".powerfrontlivechatunavailable"), 'unavailableMsg');
+var chatButton = helpers.checkForExistence(listContainer.querySelector(".powerfrontlivechat"), 'chatButton');
+var behavior = helpers.checkForExistence(listContainer.dataset.behavior, 'behaviorMsg');
+var msgToHide = available ? unavailableMsg : availableMsg;
+var msgToDisplay = available ? availableMsg : unavailableMsg;
+if (available) {
+behaviors.visible(msgToDisplay, msgToHide);
+} else {
+unavailableBehaviors(behavior, listContainer, msgToDisplay, msgToHide, chatButton);
+}
+}
+});
+}
+} catch(e) {
+console.error(e);
+return;
+}
+}
+// BELOW THE POWERFRONT SCRIPT..
+//
+// Global variable.
+window._inside = window._inside || [];
+// Variable to define if Chat has finished loading.
+var chatLoaded = false;
+// Variable to define if Visitor has clicked the link before INSIDE has finished loading.
+var chatRequested = false;
+// The "chatavailable" binding is used to make changes to your chat link
+// or to any part of the website depending if Chat is available or unavailable.
+window._inside.push({
+action: "bind",
+name: "chatavailable",
+callback: function(available) {
+chatLoaded = true;
+if (available) {
+// Handle chat available.
+// For example change the link text to "Chat Online".
+liveChatButtonBehavior(available);
+// Open chat pane if visitor has clicked the link when INSIDE has not finished loading
+// This is optional.
+if (chatRequested) {
+insideFrontInterface.openChatPane();
+}
+} else {
+// Handle Chat unavailable.
+// For example change the link text to "Chat Offline".
+liveChatButtonBehavior(available);
+}
+chatRequested = false;
+}
+});
+// This is the main code that will open the Chat Pane (also the Offline Chat Pane if enabled).
+var openChatButtonClick = function() {
+if (chatLoaded)
+// This is to check if INSIDE has finished loading.
+insideFrontInterface.openChatPane();
+else chatRequested = true;
+return false;
+};
+  </script>
+  <!-- Google Tag Manager -->
+  <script>
+   (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-N3GN2FX');
+  </script>
+  <!-- End Google Tag Manager -->
+  <!-- SEO Metadata -->
+  <script defer="" type="application/ld+json">
+   {"@context":"http://schema.org","@id":"https://www.ysl.com/en-us","@type":"Organization","name":"Saint laurent","url":"https://www.ysl.com/en-us","contactPoint":[{"@type":"ContactPoint","telephone":"+44 20 33 18 59 20","contactType":"Customer Service","areaServed":"US"}],"sameAs":["https://en.wikipedia.org/wiki/Yves_Saint_Laurent_(brand)","https://www.youtube.com/ysl","https://www.tiktok.com/@ysl","https://www.facebook.com/ysl/","https://twitter.com/YSL","https://www.instagram.com/ysl/"]}
+  </script>
+  <!-- End SEO Metadata -->
+  <!-- OneTrust Cookies Consent Notice start -->
+  <script src="https://cdn.cookielaw.org/consent/b3d75229-4ed3-4eaa-93e6-f9d376a02498/OtAutoBlock.js" type="text/javascript">
+  </script>
+  <script charset="UTF-8" data-document-language="true" data-domain-script="b3d75229-4ed3-4eaa-93e6-f9d376a02498" src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js" type="text/javascript">
+  </script>
+  <script type="text/javascript">
+   function OptanonWrapper() {
+        window.dataLayer.push({ event: 'OneTrustGroupsUpdated' });
+        /* PSEP-43031
+           observe DOM changes to prevent onetrust to give focus on skip links */
+        var targetNode = document.getElementById('onetrust-banner-sdk');
+        if (targetNode) {
+            var config = { attributes: true, childList: true };
+            var callback = function(mutationsList) {
+                window.focus();
+                if (document.activeElement) {
+                    document.activeElement.blur();
+                }
+                observer.disconnect();
+            };
+            var observer = new MutationObserver(callback);
+            observer.observe(targetNode, config);
+        }
+    }
+  </script>
+  <!-- OneTrust Cookies Consent Notice end -->
+  <meta charset="utf-8"/>
+  <meta content="ie=edge" http-equiv="x-ua-compatible"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   Saint Laurent Official Online Store | YSL.com
+  </title>
+  <meta content="Discover Saint Laurent Official Online Store. Explore the latest collections of luxury handbags, ready to wear, shoes, leather goods and accessories for men and women." name="description"/>
+  <meta content="SAINT LAURENT" name="keywords"/>
+  <meta content="telephone=no" name="format-detection"/>
+  <meta content="n8usk_kwgEOFkqNnk5BBx8PmmOTyCCHgCXAHqt3qiiA" name="google-site-verification"/>
+  <link href="/on/demandware.static/Sites-SLP-NOAM-Site/-/default/dwa208d3b6/images/favicons/favicon-196x196.png" rel="icon" sizes="196x196" type="image/png"/>
+  <link href="/on/demandware.static/Sites-SLP-NOAM-Site/-/default/dw5aa77182/images/favicons/favicon-96x96.png" rel="icon" sizes="96x96" type="image/png"/>
+  <link href="/on/demandware.static/Sites-SLP-NOAM-Site/-/default/dw80a86e3e/images/favicons/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+  <link href="/on/demandware.static/Sites-SLP-NOAM-Site/-/default/dwad56de95/images/favicons/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+  <link href="/on/demandware.static/Sites-SLP-NOAM-Site/-/default/dw699c47c8/images/favicons/favicon-128.png" rel="icon" sizes="128x128" type="image/png"/>
+  <meta content="SAINT LAURENT" name="apple-mobile-web-app-title"/>
+  <link href="/on/demandware.static/Sites-SLP-NOAM-Site/-/default/dwaccc3162/images/favicons/favicon-180x180.png" rel="apple-touch-icon" sizes="180x180"/>
+  <link href="/on/demandware.static/Sites-SLP-NOAM-Site/-/default/dw5aa77182/images/favicons/favicon-96x96.png" rel="shortcut icon"/>
+  <link href="/on/demandware.static/Sites-SLP-NOAM-Site/-/default/dwb573f2e1/images/favicons/manifest.json" rel="manifest"/>
+  <link href="/on/demandware.static/Sites-SLP-NOAM-Site/-/en_US/v1616388087743/css/style.css" rel="stylesheet"/>
+  <!-- Alternate Urls -->
+  <link href="https://www.ysl.com/en-at" hreflang="en-at" rel="alternate"/>
+  <link href="https://www.ysl.com/en-be" hreflang="en-be" rel="alternate"/>
+  <link href="https://www.ysl.com/en-dk" hreflang="en-dk" rel="alternate"/>
+  <link href="https://www.ysl.com/en-fr" hreflang="en-fr" rel="alternate"/>
+  <link href="https://www.ysl.com/en-de" hreflang="en-de" rel="alternate"/>
+  <link href="https://www.ysl.com/en-ie" hreflang="en-ie" rel="alternate"/>
+  <link href="https://www.ysl.com/en-it" hreflang="en-it" rel="alternate"/>
+  <link href="https://www.ysl.com/en-lu" hreflang="en-lu" rel="alternate"/>
+  <link href="https://www.ysl.com/en-mc" hreflang="en-mc" rel="alternate"/>
+  <link href="https://www.ysl.com/en-nl" hreflang="en-nl" rel="alternate"/>
+  <link href="https://www.ysl.com/en-no" hreflang="en-no" rel="alternate"/>
+  <link href="https://www.ysl.com/en-pl" hreflang="en-pl" rel="alternate"/>
+  <link href="https://www.ysl.com/en-pt" hreflang="en-pt" rel="alternate"/>
+  <link href="https://www.ysl.com/en-es" hreflang="en-es" rel="alternate"/>
+  <link href="https://www.ysl.com/en-se" hreflang="en-se" rel="alternate"/>
+  <link href="https://www.ysl.com/en-ch" hreflang="en-ch" rel="alternate"/>
+  <link href="https://www.ysl.com/en-gb" hreflang="en-gb" rel="alternate"/>
+  <link href="https://www.ysl.com/fr-be" hreflang="fr-be" rel="alternate"/>
+  <link href="https://www.ysl.com/fr-fr" hreflang="fr-fr" rel="alternate"/>
+  <link href="https://www.ysl.com/fr-lu" hreflang="fr-lu" rel="alternate"/>
+  <link href="https://www.ysl.com/fr-mc" hreflang="fr-mc" rel="alternate"/>
+  <link href="https://www.ysl.com/fr-ch" hreflang="fr-ch" rel="alternate"/>
+  <link href="https://www.ysl.com/de-at" hreflang="de-at" rel="alternate"/>
+  <link href="https://www.ysl.com/de-de" hreflang="de-de" rel="alternate"/>
+  <link href="https://www.ysl.com/de-ch" hreflang="de-ch" rel="alternate"/>
+  <link href="https://www.ysl.com/it-it" hreflang="it-it" rel="alternate"/>
+  <link href="https://www.ysl.com/es-es" hreflang="es-es" rel="alternate"/>
+  <link href="https://www.ysl.com/en-ca" hreflang="en-ca" rel="alternate"/>
+  <link href="https://www.ysl.com/en-us" hreflang="en-us" rel="alternate"/>
+  <link href="https://www.ysl.com/es-us" hreflang="es-us" rel="alternate"/>
+  <link href="https://www.ysl.com/en-mx" hreflang="en-mx" rel="alternate"/>
+  <link href="https://www.ysl.com/es-mx" hreflang="es-mx" rel="alternate"/>
+  <link href="https://www.ysl.com/en-bg" hreflang="en-bg" rel="alternate"/>
+  <link href="https://www.ysl.com/en-hr" hreflang="en-hr" rel="alternate"/>
+  <link href="https://www.ysl.com/en-cz" hreflang="en-cz" rel="alternate"/>
+  <link href="https://www.ysl.com/en-ee" hreflang="en-ee" rel="alternate"/>
+  <link href="https://www.ysl.com/en-fi" hreflang="en-fi" rel="alternate"/>
+  <link href="https://www.ysl.com/en-gr" hreflang="en-gr" rel="alternate"/>
+  <link href="https://www.ysl.com/en-hu" hreflang="en-hu" rel="alternate"/>
+  <link href="https://www.ysl.com/en-lv" hreflang="en-lv" rel="alternate"/>
+  <link href="https://www.ysl.com/en-lt" hreflang="en-lt" rel="alternate"/>
+  <link href="https://www.ysl.com/en-mt" hreflang="en-mt" rel="alternate"/>
+  <link href="https://www.ysl.com/en-ro" hreflang="en-ro" rel="alternate"/>
+  <link href="https://www.ysl.com/en-sk" hreflang="en-sk" rel="alternate"/>
+  <link href="https://www.ysl.com/en-au" hreflang="en-au" rel="alternate"/>
+  <link href="https://www.ysl.com/en-hk" hreflang="en-hk" rel="alternate"/>
+  <link href="https://www.ysl.com/en-sg" hreflang="en-sg" rel="alternate"/>
+  <link href="https://www.ysl.com/en-kr" hreflang="en-kr" rel="alternate"/>
+  <link href="https://www.ysl.com/ko-kr" hreflang="ko-kr" rel="alternate"/>
+  <link href="https://www.ysl.com/en-cy" hreflang="en-cy" rel="alternate"/>
+  <link href="https://www.ysl.com/en-sa" hreflang="en-sa" rel="alternate"/>
+  <link href="https://www.ysl.com/en-ae" hreflang="en-ae" rel="alternate"/>
+  <link href="https://www.ysl.com/en-jp" hreflang="en-jp" rel="alternate"/>
+  <link href="https://www.ysl.com/ja-jp" hreflang="ja-jp" rel="alternate"/>
+  <link href="https://www.ysl.com/en-en" hreflang="en-en" rel="alternate"/>
+  <!-- Canonical Urls -->
+  <link href="https://www.ysl.com/en-us" rel="canonical"/>
+  <script type="text/javascript">
+   //<!--
+/* <![CDATA[ (head-active_data.js) */
+var dw = (window.dw || {});
+dw.ac = {
+    _analytics: null,
+    _events: [],
+    _category: "",
+    _searchData: "",
+    _anact: "",
+    _anact_nohit_tag: "",
+    _capture: function(configs) {
+        if (Object.prototype.toString.call(configs) === "[object Array]") {
+            configs.forEach(captureObject);
+            return;
+        }
+        dw.ac._events.push(configs);
+    },
+	capture: function() { 
+		dw.ac._capture(arguments);
+		// send to CQ as well:
+		if (window.CQuotient) {
+			window.CQuotient.trackEventsFromAC(arguments);
+		}
+	},
+    EV_PRD_SEARCHHIT: "searchhit",
+    EV_PRD_DETAIL: "detail",
+    EV_PRD_RECOMMENDATION: "recommendation",
+    EV_PRD_SETPRODUCT: "setproduct",
+    applyContext: function(context) {
+        if (typeof context === "object" && context.hasOwnProperty("category")) {
+        	dw.ac._category = context.category;
+        }
+        if (typeof context === "object" && context.hasOwnProperty("searchData")) {
+        	dw.ac._searchData = context.searchData;
+        }
+    },
+    setDWAnalytics: function(analytics) {
+        dw.ac._analytics = analytics;
+    }
+};
+/* ]]> */
+// -->
+  </script>
+  <script type="text/javascript">
+   //<!--
+/* <![CDATA[ (head-cquotient.js) */
+var CQuotient = window.CQuotient = {};
+CQuotient.clientId = 'bcrr-SLP-NOAM';
+CQuotient.realm = 'BCRR';
+CQuotient.siteId = 'SLP-NOAM';
+CQuotient.instanceType = 'prd';
+CQuotient.locale = 'en_US';
+CQuotient.activities = [];
+CQuotient.cqcid='';
+CQuotient.cquid='';
+CQuotient.cqeid='';
+CQuotient.cqlid='';
+CQuotient.initFromCookies = function () {
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+	  var c = ca[i];
+	  while (c.charAt(0)==' ') c = c.substring(1,c.length);
+	  if (c.indexOf('cqcid=') == 0) {
+		CQuotient.cqcid=c.substring('cqcid='.length,c.length);
+	  } else if (c.indexOf('cquid=') == 0) {
+		  var value = c.substring('cquid='.length,c.length);
+		  if (value) {
+		  	var split_value = value.split("|", 3);
+		  	if (split_value.length > 0) {
+			  CQuotient.cquid=split_value[0];
+		  	}
+		  	if (split_value.length > 1) {
+			  CQuotient.cqeid=split_value[1];
+		  	}
+		  	if (split_value.length > 2) {
+			  CQuotient.cqlid=split_value[2];
+		  	}
+		  }
+	  }
+	}
+}
+CQuotient.getCQCookieId = function () {
+	if(window.CQuotient.cqcid == '')
+		window.CQuotient.initFromCookies();
+	return window.CQuotient.cqcid;
+};
+CQuotient.getCQUserId = function () {
+	if(window.CQuotient.cquid == '')
+		window.CQuotient.initFromCookies();
+	return window.CQuotient.cquid;
+};
+CQuotient.getCQHashedEmail = function () {
+	if(window.CQuotient.cqeid == '')
+		window.CQuotient.initFromCookies();
+	return window.CQuotient.cqeid;
+};
+CQuotient.getCQHashedLogin = function () {
+	if(window.CQuotient.cqlid == '')
+		window.CQuotient.initFromCookies();
+	return window.CQuotient.cqlid;
+};
+CQuotient.trackEventsFromAC = function (/* Object or Array */ events) {
+try {
+	if (Object.prototype.toString.call(events) === "[object Array]") {
+		events.forEach(_trackASingleCQEvent);
+	} else {
+		CQuotient._trackASingleCQEvent(events);
+	}
+} catch(err) {}
+};
+CQuotient._trackASingleCQEvent = function ( /* Object */ event) {
+	if (event && event.id) {
+		if (event.type === dw.ac.EV_PRD_DETAIL) {
+			CQuotient.trackViewProduct( {id:'', alt_id: event.id, type: 'raw_sku'} );
+		} // not handling the other dw.ac.* events currently
+	}
+};
+CQuotient.trackViewProduct = function(/* Object */ cqParamData){
+	var cq_params = {};
+	cq_params.cookieId = CQuotient.getCQCookieId();
+	cq_params.userId = CQuotient.getCQUserId();
+	cq_params.emailId = CQuotient.getCQHashedEmail();
+	cq_params.loginId = CQuotient.getCQHashedLogin();
+	cq_params.product = cqParamData.product;
+	cq_params.realm = cqParamData.realm;
+	cq_params.siteId = cqParamData.siteId;
+	cq_params.instanceType = cqParamData.instanceType;
+	cq_params.locale = CQuotient.locale;
+	
+	if(CQuotient.sendActivity) {
+		CQuotient.sendActivity(CQuotient.clientId, 'viewProduct', cq_params);
+	} else {
+		CQuotient.activities.push({activityType: 'viewProduct', parameters: cq_params});
+	}
+};
+/* ]]> */
+// -->
+  </script>
+  <script>
+   (window.BOOMR_mq=window.BOOMR_mq||[]).push(["addVar",{"rua.upush":"false","rua.cpush":"false","rua.upre":"false","rua.cpre":"false","rua.uprl":"false","rua.cprl":"false","rua.cprf":"false","rua.trans":"","rua.cook":"false","rua.ims":"false","rua.ufprl":"false","rua.cfprl":"false"}]);
+  </script>
+  <script>
+   !function(a){var e="https://s.go-mpulse.net/boomerang/",t="addEventListener";if("False"=="True")a.BOOMR_config=a.BOOMR_config||{},a.BOOMR_config.PageParams=a.BOOMR_config.PageParams||{},a.BOOMR_config.PageParams.pci=!0,e="https://s2.go-mpulse.net/boomerang/";if(window.BOOMR_API_key="K9JYF-NA9GU-K758U-APJ5Q-E7LPJ",function(){function n(e){a.BOOMR_onload=e&&e.timeStamp||(new Date).getTime()}if(!a.BOOMR||!a.BOOMR.version&&!a.BOOMR.snippetExecuted){a.BOOMR=a.BOOMR||{},a.BOOMR.snippetExecuted=!0;var i,_,o,r=document.createElement("iframe");if(a[t])a[t]("load",n,!1);else if(a.attachEvent)a.attachEvent("onload",n);r.src="javascript:void(0)",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="width:0;height:0;border:0;display:none;",o=document.getElementsByTagName("script")[0],o.parentNode.insertBefore(r,o);try{_=r.contentWindow.document}catch(O){i=document.domain,r.src="javascript:var d=document.open();d.domain='"+i+"';void(0);",_=r.contentWindow.document}_.open()._l=function(){var a=this.createElement("script");if(i)this.domain=i;a.id="boomr-if-as",a.src=e+"K9JYF-NA9GU-K758U-APJ5Q-E7LPJ",BOOMR_lstart=(new Date).getTime(),this.body.appendChild(a)},_.write("<bo"+'dy onload="document._l();">'),_.close()}}(),"".length>0)if(a&&"performance"in a&&a.performance&&"function"==typeof a.performance.setResourceTimingBufferSize)a.performance.setResourceTimingBufferSize();!function(){if(BOOMR=a.BOOMR||{},BOOMR.plugins=BOOMR.plugins||{},!BOOMR.plugins.AK){var e=""=="true"?1:0,t="",n="jt33l4ix24dlcycyfvxq-f-e99cbb029-clientnsv4-s.akamaihd.net",i={"ak.v":"30","ak.cp":"920114","ak.ai":parseInt("589263",10),"ak.ol":"0","ak.cr":36,"ak.ipv":4,"ak.proto":"http/1.1","ak.rid":"f8579a3","ak.r":18363,"ak.a2":e,"ak.m":"a","ak.n":"essl","ak.bpcip":"76.247.181.0","ak.cport":55562,"ak.gh":"63.217.232.5","ak.quicv":"","ak.tlsv":"tls1.3","ak.0rtt":"","ak.csrc":"-","ak.acc":"bbr","ak.t":"1616391535","ak.ak":"hOBiQwZUYzCg5VSAfCLimQ==khpqggpHXvLbXe5zDXsVjqBIJkOEl8TEeWwI9e4FvzDBapEax/8ID2Dmi7jxihR51JKT418zUiefIlIs9FNN5xSCwbab7PlvhCKQtFrd2fvpOzhUfTF+I/oyuw/eaWZ/S99VCDApmj6azJ0AT8XIBxsNc4jz5rjOjQ4ew47h33ghUo2qXzD6HTZZbCId36rb4LMHeuKWg4WIQ10iGAjf5+nx9St5Hs6H0lwRKavbUCk4WPCZCgF7YljQm5C++L6szRe/EnWFYCdyB8TeubCrySY4hN9y87eWDT6MYJvBAbpMkJVA35yInuCJJB0zwHQ1hp+FpFkStV+qp1q1sQyDdYM5Sy7G7L2Igyd7v595oJGrVagzmr3Y2EDZN0jZJZ3SElub7G5gDZrb3bGCcKbrf6NLr/WjuAM+7zPsG7r/4w4=","ak.pv":"45","ak.dpoabenc":""};if(""!==t)i["ak.ruds"]=t;var _={i:!1,av:function(e){var t="http.initiator";if(e&&(!e[t]||"spa_hard"===e[t]))i["ak.feo"]=void 0!==a.aFeoApplied?1:0,BOOMR.addVar(i)},rv:function(){var a=["ak.bpcip","ak.cport","ak.cr","ak.csrc","ak.gh","ak.ipv","ak.m","ak.n","ak.ol","ak.proto","ak.quicv","ak.tlsv","ak.0rtt","ak.r","ak.acc","ak.t"];BOOMR.removeVar(a)}};BOOMR.plugins.AK={akVars:i,akDNSPreFetchDomain:n,init:function(){if(!_.i){var a=BOOMR.subscribe;a("before_beacon",_.av,null,null),a("onbeacon",_.rv,null,null),_.i=!0}return this},is_complete:function(){return!0}}}}()}(window);
+  </script>
+ </head>
+ <body>
+  <script>
+   if ( typeof dataLayer === 'undefined' ) {
+            dataLayer = [];
+        }
+        
+            dataLayer.push({"pageType":"homepage","countryCode":"us","languageCode":"en"});
+  </script>
+  <script>
+   if ( typeof dataLayer === 'undefined' ) {
+            dataLayer = [];
+        }
+  </script>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript>
+   <iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-N3GN2FX" style="display:none;visibility:hidden" width="0">
+   </iframe>
+  </noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <div class="l-site l-site--home-show l-site--homepage page" data-action="Home-Show" data-context="Home-Show" data-loader="loader" data-querystring="">
+   <div class="c-skiplinks">
+    <ul class="c-skiplinks__list">
+     <li>
+      <a class="c-skiplinks__link u-sronly u-sronly--focusable" href="#main-content" tabindex="0">
+       Skip to main content
+      </a>
+     </li>
+    </ul>
+   </div>
+   <header data-container="header" id="backToTop" role="banner">
+    <div class="c-nav" data-component="nav" id="mainnav" nav-opened="false">
+     <div data-ref="overlay">
+     </div>
+     <div class="l-header l-header--light" data-component="navigation">
+      <div class="l-header__nav">
+       <div class="l-header__logo">
+        <a aria-label="Saint laurent - Go to the Homepage" class="l-header__link" href="/en-us" title="Saint laurent - Go to the Homepage">
+         <h1>
+          <img alt="Saint laurent - Go to the Homepage" class="u-hidden@lg" src="/on/demandware.static/-/Library-Sites-Library-SLP/default/dw792e28c1/images/logo.svg"/>
+          <img alt="Saint laurent - Go to the Homepage" class="u-show--none@lg" src="/on/demandware.static/-/Library-Sites-Library-SLP/default/dwbe61eb08/images/logo-small.svg"/>
+         </h1>
+        </a>
+       </div>
+       <div class="c-nav__wrapper" data-ref="menu" id="mainmenu">
+        <nav aria-label="Main menu" class="c-nav__container" role="navigation">
+         <p aria-level="1" class="u-sronly u-show--none@lg" role="heading">
+          Menu
+         </p>
+         <div class="c-nav__panel" data-context="YSL" data-ref="panel">
+          <ul class="c-nav__list c-nav__level1" data-ref="navlist">
+           <li class="c-nav__item" data-cgid="shop-women" data-level1="true" data-ref="item">
+            <button class="c-nav__link" data-ref="link">
+             SHOP WOMEN
+            </button>
+            <div class="c-nav__subnav" data-ref="subnav">
+             <ul class="c-nav__list c-nav__level2" data-ref="navlist">
+              <li class="c-nav__item" data-cgid="new-arrivals-women" data-level2="true" data-ref="item">
+               <a class="c-nav__link" data-cgid="new-arrivals-women" data-ref="link" href="/en-us/shop-women/new-collection">
+                NEW COLLECTION
+               </a>
+              </li>
+              <li class="c-nav__item" data-cgid="ready-to-wear-women" data-level2="true" data-ref="item">
+               <button class="c-nav__link" data-ref="link">
+                READY TO WEAR
+               </button>
+               <div class="c-nav__subnav" data-ref="subnav">
+                <ul class="c-nav__list c-nav__level3" data-ref="navlist">
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="SPRING 21 LOOKS" data-ref="link" href="/en-us/shop-women/ready-to-wear/spring-21-looks">
+                   SPRING 21 LOOKS
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="by-category-rtw-women" data-ref="link" href="/en-us/shop-women/ready-to-wear/by-category">
+                   By category
+                  </a>
+                  <div class="c-nav__subnav" data-ref="subnav">
+                   <ul class="c-nav__list c-nav__level4" data-ref="navlist">
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="jackets-women" data-ref="link" href="/en-us/shop-women/ready-to-wear/by-category/jackets">
+                      Jackets
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="dresses-and-skirts-women" data-ref="link" href="/en-us/shop-women/ready-to-wear/by-category/dresses-and-skirts">
+                      Dresses and Skirts
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="shirts-and-blouses-women" data-ref="link" href="/en-us/shop-women/ready-to-wear/by-category/shirts-and-blouses">
+                      Shirts and blouses
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="knitwear-women" data-ref="link" href="/en-us/shop-women/ready-to-wear/by-category/knitwear">
+                      KNITWEAR
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="leather-and-fur-women" data-ref="link" href="/en-us/shop-women/ready-to-wear/by-category/leather-and-fur">
+                      Leather &amp; fur
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="outerwear-women" data-ref="link" href="/en-us/shop-women/ready-to-wear/by-category/outerwear">
+                      OUTERWEAR
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="tshirts-and-sweatshirts-women" data-ref="link" href="/en-us/shop-women/ready-to-wear/by-category/t-shirts-and-sweatshirts">
+                      T-SHIRTS AND SWEATSHIRTS
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="trousers-and-shorts-women" data-ref="link" href="/en-us/shop-women/ready-to-wear/by-category/trousers-and-shorts">
+                      Trousers and Shorts
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="denim-women" data-ref="link" href="/en-us/shop-women/ready-to-wear/by-category/denim">
+                      Denim
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="lingerie-women" data-ref="link" href="/en-us/shop-women/ready-to-wear/by-category/lingerie">
+                      LINGERIE
+                     </a>
+                    </li>
+                   </ul>
+                  </div>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="le-vestiaire-women" data-ref="link" href="/en-us/shop-women/ready-to-wear/le-vestiaire">
+                   LE VESTIAIRE
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="view-all-ready-to-wear" data-ref="link" href="/en-us/shop-women/ready-to-wear/view-all">
+                   VIEW ALL
+                  </a>
+                 </li>
+                </ul>
+               </div>
+              </li>
+              <li class="c-nav__item" data-cgid="shoes-women" data-level2="true" data-ref="item">
+               <button class="c-nav__link" data-ref="link">
+                SHOES
+               </button>
+               <div class="c-nav__subnav" data-ref="subnav">
+                <ul class="c-nav__list c-nav__level3" data-ref="navlist">
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="new-arrivals-shoes" data-ref="link" href="/en-us/shop-women/shoes/new-arrivals">
+                   NEW ARRIVALS
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="boots-women" data-ref="link" href="/en-us/shop-women/shoes/boots-and-booties">
+                   BOOTS &amp; BOOTIES
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="pumps-women" data-ref="link" href="/en-us/shop-women/shoes/pumps">
+                   PUMPS
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="sandals-women" data-ref="link" href="/en-us/shop-women/shoes/sandals">
+                   Sandals
+                  </a>
+                  <div class="c-nav__subnav" data-ref="subnav">
+                   <ul class="c-nav__list c-nav__level4" data-ref="navlist">
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="flat-sandals-women" data-ref="link" href="/en-us/shop-women/shoes/sandals/flat-sandals">
+                      Flat Sandals
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="high-heels-sandals-women" data-ref="link" href="/en-us/shop-women/shoes/sandals/high-heel-sandals">
+                      High Heel Sandals
+                     </a>
+                    </li>
+                   </ul>
+                  </div>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="loafers-and-derbies-women" data-ref="link" href="/en-us/shop-women/shoes/loafers-and-derbies">
+                   LOAFERS AND DERBIES
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="sneakers-women" data-ref="link" href="/en-us/shop-women/shoes/sneakers">
+                   SNEAKERS
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="espadrilles-and-wedges-women" data-ref="link" href="/en-us/shop-women/shoes/espadrilles-and-wedges">
+                   Espadrilles &amp; wedges
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="view-all-shoes-women" data-ref="link" href="/en-us/shop-women/shoes/view-all">
+                   VIEW ALL
+                  </a>
+                 </li>
+                </ul>
+               </div>
+              </li>
+              <li class="c-nav__item" data-cgid="handbags-women" data-level2="true" data-ref="item">
+               <button class="c-nav__link" data-ref="link">
+                HANDBAGS
+               </button>
+               <div class="c-nav__subnav" data-ref="subnav">
+                <ul class="c-nav__list c-nav__level3" data-ref="navlist">
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="new-arrivals-handbags-women" data-ref="link" href="/en-us/shop-women/handbags/new-arrivals">
+                   NEW ARRIVALS
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="by-line-handbags-women" data-ref="link" href="/en-us/shop-women/handbags/by-line">
+                   BY LINE
+                  </a>
+                  <div class="c-nav__subnav" data-ref="subnav">
+                   <ul class="c-nav__list c-nav__level4" data-ref="navlist">
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="le-maillon-handbags-women" data-ref="link" href="/en-us/shop-women/handbags/by-line/le-maillon">
+                      LE MAILLON
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="le-carre-handbags-women" data-ref="link" href="/en-us/shop-women/handbags/by-line/le-carre">
+                      LE CARRÉ
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="niki-handbags-women" data-ref="link" href="/en-us/shop-women/handbags/by-line/niki">
+                      NIKI
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="lou-handbags-women" data-ref="link" href="/en-us/shop-women/handbags/by-line/lou">
+                      LOU
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="kate-handbags-women" data-ref="link" href="/en-us/shop-women/handbags/by-line/kate">
+                      KATE
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="kaia-handbags-women" data-ref="link" href="/en-us/shop-women/handbags/by-line/kaia">
+                      KAIA
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="loulou-handbags-women" data-ref="link" href="/en-us/shop-women/handbags/by-line/loulou">
+                      LOULOU
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="puffer-handbags-women" data-ref="link" href="/en-us/shop-women/handbags/by-line/puffer">
+                      PUFFER
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="solferino-handbags-women" data-ref="link" href="/en-us/shop-women/handbags/by-line/solferino">
+                      SOLFERINO
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="cassandra-handbags-women" data-ref="link" href="/en-us/shop-women/handbags/by-line/cassandra">
+                      CASSANDRA
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="envelope-handbags-women" data-ref="link" href="/en-us/shop-women/handbags/by-line/envelope">
+                      ENVELOPE
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="sunset-handbags-women" data-ref="link" href="/en-us/shop-women/handbags/by-line/sunset">
+                      SUNSET
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="manhattan-handbags-women" data-ref="link" href="/en-us/shop-women/handbags/by-line/manhattan">
+                      MANHATTAN
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="monogram-all-over-handbags-women" data-ref="link" href="/en-us/shop-women/handbags/by-line/le-monogramme">
+                      LE MONOGRAMME
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="sac-de-jour-handbags-women" data-ref="link" href="/en-us/shop-women/handbags/by-line/sac-de-jour">
+                      SAC DE JOUR
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="shopping-saint-laurent-handbags-women" data-ref="link" href="/en-us/shop-women/handbags/by-line/shopping-saint-laurent">
+                      SHOPPING SAINT LAURENT
+                     </a>
+                    </li>
+                   </ul>
+                  </div>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="by-category-handbags-women" data-ref="link" href="/en-us/shop-women/handbags/by-category">
+                   BY CATEGORY
+                  </a>
+                  <div class="c-nav__subnav" data-ref="subnav">
+                   <ul class="c-nav__list c-nav__level4" data-ref="navlist">
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="crossbody-handbags-women" data-ref="link" href="/en-us/shop-women/handbags/by-category/crossbody-bags">
+                      CROSSBODY BAGS
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="shoulder-bags-handbags-women" data-ref="link" href="/en-us/shop-women/handbags/by-category/shoulder-bags">
+                      SHOULDER BAGS
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="top-handles-handbags-women" data-ref="link" href="/en-us/shop-women/handbags/by-category/top-handles">
+                      TOP HANDLES
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="satchel-and-bucket-bags-handbags-women" data-ref="link" href="/en-us/shop-women/handbags/by-category/satchel-and-bucket-bags">
+                      SATCHEL AND BUCKET BAGS
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="tote-bags-handbags-women" data-ref="link" href="/en-us/shop-women/handbags/by-category/tote-bags">
+                      TOTE BAGS
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="clutch-and-minaudieres-handbags-women" data-ref="link" href="/en-us/shop-women/handbags/by-category/clutch-and-minaudieres">
+                      CLUTCH AND MINAUDIERES
+                     </a>
+                    </li>
+                   </ul>
+                  </div>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="view-all-handbags-women" data-ref="link" href="/en-us/shop-women/handbags/view-all">
+                   VIEW ALL
+                  </a>
+                 </li>
+                </ul>
+               </div>
+              </li>
+              <li class="c-nav__item" data-cgid="mini-bags-women" data-level2="true" data-ref="item">
+               <button class="c-nav__link" data-ref="link">
+                MINI BAGS
+               </button>
+               <div class="c-nav__subnav" data-ref="subnav">
+                <ul class="c-nav__list c-nav__level3" data-ref="navlist">
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="iconic-mini-bags-women" data-ref="link" href="/en-us/shop-women/mini-bags/iconic">
+                   ICONIC
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="lou-mini-bags-women" data-ref="link" href="/en-us/shop-women/mini-bags/lou">
+                   LOU
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="kate-mini-bags-women" data-ref="link" href="/en-us/shop-women/mini-bags/kate">
+                   KATE
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="puffer-mini-bags-women" data-ref="link" href="/en-us/shop-women/mini-bags/puffer">
+                   PUFFER
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="loulou-mini-bags-women" data-ref="link" href="/en-us/shop-women/mini-bags/loulou">
+                   LOULOU
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="sunset-mini-bags-women" data-ref="link" href="/en-us/shop-women/mini-bags/sunset">
+                   SUNSET
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="view-all-mini-bags-women" data-ref="link" href="/en-us/shop-women/mini-bags/view-all">
+                   VIEW ALL
+                  </a>
+                 </li>
+                </ul>
+               </div>
+              </li>
+              <li class="c-nav__item" data-cgid="belts-and-belt-bags-women" data-level2="true" data-ref="item">
+               <a class="c-nav__link" data-cgid="belts-and-belt-bags-women" data-ref="link" href="/en-us/shop-women/belts-and-belt-bags">
+                BELTS AND BELT BAGS
+               </a>
+              </li>
+              <li class="c-nav__item" data-cgid="slg-women" data-level2="true" data-ref="item">
+               <button class="c-nav__link" data-ref="link">
+                SMALL LEATHER GOODS
+               </button>
+               <div class="c-nav__subnav" data-ref="subnav">
+                <ul class="c-nav__list c-nav__level3" data-ref="navlist">
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="card-cases-women" data-ref="link" href="/en-us/shop-women/small-leather-goods/card-cases">
+                   CARD CASES
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="small-wallets-women" data-ref="link" href="/en-us/shop-women/small-leather-goods/small-wallets">
+                   SMALL WALLETS
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="large-wallets-women" data-ref="link" href="/en-us/shop-women/small-leather-goods/large-wallets">
+                   LARGE WALLETS
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="pouches-and-cases-women" data-ref="link" href="/en-us/shop-women/small-leather-goods/pouches-and-cases">
+                   POUCHES AND CASES
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="other-accessories-slg-women" data-ref="link" href="/en-us/shop-women/small-leather-goods/other-accessories">
+                   OTHER ACCESSORIES
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="view-all-slg-women" data-ref="link" href="/en-us/shop-women/small-leather-goods/view-all">
+                   VIEW ALL
+                  </a>
+                 </li>
+                </ul>
+               </div>
+              </li>
+              <li class="c-nav__item" data-cgid="accessories-women" data-level2="true" data-ref="item">
+               <button class="c-nav__link" data-ref="link">
+                ACCESSORIES
+               </button>
+               <div class="c-nav__subnav" data-ref="subnav">
+                <ul class="c-nav__list c-nav__level3" data-ref="navlist">
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="hats-and-gloves-women" data-ref="link" href="/en-us/shop-women/accessories/hats-and-gloves">
+                   HATS AND GLOVES
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="scarves-women" data-ref="link" href="/en-us/shop-women/accessories/scarves">
+                   SCARVES
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="view-all-accessories-women" data-ref="link" href="/en-us/shop-women/accessories/view-all">
+                   VIEW ALL
+                  </a>
+                 </li>
+                </ul>
+               </div>
+              </li>
+              <li class="c-nav__item" data-cgid="sunglasses-women" data-level2="true" data-ref="item">
+               <a class="c-nav__link" data-cgid="sunglasses-women" data-ref="link" href="/en-us/shop-women/sunglasses">
+                SUNGLASSES
+               </a>
+              </li>
+              <li class="c-nav__item" data-cgid="jewellry-women" data-level2="true" data-ref="item">
+               <button class="c-nav__link" data-ref="link">
+                Jewelry
+               </button>
+               <div class="c-nav__subnav" data-ref="subnav">
+                <ul class="c-nav__list c-nav__level3" data-ref="navlist">
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="cuffs-and-bracelet-women" data-ref="link" href="/en-us/shop-women/jewelry/cuffs-and-bracelets">
+                   CUFFS AND BRACELETS
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="rings-women" data-ref="link" href="/en-us/shop-women/jewelry/rings">
+                   RINGS
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="earrings-women" data-ref="link" href="/en-us/shop-women/jewelry/earrings">
+                   EARRINGS
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="necklaces-women" data-ref="link" href="/en-us/shop-women/jewelry/necklaces">
+                   NECKLACES
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="brooches-women" data-ref="link" href="/en-us/shop-women/jewelry/brooches">
+                   BROOCHES
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="view-all-jewellry-women" data-ref="link" href="/en-us/shop-women/jewelry/view-all">
+                   VIEW ALL
+                  </a>
+                 </li>
+                </ul>
+               </div>
+              </li>
+             </ul>
+            </div>
+           </li>
+           <li class="c-nav__item" data-cgid="shop-men" data-level1="true" data-ref="item">
+            <button class="c-nav__link" data-ref="link">
+             SHOP MEN
+            </button>
+            <div class="c-nav__subnav" data-ref="subnav">
+             <ul class="c-nav__list c-nav__level2" data-ref="navlist">
+              <li class="c-nav__item" data-cgid="new-arrivals-men" data-level2="true" data-ref="item">
+               <a class="c-nav__link" data-cgid="new-arrivals-men" data-ref="link" href="/en-us/shop-men/new-collection">
+                NEW COLLECTION
+               </a>
+              </li>
+              <li class="c-nav__item" data-cgid="ready-to-wear-men" data-level2="true" data-ref="item">
+               <button class="c-nav__link" data-ref="link">
+                READY TO WEAR
+               </button>
+               <div class="c-nav__subnav" data-ref="subnav">
+                <ul class="c-nav__list c-nav__level3" data-ref="navlist">
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="spring-summer-21-looks" data-ref="link" href="/en-us/shop-men/ready-to-wear/spring-summer-21-looks">
+                   SPRING SUMMER 21 LOOKS
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="by-category-rtw-men" data-ref="link" href="/en-us/shop-men/ready-to-wear/by-category">
+                   BY CATEGORY
+                  </a>
+                  <div class="c-nav__subnav" data-ref="subnav">
+                   <ul class="c-nav__list c-nav__level4" data-ref="navlist">
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="shirts-men" data-ref="link" href="/en-us/shop-men/ready-to-wear/by-category/shirts">
+                      SHIRTS
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="denim-men" data-ref="link" href="/en-us/shop-men/ready-to-wear/by-category/denim">
+                      DENIM
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="t-shirt-and-sweatshirt-men" data-ref="link" href="/en-us/shop-men/ready-to-wear/by-category/t-shirts-and-sweatshirts">
+                      T-SHIRTS AND SWEATSHIRTS
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="knitwear-men" data-ref="link" href="/en-us/shop-men/ready-to-wear/by-category/knitwear">
+                      KNITWEAR
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="jackets-and-pants" data-ref="link" href="/en-us/shop-men/ready-to-wear/by-category/jackets-and-pants">
+                      JACKETS AND PANTS
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="leather-men" data-ref="link" href="/en-us/shop-men/ready-to-wear/by-category/leather-and-fur">
+                      LEATHER AND FUR
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="outerwear-men" data-ref="link" href="/en-us/shop-men/ready-to-wear/by-category/outerwear">
+                      OUTERWEAR
+                     </a>
+                    </li>
+                   </ul>
+                  </div>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="le-vestiaire-homme" data-ref="link" href="/en-us/shop-men/ready-to-wear/le-vestiaire">
+                   LE VESTIAIRE
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="view-all-rtw-men" data-ref="link" href="/en-us/shop-men/ready-to-wear/view-all">
+                   VIEW ALL
+                  </a>
+                 </li>
+                </ul>
+               </div>
+              </li>
+              <li class="c-nav__item" data-cgid="shoes-men" data-level2="true" data-ref="item">
+               <button class="c-nav__link" data-ref="link">
+                SHOES
+               </button>
+               <div class="c-nav__subnav" data-ref="subnav">
+                <ul class="c-nav__list c-nav__level3" data-ref="navlist">
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="new-arrivals-shoes-men" data-ref="link" href="/en-us/shop-men/shoes/new-arrivals">
+                   NEW ARRIVALS
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="boots-men" data-ref="link" href="/en-us/shop-men/shoes/boots">
+                   BOOTS
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="sneakers-men" data-ref="link" href="/en-us/shop-men/shoes/sneakers">
+                   SNEAKERS
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="loafers-and-derbies-men" data-ref="link" href="/en-us/shop-men/shoes/loafers-and-derbies">
+                   LOAFERS AND DERBIES
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="espadrilles-and-sandals-men" data-ref="link" href="/en-us/shop-men/shoes/espadrilles-and-sandals">
+                   ESPADRILLES AND SANDALS
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="view-all-shoes-men" data-ref="link" href="/en-us/shop-men/shoes/view-all">
+                   VIEW ALL
+                  </a>
+                 </li>
+                </ul>
+               </div>
+              </li>
+              <li class="c-nav__item" data-cgid="luggages-men" data-level2="true" data-ref="item">
+               <button class="c-nav__link" data-ref="link">
+                BAGS
+               </button>
+               <div class="c-nav__subnav" data-ref="subnav">
+                <ul class="c-nav__list c-nav__level3" data-ref="navlist">
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="sac-de-jour-men" data-ref="link" href="/en-us/shop-men/bags/sac-de-jour">
+                   SAC DE JOUR
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="backpacks-men" data-ref="link" href="/en-us/shop-men/bags/backpacks">
+                   BACKPACKS
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="shopping-bag-men" data-ref="link" href="/en-us/shop-men/bags/shopping-bags">
+                   SHOPPING BAGS
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="messengers-bags-men" data-ref="link" href="/en-us/shop-men/bags/messengers">
+                   MESSENGERS
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="travel-bags-men" data-ref="link" href="/en-us/shop-men/bags/travel-bags">
+                   TRAVEL BAGS
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="business-bags-men" data-ref="link" href="/en-us/shop-men/bags/business">
+                   BUSINESS
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="view-all-luggages-men" data-ref="link" href="/en-us/shop-men/bags/view-all">
+                   VIEW ALL
+                  </a>
+                 </li>
+                </ul>
+               </div>
+              </li>
+              <li class="c-nav__item" data-cgid="slg-men" data-level2="true" data-ref="item">
+               <button class="c-nav__link" data-ref="link">
+                SMALL LEATHER GOODS
+               </button>
+               <div class="c-nav__subnav" data-ref="subnav">
+                <ul class="c-nav__list c-nav__level3" data-ref="navlist">
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="card-cases-men" data-ref="link" href="/en-us/shop-men/small-leather-goods/card-cases">
+                   CARD CASES
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="small-wallets-men" data-ref="link" href="/en-us/shop-men/small-leather-goods/small-wallets">
+                   SMALL WALLETS
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="large-wallets-men" data-ref="link" href="/en-us/shop-men/small-leather-goods/large-wallets">
+                   LARGE WALLETS
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="pouches-men" data-ref="link" href="/en-us/shop-men/small-leather-goods/pouches">
+                   POUCHES
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="other-accessories-slg-men" data-ref="link" href="/en-us/shop-men/small-leather-goods/other-accessories">
+                   OTHER ACCESSORIES
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="view-all-slg-men" data-ref="link" href="/en-us/shop-men/small-leather-goods/view-all">
+                   VIEW ALL
+                  </a>
+                 </li>
+                </ul>
+               </div>
+              </li>
+              <li class="c-nav__item" data-cgid="belts-and-belt-bags-men" data-level2="true" data-ref="item">
+               <a class="c-nav__link" data-cgid="belts-and-belt-bags-men" data-ref="link" href="/en-us/shop-men/belts-and-belt-bags">
+                BELTS AND BELT BAGS
+               </a>
+              </li>
+              <li class="c-nav__item" data-cgid="jewellry-men" data-level2="true" data-ref="item">
+               <a class="c-nav__link" data-cgid="jewellry-men" data-ref="link" href="/en-us/shop-men/jewelry">
+                Jewelry
+               </a>
+               <div class="c-nav__subnav" data-ref="subnav">
+                <ul class="c-nav__list c-nav__level3" data-ref="navlist">
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="necklaces-men" data-ref="link" href="/en-us/search?cgid=necklaces-men">
+                   NECKLACES
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="cuffs-and-bracelet-men" data-ref="link" href="/en-us/search?cgid=cuffs-and-bracelet-men">
+                   Bracelets
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="brooches-men" data-ref="link" href="/en-us/search?cgid=brooches-men">
+                   BROOCHES
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="rings-and-earrings-men" data-ref="link" href="/en-us/search?cgid=rings-and-earrings-men">
+                   Rings and earrings
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="view-all-jewellry-men" data-ref="link" href="/en-us/search?cgid=view-all-jewellry-men">
+                   VIEW ALL
+                  </a>
+                 </li>
+                </ul>
+               </div>
+              </li>
+              <li class="c-nav__item" data-cgid="accessories-men" data-level2="true" data-ref="item">
+               <button class="c-nav__link" data-ref="link">
+                ACCESSORIES
+               </button>
+               <div class="c-nav__subnav" data-ref="subnav">
+                <ul class="c-nav__list c-nav__level3" data-ref="navlist">
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="hats-men" data-ref="link" href="/en-us/shop-men/accessories/hats">
+                   HATS
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="textile-accessories-men" data-ref="link" href="/en-us/shop-men/accessories/textile-accessories">
+                   TEXTILE ACCESSORIES
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="view-all-accessories-men" data-ref="link" href="/en-us/shop-men/accessories/view-all">
+                   VIEW ALL
+                  </a>
+                 </li>
+                </ul>
+               </div>
+              </li>
+              <li class="c-nav__item" data-cgid="sunglasses-men" data-level2="true" data-ref="item">
+               <a class="c-nav__link" data-cgid="sunglasses-men" data-ref="link" href="/en-us/shop-men/sunglasses">
+                SUNGLASSES
+               </a>
+              </li>
+             </ul>
+            </div>
+           </li>
+           <li class="c-nav__item" data-cgid="gifts" data-level1="true" data-ref="item">
+            <button class="c-nav__link" data-ref="link">
+             Gifts
+            </button>
+            <div class="c-nav__subnav" data-ref="subnav">
+             <ul class="c-nav__list c-nav__level2" data-ref="navlist">
+              <li class="c-nav__item" data-cgid="for-her" data-level2="true" data-ref="item">
+               <a class="c-nav__link" data-cgid="for-her" data-ref="link" href="/en-us/gifts/for-her">
+                FOR HER
+               </a>
+              </li>
+              <li class="c-nav__item" data-cgid="for-him" data-level2="true" data-ref="item">
+               <a class="c-nav__link" data-cgid="for-him" data-ref="link" href="/en-us/gifts/for-him">
+                FOR HIM
+               </a>
+              </li>
+              <li class="c-nav__item" data-cgid="rive-droite-saint-laurent" data-level2="true" data-ref="item">
+               <a class="c-nav__link" data-cgid="Rive-droite-saint-laurent" data-ref="link" href="/en-us/gifts/rive-droite">
+                Rive Droite
+               </a>
+              </li>
+              <li class="c-nav__item" data-cgid="le-vestiaire-des-parfums" data-level2="true" data-ref="item">
+               <a class="c-nav__link" data-cgid="le-vestiaire-des-parfums" data-ref="link" href="/en-us/gifts/fragrance">
+                Fragrance
+               </a>
+              </li>
+             </ul>
+            </div>
+           </li>
+           <li class="c-nav__item" data-cgid="ysl-collections" data-level1="true" data-ref="item">
+            <button class="c-nav__link" data-ref="link">
+             COLLECTIONS
+            </button>
+            <div class="c-nav__subnav" data-ref="subnav">
+             <ul class="c-nav__list c-nav__level2" data-ref="navlist">
+              <li class="c-nav__item" data-cgid="collections-looks-w-summer21" data-level2="true" data-ref="item">
+               <a class="c-nav__link" data-cgid="collections-looks-w-summer21" data-ref="link" href="/en-us/collections/women-s-summer-21">
+                WOMEN'S SUMMER 21
+               </a>
+               <div class="c-nav__subnav" data-ref="subnav">
+                <ul class="c-nav__list c-nav__level3" data-ref="navlist">
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="women-s-summer21-fashion-show" data-ref="link" href="https://www.ysl.com/en-us/collections-ws21-video-collections-ws21-video">
+                   FASHION SHOW
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="women-s-summer21-images" data-ref="link" href="https://www.ysl.com/en-us/women-summer-21-images-collections-ws21-image">
+                   IMAGES
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="women-s-summer21-video" data-ref="link" href="https://www.ysl.com/en-us/displayname-collections-ws21-gaspar-noe-video">
+                   VIDEO
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="women-21-bestwishes-video" data-ref="link" href="https://www.ysl.com/en-us/displayname-collections-ws21-video-best-wishes21">
+                   #YSL36
+                  </a>
+                 </li>
+                </ul>
+               </div>
+              </li>
+              <li class="c-nav__item" data-cgid="collections-looks-m-spring-summer21" data-level2="true" data-ref="item">
+               <button class="c-nav__link" data-ref="link">
+                MEN'S SPRING SUMMER 21
+               </button>
+               <div class="c-nav__subnav" data-ref="subnav">
+                <ul class="c-nav__list c-nav__level3" data-ref="navlist">
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="men-s-spring-summer21-video" data-ref="link" href="https://www.ysl.com/en-us/men-spring-summer-21-video-collections-mss21-video">
+                   Video
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="men-s-spring-summer21-images" data-ref="link" href="https://www.ysl.com/en-us/men-spring-summer-21-images-collections-mss21-image">
+                   Images
+                  </a>
+                 </li>
+                </ul>
+               </div>
+              </li>
+              <li class="c-nav__item" data-cgid="collections-looks-w-winter20" data-level2="true" data-ref="item">
+               <button class="c-nav__link" data-ref="link">
+                WOMEN'S WINTER 20
+               </button>
+               <div class="c-nav__subnav" data-ref="subnav">
+                <ul class="c-nav__list c-nav__level3" data-ref="navlist">
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="women-s-winter20-fashion-show" data-ref="link" href="https://www.ysl.com/en-us/women-winter20-fashion-show-video-collections-ww20-fs">
+                   FASHION SHOW
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="women-s-winter20-looks" data-ref="link" href="https://www.ysl.com/en-us/women-winter20-looks-collections-ww20-looks">
+                   LOOKS
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="2women-s-winter20-campaign-video" data-ref="link" href="https://www.ysl.com/en-us/women-winter20campaign-video-collections-ww20-video">
+                   VIDEO
+                  </a>
+                 </li>
+                </ul>
+               </div>
+              </li>
+              <li class="c-nav__item" data-cgid="collections-looks-w-summer20" data-level2="true" data-ref="item">
+               <button class="c-nav__link" data-ref="link">
+                WOMEN'S SUMMER 20
+               </button>
+               <div class="c-nav__subnav" data-ref="subnav">
+                <ul class="c-nav__list c-nav__level3" data-ref="navlist">
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="fashion-show" data-ref="link" href="https://www.ysl.com/en-us/women-summer20-fashion-show-video-collections-ws20-fs">
+                   Fashion Show
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="women-s-summer20-looks" data-ref="link" href="https://www.ysl.com/en-us/women-summer20-looks-collections-ws20-looks">
+                   LOOKS
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <button class="c-nav__link" data-ref="link">
+                   BEHIND THE SCENE
+                  </button>
+                  <div class="c-nav__subnav" data-ref="subnav">
+                   <ul class="c-nav__list c-nav__level4" data-ref="navlist">
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="behind-the-scene-part-1" data-ref="link" href="https://www.ysl.com/en-us/women-summer20-behind-the-scene-1-video-collections-ws20-bts-1">
+                      Part I
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="behind-the-scene-part-2" data-ref="link" href="https://www.ysl.com/en-us/women-summer20-behind-the-scene-2-video-collections-wsr20-bts-2">
+                      PART II
+                     </a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                     <a class="c-nav__link" data-cgid="behind-the-scene-part-3" data-ref="link" href="https://www.ysl.com/en-us/women-summer20-behind-the-scene-3-video-collections-ws20-bts-3">
+                      PART III
+                     </a>
+                    </li>
+                   </ul>
+                  </div>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="women-s-summer20-ysl29" data-ref="link" href="https://www.ysl.com/en-us/women-summer20-ysl29-video-collections-ws20-ysl29">
+                   #YSL29
+                  </a>
+                 </li>
+                 <li class="c-nav__item c-nav__item--withslot" data-ref="item">
+                  <a class="c-nav__link" data-cgid="women-s-summer20-campaign-video" data-ref="link" href="https://www.ysl.com/en-us/women-summer20-campaign-video-collections-ws20-video">
+                   VIDEO
+                  </a>
+                 </li>
+                </ul>
+               </div>
+              </li>
+             </ul>
+            </div>
+           </li>
+           <li class="c-nav__item" data-cgid="la maison" data-level1="true" data-ref="item">
+            <button class="c-nav__link" data-ref="link">
+             La Maison
+            </button>
+            <div class="c-nav__subnav" data-ref="subnav">
+             <ul class="c-nav__list c-nav__level2" data-ref="navlist">
+              <li class="c-nav__item" data-cgid="yves-saint-laurent" data-level2="true" data-ref="item">
+               <a class="c-nav__link" data-cgid="yves-saint-laurent" data-ref="link" href="https://www.ysl.com/en-us/yves-saint-laurent-video-la-maison-ysl">
+                Yves Saint Laurent
+               </a>
+              </li>
+             </ul>
+            </div>
+           </li>
+           <li class="c-nav__item" data-cgid="saint-laurent-self" data-level1="true" data-ref="item">
+            <button class="c-nav__link" data-ref="link">
+             Saint Laurent Self
+            </button>
+            <div class="c-nav__subnav" data-ref="subnav">
+             <ul class="c-nav__list c-nav__level2" data-ref="navlist">
+              <li class="c-nav__item" data-cgid="self-6" data-level2="true" data-ref="item">
+               <a class="c-nav__link" data-cgid="self-6" data-ref="link" href="https://www.ysl.com/en-us/video-saint-laurent-self06">
+                SELF 06
+               </a>
+              </li>
+              <li class="c-nav__item" data-cgid="self-5" data-level2="true" data-ref="item">
+               <a class="c-nav__link" data-cgid="self-5" data-ref="link" href="https://www.ysl.com/en-us/video-saint-laurent-self05">
+                SELF 05
+               </a>
+              </li>
+              <li class="c-nav__item" data-cgid="self-4" data-level2="true" data-ref="item">
+               <a class="c-nav__link" data-cgid="self-4" data-ref="link" href="https://www.ysl.com/en-us/video-saint-laurent-self04">
+                SELF 04
+               </a>
+              </li>
+              <li class="c-nav__item" data-cgid="self-3" data-level2="true" data-ref="item">
+               <a class="c-nav__link" data-cgid="self-3" data-ref="link" href="https://www.ysl.com/en-us/video-saint-laurent-self03">
+                SELF 03
+               </a>
+              </li>
+              <li class="c-nav__item" data-cgid="self-2" data-level2="true" data-ref="item">
+               <a class="c-nav__link" data-cgid="self-2" data-ref="link" href="https://www.ysl.com/en-us/video-saint-laurent-self02">
+                SELF 02
+               </a>
+              </li>
+              <li class="c-nav__item" data-cgid="self-1" data-level2="true" data-ref="item">
+               <a class="c-nav__link" data-cgid="self-1" data-ref="link" href="https://www.ysl.com/en-us/video-saint-laurent-self01">
+                Self 01
+               </a>
+              </li>
+              <li class="c-nav__item" data-cgid="self" data-level2="true" data-ref="item">
+               <a class="c-nav__link" data-cgid="self" data-ref="link" href="https://www.ysl.com/en-us/introduction-saint-laurent-self">
+                Self
+               </a>
+              </li>
+             </ul>
+            </div>
+           </li>
+           <li class="c-nav__item" data-ref="item">
+            <button class="c-nav__link" data-ref="link">
+             Store Locator
+            </button>
+            <div class="c-nav__subnav" data-ref="subnav">
+             <ul class="c-nav__list c-nav__level2" data-ref="navlist">
+              <li class="c-nav__item" data-ref="item">
+               <a class="c-nav__link" data-cgid="storelocator" data-ref="link" href="https://www.ysl.com/en-us/storelocator">
+                Find a store
+               </a>
+              </li>
+             </ul>
+            </div>
+           </li>
+           <li class="c-nav__item c-nav__item--rivedroite c-nav__item--current u-show--none@lg">
+            <button class="c-nav__link" data-action="toggleMenu" role="button">
+             <span aria-hidden="true" data-ref="backTrigger">
+              <span aria-hidden="true" class="c-icon--back">
+              </span>
+              <span class="u-sronly">
+               Back
+              </span>
+              <span class="c-nav__linklabel">
+               Back
+              </span>
+             </span>
+            </button>
+           </li>
+           <li class="c-nav__item c-nav__item--hprivedroite" data-cgid="rivedroite" data-level1="true" data-ref="item">
+            <a class="c-nav__link" data-cgid="rivedroite" data-ref="link" href="/en-us/rive-droite">
+             <span class="c-nav__span">
+              Rive Droite
+             </span>
+            </a>
+           </li>
+           <li class="c-nav__space">
+           </li>
+           <li class="c-nav__item c-nav__item--nonav u-show--none@lg" data-ref="mobileitem">
+            <a class="c-nav__link" href="https://www.ysl.com/en-us/cart">
+             <span>
+              Bag
+             </span>
+            </a>
+           </li>
+           <li class="c-nav__item c-nav__item--nonav u-show--none@lg">
+            <a class="c-nav__link" data-ref="link" href="https://www.ysl.com/en-us/login">
+             <span class="c-nav__label">
+              Sign in
+             </span>
+            </a>
+           </li>
+           <li class="c-nav__item c-nav__item--nonav u-show--none@lg" data-ref="mobileitem">
+            <a class="c-nav__link" href="/en-us/displayname-faq">
+             <span>
+              Client service
+             </span>
+            </a>
+           </li>
+          </ul>
+         </div>
+        </nav>
+       </div>
+      </div>
+      <div class="l-header__aside" data-ref="headeraside">
+       <div class="l-header__icons">
+        <div class="c-topsearch" data-component="topSearch">
+         <div aria-label="Search" class="c-popin c-popin--topsearch" data-popin="searchPopin" id="searchPopin" role="dialog">
+          <div role="document">
+           <div class="c-topsearch__container" data-ref="topSearchForm">
+            <div class="c-popin__head">
+             <div class="c-popin__title">
+              <button data-element="closebtn" data-ref="closePopinTrigger" type="button">
+               <span class="u-sronly">
+                Close the dialog
+               </span>
+              </button>
+              <form action="/en-us/search" class="c-topsearch__form" method="get" name="simpleSearch" role="search">
+               <div class="c-topsearch__result">
+                <input aria-label="Search" autocomplete="off" class="c-form__input c-form_input--nooffset" data-action="topSearchInputKeypress" data-max-sugg="3" data-min="3" data-ref="topSearchInput" name="q" placeholder="Search" type="search" value=""/>
+               </div>
+               <input name="lang" type="hidden" value="en_US"/>
+              </form>
+             </div>
+            </div>
+            <div class="c-popin__content">
+             <div class="c-topsearch__autosuggest" data-action="close" data-ref="topSearchSuggestions" data-url="/on/demandware.store/Sites-SLP-NOAM-Site/en_US/SearchServices-GetSuggestions?q=">
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+         <button class="c-topsearch__button" data-action="openTopSearchInput" data-ref="topSearchTrigger">
+          <i aria-hidden="true" class="c-icon--search">
+          </i>
+          <span class="u-sronly">
+           Search
+          </span>
+         </button>
+        </div>
+        <div class="c-minicart" data-action-url="/en-us/cart?isMiniCart=true" data-component="minicart" id="minicart">
+         <div data-bind="miniCartQuantity">
+          <a class="c-minicart__link" data-action="openMiniCart" data-ref="topBagLink" href="https://www.ysl.com/en-us/cart" title="Bag">
+           <span class="c-minicart__icon c-icon--basket">
+           </span>
+           <span class="c-minicart__label">
+            Bag
+           </span>
+          </a>
+         </div>
+         <div aria-hidden="true" aria-label="See the products already added" class="c-popin c-popin--minicart c-minicartlayer" data-component="minicartLayer" data-context="MINICART" data-errorcontent="The application has encountered an unknown error. It doesn’t appear to have affected your data, but our technical staff have been automatically notified and will be looking into this with the utmost urgency." data-errortitle="Server error" data-popin="minicartLayer" role="dialog">
+          <div role="document">
+           <div class="c-popin__head">
+            <button data-element="closebtn" data-ref="closePopinTrigger" type="button">
+             <span class="u-sronly">
+              close the mini cart
+             </span>
+            </button>
+           </div>
+           <div class="c-popin__content" data-ref="minicartContent">
+            <div class="c-popin__innercontent" data-bind="minicartLayerContent" data-container="minicart">
+             <div class="c-minicartlayer__empty">
+              <p class="c-minicartlayer__title">
+               <span data-bind="numberOfItems">
+                0 Item
+               </span>
+              </p>
+              <div class="c-minicartlayer__content">
+               <div class="c-minicartlayer__txt" data-ref="minicartEmptyText" tabindex="0">
+                Your cart is empty
+               </div>
+               <div class="c-minicartlayer__needhelp">
+                For any enquieries, please contact our client service by email or by phone at +1 646 889 1961
+                <br/>
+                ( from monday to friday 10 am till 6 pm excluding holidays). It will be our pleasure to assist you
+                <div class="c-emptycart__categories">
+                 <div class="l-productgrid l-productgrid--emptycart">
+                  <span class="l-productgrid__title">
+                   Other categories
+                  </span>
+                  <ul class="l-productgrid__inner" data-gridtype="CATEGORYLIST">
+                   <li class="l-productgrid__item">
+                    <div class="l-productgrid__inner">
+                     <div class="l-productgrid__imagecontainer">
+                      <img class="l-productgrid__img" src="https://saint-laurent.dam.kering.com/m/31c0ff320924b7c8/Thumbnail-651026BOW911000_A.jpg?v=4" srcset="https://saint-laurent.dam.kering.com/m/31c0ff320924b7c8/Small_thumbnail-651026BOW911000_A.jpg?v=4 171w,
+                        https://saint-laurent.dam.kering.com/m/31c0ff320924b7c8/Thumbnail-651026BOW911000_A.jpg?v=4 342w,
+                        https://saint-laurent.dam.kering.com/m/31c0ff320924b7c8/Small-651026BOW911000_A.jpg?v=4 513w,
+                        https://saint-laurent.dam.kering.com/m/31c0ff320924b7c8/Medium-651026BOW911000_A.jpg?v=4 684w,
+                        https://saint-laurent.dam.kering.com/m/31c0ff320924b7c8/Large-651026BOW911000_A.jpg?v=4 1367w"/>
+                     </div>
+                     <div class="l-productgrid__infos">
+                      <span class="l-productgrid__name">
+                       VIEW ALL
+                      </span>
+                     </div>
+                     <a class="l-productgrid__link" href="https://www.ysl.com/en-us/shop-women/small-leather-goods/view-all">
+                     </a>
+                    </div>
+                   </li>
+                   <li class="l-productgrid__item">
+                    <div class="l-productgrid__inner">
+                     <div class="l-productgrid__imagecontainer">
+                      <img class="l-productgrid__img" src="https://saint-laurent.dam.kering.com/m/4af7aba3d04ed110/Thumbnail-65792810G001000_A.jpg?v=1" srcset="https://saint-laurent.dam.kering.com/m/4af7aba3d04ed110/Small_thumbnail-65792810G001000_A.jpg?v=1 171w,
+                        https://saint-laurent.dam.kering.com/m/4af7aba3d04ed110/Thumbnail-65792810G001000_A.jpg?v=1 342w,
+                        https://saint-laurent.dam.kering.com/m/4af7aba3d04ed110/Small-65792810G001000_A.jpg?v=1 513w,
+                        https://saint-laurent.dam.kering.com/m/4af7aba3d04ed110/Medium-65792810G001000_A.jpg?v=1 684w,
+                        https://saint-laurent.dam.kering.com/m/4af7aba3d04ed110/Large-65792810G001000_A.jpg?v=1 1367w"/>
+                     </div>
+                     <div class="l-productgrid__infos">
+                      <span class="l-productgrid__name">
+                       VIEW ALL
+                      </span>
+                     </div>
+                     <a class="l-productgrid__link" href="https://www.ysl.com/en-us/shop-women/shoes/view-all">
+                     </a>
+                    </div>
+                   </li>
+                   <li class="l-productgrid__item">
+                    <div class="l-productgrid__inner">
+                     <div class="l-productgrid__imagecontainer">
+                      <img class="l-productgrid__img" src="https://saint-laurent.dam.kering.com/m/67cefc3a71500f96/Thumbnail-644234Y5C917063_A.jpg?v=1" srcset="https://saint-laurent.dam.kering.com/m/67cefc3a71500f96/Small_thumbnail-644234Y5C917063_A.jpg?v=1 171w,
+                        https://saint-laurent.dam.kering.com/m/67cefc3a71500f96/Thumbnail-644234Y5C917063_A.jpg?v=1 342w,
+                        https://saint-laurent.dam.kering.com/m/67cefc3a71500f96/Small-644234Y5C917063_A.jpg?v=1 513w,
+                        https://saint-laurent.dam.kering.com/m/67cefc3a71500f96/Medium-644234Y5C917063_A.jpg?v=1 684w,
+                        https://saint-laurent.dam.kering.com/m/67cefc3a71500f96/Large-644234Y5C917063_A.jpg?v=1 1367w"/>
+                     </div>
+                     <div class="l-productgrid__infos">
+                      <span class="l-productgrid__name">
+                       VIEW ALL
+                      </span>
+                     </div>
+                     <a class="l-productgrid__link" href="https://www.ysl.com/en-us/shop-women/ready-to-wear/view-all">
+                     </a>
+                    </div>
+                   </li>
+                   <li class="l-productgrid__item">
+                    <div class="l-productgrid__inner">
+                     <div class="l-productgrid__imagecontainer">
+                      <img class="l-productgrid__img" src="https://saint-laurent.dam.kering.com/m/5ca522b80bfb9097/Thumbnail-64714818G1Z1000_A.jpg?v=3" srcset="https://saint-laurent.dam.kering.com/m/5ca522b80bfb9097/Small_thumbnail-64714818G1Z1000_A.jpg?v=3 171w,
+                        https://saint-laurent.dam.kering.com/m/5ca522b80bfb9097/Thumbnail-64714818G1Z1000_A.jpg?v=3 342w,
+                        https://saint-laurent.dam.kering.com/m/5ca522b80bfb9097/Small-64714818G1Z1000_A.jpg?v=3 513w,
+                        https://saint-laurent.dam.kering.com/m/5ca522b80bfb9097/Medium-64714818G1Z1000_A.jpg?v=3 684w,
+                        https://saint-laurent.dam.kering.com/m/5ca522b80bfb9097/Large-64714818G1Z1000_A.jpg?v=3 1367w"/>
+                     </div>
+                     <div class="l-productgrid__infos">
+                      <span class="l-productgrid__name">
+                       VIEW ALL
+                      </span>
+                     </div>
+                     <a class="l-productgrid__link" href="https://www.ysl.com/en-us/shop-men/small-leather-goods/view-all">
+                     </a>
+                    </div>
+                   </li>
+                   <li class="l-productgrid__item">
+                    <div class="l-productgrid__inner">
+                     <div class="l-productgrid__imagecontainer">
+                      <img class="l-productgrid__img" src="https://saint-laurent.dam.kering.com/m/29bf33abc5f89b26/Thumbnail-6304741VUVV1000_A.jpg" srcset="https://saint-laurent.dam.kering.com/m/29bf33abc5f89b26/Small_thumbnail-6304741VUVV1000_A.jpg 171w,
+                        https://saint-laurent.dam.kering.com/m/29bf33abc5f89b26/Thumbnail-6304741VUVV1000_A.jpg 342w,
+                        https://saint-laurent.dam.kering.com/m/29bf33abc5f89b26/Small-6304741VUVV1000_A.jpg 513w,
+                        https://saint-laurent.dam.kering.com/m/29bf33abc5f89b26/Medium-6304741VUVV1000_A.jpg 684w,
+                        https://saint-laurent.dam.kering.com/m/29bf33abc5f89b26/Large-6304741VUVV1000_A.jpg 1367w"/>
+                     </div>
+                     <div class="l-productgrid__infos">
+                      <span class="l-productgrid__name">
+                       VIEW ALL
+                      </span>
+                     </div>
+                     <a class="l-productgrid__link" href="https://www.ysl.com/en-us/shop-men/shoes/view-all">
+                     </a>
+                    </div>
+                   </li>
+                   <li class="l-productgrid__item">
+                    <div class="l-productgrid__inner">
+                     <div class="l-productgrid__imagecontainer">
+                      <img class="l-productgrid__img" src="https://saint-laurent.dam.kering.com/m/5d77a4bbd05dc104/Thumbnail-531956Y2B191000_A.jpg" srcset="https://saint-laurent.dam.kering.com/m/5d77a4bbd05dc104/Small_thumbnail-531956Y2B191000_A.jpg 171w,
+                        https://saint-laurent.dam.kering.com/m/5d77a4bbd05dc104/Thumbnail-531956Y2B191000_A.jpg 342w,
+                        https://saint-laurent.dam.kering.com/m/5d77a4bbd05dc104/Small-531956Y2B191000_A.jpg 513w,
+                        https://saint-laurent.dam.kering.com/m/5d77a4bbd05dc104/Medium-531956Y2B191000_A.jpg 684w,
+                        https://saint-laurent.dam.kering.com/m/5d77a4bbd05dc104/Large-531956Y2B191000_A.jpg 1367w"/>
+                     </div>
+                     <div class="l-productgrid__infos">
+                      <span class="l-productgrid__name">
+                       VIEW ALL
+                      </span>
+                     </div>
+                     <a class="l-productgrid__link" href="https://www.ysl.com/en-us/shop-men/ready-to-wear/view-all">
+                     </a>
+                    </div>
+                   </li>
+                  </ul>
+                 </div>
+                </div>
+               </div>
+              </div>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <button aria-expanded="false" class="c-nav__toggler u-show--none@lg" data-ref="trigger" type="button">
+         <span aria-hidden="true" class="c-icon--burger">
+         </span>
+         <span class="c-nav__togglerlabel">
+          Menu
+         </span>
+        </button>
+        <div class="l-header__services c-topaccount--services">
+         <div class="c-topaccount u-hidden@lg" data-qa="Account-Login">
+          <a aria-label="My Account" class="c-topaccount__icon" href="https://www.ysl.com/en-us/login">
+           <span class="c-topaccount__label">
+            My Account
+           </span>
+          </a>
+         </div>
+         <div class="c-topfaq u-hidden@lg">
+          <a aria-label="Client service" class="c-topfaq__icon" href="/en-us/displayname-faq">
+           Client service
+          </a>
+         </div>
+         <span data-ref="transientData" data-transientdata='{"customer":{"logged":false}}'>
+         </span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </header>
+   <main class="l-site__wrapper" id="main-content" role="main">
+    <!-- +1.888.555.0199 -->
+    <!--This phone is a requirement to support existing Gomez monitor of SiteGenesis. Demadware customers can remove this.-->
+    <div class="l-site__container" data-container="storefront">
+     <div class="c-toastnotifier" data-component="toastNotifier">
+      <div aria-live="polite" data-bind="toastMessage">
+      </div>
+     </div>
+     <div class="l-homepage" data-component="homePageCategories">
+      <div class="l-homepage__categories">
+       <style>
+        .ca-homecategory__image {
+            background-image: url('https://saint-laurent.dam.kering.com/m/69aea03c9d656565/Large-94_SPRING-SUMMER21_WOMEN_BAG_SOLFERINO_2200x2668.jpg');
+        }
+        @media screen and (min-width: 768px) {
+            .ca-homecategory__image {
+                background-image: url('https://saint-laurent.dam.kering.com/m/50ad53475bde70e9/Large-94_SPRING-SUMMER21_WOMEN_BAG_SOLFERINO_3450x1536.jpg');
+            }
+        }
+        @media screen and (min-width: 1024px) {
+            .ca-homecategory__image {
+                background-image: url('https://saint-laurent.dam.kering.com/m/50ad53475bde70e9/eCom-94_SPRING-SUMMER21_WOMEN_BAG_SOLFERINO_3450x1536.jpg');
+            }
+        }
+       </style>
+       <article class="ca-homecategory__image">
+        <div class="ca-homecategory__title ca-homecategory__title--dark">
+         <h2 style="text-align: center;">
+          <span style="color:#ffffff;">
+           SOLFERINO
+          </span>
+         </h2>
+         <p style="text-align: center;">
+          <u>
+           <a href="https://www.ysl.com/en-us/shop-women/handbags/by-line/solferino">
+            <span style="color:#ffffff;">
+             SHOP THE SELECTION
+            </span>
+           </a>
+          </u>
+         </p>
+        </div>
+       </article>
+      </div>
+     </div>
+    </div>
+   </main>
+   <footer data-container="footer" data-context="FOOTER" role="contentinfo">
+    <div class="l-footer l-footer__en_US">
+     <div class="l-footer__wrapper l-footer__wrapper--light" data-ref="footerWrapper">
+      <div class="l-footer__section l-footer__section--country">
+       <div class="c-storechoice">
+        <div class="c-storechoice" data-component="countryLocaleTrigger" data-url="/en-us/locale">
+         <p class="c-storechoice__content c-storechoice__content--country">
+          <span class="c-storechoice__label">
+           Shipping to
+          </span>
+          <a class="c-storechoice__link c-storechoice__countrylink" data-action="openCountryChoice" href="/en-us/countryselection" role="button">
+           <span class="u-sronly">
+            Change shipping country / region
+           </span>
+           <span class="u-hidden@md">
+            United States
+           </span>
+           <span class="u-hidden-from@md">
+            United States
+           </span>
+           <span class="u-hidden@md">
+            (Change)
+           </span>
+           <span aria-hidden="true" class="c-icon c-icon--arrow-right">
+           </span>
+          </a>
+         </p>
+         <p class="c-storechoice__content c-storechoice__content--language">
+          <span class="c-storechoice__label">
+           Language
+          </span>
+          <a class="c-storechoice__link c-storechoice__langlink" data-action="openLangChoice" href="/en-us/languagesselection" role="button">
+           <span class="u-sronly">
+            Change language
+           </span>
+           <span class="u-hidden@md">
+            English
+           </span>
+           <span class="u-hidden-from@md">
+            en
+           </span>
+           <span class="u-hidden@md">
+            (Change)
+           </span>
+           <span aria-hidden="true" class="c-icon c-icon--arrow-right">
+           </span>
+          </a>
+         </p>
+        </div>
+       </div>
+      </div>
+      <div class="l-footer__section l-footer__section--clientservice">
+       <div class="content-asset">
+        <!-- dwMarker="content" dwContentID="0364b5e6a04939b6613d642fcc" -->
+        <ul>
+         <li>
+          <a href="https://www.ysl.com/en-us/displayname-faq" title="Client service">
+           Client Service
+          </a>
+         </li>
+         <li class="u-hidden@lg">
+          <a href="https://www.ysl.com/en-us/displayname-faq?faqCategory=FAQShipping" title="Shipping">
+           Shipping
+          </a>
+         </li>
+         <li class="u-hidden@lg">
+          <a href="https://www.ysl.com/en-us/displayname-faq?faqCategory=FAQReturns" title="Returns">
+           Returns
+          </a>
+         </li>
+         <li class="u-hidden@lg">
+          <a href="https://www.ysl.com/en-us/contactus">
+           EMAIL
+          </a>
+          <a href="tel:+16468891961">
+           +1 646 889 1961
+          </a>
+         </li>
+        </ul>
+        <!-- END: footer-servicelinks -->
+       </div>
+       <!-- End content-asset -->
+      </div>
+      <div class="l-footer__section l-footer__section--careers">
+       <div class="content-asset">
+        <!-- dwMarker="content" dwContentID="9fcb5ed667b9b787abfa5fee20" -->
+        <ul>
+         <li>
+          <a class="u-hidden@lg" href="https://kering.wd3.myworkdayjobs.com/SaintLaurent" rel="noopener noreferrer" target="_blank" title="Go to Careers">
+           Career
+          </a>
+         </li>
+         <li>
+          <a href="https://www.ysl.com/en-us/legal-notices/name/terms-and-conditions-use.html" title="Legal notices">
+           Legal notices
+          </a>
+         </li>
+         <li>
+          <a href="https://www.ysl.com/en-us/legal-notices/name/web-accessibility-content-page.html" rel="noopener noreferrer" target="_blank" title="Accessibility">
+           Accessibility
+          </a>
+         </li>
+        </ul>
+        <!-- END: footer-servicelinks -->
+       </div>
+       <!-- End content-asset -->
+      </div>
+      <div class="l-footer__section l-footer__section--networks">
+       <h2 class="l-footer__title">
+        Follow us
+       </h2>
+       <ul class="l-footer__networks" data-component="social">
+        <li class="c-networks__item">
+         <a class="c-networks__link c-networks__link--facebook" href="https://www.facebook.com/ysl" target="_blank">
+          <span class="c-networks__link--label">
+           Facebook
+          </span>
+         </a>
+        </li>
+        <li class="c-networks__item">
+         <a class="c-networks__link c-networks__link--twitter" href="https://www.twitter.com/ysl" target="_blank">
+          <span class="c-networks__link--label">
+           Twitter
+          </span>
+         </a>
+        </li>
+        <li class="c-networks__item">
+         <a class="c-networks__link c-networks__link--instagram" href="https://www.instagram.com/ysl/" target="_blank">
+          <span class="c-networks__link--label">
+           Instagram
+          </span>
+         </a>
+        </li>
+        <li class="c-networks__item">
+         <a class="c-networks__link c-networks__link--youtube" href="https://www.youtube.com/ysl" target="_blank">
+          <span class="c-networks__link--label">
+           Youtube
+          </span>
+         </a>
+        </li>
+        <li class="c-networks__item">
+         <a class="c-networks__link c-networks__link--tiktok" href="https://www.tiktok.com/@ysl" target="_blank">
+          <span class="c-networks__link--label">
+           TikTok
+          </span>
+         </a>
+        </li>
+        <li class="c-networks__item">
+         <a class="c-networks__link c-networks__link--line" data-action="openSocialDrawer" href="https://www.ysl.com/en-us/name/wechatdrawer.html" role="button">
+          <span class="c-networks__link--label">
+           Wechat
+          </span>
+          <span class="c-icon c-icon--arrow-right">
+          </span>
+         </a>
+        </li>
+       </ul>
+      </div>
+      <div class="l-footer__section l-footer__section--newsletter">
+       <div class="l-footer__newsletterlink" data-component="newsletterSubscriptionPopin">
+        <a class="c-newsletter__subscribelink" data-action="showEmailSubscription" href="/en-us/newslettersubscription" role="button">
+         Subscribe to the newsletter
+         <span class="c-icon c-icon--arrow-right">
+         </span>
+        </a>
+        <div aria-hidden="true" aria-labelledby="newsletter_label" class="c-popin c-popin--newslettersubscribe" data-popin="newsletterSubscriptionPopin" role="dialog" tabindex="-1">
+         <div role="document">
+          <div class="c-popin__head">
+           <h2 class="c-popin__title" id="newsletter_label">
+            Newsletter
+           </h2>
+           <button data-element="closebtn" data-ref="closePopinTrigger" type="button">
+            <span class="u-visually-hidden">
+             Close the dialog
+            </span>
+           </button>
+          </div>
+          <div class="c-popin__content" data-component="newsLetterSubscribe">
+           <div data-container="newsletterSubscribeContainer">
+            <div class="c-newsletter" data-component="newsletterSubscription">
+             <form action="/on/demandware.store/Sites-SLP-NOAM-Site/en_US/NewsLetter-Submit" class="c-newsletter__form" data-action="submitNewsletterForm" data-tokenurl="https://www.ysl.com/on/demandware.store/Sites-SLP-NOAM-Site/en_US/NewsLetter-GetToken" id="newsletterForm" method="POST" name="newsletterForm">
+              <div class="c-form__errorblock" data-ref="formErrorBlock">
+               <div data-bind="formErrorBlock">
+               </div>
+              </div>
+              <div>
+               <div class="c-newsletter__form-inputs" data-ref="newsletterFormInputs">
+                <div class="c-newsletter__notice">
+                 <p>
+                  ‎‎Subscribe to our newsletter
+                 </p>
+                </div>
+                <div class="c-newsletter__required">
+                 <p>
+                  <span class="c-form__star">
+                   *
+                  </span>
+                  required field
+                 </p>
+                </div>
+                <div class="c-newsletter__row c-newsletter__row--option">
+                 <div class="c-form__group c-newsletter__formgroup" data-error-value=" newsletter.error.optin" data-formgroup="newsletteroptin">
+                  <div class="c-newsletter__option">
+                   <div class="c-newsletter__checkbox">
+                    <fieldset class="c-form__row c-form__row--radioinline required" data-error-missing='Please select your civility, example "Mr" or "Mrs".' data-formid="civility">
+                     <legend class="c-form__radiolabel" for="dwfrm_newsletter_civility_d0eideovzunn">
+                      <span>
+                       Civility
+                      </span>
+                      <span class="c-form__labelrequired">
+                       *
+                      </span>
+                     </legend>
+                     <div class="c-form__flexwrap">
+                      <div class="c-form__customfield">
+                       <input class="c-form__radio" id="newsletter1" name="dwfrm_newsletter_civility" required="" type="radio" value="newsletter1"/>
+                       <label class="c-form__label" for="newsletter1">
+                        Miss,Mrs,Ms
+                       </label>
+                      </div>
+                      <div class="c-form__customfield">
+                       <input class="c-form__radio" id="newsletter0" name="dwfrm_newsletter_civility" required="" type="radio" value="newsletter0"/>
+                       <label class="c-form__label" for="newsletter0">
+                        Mr.
+                       </label>
+                      </div>
+                      <div class="c-form__customfield">
+                       <input class="c-form__radio" id="newsletter2" name="dwfrm_newsletter_civility" required="" type="radio" value="newsletter2"/>
+                       <label class="c-form__label" for="newsletter2">
+                        Mx
+                       </label>
+                      </div>
+                      <div class="c-form__customfield">
+                       <input class="c-form__radio" id="newsletter3" name="dwfrm_newsletter_civility" required="" type="radio" value="newsletter3"/>
+                       <label class="c-form__label" for="newsletter3">
+                        I'd rather not say
+                       </label>
+                      </div>
+                     </div>
+                     <div aria-live="polite" class="c-form__error">
+                     </div>
+                    </fieldset>
+                   </div>
+                  </div>
+                  <div class="c-form__grouperror">
+                  </div>
+                 </div>
+                </div>
+                <div class="c-newsletter__row c-newsletter__row--input">
+                 <div class="c-newsletter__field">
+                  <div class="c-form__row required">
+                   <label class="c-form__label" for="dwfrm_newsletter_email_d0grsztmmwye">
+                    Email
+                    <span class="c-form__labelrequired">
+                     *
+                    </span>
+                   </label>
+                   <input autocomplete="email" class="c-form__input" data-error-missing="Please add your email address" data-error-parse='Invalid email format. Please try again, example "john.smith@email.com".' data-formid="email" id="dwfrm_newsletter_email_d0grsztmmwye" maxlength="80" name="dwfrm_newsletter_email" pattern="^([a-zA-Z0-9_\.\-\+]+)@([\da-zA-Z\.\-]+)\.([a-zA-Z\.]{2,12})$" placeholder="Email" required="" type="text" value=""/>
+                   <div aria-live="polite" class="c-form__error">
+                   </div>
+                  </div>
+                 </div>
+                 <!-- Subscribe Buttons -->
+                 <div class="c-newsletter__cta">
+                  <button class="c-button c-button--primary c-newsletter__btn" name="save" type="submit">
+                   send
+                  </button>
+                 </div>
+                </div>
+                <input data-ref="csrfToken" name="" type="hidden" value=""/>
+               </div>
+              </div>
+              <div class="c-newsletter__thankyou c-newsletter__thankyou--hidden" data-ref="thankYouMessage" tabindex="-1">
+               <h2 class="c-newsletter__title c-newsletter__title--valid" data-ref="successTitle">
+                Registration confirmation
+               </h2>
+               <p class="c-newsletter__confirm-message" data-bind="newsletterConfirmMessage" data-ref="newsletterConfirmMessageContainer">
+               </p>
+              </div>
+             </form>
+             <p class="c-newsletter__privacy" data-ref="newsletterFormPrivacy">
+              THE DATA FIELDS WITH AN ASTERISK (*) MUST BE COMPLETED IN ORDER TO SATISFY ANY REQUEST YOU MAKE. BY SUBMITTING THIS REQUEST, YOU CONFIRM THAT YOU HAVE REACHED, IN YOUR COUNTRY OF RESIDENCE, THE AGE OF MAJORITY. YOUR PERSONAL DATA MAY BE JOINTLY CONTROLLED BY YVES SAINT LAURENT SAS AND KERING FOR MARKETING AND OTHER PURPOSES AS DETAILED IN OUR PRIVACY POLICY. YOUR PERSONAL DATA MAY BE SHARED WITH ASSOCIATED COMPANIES AND SERVICE PROVIDERS TO SATISFY YOUR REQUEST. YOU HAVE THE RIGHT TO REQUEST FROM US ACCESS TO AND RECTIFICATION OR ERASURE OF YOUR PERSONAL DATA OR RESTRICTION OF PROCESSING CONCERNING YOU OR TO OBJECT TO PROCESSING AS WELL AS THE RIGHT TO DATA PORTABILITY, AS SET OUT IN THE PRIVACY NOTICE. YOU ALSO HAVE THE RIGHT TO OBJECT, FOR A LEGITIMATE PURPOSE, OR WITHDRAW YOUR CONSENT TO THE PROCESSING OF YOUR PERSONAL DATA. TO EXERCISE YOUR RIGHTS, PLEASE WRITE TO PRIVACY@YSL.COM. YOU CAN ALSO UNSUBSCRIBE AT ANY TIME BY CLICKING THE UNSUBSCRIBE LINK IN OUR EMAILS.
+            you have the right to request from us access to and rectification or erasure of your personal data ro restriction of processing concerning you or to object to processing as well as the right to data portability, as set out in the privacy notice. you also have the right to object, for a legitimate purpose, or withdraw your consent to the processing of your personal data. to exercise your rights, please write to
+              <a class="c-newsletter__emaillink" href="mailto: privacy@ysl.com">
+               privacy@ysl.com
+              </a>
+              . you can also unsubscribe at any time by clicking the unsubscribe link in our emails.
+             </p>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+       <div>
+       </div>
+       <div>
+       </div>
+      </div>
+     </div>
+     <div data-component="countryLocaleSelector">
+      <div aria-hidden="true" aria-labelledby="countrySelectorPopin_label" class="c-popin c-countryselector" data-popin="countrySelectorPopin" data-ref="countrySelectorPopinContent" role="dialog">
+       <div role="document">
+        <button class="c-countryselector__close" data-element="closebtn" data-ref="closePopinTrigger" type="button">
+         <span class="u-visually-hidden">
+          Close the dialog
+         </span>
+        </button>
+        <div class="c-countryselector__logo">
+         <div class="l-header__logo">
+          <a aria-label="Saint laurent - Go to the Homepage" class="l-header__link" href="/en-us" title="Saint laurent - Go to the Homepage">
+           <img alt="Saint laurent - Go to the Homepage" class="u-hidden@lg" src="/on/demandware.static/-/Library-Sites-Library-SLP/default/dw792e28c1/images/logo.svg"/>
+           <img alt="Saint laurent - Go to the Homepage" class="u-show--none@lg" src="/on/demandware.static/-/Library-Sites-Library-SLP/default/dwbe61eb08/images/logo-small.svg"/>
+          </a>
+         </div>
+        </div>
+        <div class="c-popin__head">
+         <h2 class="c-countryselector__title" id="countrySelectorPopin_label">
+          Select your country/region
+         </h2>
+        </div>
+        <div class="c-popin__content c-countryselector__wrapper">
+         <div class="c-popin__innercontent c-countryselector__innercontent" data-innerpopin="countrySelectorPopin">
+          <p class="c-countryselector__message">
+           If you already have items in your basket, please note that they wiil be shipped to the country you will select.
+          </p>
+          <div class="c-countryselector__countries u-hidden@md">
+          </div>
+          <div class="c-countryselector__countries u-hidden-from@md">
+           <label class="c-countryselector__selectlabel" for="mobileLanguageSelector">
+            Select a country/region
+           </label>
+           <select class="c-form__select c-countryselector__select" data-action="mobileCountrySelection" data-ref="mobileLanguageSelector" id="mobileLanguageSelector">
+           </select>
+          </div>
+          <div class="c-countryselector__notice">
+           <p>
+            shipping is not available for locations not listed above. Please visit our international website selecting a language below:
+           </p>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div aria-hidden="true" aria-labelledby="localeSelectorPopin_label" class="c-popin c-popin--locale" data-popin="localeSelectorPopin" data-ref="localeSelectorPopinContent" role="dialog">
+       <div role="document">
+        <div class="c-popin__head">
+         <h2 class="c-popin__title" id="localeSelectorPopin_label">
+          Select your language
+         </h2>
+         <button data-element="closebtn" data-ref="closePopinTrigger" type="button">
+          <span class="u-visually-hidden">
+           Close the dialog
+          </span>
+         </button>
+        </div>
+        <div class="c-popin__content c-locale">
+         <div class="c-popin__innercontent c-popin__innercontent--center" data-innerpopin="localeSelectorPopin">
+          <!-- Content pushed here -->
+          <p class="c-locale__title">
+           Select a language
+          </p>
+          <p class="c-locale__message">
+           Modifying the language does not modify the selected country and currency.
+           <br/>
+           Please, select from the options below. (Please note that you will be redirected to the homepage of the selected language).
+          </p>
+          <ul class="c-locale__langlist">
+          </ul>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div aria-hidden="true" aria-labelledby="socialDrawer_label" class="c-popin c-popin--social c-popin--locale" data-popin="socialDrawer" role="dialog">
+       <button data-element="closebtn" data-ref="closePopinTrigger" type="button">
+        <span class="u-sronly">
+         Close the dialog
+        </span>
+       </button>
+       <div data-ref="socialDrawerContent" role="document">
+       </div>
+      </div>
+     </div>
+     <script>
+      window.exposedData = {"sitePreferences":{"enableMinicartMobile":false},"urls":{"recaptchaCheck":"https://www.ysl.com/on/demandware.store/Sites-SLP-NOAM-Site/en_US/Recaptcha-Check"},"constants":{},"regExps":{},"resources":{},"wishlist":"https://www.ysl.com/on/demandware.store/Sites-SLP-NOAM-Site/en_US/Wishlist-GetListJson","miniCartScriptUrl":"https://www.ysl.com/on/demandware.static/Sites-SLP-NOAM-Site/-/en_US/v1616388087743/js/minicart.js","seoMetadata":{"@context":"http://schema.org","@id":"https://www.ysl.com/en-us","@type":"Organization","name":"Saint laurent","url":"https://www.ysl.com/en-us","contactPoint":[{"@type":"ContactPoint","telephone":"+44 20 33 18 59 20","contactType":"Customer Service","areaServed":"US"}],"sameAs":["https://en.wikipedia.org/wiki/Yves_Saint_Laurent_(brand)","https://www.youtube.com/ysl","https://www.tiktok.com/@ysl","https://www.facebook.com/ysl/","https://twitter.com/YSL","https://www.instagram.com/ysl/"]},"selectDefaultCategory":true};
+     </script>
+     <script>
+      if (window.exposedData && window.exposedData.resources) {
+            Object.assign(window.exposedData.resources, {"menuLabel":"Menu","menuClose":"Close","menuSronly":"Menu","addToWishlist":"Wishlist","addedToWishlist":"Saved","subMenuOpen":"Open the submenu:","subMenuClose":"Close the submenu:","defaultaddress":"Default address:","labelPhone":".","slashTitle":".","captchaIframeTitle":"Recaptcha protection - Privacy and conditions","loadingSrText":"Loading..."});
+        } else if (window.exposedData) {
+            Object.assign(window.exposedData, {
+                resources: {"menuLabel":"Menu","menuClose":"Close","menuSronly":"Menu","addToWishlist":"Wishlist","addedToWishlist":"Saved","subMenuOpen":"Open the submenu:","subMenuClose":"Close the submenu:","defaultaddress":"Default address:","labelPhone":".","slashTitle":".","captchaIframeTitle":"Recaptcha protection - Privacy and conditions","loadingSrText":"Loading..."}
+            });
+        } else {
+            window.exposedData = {
+                resources: {"menuLabel":"Menu","menuClose":"Close","menuSronly":"Menu","addToWishlist":"Wishlist","addedToWishlist":"Saved","subMenuOpen":"Open the submenu:","subMenuClose":"Close the submenu:","defaultaddress":"Default address:","labelPhone":".","slashTitle":".","captchaIframeTitle":"Recaptcha protection - Privacy and conditions","loadingSrText":"Loading..."}
+            };
+        }
+     </script>
+     <script>
+      ;(function(d, s, c) {
+        var j = d.createElement(s),
+        t = d.getElementsByTagName(s)[0]
+        j.src = "https://www.ysl.com/elastic.js"
+        j.onload = function() {elasticApm.init(c)}
+        t.parentNode.insertBefore(j, t)
+    })(document, 'script', {serviceName: 'sfcc-SLP-eu01', environment: 'prod-eu01', serverUrl: "https://bdbb8ccf57f74720a3cc74b4670a19b2.apm.eu-west-1.aws.cloud.es.io"})
+     </script>
+    </div>
+   </footer>
+  </div>
+  <!-- Demandware Analytics code 1.0 (body_end-analytics-tracking-asynch.js) -->
+  <script type="text/javascript">
+   //<!--
+/* <![CDATA[ */
+function trackPage() {
+    try{
+        var trackingUrl = "https://www.ysl.com/on/demandware.store/Sites-SLP-NOAM-Site/en_US/__Analytics-Start";
+        var dwAnalytics = dw.__dwAnalytics.getTracker(trackingUrl);
+        if (typeof dw.ac == "undefined") {
+            dwAnalytics.trackPageView();
+        } else {
+            dw.ac.setDWAnalytics(dwAnalytics);
+        }
+    }catch(err) {};
+}
+/* ]]> */
+// -->
+  </script>
+  <script async="async" onload="trackPage()" src="/on/demandware.static/Sites-SLP-NOAM-Site/-/en_US/v1616388087743/internal/jscript/dwanalytics-20.5.1.js" type="text/javascript">
+  </script>
+  <!-- Demandware Active Data (body_end-active_data.js) -->
+  <script async="async" src="/on/demandware.static/Sites-SLP-NOAM-Site/-/en_US/v1616388087743/internal/jscript/dwac-20.3.js" type="text/javascript">
+  </script>
+  <!-- CQuotient Activity Tracking (body_end-cquotient.js) -->
+  <script async="async" src="https://cdn.cquotient.com/js/v2/gretel.min.js" type="text/javascript">
+  </script>
+ </body>
+</html>

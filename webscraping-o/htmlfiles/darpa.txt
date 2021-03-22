@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en-US">
+ <head id="Head">
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="1 DAYS" name="REVISIT-AFTER"/>
+  <meta content="Defense Advanced Research Projects Agency" id="MetaDescription" name="DESCRIPTION"/>
+  <meta content="INDEX, FOLLOW" id="MetaRobots" name="ROBOTS"/>
+  <title>
+   Defense Advanced Research Projects Agency
+  </title>
+  <link href="/includes/css/default.css" rel="stylesheet" type="text/css"/>
+  <link href="/includes/css/skin.css" rel="stylesheet" type="text/css"/>
+  <link href="/includes/css/portal.css" rel="stylesheet" type="text/css"/>
+  <script src="/includes/js/jquery-3.5.1.js" type="text/javascript">
+  </script>
+  <script src="/includes/js/jquery-ui-1.12.1.js" type="text/javascript">
+  </script>
+  <script type="text/javascript">
+   //<![CDATA[
+        var analytics_page_startTime = (new Date()).getTime();
+        //]]>
+  </script>
+  <link href="rss" rel="alternate" title="DARPA RSS Feed" type="application/rss+xml"/>
+  <meta content="List" name="ContentType"/>
+  <meta content="List" name="TypeOfContent"/>
+ </head>
+ <body id="Body">
+  <script src="/includes/js/jquery.sidr.min.js" type="text/javascript">
+  </script>
+  <script src="/includes/js/jquery.flexslider-min.js" type="text/javascript">
+  </script>
+  <script src="/includes/js/sticky-nav.js" type="text/javascript">
+  </script>
+  <script src="/includes/js/picturefill.min.js" type="text/javascript">
+  </script>
+  <script src="/includes/js/skiplinks.js" type="text/javascript">
+  </script>
+  <script src="/includes/js/scripts.js" type="text/javascript">
+  </script>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <!-- my misplaced meta tag  -->
+  <!--googleoff: index-->
+  <div style="clear:both;">
+  </div>
+  <div id="HeaderPane">
+  </div>
+  <div style="clear:both;">
+  </div>
+  <!--googleon: index-->
+  <div id="ContentPane">
+  </div>
+  <div style="clear:both;">
+  </div>
+  <!--googleoff: index-->
+  <!-- ------------------ ASIDE  ------------------------------------  -->
+  <aside aria-label="sidebar-first" class="region-sidebar-first" role="complementary">
+  </aside>
+  <aside aria-label="sidebar-second" class="region-sidebar-second" role="complementary">
+  </aside>
+  <!--    ------------------Content Pane------------------------------------  -->
+  <div id="ContentPane">
+  </div>
+  <div style="clear:both;">
+  </div>
+  <div id="FooterPane">
+  </div>
+  <script type="text/javascript">
+   //Querystring  = none
+        // reject if parms found.
+        var qs1 = window.location.href.split("?")
+        if (qs1.length > 1) window.location = "/not-found.html";
+
+        //***
+        //*** Load Header template
+        //***
+        SiteNameSpace.ajaxCall({
+            url: "/includes/template/head.html",
+            type: "GET",
+            parameters: "",
+            dataType: "text",
+            WebServiceResult: false,
+            errorMessage: "Error: Unable to get head template",
+            success: function (results) {
+                if (results != null) {
+                    //***set the site data
+                    $("#HeaderPane").append(results);
+                    console.log("head template loaded.");
+                    //will filters or head arrive on page first?
+                    $.each(tagsList, function (i, tag) {
+                        $('#ulExploreTags').append('<li><a href="/tag-list.html?tag=' + tag.value_rts + '">' + tag.value_rts + '</a></li>');
+                    });
+                } else { //no result was found
+                    console.log("head template not loaded.");
+                }
+            }
+        }); //end ajaxCall
+
+        //***
+        //*** Load FiltersList
+        //***
+        SiteNameSpace.ajaxCall({
+            url: "/JSON/FiltersList.json",
+            type: "GET",
+            parameters: "",
+            dataType: "json",
+            WebServiceResult: false,
+            errorMessage: "Error: Unable to get FiltersList.json",
+            success: function (results) {
+                if (results != null) {
+                    console.log("filters data loaded.");
+                    tagsList = results.Tags_rls;
+                    //will filters or head arrive on page first?
+                    $.each(tagsList, function (i, tag) {
+                        $('#ulExploreTags').append('<li><a href="/tag-list.html?tag=' + tag.value_rts + '">' + tag.value_rts + '</a></li>');
+                    });
+
+                } else { //no result was found
+                    console.log("filters data not loaded.");
+                }
+            }
+        }); //end ajaxCall
+
+        //***
+        //*** Load Footer template
+        //***
+        SiteNameSpace.ajaxCall({
+            url: "/includes/template/foot.html",
+            type: "GET",
+            parameters: "",
+            dataType: "text",
+            WebServiceResult: false,
+            errorMessage: "Error: Unable to get foot template",
+            success: function (results) {
+                if (results != null) {
+                    //***set the site data
+                    $("#FooterPane").append(results);
+                    console.log("foot template loaded.");
+                } else { //no result was found
+                    console.log("foot template not loaded.");
+                }
+            }
+        }); //end ajaxCall
+
+
+        //***
+        //*** Load home template
+        //***
+
+
+
+        SiteNameSpace.ajaxCall({
+            url: "/includes/template/home.html",
+            type: "GET",
+            parameters: "",
+            dataType: "text",
+            WebServiceResult: false,
+            errorMessage: "Error: Unable to get home template",
+            success: function (results) {
+                if (results != null) {
+                    //***set the site data
+                    $("#ContentPane").append(results);
+                    console.log("template loaded.");
+                } else { //no result was found
+                    console.log("template not loaded.");
+                }
+            }
+        }); //end ajaxCall
+  </script>
+ </body>
+</html>

@@ -1,0 +1,901 @@
+.mobile-lightbox{overflow:hidden}
+.mobile-lightbox:after{content:'';position:fixed;top:0;left:0;background:#fff;z-index:100;width:100%;height:100%}
+.mfp-bg:not(.overlayComponent){opacity:.5 !important}
+.mfp-wrap.hideOverlay,.mfp-bg.hideOverlay{display:none}
+.lightboxPopup{max-width:970px;min-width:686px;box-sizing:border-box;margin:50px auto;position:relative}
+@media(min-width:981px) and (max-width:1240px){.lightboxPopup{width:980px}
+}
+@media(min-width:1241px){.lightboxPopup{width:980px}
+}
+.lightboxPopup .lightboxContainer{width:100%;display:block;box-sizing:border-box;position:relative;max-width:970px;overflow:hidden;margin:0 auto;max-height:none}
+.lightboxPopup .loadingBar{margin:0 auto;width:96px;height:16px;position:fixed;top:50%;left:50%;transform:translateX(-50%) translateY(-50%)}
+.lightboxPopup .loadingBar .bar{width:32px;height:16px;background-color:#f0ab00;float:left;opacity:0}
+.lightboxPopup .loadingBar .bar-first{animation:load1 1s ease-in-out infinite}
+.lightboxPopup .loadingBar .bar-second{animation:load2 1s ease-in-out infinite}
+.lightboxPopup .loadingBar .bar-third{animation:load3 1s ease-in-out infinite}
+.lightboxPopup .popupHeader{padding:35px 0 0 0;color:#fff;position:relative;box-sizing:border-box;background:#000;pointer-events:auto}
+.lightboxPopup .popupHeader .header-container{margin-right:auto;margin-left:auto}
+@media(max-width:767px){.lightboxPopup .popupHeader .header-container{padding-left:28px;padding-right:28px}
+}
+@media(min-width:768px) and (max-width:980px){.lightboxPopup .popupHeader .header-container{padding-left:79px;padding-right:79px}
+}
+@media(min-width:981px) and (max-width:1240px){.lightboxPopup .popupHeader .header-container{padding-left:90px;padding-right:90px}
+}
+@media(min-width:1241px){.lightboxPopup .popupHeader .header-container{padding-left:90px;padding-right:90px}
+}
+.lightboxPopup .popupHeader .header-container:before,.lightboxPopup .popupHeader .header-container:after{content:'';display:table}
+.lightboxPopup .popupHeader .header-container:after{clear:both}
+.lightboxPopup .popupHeader .toolbar-container{padding-top:8px;padding-bottom:8px;margin-right:auto;margin-left:auto}
+@media(max-width:767px){.lightboxPopup .popupHeader .toolbar-container{padding-left:28px;padding-right:28px}
+}
+@media(min-width:768px) and (max-width:980px){.lightboxPopup .popupHeader .toolbar-container{padding-left:79px;padding-right:79px}
+}
+@media(min-width:981px) and (max-width:1240px){.lightboxPopup .popupHeader .toolbar-container{padding-left:90px;padding-right:90px}
+}
+@media(min-width:1241px){.lightboxPopup .popupHeader .toolbar-container{padding-left:90px;padding-right:90px}
+}
+.lightboxPopup .popupHeader .toolbar-container:before,.lightboxPopup .popupHeader .toolbar-container:after{content:'';display:table}
+.lightboxPopup .popupHeader .toolbar-container:after{clear:both}
+.videoLightbox .lightboxPopup .popupHeader .toolbar-container{padding-bottom:15px}
+.videoLightbox .lightboxPopup .popupHeader .toolbar-container .toolbar .icon-download{display:none}
+.lightboxPopup .popupHeader .toolbar{margin-left:-10px;pointer-events:auto}
+.lightboxPopup .popupHeader.minified{pointer-events:auto}
+.lightboxPopup .popupHeader.minified .toolbar-container{background:#000;position:fixed;width:970px;top:0;z-index:15;max-width:100%;transform:translateZ(0)}
+.lightboxPopup .popupHeader.minified .toolbtn.exit{top:5px}
+.lightboxPopup .popupHeader.minified .page-rating .toolbtn.exit{top:8px}
+.lightboxPopup .popupHeader .toolbar-list{list-style:none;margin:0;padding:0}
+.lightboxPopup .popupHeader .toolbar-list li{display:inline-block;position:relative}
+.lightboxPopup .popupHeader .toolbar-list li:hover .share-dropdown{display:block}
+.lightboxPopup .popupHeader .toolbar-list li:hover .toolbtn{color:#000;background:#fff}
+.lightboxPopup .popupHeader .share-dropdown{padding:10px 0;color:#000;background:#fff;box-shadow:0 0 15px 0 rgba(0,0,0,0.2);display:none;position:absolute;z-index:15}
+.lightboxPopup .popupHeader .share-dropdown li{display:block;font-family:"SAPBook",Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-zh_cn .lightboxPopup .popupHeader .share-dropdown li{font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif;font-weight:300}
+html.content-iw_il .lightboxPopup .popupHeader .share-dropdown li{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ar_sa .lightboxPopup .popupHeader .share-dropdown li{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ja_jp .lightboxPopup .popupHeader .share-dropdown li{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ko_kr .lightboxPopup .popupHeader .share-dropdown li{font-family:"Malgun Gothic",Arial,Helvetica,sans-serif;font-weight:300}
+html.content-zh_tw .lightboxPopup .popupHeader .share-dropdown li{font-family:"Microsoft JhengHei",Arial,Helvetica,sans-serif;font-weight:300}
+@media only screen and (min-width:768px){.lightboxPopup .popupHeader .share-dropdown li{font-family:"SAPLight",Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-zh_cn .lightboxPopup .popupHeader .share-dropdown li{font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif;font-weight:100}
+html.content-iw_il .lightboxPopup .popupHeader .share-dropdown li{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ar_sa .lightboxPopup .popupHeader .share-dropdown li{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ja_jp .lightboxPopup .popupHeader .share-dropdown li{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ko_kr .lightboxPopup .popupHeader .share-dropdown li{font-family:"Malgun Gothic",Arial,Helvetica,sans-serif;font-weight:100}
+html.content-zh_tw .lightboxPopup .popupHeader .share-dropdown li{font-family:"Microsoft JhengHei",Arial,Helvetica,sans-serif;font-weight:100}
+}
+.lightboxPopup .popupHeader .share-dropdown a{color:#333;font-size:14px;line-height:20px;display:block;padding:8px 30px 8px 20px;white-space:nowrap}
+.lightboxPopup .popupHeader .share-dropdown a span{display:inline-block;vertical-align:top;font-size:20px;line-height:18px;padding-right:10px}
+.lightboxPopup .popupHeader .share-dropdown a:hover{background:#eee;cursor:pointer;text-decoration:none}
+.lightboxPopup .popupHeader .toolbtn{width:40px;height:40px;padding:10px;line-height:20px;text-align:center;background:no-repeat center;background-size:contain;display:inline-block;color:#fff;text-decoration:none;cursor:pointer;position:relative;z-index:16}
+.lightboxPopup .popupHeader .toolbtn:before{font-size:20px}
+.lightboxPopup .popupHeader .toolbtn:hover{color:#000;background:#fff}
+.lightboxPopup .popupHeader .toolbtn.exit{position:absolute;top:15px;right:15px;line-height:normal;margin:0;opacity:1;font-size:inherit;font-family:inherit;pointer-events:auto}
+.lightboxPopup .popupHeader .toolbtn.exit:before{font-size:20px;line-height:20px}
+.lightboxPopup .popupHeader .toolbtn.exit:hover{color:inherit;background:inherit}
+.lightboxPopup .popupContent{pointer-events:auto;max-height:none}
+.lightboxPopup .popupContent.animation-in-progress{pointer-events:none}
+.lightboxPopup .popupContent .canvasWrapper{line-height:0;margin-bottom:6px;background:#fff url('../../../../etc/sapdx/binary/clientlib-viewerjs/images/loading-icon.gif') center no-repeat}
+.lightboxPopup .popupContent .canvasWrapper.rendered{background:#fff}
+.lightboxPopup .popupContent .canvasWrapper canvas{vertical-align:top}
+.lightboxPopup .popupContent .pageWrapper:last-child .canvasWrapper{margin-bottom:0}
+.lightboxPopup .popupFooter{background-color:#000;min-height:100px;max-width:100%;margin:0 auto;padding:25px 0;color:#fff;box-sizing:border-box;pointer-events:auto;position:relative}
+@media only screen and (max-width:767px){.lightboxPopup .popupFooter{padding:20px 0;min-height:80px}
+}
+.lightboxPopup .popupFooter .footer-container{overflow:hidden;position:relative;margin-right:auto;margin-left:auto}
+@media(max-width:767px){.lightboxPopup .popupFooter .footer-container{padding-left:28px;padding-right:28px}
+}
+@media(min-width:768px) and (max-width:980px){.lightboxPopup .popupFooter .footer-container{padding-left:79px;padding-right:79px}
+}
+@media(min-width:981px) and (max-width:1240px){.lightboxPopup .popupFooter .footer-container{padding-left:90px;padding-right:90px}
+}
+@media(min-width:1241px){.lightboxPopup .popupFooter .footer-container{padding-left:90px;padding-right:90px}
+}
+.lightboxPopup .popupFooter .footer-container:before,.lightboxPopup .popupFooter .footer-container:after{content:'';display:table}
+.lightboxPopup .popupFooter .footer-container:after{clear:both}
+.lightboxPopup .popupFooter .footer-container.hidden-footer{position:absolute;left:0;top:0;opacity:0}
+@media only screen and (max-width:767px){.lightboxPopup .popupFooter .footer-container .row{display:flex}
+}
+.lightboxPopup .popupFooter .footer-container .info-container{padding-top:15px;border-top:1px solid #fff}
+@media only screen and (max-width:767px){.lightboxPopup .popupFooter .footer-container .info-container{border:0;padding-top:0}
+}
+.lightboxPopup .popupFooter .he,.lightboxPopup .popupFooter .text{color:#fff}
+.lightboxPopup .popupFooter .btn-wrapper{padding-top:25px}
+@media only screen and (max-width:767px){.lightboxPopup .popupFooter .btn-wrapper{flex:1 0 auto;align-self:center;padding-top:0}
+}
+.lightboxPopup .sectionTitle{color:#fff;padding:0;pointer-events:auto}
+.lightboxPopup .descriptionText{color:#fff;line-height:1.4em;margin:0;pointer-events:auto}
+.lightboxPopup .pageWrapper{position:relative}
+.lightboxPopup .animationTarget{background-color:#000;display:inline-block}
+.lightboxPopup .popupFooter,.lightboxPopup .popupHeader,.lightboxPopup .animationTarget{opacity:1}
+.lightboxPopup .video-wrapper{display:inline-block;position:relative}
+.lightboxPopup .video-wrapper .loadingVideo,.lightboxPopup .video-wrapper .playButton,.lightboxPopup .video-wrapper .bufferInfo,.lightboxPopup .video-wrapper div:not(.inline) img{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(128,128,128,0.3);font-size:3rem;color:#fff;padding:5px 10px;opacity:1;transition:opacity .3s}
+.lightboxPopup .video-wrapper .loadingVideo.hide,.lightboxPopup .video-wrapper .playButton.hide,.lightboxPopup .video-wrapper .bufferInfo.hide,.lightboxPopup .video-wrapper div:not(.inline) img.hide{opacity:0}
+.pdfLightbox{min-height:100vh;-webkit-overflow-scrolling:touch}
+.pdfLightbox.mfp-wrap{position:absolute}
+@media(max-width:767px){.pdfLightbox.mfp-wrap .mfp-content .header-container&gt;.row{margin-left:-8px;margin-right:-9px}
+.rtl .pdfLightbox.mfp-wrap .mfp-content .header-container&gt;.row{margin-left:-9px;margin-right:-8px}
+}
+@media(min-width:768px) and (max-width:980px){.pdfLightbox.mfp-wrap .mfp-content .header-container&gt;.row{margin-left:-19px;margin-right:-19px}
+.rtl .pdfLightbox.mfp-wrap .mfp-content .header-container&gt;.row{margin-left:-19px;margin-right:-19px}
+}
+@media(min-width:981px) and (max-width:1240px){.pdfLightbox.mfp-wrap .mfp-content .header-container&gt;.row{margin-left:-25px;margin-right:-25px}
+.rtl .pdfLightbox.mfp-wrap .mfp-content .header-container&gt;.row{margin-left:-25px;margin-right:-25px}
+}
+@media(min-width:1241px){.pdfLightbox.mfp-wrap .mfp-content .header-container&gt;.row{margin-left:-25px;margin-right:-25px}
+.rtl .pdfLightbox.mfp-wrap .mfp-content .header-container&gt;.row{margin-left:-25px;margin-right:-25px}
+}
+.pdfLightbox.mfp-wrap .mfp-content .header-container&gt;.row:before,.pdfLightbox.mfp-wrap .mfp-content .header-container&gt;.row:after{content:'';display:table}
+.pdfLightbox.mfp-wrap .mfp-content .header-container&gt;.row:after{clear:both}
+.pdfLightbox .canvasWrapper,.pdfLightbox .canvasWrapper canvas{width:100% !important}
+.pdfLightbox .lightboxPopup{pointer-events:none;max-height:none}
+.shortContentLightbox .mfp-container{padding:0;height:100%}
+.shortContentLightbox .mfp-content{height:100%}
+.shortContentLightbox .lightboxPopup{height:100%;margin:0;width:100%;max-width:100%}
+.shortContentLightbox .lightboxPopup .lightboxContainer{position:relative;max-width:100%;min-height:100vh;background:rgba(0,0,0,0.8)}
+.shortContentLightbox .lightboxPopup .lightboxContainer .popupContent:before{content:'';position:absolute;top:0;left:0;bottom:0;width:100%;background:rgba(0,0,0,0.001)}
+.shortContentLightbox .lightboxPopup .lightboxContainer .popupContent:after{content:'';height:100%;display:inline-block;vertical-align:middle;margin:0 0 0 -4px}
+.shortContentLightbox .lightboxPopup .lightboxContainer .popupContent .pageWrapper{overflow:hidden;width:100%;display:inline-block;vertical-align:middle}
+.shortContentLightbox .lightboxPopup .lightboxContainer .popupHeader{width:100%;z-index:10}
+.shortContentLightbox .lightboxPopup .lightboxContainer .popupFooter{width:100%;z-index:10;position:absolute;bottom:0;left:0}
+@media only screen and (max-width:1000px){.pdfLightbox .lightboxContainer,.pdfLightbox .mfp-container{padding:0}
+.lightboxPopup{width:100%;max-width:none;min-width:inherit;margin:0}
+}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader{padding-top:25px}
+.lightboxPopup .popupFooter{min-height:80px}
+}
+.lightboxReport.fullScreenMode .mfp-content{position:static}
+.lightboxReport.fullScreenMode .mfp-container{padding:0}
+.lightboxReport.fullScreenMode .mfp-container:before{display:none}
+.lightboxReport.fullScreenMode .lightboxPopup{margin:0;width:100%;max-width:100%;position:static}
+.lightboxReport.fullScreenMode .lightboxPopup .lightboxContainer{max-width:100%;position:static}
+.lightboxReport.fullScreenMode .lightboxPopup .lightboxContainer .popupContent{position:absolute;top:0;left:0;height:100% !important;width:100% !important;background-color:#000;overflow-y:hidden}
+.lightboxReport.fullScreenMode .lightboxPopup .lightboxContainer .popupContent .pageWrapper{display:block;margin-bottom:100%}
+.lightboxReport.fullScreenMode .lightboxPopup .lightboxContainer .popupContent .canvasWrapper{margin:0 auto}
+.lightboxReport:not(.mobileDevicesClass) .lightboxPopup .popupFooter a:hover:after{display:block}
+.lightboxReport .lightboxPopup{max-width:1240px;min-width:320px;width:auto;height:calc(100vh -  100px)}
+.lightboxReport .lightboxPopup .lightboxContainer{background:#fff;max-width:100%;height:100%}
+.lightboxReport .lightboxPopup .lightboxContainer:after{content:'';position:absolute;top:0;bottom:0;left:300px;width:20px;background-color:rgba(0,0,0,0);background:linear-gradient(to right,rgba(0,0,0,0),rgba(0,0,0,0.04))}
+.lightboxReport .lightboxPopup .lightboxContainer .toolbtn.exit{top:0;right:0;background:#000;padding:10px;width:40px;height:40px;line-height:20px;color:#fff;opacity:1;cursor:pointer;z-index:6}
+@media only screen and (min-width:1241px){.lightboxReport .lightboxPopup .lightboxContainer .toolbtn.exit{width:50px;height:50px;line-height:30px}
+}
+.lightboxReport .lightboxPopup .lightboxContainer .toolbtn.exit:before{font-size:20px;line-height:20px}
+.lightboxReport .lightboxPopup .lightboxContainer .toolbtn.exit:hover{color:#fff;background:#000}
+.lightboxReport .lightboxPopup .lightboxContainer .toolbtn:hover{color:#fff;background:#000}
+.lightboxReport .lightboxPopup .aside-lightbox{float:left;width:320px;height:100%;z-index:2;position:relative}
+@media only screen and (min-width:1241px){.lightboxReport .lightboxPopup .aside-lightbox{display:flex;flex-direction:column}
+}
+.lightboxReport .lightboxPopup .aside-lightbox&gt;.jcf-scrollable-wrapper .desktop{flex:1 1 auto;height:100% !important;min-width:0;min-height:0;overflow:hidden}
+.lightboxReport .lightboxPopup .aside-lightbox .toolbtn.exit{display:none}
+.lightboxReport .lightboxPopup .matches__holder{color:#fff;font-size:14px;font-family:"SAPBook",Arial,Helvetica,sans-serif;font-weight:normal;line-height:1.4em;overflow:hidden;margin:0 0 -10px}
+html.content-zh_cn .lightboxReport .lightboxPopup .matches__holder{font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif;font-weight:300}
+html.content-iw_il .lightboxReport .lightboxPopup .matches__holder{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ar_sa .lightboxReport .lightboxPopup .matches__holder{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ja_jp .lightboxReport .lightboxPopup .matches__holder{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ko_kr .lightboxReport .lightboxPopup .matches__holder{font-family:"Malgun Gothic",Arial,Helvetica,sans-serif;font-weight:300}
+html.content-zh_tw .lightboxReport .lightboxPopup .matches__holder{font-family:"Microsoft JhengHei",Arial,Helvetica,sans-serif;font-weight:300}
+@media only screen and (min-width:768px){.lightboxReport .lightboxPopup .matches__holder{font-family:"SAPLight",Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-zh_cn .lightboxReport .lightboxPopup .matches__holder{font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif;font-weight:100}
+html.content-iw_il .lightboxReport .lightboxPopup .matches__holder{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ar_sa .lightboxReport .lightboxPopup .matches__holder{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ja_jp .lightboxReport .lightboxPopup .matches__holder{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ko_kr .lightboxReport .lightboxPopup .matches__holder{font-family:"Malgun Gothic",Arial,Helvetica,sans-serif;font-weight:100}
+html.content-zh_tw .lightboxReport .lightboxPopup .matches__holder{font-family:"Microsoft JhengHei",Arial,Helvetica,sans-serif;font-weight:100}
+}
+@media only screen and (min-width:768px) and (max-width:1240px){.lightboxReport .lightboxPopup .matches__holder{font-size:13px}
+}
+@media only screen and (max-width:767px){.lightboxReport .lightboxPopup .matches__holder{font-size:12px}
+}
+.lightboxReport .lightboxPopup .matches__holder .search-results-control{float:right;line-height:38px}
+.lightboxReport .lightboxPopup .matches__holder .search-results-control span{display:inline-block;vertical-align:middle}
+.lightboxReport .lightboxPopup .matches__holder .search-results-control .find-arrow{cursor:pointer;width:20px;height:38px;text-align:center}
+.lightboxReport .lightboxPopup .matches__holder .search-results-control .find-arrow.actionNotAllowed{opacity:.3;pointer-events:none}
+.lightboxReport .lightboxPopup .matches__holder .search-results-control .find-arrow:before{font-size:14px}
+.lightboxReport .lightboxPopup .matches__holder .search-results-control .find-arrow.disabled{opacity:.1}
+.lightboxReport .lightboxPopup .matches__holder .entries{overflow:hidden;padding:9px 0 0}
+.lightboxReport .lightboxPopup .search-toc-container .content-btn_mobile{display:none;float:left;height:40px;padding:10px 10px 9px;margin-right:10px;margin-left:-10px;cursor:pointer;color:#fff}
+.lightboxReport .lightboxPopup .search-toc-container .content-btn_mobile:hover{background:#fff;color:#333}
+.lightboxReport .lightboxPopup .search-toc-container .content-btn_mobile:hover .content-label{color:#333}
+.lightboxReport .lightboxPopup .search-toc-container .content-btn_mobile.active-btn{background:#fff;color:#333}
+.lightboxReport .lightboxPopup .search-toc-container .content-btn_mobile.active-btn .content-label{color:#333}
+.lightboxReport .lightboxPopup .search-form .search__field{position:relative}
+.lightboxReport .lightboxPopup .search-form .clear-search-btn{position:absolute;top:0;right:39px;padding:0 5px;color:#999;width:26px;height:40px;cursor:pointer;text-align:center;display:none;align-items:center}
+.lightboxReport .lightboxPopup .search-form .clear-search-btn .icon-close{font-size:16px;line-height:16px}
+.lightboxReport .lightboxPopup .search-form .clear-search-btn .icon-close:before{font-size:16px;vertical-align:top}
+.lightboxReport .lightboxPopup .search-form .search__input{display:block;width:100%;height:40px;padding:3px 70px 3px 10px;color:#333;border:0;margin:0;background:#fff;position:relative;font-style:italic;font-family:"SAPBook",Arial,Helvetica,sans-serif;font-weight:normal;font-size:18px;line-height:34px;outline:0;-webkit-appearance:none;-moz-appearance:none;appearance:none;border-radius:0}
+html.content-zh_cn .lightboxReport .lightboxPopup .search-form .search__input{font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif;font-weight:300}
+html.content-iw_il .lightboxReport .lightboxPopup .search-form .search__input{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ar_sa .lightboxReport .lightboxPopup .search-form .search__input{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ja_jp .lightboxReport .lightboxPopup .search-form .search__input{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ko_kr .lightboxReport .lightboxPopup .search-form .search__input{font-family:"Malgun Gothic",Arial,Helvetica,sans-serif;font-weight:300}
+html.content-zh_tw .lightboxReport .lightboxPopup .search-form .search__input{font-family:"Microsoft JhengHei",Arial,Helvetica,sans-serif;font-weight:300}
+.lightboxReport .lightboxPopup .search-form .search__input::placeholder,.lightboxReport .lightboxPopup .search-form .search__input::-moz-placeholder,.lightboxReport .lightboxPopup .search-form .search__input:-ms-input-placeholder,.lightboxReport .lightboxPopup .search-form .search__input::-webkit-input-placeholder{color:#999}
+.lightboxReport .lightboxPopup .search-form .search__input::-ms-clear{display:none}
+.lightboxReport .lightboxPopup .search-form .search__icon{position:absolute;top:0;right:5px;bottom:0;width:34px;padding:0 5px;color:#999;display:flex;align-items:center;font-size:24px;cursor:pointer}
+.lightboxReport .lightboxPopup .search-form .search__icon:before{display:block;margin:0 auto}
+.lightboxReport .lightboxPopup .search-form .search__icon input{position:absolute;top:0;left:0;width:100%;height:100%;border:0;font-size:0;line-height:0;background:0;padding:0}
+.lightboxReport .lightboxPopup .popupHeader{margin-right:auto;margin-left:auto;padding-top:25px;padding-bottom:25px}
+@media(max-width:767px){.lightboxReport .lightboxPopup .popupHeader{padding-left:28px;padding-right:28px}
+}
+@media(min-width:768px) and (max-width:980px){.lightboxReport .lightboxPopup .popupHeader{padding-left:79px;padding-right:79px}
+}
+@media(min-width:981px) and (max-width:1240px){.lightboxReport .lightboxPopup .popupHeader{padding-left:90px;padding-right:90px}
+}
+@media(min-width:1241px){.lightboxReport .lightboxPopup .popupHeader{padding-left:90px;padding-right:90px}
+}
+.lightboxReport .lightboxPopup .popupHeader:before,.lightboxReport .lightboxPopup .popupHeader:after{content:'';display:table}
+.lightboxReport .lightboxPopup .popupHeader:after{clear:both}
+@media only screen and (min-width:1241px){.lightboxReport .lightboxPopup .popupHeader{flex:0 0 auto;padding-right:32px;padding-left:32px}
+}
+@media only screen and (max-width:767px){.lightboxReport .lightboxPopup .popupHeader{padding-right:40px}
+}
+.lightboxReport .lightboxPopup .popupHeader .header-container{padding:0 0 5px 0}
+@media only screen and (min-width:1241px){.lightboxReport .lightboxPopup .popupHeader .header-container [class^='col-']{width:100%;float:none}
+}
+.lightboxReport .lightboxPopup .popupHeader .toolbar-container{padding:8px 0 15px}
+.lightboxReport .lightboxPopup .popupContent{position:relative;z-index:3;height:100%;overflow-y:auto;overflow-x:hidden;background:#999;text-align:center;-webkit-overflow-scrolling:touch}
+.lightboxReport .lightboxPopup .popupContent .pageWrapper{text-align:left;display:table;margin:0 auto}
+.lightboxReport .lightboxPopup .popupFooter{color:#fff;font-size:14px;font-family:"SAPBook",Arial,Helvetica,sans-serif;font-weight:normal;line-height:1.4em;height:50px;padding:0 0 0 32px;width:100%;min-height:50px;transform:translateZ(0)}
+html.content-zh_cn .lightboxReport .lightboxPopup .popupFooter{font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif;font-weight:300}
+html.content-iw_il .lightboxReport .lightboxPopup .popupFooter{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ar_sa .lightboxReport .lightboxPopup .popupFooter{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ja_jp .lightboxReport .lightboxPopup .popupFooter{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ko_kr .lightboxReport .lightboxPopup .popupFooter{font-family:"Malgun Gothic",Arial,Helvetica,sans-serif;font-weight:300}
+html.content-zh_tw .lightboxReport .lightboxPopup .popupFooter{font-family:"Microsoft JhengHei",Arial,Helvetica,sans-serif;font-weight:300}
+@media only screen and (min-width:768px){.lightboxReport .lightboxPopup .popupFooter{font-family:"SAPLight",Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-zh_cn .lightboxReport .lightboxPopup .popupFooter{font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif;font-weight:100}
+html.content-iw_il .lightboxReport .lightboxPopup .popupFooter{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ar_sa .lightboxReport .lightboxPopup .popupFooter{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ja_jp .lightboxReport .lightboxPopup .popupFooter{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ko_kr .lightboxReport .lightboxPopup .popupFooter{font-family:"Malgun Gothic",Arial,Helvetica,sans-serif;font-weight:100}
+html.content-zh_tw .lightboxReport .lightboxPopup .popupFooter{font-family:"Microsoft JhengHei",Arial,Helvetica,sans-serif;font-weight:100}
+}
+@media only screen and (min-width:768px) and (max-width:1240px){.lightboxReport .lightboxPopup .popupFooter{font-size:13px}
+}
+@media only screen and (max-width:767px){.lightboxReport .lightboxPopup .popupFooter{font-size:12px}
+}
+@media only screen and (min-width:1241px){.lightboxReport .lightboxPopup .popupFooter{flex:0 0 auto}
+}
+.lightboxReport .lightboxPopup .popupFooter a{color:#fff;display:inline-block;vertical-align:middle;text-decoration:none;width:40px;height:50px;text-align:center;margin:0 0 0 10px;position:relative;outline:0;border:0}
+.lightboxReport .lightboxPopup .popupFooter a:after{content:'';position:absolute;top:0;bottom:0;right:0;left:0;z-index:2;background:#fff;opacity:.2;display:none}
+.lightboxReport .lightboxPopup .popupFooter a:hover,.lightboxReport .lightboxPopup .popupFooter a:active,.lightboxReport .lightboxPopup .popupFooter a:focus{text-decoration:none;cursor:pointer;outline:0;border:0;-webkit-tap-highlight-color:rgba(0,0,0,0)}
+.lightboxReport .lightboxPopup .popupFooter a.hover:after{display:block}
+.lightboxReport .lightboxPopup .popupFooter a.disabled{opacity:.3}
+.lightboxReport .lightboxPopup .popupFooter a span{font-size:20px;line-height:20px;display:inline-block;vertical-align:middle}
+.lightboxReport .lightboxPopup .popupFooter a span:before{font-size:20px;line-height:20px}
+.lightboxReport .lightboxPopup .popupFooter .fullscreen-control{float:left;line-height:50px}
+.lightboxReport .lightboxPopup .popupFooter .zoom-control{float:right;line-height:50px}
+.lightboxReport .lightboxPopup .popupFooter .zoom-control a:last-child{margin:0}
+.lightboxReport .lightboxPopup .popupFooter .zoom-control a span{font-size:16px}
+.lightboxReport .lightboxPopup .popupFooter .zoom-control a span:before{font-size:16px}
+.lightboxReport .lightboxPopup .popupFooter .zoom-control a.actionNotAllowed{opacity:.3;pointer-events:none}
+.lightboxReport .lightboxPopup .toolbtn.exit{top:0;right:0;z-index:5;background:#000}
+.lightboxReport .lightboxPopup .outlinePanel{overflow-y:auto;padding:22px 16px 0 32px;height:100% !important}
+@media only screen and (min-width:1241px){.lightboxReport .lightboxPopup .outlinePanel{flex:1 1 auto}
+}
+.lightboxReport .lightboxPopup .outlinePanel h2{padding:0 0 22px;margin:0}
+.lightboxReport .lightboxPopup .outlinePanel .outline-tree{padding:0 0 5px;margin:0;list-style:none;font-size:14px;line-height:18px;font-family:"SAPBook",Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-zh_cn .lightboxReport .lightboxPopup .outlinePanel .outline-tree{font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif;font-weight:300}
+html.content-iw_il .lightboxReport .lightboxPopup .outlinePanel .outline-tree{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ar_sa .lightboxReport .lightboxPopup .outlinePanel .outline-tree{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ja_jp .lightboxReport .lightboxPopup .outlinePanel .outline-tree{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ko_kr .lightboxReport .lightboxPopup .outlinePanel .outline-tree{font-family:"Malgun Gothic",Arial,Helvetica,sans-serif;font-weight:300}
+html.content-zh_tw .lightboxReport .lightboxPopup .outlinePanel .outline-tree{font-family:"Microsoft JhengHei",Arial,Helvetica,sans-serif;font-weight:300}
+@media only screen and (min-width:768px){.lightboxReport .lightboxPopup .outlinePanel .outline-tree{font-family:"SAPLight",Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-zh_cn .lightboxReport .lightboxPopup .outlinePanel .outline-tree{font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif;font-weight:100}
+html.content-iw_il .lightboxReport .lightboxPopup .outlinePanel .outline-tree{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ar_sa .lightboxReport .lightboxPopup .outlinePanel .outline-tree{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ja_jp .lightboxReport .lightboxPopup .outlinePanel .outline-tree{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ko_kr .lightboxReport .lightboxPopup .outlinePanel .outline-tree{font-family:"Malgun Gothic",Arial,Helvetica,sans-serif;font-weight:100}
+html.content-zh_tw .lightboxReport .lightboxPopup .outlinePanel .outline-tree{font-family:"Microsoft JhengHei",Arial,Helvetica,sans-serif;font-weight:100}
+}
+.lightboxReport .lightboxPopup .outlinePanel .outline-tree li{position:relative;margin:0 0 17px}
+.lightboxReport .lightboxPopup .outlinePanel .outline-tree li:last-child{margin:0}
+.lightboxReport .lightboxPopup .outlinePanel .outline-tree li.active:not(.has-child):before{content:'';position:absolute;width:2px;height:10px;background:#f0aa00;left:-9px;top:3px}
+.lightboxReport .lightboxPopup .outlinePanel .outline-tree li.active:not(.has-child)&gt;a{font-family:"SAPRegular",Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-zh_cn .lightboxReport .lightboxPopup .outlinePanel .outline-tree li.active:not(.has-child)&gt;a{font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif;font-weight:400}
+html.content-iw_il .lightboxReport .lightboxPopup .outlinePanel .outline-tree li.active:not(.has-child)&gt;a{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ar_sa .lightboxReport .lightboxPopup .outlinePanel .outline-tree li.active:not(.has-child)&gt;a{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ja_jp .lightboxReport .lightboxPopup .outlinePanel .outline-tree li.active:not(.has-child)&gt;a{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ko_kr .lightboxReport .lightboxPopup .outlinePanel .outline-tree li.active:not(.has-child)&gt;a{font-family:"Malgun Gothic",Arial,Helvetica,sans-serif;font-weight:400}
+html.content-zh_tw .lightboxReport .lightboxPopup .outlinePanel .outline-tree li.active:not(.has-child)&gt;a{font-family:"Microsoft JhengHei",Arial,Helvetica,sans-serif;font-weight:400}
+@media only screen and (min-width:768px){.lightboxReport .lightboxPopup .outlinePanel .outline-tree li.active:not(.has-child)&gt;a{font-family:"SAPMedium",Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-zh_cn .lightboxReport .lightboxPopup .outlinePanel .outline-tree li.active:not(.has-child)&gt;a{font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif;font-weight:500}
+html.content-iw_il .lightboxReport .lightboxPopup .outlinePanel .outline-tree li.active:not(.has-child)&gt;a{font-family:Arial,Helvetica,sans-serif;font-weight:bold}
+html.content-ar_sa .lightboxReport .lightboxPopup .outlinePanel .outline-tree li.active:not(.has-child)&gt;a{font-family:Arial,Helvetica,sans-serif;font-weight:bold}
+html.content-ja_jp .lightboxReport .lightboxPopup .outlinePanel .outline-tree li.active:not(.has-child)&gt;a{font-family:Arial,Helvetica,sans-serif;font-weight:bold}
+html.content-ko_kr .lightboxReport .lightboxPopup .outlinePanel .outline-tree li.active:not(.has-child)&gt;a{font-family:"Malgun Gothic",Arial,Helvetica,sans-serif;font-weight:500}
+html.content-zh_tw .lightboxReport .lightboxPopup .outlinePanel .outline-tree li.active:not(.has-child)&gt;a{font-family:"Microsoft JhengHei",Arial,Helvetica,sans-serif;font-weight:500}
+}
+.lightboxReport .lightboxPopup .outlinePanel .outline-tree li.active&gt;a{font-family:"SAPRegular",Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-zh_cn .lightboxReport .lightboxPopup .outlinePanel .outline-tree li.active&gt;a{font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif;font-weight:400}
+html.content-iw_il .lightboxReport .lightboxPopup .outlinePanel .outline-tree li.active&gt;a{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ar_sa .lightboxReport .lightboxPopup .outlinePanel .outline-tree li.active&gt;a{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ja_jp .lightboxReport .lightboxPopup .outlinePanel .outline-tree li.active&gt;a{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ko_kr .lightboxReport .lightboxPopup .outlinePanel .outline-tree li.active&gt;a{font-family:"Malgun Gothic",Arial,Helvetica,sans-serif;font-weight:400}
+html.content-zh_tw .lightboxReport .lightboxPopup .outlinePanel .outline-tree li.active&gt;a{font-family:"Microsoft JhengHei",Arial,Helvetica,sans-serif;font-weight:400}
+.lightboxReport .lightboxPopup .outlinePanel .outline-tree li&gt;ul{list-style:none;padding:9px 0 0 16px;display:none}
+.lightboxReport .lightboxPopup .outlinePanel .outline-tree li&gt;ul li{margin:0 0 9px}
+.lightboxReport .lightboxPopup .outlinePanel .outline-tree li.has-child .drop-opener{position:absolute;top:-1px;left:-18px;padding:0 4px;cursor:pointer;font-size:8px;line-height:18px}
+.lightboxReport .lightboxPopup .outlinePanel .outline-tree li.has-child .drop-opener:before{display:inline-block;vertical-align:top;font-size:8px;line-height:18px}
+.lightboxReport .lightboxPopup .outlinePanel .outline-tree li.has-child.opened&gt;ul{display:block}
+.lightboxReport .lightboxPopup .outlinePanel .outline-tree a{cursor:pointer;color:#333}
+.lightboxReport .lightboxPopup .outlinePanel .outline-tree a:hover{text-decoration:underline}
+.lightboxReport .lightboxPopup .textLayer{opacity:1}
+.lightboxReport .lightboxPopup .textLayer&gt;div::selection{background:rgba(0,0,255,0.2)}
+.lightboxReport .lightboxPopup .textLayer&gt;div::-moz-selection{background:rgba(0,0,255,0.2)}
+.lightboxReport .lightboxPopup .textLayer .highlight{background-color:rgba(240,171,0,0.3)}
+.lightboxReport .lightboxPopup .textLayer .highlight.selected{background-color:rgba(240,171,0,0.6)}
+.lightboxReport.mobile-toc-scroll-visible .lightboxPopup .jcf-scrollable-wrapper .jcf-scrollbar{opacity:1}
+@media only screen and (max-width:1000px){.lightboxReport.mobileScrollContainer{-webkit-overflow-scrolling:touch}
+.lightboxReport .lightboxPopup .popupContent{min-width:100%;float:left;overflow:visible}
+.lightboxReport .lightboxPopup .lightboxContainer{overflow:visible;display:table}
+.lightboxReport.mobileDevicesClass{overflow-x:auto !important}
+.lightboxReport.mobileDevicesClass .lightboxPopup .lightboxContainer .content-btn_mobile:hover{color:#fff;background:inherit}
+.lightboxReport.mobileDevicesClass .lightboxPopup .lightboxContainer .content-btn_mobile:hover .content-label{color:#fff}
+.lightboxReport.mobileDevicesClass .lightboxPopup .lightboxContainer .content-btn_mobile.active-btn{background:#fff;color:#333}
+.lightboxReport.mobileDevicesClass .lightboxPopup .lightboxContainer .content-btn_mobile.active-btn .content-label{color:#333}
+.lightboxReport.mfp-wrap{position:absolute}
+.lightboxReport .mfp-container{padding:0}
+.lightboxReport .lightboxPopup{height:100%}
+.lightboxReport .lightboxPopup .lightboxContainer{max-width:none;margin:0;background:#000}
+.lightboxReport .lightboxPopup .lightboxContainer:after{display:none}
+.lightboxReport .lightboxPopup .lightboxContainer.hidden .aside-lightbox .popupFooter{position:relative}
+.lightboxReport .lightboxPopup .lightboxContainer .toolbtn.exit{top:15px;right:15px;display:none}
+.lightboxReport .lightboxPopup .lightboxContainer .aside-lightbox{float:none;width:100vw;display:block;z-index:5;position:-webkit-sticky;position:-moz-sticky;position:-ms-sticky;position:-o-sticky;position:sticky;left:0;height:auto}
+.lightboxReport .lightboxPopup .lightboxContainer .aside-lightbox .toolbtn.exit{display:block}
+.lightboxReport .lightboxPopup .lightboxContainer .aside-lightbox .jcf-scrollable-wrapper{width:320px;position:absolute !important;top:100%;left:69px;z-index:5;box-shadow:0 0 50px 0 rgba(0,0,0,0.2)}
+.lightboxReport .lightboxPopup .lightboxContainer .aside-lightbox.minified{position:fixed;top:0;z-index:15;height:auto;max-width:100%}
+.lightboxReport .lightboxPopup .lightboxContainer .aside-lightbox.minified:not(.extended) .popupHeader{padding-top:15px;padding-bottom:15px}
+.lightboxReport .lightboxPopup .lightboxContainer .aside-lightbox.minified:not(.extended) .popupHeader .header-container,.lightboxReport .lightboxPopup .lightboxContainer .aside-lightbox.minified:not(.extended) .popupHeader .toolbar-container{display:none}
+.lightboxReport .lightboxPopup .lightboxContainer .aside-lightbox .popupFooter{display:block;position:fixed;flex:none;width:auto;min-height:40px;height:40px;padding:0;margin:0;right:20px;bottom:20px;box-sizing:border-box;pointer-events:auto;background:0}
+.lightboxReport .lightboxPopup .lightboxContainer .aside-lightbox .popupFooter .fullscreen-control{display:none}
+.lightboxReport .lightboxPopup .lightboxContainer .aside-lightbox .popupFooter .zoom-control{line-height:40px}
+.lightboxReport .lightboxPopup .lightboxContainer .aside-lightbox .popupFooter .zoom-control__label{display:none}
+.lightboxReport .lightboxPopup .lightboxContainer .aside-lightbox .popupFooter .zoom-control a{height:40px;background:#000}
+.lightboxReport .lightboxPopup .lightboxContainer .aside-lightbox .popupFooter .zoom-control a:last-child{margin:0 0 0 10px}
+.lightboxReport .lightboxPopup .lightboxContainer .search-toc-container{position:relative}
+.lightboxReport .lightboxPopup .lightboxContainer .search-toc-container:before,.lightboxReport .lightboxPopup .lightboxContainer .search-toc-container:after{content:'';display:table}
+.lightboxReport .lightboxPopup .lightboxContainer .search-toc-container:after{clear:both}
+.lightboxReport .lightboxPopup .lightboxContainer .search-toc-container.search-focus .content-btn_mobile{display:none}
+.lightboxReport .lightboxPopup .lightboxContainer .search-toc-container .search__field .search-active.search__input{padding-right:70px}
+.lightboxReport .lightboxPopup .lightboxContainer .content-btn_mobile{display:block;box-sizing:border-box}
+.lightboxReport .lightboxPopup .lightboxContainer .content-btn_mobile .icon-menu{padding-right:10px;height:21px;line-height:21px;text-align:center;background:no-repeat center;background-size:contain;display:inline-block;text-decoration:none;cursor:pointer;position:relative;z-index:16}
+.lightboxReport .lightboxPopup .lightboxContainer .content-btn_mobile .icon-menu:before{font-size:21px}
+.lightboxReport .lightboxPopup .lightboxContainer .content-btn_mobile .content-label{display:inline-block;vertical-align:top;padding-top:1px;font-size:18px;font-family:"SAPBook",Arial,Helvetica,sans-serif;font-weight:normal;line-height:1.2em}
+html.content-zh_cn .lightboxReport .lightboxPopup .lightboxContainer .content-btn_mobile .content-label{font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif;font-weight:300}
+html.content-iw_il .lightboxReport .lightboxPopup .lightboxContainer .content-btn_mobile .content-label{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ar_sa .lightboxReport .lightboxPopup .lightboxContainer .content-btn_mobile .content-label{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ja_jp .lightboxReport .lightboxPopup .lightboxContainer .content-btn_mobile .content-label{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ko_kr .lightboxReport .lightboxPopup .lightboxContainer .content-btn_mobile .content-label{font-family:"Malgun Gothic",Arial,Helvetica,sans-serif;font-weight:300}
+html.content-zh_tw .lightboxReport .lightboxPopup .lightboxContainer .content-btn_mobile .content-label{font-family:"Microsoft JhengHei",Arial,Helvetica,sans-serif;font-weight:300}
+.lightboxReport .lightboxPopup .lightboxContainer .search-form{overflow:hidden}
+.lightboxReport .lightboxPopup .lightboxContainer .search-form .search__field .search__input{text-overflow:ellipsis;padding-right:45px}
+.lightboxReport .lightboxPopup .lightboxContainer .search-form .matches__holder{min-height:34px}
+.lightboxReport .lightboxPopup .lightboxContainer .search-form .matches__holder .entries{position:absolute;left:0;padding-top:10px}
+.lightboxReport .lightboxPopup .lightboxContainer .search-form .matches__holder .search-results-control{line-height:inherit;margin-right:-7px}
+.lightboxReport .lightboxPopup .lightboxContainer .search-form .matches__holder .search-results-control .overall-matches{line-height:1;vertical-align:bottom}
+.lightboxReport .lightboxPopup .lightboxContainer .search-form .matches__holder .search-results-control .find-arrow:before{vertical-align:middle;line-height:38px}
+.lightboxReport .lightboxPopup .outlinePanel{background:#fff;width:320px;padding-bottom:20px;padding-right:32px;max-width:100%}
+.lightboxReport .lightboxPopup .jcf-scrollable-wrapper .jcf-scrollable{width:100% !important}
+.is-ios .lightboxReport.addressbar-visible:not(.toc-opened) .lightboxPopup .lightboxContainer .aside-lightbox.minified,.is-ios .lightboxReport.addressbar-visible:not(.toc-opened) .lightboxPopup .lightboxContainer .aside-lightbox.extended{height:100%}
+.is-ios .lightboxReport.addressbar-visible:not(.toc-opened) .lightboxPopup .lightboxContainer .aside-lightbox .popupFooter{transform:translateY(-120%)}
+}
+@media only screen and (min-width:1001px) and (max-width:1240px){.lightboxReport.zoomedIn .lightboxPopup .popupContent{overflow-x:auto}
+.lightboxReport .lightboxPopup .aside-lightbox{display:flex;flex-direction:column}
+.lightboxReport .lightboxPopup .aside-lightbox&gt;.jcf-scrollable-wrapper{flex:1 1 auto;height:100% !important;min-width:0;min-height:0;overflow:hidden}
+.lightboxReport .lightboxPopup .aside-lightbox .popupHeader{flex:0 0 auto;padding-right:32px;padding-left:32px}
+.lightboxReport .lightboxPopup .aside-lightbox .popupHeader .header-container [class^='col-']{width:100%;float:none}
+.lightboxReport .lightboxPopup .aside-lightbox .popupFooter{flex:0 0 auto}
+.lightboxReport .lightboxPopup .aside-lightbox .outlinePanel{flex:1 1 auto}
+}
+@media only screen and (max-width:767px){.lightboxReport .lightboxPopup .lightboxContainer .aside-lightbox .jcf-scrollable-wrapper{left:0;right:0;bottom:0;width:100%}
+.lightboxReport .lightboxPopup .lightboxContainer .aside-lightbox .jcf-scrollable-wrapper .outlinePanel{width:100%}
+.lightboxReport .lightboxPopup .lightboxContainer .aside-lightbox.minified:not(.extended) .toolbtn.exit{right:0;top:10px}
+.lightboxReport .lightboxPopup .lightboxContainer .aside-lightbox.minified:not(.extended) .popupHeader{padding-top:10px;padding-bottom:10px}
+.lightboxIR-page .is-ios .mfp-wrap{height:100vh !important}
+}
+@media only screen and (min-device-width:320px) and (max-device-width:568px) and (orientation:landscape){.is-ios .lightboxReport.addressbar-visible .lightboxPopup .lightboxContainer .aside-lightbox .popupFooter{transform:translateY(-200%)}
+}
+@media only screen and (max-width:360px){.lightboxReport .lightboxPopup .outlinePanel{left:0}
+}
+.lightboxIR-page{margin:0 !important}
+@media only screen and (min-width:768px) and (max-width:980px){.lightboxIR-page{height:100vh}
+.lightboxIR-page .mfp-wrap,.lightboxIR-page body{height:100vh}
+}
+@media only screen and (max-width:767px){.lightboxIR-page{height:100vh}
+.lightboxIR-page .mfp-wrap,.lightboxIR-page body{height:100vh}
+}
+.lightboxIR-page .jcf-scrollable-wrapper{box-sizing:content-box;position:relative;overflow:hidden}
+.lightboxIR-page .jcf-scrollable-wrapper:hover&gt;.jcf-scrollbar{opacity:1;transition-delay:0}
+.lightboxIR-page .jcf-scrollable-wrapper .lightboxReport ~ .jcf-scrollbar-vertical{z-index:1050;right:15px}
+.lightboxIR-page .jcf-scrollable-wrapper .lightboxReport ~ .jcf-scrollbar-vertical .jcf-scrollbar-inc,.lightboxIR-page .jcf-scrollable-wrapper .lightboxReport ~ .jcf-scrollbar-vertical .jcf-scrollbar-dec{height:20px;width:8px}
+.lightboxIR-page .jcf-scrollable-wrapper .lightboxReport ~ .jcf-scrollbar-vertical .jcf-scrollbar-dec{height:200px}
+.lightboxIR-page .jcf-scrollable-wrapper .lightboxReport ~ .jcf-scrollbar-horizontal{z-index:1050;bottom:13px}
+.lightboxIR-page .jcf-scrollable-wrapper .popupContent ~ .jcf-scrollbar-vertical{right:29px;width:0}
+.lightboxIR-page .jcf-scrollable-wrapper .popupContent ~ .jcf-scrollbar-vertical .jcf-scrollbar-inc,.lightboxIR-page .jcf-scrollable-wrapper .popupContent ~ .jcf-scrollbar-vertical .jcf-scrollbar-dec{height:61px;width:8px}
+.lightboxIR-page .jcf-scrollable-wrapper .popupContent ~ .jcf-scrollbar-vertical .jcf-scrollbar-inc{height:21px}
+.lightboxIR-page .jcf-scrollable-wrapper .outlinePanel ~ .jcf-scrollbar-vertical{top:0;bottom:0;right:19px}
+.lightboxIR-page .jcf-scrollable-wrapper .jcf-scrollbar{transition:opacity,0.5s ease-out;transition-delay:1.5s;position:absolute;cursor:default;background:rgba(0,0,0,0.1);border-radius:4px;z-index:3;opacity:0}
+.lightboxIR-page .jcf-scrollable-wrapper .jcf-scrollbar .jcf-scrollbar-handle{background:rgba(0,0,0,0.5);border-radius:4px;border:0}
+.lightboxIR-page .jcf-scrollable-wrapper .jcf-scrollbar .jcf-scrollbar-slider{background:rgba(0,0,0,0.1);border-radius:4px}
+.lightboxIR-page .jcf-scrollable-wrapper .jcf-scrollbar-vertical{width:0;bottom:0;right:0;top:0;border:0}
+.lightboxIR-page .jcf-scrollable-wrapper .jcf-scrollbar-vertical .jcf-scrollbar-inc,.lightboxIR-page .jcf-scrollable-wrapper .jcf-scrollbar-vertical .jcf-scrollbar-dec{height:25px;width:8px}
+.lightboxIR-page .jcf-scrollable-wrapper .jcf-scrollbar-vertical .jcf-scrollbar-handle{height:60px;width:8px;min-height:60px}
+.lightboxIR-page .jcf-scrollable-wrapper .jcf-scrollbar-vertical .jcf-scrollbar-slider{width:8px}
+.lightboxIR-page .jcf-scrollable-wrapper .jcf-scrollbar-horizontal{top:auto;left:0;right:0;bottom:14px;height:0;border:0}
+.lightboxIR-page .jcf-scrollable-wrapper .jcf-scrollbar-horizontal .jcf-scrollbar-inc,.lightboxIR-page .jcf-scrollable-wrapper .jcf-scrollbar-horizontal .jcf-scrollbar-dec{height:8px;width:21px;position:absolute;top:0;left:0}
+.lightboxIR-page .jcf-scrollable-wrapper .jcf-scrollbar-horizontal .jcf-scrollbar-dec{left:auto;top:0}
+.lightboxIR-page .jcf-scrollable-wrapper .jcf-scrollbar-horizontal .jcf-scrollbar-slider{height:8px;position:absolute;top:0;left:21px;display:block}
+.lightboxIR-page .jcf-scrollable-wrapper .jcf-scrollbar-horizontal .jcf-scrollbar-handle{position:absolute;height:8px;min-width:60px;width:60px}
+.lightboxIR-page .mobile-lightbox .jcf-scrollable-wrapper&gt;.jcf-scrollable{width:100% !important;height:100% !important}
+.lightboxIR-page .jcf-scrollbar-dec,.lightboxIR-page .jcf-scrollbar-inc{visibility:hidden;pointer-events:none}
+.lightboxIR-page .jcf-scrollbar.jcf-inactive .jcf-scrollbar-handle{visibility:hidden}
+.ie.lightboxIR-page .jcf-scrollable-wrapper&gt;.mfp-wrap{overflow-y:hidden !important}
+.videoLightbox{overflow-y:hidden !important}
+.videoLightbox .lightBoxVideoWrapper{height:100%}
+.videoLightbox .lightBoxVideoWrapper .video-js{padding:0;height:100%}
+.videoLightbox .lightBoxVideoWrapper .video-js .vjs-tech{position:relative}
+.videoLightbox .mfp-content{height:100%}
+.videoLightbox .lightboxPopup{height:calc(100% - 100px)}
+.videoLightbox .lightboxPopup.animation-in-progress{background:#000}
+@media only screen and (min-width:768px) and (max-width:1240px){.videoLightbox .lightboxPopup{height:100%}
+}
+@media only screen and (max-width:767px){.videoLightbox .lightboxPopup{height:100%}
+}
+.complexAssetsLightbox{min-height:100vh;-webkit-overflow-scrolling:touch}
+.complexAssetsLightbox .mfp-container{display:flex;justify-content:center;align-items:center;margin:0}
+@media only screen and (min-width:768px) and (max-width:1240px){.complexAssetsLightbox .mfp-container{display:block}
+}
+@media only screen and (max-width:767px){.complexAssetsLightbox .mfp-container{display:block}
+}
+.complexAssetsLightbox .mfp-content{width:95%;max-width:1100px;height:90%;background-color:#fff;margin:0}
+@media only screen and (min-width:768px) and (max-width:1240px){.complexAssetsLightbox .mfp-content{width:100%;height:100%}
+}
+@media only screen and (max-width:767px){.complexAssetsLightbox .mfp-content{width:100%;height:100%}
+}
+.complexAssetsLightbox.contactLightbox .mfp-content{max-width:970px;height:100%}
+.complexAssetsLightbox.contactLightbox .mfp-content .header-container{padding:0 2rem}
+.complexAssetsLightbox.contactLightbox .mfp-content .header-container&gt;div&gt;div{padding:0 25px}
+.complexAssetsLightbox.contactLightbox .mfp-content .popupHeader .sectionTitle.he{font-family:"SAPBook",Arial,Helvetica,sans-serif;font-weight:normal;font-size:20.80px;line-height:1.5}
+html.content-zh_cn .complexAssetsLightbox.contactLightbox .mfp-content .popupHeader .sectionTitle.he{font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif;font-weight:300}
+html.content-iw_il .complexAssetsLightbox.contactLightbox .mfp-content .popupHeader .sectionTitle.he{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ar_sa .complexAssetsLightbox.contactLightbox .mfp-content .popupHeader .sectionTitle.he{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ja_jp .complexAssetsLightbox.contactLightbox .mfp-content .popupHeader .sectionTitle.he{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ko_kr .complexAssetsLightbox.contactLightbox .mfp-content .popupHeader .sectionTitle.he{font-family:"Malgun Gothic",Arial,Helvetica,sans-serif;font-weight:300}
+html.content-zh_tw .complexAssetsLightbox.contactLightbox .mfp-content .popupHeader .sectionTitle.he{font-family:"Microsoft JhengHei",Arial,Helvetica,sans-serif;font-weight:300}
+@media only screen and (max-width:767px){.complexAssetsLightbox.contactLightbox .mfp-content .popupHeader .sectionTitle.he{font-size:19.20px}
+}
+.complexAssetsLightbox.contactLightbox .mfp-content .popupHeader .toolbtn.exit{top:10px;right:10px}
+.rtl .complexAssetsLightbox.contactLightbox .mfp-content .popupHeader .toolbtn.exit{left:10px;right:auto}
+.complexAssetsLightbox .popup-container{height:100%;overflow-x:auto}
+.complexAssetsLightbox .html-content-lightbox-frame{display:block;width:100%;height:100%;border:0}
+.complexAssetsLightbox .loading-bar-overlay{position:absolute;top:0;bottom:0;left:0;right:0;display:flex;justify-content:center;align-items:center;background:#fff}
+.complexAssetsLightbox .hidden{display:none}
+.complexAssetsLightbox .popupHeader{padding:35px 0 15px 0;color:#fff;position:relative;box-sizing:border-box;background:#000;pointer-events:auto}
+@media only screen and (max-width:767px){.complexAssetsLightbox .popupHeader{flex:0 1 auto}
+}
+.complexAssetsLightbox .popupHeader .sectionTitle{margin:0 0 10px;padding:0;color:#fff;pointer-events:auto}
+@media only screen and (min-width:768px) and (max-width:1240px){.complexAssetsLightbox .popupHeader .sectionTitle{margin:0 0 9px}
+}
+@media only screen and (max-width:767px){.complexAssetsLightbox .popupHeader .sectionTitle{margin:0 0 8px}
+}
+.complexAssetsLightbox .popupHeader .descriptionText{color:#fff;line-height:1.4em;margin:0;pointer-events:auto}
+.complexAssetsLightbox .popupHeader .descriptionText p{margin:0;padding:0 0 10px}
+.complexAssetsLightbox .popupHeader .header-container{margin-right:auto;margin-left:auto}
+@media(max-width:767px){.complexAssetsLightbox .popupHeader .header-container{padding-left:28px;padding-right:28px}
+}
+@media(min-width:768px) and (max-width:980px){.complexAssetsLightbox .popupHeader .header-container{padding-left:79px;padding-right:79px}
+}
+@media(min-width:981px) and (max-width:1240px){.complexAssetsLightbox .popupHeader .header-container{padding-left:90px;padding-right:90px}
+}
+@media(min-width:1241px){.complexAssetsLightbox .popupHeader .header-container{padding-left:90px;padding-right:90px}
+}
+.complexAssetsLightbox .popupHeader .header-container:before,.complexAssetsLightbox .popupHeader .header-container:after{content:'';display:table}
+.complexAssetsLightbox .popupHeader .header-container:after{clear:both}
+.complexAssetsLightbox .popupHeader .toolbar-container{padding-top:8px;padding-bottom:8px;margin-right:auto;margin-left:auto}
+@media(max-width:767px){.complexAssetsLightbox .popupHeader .toolbar-container{padding-left:28px;padding-right:28px}
+}
+@media(min-width:768px) and (max-width:980px){.complexAssetsLightbox .popupHeader .toolbar-container{padding-left:79px;padding-right:79px}
+}
+@media(min-width:981px) and (max-width:1240px){.complexAssetsLightbox .popupHeader .toolbar-container{padding-left:90px;padding-right:90px}
+}
+@media(min-width:1241px){.complexAssetsLightbox .popupHeader .toolbar-container{padding-left:90px;padding-right:90px}
+}
+.complexAssetsLightbox .popupHeader .toolbar-container:before,.complexAssetsLightbox .popupHeader .toolbar-container:after{content:'';display:table}
+.complexAssetsLightbox .popupHeader .toolbar-container:after{clear:both}
+.complexAssetsLightbox .popupHeader .toolbar{margin-left:-10px;pointer-events:auto}
+.complexAssetsLightbox .popupHeader.minified{pointer-events:auto}
+.complexAssetsLightbox .popupHeader.minified .toolbar-container{background:#000;position:fixed;width:970px;top:0;z-index:15;max-width:100%;transform:translateZ(0)}
+.complexAssetsLightbox .popupHeader.minified .toolbtn.exit{top:5px}
+.complexAssetsLightbox .popupHeader .toolbar-list{list-style:none;margin:0;padding:0}
+.complexAssetsLightbox .popupHeader .toolbar-list li{display:inline-block;position:relative}
+.complexAssetsLightbox .popupHeader .toolbar-list li:hover .share-dropdown{display:block}
+.complexAssetsLightbox .popupHeader .toolbar-list li:hover .toolbtn{color:#000;background:#fff}
+.complexAssetsLightbox .popupHeader .share-dropdown{padding:10px 0;color:#000;background:#fff;box-shadow:0 0 15px 0 rgba(0,0,0,0.2);display:none;position:absolute;z-index:15}
+.complexAssetsLightbox .popupHeader .share-dropdown li{display:block;font-family:"SAPBook",Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-zh_cn .complexAssetsLightbox .popupHeader .share-dropdown li{font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif;font-weight:300}
+html.content-iw_il .complexAssetsLightbox .popupHeader .share-dropdown li{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ar_sa .complexAssetsLightbox .popupHeader .share-dropdown li{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ja_jp .complexAssetsLightbox .popupHeader .share-dropdown li{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ko_kr .complexAssetsLightbox .popupHeader .share-dropdown li{font-family:"Malgun Gothic",Arial,Helvetica,sans-serif;font-weight:300}
+html.content-zh_tw .complexAssetsLightbox .popupHeader .share-dropdown li{font-family:"Microsoft JhengHei",Arial,Helvetica,sans-serif;font-weight:300}
+@media only screen and (min-width:768px){.complexAssetsLightbox .popupHeader .share-dropdown li{font-family:"SAPLight",Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-zh_cn .complexAssetsLightbox .popupHeader .share-dropdown li{font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif;font-weight:100}
+html.content-iw_il .complexAssetsLightbox .popupHeader .share-dropdown li{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ar_sa .complexAssetsLightbox .popupHeader .share-dropdown li{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ja_jp .complexAssetsLightbox .popupHeader .share-dropdown li{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ko_kr .complexAssetsLightbox .popupHeader .share-dropdown li{font-family:"Malgun Gothic",Arial,Helvetica,sans-serif;font-weight:100}
+html.content-zh_tw .complexAssetsLightbox .popupHeader .share-dropdown li{font-family:"Microsoft JhengHei",Arial,Helvetica,sans-serif;font-weight:100}
+}
+.complexAssetsLightbox .popupHeader .share-dropdown a{color:#333;font-size:14px;line-height:20px;display:block;padding:8px 30px 8px 20px;white-space:nowrap}
+.complexAssetsLightbox .popupHeader .share-dropdown a span{display:inline-block;vertical-align:top;font-size:20px;line-height:18px;padding-right:10px}
+.complexAssetsLightbox .popupHeader .share-dropdown a:hover{background:#eee;cursor:pointer;text-decoration:none}
+.complexAssetsLightbox .popupHeader .toolbtn{width:40px;height:40px;padding:10px;line-height:20px;text-align:center;background:no-repeat center;background-size:contain;display:inline-block;color:#fff;text-decoration:none;cursor:pointer;position:relative;z-index:16}
+.complexAssetsLightbox .popupHeader .toolbtn:before{font-size:20px}
+.complexAssetsLightbox .popupHeader .toolbtn:hover{color:#000;background:#fff}
+.complexAssetsLightbox .popupHeader .toolbtn.exit{position:absolute;top:15px;right:15px;line-height:normal;margin:0;opacity:1;font-size:inherit;font-family:inherit;pointer-events:auto}
+.complexAssetsLightbox .popupHeader .toolbtn.exit:before{font-size:20px;line-height:20px}
+.complexAssetsLightbox .popupHeader .toolbtn.exit:hover{color:inherit;background:inherit}
+.complexAssetsLightbox.contactLightbox .mfp-container{padding-top:50px}
+.complexAssetsLightbox.contactLightbox .mfp-content{background:0}
+.complexAssetsLightbox.contactLightbox .popupHeader{padding:20px 0 20px 0;position:relative}
+.complexAssetsLightbox.contactLightbox .popupHeader .sectionTitle{margin-bottom:0}
+.complexAssetsLightbox.contactLightbox .popupHeader .sectionTitle.he{font-family:"SAPBook",Arial,Helvetica,sans-serif;font-weight:normal;font-size:17px;line-height:1.1em}
+html.content-zh_cn .complexAssetsLightbox.contactLightbox .popupHeader .sectionTitle.he{font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif;font-weight:300}
+html.content-iw_il .complexAssetsLightbox.contactLightbox .popupHeader .sectionTitle.he{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ar_sa .complexAssetsLightbox.contactLightbox .popupHeader .sectionTitle.he{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ja_jp .complexAssetsLightbox.contactLightbox .popupHeader .sectionTitle.he{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ko_kr .complexAssetsLightbox.contactLightbox .popupHeader .sectionTitle.he{font-family:"Malgun Gothic",Arial,Helvetica,sans-serif;font-weight:300}
+html.content-zh_tw .complexAssetsLightbox.contactLightbox .popupHeader .sectionTitle.he{font-family:"Microsoft JhengHei",Arial,Helvetica,sans-serif;font-weight:300}
+@media only screen and (max-width:767px){.complexAssetsLightbox.contactLightbox .popupHeader .sectionTitle.he{font-size:15px}
+}
+@media only screen and (min-width:768px) and (max-width:1240px){.complexAssetsLightbox.contactLightbox .popupHeader .sectionTitle.he{font-size:16px}
+}
+.complexAssetsLightbox.contactLightbox .popupHeader .toolbar-container{position:absolute;right:0;top:0}
+.complexAssetsLightbox.contactLightbox .popupHeader .toolbtn.exit{line-height:30px;box-sizing:border-box}
+.complexAssetsLightbox.contactLightbox .popupHeader .toolbtn.exit:before{content:'\e024';font-family:'SAPcom icons'}
+.complexAssetsLightbox.contactLightbox .popup-container{margin-bottom:50px;background-color:#fff}
+.complexAssetsLightbox .popupFooter{background-color:#000;min-height:100px;max-width:100%;margin:0 auto;padding:25px 90px;color:#fff;box-sizing:border-box;pointer-events:auto;position:relative}
+@media only screen and (max-width:767px){.complexAssetsLightbox .popupFooter{padding:20px 28px;flex:0 1 auto;width:100%}
+}
+.complexAssetsLightbox .popupFooter .service-description{position:relative;color:#fff;padding-left:42px;margin:0}
+@media only screen and (max-width:767px){.complexAssetsLightbox .popupFooter .service-description{padding-left:34px}
+}
+.complexAssetsLightbox .popupFooter .service-description span[class^='icon-']{color:#999;float:left;position:absolute;left:0;top:0}
+.complexAssetsLightbox .popupFooter .service-description span[class^='icon-']:before{font-size:32px;vertical-align:top}
+@media only screen and (max-width:767px){.complexAssetsLightbox .popupFooter .service-description span[class^='icon-']:before{font-size:24px}
+}
+.complexAssetsLightbox .popupFooter .service-description--list{display:block;width:100%}
+.complexAssetsLightbox .popupFooter .service-description--list:before,.complexAssetsLightbox .popupFooter .service-description--list:after{content:'';display:table}
+.complexAssetsLightbox .popupFooter .service-description--list:after{clear:both}
+.complexAssetsLightbox .popupFooter .service-description--column{float:left;width:33%;padding:0 15px 0 0}
+@media only screen and (max-width:767px){.complexAssetsLightbox .popupFooter .service-description--column{float:none;width:100%;padding:0 0 16px}
+}
+.complexAssetsLightbox .popupFooter .service-description--title{color:#fff;display:block;font-family:"SAPRegular",Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-zh_cn .complexAssetsLightbox .popupFooter .service-description--title{font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif;font-weight:400}
+html.content-iw_il .complexAssetsLightbox .popupFooter .service-description--title{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ar_sa .complexAssetsLightbox .popupFooter .service-description--title{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ja_jp .complexAssetsLightbox .popupFooter .service-description--title{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ko_kr .complexAssetsLightbox .popupFooter .service-description--title{font-family:"Malgun Gothic",Arial,Helvetica,sans-serif;font-weight:400}
+html.content-zh_tw .complexAssetsLightbox .popupFooter .service-description--title{font-family:"Microsoft JhengHei",Arial,Helvetica,sans-serif;font-weight:400}
+@media only screen and (min-width:768px){.complexAssetsLightbox .popupFooter .service-description--title{font-family:"SAPMedium",Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-zh_cn .complexAssetsLightbox .popupFooter .service-description--title{font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif;font-weight:500}
+html.content-iw_il .complexAssetsLightbox .popupFooter .service-description--title{font-family:Arial,Helvetica,sans-serif;font-weight:bold}
+html.content-ar_sa .complexAssetsLightbox .popupFooter .service-description--title{font-family:Arial,Helvetica,sans-serif;font-weight:bold}
+html.content-ja_jp .complexAssetsLightbox .popupFooter .service-description--title{font-family:Arial,Helvetica,sans-serif;font-weight:bold}
+html.content-ko_kr .complexAssetsLightbox .popupFooter .service-description--title{font-family:"Malgun Gothic",Arial,Helvetica,sans-serif;font-weight:500}
+html.content-zh_tw .complexAssetsLightbox .popupFooter .service-description--title{font-family:"Microsoft JhengHei",Arial,Helvetica,sans-serif;font-weight:500}
+}
+@media only screen and (max-width:767px){.complexAssetsLightbox .popupFooter{padding:20px 0;min-height:80px}
+}
+.complexAssetsLightbox .popupFooter .footer-container{overflow:hidden;position:relative;margin-right:auto;margin-left:auto}
+@media(max-width:767px){.complexAssetsLightbox .popupFooter .footer-container{padding-left:28px;padding-right:28px}
+}
+@media(min-width:768px) and (max-width:980px){.complexAssetsLightbox .popupFooter .footer-container{padding-left:79px;padding-right:79px}
+}
+@media(min-width:981px) and (max-width:1240px){.complexAssetsLightbox .popupFooter .footer-container{padding-left:90px;padding-right:90px}
+}
+@media(min-width:1241px){.complexAssetsLightbox .popupFooter .footer-container{padding-left:90px;padding-right:90px}
+}
+.complexAssetsLightbox .popupFooter .footer-container:before,.complexAssetsLightbox .popupFooter .footer-container:after{content:'';display:table}
+.complexAssetsLightbox .popupFooter .footer-container:after{clear:both}
+.complexAssetsLightbox .popupFooter .footer-container.hidden-footer{position:absolute;left:0;top:0;opacity:0}
+@media only screen and (max-width:767px){.complexAssetsLightbox .popupFooter .footer-container .row{display:flex}
+}
+.complexAssetsLightbox .popupFooter .footer-container .info-container{padding-top:15px;border-top:1px solid #fff}
+@media only screen and (max-width:767px){.complexAssetsLightbox .popupFooter .footer-container .info-container{border:0;padding-top:0}
+}
+.complexAssetsLightbox .popupFooter .he,.complexAssetsLightbox .popupFooter .text{color:#fff}
+.complexAssetsLightbox .popupFooter .he{margin-bottom:10px}
+@media only screen and (max-width:767px){.complexAssetsLightbox .popupFooter .he{margin-bottom:8px}
+}
+@media only screen and (min-width:768px) and (max-width:1240px){.complexAssetsLightbox .popupFooter .he{margin-bottom:9px}
+}
+.complexAssetsLightbox .popupFooter .btn-wrapper{padding-top:25px}
+@media only screen and (max-width:767px){.complexAssetsLightbox .popupFooter .btn-wrapper{flex:1 0 auto;align-self:center;padding-top:0}
+}
+.complexAssetsLightbox.universalFormLightbox .mfp-container{align-items:normal;display:inline-block;padding:0}
+.complexAssetsLightbox.universalFormLightbox .mfp-content{height:auto;margin:50px auto}
+.complexAssetsLightbox.universalFormLightbox .popup-container{height:900px;margin-bottom:0}
+@media(max-width:980px){.complexAssetsLightbox.universalFormLightbox .mfp-content{background:#fff;height:100%;margin:0;max-width:100%;vertical-align:top}
+}
+.overlayComponent{min-height:100vh;-webkit-overflow-scrolling:touch}
+.overlayComponent.mfp-bg{opacity:.9;background:#000}
+.overlayComponent .popupHeader{background:0;padding:0}
+.overlayComponent .popupHeader .toolbar-container{padding:0}
+.overlayComponent .popupHeader .toolbtn.exit{padding:0;width:20px;height:20px;top:-23px;right:-23px}
+@media only screen and (min-width:768px){.overlayComponent .popupHeader .toolbtn.exit{width:30px;height:30px;top:-38px;right:-38px}
+}
+@media only screen and (min-width:1300px){.overlayComponent .popupHeader .toolbtn.exit{width:2.1875rem;height:2.1875rem;top:-2.9375rem;right:-2.9375rem}
+}
+.overlayComponent .popupHeader .toolbtn.exit:before{font-size:20px;line-height:1}
+@media only screen and (min-width:768px){.overlayComponent .popupHeader .toolbtn.exit:before{font-size:30px}
+}
+@media only screen and (min-width:1300px){.overlayComponent .popupHeader .toolbtn.exit:before{font-size:2.1875rem}
+}
+.overlayComponent .popupFooter{display:none}
+.overlayComponent .mfp-container{padding:30px 30px 0}
+@media only screen and (min-width:768px){.overlayComponent .mfp-container{padding:50px 50px 0}
+}
+@media only screen and (min-width:1300px){.overlayComponent .mfp-container{padding:8.1875rem 8.1875rem 0}
+}
+.overlayComponent .mfp-content{max-width:1600px;background:#fff;box-shadow:0 0 50px 0 rgba(0,0,0,0.5);height:100%;width:100%}
+.overlayComponent .html-content-lightbox-frame{display:block;width:100%;height:100%;border:0}
+@media(max-width:767px){.contactLightbox .mfp-content .header-container&gt;.row{margin-left:-8px;margin-right:-9px}
+.rtl .contactLightbox .mfp-content .header-container&gt;.row{margin-left:-9px;margin-right:-8px}
+}
+@media(min-width:768px) and (max-width:980px){.contactLightbox .mfp-content .header-container&gt;.row{margin-left:-19px;margin-right:-19px}
+.rtl .contactLightbox .mfp-content .header-container&gt;.row{margin-left:-19px;margin-right:-19px}
+}
+@media(min-width:981px) and (max-width:1240px){.contactLightbox .mfp-content .header-container&gt;.row{margin-left:-25px;margin-right:-25px}
+.rtl .contactLightbox .mfp-content .header-container&gt;.row{margin-left:-25px;margin-right:-25px}
+}
+@media(min-width:1241px){.contactLightbox .mfp-content .header-container&gt;.row{margin-left:-25px;margin-right:-25px}
+.rtl .contactLightbox .mfp-content .header-container&gt;.row{margin-left:-25px;margin-right:-25px}
+}
+.contactLightbox .mfp-content .header-container&gt;.row:before,.contactLightbox .mfp-content .header-container&gt;.row:after{content:'';display:table}
+.contactLightbox .mfp-content .header-container&gt;.row:after{clear:both}
+.contactLightbox .popupFooter{display:none}
+.contactLightbox iframe.html-content-lightbox-frame{width:100%;height:100%}
+.is-lightbox .cx-section-component{padding-top:3.25rem;margin-bottom:5.25rem}
+.is-lightbox .cx-section-component .col-lg-offset-1,.is-lightbox .cx-section-component .col-md-offset-1,.is-lightbox .cx-section-component .col-sm-offset-1{width:100%;margin-left:0}
+.is-lightbox .cx-section-component .section-content&gt;.section{margin-bottom:38px}
+.is-lightbox .cx-section-component.no-content .section-content{margin-top:0}
+.is-lightbox .section-divider-container{padding-top:0}
+.is-lightbox .section-divider-container .section-divider{padding-top:0}
+.is-lightbox .cx-section-component .section-content&gt;.section:last-child{margin:0}
+.rtl-bp .contactLightbox .toolbar-container,.rtl .contactLightbox .toolbar-container{left:0;right:auto}
+.rtl-bp .contactLightbox .header-container&gt;div&gt;div,.rtl .contactLightbox .header-container&gt;div&gt;div{float:right}
+.rtl-bp .contactLightbox .popupHeader .sectionTitle,.rtl .contactLightbox .popupHeader .sectionTitle{text-align:right}
+.rtl-bp .contactLightbox .popupHeader .toolbtn.exit,.rtl .contactLightbox .popupHeader .toolbtn.exit{left:10px;right:auto}
+.ie11 .expiredVideoStub{display:table-cell;vertical-align:middle}
+.ie11 .expiredVideoStub .expired-text{display:inline}
+.expiredVideoStub{display:flex;justify-content:center;align-items:center;height:100%;width:100%;color:#d04512;font-size:18px;font-weight:bold;background-color:#eaeaea;border:#d04512 3px solid}
+.expiredVideoStub .icon{font-size:32px;margin-right:10px}
+.lightboxPopup .popupHeader.minified .toolbar-container.page-rating,.lightboxPopup .popupHeader.show-rating .toolbar-container.page-rating{position:fixed}
+.lightboxPopup .popupHeader.minified .toolbar-container.page-rating.top-position,.lightboxPopup .popupHeader.show-rating .toolbar-container.page-rating.top-position{position:absolute}
+.lightboxPopup .popupHeader .question-container{display:none;overflow:hidden;position:relative}
+.lightboxPopup .popupHeader .question-container.swipe{transition-timing-function:cubic-bezier(0.38,0,0.18,1);transition-duration:.2s;opacity:0}
+.videoLightbox .lightboxPopup .popupHeader .question-container{position:absolute;z-index:3;background:rgba(0,0,0,0.85);left:0;width:100%}
+.videoLightbox .lightboxPopup .popupHeader .question-container .blockReasons{margin-top:calc(2rem - 5px);text-align:left}
+.videoLightbox .lightboxPopup .popupHeader .question-container .blockReasons .second-question-headline{text-align:left}
+.videoLightbox .lightboxPopup .popupHeader .question-container .blockReasons .bottom-position{position:absolute;bottom:0}
+.lightboxPopup .popupHeader .rating-wrapper-lightbox{position:relative;display:flex;justify-content:center;color:#eaeaea;text-align:right;font-family:"SAPBook",Arial,Helvetica,sans-serif;font-weight:normal;flex-grow:10}
+html.content-zh_cn .lightboxPopup .popupHeader .rating-wrapper-lightbox{font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif;font-weight:300}
+html.content-iw_il .lightboxPopup .popupHeader .rating-wrapper-lightbox{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ar_sa .lightboxPopup .popupHeader .rating-wrapper-lightbox{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ja_jp .lightboxPopup .popupHeader .rating-wrapper-lightbox{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ko_kr .lightboxPopup .popupHeader .rating-wrapper-lightbox{font-family:"Malgun Gothic",Arial,Helvetica,sans-serif;font-weight:300}
+html.content-zh_tw .lightboxPopup .popupHeader .rating-wrapper-lightbox{font-family:"Microsoft JhengHei",Arial,Helvetica,sans-serif;font-weight:300}
+.lightboxPopup .popupHeader .rating-wrapper-lightbox.container-extended{margin:0;padding-right:0;padding-left:0;padding-bottom:3.25rem;width:100vw;max-width:100vw;clear:both}
+.lightboxPopup .popupHeader .rating-wrapper-lightbox .close-feedback{position:absolute;top:calc(1.25rem + 35px);right:calc(45px + 2rem);line-height:normal;margin:0;opacity:1;font-size:inherit;font-family:inherit;pointer-events:auto;cursor:pointer;z-index:5}
+.videoLightbox .lightboxPopup .popupHeader .rating-wrapper-lightbox .close-feedback{top:calc(1.25rem + 12px)}
+.lightboxPopup .popupHeader .rating-wrapper-lightbox .close-feedback:before{font-size:20px}
+.lightboxPopup .popupHeader .rating-wrapper-lightbox ul.radio-rating{padding:0;list-style:none;margin-bottom:0}
+.lightboxPopup .popupHeader .rating-wrapper-lightbox ul.radio-rating li{margin-bottom:1.25rem;display:flex}
+.lightboxPopup .popupHeader .rating-wrapper-lightbox ul.radio-rating li:last-child{margin-bottom:calc(1.25rem - 8px)}
+.videoLightbox .lightboxPopup .popupHeader .rating-wrapper-lightbox ul.radio-rating li:last-child{margin-bottom:2rem}
+.lightboxPopup .popupHeader .rating-wrapper-lightbox ul.radio-rating li input{margin-right:.75em}
+.lightboxPopup .popupHeader .rating-wrapper-lightbox ul.radio-rating li .radio-label{display:block}
+.lightboxPopup .popupHeader .rating-wrapper-lightbox .jcf-radio{margin-right:.5rem;vertical-align:middle;display:inline-block;position:relative;overflow:hidden;cursor:default;background:#eaeaea;box-sizing:content-box;box-shadow:inset 0 0 3px 0 rgba(0,0,0,0.5);border:1px solid #727272;border-radius:50%;height:22px;width:22px;flex-shrink:0}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .rating-wrapper-lightbox .jcf-radio{margin-right:.35rem}
+}
+.lightboxPopup .popupHeader .rating-wrapper-lightbox .jcf-radio:hover:before{content:'';display:block;width:20px;height:20px;box-sizing:content-box;border:1px solid #89c9e8;border-radius:50%}
+.lightboxPopup .popupHeader .rating-wrapper-lightbox .jcf-radio.jcf-checked{border-color:#007db8;box-shadow:none}
+.lightboxPopup .popupHeader .rating-wrapper-lightbox .jcf-radio.jcf-checked:before{content:'';display:block;width:22px;height:22px;box-sizing:border-box;border:6px solid #007db8;border-radius:50%}
+.lightboxPopup .popupHeader .rating-wrapper-lightbox .jcf-radio input[type='radio']{position:absolute;height:100%;width:100%;border:0;margin:0;left:0;top:0}
+.lightboxPopup .popupHeader .toolbar-container.page-rating{padding-right:calc(45px + 2rem);float:none;position:static;z-index:1}
+.minified .lightboxPopup .popupHeader .toolbar-container.page-rating{position:fixed}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating{padding:0;background-color:transparent}
+}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox .close-feedback{right:0}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .toolbar{position:relative;margin:0}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .toolbar .toolbar-list{display:flex;align-items:center;z-index:2;--line-position:28px}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .toolbar .toolbar-list:after{content:'';display:block;border-top:1px solid #fff;position:absolute;width:calc(100% - 10px);left:calc(-50% + 15px);bottom:-15px;transform:translateX(50%);z-index:1;visibility:hidden;opacity:0;background-color:#000}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating .toolbar .toolbar-list:after{transform:none;width:calc(100% - 56px);left:var(--line-position);bottom:calc(1.4rem - 15px)}
+}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating .toolbar .toolbar-list.hair-line .rating-message{padding-bottom:calc(1.75rem - 8px)}
+}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .toolbar .toolbar-list.hair-line .rating-message.rated{padding-bottom:.75rem}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating .toolbar .toolbar-list.hair-line .rating-message.rated{padding-bottom:.525rem}
+}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .toolbar .toolbar-list.hair-line:after{visibility:visible;opacity:1}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .toolbar .toolbar-list.hair-line-initial:after{transition-timing-function:cubic-bezier(0.64,0,0.35,1);transition-duration:.28s}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .toolbar .toolbar-list.hair-line-hidden:after{visibility:hidden;opacity:0;transition-timing-function:cubic-bezier(0.64,0.04,0.35,1);transition-delay:.24s;transition-duration:.28s}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating .toolbar .toolbar-list{flex-wrap:wrap}
+}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating .toolbar .toolbar-list&gt;li{background-color:#000;padding-top:8px;padding-bottom:8px}
+}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating .toolbar .toolbar-list&gt;li:first-child{padding-left:28px}
+}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating .toolbar .toolbar-list&gt;li:not(.rating-message):nth-last-child(2){padding-right:8px;flex-grow:5}
+}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .toolbar .toolbar-list&gt;li.rating-message{display:inline-block;flex-grow:10;width:100%}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .toolbar .toolbar-list&gt;li.rating-message.swipe{opacity:0;transition-timing-function:cubic-bezier(0.38,0,0.18,1);transition:all .2s}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .toolbar .toolbar-list&gt;li.rating-message.hidden-message{visibility:hidden;opacity:0;transition:visibility 1s,opacity 1s}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating .toolbar .toolbar-list&gt;li.rating-message.hidden-message{display:inline-block;visibility:hidden;opacity:0}
+}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating .toolbar .toolbar-list&gt;li.rating-message.initial{visibility:hidden;opacity:0;padding:0}
+}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating .toolbar .toolbar-list&gt;li.rating-message{background-color:rgba(0,0,0,0.8);padding:calc(0.525rem) 28px;transition:visibility 1s,opacity 1s}
+}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating .toolbtn.exit{padding-right:0;right:23px}
+}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .thanksLikeBlock,.lightboxPopup .popupHeader .toolbar-container.page-rating .thanksDisliking{display:none;color:#eaeaea;text-align:center;padding:0 2rem}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .thanksDisliking{font-family:"SAPRegular",Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-zh_cn .lightboxPopup .popupHeader .toolbar-container.page-rating .thanksDisliking{font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif;font-weight:400}
+html.content-iw_il .lightboxPopup .popupHeader .toolbar-container.page-rating .thanksDisliking{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ar_sa .lightboxPopup .popupHeader .toolbar-container.page-rating .thanksDisliking{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ja_jp .lightboxPopup .popupHeader .toolbar-container.page-rating .thanksDisliking{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ko_kr .lightboxPopup .popupHeader .toolbar-container.page-rating .thanksDisliking{font-family:"Malgun Gothic",Arial,Helvetica,sans-serif;font-weight:400}
+html.content-zh_tw .lightboxPopup .popupHeader .toolbar-container.page-rating .thanksDisliking{font-family:"Microsoft JhengHei",Arial,Helvetica,sans-serif;font-weight:400}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .thanksDisliking .dislike-title{line-height:1.1;position:relative;top:-2px}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating .thanksDisliking .dislike-title{top:auto;line-height:1.5}
+}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .thanksDisliking .dislike-body{position:relative;bottom:-2px}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating .thanksDisliking .dislike-body{bottom:auto;padding-top:calc(0.35rem)}
+}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .thanksLikeBlock{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100%}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion{display:flex;justify-content:flex-end;align-items:center;margin-left:3.25rem;visibility:visible;opacity:1;transition:visibility 1s,opacity 1s}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion{margin-left:0;justify-content:space-between}
+}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion.initial,.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion.hidden-question{visibility:hidden;opacity:0}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion.initial .question-headline,.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion.hidden-question .question-headline,.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion.initial .question-buttons,.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion.hidden-question .question-buttons{display:none}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion.invisible{visibility:hidden;transition:none}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion .question-headline{display:flex;align-items:center;color:#eaeaea}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion .question-headline{font-size:.83rem}
+}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion .question-buttons{display:block;flex-shrink:0}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion .question-buttons .button-block{display:flex}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion .question-buttons .button-block .ds-button{padding-left:2rem;padding-right:2rem}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion .question-buttons .button-block .ds-button{padding-left:1.4rem;padding-right:1.4rem}
+}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion .like-button{cursor:pointer}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion .like-button:before{content:'\e059';font-family:'SAPcom icons',sans-serif;color:#fff;display:block;height:22px;font-size:22px;top:calc(-0.35rem);position:relative}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion .like-button{margin:0 calc(1.05rem)}
+}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion .dislike-button{margin-right:0;cursor:pointer}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion .dislike-icon:before{content:'\e059';font-family:'SAPcom icons',sans-serif;color:#fff;display:block;height:22px;font-size:22px;transform:rotate(180deg);top:calc(0.35rem);position:relative}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion .loading:before{content:'';display:block;border-left:#fff 2px solid;border-right:transparent 2px solid;border-top:#fff 2px solid;border-radius:50%;height:22px;width:22px;position:relative;left:auto;transform:initial;top:auto;animation:spin .6s infinite;animation-timing-function:linear}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion .loading:before{margin-bottom:auto}
+}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion .like-button.frozen,.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion .dislike-button.frozen{pointer-events:none;background:transparent}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion .like-button:hover:before,.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion .dislike-button:hover:before{color:#000}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion .like-button:hover:before,.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion .dislike-button:hover:before{color:#fff}
+}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion .like-button:hover,.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion .dislike-button:hover{background-color:rgba(255,255,255,0.15)}
+}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion .like-button:active:before,.lightboxPopup .popupHeader .toolbar-container.page-rating .firstQuestion .dislike-button:active:before{color:#fff}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox{position:relative;display:flex;justify-content:center;color:#eaeaea;text-align:right;font-family:"SAPBook",Arial,Helvetica,sans-serif;font-weight:normal;flex-grow:10}
+html.content-zh_cn .lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox{font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif;font-weight:300}
+html.content-iw_il .lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ar_sa .lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ja_jp .lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ko_kr .lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox{font-family:"Malgun Gothic",Arial,Helvetica,sans-serif;font-weight:300}
+html.content-zh_tw .lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox{font-family:"Microsoft JhengHei",Arial,Helvetica,sans-serif;font-weight:300}
+.videoLightbox .lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox{margin:15px 0 0}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox{background-color:rgba(0,0,0,0.8);justify-content:flex-start}
+}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox.container-extended{margin:0;padding-right:0;padding-left:0;padding-bottom:3.25rem;width:100vw;max-width:100vw;clear:both}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox .secondQuestion{display:none;margin-top:20px;overflow:hidden;transition-timing-function:cubic-bezier(0.38,0,0.18,1);transition-delay:.02s;transition-duration:.68s}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox .secondQuestion{margin-top:0}
+}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox .secondQuestion{width:calc(100% - 0.875rem - 40px);padding-left:28px}
+}
+.videoLightbox .lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox .secondQuestion{position:absolute;z-index:3;background:rgba(0,0,0,0.85)}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox .secondQuestion .blockReasons{display:flex;text-align:left;position:absolute;visibility:hidden;z-index:1;margin-top:calc(2rem - 5px);max-height:2000px}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox .secondQuestion .blockReasons{margin-top:calc(1.75rem - 5px)}
+}
+@media only screen and (max-width:1240px){.lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox .secondQuestion .blockReasons{overflow-y:auto}
+}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox .secondQuestion .blockReasons.show-reasons{visibility:visible;transition-timing-function:cubic-bezier(0.38,0,0.18,1);transition-delay:.02s;transition-duration:.68s}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox .secondQuestion .blockReasons.hide-reason{transition-timing-function:cubic-bezier(0.62,0,0.82,1);transition-delay:0;transition-duration:.5s}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox .secondQuestion .blockReasons .question-wrapper{width:100%}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox .secondQuestion .blockReasons .question-wrapper .second-question-headline{color:#eaeaea}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox .secondQuestion .reject-feedback-button{border-color:#fff;color:#fff}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox .secondQuestion .reject-feedback-button:hover{color:#000}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox .close-feedback{position:absolute;top:calc(1.25rem + 35px);right:0;line-height:normal;margin:0;opacity:1;font-size:inherit;font-family:inherit;pointer-events:auto;cursor:pointer}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox .close-feedback:before{font-size:20px}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox .close-feedback{top:calc(0.875rem + 15px);right:28px}
+}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox ul.radio-rating{padding:0;list-style:none;margin-bottom:0}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox ul.radio-rating{margin-top:calc(1.4rem)}
+}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox ul.radio-rating li{margin-bottom:1.25rem;display:flex}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox ul.radio-rating li{margin-bottom:.875rem}
+}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox ul.radio-rating li:last-child{margin-bottom:calc(1.25rem - 8px)}
+@media only screen and (max-width:767px){.lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox ul.radio-rating li:last-child{margin-bottom:calc(1.4rem)}
+}
+.lightboxPopup .popupHeader .toolbar-container.page-rating .rating-wrapper-lightbox ul.radio-rating li .radio-label{display:block}
+.close-feedback{display:none}
+.lightboxPopup .popupHeader .toolbar-list li.rating-message{display:none}
+.call-popup{box-shadow:0 0 50px 0 rgba(0,0,0,0.2);display:none;position:fixed;right:18px;bottom:0;z-index:10000;width:475px;height:650px}
+.call-popup.active{background:#fff url('../../../../etc/sapdx/binary/clientlib-viewerjs/images/loading-icon.gif') center no-repeat}
+.call-popup iframe{border:0;opacity:0}
+.call-popup iframe.loaded{opacity:1}
+.call-popup.minimized{bottom:0;height:34px;left:inherit !important;right:18px;top:inherit !important;width:225px}
+.call-popup.minimized .musthead{padding:0 7px 0 16px}
+.call-popup.minimized .musthead:hover{background-color:#007db8}
+@media only screen and (max-width:1000px){.call-popup.minimized .popup-maximize,.call-popup.minimized .popup-close{width:44px}
+}
+.call-popup .musthead{box-sizing:border-box;background-color:#007db8;height:34px;line-height:34px;padding:0 7px 0 16px;position:relative}
+@media only screen and (max-width:1000px){.call-popup .musthead{padding:0 0 0 16px}
+}
+.call-popup .callme-title{display:inline-block;margin:0;color:#fff;font-size:15px;line-height:34px;vertical-align:middle;font-family:"SAPBook",Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-zh_cn .call-popup .callme-title{font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif;font-weight:300}
+html.content-iw_il .call-popup .callme-title{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ar_sa .call-popup .callme-title{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ja_jp .call-popup .callme-title{font-family:Arial,Helvetica,sans-serif;font-weight:normal}
+html.content-ko_kr .call-popup .callme-title{font-family:"Malgun Gothic",Arial,Helvetica,sans-serif;font-weight:300}
+html.content-zh_tw .call-popup .callme-title{font-family:"Microsoft JhengHei",Arial,Helvetica,sans-serif;font-weight:300}
+.call-popup .popup-minimize{background:0;border:0;font-size:14px;height:34px;width:28px;float:right;padding:0;position:relative;text-align:center;cursor:pointer}
+.call-popup .popup-minimize:before{content:'';color:#fff;display:inline-block;width:12px;height:20px;border-bottom:2px solid #fff;font-family:'SAPcom icons'}
+.call-popup .popup-minimize:hover{background-color:#007db8}
+@media only screen and (max-width:1000px){.call-popup .popup-minimize{width:44px}
+}
+.call-popup .popup-maximize{display:none;background:0;border:0;font-size:12px;height:34px;width:28px;float:right;padding:0;position:relative;text-align:center;cursor:pointer}
+.call-popup .popup-maximize:before{content:'\e00f';color:#fff;font-size:10px;font-family:'SAPcom icons'}
+.call-popup .popup-maximize:hover{background-color:#007db8}
+@media only screen and (max-width:1000px){.call-popup .popup-maximize{width:44px}
+}
+.call-popup .popup-close{background:0;border:0;font-size:14px;height:34px;width:28px;float:right;padding:0;position:relative;text-align:center;cursor:pointer}
+.call-popup .popup-close:before{content:'\e600';color:#fff;font-size:17px;font-family:'SAPcom icons'}
+.hanaProduct3Page .call-popup .popup-close:before{content:'\e024';font-family:'SAPcom icons';font-size:15px}
+.call-popup .popup-close:hover{background-color:#007db8}
+@media only screen and (max-width:1000px){.call-popup .popup-close{width:44px}
+}
+@media only screen and (max-width:767px){.call-popup{left:0;top:0;width:100%;height:100%}
+}
+#header{height:64px;background-color:#000}
+#header.tier2{background-color:#f4f4f4}
+html:not(.aem-AuthorLayer-Preview) #header.cq-Editable-dom{height:280px;background-color:#fff}
+#footer{background-color:#222}
+#footer.tier2{background-color:#f4f4f4}
+.storyContainer{background:#222;color:#fff;padding-top:5.25rem}
+.customer-reference-standard .carousel-holder .carousel-mask .carousel-slider{display:flex}
+.customer-reference-standard .carousel-holder .carousel-mask .carousel-slider .max-divider{min-width:3.25rem}
+.customer-reference-standard .item-content .navbar-item-icon-link:after{display:none}
+.customer-reference-standard .item-content .navbar-item-icon-link .navbar-item-icon{width:140px;height:86px}
+.customer-reference-standard .item-content .navbar-item-icon-link .navbar-item-icon .svg-image{max-width:140px;max-height:90%;filter:grayscale(100%)}
+.customer-reference-standard .arrows{display:none}
+.footer-standard{padding:40px 0;color:#999}
+.footer-standard .service-item-image{margin:0 15px 0 0;width:32px;height:32px}
+.footer-standard .social-networks__icon{max-width:16px;max-height:16px;display:block}
+.footer-standard .social-networks__link{width:26px;height:26px;display:flex}
+.footer-standard .social-networks__list{margin:0;padding:0 0 0 8px;list-style:none outside}
+.footer-standard .social-networks__item{float:left}
+.footer-standard .footer-column__icon{display:none}
+.footer-standard .footer-list{list-style:none outside;margin:0;padding:0}
+.footer-standard .footer-list__item{padding:0 0 20px}
+.footer-standard .footer-list__item .footer-list__link{color:#999}
+@media only screen and (min-width:768px){.footer-standard .footer-column__checkbox{display:none}
+}
+.hidden-chat-button{display:none}
+.textOnlyView{background:none !important;background-color:white !important;background-image:none !important;color:black !important;border:none !important}
+.textOnlyView:after{background:none !important;background-color:white !important;background-image:none !important;color:black !important;border:none !important;content:attr(data-alt)}
+.textOnlyView:before{background:none !important;background-color:white !important;background-image:none !important;color:black !important;border:none !important}
+.textOnlyView a,.textOnlyView a span{color:#00f !important;text-decoration:underline !important}
+.textOnlyView input{border:1px solid !important}
+.textOnlyView input[type='submit']{background-color:#aaa !important}
+.textOnlyView img{display:none !important}

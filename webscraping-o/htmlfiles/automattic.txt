@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="noodp" name="robots"/>
+  <link href="https://automattic.com/xmlrpc.php" rel="pingback"/>
+  <meta content="LsUOC70Kd1OVRa84YXSdDMeWfa_tu9k9Cyi9HUFlR60" name="google-site-verification"/>
+  <link href="https://automattic.com/" rel="start" title="Automattic"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <link href="https://s0.wp.com" rel="preconnect"/>
+  <title>
+   Automattic – Making the web a better place
+  </title>
+  <meta content="max-image-preview:large" name="robots"/>
+  <meta content="XECAgs1qhOf9tfH5snpZFPxF4nDR6Jmy58IraJfFVo0" name="google-site-verification"/>
+  <!-- Async WordPress.com Remote Login -->
+  <script id="wpcom_remote_login_js">
+   var wpcom_remote_login_extra_auth = '';
+function wpcom_remote_login_remove_dom_node_id( element_id ) {
+	var dom_node = document.getElementById( element_id );
+	if ( dom_node ) { dom_node.parentNode.removeChild( dom_node ); }
+}
+function wpcom_remote_login_remove_dom_node_classes( class_name ) {
+	var dom_nodes = document.querySelectorAll( '.' + class_name );
+	for ( var i = 0; i < dom_nodes.length; i++ ) {
+		dom_nodes[ i ].parentNode.removeChild( dom_nodes[ i ] );
+	}
+}
+function wpcom_remote_login_final_cleanup() {
+	wpcom_remote_login_remove_dom_node_classes( "wpcom_remote_login_msg" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_key" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_validate" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_js" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_request_access_iframe" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_request_access_styles" );
+}
+
+// Watch for messages back from the remote login
+window.addEventListener( "message", function( e ) {
+	if ( e.origin === "https://r-login.wordpress.com" ) {
+		var data = {};
+		try {
+			data = JSON.parse( e.data );
+		} catch( e ) {
+			wpcom_remote_login_final_cleanup();
+			return;
+		}
+
+		if ( data.msg === 'LOGIN' ) {
+			// Clean up the login check iframe
+			wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_key" );
+
+			var id_regex = new RegExp( /^[0-9]+$/ );
+			var token_regex = new RegExp( /^.*|.*|.*$/ );
+			if (
+				token_regex.test( data.token )
+				&& id_regex.test( data.wpcomid )
+			) {
+				// We have everything we need to ask for a login
+				var script = document.createElement( "script" );
+				script.setAttribute( "id", "wpcom_remote_login_validate" );
+				script.src = '/remote-login.php?wpcom_remote_login=validate'
+					+ '&wpcomid=' + data.wpcomid
+					+ '&token=' + encodeURIComponent( data.token )
+					+ '&host=' + window.location.protocol
+						+ '//' + window.location.hostname;
+				document.body.appendChild( script );
+			}
+
+			return;
+		}
+
+		// Safari ITP, not logged in, so redirect
+		if ( data.msg === 'LOGIN-REDIRECT' ) {
+			window.location = 'https://wordpress.com/log-in?redirect_to=' + window.location.href;
+			return;
+		}
+
+		// Safari ITP, storage access failed, remove the request
+		if ( data.msg === 'LOGIN-REMOVE' ) {
+			var css_zap = 'html { -webkit-transition: margin-top 1s; transition: margin-top 1s; } /* 9001 */ html { margin-top: 0 !important; } * html body { margin-top: 0 !important; } @media screen and ( max-width: 782px ) { html { margin-top: 0 !important; } * html body { margin-top: 0 !important; } }';
+			var style_zap = document.createElement( 'style' );
+			style_zap.type = 'text/css';
+			style_zap.appendChild( document.createTextNode( css_zap ) );
+			document.body.appendChild( style_zap );
+
+			var e = document.getElementById( 'wpcom_request_access_iframe' );
+			e.parentNode.removeChild( e );
+
+			document.cookie = 'wordpress_com_login_access=denied; path=/; max-age=31536000';
+
+			return;
+		}
+
+		// Safari ITP
+		if ( data.msg === 'REQUEST_ACCESS' ) {
+			console.log( 'request access: safari' );
+
+			// Check ITP iframe enable/disable knob
+			if ( wpcom_remote_login_extra_auth !== 'safari_itp_iframe' ) {
+				return;
+			}
+
+			// If we are in a "private window" there is no ITP.
+			var private_window = false;
+			try {
+				var opendb = window.openDatabase( null, null, null, null );
+			} catch( e ) {
+				private_window = true;
+			}
+
+			if ( private_window ) {
+				console.log( 'private window' );
+				return;
+			}
+
+			var iframe = document.createElement( 'iframe' );
+			iframe.id = 'wpcom_request_access_iframe';
+			iframe.setAttribute( 'scrolling', 'no' );
+			iframe.setAttribute( 'sandbox', 'allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-top-navigation-by-user-activation' );
+			iframe.src = 'https://r-login.wordpress.com/remote-login.php?wpcom_remote_login=request_access&origin=' + encodeURIComponent( data.origin ) + '&wpcomid=' + encodeURIComponent( data.wpcomid );
+
+			var css = 'html { -webkit-transition: margin-top 1s; transition: margin-top 1s; } /* 9001 */ html { margin-top: 46px !important; } * html body { margin-top: 46px !important; } @media screen and ( max-width: 660px ) { html { margin-top: 71px !important; } * html body { margin-top: 71px !important; } #wpcom_request_access_iframe { display: block; height: 71px !important; } } #wpcom_request_access_iframe { border: 0px; height: 46px; position: fixed; top: 0; left: 0; width: 100%; min-width: 100%; z-index: 99999; background: #23282d; } ';
+
+			var style = document.createElement( 'style' );
+			style.type = 'text/css';
+			style.id = 'wpcom_request_access_styles';
+			style.appendChild( document.createTextNode( css ) );
+			document.body.appendChild( style );
+
+			document.body.appendChild( iframe );
+		}
+
+		if ( data.msg === 'DONE' ) {
+			wpcom_remote_login_final_cleanup();
+		}
+	}
+}, false );
+
+// Inject the remote login iframe after the page has had a chance to load
+// more critical resources
+window.addEventListener( "DOMContentLoaded", function( e ) {
+	var iframe = document.createElement( "iframe" );
+	iframe.style.display = "none";
+	iframe.setAttribute( "scrolling", "no" );
+	iframe.setAttribute( "id", "wpcom_remote_login_key" );
+	iframe.src = "https://r-login.wordpress.com/remote-login.php"
+		+ "?wpcom_remote_login=key"
+		+ "&origin=aHR0cHM6Ly9hdXRvbWF0dGljLmNvbQ%3D%3D"
+		+ "&wpcomid=54117"
+		+ "&time=1616353042";
+	document.body.appendChild( iframe );
+}, false );
+  </script>
+  <script type="text/javascript">
+   /* <![CDATA[ */
+		function addLoadEvent(func) {
+			var oldonload = window.onload;
+			if (typeof window.onload != 'function') {
+				window.onload = func;
+			} else {
+				window.onload = function () {
+					oldonload();
+					func();
+				}
+			}
+		}
+		/* ]]> */
+  </script>
+  <link href="https://s2.wp.com/_static/??-eJydkdtuwyAMhl9oDiHSot5MexYgLqWDgLBpl7efky6apmmZtBvk0/f7gLoXcHlmnFmV2HyYSfkmrsXqJVNR3XTfDZ1WtoU4KRuze4MYbDV1UcRLxM4RPalDoY0idUUuZsXNkhuDr2H6r0Q1HGZPv+Cpwa6w7iDxVAyvFQmnYDBikrIj7B4mjyw47TYwvh8jRdqAtaUiEcibQkvAF+lFP7hHWJmTU6ZxToY5OBh6rf9eaZ+N0FR32UZ8mPA56blu0HQk4jGDnFTOmOdvDpyjCfUIrSif4cX0W+8vd4Ve04se9dgPw/h8un4AogDjrg==?cssminify=yes" id="all-css-0-1" media="all" rel="stylesheet" type="text/css"/>
+  <style id="wp-block-library-inline-css">
+   .has-text-align-justify {
+	text-align:justify;
+}
+  </style>
+  <style id="jetpack-global-styles-frontend-style-inline-css">
+   :root { --font-headings: unset; --font-base: unset; --font-headings-default: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif; --font-base-default: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;}
+  </style>
+  <link href="https://s0.wp.com/_static/??-eJzTLy/QTc7PK0nNK9HPLdUtyClNz8wr1i/ILy7RTctJzCzSL85ILMrMS4fResnFxTr62HUV5ydnJubo5uSn56NyQJrsc20NzQxNjMwsLAxNswC9VyvQ?cssminify=yes" id="all-css-2-1" media="all" rel="stylesheet" type="text/css"/>
+  <script id="wpcom-actionbar-placeholder-js-extra">
+   var actionbardata = {"siteID":"54117","siteName":"Automattic","siteURL":"https:\/\/automattic.com","icon":"<img alt='' src='https:\/\/secure.gravatar.com\/blavatar\/0d6c430459af115394a012d20b6711d6?s=50&d=https%3A%2F%2Fs2.wp.com%2Fi%2Flogo%2Fwpcom-gray-white.png' class='avatar avatar-50' height='50' width='50' \/>","canManageOptions":"","canCustomizeSite":"","isFollowing":"","themeSlug":"a8c\/automattic-2011","signupURL":"https:\/\/wordpress.com\/start\/","loginURL":"https:\/\/wordpress.com\/log-in?redirect_to=https%3A%2F%2Fautomattic.com%2F&signup_flow=account&domain=automattic.com","themeURL":"","xhrURL":"https:\/\/automattic.com\/wp-admin\/admin-ajax.php","nonce":"9c51e18857","isSingular":"1","isFolded":"","isLoggedIn":"","isMobile":"","subscribeNonce":"<input type=\"hidden\" id=\"_wpnonce\" name=\"_wpnonce\" value=\"a9d76c638d\" \/>","referer":"https:\/\/automattic.com\/","canFollow":"","feedID":"73075320","statusMessage":"","customizeLink":"https:\/\/automattic.wordpress.com\/wp-admin\/customize.php?url=https%3A%2F%2Fautomattic.wordpress.com%2F","postID":"39806","shortlink":"https:\/\/wp.me\/Pe4R-am2","canEditPost":"","editLink":"https:\/\/wordpress.com\/page\/automattic.com\/39806","statsLink":"https:\/\/wordpress.com\/stats\/post\/39806\/automattic.com","i18n":{"view":"View site","follow":"Follow","following":"Following","edit":"Edit","login":"Log in","signup":"Sign up","customize":"Customize","report":"Report this content","themeInfo":"Get theme: Automattic 2011","shortlink":"Copy shortlink","copied":"Copied","followedText":"New posts from this site will now appear in your <a href=\"https:\/\/wordpress.com\/read\">Reader<\/a>","foldBar":"Collapse this bar","unfoldBar":"Expand this bar","editSubs":"Manage subscriptions","viewReader":"View site in Reader","viewReadPost":"View post in Reader","subscribe":"Sign me up","enterEmail":"Enter your email address","followers":"Join 9,809 other followers","alreadyUser":"Already have a WordPress.com account? <a href=\"https:\/\/wordpress.com\/log-in?redirect_to=https%3A%2F%2Fautomattic.com%2F&signup_flow=account&domain=automattic.com\">Log in now.<\/a>","stats":"Stats"}};
+  </script>
+  <script src="https://s1.wp.com/_static/??/wp-content/js/postmessage.js,/wp-content/js/mobile-useragent-info.js,/wp-content/js/rlt-proxy.js?m=1615930751j" type="text/javascript">
+  </script>
+  <script type="text/javascript">
+   window.addEventListener( 'DOMContentLoaded', function() {
+		rltInitialize( {"token":null,"iframeOrigins":["https:\/\/widgets.wp.com"]} );
+	} );
+  </script>
+  <link href="https://automattic.wordpress.com/xmlrpc.php?rsd" rel="EditURI" title="RSD" type="application/rsd+xml"/>
+  <link href="https://s1.wp.com/wp-includes/wlwmanifest.xml" rel="wlwmanifest" type="application/wlwmanifest+xml"/>
+  <meta content="WordPress.com" name="generator"/>
+  <link href="https://wp.me/Pe4R-am2" rel="shortlink"/>
+  <style>
+   @font-face {
+			font-family: Recoleta;
+			src: url('https://s1.wp.com/i/fonts/recoleta/400.woff2')
+		}
+  </style>
+  <link href="https://public-api.wordpress.com/oembed/?format=json&amp;url=https%3A%2F%2Fautomattic.com%2F&amp;for=wpcom-auto-discovery" rel="alternate" type="application/json+oembed"/>
+  <link href="https://public-api.wordpress.com/oembed/?format=xml&amp;url=https%3A%2F%2Fautomattic.com%2F&amp;for=wpcom-auto-discovery" rel="alternate" type="application/xml+oembed"/>
+  <!-- Jetpack Open Graph Tags -->
+  <meta content="website" property="og:type"/>
+  <meta content="Automattic" property="og:title"/>
+  <meta content="Making the web a better place" property="og:description"/>
+  <meta content="https://automattic.com/" property="og:url"/>
+  <meta content="Automattic" property="og:site_name"/>
+  <meta content="https://secure.gravatar.com/blavatar/0d6c430459af115394a012d20b6711d6?s=200&amp;ts=1616353042" property="og:image"/>
+  <meta content="200" property="og:image:width"/>
+  <meta content="200" property="og:image:height"/>
+  <meta content="en_US" property="og:locale"/>
+  <meta content="@automattic" name="twitter:creator"/>
+  <meta content="@automattic" name="twitter:site"/>
+  <meta content="Home" name="twitter:text:title"/>
+  <meta content="https://secure.gravatar.com/blavatar/0d6c430459af115394a012d20b6711d6?s=240" name="twitter:image"/>
+  <meta content="summary" name="twitter:card"/>
+  <meta content="https://www.facebook.com/WordPresscom" property="article:publisher"/>
+  <meta content="WordPress" name="twitter:app:name:iphone"/>
+  <meta content="335703880" name="twitter:app:id:iphone"/>
+  <meta content="WordPress" name="twitter:app:name:ipad"/>
+  <meta content="335703880" name="twitter:app:id:ipad"/>
+  <meta content="WordPress" name="twitter:app:name:googleplay"/>
+  <meta content="org.wordpress.android" name="twitter:app:id:googleplay"/>
+  <!-- End Jetpack Open Graph Tags -->
+  <link href="https://secure.gravatar.com/blavatar/0d6c430459af115394a012d20b6711d6?s=32" rel="shortcut icon" sizes="16x16" type="image/x-icon"/>
+  <link href="https://secure.gravatar.com/blavatar/0d6c430459af115394a012d20b6711d6?s=32" rel="icon" sizes="16x16" type="image/x-icon"/>
+  <link href="https://secure.gravatar.com/blavatar/0d6c430459af115394a012d20b6711d6?s=114" rel="apple-touch-icon"/>
+  <link href="https://automattic.com/?openidserver=1" rel="openid.server"/>
+  <link href="https://automattic.com/" rel="openid.delegate"/>
+  <link href="https://automattic.com/osd.xml" rel="search" title="Automattic" type="application/opensearchdescription+xml"/>
+  <link href="https://s1.wp.com/opensearch.xml" rel="search" title="WordPress.com" type="application/opensearchdescription+xml"/>
+  <link href="https://automattic.com/" rel="canonical"/>
+  <script type="application/ld+json">
+   {"@context":"https:\/\/schema.org","@graph":[{"@type":"Corporation","@id":"https:\/\/automattic.com\/#organization","url":"https:\/\/automattic.com\/","name":"Automattic","legalName":"Automattic, Inc.","foundingDate":"2005-08-01","slogan":"We don\u2019t make software for free, we make it for freedom.","description":"We are the people behind <a href=\"https:\/\/wordpress.com\/\">WordPress.com<\/a>, <a href=\"https:\/\/woocommerce.com\/\">WooCommerce<\/a>, <a href=\"https:\/\/jetpack.com\/\">Jetpack<\/a>, <a href=\"https:\/\/simplenote.com\/\">Simplenote<\/a>, <a href=\"https:\/\/longreads.com\/\">Longreads<\/a>, <a href=\"https:\/\/vaultpress.com\/\">VaultPress<\/a>, <a href=\"https:\/\/akismet.com\/\">Akismet<\/a>, <a href=\"https:\/\/gravatar.com\/\">Gravatar<\/a>, <a href=\"\">Crowdsignal<\/a>, <a href=\"https:\/\/cloudup.com\/\">Cloudup<\/a>, and more. We believe in making the web a better place, and <a href=\"https:\/\/github.com\/Automattic\">we believe in Open Source<\/a>. The vast majority of our work is available under the GPL.","logo":{"@type":"ImageObject","@id":"https:\/\/automattic.com\/#logo","url":"https:\/\/automattic.com\/wp-content\/themes\/a8c\/automattic-2011\/images\/automattic-logo-2x.png","width":552,"height":60,"caption":"Automattic"},"image":{"@id":"https:\/\/automattic.com\/#logo"},"address":{"@type":"PostalAddress","streetAddress":"60 29th Street #343","addressLocality":"San Francisco","addressRegion":"CA","postalCode":"94110","addressCountry":"US"},"founder":{"@type":"Person","@id":"https:\/\/wordpress.com\/schema.org\/author\/5#person","name":"Matt Mullenweg","description":"In 2002 I started contributing to Open Source software, and life has just gotten better from there. Co-founder of WordPress, founder Automattic.","image":{"@type":"ImageObject","@id":"https:\/\/wordpress.com\/schema.org\/author\/5#personimage","url":"https:\/\/secure.gravatar.com\/avatar\/767fc9c115a1b989744c755db47feb60?s=96&d=mm","width":96,"height":96,"caption":"Matt Mullenweg"}},"numberOfEmployees":1404,"sameAs":["https:\/\/twitter.com\/automattic","https:\/\/www.facebook.com\/AutomatticInc","https:\/\/www.linkedin.com\/company\/automattic\/","https:\/\/en.wikipedia.org\/wiki\/Automattic","https:\/\/www.youtube.com\/c\/automattic"],"subOrganization":{"@id":"https:\/\/wordpress.com\/#organization"}},{"@type":"Organization","@id":"https:\/\/wordpress.com\/#organization","url":"https:\/\/wordpress.com\/","name":"WordPress.com","legalName":"Automattic, Inc.","foundingDate":"2005-08-01","slogan":"Build a website, build a movement.","description":"Create a free website or build a blog with ease on WordPress.com. Dozens of free, customizable, mobile-ready designs and themes. Free hosting and support.","logo":{"@type":"ImageObject","@id":"https:\/\/wordpress.com\/#logo","url":"https:\/\/s1.wp.com\/home.logged-out\/images\/wpcom-a-website-that-can.jpg","width":1024,"height":512,"caption":"WordPress.com"},"image":{"@id":"https:\/\/wordpress.com\/#logo"},"address":{"@type":"PostalAddress","streetAddress":"60 29th Street #343","addressLocality":"San Francisco","addressRegion":"CA","postalCode":"94110","addressCountry":"US"},"founder":{"@type":"Person","@id":"https:\/\/wordpress.com\/schema.org\/author\/5#person","name":"Matt Mullenweg","description":"In 2002 I started contributing to Open Source software, and life has just gotten better from there. Co-founder of WordPress, founder Automattic.","image":{"@type":"ImageObject","@id":"https:\/\/wordpress.com\/schema.org\/author\/5#personimage","url":"https:\/\/secure.gravatar.com\/avatar\/767fc9c115a1b989744c755db47feb60?s=96&d=mm","width":96,"height":96,"caption":"Matt Mullenweg"}},"numberOfEmployees":1404,"sameAs":["https:\/\/twitter.com\/wordpressdotcom","https:\/\/www.facebook.com\/WordPresscom","https:\/\/www.instagram.com\/wordpressdotcom\/","https:\/\/www.linkedin.com\/company\/wordpress","https:\/\/www.youtube.com\/WordPressdotcom","https:\/\/www.pinterest.com\/wordpressdotcom\/","https:\/\/en.wikipedia.org\/wiki\/WordPress.com"],"parentOrganization":{"@id":"https:\/\/automattic.com\/#organization"}},{"@type":"WebSite","@id":"https:\/\/automattic.com\/#website","url":"https:\/\/automattic.com\/","name":"Automattic","description":"Making the web a better place","potentialAction":{"@type":"SearchAction","target":"https:\/\/automattic.com\/search\/{search_term_string}\/","query-input":"required name=search_term_string"},"publisher":{"@id":"https:\/\/wordpress.com\/#organization"},"image":{"@id":"https:\/\/automattic.com\/#logo"},"sameAs":["https:\/\/twitter.com\/automattic","https:\/\/www.facebook.com\/AutomatticInc","https:\/\/www.linkedin.com\/company\/automattic\/","https:\/\/en.wikipedia.org\/wiki\/Automattic","https:\/\/www.youtube.com\/c\/automattic"]},{"@type":"BreadcrumbList","@id":"https:\/\/automattic.com\/#breadcrumbs","itemListElement":[{"@type":"ListItem","position":0,"item":{"@type":"WebSite","@id":"https:\/\/automattic.com\/#website-breadcrumb","url":"https:\/\/automattic.com\/","name":"Home"}},{"@type":"ListItem","position":1,"item":{"@type":"WebPage","@id":"https:\/\/automattic.com\/#webpage-breadcrumb","url":"https:\/\/automattic.com\/","name":"Automattic"}}]},{"@type":"ImageObject","@id":"https:\/\/automattic.com\/#primaryimage","url":"https:\/\/secure.gravatar.com\/blavatar\/0d6c430459af115394a012d20b6711d6?s=200&ts=1616353042","width":200,"height":200,"caption":"Automattic"},{"@type":"WebPage","@id":"https:\/\/automattic.com\/#webpage","url":"https:\/\/automattic.com\/","name":"Automattic","description":"Making the web a better place","inLanguage":"en","isPartOf":{"@id":"https:\/\/automattic.com\/#website"},"primaryImageOfPage":{"@id":"https:\/\/automattic.com\/#primaryimage"},"breadcrumb":{"@id":"https:\/\/automattic.com\/#breadcrumbs"},"publisher":{"@id":"https:\/\/wordpress.com\/#organization"},"about":{"@id":"https:\/\/automattic.com\/#organization"}}]}
+  </script>
+  <meta content="Automattic" name="application-name"/>
+  <meta content="width=device-width;height=device-height" name="msapplication-window"/>
+  <meta content="Making the web a better place" name="msapplication-tooltip"/>
+  <meta content="name=Subscribe;action-uri=https://automattic.com/feed/;icon-uri=https://secure.gravatar.com/blavatar/0d6c430459af115394a012d20b6711d6?s=16" name="msapplication-task"/>
+  <meta content="name=Sign up for a free blog;action-uri=http://wordpress.com/signup/;icon-uri=https://s1.wp.com/i/favicon.ico" name="msapplication-task"/>
+  <meta content="name=WordPress.com Support;action-uri=http://support.wordpress.com/;icon-uri=https://s1.wp.com/i/favicon.ico" name="msapplication-task"/>
+  <meta content="name=WordPress.com Forums;action-uri=http://forums.wordpress.com/;icon-uri=https://s1.wp.com/i/favicon.ico" name="msapplication-task"/>
+  <meta content="We are passionate about making the web a better place. WordPress.com Your blog or website Has a (free!) home on the web. Your story, your way. Tumblr Where your interests connect you to your people one post at a time. WooCommerce Selling online? Woo! Hang your digital shingle With this free plugin. Jetpack Stats, backups, speed, power:…" name="description"/>
+  <!-- Your Google Analytics Plugin is missing the tracking ID -->
+ </head>
+ <body class="home page-template-default page page-id-39806 customizer-styles-applied highlander-enabled highlander-light">
+  <div id="wrapper">
+   <header class="header">
+    <h1 class="logo">
+     <a href="/">
+      Automattic
+     </a>
+    </h1>
+    <nav>
+     <ol class="menu">
+      <li class="page-item page-item-home current_page-item">
+       <a href="/">
+        Home
+       </a>
+      </li>
+      <li class="page-item page-item-about">
+       <a href="/about/">
+        About Us
+       </a>
+      </li>
+      <li class="page-item page-item-news">
+       <a href="/news/">
+        News
+       </a>
+      </li>
+      <li class="page-item page-item-jobs">
+       <a href="/work-with-us/">
+        Work With Us
+       </a>
+      </li>
+     </ol>
+    </nav>
+   </header>
+   <div id="container">
+    <main class="tier" id="content">
+     <h2>
+      Home
+     </h2>
+     <h1 class="statement">
+      <em>
+       We are
+      </em>
+      passionate about making
+      <em>
+       the web
+      </em>
+      a better place.
+     </h1>
+     <div class="haiku">
+      <h3>
+       <a href="https://wordpress.com/">
+        WordPress.com
+       </a>
+      </h3>
+      <p>
+       Your blog or website
+       <br/>
+       Has a (free!) home on the web.
+       <br/>
+       Your story, your way.
+      </p>
+     </div>
+     <div class="haiku new">
+      <h3>
+       <a href="https://tumblr.com/">
+        Tumblr
+       </a>
+      </h3>
+      <p>
+       Where your interests
+       <br/>
+       connect you to your people
+       <br/>
+       one post at a time.
+      </p>
+     </div>
+     <div class="haiku new">
+      <h3>
+       <a href="https://woocommerce.com/">
+        WooCommerce
+       </a>
+      </h3>
+      <p>
+       Selling online? Woo!
+       <br/>
+       Hang your digital shingle
+       <br/>
+       With this free plugin.
+      </p>
+     </div>
+     <div class="haiku" style="white-space:nowrap;">
+      <h3>
+       <a href="https://jetpack.com/">
+        Jetpack
+       </a>
+      </h3>
+      <p>
+       Stats, backups, speed, power:
+       <br/>
+       The first plugin your site needs
+       <br/>
+       Has it all built in.
+      </p>
+     </div>
+     <div class="haiku new">
+      <h3>
+       <a href="https://wpvip.com/">
+        WP VIP
+       </a>
+      </h3>
+      <p>
+       Time, Fortune, TED, Quartz.
+       <br/>
+       Big? The bigger the better.
+       <br/>
+       We handle them all.
+      </p>
+     </div>
+     <div class="haiku">
+      <h3>
+       <a href="https://vaultpress.com/">
+        VaultPress
+       </a>
+      </h3>
+      <p>
+       Your site, safe and sound.
+       <br/>
+       Auto-backups and scanning.
+       <br/>
+       Always on the job.
+      </p>
+     </div>
+     <div class="haiku">
+      <h3>
+       <a href="https://akismet.com/">
+        Akismet
+       </a>
+      </h3>
+      <p>
+       Did someone say spam?
+       <br/>
+       Akismet filters it out.
+       <br/>
+       Nothing to see here.
+      </p>
+     </div>
+     <div class="haiku">
+      <h3>
+       <a href="https://longreads.com/">
+        Longreads
+       </a>
+      </h3>
+      <p>
+       Great storytelling,
+       <br/>
+       Long enough to dig into.
+       <br/>
+       Find it and share it.
+      </p>
+     </div>
+     <div class="haiku">
+      <h3>
+       <a href="https://simplenote.com/">
+        Simplenote
+       </a>
+      </h3>
+      <p>
+       Synchronization.
+       <br/>
+       Now your notes are everywhere,
+       <br/>
+       On every device.
+      </p>
+     </div>
+     <div class="haiku">
+      <h3>
+       <a href="https://crowdsignal.com/">
+        Crowdsignal
+       </a>
+      </h3>
+      <p>
+       Opinions! We all
+       <br/>
+       Have them. Collect your readers’
+       <br/>
+       With polls and surveys.
+      </p>
+     </div>
+     <div class="haiku new">
+      <h3>
+       <a href="https://happy.tools/">
+        Happy Tools
+       </a>
+      </h3>
+      <p>
+       Distributed teams
+       <br/>
+       are happier with our tools.
+       <br/>
+       Less friction, more time!
+      </p>
+     </div>
+     <div class="haiku">
+      <h3>
+       <a href="https://en.gravatar.com/">
+        Gravatar
+       </a>
+      </h3>
+      <p>
+       Global avatar —
+       <br/>
+       “Gravatar,” get it? One pic
+       <br/>
+       For all your profiles.
+      </p>
+     </div>
+     <p id="home-sep">
+      We also contribute to a number of non-profit and Open Source projects, like:
+     </p>
+     <div class="haiku">
+      <h3>
+       <a href="https://wordpress.org/">
+        WordPress.org
+       </a>
+      </h3>
+      <p class="p1">
+       <span class="s1">
+        From many, one tool.
+        <br/>
+       </span>
+       <span class="s1">
+        Find strength in community
+        <br/>
+       </span>
+       <span class="s1">
+        For a better web.
+       </span>
+      </p>
+     </div>
+     <div class="haiku">
+      <h3>
+       <a href="https://apps.wordpress.com/mobile/">
+        WP for iOS
+       </a>
+      </h3>
+      <p class="p1">
+       <span class="s1">
+        Updates on the go?
+        <br/>
+       </span>
+       <span class="s1">
+        Your site’s everywhere you are
+        <br/>
+       </span>
+       <span class="s1">
+        With the iPhone app.
+       </span>
+      </p>
+     </div>
+     <div class="haiku">
+      <h3>
+       <a href="https://apps.wordpress.com/mobile/">
+        WP for Android
+       </a>
+      </h3>
+      <p class="p1">
+       <span class="s1">
+        Same goes for Android!
+        <br/>
+       </span>
+       <span class="s1">
+        No matter your devices,
+        <br/>
+       </span>
+       <span class="s1">
+        There’s an app for you.
+       </span>
+      </p>
+     </div>
+     <div class="haiku">
+      <h3>
+       <a href="https://wordpress.com/p2">
+        P2
+       </a>
+      </h3>
+      <p>
+       Collaborating?
+       <br/>
+       Never send email again.
+       <br/>
+       This will change your life.
+      </p>
+     </div>
+     <div class="haiku">
+      <h3>
+       <a href="https://buddypress.org/">
+        BuddyPress
+       </a>
+      </h3>
+      <p>
+       Without connections,
+       <br/>
+       There’s no such thing as a web.
+       <br/>
+       Make your site social.
+      </p>
+     </div>
+     <div class="haiku">
+      <h3>
+       <a href="https://bbpress.org/">
+        bbPress
+       </a>
+      </h3>
+      <p>
+       Blogs sometimes restrain
+       <br/>
+       Community discussion.
+       <br/>
+       Forums, the new black.
+      </p>
+     </div>
+     <div class="haiku">
+      <h3>
+       <a href="https://2019.us.wordcamp.org">
+        WordCamp US
+       </a>
+      </h3>
+      <p>
+       WordPress fans, unite!
+       <br/>
+       Come out from behind your screens,
+       <br/>
+       Connect, and celebrate.
+      </p>
+     </div>
+     <div class="haiku">
+      <h3>
+       <a href="https://wpjobmanager.com/">
+        WP Job Manager
+       </a>
+      </h3>
+      <p>
+       Need to make a hire?
+       <br/>
+       Put your site to work for you.
+       <br/>
+       Online job listings!
+      </p>
+     </div>
+     <h1 class="statement" id="freedom" style="clear:left;">
+      We don’t make software for free, we make it for freedom.
+     </h1>
+     <div class="quote">
+      “We are much better at writing code than haiku.
+      <span class="qend">
+       ”
+      </span>
+      <br/>
+      <cite>
+       —
+       <a href="http://ma.tt/">
+        Matt Mullenweg
+       </a>
+       , founder of Automattic
+      </cite>
+     </div>
+     <div id="oh-hai">
+      <p>
+       Inspired by you
+       <br/>
+       Striving to create good
+       <br/>
+       Nothing
+       <a href="https://www.youtube.com/watch?v=GwkEt_IWZYQ&amp;t=23s">
+        *
+       </a>
+       is perfect.
+      </p>
+      <div class="sub-quote">
+       * Including this.
+      </div>
+     </div>
+    </main>
+    <!-- #content  -->
+   </div>
+   <!-- #container -->
+   <nav class="nav">
+    <div class="contactus">
+     <a href="/contact/">
+      Contact Us
+     </a>
+    </div>
+    <div class="diversity">
+     <a href="/diversity-and-inclusion/">
+      Diversity
+     </a>
+    </div>
+    <div class="press">
+     <a href="/press/">
+      Press
+     </a>
+    </div>
+    <div class="privacy">
+     <a href="/privacy/">
+      Privacy Policy
+     </a>
+    </div>
+    <div class="social-links">
+     <div class="twitter">
+      <a aria-label="Twitter" class="noticon noticon-twitter" href="https://twitter.com/automattic" target="_blank">
+       <!-- Twitter -->
+      </a>
+     </div>
+     <div class="facebook">
+      <a aria-label="Facebook" class="noticon noticon-facebook" href="http://www.facebook.com/AutomatticInc" target="_blank">
+       <!-- Facebook -->
+      </a>
+     </div>
+     <div class="facebook">
+      <a aria-label="YouTube" class="noticon noticon-youtube" href="https://www.youtube.com/c/automattic" target="_blank">
+       <!-- YouTube -->
+      </a>
+     </div>
+    </div>
+    <ol class="menu">
+     <li class="page-item current_page-item">
+      <a href="/">
+       Home
+      </a>
+     </li>
+     <li class="page-item">
+      <a href="/about/">
+       About Us
+      </a>
+     </li>
+     <li class="page-item">
+      <a href="/news/">
+       News
+      </a>
+     </li>
+     <li class="page-item">
+      <a href="/work-with-us/">
+       Work With Us
+      </a>
+     </li>
+    </ol>
+   </nav>
+   <footer class="footer">
+    <p class="copyr">
+     © Automattic Inc., purveyors of fine blogging and site-building services since 2005. Thank you for your time.
+    </p>
+   </footer>
+  </div>
+  <!-- #wrapper -->
+  <!-- -->
+  <!-- A8C Analytics [start] -->
+  <script type="text/javascript">
+   ( function() {
+					'use strict';
+
+					var setupAnalytics = function() {
+						window.a8cAnalyticsConfig = {"cookieBanner":{"version":"1","cssZIndex":50001,"skipBanner":false,"cookieDomain":null,"v1CookieName":"sensitive_pixel_option","v2CookieName":"sensitive_pixel_options","v1Text":"Our websites and dashboards use cookies. By continuing, you agree to their use. <a target=\"_blank\" href=\"https:\/\/automattic.com\/cookies\">Learn more<\/a>, including how to control cookies.","v2Text":"We and our partners process your personal data (such as browsing data, IP addresses, cookie information, and other unique identifiers) based on your consent and\/or our legitimate interest to optimize our website, marketing activities, and your user experience.","v2OptionsText":"Your privacy is critically important to us. We and our partners use, store, and process your personal data to optimize: our <strong>website<\/strong> such as by improving security or conducting analytics, <strong>marketing activities<\/strong> to help deliver relevant marketing or content, and your <strong>user experience<\/strong> such as by remembering your account name, language settings, or cart information, where applicable. You can customize your cookie settings below. Learn more in our <a href=\"https:\/\/automattic.com\/privacy\/\" target=\"_blank\">Privacy Policy<\/a> and <a href=\"https:\/\/automattic.com\/cookies\/\" target=\"_blank\">Cookie Policy<\/a>.","v2EssentialOptionText":"<strong>Required:<\/strong> These cookies are essential for our websites and services to perform basic functions and are necessary for us to operate certain features. These include those required to allow registered users to authenticate and perform account-related functions, store preferences set by users such as account name, language, and location, and ensure our services are operating properly.","v2AnalyticsOptionText":"<strong>Analytics:<\/strong> These cookies allow us to optimize performance by collecting information on how users interact with our websites, including which pages are visited most, as well as other analytical data. We use these details to improve how our websites function and to understand how users interact with them. You can opt-out by logging into your account and changing your privacy settings at <a target=\"_blank\" href=\"https:\/\/wordpress.com\/me\/privacy\">https:\/\/wordpress.com\/me\/privacy<\/a>.","v2AdvertisingOptionText":"<strong>Advertising:<\/strong> These cookies are set by us and our advertising partners to provide you with relevant content and to understand that content\u2019s effectiveness. They may be used to collect information about your online activities over time and across different websites to predict your preferences and to display more relevant advertisements to you. These cookies also allow a profile to be built about you and your interests, and enable personalized ads to be shown to you based on your profile.","v1ButtonText":"Got It!","v2CustomizeButtonText":"Customize","v2AcceptAllButtonText":"Accept All","v2AcceptSelectionButtonText":"Accept Selection"},"fireAnalyticsOptions":[]};
+					};
+
+					if ( window.defQueue && defQueue.isLOHP && defQueue.isLOHP === 2020 ) {
+						defQueue.items.push( setupAnalytics );
+					} else {
+						setupAnalytics();
+					}
+				} )();
+  </script>
+  <script type="text/javascript">
+   ( function () {
+		'use strict';
+
+		document.addEventListener( 'a8c-analytics:loaded', function () {
+			var kit = window.a8cAnalytics.kit;
+
+			if ( kit.doNotTrack() ) {
+				return;
+			}
+
+			function fireGoogleAnalytics() {
+				kit.loadGoogleAnalytics();
+				ga( 'create', 'UA-52447-5', 'auto' );
+
+				ga( 'set', 'transport', typeof navigator.sendBeacon === 'function' ? 'beacon' : 'xhr' );
+				ga( 'set', 'anonymizeIp', true );
+
+				ga( 'send', 'pageview' );
+			}
+
+			// ------- Fire Normal Pixels -------
+
+						fireGoogleAnalytics();
+
+			// ------- Fire Sensitive Pixels -------
+
+			/* none for now
+			document.addEventListener( 'a8c-analytics:fire-sensitive-pixels', function () {
+			} );
+			*/
+		} );
+	} )();
+  </script>
+  <script type="text/javascript">
+   ( function() {
+					'use strict';
+					var currentScript = document.currentScript;
+
+					var setupAnalytics = function() {
+						function getScript() {
+							var script = document.createElement( 'script' );
+							var prev = currentScript || document.getElementsByTagName( 'script' )[ 0 ];
+							script.setAttribute( 'src', "https:\/\/s0.wp.com\/wp-content\/mu-plugins\/a8c-analytics\/a8c-analytics.js?v=1610571889" );
+							script.setAttribute( 'async', true );
+							prev.parentNode.insertBefore( script, prev );
+						}
+
+													getScript();
+											};
+
+					if ( window.defQueue && defQueue.isLOHP && defQueue.isLOHP === 2020 ) {
+						defQueue.items.push( setupAnalytics );
+					} else {
+						setupAnalytics();
+					}
+				} )();
+  </script>
+  <!-- A8C Analytics [end] -->
+  <div style="display:none">
+  </div>
+  <script>
+   window.addEventListener( "load", function( event ) {
+	var link = document.createElement( "link" );
+	link.href = "https://s0.wp.com/wp-content/mu-plugins/actionbar/actionbar.css?v=20201002";
+	link.type = "text/css";
+	link.rel = "stylesheet";
+	document.head.appendChild( link );
+
+	var script = document.createElement( "script" );
+	script.src = "https://s0.wp.com/wp-content/mu-plugins/actionbar/actionbar.js?v=20201002";
+	script.defer = true;
+	document.body.appendChild( script );
+} );
+  </script>
+  <script src="https://s2.wp.com/_static/??/wp-content/mu-plugins/widgets/search/js/search-widget.js,/wp-content/mu-plugins/admin-bar/masterbar-tracks.js?m=1603726956j" type="text/javascript">
+  </script>
+  <script type="text/javascript">
+   // <![CDATA[
+(function() {
+try{
+  if ( window.external &&'msIsSiteMode' in window.external) {
+    if (window.external.msIsSiteMode()) {
+      var jl = document.createElement('script');
+      jl.type='text/javascript';
+      jl.async=true;
+      jl.src='/wp-content/plugins/ie-sitemode/custom-jumplist.php';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(jl, s);
+    }
+  }
+}catch(e){}
+})();
+// ]]>
+  </script>
+  <script defer="" src="//stats.wp.com/w.js?61">
+  </script>
+  <script type="text/javascript">
+   _tkq = window._tkq || [];
+_stq = window._stq || [];
+_tkq.push(['storeContext', {'blog_id':'54117','blog_tz':'0','user_lang':'en','blog_lang':'en','user_id':'0'}]);
+_stq.push(['view', {'blog':'54117','v':'wpcom','tz':'0','user_id':'0','post':'39806','subd':'automattic'}]);
+_stq.push(['extra', {'crypt':'UE40eW5QN0p8M2Y/RE1lSiYrZXhzUkM5fD1uTDNLUGt6QzVbd3FKb3Q4aWxFU0VMK3ppSG1wamM0bi81JStxN2lKP1pvVnxQRHk3W0d3VEh0SklpNENJfHppaiZjVlFtdzJJS0ovSDNEYllHTGlmZ2N8XWpOY1p2LDE0dlY2QXZlTWtvMV0vVDBzL1U/cWZsMWMycitPXzRtay8mcTRxfktpdm9ZQ2pEKzZXTzV5fGtCWkFQMmVCTFlCVmp4VTFTUjdOXUd+VTgmVFNtM2ZmcHR+VnY0QXdaamo3W11ZLz9KLTdkYT0zSDN+VF1VQkFDWFlaUmEvOEozYTE5fG44YjV5LStqdk9+dGU/cDZ3RFtlfFhwSHlLUEN3L2J8'}]);
+_stq.push([ 'clickTrackerInit', '54117', '39806' ]);
+  </script>
+  <noscript>
+   <img alt="" src="https://pixel.wp.com/b.gif?v=noscript" style="height:1px;width:1px;overflow:hidden;position:absolute;bottom:1px;"/>
+  </noscript>
+  <script data-provider="wordpress.com" data-service="simple" defer="" id="bilmur" src="https://s0.wp.com/wp-content/js/bilmur.min.js?m=202111">
+  </script>
+  <script>
+   if ( 'object' === typeof wpcom_mobile_user_agent_info ) {
+
+	wpcom_mobile_user_agent_info.init();
+	var mobileStatsQueryString = "";
+	
+	if( false !== wpcom_mobile_user_agent_info.matchedPlatformName )
+		mobileStatsQueryString += "&x_" + 'mobile_platforms' + '=' + wpcom_mobile_user_agent_info.matchedPlatformName;
+	
+	if( false !== wpcom_mobile_user_agent_info.matchedUserAgentName )
+		mobileStatsQueryString += "&x_" + 'mobile_devices' + '=' + wpcom_mobile_user_agent_info.matchedUserAgentName;
+	
+	if( wpcom_mobile_user_agent_info.isIPad() )
+		mobileStatsQueryString += "&x_" + 'ipad_views' + '=' + 'views';
+
+	if( "" != mobileStatsQueryString ) {
+		new Image().src = document.location.protocol + '//pixel.wp.com/g.gif?v=wpcom-no-pv' + mobileStatsQueryString + '&baba=' + Math.random();
+	}
+	
+}
+  </script>
+  <script type="text/javascript">
+   console.log( 'Ready to wrangle JavaScript? https://automattic.com/work-with-us/' );
+
+	var pg = document.location.href;
+
+	function get_cookie( key ) {
+		var pairs = document.cookie.split( '; ' );
+		for ( var i = 0, pair; pair = pairs[ i ] && pairs[ i ].split( '=' ); i++ ) {
+			if ( decodeURIComponent( pair[ 0 ] ) === key ) {
+				return decodeURIComponent( pair[ 1 ] ) || '';
+			}
+		}
+
+		return null;
+	}
+
+	function set_cookie( key, value, options = {} ) {
+		if ( typeof options.expires === 'number' ) {
+			var days = options.expires, t = options.expires = new Date();
+			t.setDate( t.getDate() + days );
+		}
+
+		value = String( value );
+
+		return ( document.cookie = [
+			encodeURIComponent( key ), '=', encodeURIComponent( value ),
+			options.expires ? '; expires=' + options.expires.toUTCString() : '',
+			options.path ? '; path=' + options.path : '',
+			options.domain ? '; domain=' + options.domain : '',
+			options.secure ? '; secure' : ''
+		].join( '' ) );
+	}
+
+	if ( pg.indexOf( 'work-with-us' ) != -1 ) { 	// check on jobs page
+		if ( pg.length > 37 ) { // check if detail page
+
+			var jvct = get_cookie( 'jvct' );
+			if ( typeof( jvct ) === "undefined" ) {
+				jvct = 0;
+			}	else {
+				jvct = parseInt( jvct );
+			}
+			if ( isNaN( jvct ) ) {
+				jvct = 0;
+			}
+
+			jvct = jvct + 1;
+			set_cookie( 'jvct', jvct, { expires: 60, path: '/' } );
+
+			if ( jvct > 3 ) {
+				var nudge = '<div class="jobs-notes-back card"><h4>Hey there!</h4><p>We couldn’t help but notice that you’ve visited this page a few times. It looks like you’re really thinking about working here, huh?</p><p>Give it a shot and apply already!</p></div>';
+				if ( jvct === 1337 ) {
+					nudge = '<div class="jobs-notes-back card"><h4>We saw what you did there!</h4><p>You like poking around in code, huh? Us too — you seem like just the kind of person we’re looking for. Apply already!</p></div>';
+				}
+
+				// display card flipper
+				var sidebar = document.querySelector( '.jobsidebar' );
+				if ( sidebar ) {
+					var wrapped = '<div class="card-container">' + sidebar.outerHTML + '</div>';
+					sidebar.outerHTML = wrapped;
+
+					sidebar = document.querySelector( '.jobsidebar' );
+					var nudgeEl = document.createElement( 'div' );
+					sidebar.appendChild( nudgeEl );
+					nudgeEl.outerHTML = nudge;
+					setTimeout( function() {
+						sidebar.classList.toggle( 'flipped' );
+					}, 1000 );
+					setInterval( function() {
+						sidebar.classList.toggle( 'flipped' );
+					}, 20000 );
+				}
+
+				var notes = document.querySelector( '.jobs-notes' );
+				notes && notes.classList.add( 'card' );
+			}
+		}
+	}
+
+	// check on Systems Wrangler page
+	if ( pg.indexOf( 'systems-wrangler' ) !== -1 ) {
+
+		var init = function () {
+			resizeMap();
+		};
+		// On page load/ready
+		if ( document.readyState === 'loading' ) {
+			document.addEventListener( 'DOMContentLoaded', init );
+		} else {
+			init();
+		}
+
+		var resizeId;
+		// On resize
+		window.addEventListener( 'resize', function () {
+			clearTimeout( resizeId );
+			resizeId = setTimeout( resizeMap, 500 );
+		} );
+
+		function resizeMap() {
+			var jobsList = document.querySelector( '.jobs-list' );
+			var w = jobsList ? jobsList.offsetWidth : 0;
+			var	h = Math.round( w / 2 );
+
+			var iframe = document.querySelector( '.embed-anycast-map iframe' );
+			if ( iframe ) {
+				iframe.setAttribute( 'src', 'https://ac-map.automattic.com/?w=' + w.toString() + 'h=' + h.toString() );
+				iframe.setAttribute( 'width', w );
+				iframe.setAttribute( 'height', h );
+			}
+		}
+	}
+
+	// Load the noticons css async, as they are only used for a few small icons
+	// at the bottom of the page.
+	window.addEventListener( 'load', function( event ) {
+		var noticons = document.createElement( 'link' );
+		noticons.rel = 'stylesheet';
+		noticons.href = 'https://s0.wp.com/i/noticons/noticons.css?ver=20130828';
+		document.head.insertBefore(
+			noticons,
+			document.head.childNodes[ document.head.childNodes.length - 1 ].nextSibling
+		);
+	} );
+  </script>
+ </body>
+</html>
+<!--
+	generated 36 seconds ago
+	generated in 0.115 seconds
+	served from batcache in 0.002 seconds
+	expires in 264 seconds
+-->

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en" ng-app="app" ng-controller="global">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title ng-bind="global.pageTitle">
+   The Pulitzer Prizes
+  </title>
+  <!-- meta tags for search engines and etc -->
+  <link ng-href="{{global.pageCanocialUrl}}" ng-if="global.pageCanocialUrl" rel="canonical"/>
+  <meta content="{{(global.doNotFollow == true) ? 'noindex' : ''}}" name="robots" ng-if="global.doNotFollow"/>
+  <meta content="{{(global.pageDescription) ? global.pageDescription : global.pageDefaultDescription}}" name="description" ng-if="global.pageDescription"/>
+  <meta content="{{global.controller}}" name="ngController" ng-if="global.controller"/>
+  <meta content="{{(global.pageOgTitle) ? global.pageOgTitle : global.pageTitle}}" name="pageTitle" ng-if="global.pageTitle"/>
+  <meta content="{{global.winnersHtmlTitle}}" name="winnersPageTitle" ng-if="global.winnersHtmlTitle"/>
+  <meta content="{{global.pageNid}}" name="pageNid" ng-if="global.pageNid"/>
+  <meta content="{{global.authorName}}" name="author" ng-if="global.authorName"/>
+  <meta content="{{global.pageContentType}}" name="pageContentType" ng-if="global.pageContentType"/>
+  <meta content="{{global.pageYear.yearTid}}" name="year" ng-if="global.pageYear.yearTid"/>
+  <meta content="{{global.awardCategory.awardTid}}" name="awardCategory" ng-if="global.awardCategory.awardTid"/>
+  <meta content="{{global.eventType}}" name="eventType" ng-if="global.eventType"/>
+  <meta content="{{global.topics}}" name="topics" ng-if="global.topics"/>
+  <meta content="{{global.date}}" name="date" ng-if="global.date"/>
+  <meta content="{{(global.pageImage.fullPath) ? global.pageImage.fullPath : global.defaultImage.fullPath}}" name="pageImage" ng-if="global.defaultImage.fullPath"/>
+  <meta content="{{(global.pageImage.fullPath) ? global.pageImage.fullPath : global.defaultImage.fullPath}}" name="pageImageUrl" ng-if="global.defaultImage.fullPath"/>
+  <meta content="{{(global.pageImage.filemime) ? global.pageImage.filemime : global.defaultImage.filemime}}" name="pageImageType" ng-if="global.defaultImage.filemime"/>
+  <meta content="{{(global.pageImage.width) ? global.pageImage.width : global.defaultImage.width}}" name="pageImageWidth" ng-if="global.defaultImage.width"/>
+  <meta content="{{(global.pageImage.height) ? global.pageImage.height : global.defaultImage.height}}" name="pageImageHeight" ng-if="global.defaultImage.height"/>
+  <meta content="{{global.pageTeaserImage.fullPath}}" name="pageTeaserImage" ng-if="global.pageTeaserImage.fullPath"/>
+  <meta content="{{global.pageTeaserImage.fullPath}}" name="pageTeaserImageUrl" ng-if="global.pageTeaserImage.fullPath"/>
+  <meta content="{{global.pageTeaserImage.filemime}}" name="pageTeaserImageType" ng-if="global.pageTeaserImage.filemime"/>
+  <meta content="{{global.pageTeaserImage.width}}" name="pageTeaserImageWidth" ng-if="global.pageTeaserImage.width"/>
+  <meta content="{{global.pageTeaserImage.height}}" name="pageTeaserImageHeight" ng-if="global.pageTeaserImage.height"/>
+  <meta content="521501621352707" property="fb:app_id"/>
+  <!-- open graph -->
+  <meta content="{{(global.pageOgTitle) ? global.pageOgTitle : global.pageTitle}}" ng-if="global.pageTitle" property="og:title"/>
+  <meta content="{{(global.pageOgType) ? global.pageOgType : global.pageDefaultType}}" ng-if="global.pageDefaultType" property="og:type"/>
+  <meta content="{{(global.pageDescription) ? global.pageDescription : global.pageDefaultDescription}}" ng-if="global.pageDescription" property="og:description"/>
+  <meta content="{{global.pageCanocialUrl}}" ng-if="global.pageCanocialUrl" property="og:url"/>
+  <meta content="{{(global.pageImage.fullPath) ? global.pageImage.fullPath : global.defaultImage.fullPath}}" ng-if="global.defaultImage.fullPath" property="og:image"/>
+  <meta content="{{(global.pageImage.fullPath) ? global.pageImage.fullPath : global.defaultImage.fullPath}}" ng-if="global.defaultImage.fullPath" property="og:image:url"/>
+  <meta content="{{(global.pageImage.filemime) ? global.pageImage.filemime : global.defaultImage.filemime}}" ng-if="global.defaultImage.filemime" property="og:image:type"/>
+  <meta content="{{(global.pageImage.width) ? global.pageImage.width : global.defaultImage.width}}" ng-if="global.defaultImage.width" property="og:image:width"/>
+  <meta content="{{(global.pageImage.height) ? global.pageImage.height : global.defaultImage.height}}" ng-if="global.defaultImage.height" property="og:image:height"/>
+  <meta content="{{global.pageTeaserImage.fullPath}}" ng-if="global.pageTeaserImage.fullPath" property="og:image"/>
+  <meta content="{{global.pageTeaserImage.fullPath}}" ng-if="global.pageTeaserImage.fullPath" property="og:image:url"/>
+  <meta content="{{global.pageTeaserImage.filemime}}" ng-if="global.pageTeaserImage.filemime" property="og:image:type"/>
+  <meta content="{{global.pageTeaserImage.width}}" ng-if="global.pageTeaserImage.width" property="og:image:width"/>
+  <meta content="{{global.pageTeaserImage.height}}" ng-if="global.pageTeaserImage.height" property="og:image:height"/>
+  <meta content="summary_large_image" name="twitter:card"/>
+  <meta content="@PulitzerPrizes" name="twitter:site"/>
+  <meta content="{{(global.pageOgTitle) ? global.pageOgTitle : global.pageTitle}}" name="twitter:title" ng-if="global.pageTitle"/>
+  <meta content="{{(global.pageDescription) ? global.pageDescription : global.pageDefaultDescription}}" name="twitter:description" ng-if="global.pageDescription"/>
+  <meta content="{{global.pageCanocialUrl}}" name="twitter:url" ng-if="global.pageCanocialUrl"/>
+  <meta content="{{global.siteUrl}}" name="twitter:domain" ng-if="global.siteUrl"/>
+  <meta content="{{(global.pageImage.fullPath) ? global.pageImage.fullPath : global.defaultImage.fullPath}}" name="twitter:image" ng-if="global.defaultImage.fullPath"/>
+  <meta content="{{(global.pageImage.fullPath) ? global.pageImage.fullPath : global.defaultImage.fullPath}}" name="twitter:image:src" ng-if="global.defaultImage.fullPath"/>
+  <!-- favicon -->
+  <link href="/favicons/apple-touch-icon-57x57.png" rel="apple-touch-icon" sizes="57x57"/>
+  <link href="/favicons/apple-touch-icon-60x60.png" rel="apple-touch-icon" sizes="60x60"/>
+  <link href="/favicons/apple-touch-icon-72x72.png" rel="apple-touch-icon" sizes="72x72"/>
+  <link href="/favicons/apple-touch-icon-76x76.png" rel="apple-touch-icon" sizes="76x76"/>
+  <link href="/favicons/apple-touch-icon-114x114.png" rel="apple-touch-icon" sizes="114x114"/>
+  <link href="/favicons/apple-touch-icon-120x120.png" rel="apple-touch-icon" sizes="120x120"/>
+  <link href="/favicons/apple-touch-icon-144x144.png" rel="apple-touch-icon" sizes="144x144"/>
+  <link href="/favicons/apple-touch-icon-152x152.png" rel="apple-touch-icon" sizes="152x152"/>
+  <link href="/favicons/apple-touch-icon-180x180.png" rel="apple-touch-icon" sizes="180x180"/>
+  <link href="/favicons/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+  <link href="/favicons/android-chrome-192x192.png" rel="icon" sizes="192x192" type="image/png"/>
+  <link href="/favicons/favicon-96x96.png" rel="icon" sizes="96x96" type="image/png"/>
+  <link href="/favicons/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+  <link href="/favicons/manifest.json" rel="manifest"/>
+  <meta content="#da532c" name="msapplication-TileColor"/>
+  <meta content="/favicons/mstile-144x144.png" name="msapplication-TileImage"/>
+  <meta content="#ffffff" name="theme-color"/>
+  <link href="/min/g=css?v=1.7.5" rel="stylesheet"/>
+  <script>
+   var cacheVariable = "?v=1.7.5";
+  </script>
+  <script src="/min/g=js?v=1.7.5">
+  </script>
+  <script async="" defer="" src="https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&amp;render=explicit">
+  </script>
+  <script>
+   (function(d) {
+        var config = {
+          kitId: 'ygv2zil',
+          scriptTimeout: 3000,
+          async: true
+        },
+        h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='//use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+      })(document);
+  </script>
+  <script>
+   document.documentElement.className = document.documentElement.className.replace("no-js","js");
+  </script>
+  <!-- HTML5 shim and Respond.js?v=1.7.5 for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js?v=1.7.5 doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js?v=1.7.5"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js?v=1.7.5"></script>
+    <![endif]-->
+  <base href="/"/>
+ </head>
+ <body breakpoint="{0:'mobile', 767:'break768', 991:'break992', 1219: 'break1220'}" ng-class="[global.controller ? global.controller : 'homeCtrl', global.loggedIn ? 'toolbar' : '', global.animated ? '' : 'anim', search.widgetOpen ? 'search-open' : '', nav.mobileOpen ? 'mobile-nav-open' : '', page.overlayShown ? 'overlay-shown' : '', global.banner.on ? 'banner-open' : '', global.pageTabs.active ? 'page-tabs-open' : '']" ng-cloak="">
+  <div data-slides="global.slider.slides" ng-if="global.slider" pul-slider-modal="">
+  </div>
+  <div ng-if="global.bookPreview" pul-book-preview-modal="">
+  </div>
+  <header role="banner">
+   <div id="global-banner" ng-show="global.banner.on &amp;&amp; global.banner.date">
+    <div class="container">
+     <div class="row">
+      <div class="global-banner-wrapper col-sm-12 clearfix">
+       <div class="global-banner-text">
+        <div class="count-down-timer" data-countdown-date="global.banner.date.value" data-pul-countdown-timer="" ng-if="global.banner.date.value &amp;&amp; global.banner.type == 'countdown'">
+        </div>
+        <div class="count-down-text">
+         <p ng-bind-html="global.banner.text">
+         </p>
+        </div>
+       </div>
+       <div class="close-icon-wrapper">
+        <div class="close-icon" ng-click="global.banner.bannerToggle()">
+         <span>
+         </span>
+         <span>
+         </span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="container">
+    <div class="row site-header">
+     <div class="hidden-xs" id="site-medals-wrapper">
+      <div id="site-medals">
+       <a href="/">
+        <span class="brand-image-franklin" ng-dblclick="global.devTest(1)">
+        </span>
+        <span class="brand-image-publicservice" ng-dblclick="global.devTest(2)">
+        </span>
+       </a>
+      </div>
+     </div>
+     <div class="clearfix" id="site-name-nav-wrapper">
+      <div id="site-name-and-mission" ng-if="!search.widgetOpen">
+       <a href="/">
+        <span class="brand">
+         The Pulitzer Prizes
+        </span>
+       </a>
+       <p class="sr-only" id="brand-mission">
+        Honoring Excellence in Journalism and the Arts
+       </p>
+      </div>
+      <div id="search-widget" ng-if="search.widgetOpen">
+       <form ng-submit="search.submit()">
+        <div class="form-group clearfix">
+         <input class="form-control input-lg" id="keywords" ng-keyup="search.keyUp($event)" ng-model="search.keywords" placeholder="{{(breakpoint.class == 'mobile') ? 'Search' : 'Search winners, finalists, stories and more'}}" type="text"/>
+         <button class="btn btn-search" type="submit">
+          <div class="search-icon">
+           <span>
+           </span>
+           <span>
+           </span>
+           <span>
+           </span>
+          </div>
+         </button>
+        </div>
+       </form>
+      </div>
+      <div class="clearfix" id="main-nav-wrapper" ng-class="nav.classes">
+       <nav class="hidden-xs hidden-sm clearfix" id="main-nav" ng-if="!search.widgetOpen">
+        <div ng-if="data.menus">
+         <ul class="nav navbar-nav">
+          <li ng-mouseout="::nav.focus(-1)" ng-mouseover="::nav.focus($index)" ng-repeat="item in data.menus.main_menu">
+           <div ng-if="!item.children">
+            <a ng-class="(global.path == '/' + item.url) ? 'active': ''" ng-href="/{{::item.url}}">
+             <span class="l" ng-bind="::item.label">
+             </span>
+            </a>
+           </div>
+           <div ng-if="item.children">
+            <a href="" ng-click="::nav.toggleFocusedTree($index)">
+             <span class="l">
+              {{::item.label}}
+              <span class="glyphicon glyphicon-menu-down">
+              </span>
+             </span>
+            </a>
+            <ul class="angular-animate ng-trans ng-trans-fade-up" ng-if="nav.focusedTree == $index">
+             <li ng-repeat="child in item.children">
+              <a ng-class="(global.path == '/' + child.url) ? 'active': ''" ng-href="/{{::child.url}}">
+               <span class="l" ng-bind="::child.label">
+               </span>
+              </a>
+             </li>
+            </ul>
+           </div>
+          </li>
+         </ul>
+        </div>
+       </nav>
+       <div class="visible-xs-block visible-sm-block" id="nav-icon-wrapper" ng-class="(nav.mobileOpen) ? 'open' : ''" ng-click="nav.mobileToggle()" ng-if="!search.widgetOpen">
+        <div id="nav-icon">
+         <span>
+         </span>
+         <span>
+         </span>
+         <span>
+         </span>
+         <span>
+         </span>
+        </div>
+       </div>
+       <div class="search-icon" id="search-icon-wrapper" ng-click="search.toggleWidget()" ng-if="search.ready">
+        <div class="search-icon">
+         <span>
+         </span>
+         <span>
+         </span>
+         <span>
+         </span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="row">
+     <nav class="angular-animate ng-trans ng-trans-fade-down container" id="mobile-nav" ng-show="nav.mobileOpen &amp;&amp; data.menus">
+      <div class="row">
+       <div class="col-sm-12">
+        <ul class="nav">
+         <li class="mlid-{{::item.mlid}}" ng-repeat="item in data.menus.main_menu">
+          <a ng-bind="item.label" ng-class="(global.path == '/' + item.url) ? 'active': ''" ng-href="{{(item.url != '&lt;nolink&gt;') ? '/' + item.url : ''}}">
+          </a>
+          <ul ng-if="item.children">
+           <li ng-repeat="child in item.children">
+            <a ng-bind="child.label" ng-class="(global.path == '/' + child.url) ? 'active': ''" ng-href="/{{::child.url}}">
+            </a>
+           </li>
+          </ul>
+         </li>
+        </ul>
+       </div>
+      </div>
+     </nav>
+    </div>
+   </div>
+   <div id="page-tabs" ng-class="global.pageTabs.classes" ng-if="global.pageTabs.active">
+    <div class="container">
+     <div class="row">
+      <a ng-bind-html="tab.text" ng-class="(tab.active) ? 'active' : ''" ng-href="{{tab.url}}" ng-mouseleave="global.pageTabs.removeFocus()" ng-mouseover="global.pageTabs.setFocus()" ng-mouseup="global.pageTabs.removeFocus()" ng-repeat="tab in global.pageTabs.items[global.pageTabs.active]">
+      </a>
+     </div>
+    </div>
+   </div>
+  </header>
+  <main ng-view="">
+  </main>
+  <noscript>
+   <div class="container">
+    <div class="row">
+     <div class="col-sm-12 no-script-msg">
+      <h1>
+       In order to run this application you will need JavaScript enabled
+      </h1>
+     </div>
+    </div>
+   </div>
+  </noscript>
+  <footer>
+   <div class="container">
+    <div class="row">
+     <div class="col-sm-4 col-lg-3">
+      <h3 class="hidden-xs" id="footer-brand">
+       <a href="/">
+        <span class="brand brand-responsive">
+         The Pulitzer Prizes
+        </span>
+       </a>
+      </h3>
+      <p id="mission">
+       Honoring excellence in journalism and the arts since 1917
+      </p>
+      <div class="social">
+       <a class="twitter" href="https://twitter.com/pulitzerprizes" target="_blank">
+        Twitter
+       </a>
+       <a class="facebook" href="https://www.facebook.com/pulitzerprizes" target="_blank">
+        Facebook
+       </a>
+       <a class="instagram" href="https://www.instagram.com/pulitzerprizes/" target="_blank">
+        Instagram
+       </a>
+      </div>
+     </div>
+     <div class="footer-menu col-sm-8 col-lg-offset-3 col-lg-6 hidden-xs" ng-if="data.menus">
+      <div class="footer-menu-inner">
+       <ul>
+        <li class="mlid-{{::item.mlid}}" ng-repeat="item in data.menus.main_menu">
+         <a data-mlid="{{::item.mlid}}" ng-bind="item.label" ng-class="(global.path == '/' + item.url) ? 'active': ''" ng-href="{{(item.url != '&lt;nolink&gt;') ? '/' + item.url : ''}}">
+         </a>
+         <ul class="child-ul" ng-if="item.children">
+          <li ng-repeat="child in item.children">
+           <a data-mlid="{{item.mlid}}" ng-bind="child.label" ng-class="(global.path == '/' + child.url) ? 'active': ''" ng-href="/{{::child.url}}">
+           </a>
+          </li>
+         </ul>
+        </li>
+       </ul>
+      </div>
+     </div>
+    </div>
+    <div class="row">
+     <div class="col-sm-12">
+      <address>
+       ©
+       <span ng-bind="global.currentYear">
+       </span>
+       The Pulitzer Prizes — Columbia University, 709 Pulitzer Hall, 2950 Broadway, New York, NY 10027
+      </address>
+     </div>
+    </div>
+   </div>
+  </footer>
+  <nav class="hidden-xs navbar navbar-inverse navbar-fixed-bottom" id="cms-links" ng-if="global.loggedIn">
+   <div class="container-fluid">
+    <div class="row">
+     <ul class="nav navbar-nav">
+      <li ng-mouseout="hideNoCacheTt()" ng-switch="" on="cms.nocache">
+       <a class="clearfix" id="nocache-trigger" ng-href="{{global.path}}?nocache=1" ng-mouseover="showNoCacheTt()" ng-switch-default="" target="_self">
+        <span class="glyphicon glyphicon-refresh">
+        </span>
+        <span class="pull-right angular-animate ng-trans ng-trans-fade-right" ng-show="cms.nocacheTt">
+         Show dynamic data (uncached)
+        </span>
+       </a>
+       <a class="clearfix active" id="nocache-trigger" ng-href="{{global.path}}" ng-mouseover="showNoCacheTt()" ng-switch-when="1" target="_self">
+        <span class="glyphicon glyphicon-refresh">
+        </span>
+        <span class="pull-right angular-animate ng-trans ng-trans-fade-right" ng-show="cms.nocacheTt">
+         Show cached data
+        </span>
+       </a>
+      </li>
+      <li class="angular-animate ng-trans ng-trans-scale-up cms-links-item" ng-repeat="item in cms.links">
+       <a ng-bind-html="::item.label" ng-href="{{::item.href}}" target="_blank">
+       </a>
+      </li>
+     </ul>
+     <a class="cms-notice angular-animate ng-trans ng-trans-slide-up btn btn-danger" data-label="{{item.label}}" ng-href="{{item.url}}" ng-repeat="item in cms.notice" target="_blank">
+      <span class="glyphicon glyphicon-exclamation-sign">
+      </span>
+      <span class="badge" ng-bind="item.count">
+      </span>
+     </a>
+     <p class="navbar-text navbar-right angular-animate ng-trans ng-trans-scale-up" id="cms-watchers" ng-if="global.dev == 2">
+      <img class="img-responsive" src="/img/AngularJS-Shield-small.png"/>
+      <span>
+       {{getWatchers().length}}
+      </span>
+     </p>
+     <div class="navbar-text navbar-right" id="cms-path">
+      <code class="angular-animate ng-trans ng-trans-fade-down btn-info" ng-bind="cms.path" ng-show="cms.path">
+      </code>
+     </div>
+     <p class="navbar-text navbar-right angular-animate ng-trans ng-trans-scale-up" id="cms-text" ng-bind-html="cms.text">
+     </p>
+    </div>
+   </div>
+  </nav>
+ </body>
+</html>

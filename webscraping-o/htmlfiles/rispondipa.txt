@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<html class="no-js">
+ <head>
+  <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" name="viewport"/>
+  <meta charset="utf-8"/>
+  <title>
+   SugarCRM
+  </title>
+  <link href="themes/default/images/sugar_icon.ico?v=6xzRa3SyWAVO2VirkDzjrg" rel="shortcut icon"/>
+  <!-- CSS -->
+  <link href="styleguide/assets/css/loading.css" rel="stylesheet" type="text/css"/>
+  <link href="cache/themes/clients/base/default/bootstrap_888bccb2cf62f0550cb4ffbc9ed22e5a.css?v=6xzRa3SyWAVO2VirkDzjrg" rel="stylesheet"/>
+  <link href="cache/themes/clients/base/default/sugar_566b4bf1756d24a27b7ed63f657b19a4.css?v=6xzRa3SyWAVO2VirkDzjrg" rel="stylesheet"/>
+  <script src="include/javascript/modernizr.js?v=6xzRa3SyWAVO2VirkDzjrg" type="text/javascript">
+  </script>
+ </head>
+ <body>
+  <div id="sugarcrm">
+   <div id="sidecar">
+    <div class="alert-top" id="alerts">
+     <div class="alert-wrapper">
+      <div class="alert alert-process">
+       <strong>
+        <div class="loading">
+         Caricamento
+         <i class="l1">
+          .
+         </i>
+         <i class="l2">
+          .
+         </i>
+         <i class="l3">
+          .
+         </i>
+        </div>
+       </strong>
+      </div>
+     </div>
+     <noscript>
+      <div class="alert-top">
+       <div class="alert alert-danger">
+        <strong>
+         SugarCRM richiede javascript. Si prega di attivare javascript per continuare ad utilizzare SugarCRM.
+        </strong>
+       </div>
+      </div>
+     </noscript>
+    </div>
+    <div id="header">
+    </div>
+    <div id="content">
+    </div>
+    <div id="sweetspot">
+    </div>
+    <div id="drawers">
+    </div>
+    <div id="footer">
+    </div>
+   </div>
+  </div>
+  <!-- App Scripts -->
+  <script src="sidecar/minified/sidecar.min.js?v=6xzRa3SyWAVO2VirkDzjrg" type="text/javascript">
+  </script>
+  <script src="./cache/include/javascript/sugar_sidecar.min.js?v=6xzRa3SyWAVO2VirkDzjrg">
+  </script>
+  <script src="cache/Expressions/functions_cache.js?v=6xzRa3SyWAVO2VirkDzjrg">
+  </script>
+  <!-- <script src='sidecar/minified/sugar.min.js?v=6xzRa3SyWAVO2VirkDzjrg'></script> -->
+  <script src="cache/config.js?hash=$configHash?v=6xzRa3SyWAVO2VirkDzjrg">
+  </script>
+  <script src="cache/include/javascript/sugar_grp7.min.js?v=6xzRa3SyWAVO2VirkDzjrg" type="text/javascript">
+  </script>
+  <script language="javascript">
+   var parentIsSugar = false;
+            try {
+                parentIsSugar = (parent.window != window)
+                    && (typeof parent.SUGAR != "undefined")
+                    && (typeof parent.SUGAR.App.router != "undefined");
+            } catch (e) {
+                // if we got here, we were trying to access parent window from different domain
+            }
+            if (parentIsSugar) {
+                parent.SUGAR.App.router.navigate("#Home", {trigger:true});
+            } else {
+                var App;
+                
+                App = SUGAR.App.init({
+                    el: "#sidecar",
+                    callback: function(app){
+                        app.progress.set(0.6);
+                        app.once("app:view:change", function(){
+                            app.progress.done();
+                        });
+                        app.alert.dismissAll();
+                        app.start();
+                    }
+                });
+                App.api.debug = App.config.debugSugarApi;
+            }
+  </script>
+ </body>
+</html>

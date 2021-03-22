@@ -1,0 +1,1754 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml">
+ <head profile="http://gmpg.org/xfn/11">
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <title>
+   Krebs on Security
+  </title>
+  <link href="https://krebsonsecurity.com/wp-content/themes/krebsads/krebsads/style.css?201108" media="screen" rel="stylesheet" type="text/css"/>
+  <!--[if IE]><link type="text/css" href="https://krebsonsecurity.com/wp-content/themes/krebsads/krebsads/css/ie.css" rel="stylesheet" media="all" /><![endif]-->
+  <link href="https://krebsonsecurity.com/feed/" rel="alternate" title="Krebs on Security RSS Feed" type="application/rss+xml"/>
+  <link href="https://krebsonsecurity.com/feed/atom/" rel="alternate" title="Krebs on Security Atom Feed" type="application/atom+xml"/>
+  <link href="https://krebsonsecurity.com/xmlrpc.php" rel="pingback"/>
+  <link href="//s.w.org" rel="dns-prefetch"/>
+  <script type="text/javascript">
+   window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.0.1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.0.1\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/krebsonsecurity.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.6.2"}};
+			!function(e,a,t){var n,r,o,i=a.createElement("canvas"),p=i.getContext&&i.getContext("2d");function s(e,t){var a=String.fromCharCode;p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,e),0,0);e=i.toDataURL();return p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,t),0,0),e===i.toDataURL()}function c(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(o=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},r=0;r<o.length;r++)t.supports[o[r]]=function(e){if(!p||!p.fillText)return!1;switch(p.textBaseline="top",p.font="600 32px Arial",e){case"flag":return s([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])?!1:!s([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!s([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]);case"emoji":return!s([55357,56424,8205,55356,57212],[55357,56424,8203,55356,57212])}return!1}(o[r]),t.supports.everything=t.supports.everything&&t.supports[o[r]],"flag"!==o[r]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[o[r]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(n=t.source||{}).concatemoji?c(n.concatemoji):n.wpemoji&&n.twemoji&&(c(n.twemoji),c(n.wpemoji)))}(window,document,window._wpemojiSettings);
+  </script>
+  <style type="text/css">
+   img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+  </style>
+  <link href="https://krebsonsecurity.com/wp-content/plugins/jquery-lightbox-for-native-galleries/colorbox/theme1/colorbox.css?ver=1.3.14" id="colorbox-theme1-css" media="screen" rel="stylesheet" type="text/css"/>
+  <link href="https://krebsonsecurity.com/wp-includes/css/dist/block-library/style.min.css?ver=5.6.2" id="wp-block-library-css" media="all" rel="stylesheet" type="text/css"/>
+  <link href="https://krebsonsecurity.com/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=5.4" id="contact-form-7-css" media="all" rel="stylesheet" type="text/css"/>
+  <script id="jquery-core-js" src="https://krebsonsecurity.com/wp-includes/js/jquery/jquery.min.js?ver=3.5.1" type="text/javascript">
+  </script>
+  <script id="jquery-migrate-js" src="https://krebsonsecurity.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2" type="text/javascript">
+  </script>
+  <script id="colorbox-js" src="https://krebsonsecurity.com/wp-content/plugins/jquery-lightbox-for-native-galleries/colorbox/jquery.colorbox-min.js?ver=1.3.14" type="text/javascript">
+  </script>
+  <script id="nav-js" src="https://krebsonsecurity.com/wp-content/themes/krebsads/krebsads/js/jquery.dropdown.js?ver=5.6.2" type="text/javascript">
+  </script>
+  <link href="https://krebsonsecurity.com/wp-json/" rel="https://api.w.org/"/>
+  <link href="https://krebsonsecurity.com/xmlrpc.php?rsd" rel="EditURI" title="RSD" type="application/rsd+xml"/>
+  <link href="https://krebsonsecurity.com/wp-includes/wlwmanifest.xml" rel="wlwmanifest" type="application/wlwmanifest+xml"/>
+  <meta content="WordPress 5.6.2" name="generator"/>
+  <!-- JavaScript Pull-Quotes plugin v2.2 -->
+  <link href="https://krebsonsecurity.com/wp-content/plugins/jspullquotes/resources/jspullquotes-core.css" rel="stylesheet" type="text/css"/>
+  <link href="https://krebsonsecurity.com/wp-content/plugins/jspullquotes/resources/jspullquotes-default.css" rel="stylesheet" type="text/css"/>
+  <script src="https://krebsonsecurity.com/wp-content/plugins/jspullquotes/resources/jspullquotes.js" type="text/javascript">
+  </script>
+  <script type="text/javascript">
+   var arrOptions = new Array("1", "1", "right", "1", "1", "blockquote", "pullquote", "pullquote pqRight");
+		pullQuoteOpts(arrOptions);
+  </script>
+  <!-- end pull-quote additions -->
+  <!-- jQuery Lightbox For Native Galleries v3.1.3 | http://www.viper007bond.com/wordpress-plugins/jquery-lightbox-for-native-galleries/ -->
+  <script type="text/javascript">
+   // <![CDATA[
+	jQuery(document).ready(function($){
+		$(".gallery").each(function(index, obj){
+			var galleryid = Math.floor(Math.random()*10000);
+			$(obj).find("a").colorbox({rel:galleryid, maxWidth:"95%", maxHeight:"95%"});
+		});
+		$("a.lightbox").colorbox({maxWidth:"95%", maxHeight:"95%"});
+	});
+// ]]>
+  </script>
+  <link href="https://twitter.com/briankrebs" rel="me"/>
+  <meta content="#000000" name="twitter:widgets:link-color"/>
+  <meta content="#000000" name="twitter:widgets:border-color"/>
+  <meta content="tfwp" name="twitter:partner"/>
+  <meta content="summary" name="twitter:card"/>
+  <meta content="Krebs on Security" name="twitter:title"/>
+  <meta content="@briankrebs" name="twitter:site"/>
+  <meta content="In-depth security news and investigation" name="twitter:description"/>
+  <http-equiv content="NO-CACHE">
+   <meta content="KJUnFQJOARQGzfdipzjeGoYl07sFyzvo9yLgSyw_Uro" name="google-site-verification"/>
+   <meta content="width=device-width, content=" initial-scale="0.8," maximum-scale='2"' name="viewport"/>
+   <meta content="364e0ba6c04aeef4e3e78bafc9264452" name="cloudpiercer-verification"/>
+  </http-equiv>
+ </head>
+ <script language="javascript" type="text/javascript">
+  <!-- //
+function ClearForm(){
+    document.commentform.reset();
+}
+// -->
+ </script>
+ <body onload="ClearForm()">
+  <div class="container_16">
+   <div id="top-banner">
+    <div class="a-statement">
+     Advertisement
+    </div>
+    <div id="social-networks">
+     <div class="socnet-link">
+      <a href="https://krebsonsecurity.com/feed/">
+       <img alt="RSS Feed" src="https://krebsonsecurity.com/wp-content/themes/krebsads/krebsads/images/icon-rss.png"/>
+       Subscribe to RSS
+      </a>
+      <br/>
+     </div>
+     <div class="socnet-link">
+      <a href="http://www.twitter.com/briankrebs" target="_blank">
+       <img alt="Twitter" src="https://krebsonsecurity.com/wp-content/themes/krebsads/krebsads/images/icon-twitter.png"/>
+       Follow me on Twitter
+      </a>
+      <br/>
+     </div>
+     <div class="socnet-link">
+      <a href="http://www.facebook.com/pages/Brian-Krebs/119740914725557" target="_blank">
+       <img alt="Facebook" src="https://krebsonsecurity.com/wp-content/themes/krebsads/krebsads/images/icon-facebook.png"/>
+       Join me on Facebook
+      </a>
+      <br/>
+     </div>
+    </div>
+    <div class="a-img" id="top-banner-image">
+     <a href="https://www.akamai.com/us/en/resources/our-thinking/state-of-the-internet-report/global-state-of-the-internet-security-ddos-attack-reports.jsp?utm_source=krebsonsecurity&amp;utm_medium=display&amp;utm_id=GL_CrossSecurity&amp;utm_campaign=F-MC-52613&amp;utm_content=SOTI_Adapting">
+      <img src="/b-akamai/100.jpg"/>
+     </a>
+    </div>
+   </div>
+   <div id="header">
+    <!-- class="grid_16" -->
+    <h1>
+     Krebs on Security
+    </h1>
+    <h2>
+     In-depth security news and investigation
+    </h2>
+    <h3 id="header-img">
+     <a href="https://krebsonsecurity.com">
+      <img alt="Brian Krebs" src="https://krebsonsecurity.com/wp-content/themes/krebsads/krebsads/images/header.jpg"/>
+     </a>
+    </h3>
+   </div>
+   <!-- #header -->
+   <div id="pgnav">
+    <li class="page_item page-item-2">
+     <a href="https://krebsonsecurity.com/about/">
+      About the Author
+     </a>
+    </li>
+    <li class="page_item page-item-645">
+     <a href="https://krebsonsecurity.com/cpm/">
+      Advertising/Speaking
+     </a>
+    </li>
+   </div>
+   <!-- #pgnav -->
+   <hr/>
+   <div class="grid_11">
+    <div id="content">
+     <div class="post-54409 post type-post status-publish format-standard has-post-thumbnail hentry category-sunshine tag-abraham-vegh tag-cashedge tag-credit-one-bank tag-defaultinstitution-com tag-fiserv tag-netspend tag-popmoney tag-tcf-national-bank tag-union-bank tag-zelle" id="post-54409">
+      <div class="post-smallerfont">
+       <span class="postmetadata">
+        <a href="https://krebsonsecurity.com/category/sunshine/" rel="category tag">
+         A Little Sunshine
+        </a>
+        —
+        <a href="https://krebsonsecurity.com/2021/03/fintech-giant-fiserv-used-unclaimed-domain/#comments">
+         58 comments
+        </a>
+       </span>
+       <br/>
+       <small>
+        <span class="date">
+         17
+        </span>
+        <br/>
+        Mar 21
+        <!-- by BrianKrebs -->
+       </small>
+       <h2 class="post-title">
+        <a href="https://krebsonsecurity.com/2021/03/fintech-giant-fiserv-used-unclaimed-domain/" rel="bookmark" title="Permanent Link to Fintech Giant Fiserv Used Unclaimed Domain">
+         Fintech Giant Fiserv Used Unclaimed Domain
+        </a>
+       </h2>
+       <div class="entry">
+        <p>
+         If you sell Web-based software for a living and ship code that references an unregistered domain name, you are asking for trouble. But when the same mistake is made by a Fortune 500 company, the results can range from costly to disastrous. Here’s the story of one such goof committed by
+         <strong>
+          Fiserv
+         </strong>
+         [
+         <a href="https://www.nasdaq.com/symbol/fisv" rel="noopener" target="_blank">
+          NASDAQ:FISV
+         </a>
+         ], a $15 billion firm that provides online banking software and other technology solutions to thousands of financial institutions.
+        </p>
+        <p>
+         <img alt="" class="aligncenter wp-image-44816" height="302" loading="lazy" src="https://krebsonsecurity.com/wp-content/uploads/2018/08/fiserve.png" width="597"/>
+        </p>
+        <p>
+         In November 2020, KrebsOnSecurity heard from security researcher
+         <strong>
+          Abraham Vegh
+         </strong>
+         , who noticed something odd while inspecting an email from his financial institution.
+        </p>
+        <p>
+         Vegh could see the message from his bank referenced a curious domain:
+         <strong>
+          defaultinstitution.com
+         </strong>
+         . A quick search of WHOIS registration records showed the domain was unregistered. Wondering whether he might receive email communications to that address if he registered the domain, Vegh snapped it up for a few dollars, set up a catch-all email account for it, and waited.
+        </p>
+        <p>
+         “It appears that the domain is provided as a default, and customer bank IT departments are either assuming they don’t need to change it, or are not aware that they could/should,” Vegh said, noting that a malicious person who stumbled on his discovery earlier could have had a powerful, trusted domain from which to launch email phishing attacks.
+        </p>
+        <p>
+         At first, only a few wayward emails arrived. Ironically enough, one was from a “quality assurance” manager at Fiserv. The automatic reply message stated that the employee was out of the office “on R&amp;R” and would be back to work on Dec. 14.
+        </p>
+        <p>
+         Many other emails poured in, including numerous “bounced” messages delivered in reply to missives from
+         <strong>
+          Cashedge.com
+         </strong>
+         , a money transfer service that
+         <a href="https://investors.fiserv.com/news-releases/news-release-details/fiserv-agrees-acquire-cashedge-advance-its-digital-payments-and" rel="noopener" target="_blank">
+          Fiserv acquired in 2011
+         </a>
+         .
+        </p>
+        <p>
+         Emails get bounced — or returned to the sender — when they are sent to an address that doesn’t exist or that is no longer active. The messages had been sent to an email address for a former client solutions director at Fiserv; the “reply-to:” address in those missives was “donotreply@defaultinstitution.com”.
+        </p>
+        <p>
+         The messages were informing customers of CashEdge’s main service
+         <a href="https://www.fiserv.com/en/solutions/payments/personal-payments-services/popmoney.html" rel="noopener" target="_blank">
+          Popmoney
+         </a>
+         — which lets users send, request and receive money directly from bank accounts — that Popmoney was being replaced with
+         <a href="https://www.zellepay.com/" rel="noopener" target="_blank">
+          Zelle
+         </a>
+         , a more modern bank-to-bank transfer service.
+        </p>
+        <p>
+         Each CashEdge missive included information about recurring transfers that were being canceled, such as the plan ID, send date, amount to be transferred, the name and last four digits of the account number the money was coming from, and the email address of the recipient account.
+        </p>
+        <p>
+         Incredibly, at the bottom of every message to CashEdge/Popmoney customers was a boilerplate text: “This email was sent to [recipient name here]. If you have received this email in error, please send an e-mail to customersupport@defaultinstitution.com.”
+        </p>
+        <p>
+         <img alt="" class="aligncenter wp-image-54537" height="407" loading="lazy" sizes="(max-width: 593px) 100vw, 593px" src="https://krebsonsecurity.com/wp-content/uploads/2021/03/popmoney.png" srcset="https://krebsonsecurity.com/wp-content/uploads/2021/03/popmoney.png 782w, https://krebsonsecurity.com/wp-content/uploads/2021/03/popmoney-768x527.png 768w" width="593"/>
+        </p>
+        <p>
+         <a class="more-link" href="https://krebsonsecurity.com/2021/03/fintech-giant-fiserv-used-unclaimed-domain/#more-54409">
+          <em>
+           Continue reading →
+          </em>
+         </a>
+        </p>
+       </div>
+       <div class="clearfix">
+       </div>
+      </div>
+     </div>
+     <div class="post-54819 post type-post status-publish format-standard has-post-thumbnail hentry category-latest-warnings category-comingstorm tag-allison-nixon tag-alt-spid tag-lucky225 tag-netnumber tag-npac tag-number-portability-administration-center tag-sim-swapping tag-unit221b" id="post-54819">
+      <div class="post-smallerfont">
+       <span class="postmetadata">
+        <a href="https://krebsonsecurity.com/category/latest-warnings/" rel="category tag">
+         Latest Warnings
+        </a>
+        /
+        <a href="https://krebsonsecurity.com/category/comingstorm/" rel="category tag">
+         The Coming Storm
+        </a>
+        —
+        <a href="https://krebsonsecurity.com/2021/03/can-we-stop-pretending-sms-is-secure-now/#comments">
+         46 comments
+        </a>
+       </span>
+       <br/>
+       <small>
+        <span class="date">
+         16
+        </span>
+        <br/>
+        Mar 21
+        <!-- by BrianKrebs -->
+       </small>
+       <h2 class="post-title">
+        <a href="https://krebsonsecurity.com/2021/03/can-we-stop-pretending-sms-is-secure-now/" rel="bookmark" title="Permanent Link to Can We Stop Pretending SMS Is Secure Now?">
+         Can We Stop Pretending SMS Is Secure Now?
+        </a>
+       </h2>
+       <div class="entry">
+        <p>
+         SMS text messages were already the weakest link securing just about anything online, mainly because there are tens of thousands of employees at mobile stores who can be tricked or bribed into swapping control over a mobile phone number to someone else. Now we’re learning about an entire ecosystem of companies that anyone could use to silently intercept text messages intended for other mobile users.
+        </p>
+        <p>
+         <img alt="" class="aligncenter wp-image-45224" height="375" loading="lazy" src="https://krebsonsecurity.com/wp-content/uploads/2018/09/phonescam.png" width="595"/>
+        </p>
+        <p>
+         Security researcher “
+         <a href="https://www.twitter.com/lucky225" rel="noopener" target="_blank">
+          Lucky225
+         </a>
+         ” worked with Vice.com’s
+         <strong>
+          Joseph Cox
+         </strong>
+         <a href="https://www.vice.com/amp/en/article/y3g8wb/hacker-got-my-texts-16-dollars-sakari-netnumber?__twitter_impression=true" rel="noopener" target="_blank">
+          to intercept Cox’s incoming text messages with his permission
+         </a>
+         . Lucky225 showed how anyone could do the same after creating an account at a service called
+         <a href="https://sakari.io" rel="noopener" target="_blank">
+          Sakari
+         </a>
+         , a company that helps celebrities and businesses do SMS marketing and mass messaging.
+        </p>
+        <p>
+         The “how they did it” was sickeningly simple. It cost just $16, and there was precious little to prevent someone from stealing your text messages without your knowledge. Cox writes:
+        </p>
+        <blockquote>
+         <p>
+          Sakari offers a free trial to anyone wishing to see what the company’s dashboard looks like. The cheapest plan, which allows customers to add a phone number they want to send and receive texts as, is where the $16 goes. Lucky225 provided Motherboard with screenshots of Sakari’s interface, which show a red “+” symbol where users can add a number.
+         </p>
+         <p>
+          While adding a number, Sakari provides the Letter of Authorization for the user to sign. Sakari’s LOA says that the user should not conduct any unlawful, harassing, or inappropriate behavior with the text messaging service and phone number.
+         </p>
+         <p>
+          But as Lucky225 showed, a user can just sign up with someone else’s number and receive their text messages instead.
+         </p>
+        </blockquote>
+        <p>
+         Lucky225, who is chief information officer for
+         <a href="http://okeymonitor.com/" rel="noopener" target="_blank">
+          Okey Systems
+         </a>
+         , told KrebsOnSecurity that Sakari has since taken steps to block its service for being used with mobile telephone numbers. He said Sakari is just one part of a much larger, unregulated industry that can be used to hijack SMS messages for many phone numbers.
+        </p>
+        <p>
+         “It’s not a Sakari thing,” Lucky225 replied when first approached for more details. “It’s an industry-wide thing. There are many of these ‘SMS enablement’ providers.”
+        </p>
+        <p>
+         The most common way thieves hijack SMS messages these days involves “sim swapping,” a crime that entails bribing or tricking employees at wireless phone companies into modifying customer account information.
+        </p>
+        <p>
+         In a SIM swap, the attackers redirect the target’s phone number to a device they control, and then can intercept the target’s incoming SMS messages and phone calls. From there, the attacker can reset the password of any account which uses that phone number for password reset links.
+        </p>
+        <p>
+         But the attacks Lucky225 has been demonstrating merely require customers of any number of firms to sign a sworn “letter of authorization” or LOA stating that they indeed do have the authority to act on behalf of the owner of the targeted number.
+        </p>
+        <p>
+         <strong>
+          Allison Nixon
+         </strong>
+         is chief research officer at
+         <a href="https://www.unit221b.com" rel="noopener" target="_blank">
+          Unit221B
+         </a>
+         , a New York City-based cyber investigations firm. An expert on SIM-swapping attacks who’s
+         <a href="https://krebsonsecurity.com/?s=allison+nixon&amp;x=0&amp;y=0" rel="noopener" target="_blank">
+          been quoted quite a bit on this blog
+         </a>
+         , Nixon said she also had Lucky225 test his interception tricks on her mobile phone, only to watch her incoming SMS messages show up on his burner phone.
+        </p>
+        <p>
+         “This basically means the only thing standing between anyone and the equivalent of a SIM swap is a forged LOA,” Nixon said. “And the ‘fix’ put in seems to be temporary in nature.”
+        </p>
+        <p>
+         <img alt="" class="aligncenter wp-image-45226" height="687" loading="lazy" src="https://krebsonsecurity.com/wp-content/uploads/2018/09/cell8.png" width="597"/>
+        </p>
+        <p>
+         The interception method that Lucky225 described is still dangerously exposed by a number of systemic weaknesses in the global SMS network, he said.
+        </p>
+        <p>
+         Most large and legacy telecommunications providers validate transfer requests related to their customers by consulting
+         <strong>
+          NPAC
+         </strong>
+         , or the
+         <a href="https://www.npac.com/" rel="noopener" target="_blank">
+          Number Portability Administration Center
+         </a>
+         . When customers want to move their phone numbers — mobile or otherwise — that request is routed through NPAC to the customer’s carrier.
+        </p>
+        <p>
+         That change request carries what’s known as an ALT-SPID, which is a four-digit number that enables NPAC to identify the telecommunications company currently providing service to the customer. More importantly, as part of this process no changes can happen unless the customer’s carrier has verified the changes with the existing customer.
+        </p>
+        <p>
+         But Lucky225 said the class of SMS interception he’s been testing targets a series of authentication weaknesses tied to a system developed by
+         <a href="https://www.netnumber.com" rel="noopener" target="_blank">
+          NetNumber
+         </a>
+         , a private company in Lowell, Mass. NetNumber developed its own proprietary system for mapping telecommunications providers that is used by Sakari and an entire industry of similar firms.
+        </p>
+        <p>
+         NetNumber developed its six-digit ALT SPIDs (NetNumber IDs) to better organize and track communications service providers that were all using other numbering systems (and differing numbers of digits). But NetNumber also works directly with dozens of voice-over-IP or Internet-based phone companies which do not play by the same regulatory rules that apply to legacy telecommunications providers.
+        </p>
+        <p>
+         “There are many VoIP providers that offer ‘off net’ ‘text enablement’,” Lucky225 explained. “Companies such as ZipWhip that promise to let you ‘Text enable your existing business phone number’ so that customers can text your main business line whether it be VoIP, toll-free or a landline number.”
+        </p>
+        <p>
+         As Lucky225 wrote in his
+         <a href="https://lucky225.medium.com/its-time-to-stop-using-sms-for-anything-203c41361c80" rel="noopener" target="_blank">
+          comprehensive Medium article
+         </a>
+         , there are a plethora of wholesale VoIP providers that let you become a reseller with little to no verification, many of them allow blanket Letters of Authorization (LOAs), where you as the reseller promise that you have an LOA on file for any number you want to text enable for your resellers or end-users.
+        </p>
+        <blockquote>
+         <p>
+          “In essence, once you have a reseller account with these VoIP wholesalers you can change the Net Number ID of any phone number to your wholesale provider’s NNID and begin receiving SMS text messages with virtually no authentication whatsoever. No SIM Swap, SS7 attacks, or port outs needed — just type the target’s phone number in a text box and hit submit and within minutes you can start receiving SMS text messages for them. They won’t even be alerted that anything has happened as their voice &amp; data services will continue to work as usual. Surprisingly, despite the fact that
+          <a href="https://twitter.com/lucky225/status/1025206045235277824" rel="noopener" target="_blank">
+           I publicly disclosed this in 2018
+          </a>
+          , nothing has been done to stop this relatively unsophisticated attack.”
+         </p>
+        </blockquote>
+        <p>
+         <a class="more-link" href="https://krebsonsecurity.com/2021/03/can-we-stop-pretending-sms-is-secure-now/#more-54819">
+          <em>
+           Continue reading →
+          </em>
+         </a>
+        </p>
+       </div>
+       <div class="clearfix">
+       </div>
+      </div>
+     </div>
+     <div class="post-54767 post type-post status-publish format-standard has-post-thumbnail hentry category-breadcrumbs category-neer-do-well-news tag-fbi tag-flashpoint tag-gerald-murphy tag-mazafaka tag-pompompurin tag-raidforums tag-verified tag-weleakinfo" id="post-54767">
+      <div class="post-smallerfont">
+       <span class="postmetadata">
+        <a href="https://krebsonsecurity.com/category/breadcrumbs/" rel="category tag">
+         Breadcrumbs
+        </a>
+        /
+        <a href="https://krebsonsecurity.com/category/neer-do-well-news/" rel="category tag">
+         Ne'er-Do-Well News
+        </a>
+        —
+        <a href="https://krebsonsecurity.com/2021/03/weleakinfo-leaked-customer-payment-info/#comments">
+         19 comments
+        </a>
+       </span>
+       <br/>
+       <small>
+        <span class="date">
+         15
+        </span>
+        <br/>
+        Mar 21
+        <!-- by BrianKrebs -->
+       </small>
+       <h2 class="post-title">
+        <a href="https://krebsonsecurity.com/2021/03/weleakinfo-leaked-customer-payment-info/" rel="bookmark" title="Permanent Link to WeLeakInfo Leaked Customer Payment Info">
+         WeLeakInfo Leaked Customer Payment Info
+        </a>
+       </h2>
+       <div class="entry">
+        <p>
+         A little over a year ago, the FBI and law enforcement partners overseas seized
+         <strong>
+          WeLeakInfo[.]com
+         </strong>
+         , a wildly popular service that sold access to more than 12 billion usernames and passwords stolen from thousands of hacked websites. In an ironic turn of events, a lapsed domain registration tied to WeLeakInfo let someone plunder and publish account data on 24,000 customers who paid to access the service with a credit card.
+        </p>
+        <p>
+         <img alt="" class="aligncenter wp-image-54776" height="306" loading="lazy" src="https://krebsonsecurity.com/wp-content/uploads/2021/03/wli-homepage.png" width="598"/>
+        </p>
+        <p>
+         For several years, WeLeakInfo was the largest of several services selling access to hacked passwords. Prosecutors
+         <a href="https://www.justice.gov/usao-dc/pr/weleakinfocom-domain-name-seized" rel="noopener" target="_blank">
+          said
+         </a>
+         it had indexed, searchable information from more than 10,000 data breaches containing over 12 billion indexed records — including names, email addresses, usernames, phone numbers, and passwords for online accounts.
+        </p>
+        <p>
+         For a small fee, you could enter an email address and see every password ever associated with that address in a previous breach. Or the reverse — show me all the email accounts that ever used a specific password (see screenshot above). It was a fantastic tool for launching targeted attacks against people, and that’s exactly how the service was viewed by many of its customers.
+        </p>
+        <p>
+         Now, nearly 24,000 WeLeakInfo’s customers are finding that the personal and payment data they shared with WeLeakInfo over its five-year-run has been leaked online.
+        </p>
+        <div class="wp-caption aligncenter" id="attachment_54808" style="width: 602px">
+         <a href="https://krebsonsecurity.com/wp-content/uploads/2021/03/wli-fees.png">
+          <img alt="" aria-describedby="caption-attachment-54808" class="wp-image-54808" height="361" loading="lazy" sizes="(max-width: 592px) 100vw, 592px" src="https://krebsonsecurity.com/wp-content/uploads/2021/03/wli-fees.png" srcset="https://krebsonsecurity.com/wp-content/uploads/2021/03/wli-fees.png 795w, https://krebsonsecurity.com/wp-content/uploads/2021/03/wli-fees-768x469.png 768w" width="592"/>
+         </a>
+         <p class="wp-caption-text" id="caption-attachment-54808">
+          WeLeakInfo’s service fees.
+         </p>
+        </div>
+        <p>
+         In a post on the database leaking forum
+         <strong>
+          Raidforums
+         </strong>
+         , a regular contributor using the handle “pompompurin” said he stole the WeLeakInfo payment logs and other data after noticing the domain wli[.]design was no longer listed as registered.
+        </p>
+        <p>
+         “Long story short: FBI let one of weleakinfo’s domains expire that they used for the emails/payments,” pompompurin wrote. “I registered that domain, &amp; was able to [password] reset the stripe.com account &amp; get all the Data. [It’s] only from people that used stripe.com to checkout. If you used paypal or [bitcoin] ur all good.”
+        </p>
+        <p>
+         Cyber threat intelligence firm
+         <a href="https://www.flashpoint-intel.com" rel="noopener" target="_blank">
+          Flashpoint
+         </a>
+         obtained a copy of the data leaked by pompompurin, and said it includes partial credit card data, email addresses, full names, IP addresses, browser user agent string data, physical addresses, phone numbers, and amount paid. One forum member commented that they found their own payment data in the logs.
+        </p>
+        <div class="wp-caption aligncenter" id="attachment_54807" style="width: 589px">
+         <a href="https://krebsonsecurity.com/wp-content/uploads/2021/03/wli-stackup.png">
+          <img alt="" aria-describedby="caption-attachment-54807" class="wp-image-54807" height="467" loading="lazy" sizes="(max-width: 579px) 100vw, 579px" src="https://krebsonsecurity.com/wp-content/uploads/2021/03/wli-stackup.png" srcset="https://krebsonsecurity.com/wp-content/uploads/2021/03/wli-stackup.png 805w, https://krebsonsecurity.com/wp-content/uploads/2021/03/wli-stackup-768x618.png 768w" width="579"/>
+         </a>
+         <p class="wp-caption-text" id="caption-attachment-54807">
+          How WeLeakInfo stacked up against its competitors (according to WLI).
+         </p>
+        </div>
+        <p>
+         According to
+         <strong>
+          DomainTools
+         </strong>
+         [an advertiser on this site] Wli[.]design was registered on Aug. 24, 2016 with
+         <strong>
+          Dynadot
+         </strong>
+         , the domain registrar which also was used to register WeLeakInfo.com. On March 12, wli[.]design was moved to another registrar —
+         <strong>
+          Namecheap
+         </strong>
+         .
+        </p>
+        <p>
+         Pompompurin released several screenshots of himself logged in to the WeLeakInfo account at stripe.com, an online payment processor. Under “management and ownership” was listed a
+         <strong>
+          Gerald Murphy
+         </strong>
+         from Fintona, U.K.
+        </p>
+        <p>
+         Shortly after WeLeakInfo’s domain was seized by authorities in Jan. 2020, the U.K.’s National Crime Agency (NCA)
+         <a href="https://www.psni.police.uk/news/Latest-News/170120-weleakinfo.com-site-hosting-stolen-credentials-taken-down-after-international-operation/" rel="noopener" target="_blank">
+          arrested two individuals
+         </a>
+         in connection with the service, including a 22-year-old from Fintona.
+        </p>
+        <p>
+         <img alt="" class="aligncenter size-full wp-image-54779" height="561" loading="lazy" src="https://krebsonsecurity.com/wp-content/uploads/2021/03/wli-murphyr.png" width="424"/>
+         <br/>
+         <a class="more-link" href="https://krebsonsecurity.com/2021/03/weleakinfo-leaked-customer-payment-info/#more-54767">
+          <em>
+           Continue reading →
+          </em>
+         </a>
+        </p>
+       </div>
+       <div class="clearfix">
+       </div>
+      </div>
+     </div>
+     <div class="post-54747 post type-post status-publish format-standard has-post-thumbnail hentry category-latest-warnings category-comingstorm category-patches tag-askwoody-com tag-cve-2021-26411 tag-dustin-childs tag-exchange-server-hack tag-microsoft-patch-tuesday-march-2021 tag-satnam-narang tag-tenable tag-windows-dns" id="post-54747">
+      <div class="post-smallerfont">
+       <span class="postmetadata">
+        <a href="https://krebsonsecurity.com/category/latest-warnings/" rel="category tag">
+         Latest Warnings
+        </a>
+        /
+        <a href="https://krebsonsecurity.com/category/comingstorm/" rel="category tag">
+         The Coming Storm
+        </a>
+        /
+        <a href="https://krebsonsecurity.com/category/patches/" rel="category tag">
+         Time to Patch
+        </a>
+        —
+        <a href="https://krebsonsecurity.com/2021/03/microsoft-patch-tuesday-march-2021-edition/#comments">
+         34 comments
+        </a>
+       </span>
+       <br/>
+       <small>
+        <span class="date">
+         09
+        </span>
+        <br/>
+        Mar 21
+        <!-- by BrianKrebs -->
+       </small>
+       <h2 class="post-title">
+        <a href="https://krebsonsecurity.com/2021/03/microsoft-patch-tuesday-march-2021-edition/" rel="bookmark" title="Permanent Link to Microsoft Patch Tuesday, March 2021 Edition">
+         Microsoft Patch Tuesday, March 2021 Edition
+        </a>
+       </h2>
+       <div class="entry">
+        <p>
+         On the off chance you were looking for more security to-dos from
+         <strong>
+          Microsoft
+         </strong>
+         today…the company released software updates to plug more than 82 security flaws in Windows and other supported software. Ten of these earned Microsoft’s “critical” rating, meaning they can be exploited by malware or miscreants with little or no help from users.
+        </p>
+        <p>
+         <img alt="" class="aligncenter size-full wp-image-52647" height="425" loading="lazy" src="https://krebsonsecurity.com/wp-content/uploads/2020/08/windowsec.png" width="579"/>
+        </p>
+        <p>
+         Top of the heap this month (apart from the
+         <a href="https://krebsonsecurity.com/2021/03/at-least-30000-u-s-organizations-newly-hacked-via-holes-in-microsofts-email-software/" rel="noopener" target="_blank">
+          ongoing, global Exchange Server mass-compromise
+         </a>
+         ) is a patch for an
+         <strong>
+          Internet Explorer
+         </strong>
+         bug that is seeing active exploitation. The IE weakness —
+         <a href="https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2021-26411" rel="noopener" target="_blank">
+          CVE-2021-26411
+         </a>
+         — affects both IE11 and newer EdgeHTML-based versions, and it allows attackers to run a file of their choice by getting you to view a hacked or malicious website in IE.
+        </p>
+        <p>
+         The IE flaw is tied to a vulnerability that was publicly disclosed in early February by researchers at
+         <a href="http://enki.co.kr/blog/2021/02/04/ie_0day.html" rel="noopener" target="_blank">
+          ENKI
+         </a>
+         who claim it was one of those
+         <a href="https://www.bleepingcomputer.com/news/security/hacking-group-also-used-an-ie-zero-day-against-security-researchers/" rel="noopener" target="_blank">
+          used in a recent campaign by nation-state actors to target security researchers
+         </a>
+         . In the ENKI blog post, the researchers said they will publish proof-of-concept (PoC) details after the bug has been patched.
+        </p>
+        <p>
+         “As we’ve seen in the past, once PoC details become publicly available, attackers quickly incorporate those PoCs into their attack toolkits,” said
+         <strong>
+          Satnam Narang
+         </strong>
+         , staff research engineer at
+         <strong>
+          Tenable
+         </strong>
+         . “We strongly encourage all organizations that rely on Internet Explorer and Microsoft Edge (EdgeHTML-Based) to apply these patches as soon as possible.”
+        </p>
+        <p>
+         This is probably a good place to quote
+         <a href="https://www.ghacks.net/2021/03/09/microsoft-windows-security-updates-march-2021-overview/" rel="noopener" target="_blank">
+          Ghacks.net’s Martin Brinkman
+         </a>
+         : This is
+         <a href="https://www.ghacks.net/2021/01/31/reminder-microsoft-edge-legacy-will-be-retired-in-march-2021/" rel="noopener" target="_blank">
+          the last patch hurrah
+         </a>
+         for the legacy Microsoft Edge web browser, which is being retired by Microsoft.
+        </p>
+        <p>
+         For the second month in a row, Microsoft has patched scary flaws in the DNS servers on
+         <strong>
+          Windows Server 2008
+         </strong>
+         through
+         <strong>
+          2019
+         </strong>
+         versions that could be used to remotely install software of the attacker’s choice. All five of the DNS bugs quashed in today’s patch batch earned a CVSS Score (danger metric) of 9.8 — almost as bad as it gets.
+        </p>
+        <p>
+         “There is the outside chance this could be wormable between DNS servers,” warned Trend Micro’s
+         <strong>
+          Dustin Childs
+         </strong>
+         .
+         <a class="more-link" href="https://krebsonsecurity.com/2021/03/microsoft-patch-tuesday-march-2021-edition/#more-54747">
+          <em>
+           Continue reading →
+          </em>
+         </a>
+        </p>
+       </div>
+       <div class="clearfix">
+       </div>
+      </div>
+     </div>
+     <div class="post-54668 post type-post status-publish format-standard has-post-thumbnail hentry category-comingstorm category-patches tag-allison-nixon tag-check-my-owa tag-unit221b" id="post-54668">
+      <div class="post-smallerfont">
+       <span class="postmetadata">
+        <a href="https://krebsonsecurity.com/category/comingstorm/" rel="category tag">
+         The Coming Storm
+        </a>
+        /
+        <a href="https://krebsonsecurity.com/category/patches/" rel="category tag">
+         Time to Patch
+        </a>
+        —
+        <a href="https://krebsonsecurity.com/2021/03/warning-the-world-of-a-ticking-time-bomb/#comments">
+         33 comments
+        </a>
+       </span>
+       <br/>
+       <small>
+        <span class="date">
+         09
+        </span>
+        <br/>
+        Mar 21
+        <!-- by BrianKrebs -->
+       </small>
+       <h2 class="post-title">
+        <a href="https://krebsonsecurity.com/2021/03/warning-the-world-of-a-ticking-time-bomb/" rel="bookmark" title="Permanent Link to Warning the World of a Ticking Time Bomb">
+         Warning the World of a Ticking Time Bomb
+        </a>
+       </h2>
+       <div class="entry">
+        <p>
+         Globally, hundreds of thousand of organizations running Exchange email servers from Microsoft just got mass-hacked, including at least 30,000 victims in the United States. Each hacked server has been retrofitted with a “web shell” backdoor that gives the bad guys total, remote control, the ability to read all email, and easy access to the victim’s other computers. Researchers are now racing to identify, alert and help victims, and hopefully prevent further mayhem.
+        </p>
+        <p>
+         <img alt="" class="aligncenter wp-image-54723" height="317" loading="lazy" src="https://krebsonsecurity.com/wp-content/uploads/2021/03/worldclock.png" width="598"/>
+        </p>
+        <p>
+         On Mar. 5, KrebsOnSecurity broke the news that
+         <a href="https://krebsonsecurity.com/2021/03/at-least-30000-u-s-organizations-newly-hacked-via-holes-in-microsofts-email-software/" rel="noopener" target="_blank">
+          at least 30,000 organizations and hundreds of thousands globally had been hacked
+         </a>
+         . The same sources who shared those figures say the victim list has grown considerably since then, with many victims compromised by multiple cybercrime groups.
+        </p>
+        <p>
+         Security experts are now trying to alert and assist these victims before malicious hackers launch what many refer to with a mix of dread and anticipation as “Stage 2,” when the bad guys revisit all these hacked servers and seed them with ransomware or else additional hacking tools for crawling even deeper into victim networks.
+        </p>
+        <p>
+         But that rescue effort has been stymied by the sheer volume of attacks on these Exchange vulnerabilities, and by the number of apparently distinct hacking groups that are vying for control over vulnerable systems.
+        </p>
+        <p>
+         A security expert who has briefed federal and military advisors on the threat says many victims appear to have more than one type of backdoor installed. Some victims had three of these web shells installed. One was pelted with eight distinct backdoors. This initially caused a major overcount of potential victims, and required a great deal of de-duping various victim lists.
+        </p>
+        <p>
+         The source, who spoke on condition of anonymity, said many in the cybersecurity community recently saw a large spike in attacks on thousands of Exchange servers that was later linked to a profit-motivated cybercriminal group.
+        </p>
+        <p>
+         “What we thought was Stage 2 actually was one criminal group hijacking like 10,000 exchange servers,” said one source who’s briefed U.S. national security advisors on the outbreak.
+        </p>
+        <p>
+         On Mar. 2,
+         <a href="https://krebsonsecurity.com/2021/03/microsoft-chinese-cyberspies-used-4-exchange-server-flaws-to-plunder-emails/" rel="noopener" target="_blank">
+          when Microsoft released updates to plug the four Exchange flaws being attacked
+         </a>
+         , it attributed the hacking activity to a previously unidentified Chinese cyber espionage group it called “Hafnium.” Microsoft said Hafnium had been using the Exchange flaws to conduct a series of low-and-slow attacks against specific strategic targets, such as non-governmental organization (NGOs) and think tanks.
+        </p>
+        <p>
+         But by Feb. 26, that relatively stealthy activity was morphing into the indiscriminate mass-exploitation of all vulnerable Exchange servers. That means even Exchange users that patched the same day Microsoft released security updates may have had servers seeded with backdoors.
+        </p>
+        <p>
+         Many experts who spoke to KrebsOnSecurity said they believe different cybercriminal groups somehow learned of Microsoft’s plans to ship fixes for the Exchange flaws a week earlier than they’d hoped (Microsoft
+         <a href="https://krebsonsecurity.com/2021/03/a-basic-timeline-of-the-exchange-mass-hack/" rel="noopener" target="_blank">
+          originally targeted today
+         </a>
+         , Patch Tuesday, as the release date).
+        </p>
+        <p>
+         The vulnerability scanning activity also ramped up markedly after Microsoft released its updates on Mar. 2. Security researchers love to tear apart patches for clues about the underlying security holes, and one major concern is that various cybercriminal groups may have already worked out how to exploit the flaws independently.
+        </p>
+        <h4>
+         AVERTING MASS-RANSOMWARE
+        </h4>
+        <p>
+         Security experts now are desperately trying to reach tens of thousands of victim organizations with a single message: Whether you have patched yet or have been hacked,
+         <em>
+          backup any data stored on those servers immediately.
+         </em>
+        </p>
+        <p>
+         Every source I’ve spoken with about this incident says they fully expect profit-motivated cybercriminals to pounce on victims by mass-deploying ransomware. Given that so many groups now have backdoor web shells installed, it would be trivial to unleash ransomware on the lot of them in one go. Also, compromised Exchange servers can be a virtual doorway into the rest of the victim’s network.
+        </p>
+        <p>
+         “With the number of different threat actors dropping [web] shells on servers increasing, ransomware is inevitable,” said
+         <strong>
+          Allison Nixon
+         </strong>
+         , chief research officer at
+         <a href="https://www.unit221b.com" rel="noopener" target="_blank">
+          Unit221B
+         </a>
+         , a New York City-based cyber investigations firm.
+        </p>
+        <p>
+         So far there are no signs of victims of this mass-hack being ransomed. But that may well change if the exploit code used to break into these vulnerable Exchange servers goes public. And nobody I’ve interviewed seems to think working exploit code is going to stay unpublished for much longer.
+        </p>
+        <p>
+         When that happens, the exploits will get folded into publicly available exploit testing kits, effectively making it simple for any attacker to find and compromise a decent number of victims who haven’t already patched.
+         <a class="more-link" href="https://krebsonsecurity.com/2021/03/warning-the-world-of-a-ticking-time-bomb/#more-54668">
+          <em>
+           Continue reading →
+          </em>
+         </a>
+        </p>
+       </div>
+       <div class="clearfix">
+       </div>
+      </div>
+     </div>
+     <div class="post-54660 post type-post status-publish format-standard has-post-thumbnail hentry category-sunshine tag-chopper-web-shell tag-devcore tag-dubex tag-orange-tsai tag-proxylogon-com tag-volexity" id="post-54660">
+      <div class="post-smallerfont">
+       <span class="postmetadata">
+        <a href="https://krebsonsecurity.com/category/sunshine/" rel="category tag">
+         A Little Sunshine
+        </a>
+        —
+        <a href="https://krebsonsecurity.com/2021/03/a-basic-timeline-of-the-exchange-mass-hack/#comments">
+         86 comments
+        </a>
+       </span>
+       <br/>
+       <small>
+        <span class="date">
+         08
+        </span>
+        <br/>
+        Mar 21
+        <!-- by BrianKrebs -->
+       </small>
+       <h2 class="post-title">
+        <a href="https://krebsonsecurity.com/2021/03/a-basic-timeline-of-the-exchange-mass-hack/" rel="bookmark" title="Permanent Link to A Basic Timeline of the Exchange Mass-Hack">
+         A Basic Timeline of the Exchange Mass-Hack
+        </a>
+       </h2>
+       <div class="entry">
+        <p>
+         Sometimes when a complex story takes us by surprise or knocks us back on our heels, it pays to revisit the events in a somewhat linear fashion. Here’s a brief timeline of what we know leading up to last week’s mass-hack, when hundreds of thousands of
+         <strong>
+          Microsoft Exchange Server
+         </strong>
+         systems
+         <a href="https://krebsonsecurity.com/2021/03/at-least-30000-u-s-organizations-newly-hacked-via-holes-in-microsofts-email-software/" rel="noopener" target="_blank">
+          got compromised and seeded with a powerful backdoor Trojan horse program
+         </a>
+         .
+        </p>
+        <p>
+         <strong>
+          When did Microsoft find out about attacks on previously unknown vulnerabilities in Exchange?
+         </strong>
+        </p>
+        <p>
+         Pressed for a date when it first became aware of the problem, Microsoft told KrebsOnSecurity it was initially notified “in early January.” So far the earliest known report came on Jan. 5, from a principal security researcher for security testing firm
+         <a href="https://devco.re/en/" rel="noopener" target="_blank">
+          DEVCORE
+         </a>
+         who goes by the handle “
+         <a href="https://twitter.com/orange_8361" rel="noopener" target="_blank">
+          Orange Tsai
+         </a>
+         .” DEVCORE is credited with reporting two of the four Exchange flaws that
+         <a href="https://krebsonsecurity.com/2021/03/microsoft-chinese-cyberspies-used-4-exchange-server-flaws-to-plunder-emails/" rel="noopener" target="_blank">
+          Microsoft patched on Mar. 2
+         </a>
+         .
+        </p>
+        <p>
+         <img alt="" class="aligncenter wp-image-54677" height="224" loading="lazy" src="https://krebsonsecurity.com/wp-content/uploads/2021/03/orangetsai.png" width="595"/>
+        </p>
+        <p>
+         Reston, Va.-based
+         <a href="https://www.volexity.com" rel="noopener" target="_blank">
+          Volexity
+         </a>
+         first identified attacks on the flaws on Jan. 6, and officially informed Microsoft about it on Feb. 2. Volexity now says it can see attack traffic going back to Jan. 3. Microsoft credits Volexity with reporting the same two Exchange flaws as DEVCORE.
+        </p>
+        <p>
+         Danish security firm
+         <a href="https://www.dubex.dk" rel="noopener" target="_blank">
+          Dubex
+         </a>
+         says it first saw clients hit on Jan. 18, and reported their incident response findings to Microsoft on Jan. 27.
+        </p>
+        <p>
+         In a blog post on their discovery,
+         <a href="https://www.dubex.dk/aktuelt/nyheder/please-leave-an-exploit-after-the-beep" rel="noopener" target="_blank">
+          Please Leave an Exploit After the Beep
+         </a>
+         , Dubex said the victims it investigated in January had a “web shell” backdoor installed via the “unifying messaging” module, a component of Exchange that allows an organization to store voicemail and faxes along with emails, calendars, and contacts in users’ mailboxes.
+        </p>
+        <p>
+         “A unified messaging server also allows users access to voicemail features via smartphones, Microsoft Outlook and Outlook Web App,” Dubex wrote. “Most users and IT departments manage their voicemail separately from their email, and voicemail and email exist as separate inboxes hosted on separate servers. Unified Messaging offers an integrated store for all messages and access to content through the computer and the telephone.”
+        </p>
+        <p>
+         Dubex says Microsoft “escalated” their issue on Feb. 8, but never confirmed the zero-day with Dubex prior to the emergency patch plea on Mar. 2. “We never got a ‘real’ confirmation of the zero-day before the patch was released,” said Dubex’s
+         <strong>
+          Chief Technology Officer Jacob Herbst
+         </strong>
+         .
+        </p>
+        <p>
+         <strong>
+          How long have the vulnerabilities exploited here been around?
+         </strong>
+        </p>
+        <p>
+         On Mar. 2, Microsoft patched four flaws in Exchange Server 2013 through 2019. Exchange Server 2010 is no longer supported, but the software giant made a “defense in depth” exception and gave Server 2010 users a freebie patch, too. That means the vulnerabilities the attackers exploited have been in the Microsoft Exchange Server code base for more than ten years.
+        </p>
+        <p>
+         The timeline also means Microsoft had almost two months to push out the patch it ultimately shipped Mar. 2, or else help hundreds of thousands of Exchange customers mitigate the threat from this flaw before attackers started exploiting it indiscriminately.
+        </p>
+        <p>
+         <img alt="" class="aligncenter wp-image-54572" height="202" loading="lazy" sizes="(max-width: 598px) 100vw, 598px" src="https://krebsonsecurity.com/wp-content/uploads/2021/03/exchange.png" srcset="https://krebsonsecurity.com/wp-content/uploads/2021/03/exchange.png 1072w, https://krebsonsecurity.com/wp-content/uploads/2021/03/exchange-768x259.png 768w" width="598"/>
+        </p>
+        <p>
+         <strong>
+          Here’s a rough timeline as we know it so far:
+         </strong>
+         <a class="more-link" href="https://krebsonsecurity.com/2021/03/a-basic-timeline-of-the-exchange-mass-hack/#more-54660">
+          <em>
+           Continue reading →
+          </em>
+         </a>
+        </p>
+       </div>
+       <div class="clearfix">
+       </div>
+      </div>
+     </div>
+     <div class="post-54608 post type-post status-publish format-standard has-post-thumbnail hentry category-latest-warnings category-comingstorm category-patches tag-andy-greenberg tag-chris-krebs tag-hafnium tag-jen-psaki tag-microsoft-exchange-server-flaws tag-steven-adair tag-volexity tag-wired" id="post-54608">
+      <div class="post-smallerfont">
+       <span class="postmetadata">
+        <a href="https://krebsonsecurity.com/category/latest-warnings/" rel="category tag">
+         Latest Warnings
+        </a>
+        /
+        <a href="https://krebsonsecurity.com/category/comingstorm/" rel="category tag">
+         The Coming Storm
+        </a>
+        /
+        <a href="https://krebsonsecurity.com/category/patches/" rel="category tag">
+         Time to Patch
+        </a>
+        —
+        <a href="https://krebsonsecurity.com/2021/03/at-least-30000-u-s-organizations-newly-hacked-via-holes-in-microsofts-email-software/#comments">
+         120 comments
+        </a>
+       </span>
+       <br/>
+       <small>
+        <span class="date">
+         05
+        </span>
+        <br/>
+        Mar 21
+        <!-- by BrianKrebs -->
+       </small>
+       <h2 class="post-title">
+        <a href="https://krebsonsecurity.com/2021/03/at-least-30000-u-s-organizations-newly-hacked-via-holes-in-microsofts-email-software/" rel="bookmark" title="Permanent Link to At Least 30,000 U.S. Organizations Newly Hacked Via Holes in Microsoft’s Email Software">
+         At Least 30,000 U.S. Organizations Newly Hacked Via Holes in Microsoft’s Email Software
+        </a>
+       </h2>
+       <div class="entry">
+        <p>
+         At least 30,000 organizations across the United States — including a significant number of small businesses, towns, cities and local governments — have over the past few days been hacked by an unusually aggressive Chinese cyber espionage unit that’s focused on stealing email from victim organizations, multiple sources tell KrebsOnSecurity. The espionage group is exploiting four newly-discovered flaws in
+         <strong>
+          Microsoft Exchange Server
+         </strong>
+         email software, and has seeded hundreds of thousands of victim organizations worldwide with tools that give the attackers total, remote control over affected systems.
+        </p>
+        <p>
+         <img alt="" class="aligncenter wp-image-54572" height="200" loading="lazy" sizes="(max-width: 592px) 100vw, 592px" src="https://krebsonsecurity.com/wp-content/uploads/2021/03/exchange.png" srcset="https://krebsonsecurity.com/wp-content/uploads/2021/03/exchange.png 1072w, https://krebsonsecurity.com/wp-content/uploads/2021/03/exchange-768x259.png 768w" width="592"/>
+        </p>
+        <p>
+         On March 2, Microsoft
+         <a href="https://krebsonsecurity.com/2021/03/microsoft-chinese-cyberspies-used-4-exchange-server-flaws-to-plunder-emails/" rel="noopener" target="_blank">
+          released emergency security updates
+         </a>
+         to plug four security holes in Exchange Server versions 2013 through 2019 that hackers were actively using to siphon email communications from Internet-facing systems running Exchange.
+        </p>
+        <p>
+         Microsoft said the Exchange flaws are being targeted by a previously unidentified Chinese hacking crew it dubbed “
+         <a href="https://blogs.microsoft.com/on-the-issues/2021/03/02/new-nation-state-cyberattacks/" rel="noopener" target="_blank">
+          Hafnium
+         </a>
+         ,” and said the group had been conducting targeted attacks on email systems used by a range of industry sectors, including infectious disease researchers, law firms, higher education institutions, defense contractors, policy think tanks, and NGOs.
+        </p>
+        <p>
+         In the three days since then, security experts say the same Chinese cyber espionage group has dramatically stepped up attacks on any vulnerable, unpatched Exchange servers worldwide.
+        </p>
+        <p>
+         In each incident, the intruders have left behind a “web shell,” an easy-to-use, password-protected hacking tool that can be accessed over the Internet from any browser. The web shell gives the attackers administrative access to the victim’s computer servers.
+        </p>
+        <p>
+         Speaking on condition of anonymity, two cybersecurity experts who’ve briefed U.S. national security advisors on the attack told KrebsOnSecurity the Chinese hacking group thought to be responsible has seized control over “hundreds of thousands” of Microsoft Exchange Servers worldwide — with each victim system representing approximately one organization that uses Exchange to process email.
+        </p>
+        <p>
+         Microsoft’s
+         <a href="https://www.microsoft.com/security/blog/2021/03/02/hafnium-targeting-exchange-servers/" rel="noopener" target="_blank">
+          initial advisory about the Exchange flaws
+         </a>
+         credited Reston, Va. based
+         <a href="https://www.volexity.com" rel="noopener" target="_blank">
+          Volexity
+         </a>
+         for reporting the vulnerabilities. Volexity President
+         <strong>
+          Steven Adair
+         </strong>
+         said the company
+         <a href="https://www.volexity.com/blog/2021/03/02/active-exploitation-of-microsoft-exchange-zero-day-vulnerabilities/" rel="noopener" target="_blank">
+          first saw attackers quietly exploiting the Exchange bugs on Jan. 6, 2021
+         </a>
+         , a day when most of the world was glued to television coverage of
+         <a href="https://krebsonsecurity.com/2021/01/all-aboard-the-pequod/" rel="noopener" target="_blank">
+          the riot at the U.S. Capitol
+         </a>
+         .
+        </p>
+        <p>
+         But Adair said that over the past few days the hacking group has shifted into high gear, moving quickly to scan the Internet for Exchange servers that weren’t yet protected by the security updates Microsoft released Tuesday.
+        </p>
+        <p>
+         “We’ve worked on dozens of cases so far where web shells were put on the victim system back on Feb. 28 [before Microsoft announced its patches], all the way up to today,” Adair said. “Even if you patched the same day Microsoft published its patches, there’s still a high chance there is a web shell on your server. The truth is, if you’re running Exchange and you haven’t patched this yet, there’s a very high chance that your organization is already compromised.”
+        </p>
+        <p>
+         Reached for comment, Microsoft said it is working closely with the
+         <strong>
+          U.S. Cybersecurity &amp; Infrastructure Security Agency
+         </strong>
+         (CISA), other government agencies, and security companies, to ensure it is providing the best possible guidance and mitigation for its customers.
+        </p>
+        <p>
+         “The best protection is to apply updates as soon as possible across all impacted systems,” a Microsoft spokesperson said in a written statement. “We continue to help customers by providing additional investigation and mitigation guidance. Impacted customers should contact our support teams for additional help and resources.”
+        </p>
+        <p>
+         Meanwhile, CISA has issued
+         <a href="https://www.cisa.gov/ed2102" rel="noopener" target="_blank">
+          an emergency directive
+         </a>
+         ordering all federal civilian departments and agencies running vulnerable Microsoft Exchange servers to either update the software or disconnect the products from their networks.
+        </p>
+        <p>
+         Adair said he’s fielded dozens of calls today from state and local government agencies that have identified the backdoors in their Exchange servers and are pleading for help. The trouble is, patching the flaws only blocks the four different ways the hackers are using to get in. But it does nothing to undo the damage that may already have been done.
+        </p>
+        <div class="wp-caption aligncenter" id="attachment_54640" style="width: 609px">
+         <img alt="" aria-describedby="caption-attachment-54640" class="wp-image-54640" height="329" loading="lazy" src="https://krebsonsecurity.com/wp-content/uploads/2021/03/chriskrebstweet.png" width="599"/>
+         <p class="wp-caption-text" id="caption-attachment-54640">
+          A tweet from Chris Krebs, former director of the Cybersecurity &amp; Infrastructure Security Agency, responding to a tweet from White House National Security Advisor Jake Sullivan.
+         </p>
+        </div>
+        <p>
+         White House press secretary
+         <strong>
+          Jen Psaki
+         </strong>
+         <a href="https://www.reuters.com/article/uk-usa-cyber-microsoft-idUKKCN2AX23L" rel="noopener" target="_blank">
+          told reporters today
+         </a>
+         the vulnerabilities found in Microsoft’s widely used Exchange servers were “significant,” and “could have far-reaching impacts.”
+        </p>
+        <p>
+         “We’re concerned that there are a large number of victims,” Psaki said.
+        </p>
+        <p>
+         <a class="more-link" href="https://krebsonsecurity.com/2021/03/at-least-30000-u-s-organizations-newly-hacked-via-holes-in-microsofts-email-software/#more-54608">
+          <em>
+           Continue reading →
+          </em>
+         </a>
+        </p>
+       </div>
+       <div class="clearfix">
+       </div>
+      </div>
+     </div>
+     <div class="post-54587 post type-post status-publish format-standard has-post-thumbnail hentry category-neer-do-well-news tag-exploit-hack tag-intel-471 tag-maza tag-mazafaka-hack tag-mfclub tag-verified-hack" id="post-54587">
+      <div class="post-smallerfont">
+       <span class="postmetadata">
+        <a href="https://krebsonsecurity.com/category/neer-do-well-news/" rel="category tag">
+         Ne'er-Do-Well News
+        </a>
+        —
+        <a href="https://krebsonsecurity.com/2021/03/three-top-russian-cybercrime-forums-hacked/#comments">
+         53 comments
+        </a>
+       </span>
+       <br/>
+       <small>
+        <span class="date">
+         04
+        </span>
+        <br/>
+        Mar 21
+        <!-- by BrianKrebs -->
+       </small>
+       <h2 class="post-title">
+        <a href="https://krebsonsecurity.com/2021/03/three-top-russian-cybercrime-forums-hacked/" rel="bookmark" title="Permanent Link to Three Top Russian Cybercrime Forums Hacked">
+         Three Top Russian Cybercrime Forums Hacked
+        </a>
+       </h2>
+       <div class="entry">
+        <p>
+         Over the past few weeks, three of the longest running and most venerated Russian-language online forums serving thousands of experienced cybercriminals have been hacked. In two of the intrusions, the attackers made off with the forums’ user databases, including email and Internet addresses and hashed passwords. Members of all three forums are worried the incidents could serve as a virtual Rosetta Stone for connecting the real-life identities of the same users across multiple crime forums.
+        </p>
+        <div class="wp-caption aligncenter" id="attachment_54593" style="width: 606px">
+         <a href="https://krebsonsecurity.com/wp-content/uploads/2021/03/mazaleak.png">
+          <img alt="" aria-describedby="caption-attachment-54593" class="wp-image-54593" height="481" loading="lazy" sizes="(max-width: 596px) 100vw, 596px" src="https://krebsonsecurity.com/wp-content/uploads/2021/03/mazaleak.png" srcset="https://krebsonsecurity.com/wp-content/uploads/2021/03/mazaleak.png 943w, https://krebsonsecurity.com/wp-content/uploads/2021/03/mazaleak-768x620.png 768w" width="596"/>
+         </a>
+         <p class="wp-caption-text" id="caption-attachment-54593">
+          References to the leaked Mazafaka crime forum database were posted online in the past 48 hours.
+         </p>
+        </div>
+        <p>
+         On Tuesday, someone dumped thousands of usernames, email addresses and obfuscated passwords on the dark web apparently pilfered from
+         <strong>
+          Mazafaka
+         </strong>
+         (a.k.a. “
+         <strong>
+          Maza
+         </strong>
+         ,” “
+         <strong>
+          MFclub
+         </strong>
+         “), an exclusive crime forum that has for more than a decade played host to some of the most experienced and infamous Russian cyberthieves.
+        </p>
+        <p>
+         At the top of a 35-page PDF leaked online is a private encryption key allegedly used by Maza administrators. The database also includes ICQ numbers for many users. ICQ, also known as “I seek you,” was an instant message platform trusted by countless early denizens of these older crime forums before its use fell out of fashion in favor of more private networks, such as
+         <strong>
+          Jabber
+         </strong>
+         and
+         <strong>
+          Telegram
+         </strong>
+         .
+        </p>
+        <p>
+         This is notable because ICQ numbers tied to specific accounts often are a reliable data point that security researchers can use to connect multiple accounts to the same user across many forums and different nicknames over time.
+        </p>
+        <p>
+         Cyber intelligence firm
+         <a href="https://www.intel471.com" rel="noopener" target="_blank">
+          Intel 471
+         </a>
+         assesses that the leaked Maza database is legitimate.
+        </p>
+        <p>
+         “The file comprised more than 3,000 rows, containing usernames, partially obfuscated password hashes, email addresses and other contact details,” Intel 471 found, noting that Maza forum visitors are now redirected to a breach announcement page. “Initial analysis of the leaked data pointed to its probable authenticity, as at least a portion of the leaked user records correlated with our own data holdings.”
+        </p>
+        <p>
+         The attack on Maza comes just weeks after another major Russian crime forum got plundered. On Jan. 20, a longtime administrator of the Russian language forum
+         <strong>
+          Verified
+         </strong>
+         disclosed that the community’s domain registrar had been hacked, and that the site’s domain was redirected to an Internet server the attackers controlled.
+        </p>
+        <div class="wp-caption aligncenter" id="attachment_54594" style="width: 604px">
+         <a href="https://krebsonsecurity.com/wp-content/uploads/2021/03/verifiedhack.png">
+          <img alt="" aria-describedby="caption-attachment-54594" class="wp-image-54594" height="289" loading="lazy" sizes="(max-width: 594px) 100vw, 594px" src="https://krebsonsecurity.com/wp-content/uploads/2021/03/verifiedhack.png" srcset="https://krebsonsecurity.com/wp-content/uploads/2021/03/verifiedhack.png 1562w, https://krebsonsecurity.com/wp-content/uploads/2021/03/verifiedhack-768x374.png 768w, https://krebsonsecurity.com/wp-content/uploads/2021/03/verifiedhack-1536x747.png 1536w" width="594"/>
+         </a>
+         <p class="wp-caption-text" id="caption-attachment-54594">
+          A note posted by a Verified forum administrator concerning the hack of its registrar in January.
+         </p>
+        </div>
+        <blockquote>
+         <p>
+          “Our [bitcoin] wallet has been cracked. Luckily, we did not keep large amounts in it, but this is an unpleasant incident anyway. Once the circumstances became clear, the admin assumed that THEORETICALLY, all the forum’s accounts could have been compromised (the probability is low, but it is there). In our business, it’s better to play safe. So, we’ve decided to reset everyone’s codes. This is not a big deal. Simply write them down and use them from now on.”
+         </p>
+        </blockquote>
+        <p>
+         A short time later, the administrator updated his post, saying:
+        </p>
+        <blockquote>
+         <p>
+          “We are getting messages that the forum’s databases were filched after all when the forum was hacked. Everyone’s account passwords were forcibly reset. Pass this information to people you know. The forum was hacked through the domain registrar. The registrar was hacked first, then domain name servers were changed, and traffic was sniffed.”
+         </p>
+        </blockquote>
+        <p>
+         On Feb. 15, the administrator posted a message purportedly sent on behalf of the intruders, who claimed they hacked Verified’s domain registrar between Jan. 16 and 20.
+        </p>
+        <blockquote>
+         <p>
+          “It should be clear by now that the forum administration did not do an acceptable job with the security of this whole thing,” the attacker explained. “Most likely just out of laziness or incompetence, they gave up the whole thing. But the main surprise for us was that they saved all the user data, including cookies, referrers, ip addresses of the first registrations, login analytics, and everything else.”
+         </p>
+        </blockquote>
+        <p>
+         Other sources indicate tens of thousands of private messages between Verified users were stolen, including information about bitcoin deposits and withdrawals and private Jabber contacts.
+        </p>
+        <p>
+         The compromise of Maza and Verified — and possibly a third major forum — has many community members concerned that their real-life identities could be exposed.
+         <strong>
+          Exploit
+         </strong>
+         — perhaps the next-largest and most popular Russian forum after Verified, also experienced an apparent compromise this week.
+         <a class="more-link" href="https://krebsonsecurity.com/2021/03/three-top-russian-cybercrime-forums-hacked/#more-54587">
+          <em>
+           Continue reading →
+          </em>
+         </a>
+        </p>
+       </div>
+       <div class="clearfix">
+       </div>
+      </div>
+     </div>
+     <div class="post-54566 post type-post status-publish format-standard has-post-thumbnail hentry category-latest-warnings category-comingstorm category-patches tag-cve-2021-26855 tag-cve-2021-26857 tag-cve-2021-26858 tag-cve-2021-27065 tag-hafnium tag-microsoft-exchange tag-zero-day" id="post-54566">
+      <div class="post-smallerfont">
+       <span class="postmetadata">
+        <a href="https://krebsonsecurity.com/category/latest-warnings/" rel="category tag">
+         Latest Warnings
+        </a>
+        /
+        <a href="https://krebsonsecurity.com/category/comingstorm/" rel="category tag">
+         The Coming Storm
+        </a>
+        /
+        <a href="https://krebsonsecurity.com/category/patches/" rel="category tag">
+         Time to Patch
+        </a>
+        —
+        <a href="https://krebsonsecurity.com/2021/03/microsoft-chinese-cyberspies-used-4-exchange-server-flaws-to-plunder-emails/#comments">
+         30 comments
+        </a>
+       </span>
+       <br/>
+       <small>
+        <span class="date">
+         02
+        </span>
+        <br/>
+        Mar 21
+        <!-- by BrianKrebs -->
+       </small>
+       <h2 class="post-title">
+        <a href="https://krebsonsecurity.com/2021/03/microsoft-chinese-cyberspies-used-4-exchange-server-flaws-to-plunder-emails/" rel="bookmark" title="Permanent Link to Microsoft: Chinese Cyberspies Used 4 Exchange Server Flaws to Plunder Emails">
+         Microsoft: Chinese Cyberspies Used 4 Exchange Server Flaws to Plunder Emails
+        </a>
+       </h2>
+       <div class="entry">
+        <p>
+         <strong>
+          Microsoft Corp.
+         </strong>
+         today released software updates to plug four security holes that attackers have been using to plunder email communications at companies that use its
+         <strong>
+          Exchange Server
+         </strong>
+         products. The company says all four flaws are being actively exploited as part of a complex attack chain deployed by a previously unidentified Chinese cyber espionage group.
+        </p>
+        <p>
+         <img alt="" class="aligncenter wp-image-54572" height="201" loading="lazy" sizes="(max-width: 595px) 100vw, 595px" src="https://krebsonsecurity.com/wp-content/uploads/2021/03/exchange.png" srcset="https://krebsonsecurity.com/wp-content/uploads/2021/03/exchange.png 1072w, https://krebsonsecurity.com/wp-content/uploads/2021/03/exchange-768x259.png 768w" width="595"/>
+        </p>
+        <p>
+         The software giant typically releases security updates on the second Tuesday of each month, but it occasionally deviates from that schedule when addressing active attacks that target newly identified and serious vulnerabilities in its products.
+        </p>
+        <p>
+         The patches released today fix security problems in
+         <strong>
+          Microsoft Exchange Server 2013
+         </strong>
+         ,
+         <strong>
+          2016
+         </strong>
+         and
+         <strong>
+          2019
+         </strong>
+         . Microsoft said its
+         <strong>
+          Exchange Online
+         </strong>
+         service — basically hosted email for businesses — is not impacted by these flaws.
+        </p>
+        <p>
+         Microsoft credited researchers at Reston, Va. based
+         <a href="https://www.volexity.com/blog/2021/03/02/active-exploitation-of-microsoft-exchange-zero-day-vulnerabilities/" rel="noopener" target="_blank">
+          Volexity
+         </a>
+         for reporting the attacks. Volexity
+         <strong>
+          President Steven Adair
+         </strong>
+         told KrebsOnSecurity it first spotted the attacks on Jan. 6, 2021.
+        </p>
+        <p>
+         Adair said while the exploits used by the group may have taken great skills to develop, they require little technical know-how to use and can give an attacker easy access to all of an organization’s email if their vulnerable Exchange Servers are directly exposed to the Internet.
+        </p>
+        <p>
+         “These flaws are very easy to exploit,” Adair said. “You don’t need any special knowledge with these exploits. You just show up and say ‘I would like to break in and read all their email.’ That’s all there is to it.”
+         <a class="more-link" href="https://krebsonsecurity.com/2021/03/microsoft-chinese-cyberspies-used-4-exchange-server-flaws-to-plunder-emails/#more-54566">
+          <em>
+           Continue reading →
+          </em>
+         </a>
+        </p>
+       </div>
+       <div class="clearfix">
+       </div>
+      </div>
+     </div>
+     <div class="post-54543 post type-post status-publish format-standard has-post-thumbnail hentry category-ransomware tag-decimal tag-jacob-cloran tag-peos tag-prismhr tag-professional-employer-organizations" id="post-54543">
+      <div class="post-smallerfont">
+       <span class="postmetadata">
+        <a href="https://krebsonsecurity.com/category/ransomware/" rel="category tag">
+         Ransomware
+        </a>
+        —
+        <a href="https://krebsonsecurity.com/2021/03/payroll-hr-giant-prismhr-hit-by-ransomware/#comments">
+         37 comments
+        </a>
+       </span>
+       <br/>
+       <small>
+        <span class="date">
+         02
+        </span>
+        <br/>
+        Mar 21
+        <!-- by BrianKrebs -->
+       </small>
+       <h2 class="post-title">
+        <a href="https://krebsonsecurity.com/2021/03/payroll-hr-giant-prismhr-hit-by-ransomware/" rel="bookmark" title="Permanent Link to Payroll/HR Giant PrismHR Hit by Ransomware?">
+         Payroll/HR Giant PrismHR Hit by Ransomware?
+        </a>
+       </h2>
+       <div class="entry">
+        <p>
+         <strong>
+          PrismHR
+         </strong>
+         , a company that sells technology used by other firms to help more than 80,000 small businesses manage payroll, benefits, and human resources, has suffered what appears to be an ongoing ransomware attack that is disrupting many of its services.
+        </p>
+        <p>
+         <img alt="" class="aligncenter wp-image-54554" height="274" loading="lazy" sizes="(max-width: 597px) 100vw, 597px" src="https://krebsonsecurity.com/wp-content/uploads/2021/03/prismhr.png" srcset="https://krebsonsecurity.com/wp-content/uploads/2021/03/prismhr.png 949w, https://krebsonsecurity.com/wp-content/uploads/2021/03/prismhr-768x352.png 768w" width="597"/>
+        </p>
+        <p>
+         Hopkinton, Mass.-based PrismHR handles everything from payroll processing and human resources to health insurance and tax forms for hundreds of “professional employer organizations” (PEOs) that serve more than two million employees. The company processes more than $80 billion payroll payments annually on behalf of PEOs and their clients.
+        </p>
+        <p>
+         Countless small businesses turn to PEOs in part because they simplify compliance with various state payroll taxes, and because PEOs are the easiest way for small businesses to pool their resources and obtain more favorable health insurance rates for their employees.
+        </p>
+        <p>
+         PrismHR has not yet responded to requests for comment. But in a notice sent to its PEO partners, PrismHR said it detected suspicious activity within its networks on Feb. 28, and that it disabled access to its platform for all users in an effort to contain the security incident.
+        </p>
+        <p>
+         The company said the disruption has affected 200 PEO clients across the country, and that the most immediate concern is helping PEOs ensure their customers can process payrolls this week.
+        </p>
+        <p>
+         “The outage may extend throughout today and possibly later, with potential impact on payroll processing,” Prism explained in a template email it suggested PEO partners share with their customers. “We are committed to ensuring everyone receives their pay as timely and as accurately as possible. For this payroll period, we will use estimates from the last available payroll period. Once the software platform is back online, we will perform a reconciliation and correct any discrepancies as soon as possible.”
+        </p>
+        <p>
+         <strong>
+          Jacob Cloran
+         </strong>
+         is co-founder of
+         <a href="https://www.getdecimal.com" rel="noopener" target="_blank">
+          Decimal
+         </a>
+         , a company that does accounting for small businesses, many of whom rely on PEOs affected by the PrismHR outage. Decimal itself uses a PEO that relies on PrismHR.
+        </p>
+        <p>
+         “We don’t have a good option to run our payroll this week, and the message we’ve received from our PEO doesn’t give me a lot of confidence we’ll be able to do that,” Cloran said.
+        </p>
+        <p>
+         Cloran said while there are other cloud-based companies that work with multiple PEOs, PrismHR is by far the largest.
+        </p>
+        <p>
+         “Prism is the only real option on the PEO software market,” he said. “Everyone I know who has tried any of the others ends up back at Prism. It’s the best of all bad available options.”
+         <a class="more-link" href="https://krebsonsecurity.com/2021/03/payroll-hr-giant-prismhr-hit-by-ransomware/#more-54543">
+          <em>
+           Continue reading →
+          </em>
+         </a>
+        </p>
+       </div>
+       <div class="clearfix">
+       </div>
+      </div>
+     </div>
+     <div class="navigation">
+      <div class="alignleft">
+       <a href="https://krebsonsecurity.com/page/2/">
+        ← Older Entries
+       </a>
+      </div>
+      <div class="alignright">
+      </div>
+      <div class="clearfix">
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="grid_5" id="sidebar">
+    <div id="sidebar-box" style="margin-left:0px;">
+     <div class="a-statement">
+      Advertisement
+     </div>
+     <div class="a-img" id="sidebar-b-img">
+      <a href="https://www.sans.org/u/1bpx">
+       <img src="/b-sans/46.jpg"/>
+      </a>
+     </div>
+    </div>
+    <ul class="nobullet">
+     <li>
+      <form action="https://krebsonsecurity.com/" id="searchform" method="get">
+       <input id="s" name="s" onblur="clearInput('s', '')" onfocus="clearInput('s', '')" type="text" value=""/>
+       <input id="searchbtn" src="https://krebsonsecurity.com/wp-content/themes/krebsads/krebsads/images/search_magnifier.gif" type="image" value="Search"/>
+      </form>
+     </li>
+    </ul>
+    <a href="https://www.akamai.com/us/en/resources/our-thinking/state-of-the-internet-report/global-state-of-the-internet-security-ddos-attack-reports.jsp?utm_source=krebsonsecurity&amp;utm_medium=display&amp;utm_id=GL_CrossSecurity&amp;utm_campaign=F-MC-52613&amp;utm_content=SOTI_Adapting">
+     <img src="/b-akamai/103.jpg"/>
+    </a>
+    <br/>
+    <br/>
+    <ul class="nobullet">
+     <li class="widget_text widget widget_custom_html" id="custom_html-2">
+      <h2 class="widgettitle">
+       Mailing List
+      </h2>
+      <div class="textwidget custom-html-widget">
+       <a href="/subscribe/">
+        Subscribe here
+       </a>
+      </div>
+     </li>
+     <li class="widget widget_recent_entries" id="recent-posts-3">
+      <h2 class="widgettitle">
+       Recent Posts
+      </h2>
+      <ul>
+       <li>
+        <a href="https://krebsonsecurity.com/2021/03/fintech-giant-fiserv-used-unclaimed-domain/">
+         Fintech Giant Fiserv Used Unclaimed Domain
+        </a>
+       </li>
+       <li>
+        <a href="https://krebsonsecurity.com/2021/03/can-we-stop-pretending-sms-is-secure-now/">
+         Can We Stop Pretending SMS Is Secure Now?
+        </a>
+       </li>
+       <li>
+        <a href="https://krebsonsecurity.com/2021/03/weleakinfo-leaked-customer-payment-info/">
+         WeLeakInfo Leaked Customer Payment Info
+        </a>
+       </li>
+       <li>
+        <a href="https://krebsonsecurity.com/2021/03/microsoft-patch-tuesday-march-2021-edition/">
+         Microsoft Patch Tuesday, March 2021 Edition
+        </a>
+       </li>
+       <li>
+        <a href="https://krebsonsecurity.com/2021/03/warning-the-world-of-a-ticking-time-bomb/">
+         Warning the World of a Ticking Time Bomb
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="widget widget_text" id="text-2">
+      <div class="textwidget">
+       <a name="subscribe2">
+       </a>
+      </div>
+     </li>
+     <li class="widget widget_sp_image" id="widget_sp_image-3">
+      <h2 class="widgettitle">
+       All About Skimmers
+      </h2>
+      <a class="widget_sp_image-image-link" href="https://krebsonsecurity.com/all-about-skimmers/" target="_blank" title="All About Skimmers ">
+       <img alt="All About Skimmers" class="attachment-299x232 aligncenter" height="232" src="https://krebsonsecurity.com/wp-content/uploads/2010/08/skimgallery1.jpg" style="max-width: 100%;" width="299"/>
+      </a>
+      <div class="widget_sp_image-description">
+       <p>
+        Click image for my skimmer series.
+       </p>
+      </div>
+     </li>
+     <li class="widget widget_sp_image" id="widget_sp_image-24">
+      <a class="widget_sp_image-image-link" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=MCCRKHWRX57HS" id="donate" target="_self">
+       <img alt="Donate to Krebs On Security" class="attachment-medium aligncenter" height="55" src="https://krebsonsecurity.com/wp-content/uploads/2016/09/donatepaypal2-1.png" style="max-width: 100%;" width="250"/>
+      </a>
+     </li>
+     <li class="widget widget_sp_image" id="widget_sp_image-15">
+      <h2 class="widgettitle">
+       Spam Nation
+      </h2>
+      <a class="widget_sp_image-image-link" href="https://www.amazon.com/Spam-Nation-Organized-Cybercrime-Epidemic-ebook/dp/B00L5QGBL0/ref=dp_kinw_strp_1" target="_blank" title="Spam Nation">
+       <img alt="Spam Nation" class="attachment-266x404 aligncenter" height="404" src="https://krebsonsecurity.com/wp-content/uploads/2015/04/spamnation-nyt.png" style="max-width: 100%;" width="266"/>
+      </a>
+      <div class="widget_sp_image-description">
+       <p>
+        A New York Times Bestseller!
+       </p>
+      </div>
+     </li>
+     <li class="widget widget_sp_image" id="widget_sp_image-19">
+      <a class="widget_sp_image-image-link" href="https://www.amazon.com/Spam-Nation-Organized-Cybercrime-Epidemic-ebook/dp/B00L5QGBL0/ref=dp_kinw_strp_1" target="_blank">
+       <img alt=" " class="attachment-full aligncenter" height="48" src="https://krebsonsecurity.com/wp-content/uploads/2014/10/amazon-mid.png" style="max-width: 100%;" width="181"/>
+      </a>
+     </li>
+     <li class="widget widget_sp_image" id="widget_sp_image-5">
+      <h2 class="widgettitle">
+       The Value of a Hacked PC
+      </h2>
+      <a class="widget_sp_image-image-link" href="https://krebsonsecurity.com/2012/10/the-scrap-value-of-a-hacked-pc-revisited/" target="_blank" title="The Value of a Hacked PC">
+       <img alt="valuehackedpc " class="attachment-285x180 aligncenter" height="180" src="https://krebsonsecurity.com/wp-content/uploads/2012/12/valuehackedpc-285x180.png" style="max-width: 100%;" width="285"/>
+      </a>
+      <div class="widget_sp_image-description">
+       <p>
+        Badguy uses for your PC
+       </p>
+      </div>
+     </li>
+     <li class="widget widget_sp_image" id="widget_sp_image-7">
+      <h2 class="widgettitle">
+       The Pharma Wars
+      </h2>
+      <a class="widget_sp_image-image-link" href="https://krebsonsecurity.com/category/pharma-wars/" target="_self" title="The Pharma Wars">
+       <img alt="The Pharma Wars " class="attachment-full aligncenter" height="228" src="https://krebsonsecurity.com/wp-content/uploads/2013/01/pharmawarsg.png" style="max-width: 100%;" width="252"/>
+      </a>
+      <div class="widget_sp_image-description">
+       <p>
+        Spammers Duke it Out
+       </p>
+      </div>
+     </li>
+     <li class="widget widget_sp_image" id="widget_sp_image-9">
+      <h2 class="widgettitle">
+       Badguy Uses for Your Email
+      </h2>
+      <a class="widget_sp_image-image-link" href="https://krebsonsecurity.com/2013/06/the-value-of-a-hacked-email-account/" target="_self" title="Badguy Uses for Your Email ">
+       <img alt="Badguy Uses for Your Email " class="attachment-full aligncenter" height="170" sizes="(max-width: 296px) 100vw, 296px" src="https://krebsonsecurity.com/wp-content/uploads/2013/06/badguyemail.png" srcset="https://krebsonsecurity.com/wp-content/uploads/2013/06/badguyemail.png 296w, https://krebsonsecurity.com/wp-content/uploads/2013/06/badguyemail-285x163.png 285w" style="max-width: 100%;" width="296"/>
+      </a>
+      <div class="widget_sp_image-description">
+       <p>
+        Your email account may be worth far more than you imagine.
+       </p>
+      </div>
+     </li>
+     <li class="widget widget_sp_image" id="widget_sp_image-10">
+      <h2 class="widgettitle">
+       eBanking Best Practices
+      </h2>
+      <a class="widget_sp_image-image-link" href="https://krebsonsecurity.com/online-banking-best-practices-for-businesses/" target="_blank" title="eBanking Best Practices">
+       <img alt="eBanking Best Practices" class="attachment-medium aligncenter" height="213" sizes="(max-width: 285px) 100vw, 285px" src="https://krebsonsecurity.com/wp-content/uploads/2013/04/robotrobkb-285x213.jpg" srcset="https://krebsonsecurity.com/wp-content/uploads/2013/04/robotrobkb-285x213.jpg 285w, https://krebsonsecurity.com/wp-content/uploads/2013/04/robotrobkb.jpg 400w" style="max-width: 100%;" width="285"/>
+      </a>
+      <div class="widget_sp_image-description">
+       <p>
+        eBanking Best Practices for Businesses
+       </p>
+      </div>
+     </li>
+     <li class="widget widget_most_popular_posts" id="most_popular_posts-3">
+      <h2 class="widgettitle">
+       Most Popular Posts
+      </h2>
+      <ul>
+       <li>
+        <a href="https://krebsonsecurity.com/2018/07/sextortion-scam-uses-recipients-hacked-passwords/">
+         Sextortion Scam Uses Recipient's Hacked Passwords
+        </a>
+        (1076)
+       </li>
+       <li>
+        <a href="https://krebsonsecurity.com/2015/07/online-cheating-site-ashleymadison-hacked/">
+         Online Cheating Site AshleyMadison Hacked
+        </a>
+        (798)
+       </li>
+       <li>
+        <a href="https://krebsonsecurity.com/2013/12/sources-target-investigating-data-breach/">
+         Sources: Target Investigating Data Breach
+        </a>
+        (620)
+       </li>
+       <li>
+        <a href="https://krebsonsecurity.com/2020/11/trump-fires-security-chief-christopher-krebs/">
+         Trump Fires Security Chief Christopher Krebs
+        </a>
+        (534)
+       </li>
+       <li>
+        <a href="https://krebsonsecurity.com/2013/12/cards-stolen-in-target-breach-flood-underground-markets/">
+         Cards Stolen in Target Breach Flood Underground Markets
+        </a>
+        (445)
+       </li>
+       <li>
+        <a href="https://krebsonsecurity.com/2013/05/reports-liberty-reserve-founder-arrested-site-shuttered/">
+         Reports: Liberty Reserve Founder Arrested, Site Shuttered
+        </a>
+        (416)
+       </li>
+       <li>
+        <a href="https://krebsonsecurity.com/2015/08/was-the-ashley-madison-database-leaked/">
+         Was the Ashley Madison Database Leaked?
+        </a>
+        (376)
+       </li>
+       <li>
+        <a href="https://krebsonsecurity.com/2021/01/ddos-guard-to-forfeit-internet-space-occupied-by-parler/">
+         DDoS-Guard To Forfeit Internet Space Occupied by Parler
+        </a>
+        (374)
+       </li>
+       <li>
+        <a href="https://krebsonsecurity.com/2014/05/true-goodbye-using-truecrypt-is-not-secure/">
+         True Goodbye: 'Using TrueCrypt Is Not Secure'
+        </a>
+        (363)
+       </li>
+       <li>
+        <a href="https://krebsonsecurity.com/2015/08/who-hacked-ashley-madison/">
+         Who Hacked Ashley Madison?
+        </a>
+        (361)
+       </li>
+      </ul>
+     </li>
+     <li class="widget widget_sp_image" id="widget_sp_image-11">
+      <h2 class="widgettitle">
+       Category: Web Fraud 2.0
+      </h2>
+      <a class="widget_sp_image-image-link" href="https://krebsonsecurity.com/category/web-fraud-2-0/" target="_blank" title="Category: Web Fraud 2.0">
+       <img alt="Criminnovations" class="attachment-medium aligncenter" height="400" src="https://krebsonsecurity.com/wp-content/uploads/2013/11/cybercrimeinnovations-227x400.png" style="max-width: 100%;" width="227"/>
+      </a>
+      <div class="widget_sp_image-description">
+       <p>
+        Innovations from the Underground
+       </p>
+      </div>
+     </li>
+     <li class="widget widget_sp_image" id="widget_sp_image-12">
+      <a class="widget_sp_image-image-link" href="https://krebsonsecurity.com/2014/03/are-credit-monitoring-services-worth-it/" target="_blank">
+       <img class="attachment-medium aligncenter" height="189" sizes="(max-width: 285px) 100vw, 285px" src="https://krebsonsecurity.com/wp-content/uploads/2014/03/shreddedID-copy-285x189.png" srcset="https://krebsonsecurity.com/wp-content/uploads/2014/03/shreddedID-copy-285x189.png 285w, https://krebsonsecurity.com/wp-content/uploads/2014/03/shreddedID-copy-600x399.png 600w, https://krebsonsecurity.com/wp-content/uploads/2014/03/shreddedID-copy.png 849w" style="max-width: 100%;" width="285"/>
+      </a>
+      <div class="widget_sp_image-description">
+       <p>
+        ID Protection Services Examined
+       </p>
+      </div>
+     </li>
+     <li class="widget widget_sp_image" id="widget_sp_image-13">
+      <h2 class="widgettitle">
+       Is Antivirus Dead?
+      </h2>
+      <a class="widget_sp_image-image-link" href="https://krebsonsecurity.com/2014/05/antivirus-is-dead-long-live-antivirus/" target="_blank" title="Is Antivirus Dead?">
+       <img alt="Is Antivirus Dead?" class="attachment-medium aligncenter" height="161" sizes="(max-width: 285px) 100vw, 285px" src="https://krebsonsecurity.com/wp-content/uploads/2014/05/cryptservices-285x161.png" srcset="https://krebsonsecurity.com/wp-content/uploads/2014/05/cryptservices-285x161.png 285w, https://krebsonsecurity.com/wp-content/uploads/2014/05/cryptservices-600x339.png 600w, https://krebsonsecurity.com/wp-content/uploads/2014/05/cryptservices.png 945w" style="max-width: 100%;" width="285"/>
+      </a>
+      <div class="widget_sp_image-description">
+       <p>
+        The reasons for its decline
+       </p>
+      </div>
+     </li>
+     <li class="widget widget_sp_image" id="widget_sp_image-14">
+      <h2 class="widgettitle">
+       The Growing Tax Fraud Menace
+      </h2>
+      <a class="widget_sp_image-image-link" href="https://krebsonsecurity.com/category/tax-refund-fraud/" target="_blank" title="The Growing Tax Fraud Menace">
+       <img alt="The Growing Tax Fraud Menace" class="attachment-medium aligncenter" height="285" sizes="(max-width: 285px) 100vw, 285px" src="https://krebsonsecurity.com/wp-content/uploads/2014/04/taxfraud-285x285.jpg" srcset="https://krebsonsecurity.com/wp-content/uploads/2014/04/taxfraud-285x285.jpg 285w, https://krebsonsecurity.com/wp-content/uploads/2014/04/taxfraud-150x150.jpg 150w, https://krebsonsecurity.com/wp-content/uploads/2014/04/taxfraud-600x600.jpg 600w, https://krebsonsecurity.com/wp-content/uploads/2014/04/taxfraud.jpg 693w" style="max-width: 100%;" width="285"/>
+      </a>
+      <div class="widget_sp_image-description">
+       <p>
+        File 'em Before the Bad Guys Can
+       </p>
+      </div>
+     </li>
+     <li class="widget widget_sp_image" id="widget_sp_image-17">
+      <h2 class="widgettitle">
+       Inside a Carding Shop
+      </h2>
+      <a class="widget_sp_image-image-link" href="https://krebsonsecurity.com/2014/06/peek-inside-a-professional-carding-shop/" target="_blank" title="Inside a Carding Shop">
+       <img alt="Inside a Carding Shop" class="attachment-medium aligncenter" height="340" src="https://krebsonsecurity.com/wp-content/uploads/2014/06/mcdumpalsjoined.png" style="max-width: 100%;" width="194"/>
+      </a>
+      <div class="widget_sp_image-description">
+       <p>
+        A crash course in carding.
+       </p>
+      </div>
+     </li>
+     <li class="widget widget_sp_image" id="widget_sp_image-18">
+      <h2 class="widgettitle">
+       Beware Social Security Fraud
+      </h2>
+      <a class="widget_sp_image-image-link" href="https://krebsonsecurity.com/2013/09/crooks-hijack-retirement-funds-via-ssa-portal/" target="_blank" title="Beware Social Security Fraud">
+       <img alt="Beware Social Security Fraud" class="attachment-full aligncenter" height="293" src="https://krebsonsecurity.com/wp-content/uploads/2016/09/myssn-285x293.png" style="max-width: 100%;" width="285"/>
+      </a>
+      <div class="widget_sp_image-description">
+       <p>
+        Sign up, or Be Signed Up!
+       </p>
+      </div>
+     </li>
+     <li class="widget widget_sp_image" id="widget_sp_image-2">
+      <h2 class="widgettitle">
+       How Was Your Card Stolen?
+      </h2>
+      <a class="widget_sp_image-image-link" href="https://krebsonsecurity.com/2015/01/how-was-your-credit-card-stolen/" target="_blank" title="How Was Your Card Stolen?">
+       <img alt="How Was Your Card Stolen?" class="attachment-full aligncenter" height="285" sizes="(max-width: 285px) 100vw, 285px" src="https://krebsonsecurity.com/wp-content/uploads/2016/09/carddominoes-285x285.jpg" srcset="https://krebsonsecurity.com/wp-content/uploads/2016/09/carddominoes-285x285.jpg 285w, https://krebsonsecurity.com/wp-content/uploads/2016/09/carddominoes-285x285-150x150.jpg 150w" style="max-width: 100%;" width="285"/>
+      </a>
+      <div class="widget_sp_image-description">
+       <p>
+        Finding out is not so easy.
+       </p>
+      </div>
+     </li>
+     <li class="widget widget_sp_image" id="widget_sp_image-22">
+      <h2 class="widgettitle">
+       Krebs’s 3 Rules…
+      </h2>
+      <a class="widget_sp_image-image-link" href="https://krebsonsecurity.com/2011/05/krebss-3-basic-rules-for-online-safety/" target="_blank" title="Krebs’s 3 Rules…">
+       <img alt="Krebs’s 3 Rules…" class="attachment-medium aligncenter" height="300" sizes="(max-width: 300px) 100vw, 300px" src="https://krebsonsecurity.com/wp-content/uploads/2011/05/three-300x300.jpg" srcset="https://krebsonsecurity.com/wp-content/uploads/2011/05/three-300x300.jpg 300w, https://krebsonsecurity.com/wp-content/uploads/2011/05/three-150x150.jpg 150w, https://krebsonsecurity.com/wp-content/uploads/2011/05/three.jpg 347w" style="max-width: 100%;" width="300"/>
+      </a>
+      <div class="widget_sp_image-description">
+       <p>
+        ...For Online Safety.
+       </p>
+      </div>
+     </li>
+    </ul>
+   </div>
+   <hr/>
+   <div class="grid_16" id="footer">
+    <p>
+     © 2021 Krebs on Security. 
+		 Powered by
+     <a href="http://wordpress.org/">
+      WordPress
+     </a>
+     .
+     <a href="http://krebsonsecurity.com/wp-content/uploads/2010/04/kospp.pdf">
+      Privacy Policy
+     </a>
+    </p>
+   </div>
+  </div>
+  <script id="wp-embed-js" src="https://krebsonsecurity.com/wp-includes/js/wp-embed.min.js?ver=5.6.2" type="text/javascript">
+  </script>
+  <!-- Piwik 
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(["trackPageView"]);
+  _paq.push(["enableLinkTracking"]);
+
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://s.krebsonsecurity.com/";
+    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+    _paq.push(["setSiteId", "1"]);
+    var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+    g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+  End Piwik Code -->
+  <script type="text/javascript">
+   var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "https://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+   try {
+var pageTracker = _gat._getTracker("UA-12214465-1");
+pageTracker._trackPageview();
+} catch(err) {}
+  </script>
+ </body>
+</html>

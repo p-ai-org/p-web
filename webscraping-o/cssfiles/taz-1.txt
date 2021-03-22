@@ -1,0 +1,256 @@
+/* cascade of what and waht not to display */
+body &gt; * { display:none; }
+body &gt; #background { display:block; } 
+body &gt; #background &gt; * { display:none; } 
+body &gt; #background &gt; #centered { display:block; width:auto; padding:0;} 
+body &gt; #background &gt; #centered &gt; * { display:none; } 
+body &gt; #background &gt; #centered &gt; #pages { display:block; } 
+body &gt; #background &gt; #centered &gt; #pages &gt; * { display:none; } 
+body &gt; #background &gt; #centered &gt; #pages &gt; div.page,
+body &gt; #background &gt; #centered &gt; #pages &gt; div.insert { display:block; } 
+body &gt; #background &gt; #centered &gt; #pages &gt; div.page &gt; * { display:none; }
+body &gt; #background &gt; #centered &gt; #pages &gt; div.page &gt; span.body { display:block; padding-top:0px; min-height:auto !important; }
+body &gt; #background &gt; #centered &gt; #pages &gt; div.page &gt; span.body &gt; * { display:none;}
+/* fallback for different site structure in Kultur/ Buch */
+body &gt; #background &gt; #centered &gt; #pages &gt; div.page &gt; span.body &gt; .rack { display:block;}
+body &gt; #background &gt; #centered &gt; #pages &gt; div.page &gt; span.body &gt; .rack &gt; * { display:none;}
+
+body &gt; #background &gt; #centered &gt; #pages &gt; div.page &gt; span.body    div.sect { display:block; padding:0px;} 
+body &gt; #background &gt; #centered &gt; #pages &gt; div.page &gt; span.body &gt;  div.sect &gt; * { display:none; } 
+body &gt; #background &gt; #centered &gt; #pages &gt; div.page &gt; span.body &gt;  div.sect &gt; .sectbody { display:block; box-shadow: none; padding:0;} 
+
+/* fallback for different site structure in Kultur/ Buch */
+body &gt; #background &gt; #centered &gt; #pages &gt; div.page &gt; span.body &gt; .rack &gt;  div.sect &gt; * { display:none; } 
+body &gt; #background &gt; #centered &gt; #pages &gt; div.page &gt; span.body &gt; .rack &gt;  div.sect &gt; .sectbody { display:block; box-shadow: none; padding:0;} 
+
+body &gt; #background &gt; #centered &gt; #pages &gt; div.page &gt; span.body  div.sect &gt; .sectbody::before { display:none;} 
+body &gt; #background &gt; #centered &gt; #pages &gt; div.page &gt; span.body  div.sect &gt; .directory { display:block; box-shadow: none; padding:0;} 
+
+/* don't print comments */
+body &gt; #background &gt; #centered &gt; #pages &gt; div.page.community { display:none; }
+
+/* don't tear articles in lists apart */
+body &gt; #background &gt; #centered &gt; #pages &gt; div.page &gt; span.body  div.sect &gt; .directory &gt; li { page-break-inside: avoid; }
+
+
+/* rules for longread */
+body.js #pages &gt; .news.article.page &gt; .body &gt; .main &gt; .longread, 
+#pages &gt; .longread &gt; .body, #pages &gt; .full.page.longread &gt; .body,
+.body &gt; .main &gt; .longread &gt; article.sectbody &gt; .secthead &gt; p.intro {
+	width: 100% !important;	
+	margin-left: 0 !important;
+	margin-right: 0 !important;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+.body &gt;.main &gt;.longread .headlineWrapper {
+	/* no text on image */
+	height: auto;
+	bottom: 0;
+}
+.body &gt; .main &gt; .longread &gt; article.sectbody &gt; .secthead &gt; a.full.picture:first-of-type::after {
+	/* no gradient on image */
+	content: none;
+}
+.body &gt; .main &gt; .longread .sectbody &gt; h6, .sect_article.longread ~ .sect_text.tziBottom h6, .body &gt; .main &gt; .longread &gt; article.sectbody .sect:not(.sect_text) &gt; .secthead &gt; h2 {
+	width: 60% !important;
+	margin-left: 20% !important;
+	margin-right: 20% !important;
+}
+.body &gt;.main &gt;.longread .sect_galleries,
+#pages.news &gt;.longread &gt; .body &gt;*
+ {
+	display: none !important;
+} 
+#pages.news &gt;.longread &gt; .body &gt;.main {
+	display: block !important;
+
+}
+
+.body &gt; .main &gt; .longread &gt; article.sectbody &gt; .secthead &gt; a.full.picture:first-of-type + p.caption {
+	top: 338px !important;
+}
+/* end rules for longread */
+
+body &gt; #background &gt; #centered &gt; #pages &gt; div.longread.article.page &gt; span.body &gt; div.main.rack &gt; div.sect_article.longread &gt; article {
+	-webkit-transform: scale(0.9);
+	-ms-transform: scale(0.9);
+		transform: scale(0.9);
+	transform-origin: top;
+}
+	
+
+
+/* reset dimensions of the main content */
+.body .sect_article &gt; .sectbody &gt; p.article, 
+.body .sect_article &gt; .sectbody &gt; h6 {
+	width:auto !important;
+	height:auto;
+	padding-left:15px; 
+	padding-right:15px;
+	margin-left: 0px !important; 
+	margin-bottom:10px;
+	float:none;
+	position:static;
+	widows:3;
+	orphans:3;
+/*	page-break-inside: avoid; */
+}
+
+/* Intro nicht in die rechte Spalte schieben */
+.sect &gt; .sectbody &gt; p.intro {
+	width: auto;
+	height:auto;
+}
+
+/* Links in articles  */
+.sect &gt; .sectbody &gt; p.article &gt; a:after {
+	content: " [https://taz.de/!" attr(href)"]";
+	color:#d50d2e;
+	font-size:75%;
+	word-wrap: break-word;
+}
+
+.sect &gt; .sectbody &gt; p.article &gt; a[href^='//']:after {
+	content: " [ https:" attr(href) "]";
+}
+
+.sect &gt; .sectbody &gt; p.article &gt; a[href^='http://']:after,
+.sect &gt; .sectbody &gt; p.article &gt; a[href^='https://']:after {
+	content: " [" attr(href) "]";
+}
+/* don't pull pictures, racks and captions apart */
+.body .sect_article &gt; .sectbody &gt; a.picture,
+.body .sect_article &gt; .sectbody &gt; .rack,
+.body .sect_article &gt; .sectbody &gt; .caption {
+	margin-right: 24px;
+	page-break-inside: avoid;
+}
+
+/* don't pull picture and their caption apart */
+.sect_article &gt; .sectbody &gt; a.picture + .caption {
+	page-break-before: avoid;
+}
+
+body &gt; #background &gt; #centered &gt; #pages &gt; div.page &gt; div.float  { 
+	display:block; 
+	position:static !important; 
+	height:auto !important; 
+	width:auto !important; 
+	margin-top:15px;
+}
+ 
+body &gt; #background &gt; #centered &gt; #pages &gt; div.page &gt; div.float::before { 
+	display:none; 
+}
+
+body &gt; #background &gt; #centered &gt; #pages &gt; div.page &gt; div.float &gt; div.rightbar {
+	display:block; 
+	position:static !important;
+	height:auto !important;
+	width:auto; 
+} 
+
+
+body &gt; #background &gt; #centered &gt; #pages &gt; div.page div.nose,
+body &gt; #background &gt; #centered &gt; #pages &gt; div.page span.wing {
+	display:none;
+}
+	
+body &gt; #background &gt; #centered &gt; #pages &gt; div.page span.wing[role='contentinfo'] {
+	display:block; 
+	padding-top:0px; 
+	width:auto;
+} 
+
+/* Artikel Meta Daten  nie trennen */
+body &gt; #background &gt; #centered &gt; #pages &gt; div.page span.wing[role='contentinfo'] &gt; .rack {
+	page-break-inside:avoid;
+	border-width:0;
+}
+
+/* aber "aktuelle ausgabe der taz" ausblenden  */
+body &gt; #background &gt; #centered &gt; #pages &gt; div.page span.wing[role='contentinfo'] &gt; .rack &gt; * {
+	display:none !important; 
+}
+body &gt; #background &gt; #centered &gt; #pages &gt; div.page span.wing[role='contentinfo'] &gt; .rack &gt; .sect_meta, 
+body &gt; #background &gt; #centered &gt; #pages &gt; div.page span.wing[role='contentinfo'] &gt; .rack &gt; .sect_profile,
+body &gt; #background &gt; #centered &gt; #pages &gt; div.page span.wing[role='contentinfo'] &gt; .rack &gt; .sect_profile-descr,
+body &gt; #background &gt; #centered &gt; #pages &gt; div.page span.wing[role='contentinfo'] &gt; .rack &gt; .sect_tags {
+	display:block !important;
+}
+
+/* PDF und Interred Links wenn vorhanden ausblenden */
+body &gt; #background &gt; #centered &gt; #pages &gt; div.page span.wing[role='contentinfo'] &gt; .rack &gt; .print-length &gt; .sectbody &gt; ul.right.toolbar {
+	visibility:hidden;
+}
+
+/* forms? where we go we need no forms */
+form, form[style] {
+	display:none !important;
+}
+/* no tzi */
+#tzi-shackle, #tzi-shackle[style] {
+	display:none !important;
+}
+/* no ads */
+iframe, iframe[style] {
+	display:none !important;
+}
+
+/* don't scale images beyond page */
+img {
+	max-width: 100%;
+}
+/* Hintergrund wird nicht gedruckt, also zussätzlich unterstreichung */
+mark {
+	border-bottom:1px solid #ee4;
+}
+
+/* 
+  Versuch: Links im directory 
+  Es fehlen aber einige spezialfälle
+ */
+ul.directory li a.objlink {
+	padding-bottom:15px !important;
+}
+ul.directory li a.pictured {
+	min-height:auto !important;
+}
+ul.directory li a.objlink.leaded p {
+	padding-bottom:0px;
+}
+
+ul.directory li ul.teaserstuff {
+	margin-top:15px;
+}
+
+ul.directory li a.objlink::after {
+	/*content: "http://taz.de" attr(href); */
+	content: "http://taz.de/!" attr(ratiourl-ressource);
+	color:#d50d2e;
+	background-color:#fff;
+	word-wrap: break-word;
+	clear:both;
+	height:auto;
+	position:absolute;
+	left:0px;
+	bottom:0px;
+	font-size:75%;
+	border-width:0;
+	width:auto;
+	
+}
+ul.directory li a.objlink[href^='http:']::after,
+ul.directory li a.objlink[href^='https:']::after {
+	content: attr(href);
+}
+
+.sect_article.longread &gt; article.sectbody &gt; .secthead &gt; .headlineWrapper &gt; h4,
+.sect_article.longread &gt; article.sectbody &gt; .secthead &gt; .headlineWrapper &gt; h1 {
+	text-align: center;
+}
+
+
+

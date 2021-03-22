@@ -1,0 +1,5453 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en" prefix="lc: http://loc.gov/#">
+ <head>
+  <meta content="The Library of Congress is the nation's oldest federal cultural institution, and it serves as the research arm of Congress. It is also the largest library in the world, with more than 162 million items. The collections include books, sound recordings, motion pictures, photographs, maps, and manuscripts." name="description"/>
+  <meta content="http://www.loc.gov/" name="dc.identifier"/>
+  <meta href="http://loc.gov/" rel="canonical"/>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width,initial-scale=1" name="viewport"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <meta content="$Revision$" name="version"/>
+  <meta content="5C89FB9D99590AB2F55BD95C3A59BD81" name="msvalidate.01"/>
+  <link href="http://purl.org/dc/elements/1.1/" rel="schema.dc" title="schema(DC)"/>
+  <meta content="eng" name="dc.language"/>
+  <meta content="Library of Congress, Washington, D.C. 20540 USA" name="dc.source"/>
+  <meta content="libraryofcongress" property="fb:admins"/>
+  <meta content="The Library of Congress" property="og:site_name"/>
+  <meta content="article" property="og:type"/>
+  <meta content="librarycongress" property="twitter:site"/>
+  <title>
+   Home | Library of Congress
+  </title>
+  <meta content="Home | Library of Congress " name="dc.title"/>
+  <meta content="Home | Library of Congress " property="og:title"/>
+  <meta content="The world’s largest library. View historic photos, maps, books and more. Contact experts for help with research. Plan a visit. Home of U.S. Copyright Office." name="description"/>
+  <meta content="The world’s largest library. View historic photos, maps, books and more. Contact experts for help with research. Plan a visit. Home of U.S. Copyright Office." property="og:description"/>
+  <meta content="Text is U.S. Government Work" name="dc.rights"/>
+  <link href="http://www.loc.gov/text-us-government-work" rel="dc.rights" title="Rights Restriction"/>
+  <meta content="web page" name="dc.type"/>
+  <meta content="http://www.loc.gov/static/images/favicons/open-graph-logo.png" property="og:image"/>
+  <meta content="https://www.loc.gov/static/images/favicons/open-graph-logo.png" property="og:image:secure_url"/>
+  <meta content="1200" property="og:image:width"/>
+  <meta content="630" property="og:image:height"/>
+  <link href="/static/stylesheets/base.css" rel="stylesheet" type="text/css"/>
+  <script src="https://assets.adobedtm.com/dac62e20b491e735c6b56e64c39134d8ee93f9cf/satelliteLib-6b47f831c184878d7338d4683ecf773a17973bb9.js">
+  </script>
+  <script src="/static/js/lib/jquery-1.8.2.js" type="text/javascript">
+  </script>
+  <script type="text/javascript">
+   /**
+ * Timing.js 1.0.4
+ * Copyright 2015 Addy Osmani
+ */
+(function(window) {
+    'use strict';
+
+    /**
+     * Navigation Timing API helpers
+     * timing.getTimes();
+     **/
+    window.timing = window.timing || {
+        /**
+         * Outputs extended measurements using Navigation Timing API
+         * @param  Object opts Options (simple (bool) - opts out of full data view)
+         * @return Object      measurements
+         */
+        getTimes: function(opts) {
+            var performance = window.performance || window.webkitPerformance || window.msPerformance || window.mozPerformance;
+
+            if (performance === undefined) {
+                return false;
+            }
+
+            var timing = performance.timing;
+            var api = {};
+            opts = opts || {};
+
+            if (timing) {
+                if(opts && !opts.simple) {
+                    for (var k in timing) {
+                        // hasOwnProperty does not work because properties are
+                        // added by modifying the object prototype
+                        if(isNumeric(timing[k])) {
+                            api[k] = parseFloat(timing[k]);
+                        }
+                    }
+                }
+
+
+                // Time to first paint
+                if (api.firstPaint === undefined) {
+                    // All times are relative times to the start time within the
+                    // same objects
+                    var firstPaint = 0;
+
+                    // Chrome
+                    if (window.chrome && window.chrome.loadTimes) {
+                        // Convert to ms
+                        firstPaint = window.chrome.loadTimes().firstPaintTime * 1000;
+                        api.firstPaintTime = firstPaint - (window.chrome.loadTimes().startLoadTime*1000);
+                    }
+                    // IE
+                    else if (typeof window.performance.timing.msFirstPaint === 'number') {
+                        firstPaint = window.performance.timing.msFirstPaint;
+                        api.firstPaintTime = firstPaint - window.performance.timing.navigationStart;
+                    }
+                    // Firefox
+                    // This will use the first times after MozAfterPaint fires
+                    //else if (window.performance.timing.navigationStart && typeof InstallTrigger !== 'undefined') {
+                    //    api.firstPaint = window.performance.timing.navigationStart;
+                    //    api.firstPaintTime = mozFirstPaintTime - window.performance.timing.navigationStart;
+                    //}
+                    if (opts && !opts.simple) {
+                        api.firstPaint = firstPaint;
+                    }
+                }
+
+                // Total time from start to load
+                api.loadTime = timing.loadEventEnd - timing.fetchStart;
+                // Time spent constructing the DOM tree
+                api.domReadyTime = timing.domComplete - timing.domInteractive;
+                // Time consumed preparing the new page
+                api.readyStart = timing.fetchStart - timing.navigationStart;
+                // Time spent during redirection
+                api.redirectTime = timing.redirectEnd - timing.redirectStart;
+                // AppCache
+                api.appcacheTime = timing.domainLookupStart - timing.fetchStart;
+                // Time spent unloading documents
+                api.unloadEventTime = timing.unloadEventEnd - timing.unloadEventStart;
+                // DNS query time
+                api.lookupDomainTime = timing.domainLookupEnd - timing.domainLookupStart;
+                // TCP connection time
+                api.connectTime = timing.connectEnd - timing.connectStart;
+                // Time spent during the request
+                api.requestTime = timing.responseEnd - timing.requestStart;
+                // Request to completion of the DOM loading
+                api.initDomTreeTime = timing.domInteractive - timing.responseEnd;
+                // Load event time
+                api.loadEventTime = timing.loadEventEnd - timing.loadEventStart;
+            }
+
+            return api;
+        },
+        /**
+         * Uses console.table() to print a complete table of timing information
+         * @param  Object opts Options (simple (bool) - opts out of full data view)
+         */
+        printTable: function(opts) {
+            var table = {};
+            var data  = this.getTimes(opts) || {};
+            Object.keys(data).sort().forEach(function(k) {
+                table[k] = {
+                    ms: data[k],
+                    s: +((data[k] / 1000).toFixed(2))
+                };
+            });
+            console.table(table);
+        },
+        /**
+         * Uses console.table() to print a summary table of timing information
+         */
+        printSimpleTable: function() {
+            this.printTable({simple: true});
+        }
+    };
+
+    function isNumeric(n) {
+        return !isNaN(parseFloat(n)) && isFinite(n);
+    }
+
+    // Expose as a commonjs module
+    if (typeof module !== 'undefined' && module.exports) {
+        module.exports = window.timing;
+    }
+
+})(typeof window !== 'undefined' ? window : {});
+;;
+  </script>
+  <script type="text/javascript">
+   // Stub window.loc_ux_tracking so we dont have to riddle the pages
+// with if(window.loc_ux_tracking) everywhere.  Also create an alias
+// `UX`
+jQuery(function($){
+    if(!window.loc_ux_tracking){
+        window.loc_ux_tracking = {
+            trackFileDownloadEvent: function(){},
+            trackUserInteractionEvent: function(){},
+            trackUserInterfaceAction: function(){},
+        }
+    }
+    window.UX = window.loc_ux_tracking;
+    UX.download = UX.trackFileDownloadEvent;
+    UX.interaction = UX.trackUserInteractionEvent;
+    UX.interface = UX.trackUserInterfaceAction;
+
+    function getMediaPosition(player) {
+        /*
+         * To support the two media players (JW Player and mediaElement) a facade function
+         * wwas created in order to get the current position in a video.
+         *
+         * getMediaPosition() returns the current position in the video.
+         * @param {playerObject} player
+         * @return {currentPosition} number
+         */
+        switch(player.type) {
+            case 'jwPlayer': {
+                return player.getPosition();
+            }
+            case 'mediaElement': {
+                return player.getCurrentTime();
+            }
+        }
+        return null;
+    }
+
+
+    function getMediaDuration(player) {
+        /*
+         * To support the two media players (JW Player and mediaElement) a facade function
+         * wwas created in order to get the length of a video.
+         *
+         * getMediaPosition() returns the length of the video.
+         * @param {playerObject} player
+         * @return {currentPosition} number
+         */
+        switch(player.type) {
+            case 'jwPlayer': {
+                return player.getDuration();
+            }
+            case 'mediaElement': {
+                return player.duration;
+            }
+        }
+        return null;
+    }
+
+    /*
+    function mediaPlayerInterface(player, playerType) {
+        // given the media player type, this function will modify the objects such that the methods
+        // called in track_player are the same for both jwPlayer and mediaElement
+        switch(playerType) {
+            case 'jwPlayer': {
+                // Want to mimic the jwPlayers functions so if jwPlayer do nothing
+                break;
+            }
+            case 'mediaElement': {
+                player.getPosition = function() {
+                    return player.getCurrentTime();
+                }
+
+                player.getDuration = function() {
+                    return player.duration;
+                }
+                break;
+            }
+        }
+        return player;
+    }
+    */
+
+    // Register calls to Adobe for metrics tracking
+    $.omniture = UX.track_player = function(player, playerType, shortName, isVideo) {
+
+        player.type = playerType;
+        var eventData = {
+            player: player,
+            shortName: shortName
+        };
+        eventData.mediaType = isVideo ? 'video' : 'audio';
+
+
+        switch(playerType) {
+            case 'jwPlayer': {
+                player.on('pause', function(event) {handleMediaEvent(event, eventData)}, this);
+                player.on('buffer', function(event) {handleMediaEvent(event, eventData)}, this);
+                player.on('idle', function(event) {handleMediaEvent(event, eventData)}, this);
+                player.on('complete', function(event) {handleMediaEvent(event, eventData)}, this);
+                player.on('play', function(event) {handleMediaEvent(event, eventData)}, this);
+                player.on('seeked', function(event) {handleMediaEvent(event, eventData)}, this);
+                player.on('seeking', function(event) {handleMediaEvent(event, eventData)}, this);
+                break;
+            }
+            case 'mediaElement': {
+                player.addEventListener('pause', function(event) {handleMediaEvent(event, eventData)}, this);
+                player.addEventListener('buffer', function(event) {handleMediaEvent(event, eventData)}, this);
+                player.addEventListener('idle', function(event) {handleMediaEvent(event, eventData)}, this);
+                player.addEventListener('ended', function(event) {handleMediaEvent(event, eventData)}, this);
+                player.addEventListener('play', function(event) {handleMediaEvent(event, eventData)}, this);
+                player.addEventListener('seeked', function(event) {handleMediaEvent(event, eventData)}, this);
+                player.addEventListener('seeking', function(event) {handleMediaEvent(event, eventData)}, this);
+                break;
+            }
+            default:
+                break;
+        }
+
+    };
+
+    //Handle various media events and send data to Adobe. This also sends data to the legacy locjukebox reporting suite
+    function handleMediaEvent(event, eventData) {
+        if (typeof s != "undefined") {
+            var player = eventData.player;
+            var mediaName = eventData.shortName;
+            var mediaType = eventData.mediaType;
+            var mediaPlayerName = "LOC JW Player";
+            var mediaOffset = 0;
+            var legacyTracking = s_gi('locjukebox');
+
+            legacyTracking.trackingServer = s.trackingServerSecure;
+            legacyTracking.prop4 = mediaName;
+
+            if (getMediaPosition(player) > 0) {
+                mediaOffset = Math.floor(getMediaPosition(player));
+            }
+
+            switch (event.type) {
+                case 'play':
+                    if (mediaOffset == 0) {
+                        setTimeout(function() {
+                            s.Media.open(mediaName, getMediaDuration(player), mediaPlayerName);
+                            s.Media.play(mediaName, mediaOffset);
+                            legacyTracking.prop8 = "[Button Click] - Start " + mediaType;
+                            legacyTracking.tl();
+                            console.log('play event fired off');
+                        }, 500);
+                    }
+                    else {
+                        s.Media.play(mediaName, mediaOffset);
+                        legacyTracking.prop8 = "[Button Click] - Resume " + mediaType;
+                        legacyTracking.tl();
+                    }
+                    break;
+
+                case 'seeked':
+                    s.Media.stop(mediaName, mediaOffset);
+                    s.Media.play(mediaName, mediaOffset);
+                    legacyTracking.prop8 = "[Scrub] - Specific Point in " + mediaType + " Clip";
+                    legacyTracking.tl();
+                    console.log('seek event fired off');
+                    break;
+
+                case 'pause':
+                    s.Media.stop(mediaName, mediaOffset);
+                    legacyTracking.prop8 = "[Button Click] - Pause " + mediaType;
+                    legacyTracking.tl();
+                    console.log('pause event fired off');
+                    break;
+
+                case 'seeking':
+                    s.Media.stop(mediaName, mediaOffset);
+                    console.log('seeking event fired off');
+                    break;
+
+                case 'buffer':
+                case 'idle':
+                    break;
+
+                case 'ended':
+                case 'complete':
+                    s.Media.stop(mediaName, mediaOffset);
+                    s.Media.close(mediaName);
+                    mediaOffset = 0;
+                    legacyTracking.prop8 = "[End Clip] - " + mediaType;
+                    legacyTracking.tl();
+                    break;
+            }
+        }
+    }
+});
+
+// General analytics properties.  Adobe will inspect the global scope
+// and execute this function if it finds it.
+var doPageMetricsPlugin = function(s){
+
+    // window.UX = window.loc_ux_tracking;  // This resets the UX object removing track_player causing a bug for the video player
+    UX.download = UX.trackFileDownloadEvent;
+    UX.interaction = UX.trackUserInteractionEvent;
+    UX.interface = UX.trackUserInterfaceAction;
+
+    /* application title: prop10 */
+    s.prop10 = "Project One";
+
+    /* error page report */
+    
+
+    s.prop15 = "";
+    s.prop16 = "";
+    s.prop18 = ""; // Start Date
+    s.prop19 = ""; // End Date
+    s.prop20 = false; // Front page only
+    /* page title: prop21 */
+    
+    //Meta is deprecated, but for old portals still exists, so use it first
+        s.prop21 = 'Home';
+    
+    // Basic or Advanced
+    
+        s.prop15 = 'basic';
+    
+    //Start date
+    
+    //End Date
+    
+    //Front page only
+    
+        s.prop20 = false;
+    
+    /* system identifier: prop20 */
+    /*
+    
+    */
+    /* page identifier: prop11 */
+    // metrics item page identifier is unique id plus readable title.  This
+    // needs help getting cleaned up using site_type/site_id/resource/title?
+    // - from item/metrics.html
+    // - from managed_content/metrics.html
+    
+        s.prop11 = '/ - Home';
+    
+
+    //Set title, same across supporting material like about-this-thing, search
+    //results within the set as the content, articles and essays etc.
+    
+
+    s.prop22 = 0.000633955001831;//backend duration
+
+
+    // Assigning specific search options for selected search facets
+    s.prop23 = "";// suggested
+    s.prop24 = "";// digitized
+    s.prop25 = "";// original format
+    s.prop26 = "";// online format
+    s.prop27 = "";// date
+    s.prop28 = "";// part of
+    s.prop29 = "";// contributor
+    s.prop30 = "";// subject
+    s.prop31 = "";// site_id -> picked up by prop62
+    s.prop32 = "";// location
+    s.prop33 = "";// site_type -> picked up by prop61
+    s.prop34 = "";// site_path (options.resource) can be longer than 2 segments
+    s.prop35 = "";// language
+    s.prop36 = "";// results view type
+    
+    s.prop37 = '';// searchIn
+    s.prop38 = "/";// path_info
+    s.prop39 = "";//truncated query string
+    s.prop40 = '';// count
+    s.prop41 = "";// sort
+    s.prop44 = "";// searchTerms
+    s.prop45 = "";
+    s.prop46 = "";// qs-adv-search-kw
+    s.prop47 = '';// startPage
+    s.prop67 = "";// access condition
+
+    /* original format: prop49 */
+    
+    s.prop50 = "";
+    s.prop53 = "";// facetPrefix
+    s.prop54 = "";// fullText
+    s.prop55 = "";// download
+    s.prop56 = ""; // partof_collection
+    s.prop57 = ""; // number_page
+    s.prop60 = 123456789;//release_id
+    s.prop69 = ""; // location_state
+    s.prop70 = ""; //location_county
+    s.prop71 = ""; //language
+    // Combined Facets - yuck, should be deprecated soon
+    // TODO: This means we need a s.prop for "digitized"
+    //       aka "available online".
+    s.prop48 = "Facet[Digitized]-(false) ";
+    /*
+    /* Advanced Search display level */
+    
+        s.prop16 = "None";
+    
+
+    /* Advanced Search Parameter */
+    
+    /* Query String */
+    
+
+    /* Partof Title */
+    
+
+    /* Partof_Division */
+    
+    /* Partof_Collection */
+    
+    /* number_page */
+    
+
+    /* Location country */
+    
+
+    /* Location state */
+    
+
+    /* Language */
+    
+
+    
+
+    return s;
+};
+  </script>
+  <meta content="#ffffff" name="msapplication-TileColor"/>
+  <meta content="ms-icon-144x144.png" name="msapplication-TileImage"/>
+  <link href="https://www.loc.gov/search/opensearch.xml" rel="search" title="Library of Congress Search" type="application/opensearchdescription+xml"/>
+ </head>
+ <body>
+  <div class="" id="body">
+   <a class="skip-nav" href="#skip-to-content">
+    Skip to main content
+   </a>
+   <style>
+    .alert-wrapper {
+  background-color: #D1332E;
+}
+.alert-wrapper .alert-container {
+  max-width: 85.71428571rem;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 2rem;
+  background-color: transparent;
+  box-sizing: border-box;
+  color: #fff;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  overflow: hidden;
+}
+@media (max-width: 768px) {
+  .alert-wrapper .alert-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+.alert-wrapper .alert-container a {
+  color: #fff;
+  text-decoration: underline;
+}
+.alert-wrapper .alert-container a:link {
+  text-decoration: underline;
+}
+.alert-wrapper .alert-container a:visited {
+  text-decoration: underline;
+}
+.alert-wrapper .alert-container a:hover {
+  text-decoration: none;
+}
+.alert-wrapper .alert-container a:focus {
+  text-decoration: none;
+}
+.alert-wrapper .alert-container a:active {
+  text-decoration: underline;
+}
+.alert-wrapper .alert-container .alert-row {
+  display: -webkit-box;
+  /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+  display: -ms-flexbox;
+  /* TWEENER - IE 10 */
+  display: -webkit-flex;
+  /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+  display: -moz-box;
+  display: flex;
+  /* NEW, Spec - Firefox, Chrome, Opera */
+  -webkit-flex-flow: row wrap;
+  flex-flow: row wrap;
+  -webkit-flex-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin: 0 0;
+}
+.alert-wrapper .alert-container .alert-row .alert-content {
+  -webkit-box-flex: 1;
+  /* OLD - iOS 6-, Safari 3.1-6 */
+  -webkit-flex: 1;
+  /* Safari 6.1+. iOS 7.1+, BB10 */
+  -ms-flex: 1;
+  /* IE 10 */
+  -moz-box-flex: 1;
+  flex: 1;
+  /* NEW, Spec - Firefox, Chrome, Opera */
+  min-width: 0;
+  /* firefox fix */
+  margin: 0 0;
+  box-sizing: border-box;
+  line-height: 1.3;
+}
+.alert-wrapper .alert-container .alert-row .alert-content a {
+  text-decoration: underline;
+}
+.alert-wrapper .alert-container .alert-row .alert-button {
+  background-color: transparent;
+  border-color: transparent;
+  color: #0076AD;
+  padding: 0 0 0 1rem;
+  color: #fff;
+  font-size: 18px;
+  line-height: 1;
+  height: 20px;
+}
+.alert-wrapper .alert-container .alert-row .alert-button:hover,
+.alert-wrapper .alert-container .alert-row .alert-button:focus {
+  background-color: transparent;
+  border-color: transparent;
+  color: #002347;
+}
+.alert-wrapper .alert-container .alert-row .alert-button:hover,
+.alert-wrapper .alert-container .alert-row .alert-button:focus {
+  color: #fff;
+}
+.alert-wrapper .alert-container .alert-row .alert-button span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+   </style>
+   <section class="alert-wrapper" role="alertdialog">
+    <div class="alert-container">
+     <div class="alert-row">
+      <div class="alert-content" id="notice">
+       Notice: Limited researcher access to restricted digital resources is available on-site by appointment only. Online services, resources available.
+       <a href="/about/pandemic-information/for-researchers/">
+        More
+       </a>
+       .
+       <br/>
+       Library buildings otherwise closed to the public. Public events on-site canceled until further notice. Virtual events ongoing.
+       <a href="/about/pandemic-information/for-public/">
+        More
+       </a>
+       .
+      </div>
+      <button class="alert-button">
+       <span>
+        Close
+       </span>
+       <i class="icon icon-times">
+       </i>
+      </button>
+     </div>
+    </div>
+   </section>
+   <script>
+    jQuery(function($){
+    $('.alert-button').click(function() {
+        $('.alert-wrapper').hide();
+        UX.interaction($(this), 'Alert Notice', 'Close', '');
+    });
+});
+   </script>
+   <style>
+    .header-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 998;
+  background-color: #000000;
+  /* fallback */
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.header {
+  background-color: #fff;
+  border-top: 4px solid #F05129;
+  border-bottom: 1px solid #BFBFBF;
+  position: relative;
+  z-index: 999;
+}
+.header-container {
+  max-width: 85.71428571rem;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 2rem;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+@media (max-width: 768px) {
+  .header-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+.header-row {
+  display: flex;
+  align-items: center;
+  min-height: 70px;
+}
+@media (min-width: 993px) {
+  .header-row {
+    align-items: flex-end;
+  }
+}
+   </style>
+   <header class="header" role="banner">
+    <div class="header-container">
+     <div class="header-row">
+      <style>
+       .header-logo {
+  width: 161px;
+}
+@media (min-width: 993px) {
+  .header-logo {
+    width: 363px;
+    padding: 25px 0;
+  }
+}
+.header-logo > a {
+  display: block;
+  width: 363px;
+  height: 90px;
+}
+.header-logo > a > img {
+  width: 100%;
+  height: auto;
+}
+.header-logo > a > span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+@media (max-width: 992px) {
+  .header-logo > a {
+    width: 161px;
+    height: 40px;
+  }
+}
+@media print {
+  .header-logo > a {
+    display: none;
+  }
+}
+@media (max-width: 992px) {
+  .header-logo {
+    padding: 0;
+  }
+}
+@media print {
+  .header-logo {
+    padding: 1rem 0;
+    height: 68px;
+    display: block;
+  }
+  .header-logo:after {
+    content: url("/static/images/logo-loc-new-branding.svg?$Revision$");
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+}
+      </style>
+      <script>
+       jQuery(function($) {
+    // UX Interaction Tracking - Logo, Menu, Search, Breadcrumbs
+    $('.header-logo a').live('click', function() {
+        UX.interaction($(this), 'LC Logo', 'Click', '');
+    });
+
+});
+      </script>
+      <div class="header-logo">
+       <a href="/">
+        <img alt="" src="/static/images/logo-loc-new-branding.svg"/>
+        <span>
+         Library of Congress
+        </span>
+       </a>
+      </div>
+      <style>
+       .header-search {
+  flex: 1 1 0%;
+  padding-left: 30px;
+}
+@media (min-width: 993px) {
+  .header-search {
+    padding: 25px 0 25px 210px;
+  }
+}
+.header-search > form {
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid #000;
+  -webkit-transition: all 0.3s ease 0s;
+  -moz-transition: all 0.3s ease 0s;
+  -ms-transition: all 0.3s ease 0s;
+  -o-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+}
+@media (max-width: 768px) {
+  .header-search > form {
+    flex: 1 0 100%;
+  }
+}
+.header-search > form .header-search-formats {
+  position: relative;
+  color: #000;
+  border-bottom: 1px solid #000;
+  flex: 0 0 100%;
+}
+@media (min-width: 481px) {
+  .header-search > form .header-search-formats {
+    flex: none;
+    border: none;
+  }
+}
+.header-search > form .header-search-formats:after {
+  content: "\f107";
+  font-family: FontAwesome;
+  position: absolute;
+  right: 0;
+  top: 0;
+  pointer-events: none;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 6px;
+  font-size: 12px;
+}
+.header-search > form .header-search-formats .header-search-format-select {
+  border: none;
+  height: 30px;
+  width: 100%;
+  padding-right: 20px;
+  box-sizing: border-box;
+  font-size: 12px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  -o-appearance: none;
+  appearance: none;
+}
+@media (max-width: 480px) {
+  .header-search > form .header-search-formats .header-search-format-select {
+    font-size: 16px;
+  }
+}
+.header-search > form .header-search-formats .header-search-format-select::-ms-expand {
+  display: none;
+}
+.header-search > form .header-search-formats .header-search-format-select:hover,
+.header-search > form .header-search-formats .header-search-format-select:focus {
+  box-shadow: inset 0 0 3px #000 !important;
+}
+.header-search > form .header-search-input-wrapper {
+  flex: 1 1 1%;
+  position: relative;
+}
+.header-search > form .header-search-input-wrapper .header-search-input {
+  box-sizing: border-box;
+  width: 100%;
+  border: none;
+  border-left: 1px solid #000;
+  height: 30px;
+  line-height: 30px;
+}
+@media (max-width: 480px) {
+  .header-search > form .header-search-input-wrapper .header-search-input {
+    font-size: 16px;
+    border: none;
+  }
+}
+.header-search > form .header-search-input-wrapper .header-search-input:focus {
+  box-shadow: inset 0 0 3px #808080 !important;
+}
+.header-search > form .header-search-button {
+  height: 30px;
+  font-size: 18px;
+  padding: 0 10px;
+  background-color: #000;
+  border-color: #000;
+}
+.header-search > form .header-search-button > span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+.header-search > form .header-search-button .icon {
+  line-height: inherit;
+}
+@media (max-width: 768px) {
+  .header-search > form {
+    display: none;
+  }
+  .header-search > form.header-search-form-active {
+    display: flex;
+  }
+}
+.header-search .header-search-toggle {
+  display: none;
+  height: 32px;
+  font-size: 1.25rem;
+  padding: 0 10px;
+  background-color: #000;
+  border-color: #000;
+}
+.header-search .header-search-toggle span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+@media (max-width: 768px) {
+  .header-search .header-search-toggle {
+    display: inline-block;
+    float: right;
+  }
+  .header-search .header-search-toggle.header-search-toggle-close {
+    background-color: transparent;
+    border-color: transparent;
+    color: #0076AD;
+    font-size: 36px;
+    color: #F05129;
+    height: auto;
+    flex: none;
+  }
+  .header-search .header-search-toggle.header-search-toggle-close:hover,
+  .header-search .header-search-toggle.header-search-toggle-close:focus {
+    background-color: transparent;
+    border-color: transparent;
+    color: #002347;
+  }
+}
+@media (max-width: 768px) {
+  .header-search {
+    min-height: 32px;
+    box-sizing: border-box;
+    margin: 0 !important;
+  }
+  .header-search.header-search-close {
+    padding: 0 55px 0 1rem !important;
+    z-index: 2;
+    background: #fff;
+    overflow: hidden;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+}
+@media print {
+  .header-search {
+    display: none;
+  }
+}
+/* autocomplete */
+.autocomplete-w1 {
+  position: absolute;
+  top: 1px;
+  left: 0;
+  margin: 0;
+  width: 100% !important;
+  box-sizing: border-box;
+}
+.autocomplete {
+  box-sizing: border-box;
+  border: 1px solid #808080;
+  border-top-color: transparent;
+  background-color: #fff;
+  cursor: default;
+  text-align: left;
+  max-height: 350px;
+  overflow: auto;
+  margin: 0;
+}
+.autocomplete .selected {
+  background: #EFEFEF;
+}
+.autocomplete div {
+  padding: 2px 5px;
+  white-space: nowrap;
+}
+.autocomplete strong {
+  font-weight: normal;
+  color: #0076AD;
+}
+.autocomplete-status {
+  font-weight: normal;
+  font-size: 10px;
+  float: right;
+  text-align: right;
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+}
+      </style>
+      <script>
+       jQuery(function($) {
+    // UX Interaction Tracking - Logo, Menu, Search, Breadcrumbs
+    $('.header-search-format-select').change(function() {
+        var label;
+        $('.header-search-format-select option:selected').each(function() {
+            label = $(this).text().trim();
+        });
+        UX.interaction($(this), 'Search', 'Select Format', label);
+    });
+    // search toggle
+    function searchActive() {
+        $('.header-search > form').addClass('header-search-form-active');
+        $('.header-search .header-search-input').focus();
+        $('.header-search-toggle i').switchClass('icon-search', 'icon-times', 50);
+        $('.header-search-toggle').addClass('header-search-toggle-close');
+        $('.header-search').addClass('header-search-close');
+    };
+    function searchInactive() {
+        $('.header-search > form').removeClass('header-search-form-active');
+        $('.header-search-toggle i').switchClass('icon-times', 'icon-search', 50);
+        $('.header-search-toggle').removeClass('header-search-toggle-close');
+        $('.header-search').removeClass('header-search-close');
+    };
+
+    $('.header-search-toggle').live('click', function() {
+        if ($('.header-search > form').hasClass('header-search-form-active')) {
+            searchInactive();
+            //UX Interaction Tracking
+            UX.interaction($(this), 'Search', 'Hide', '');
+        } else {
+            searchActive();
+            //UX Interaction Tracking
+            UX.interaction($(this), 'Search', 'Show', '');
+        }
+    });
+
+    $(window).on("load resize",function(e){
+        $('.autocomplete-w1').parent().css('width', '100%');
+    });
+
+});
+      </script>
+      <div class="header-search">
+       <label class="test screen-readers-only" for="search">
+        Search
+       </label>
+       <form action="/search/" method="get" role="search">
+        <div class="header-search-formats">
+         <select aria-label="search" class="header-search-format-select" id="searchFormat" name="in">
+          <option value="">
+           Everything
+          </option>
+          <option value="original-format:sound recording">
+           Audio Recordings
+          </option>
+          <option value="original-format:book">
+           Books/Printed Material
+          </option>
+          <option value="original-format:film, video">
+           Films, Videos
+          </option>
+          <option value="original-format:legislation">
+           Legislation
+          </option>
+          <option value="original-format:manuscript/mixed material">
+           Manuscripts/Mixed Material
+          </option>
+          <option value="original-format:map">
+           Maps
+          </option>
+          <option value="original-format:notated music">
+           Notated Music
+          </option>
+          <option value="original-format:newspaper">
+           Newspapers
+          </option>
+          <option value="original-format:periodical">
+           Periodicals
+          </option>
+          <option value="original-format:personal narrative">
+           Personal Narratives
+          </option>
+          <option value="original-format:photo, print, drawing">
+           Photos, Prints, Drawings
+          </option>
+          <option value="original-format:software, e-resource">
+           Software, E-Resources
+          </option>
+          <option value="original-format:web archive">
+           Web Archives
+          </option>
+          <option value="original-format:web page">
+           Web Pages
+          </option>
+          <option value="original-format:3d object">
+           3D Objects
+          </option>
+         </select>
+        </div>
+        <div class="header-search-input-wrapper">
+         <input accesskey="/" class="locsuggest header-search-input" id="search" maxlength="250" name="q" onfocus="this.select();" placeholder="Search Loc.gov" title="Search the Library of Congress" type="search" value=""/>
+         <div class="searchtarget">
+          <input id="search_within_default" name="new" type="hidden" value="true"/>
+         </div>
+        </div>
+        <button class="header-search-button" type="submit" value="submit">
+         <span>
+          Search
+         </span>
+         <i class="icon icon-search">
+         </i>
+        </button>
+        <input name="st" type="hidden" value=""/>
+       </form>
+       <button class="header-search-toggle">
+        <span>
+         Search toggle
+        </span>
+        <i class="icon icon-search">
+        </i>
+       </button>
+      </div>
+      <style>
+       .header-menu {
+  position: relative;
+}
+@media (min-width: 769px) {
+  .header-menu {
+    padding-left: 15px;
+  }
+}
+.header-menu .header-menu-button {
+  color: #000;
+  border: 0;
+  background: none;
+  font-size: 36px;
+  width: 31px;
+  height: 70px;
+  line-height: 1;
+  padding: 0 15px;
+  margin-right: -14px;
+  box-sizing: content-box;
+}
+.header-menu .header-menu-button .icon-times {
+  color: #F05129;
+}
+.header-menu .header-menu-button > span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+@media (min-width: 993px) {
+  .header-menu .header-menu-button {
+    height: auto;
+    line-height: normal;
+    padding: 9px 15px 18px;
+  }
+}
+.header-menu.header-menu-active .header-menu-button {
+  background: #EFEFEF;
+}
+.header-menu .header-menu-container {
+  display: none;
+  background: #EFEFEF;
+  position: absolute;
+  top: auto;
+  right: -14px;
+  z-index: 999;
+}
+@media (min-width: 993px) {
+  .header-menu .header-menu-container {
+    top: auto;
+  }
+}
+.header-menu .header-menu-container.header-menu-container-active {
+  display: block;
+  height: auto;
+  overflow: auto;
+  opacity: 1;
+}
+.header-menu .header-menu-container > ul {
+  padding-left: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0 53px 0 2rem;
+}
+ul .header-menu .header-menu-container > ul {
+  padding-left: 40px;
+}
+@media (min-width: 481px) {
+  .header-menu .header-menu-container > ul {
+    padding: 0 153px 0 2rem;
+  }
+}
+.header-menu .header-menu-container > ul a {
+  color: #242424;
+}
+.header-menu .header-menu-container > ul > li {
+  padding: 0.5rem 50px 0.5rem 0;
+  white-space: nowrap;
+}
+.header-menu .header-menu-container > ul > li:first-child {
+  padding-top: 1rem;
+}
+.header-menu .header-menu-container > ul > li:last-child {
+  padding-bottom: 1rem;
+}
+.header-menu .header-menu-container > ul.header-menu-tertiary > li:first-child,
+.header-menu .header-menu-container > ul.header-menu-external > li:first-child {
+  border-top: 1px solid #808080;
+}
+@media print {
+  .header-menu {
+    display: none;
+  }
+}
+      </style>
+      <script>
+       jQuery(function($) {
+    $('.header-menu-link a.menu-link').live('click', function () {
+        $('.header-submenu, .header-menu, .header-menu-link').toggleClass('on-off');
+    });
+    var delay = 800,
+        global_nav_header_timeout;
+    $('.header-menu li').live('hover', function(event) {
+        $('.header-dropdown img').each(function(index, image){
+            var data_source = $(image).attr('data-src');
+            if(data_source){
+                $(image).attr({src: data_source, 'data-src': null});
+            }
+        });
+
+        if( $(event.target).parents('.hover').length ){
+            return;
+        }
+
+        $('.header-menu li.hover').removeClass('hover');
+        $(event.target).closest('li').addClass('hover');
+        global_nav_header_timeout = setTimeout(function(){
+            $('.header-dropdown').hide();
+            $('.header-dropdown', $(event.target).closest('li')).show();
+        }, delay);
+    }, function(event){
+        clearTimeout( global_nav_header_timeout );
+        $(event.target).closest('li').removeClass('hover');
+        $('.header-dropdown', $(event.target).closest('li')).hide();
+    });
+
+    $('.header-menu').live('hover',  function(event) {/*
+        do nothing on hover over, only on hover out
+    */}, function(event){
+        $('.header-menu li.hover').removeClass('hover');
+        $(event.target).parents('.header-dropdown').hide();
+    });
+
+    //Metrics tracking how users are using the new header
+    $('.header-menu a, .intersite-navigation a, .locfoot a').live('click', function(event){
+        s.linkTrackVars = s.linkTrackVar + ",prop57";
+        var label = $(this).attr('name');
+        if ( !label ){
+            label = $(this).text().trim();
+        }
+        s.prop57 = label;
+        s.tl(this,'o',label);
+    });
+
+    function headerMenuActive() {
+        $('.header-menu-container').removeClass('header-menu-container-active').attr('aria-hidden', 'true');
+        $('.header-menu').removeClass('header-menu-active');
+        $('.header-menu-button').attr('aria-expanded', 'false');
+        $('.header-menu-button i').switchClass('icon-times', 'icon-bars', 50);
+        //$('.header-overlay').hide();
+    };
+    function headerMenuInactive() {
+        $('.header-menu-container').addClass('header-menu-container-active').attr('aria-hidden', 'false');
+        $('.header-menu').addClass('header-menu-active');
+        $('.header-menu-button').attr('aria-expanded', 'true');
+        $('.header-menu-button i').switchClass('icon-bars', 'icon-times', 50);
+        //$('.header-overlay').show();
+    };
+    $('.header-menu-button').live('click', function() {
+        if ($('.header-menu-container').hasClass('header-menu-container-active')) {
+            headerMenuActive();
+            //UX Interaction Tracking
+            UX.interaction($(this), 'Hamburger Menu', 'Close', '');
+        } else {
+            headerMenuInactive();
+            //UX Interaction Tracking
+            UX.interaction($(this), 'Hamburger Menu', 'Open', '');
+        }
+    });
+    $("html").live("click touchstart keydown",function(event) {
+        headerMenuActive();
+    });
+    $(".header-menu").live("click touchstart keydown",function(event) {
+        event.stopPropagation();
+        // allow escape key to close for accessibility
+        if (event.which == 27) {
+            headerMenuActive();
+        }
+    });
+    // menu position and height
+    $(window).live("load resize scroll",function(e){
+        var headerHeight = $('.header-menu').outerHeight();
+        $('.header-menu-container').css({"top": headerHeight});
+    });
+
+    // UX Interaction Tracking - Logo, Menu, Search, Breadcrumbs
+    $('.header-menu-container ul li').live('click', function() {
+        var label = $(this).text().trim();
+        UX.interaction($(this), 'Hamburger Menu', 'Click', label);
+    });
+});
+      </script>
+      <div class="header-menu">
+       <button aria-controls="header-menu-container" class="header-menu-button" id="header-menu-button">
+        <span>
+         menu
+        </span>
+        <i class="icon icon-bars">
+        </i>
+       </button>
+       <nav aria-labelledby="header-menu-button" class="header-menu-container" id="header-menu-container">
+        <ul class="">
+         <li class="">
+          <a href="/discover/">
+           Discover
+          </a>
+         </li>
+         <li class="">
+          <a href="/services-and-programs/">
+           Services
+          </a>
+         </li>
+         <li class="">
+          <a href="/visit/">
+           Visit
+          </a>
+         </li>
+         <li class="">
+          <a href="/education/">
+           Education
+          </a>
+         </li>
+         <li class="">
+          <a href="/connect/">
+           Connect
+          </a>
+         </li>
+         <li class="">
+          <a href="/about/">
+           About
+          </a>
+         </li>
+        </ul>
+        <ul class="header-menu-tertiary">
+         <li class="">
+          <a href="https://ask.loc.gov/">
+           Ask a Librarian
+          </a>
+         </li>
+         <li class="">
+          <a href="/help/">
+           Help
+          </a>
+         </li>
+         <li class="">
+          <a href="/contact/">
+           Contact
+          </a>
+         </li>
+        </ul>
+        <ul class="header-menu-external">
+         <li class="">
+          <a href="https://catalog.loc.gov/">
+           Search Online Catalog
+          </a>
+         </li>
+         <li class="">
+          <a href="http://copyright.gov/">
+           Copyright.gov
+          </a>
+         </li>
+         <li class="">
+          <a href="https://www.congress.gov/">
+           Congress.gov
+          </a>
+         </li>
+        </ul>
+       </nav>
+      </div>
+     </div>
+    </div>
+   </header>
+   <style>
+    .breadcrumbs-wrapper {
+  background-color: #fff;
+  position: relative;
+  z-index: 2;
+}
+.breadcrumbs-container {
+  max-width: 85.71428571rem;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 2rem;
+  background-color: transparent;
+  box-sizing: border-box;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  font-size: 12px;
+}
+@media (max-width: 768px) {
+  .breadcrumbs-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+.breadcrumbs-row {
+  display: flex;
+  justify-content: flex-end;
+}
+.header-breadcrumbs {
+  flex: 1 1 0%;
+  margin-right: 2rem;
+}
+@media (max-width: 768px) {
+  .header-breadcrumbs > a::before {
+    content: "\000AB \0000a0";
+  }
+  .header-breadcrumbs > a:not(:last-of-type) {
+    display: none;
+  }
+}
+@media (min-width: 769px) {
+  .header-breadcrumbs > a::after {
+    content: "\0000a0 \000BB";
+    color: #242424;
+  }
+}
+@media (max-width: 768px) {
+  .header-breadcrumbs > .active {
+    display: none;
+  }
+}
+   </style>
+   <script>
+    jQuery(function($) {
+    $(".header-breadcrumbs a:contains('at the Library of Congress'), .header-breadcrumbs span:contains('at the Library of Congress')").html(function(_, html) {
+        return html.split('at the Library of Congress').join("<span class='screen-readers-only'>at the Library of Congress</span>");
+    });
+    // UX Interaction Tracking - Logo, Menu, Search, Breadcrumbs
+    $('.header-breadcrumbs a').live('click', function(event){
+        var label = $(this).attr('name');
+        if ( !label ){
+            label = $(this).text().trim();
+        }
+        UX.interaction($(this), 'Breadcrumbs', 'click', label);
+    });
+});
+   </script>
+   <div class="content without-padding">
+    <a id="skip-to-content" name="skip-to-content">
+    </a>
+    <style>
+     .homepage-section-heading {
+  font-family: inherit;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #242424;
+  margin: 0 0 1rem;
+  font-size: 2.5rem;
+  font-family: 'Roboto Slab', Arial, Helvetica, sans-serif;
+  font-size: 2.125rem;
+  text-align: center;
+}
+.homepage-section-heading small,
+.homepage-section-heading .small {
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  font-weight: normal;
+  line-height: 1;
+  color: #242424;
+}
+.homepage-section-heading small.block,
+.homepage-section-heading .small.block {
+  display: block;
+  margin-bottom: 2px;
+}
+a .homepage-section-heading {
+  color: inherit !important;
+}
+.homepage-section-heading small,
+.homepage-section-heading .small {
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+}
+.homepage-section-heading small.match-header,
+.homepage-section-heading .small.match-header {
+  font-family: 'Roboto Slab', Arial, Helvetica, sans-serif;
+  text-transform: none;
+  font-weight: normal;
+  font-size: inherit;
+}
+.homepage-section-heading .subheading {
+  font-family: 'Roboto Slab', Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+  display: block;
+  margin-top: 5px;
+  text-transform: none;
+}
+.video-player-home {
+  position: relative;
+  padding-bottom: 56.25%;
+  /* 16:9 */
+  height: 0;
+}
+.video-player-home > .video-player-home-inner,
+.video-player-home > .jwplayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.video-text-home {
+  padding: 10px;
+}
+.video-text-home .trending-item-title {
+  font-size: 1.125rem;
+}
+.video-text-home a .trending-item-title {
+  color: #242424;
+}
+@media (max-width: 768px) {
+  .video-text-home {
+    padding-bottom: 2rem;
+  }
+}
+    </style>
+    <div class="home-container">
+     <style>
+      .featured {
+  max-width: 85.71428571rem;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 2rem;
+  box-sizing: border-box;
+  padding: 0;
+  background-color: #fff;
+}
+@media (max-width: 768px) {
+  .featured {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+@media (max-width: 768px) {
+  .featured {
+    padding: 0;
+  }
+}
+.featured > h2 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+.featured video {
+  display: block;
+  margin: 0;
+  width: 100%;
+  height: auto;
+}
+.featured .featured-slider {
+  padding: 0;
+  max-height: 560px;
+  overflow: hidden;
+}
+.featured .featured-slider.slick-initialized {
+  max-height: none;
+  overflow: visible;
+}
+.featured .featured-slider .featured-slider-slide {
+  padding: 0;
+  position: relative;
+}
+.featured .featured-slider .featured-slider-slide img {
+  margin: 0;
+}
+.featured .featured-slider .slick-prev {
+  box-sizing: border-box;
+  padding: 0;
+  /* inherited from button */
+  position: absolute;
+  top: 50%;
+  text-align: center;
+  width: 60px;
+  height: 60px;
+  margin-top: -30px;
+  z-index: 100;
+  font-family: FontAwesome;
+  font-size: 0 !important;
+  line-height: 0;
+  background-color: transparent;
+  color: #000;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  left: 0;
+  right: auto;
+  /* from fontAwesome core.less */
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: auto !important;
+  height: auto !important;
+}
+.featured .featured-slider .slick-prev:before {
+  font-size: 96px !important;
+  line-height: 60px !important;
+}
+.featured .featured-slider .slick-prev.slick-disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+@media (max-width: 992px) {
+  .featured .featured-slider .slick-prev {
+    width: 60px;
+    height: 60px;
+  }
+  .featured .featured-slider .slick-prev:before {
+    font-size: 96px !important;
+    line-height: 60px !important;
+  }
+}
+@media (max-width: 768px) {
+  .featured .featured-slider .slick-prev {
+    width: 50px;
+    height: 50px;
+  }
+  .featured .featured-slider .slick-prev:before {
+    font-size: 48px !important;
+    line-height: 50px !important;
+  }
+}
+.featured .featured-slider .slick-prev:before {
+  content: "\f104";
+}
+@media (max-width: 768px) {
+  .featured .featured-slider .slick-prev {
+    left: 13px;
+    margin-top: 46.66666667%;
+    /* 1200 x 560 */
+    top: 10px !important;
+  }
+}
+@media (max-width: 480px) {
+  .featured .featured-slider .slick-prev {
+    top: 20px !important;
+  }
+}
+@media (min-width: 769px) {
+  .featured .featured-slider .slick-prev {
+    left: 20px;
+    background-image: url("/static/images/slick-left-arrow.svg");
+    background-repeat: no-repeat;
+    background-position: left center;
+    width: 40px !important;
+    height: 66px !important;
+  }
+  .featured .featured-slider .slick-prev::before {
+    content: "" !important;
+  }
+}
+.featured .featured-slider .slick-next {
+  box-sizing: border-box;
+  padding: 0;
+  /* inherited from button */
+  position: absolute;
+  top: 50%;
+  text-align: center;
+  width: 60px;
+  height: 60px;
+  margin-top: -30px;
+  z-index: 100;
+  font-family: FontAwesome;
+  font-size: 0 !important;
+  line-height: 0;
+  background-color: transparent;
+  color: #000;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  left: auto;
+  right: 0;
+  /* from fontAwesome core.less */
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: auto !important;
+  height: auto !important;
+}
+.featured .featured-slider .slick-next:before {
+  font-size: 96px !important;
+  line-height: 60px !important;
+}
+.featured .featured-slider .slick-next.slick-disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+@media (max-width: 992px) {
+  .featured .featured-slider .slick-next {
+    width: 60px;
+    height: 60px;
+  }
+  .featured .featured-slider .slick-next:before {
+    font-size: 96px !important;
+    line-height: 60px !important;
+  }
+}
+@media (max-width: 768px) {
+  .featured .featured-slider .slick-next {
+    width: 50px;
+    height: 50px;
+  }
+  .featured .featured-slider .slick-next:before {
+    font-size: 48px !important;
+    line-height: 50px !important;
+  }
+}
+.featured .featured-slider .slick-next:before {
+  content: "\f105";
+}
+@media (max-width: 768px) {
+  .featured .featured-slider .slick-next {
+    right: 13px;
+    margin-top: 46.66666667%;
+    /* 1200 x 560 */
+    top: 10px !important;
+  }
+}
+@media (max-width: 480px) {
+  .featured .featured-slider .slick-next {
+    top: 20px !important;
+  }
+}
+@media (min-width: 769px) {
+  .featured .featured-slider .slick-next {
+    right: 20px;
+    background-image: url("/static/images/slick-right-arrow.svg");
+    background-repeat: no-repeat;
+    background-position: right center;
+    width: 40px !important;
+    height: 66px !important;
+  }
+  .featured .featured-slider .slick-next::before {
+    content: "" !important;
+  }
+}
+.featured .text-box-wrapper {
+  padding: 15px 50px 20px;
+  text-align: center;
+  box-sizing: border-box;
+}
+@media (min-width: 769px) {
+  .featured .text-box-wrapper {
+    text-align: left;
+    background-color: rgba(0, 0, 0, 0.75);
+    width: calc(100% - 40px);
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 60px 14px 16px;
+  }
+}
+@media (min-width: 993px) {
+  .featured .text-box-wrapper {
+    width: calc(100% - 240px);
+    bottom: 32px;
+  }
+}
+@media (min-width: 769px) {
+  .featured .text-box-wrapper * {
+    color: #fff !important;
+  }
+}
+.featured .text-box-wrapper .title {
+  font-family: inherit;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #242424;
+  margin: 0 0 1rem;
+  font-size: 2.5rem;
+  font-family: 'Roboto Slab', Arial, Helvetica, sans-serif;
+  margin: 0 0 6px;
+  line-height: 1.1;
+}
+.featured .text-box-wrapper .title small,
+.featured .text-box-wrapper .title .small {
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  font-weight: normal;
+  line-height: 1;
+  color: #242424;
+}
+.featured .text-box-wrapper .title small.block,
+.featured .text-box-wrapper .title .small.block {
+  display: block;
+  margin-bottom: 2px;
+}
+a .featured .text-box-wrapper .title {
+  color: inherit !important;
+}
+.featured .text-box-wrapper .title small,
+.featured .text-box-wrapper .title .small {
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+}
+.featured .text-box-wrapper .title small.match-header,
+.featured .text-box-wrapper .title .small.match-header {
+  font-family: 'Roboto Slab', Arial, Helvetica, sans-serif;
+  text-transform: none;
+  font-weight: normal;
+  font-size: inherit;
+}
+.featured .text-box-wrapper .title .subheading {
+  font-family: 'Roboto Slab', Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+  display: block;
+  margin-top: 5px;
+  text-transform: none;
+}
+@media (max-width: 992px) {
+  .featured .text-box-wrapper .title {
+    font-size: 24px;
+  }
+}
+.featured .text-box-wrapper .description {
+  margin: 0;
+}
+.featured .text-box-wrapper .paging-info {
+  position: absolute;
+  right: 15px;
+  bottom: 14px;
+  font-weight: bold;
+}
+@media (max-width: 768px) {
+  .featured .text-box-wrapper .paging-info {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+}
+     </style>
+     <script>
+      jQuery(function($){
+    // video fix
+    $('.featured-slider').on('init', function(){
+        $('video').each(function () {
+            var promise = this.play();
+
+            if (promise !== undefined) {
+                promise.then(_ => {
+                    // Autoplay started!
+                }).catch(error => {
+                    // Autoplay was prevented.
+                    // Show a "Play" button so that user can start playback.
+                });
+            }
+        });
+    });
+
+    // custom paging
+    var $status = $('.paging-info');
+    var $slickElement = $('.featured-slider');
+    $slickElement.on('init reInit afterChange', function(event, slick, currentSlide, nextSlide){
+        var i = (currentSlide ? currentSlide : 0) + 1;
+        $status.text(i + '/' + slick.slideCount);
+    });
+
+    // configuration
+    $('.featured-slider').slick({
+        infinite: true,
+        rows: 0, // a fix for extra divs issue
+        
+            
+            // AB Testing
+            autoplay: true,
+            autoplaySpeed: 7000,
+            
+        
+        responsive: [{
+            breakpoint: 768,
+            settings: {
+                adaptiveHeight: true
+            }
+        }]
+    });
+
+    // UX Interaction Tracking - Carousel
+    $('.featured-slider').on('swipe', function(event, slick, direction) {
+        // track only if slide change triggered by the user
+        var label = 'left' == direction ? 'next' : 'prev';
+        UX.interaction($(this), 'Homepage Carousel', 'Rotate', label);
+    });
+
+    $('.featured-slider .slick-prev').on('click', function() {
+        // track only if slide change triggered by the user
+        UX.interaction($(this), 'Homepage Carousel', 'Rotate',  'prev');
+    });
+
+    $('.featured-slider .slick-next').on('click', function() {
+        // track only if slide change triggered by the user
+        UX.interaction($(this), 'Homepage Carousel', 'Rotate',  'next');
+    });
+
+    $('.featured-slider .featured-slider-dots li').on('click', function(event){
+        var position = Number($(event.target).text()),
+            item = $('.featured-slider .slick-slide').get(position),
+            title = $('.title', item).text(),
+            label = 'Thumbnail[' + position + ']:' + title;
+        UX.interaction($(this), 'Homepage Carousel', 'Select', label);
+    });
+
+    $('.featured-slider a').on('click', function(){
+        var target = $(event.currentTarget),
+            title = target.attr('data-title'),
+            position = target.parents('.slick-slide').attr('data-slick-index'),
+            label = '[' + position + ']:' + title;
+        UX.interaction($(this), 'Homepage Carousel', 'Clickthrough', label);
+    });
+});
+     </script>
+     <section class="featured">
+      <h2>
+       Featured Items
+      </h2>
+      <div class="featured-slider" id="featured-slider">
+       <div class="featured-slider-slide">
+        <a data-link="/concerts/" data-title="Concerts from the Library" href="/concerts/">
+         <img alt="" class="" src="/static/home/images/featured/programs/2021concerts-mar_1200x560.jpg"/>
+         <div class="text-box-wrapper">
+          <h3 class="title">
+           Concerts from the Library
+          </h3>
+          <p class="description">
+           Our virtual season continues in 2021 -- great musical performances &amp; more.
+          </p>
+          <div class="paging-info">
+          </div>
+         </div>
+        </a>
+       </div>
+       <div class="featured-slider-slide">
+        <a data-link="/item/prn-21-009/" data-title="Danielle Allen: Our Common Purpose" href="/item/prn-21-009/">
+         <img alt="" class="" src="/static/home/images/featured/programs/allen-ocp_1200x560b.jpg"/>
+         <div class="text-box-wrapper">
+          <h3 class="title">
+           Danielle Allen: Our Common Purpose
+          </h3>
+          <p class="description">
+           Kluge laureate launches campaign and events this spring to promote civic strength.
+          </p>
+          <div class="paging-info">
+          </div>
+         </div>
+        </a>
+       </div>
+       <div class="featured-slider-slide">
+        <a data-link="https://womenshistorymonth.gov/" data-title="Women's History Month" href="https://womenshistorymonth.gov/">
+         <img alt="" class="" src="/static/home/images/featured/heritage/womens-history-ww2_r.jpg"/>
+         <div class="text-box-wrapper">
+          <h3 class="title">
+           Women's History Month
+          </h3>
+          <p class="description">
+           U.S. cultural institutions celebrate role of women in American history..
+          </p>
+          <div class="paging-info">
+          </div>
+         </div>
+        </a>
+       </div>
+       <div class="featured-slider-slide">
+        <a data-link="/engage/" data-title="Engage with the Library of Congress" href="/engage/">
+         <img alt="" class="" src="/static/home/images/featured/programs/2020engage_1200x560.jpg"/>
+         <div class="text-box-wrapper">
+          <h3 class="title">
+           Engage with the Library of Congress
+          </h3>
+          <p class="description">
+           Find new ways to join programming and connect with Library resources.
+          </p>
+          <div class="paging-info">
+          </div>
+         </div>
+        </a>
+       </div>
+       <div class="featured-slider-slide">
+        <a data-link="/about/pandemic-information/for-researchers/" data-title="Limited Researcher Access" href="/about/pandemic-information/for-researchers/">
+         <img alt="" class="" src="/static/home/images/featured/evergreen/readroomlimit2020_1200x560.jpg"/>
+         <div class="text-box-wrapper">
+          <h3 class="title">
+           Limited Researcher Access
+          </h3>
+          <p class="description">
+           Appointment-only access to electronic resources only available on-site.
+          </p>
+          <div class="paging-info">
+          </div>
+         </div>
+        </a>
+       </div>
+      </div>
+     </section>
+     <div class="horizontal-scrolling-navigation-wrapper">
+      <nav aria-label="Programs, services" class="horizontal-scrolling-navigation dragscroll" id="horizontalScrollingNavigation">
+       <ul class="horizontal-scrolling-navigation-items" id="horizontalScrollingNavigationItems">
+        <li class="horizontal-scrolling-navigation-item">
+         <a href="https://catalog.loc.gov/">
+          Library Catalog
+         </a>
+        </li>
+        <li class="horizontal-scrolling-navigation-item">
+         <a href="/collections/">
+          Digital Collections
+         </a>
+        </li>
+        <li class="horizontal-scrolling-navigation-item">
+         <a href="/rr/">
+          Researchers
+         </a>
+        </li>
+        <li class="horizontal-scrolling-navigation-item">
+         <a href="/visit/">
+          Visitors
+         </a>
+        </li>
+        <li class="horizontal-scrolling-navigation-item">
+         <a href="/teachers/">
+          Teachers
+         </a>
+        </li>
+        <li class="horizontal-scrolling-navigation-item">
+         <a href="https://blogs.loc.gov/">
+          Blogs
+         </a>
+        </li>
+        <li class="horizontal-scrolling-navigation-item">
+         <a href="https://copyright.gov/">
+          U.S. Copyright Office
+         </a>
+        </li>
+        <li class="horizontal-scrolling-navigation-item">
+         <a href="/services-and-programs/">
+          More...
+         </a>
+        </li>
+       </ul>
+      </nav>
+      <button aria-hidden="true" class="horizontal-scrolling-navigation-advancer horizontal-scrolling-navigation-advancer-left" id="horizontalScrollingNavigationAdvancerLeft" type="button">
+       <span class="screen-readers-only">
+        prev
+       </span>
+       <i class="icon icon-angle-left">
+       </i>
+      </button>
+      <button aria-hidden="true" class="horizontal-scrolling-navigation-advancer horizontal-scrolling-navigation-advancer-right" id="horizontalScrollingNavigationAdvancerRight" type="button">
+       <span class="screen-readers-only">
+        next
+       </span>
+       <i class="icon icon-angle-right">
+       </i>
+      </button>
+     </div>
+     <style>
+      .horizontal-scrolling-navigation-wrapper {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 44px;
+  box-sizing: border-box;
+  border: 1px solid #BFBFBF;
+}
+.horizontal-scrolling-navigation {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  white-space: nowrap;
+  text-align: center;
+  scrollbar-width: none;
+}
+.horizontal-scrolling-navigation::-webkit-scrollbar {
+  display: none;
+}
+.horizontal-scrolling-navigation-items {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  text-align: center;
+  display: flex;
+  transition: transform 0.2s ease-in-out;
+  width: min-content;
+}
+/* Don't even bother IE 10+ and Edge 16+ */
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  .horizontal-scrolling-navigation-items {
+    display: inline-flex;
+    width: auto;
+  }
+}
+@supports (-ms-ime-align:auto) {
+  .horizontal-scrolling-navigation-items {
+    display: inline-flex;
+    width: auto;
+  }
+}
+.horizontal-scrolling-navigation-items-no-transition {
+  transition: none;
+}
+.horizontal-scrolling-navigation-item {
+  margin: 0;
+  font-size: 18px;
+}
+.horizontal-scrolling-navigation-item > a {
+  padding: 0 18px;
+  color: #242424;
+}
+.horizontal-scrolling-navigation-item:first-child > a {
+  padding-left: 0;
+}
+.horizontal-scrolling-navigation-advancer {
+  position: absolute;
+  top: 12px;
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.3s;
+  background-color: transparent;
+  border-color: transparent;
+  color: #000;
+  padding: 0 5px;
+  height: auto;
+}
+.horizontal-scrolling-navigation-advancer .icon {
+  font-size: 2rem !important;
+  line-height: 1;
+}
+.horizontal-scrolling-navigation-advancer:hover,
+.horizontal-scrolling-navigation-advancer:focus {
+  background-color: transparent;
+  border-color: transparent;
+  color: #000;
+}
+/* Don't even bother IE 10+ and Edge 16+ */
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  .horizontal-scrolling-navigation-advancer {
+    display: none;
+  }
+}
+@supports (-ms-ime-align:auto) {
+  .horizontal-scrolling-navigation-advancer {
+    display: none;
+  }
+}
+.horizontal-scrolling-navigation-advancer-right {
+  left: auto;
+  right: 0;
+  padding-right: 13px;
+}
+.horizontal-scrolling-navigation-advancer-left {
+  padding-left: 13px;
+}
+[data-overflowing="both"] ~ .horizontal-scrolling-navigation-advancer-left,
+[data-overflowing="left"] ~ .horizontal-scrolling-navigation-advancer-left {
+  opacity: 1;
+}
+[data-overflowing="both"] ~ .horizontal-scrolling-navigation-advancer-right,
+[data-overflowing="right"] ~ .horizontal-scrolling-navigation-advancer-right {
+  opacity: 1;
+}
+     </style>
+     <script>
+      /*
+ben frain
+https://benfrain.com/a-horizontal-scrolling-navigation-pattern-for-touch-and-mouse-with-moving-current-indicator/
+example
+https://benfrain.com/playground/scroller.html
+*/
+
+var SETTINGS = {
+    navBarTravelling: false,
+    navBarTravelDirection: "",
+	navBarTravelDistance: 150
+}
+
+// Out advancer buttons
+var horizontalScrollingNavigationAdvancerLeft = document.getElementById("horizontalScrollingNavigationAdvancerLeft");
+var horizontalScrollingNavigationAdvancerRight = document.getElementById("horizontalScrollingNavigationAdvancerRight");
+
+var horizontalScrollingNavigation = document.getElementById("horizontalScrollingNavigation");
+var horizontalScrollingNavigationItems = document.getElementById("horizontalScrollingNavigationItems");
+
+horizontalScrollingNavigation.setAttribute("data-overflowing", determineOverflow(horizontalScrollingNavigationItems, horizontalScrollingNavigation));
+
+// Handle the scroll of the horizontal container
+var last_known_scroll_position = 0;
+var ticking = false;
+
+function doSomething(scroll_pos) {
+    horizontalScrollingNavigation.setAttribute("data-overflowing", determineOverflow(horizontalScrollingNavigationItems, horizontalScrollingNavigation));
+}
+
+horizontalScrollingNavigation.addEventListener("scroll", function() {
+    last_known_scroll_position = window.scrollY;
+    if (!ticking) {
+        window.requestAnimationFrame(function() {
+            doSomething(last_known_scroll_position);
+            ticking = false;
+        });
+    }
+    ticking = true;
+});
+
+horizontalScrollingNavigationAdvancerLeft.addEventListener("click", function() {
+	// If in the middle of a move return
+    if (SETTINGS.navBarTravelling === true) {
+        return;
+    }
+    // If we have content overflowing both sides or on the left
+    if (determineOverflow(horizontalScrollingNavigationItems, horizontalScrollingNavigation) === "left" || determineOverflow(horizontalScrollingNavigationItems, horizontalScrollingNavigation) === "both") {
+        // Find how far this panel has been scrolled
+        var availableScrollLeft = horizontalScrollingNavigation.scrollLeft;
+        // If the space available is less than two lots of our desired distance, just move the whole amount
+        // otherwise, move by the amount in the settings
+        if (availableScrollLeft < SETTINGS.navBarTravelDistance * 2) {
+            horizontalScrollingNavigationItems.style.transform = "translateX(" + availableScrollLeft + "px)";
+        } else {
+            horizontalScrollingNavigationItems.style.transform = "translateX(" + SETTINGS.navBarTravelDistance + "px)";
+        }
+        // We do want a transition (this is set in CSS) when moving so remove the class that would prevent that
+        horizontalScrollingNavigationItems.classList.remove("horizontal-scrolling-navigation-items-no-transition");
+        // Update our settings
+        SETTINGS.navBarTravelDirection = "left";
+        SETTINGS.navBarTravelling = true;
+    }
+    // Now update the attribute in the DOM
+    horizontalScrollingNavigation.setAttribute("data-overflowing", determineOverflow(horizontalScrollingNavigationItems, horizontalScrollingNavigation));
+});
+
+horizontalScrollingNavigationAdvancerRight.addEventListener("click", function() {
+    // If in the middle of a move return
+    if (SETTINGS.navBarTravelling === true) {
+        return;
+    }
+    // If we have content overflowing both sides or on the right
+    if (determineOverflow(horizontalScrollingNavigationItems, horizontalScrollingNavigation) === "right" || determineOverflow(horizontalScrollingNavigationItems, horizontalScrollingNavigation) === "both") {
+        // Get the right edge of the container and content
+        var navBarRightEdge = horizontalScrollingNavigationItems.getBoundingClientRect().right;
+        var navBarScrollerRightEdge = horizontalScrollingNavigation.getBoundingClientRect().right;
+        // Now we know how much space we have available to scroll
+        var availableScrollRight = Math.floor(navBarRightEdge - navBarScrollerRightEdge);
+        // If the space available is less than two lots of our desired distance, just move the whole amount
+        // otherwise, move by the amount in the settings
+        if (availableScrollRight < SETTINGS.navBarTravelDistance * 2) {
+            horizontalScrollingNavigationItems.style.transform = "translateX(-" + availableScrollRight + "px)";
+        } else {
+            horizontalScrollingNavigationItems.style.transform = "translateX(-" + SETTINGS.navBarTravelDistance + "px)";
+        }
+        // We do want a transition (this is set in CSS) when moving so remove the class that would prevent that
+        horizontalScrollingNavigationItems.classList.remove("horizontal-scrolling-navigation-items-no-transition");
+        // Update our settings
+        SETTINGS.navBarTravelDirection = "right";
+        SETTINGS.navBarTravelling = true;
+    }
+    // Now update the attribute in the DOM
+    horizontalScrollingNavigation.setAttribute("data-overflowing", determineOverflow(horizontalScrollingNavigationItems, horizontalScrollingNavigation));
+});
+
+horizontalScrollingNavigationItems.addEventListener(
+    "transitionend",
+    function() {
+        // get the value of the transform, apply that to the current scroll position (so get the scroll pos first) and then remove the transform
+        var styleOfTransform = window.getComputedStyle(horizontalScrollingNavigationItems, null);
+        var tr = styleOfTransform.getPropertyValue("-webkit-transform") || styleOfTransform.getPropertyValue("transform");
+        // If there is no transition we want to default to 0 and not null
+        var amount = Math.abs(parseInt(tr.split(",")[4]) || 0);
+        horizontalScrollingNavigationItems.style.transform = "none";
+        horizontalScrollingNavigationItems.classList.add("horizontal-scrolling-navigation-items-no-transition");
+        // Now lets set the scroll position
+        if (SETTINGS.navBarTravelDirection === "left") {
+            horizontalScrollingNavigation.scrollLeft = horizontalScrollingNavigation.scrollLeft - amount;
+        } else {
+            horizontalScrollingNavigation.scrollLeft = horizontalScrollingNavigation.scrollLeft + amount;
+        }
+        SETTINGS.navBarTravelling = false;
+    },
+    false
+);
+
+function determineOverflow(content, container) {
+    var containerMetrics = container.getBoundingClientRect();
+    var containerMetricsRight = Math.floor(containerMetrics.right);
+    var containerMetricsLeft = Math.floor(containerMetrics.left);
+    var contentMetrics = content.getBoundingClientRect();
+    var contentMetricsRight = Math.floor(contentMetrics.right);
+    var contentMetricsLeft = Math.floor(contentMetrics.left);
+	 if (containerMetricsLeft > contentMetricsLeft && containerMetricsRight < contentMetricsRight) {
+        return "both";
+    } else if (contentMetricsLeft < containerMetricsLeft) {
+        return "left";
+    } else if (contentMetricsRight > containerMetricsRight) {
+        return "right";
+    } else {
+        return "none";
+    }
+}
+     </script>
+     <script>
+      /**
+ * @fileoverview dragscroll - scroll area by dragging
+ * @version 0.0.8
+ * @license MIT, see http://github.com/asvd/dragscroll
+ * @copyright 2015 asvd <heliosframework@gmail.com>
+ */
+
+
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define(['exports'], factory);
+    } else if (typeof exports !== 'undefined') {
+        factory(exports);
+    } else {
+        factory((root.dragscroll = {}));
+    }
+}(this, function (exports) {
+    var _window = window;
+    var _document = document;
+    var mousemove = 'mousemove';
+    var mouseup = 'mouseup';
+    var mousedown = 'mousedown';
+    var EventListener = 'EventListener';
+    var addEventListener = 'add'+EventListener;
+    var removeEventListener = 'remove'+EventListener;
+    var newScrollX, newScrollY;
+
+    var dragged = [];
+    var reset = function(i, el) {
+        for (i = 0; i < dragged.length;) {
+            el = dragged[i++];
+            el = el.container || el;
+            el[removeEventListener](mousedown, el.md, 0);
+            _window[removeEventListener](mouseup, el.mu, 0);
+            _window[removeEventListener](mousemove, el.mm, 0);
+        }
+
+        // cloning into array since HTMLCollection is updated dynamically
+        dragged = [].slice.call(_document.getElementsByClassName('dragscroll'));
+        for (i = 0; i < dragged.length;) {
+            (function(el, lastClientX, lastClientY, pushed, scroller, cont){
+                (cont = el.container || el)[addEventListener](
+                    mousedown,
+                    cont.md = function(e) {
+                        if (!el.hasAttribute('nochilddrag') ||
+                            _document.elementFromPoint(
+                                e.pageX, e.pageY
+                            ) == cont
+                        ) {
+                            pushed = 1;
+                            lastClientX = e.clientX;
+                            lastClientY = e.clientY;
+
+                            e.preventDefault();
+                        }
+                    }, 0
+                );
+
+                _window[addEventListener](
+                    mouseup, cont.mu = function() {pushed = 0;}, 0
+                );
+
+                _window[addEventListener](
+                    mousemove,
+                    cont.mm = function(e) {
+                        if (pushed) {
+                            (scroller = el.scroller||el).scrollLeft -=
+                                newScrollX = (- lastClientX + (lastClientX=e.clientX));
+                            scroller.scrollTop -=
+                                newScrollY = (- lastClientY + (lastClientY=e.clientY));
+                            if (el == _document.body) {
+                                (scroller = _document.documentElement).scrollLeft -= newScrollX;
+                                scroller.scrollTop -= newScrollY;
+                            }
+                        }
+                    }, 0
+                );
+             })(dragged[i++]);
+        }
+    }
+
+
+    if (_document.readyState == 'complete') {
+        reset();
+    } else {
+        _window[addEventListener]('load', reset, 0);
+    }
+
+    exports.reset = reset;
+}));
+     </script>
+     <script>
+      jQuery(function($){
+    $('#horizontalScrollingNavigationItems li a').click(function() {
+        var label = $(this).text().trim();
+        UX.interaction($(this), 'Programs and Services', 'Click', label);
+    });
+});
+     </script>
+     <style>
+      .trending {
+  max-width: 85.71428571rem;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 2rem;
+  background-color: #fff;
+  box-sizing: border-box;
+  padding: 2rem 1rem;
+  background-color: #EFEFEF;
+}
+@media (max-width: 768px) {
+  .trending {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+@media (max-width: 768px) {
+  .trending {
+    padding-top: 2rem;
+  }
+}
+@media (max-width: 480px) {
+  .trending {
+    padding: 2rem 0 0;
+  }
+}
+.trending h2 {
+  font-family: inherit;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #242424;
+  margin: 0 0 1rem;
+  font-size: 2.5rem;
+  font-family: 'Roboto Slab', Arial, Helvetica, sans-serif;
+  font-size: 2.125rem;
+  text-align: center;
+}
+.trending h2 small,
+.trending h2 .small {
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  font-weight: normal;
+  line-height: 1;
+  color: #242424;
+}
+.trending h2 small.block,
+.trending h2 .small.block {
+  display: block;
+  margin-bottom: 2px;
+}
+a .trending h2 {
+  color: inherit !important;
+}
+.trending h2 small,
+.trending h2 .small {
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+}
+.trending h2 small.match-header,
+.trending h2 .small.match-header {
+  font-family: 'Roboto Slab', Arial, Helvetica, sans-serif;
+  text-transform: none;
+  font-weight: normal;
+  font-size: inherit;
+}
+.trending h2 .subheading {
+  font-family: 'Roboto Slab', Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+  display: block;
+  margin-top: 5px;
+  text-transform: none;
+}
+.trending-top-searches {
+  padding: 0 1rem 1rem;
+  text-align: center;
+}
+.trending-top-searches h3 {
+  font-family: inherit;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #242424;
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  margin: 0 0 0.5rem;
+  font-weight: normal;
+  display: inline-block;
+  margin: 0 0.7rem 0 0;
+}
+.trending-top-searches h3 small,
+.trending-top-searches h3 .small {
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  font-weight: normal;
+  line-height: 1;
+  color: #242424;
+}
+.trending-top-searches h3 small.block,
+.trending-top-searches h3 .small.block {
+  display: block;
+  margin-bottom: 2px;
+}
+a .trending-top-searches h3 {
+  color: inherit !important;
+}
+.trending-top-searches ul {
+  display: inline-block;
+  padding-left: 0;
+  list-style: none;
+  margin: 0 -1rem;
+  margin: 0;
+}
+ul .trending-top-searches ul {
+  padding-left: 40px;
+}
+.trending-top-searches ul > li {
+  display: inline-block;
+  margin: 0 1rem;
+}
+.trending-top-searches ul li {
+  margin: 0;
+}
+.trending-top-searches ul li:after {
+  content: "/";
+  padding: 0 0.7rem 0 1rem;
+  color: #242424;
+}
+.trending-top-searches ul li:last-child:after {
+  content: "";
+}
+.trending-items {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.trending-item-sizer {
+  width: 25%;
+}
+.trending-item {
+  box-sizing: border-box;
+  width: 25%;
+  padding: 1rem;
+  float: left;
+  /* fix for isotope initial loading delay */
+  /* item block */
+}
+.trending-item img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0;
+}
+.trending-item > a {
+  box-sizing: border-box;
+  background-color: #fff;
+  color: #242424;
+  display: block;
+  position: relative;
+  height: 244px;
+  overflow: hidden;
+}
+@media (max-width: 992px) {
+  .trending-item > a {
+    height: 235px;
+  }
+}
+@media (max-width: 768px) {
+  .trending-item > a {
+    height: 290px;
+  }
+}
+@media (max-width: 624px) {
+  .trending-item > a {
+    height: 260px;
+  }
+}
+@media (max-width: 480px) {
+  .trending-item > a {
+    height: auto;
+  }
+}
+@media (max-width: 768px) {
+  .trending-item {
+    width: 50%;
+  }
+}
+@media (max-width: 480px) {
+  .trending-item {
+    width: 100%;
+    padding: 0;
+  }
+}
+.trending-item-image {
+  display: block;
+  position: relative;
+}
+.trending-item-image:before {
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #fff;
+  position: absolute;
+  margin-left: -8px;
+  bottom: 0;
+  left: 50%;
+  z-index: 999;
+}
+.trending-item-text {
+  box-sizing: border-box;
+  display: block;
+  padding: 10px 10px 0;
+  line-height: 1.3;
+  height: 64px;
+  overflow: hidden;
+}
+@media (max-width: 992px) {
+  .trending-item-text {
+    height: auto;
+  }
+}
+@media (max-width: 480px) {
+  .trending-item-text {
+    padding-bottom: 3rem;
+  }
+}
+.trending-item-format {
+  display: block;
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #0076AD;
+  margin-bottom: 2px;
+}
+.trending-item-title {
+  display: block;
+  font-weight: bold;
+}
+.trending-item-description {
+  display: block;
+}
+/* featured static image */
+.trending-item-featured {
+  width: 50%;
+}
+@media (max-width: 768px) {
+  .trending-item-featured {
+    width: 100%;
+  }
+  .trending-item-featured a {
+    height: auto;
+  }
+}
+@media (max-width: 480px) {
+  .trending-item-featured {
+    background-color: #242424;
+  }
+}
+.trending-item-featured a {
+  background-color: #242424;
+}
+@media (max-width: 480px) {
+  .trending-item-featured img.tablet {
+    display: none;
+  }
+}
+.trending-item-featured img.mobile {
+  display: none;
+}
+@media (max-width: 480px) {
+  .trending-item-featured img.mobile {
+    display: block;
+  }
+}
+@media (max-width: 992px) {
+  .trending-item-featured img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+@media (max-width: 768px) {
+  .trending-item-featured img {
+    width: auto;
+    height: auto;
+    object-fit: fill;
+  }
+}
+.trending-item-featured .trending-item-image-featured {
+  display: block;
+  position: relative;
+  height: 100%;
+}
+@media (max-width: 480px) {
+  .trending-item-featured .trending-item-image-featured:before {
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #242424;
+    position: absolute;
+    margin-left: -8px;
+    bottom: 0;
+    left: 50%;
+    z-index: 999;
+  }
+}
+.trending-item-featured .trending-item-text {
+  background: rgba(0, 0, 0, 0.7);
+  border-color: transparent;
+  position: absolute;
+  height: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  margin-top: 30.645%;
+  /* image / container */
+  color: #fff;
+  width: calc(50% - 1rem);
+}
+.trending-item-featured .trending-item-text .trending-item-format {
+  color: orange;
+}
+@media (max-width: 768px) {
+  .trending-item-featured .trending-item-text {
+    width: 100% !important;
+    margin-top: auto;
+    top: auto;
+    padding-bottom: 3rem;
+  }
+}
+@media (max-width: 480px) {
+  .trending-item-featured .trending-item-text {
+    background-color: #242424;
+    position: static;
+  }
+}
+/* audio featured */
+.trending-item-audio {
+  width: 100%;
+}
+@media (min-width: 769px) {
+  .trending-item-audio {
+    width: 50%;
+  }
+}
+.trending-item-audio .trending-item-audio-wrapper {
+  box-sizing: border-box;
+  background-color: #fff;
+  display: grid;
+  grid-template-columns: 40% 1fr;
+  grid-template-rows: 1fr auto;
+  grid-template-areas: "audio-image audio-text" "audio-player audio-player";
+}
+@media (min-width: 481px) {
+  .trending-item-audio .trending-item-audio-wrapper {
+    grid-template-columns: 25% 1fr;
+  }
+}
+@media (min-width: 769px) {
+  .trending-item-audio .trending-item-audio-wrapper {
+    grid-template-columns: 41% 1fr;
+  }
+}
+@media (min-width: 1201px) {
+  .trending-item-audio .trending-item-audio-wrapper {
+    grid-template-areas: "audio-image audio-text" "audio-image audio-player";
+    height: 244px;
+    overflow: hidden;
+    padding: 13px;
+  }
+}
+.trending-item-audio .audio-image {
+  grid-area: audio-image;
+}
+@media (max-width: 1200px) {
+  .trending-item-audio .audio-image {
+    padding: 13px;
+  }
+}
+.trending-item-audio .audio-image .audio-image-holder {
+  border: 1px solid #BFBFBF;
+  position: relative;
+}
+.trending-item-audio .audio-image .audio-image-holder:after {
+  content: "";
+  display: block;
+  padding-bottom: 100%;
+}
+.trending-item-audio .audio-image .audio-image-holder-content {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+}
+.trending-item-audio .audio-text {
+  grid-area: audio-text;
+}
+@media (max-width: 1200px) {
+  .trending-item-audio .audio-text {
+    padding: 13px 13px 13px 0;
+  }
+}
+.trending-item-audio .audio-text a .trending-item-title {
+  color: #242424;
+}
+@media (min-width: 1201px) {
+  .trending-item-audio .audio-text {
+    padding-left: 13px;
+  }
+}
+.trending-item-audio .audio-player {
+  grid-area: audio-player;
+}
+@media (min-width: 1201px) {
+  .trending-item-audio .audio-player {
+    padding-left: 13px;
+  }
+}
+/* video featured */
+.trending-item-video {
+  width: 50%;
+}
+@media (max-width: 768px) {
+  .trending-item-video {
+    width: 100%;
+  }
+}
+.trending-item-video .trending-item-video-wrapper {
+  box-sizing: border-box;
+  background-color: #fff;
+}
+     </style>
+     <script>
+      jQuery(function($){
+    // trending
+    var trending_items = $('.trending-items').isotope({
+        itemSelector: '.trending-item',
+        percentPosition: true,
+        masonry: {
+            columnWidth: '.trending-item-sizer'
+        }
+    });
+    trending_items.imagesLoaded().progress( function() {
+        trending_items.isotope('layout');
+    });
+
+    $('.trending-top-searches ul li a').click(function() {
+        var label = $(this).text().trim();
+        UX.interaction($(this), 'Top Searches', 'Click', label);
+    });
+    $('.trending-items a').click(function() {
+        var listItem = $(this).closest('li'),
+            index = $(listItem).parent().children().index(listItem) + 1,
+            label = $(this).text().trim();
+        // If we have a spacer element for isotope layouts, dont include it
+        if($('.trending-items li.trending-item-sizer').length){
+            index = index - 1;
+        }
+        label = '[' + index + ']:' + label;
+        UX.interaction($(this), 'Trending', 'Click', label);
+    });
+    // featured audio and video
+    
+});
+     </script>
+     <section class="trending">
+      <h2>
+       Trending
+      </h2>
+      <div class="trending-top-searches">
+       <h3>
+        Top Searches:
+       </h3>
+       <ul>
+        <li>
+         <a href="/search/?q=Inauguration" id="top_searches_1">
+          Inauguration
+         </a>
+        </li>
+        <li>
+         <a href="/search/?q=Frederick Douglass" id="top_searches_2">
+          Frederick Douglass
+         </a>
+        </li>
+        <li>
+         <a href="/search/?q=Civil War Photographs" id="top_searches_3">
+          Civil War Photographs
+         </a>
+        </li>
+        <li>
+         <a href="/search/?q=Poetry" id="top_searches_4">
+          Poetry
+         </a>
+        </li>
+        <li>
+         <a href="/search/?q=World War II" id="top_searches_5">
+          World War II
+         </a>
+        </li>
+        <li>
+         <a href="/search/?q=Harriet Tubman" id="top_searches_6">
+          Harriet Tubman
+         </a>
+        </li>
+       </ul>
+      </div>
+      <ul class="trending-items">
+       <li class="trending-item-sizer">
+        <!-- this empty sizer is required for isotope js to support responsive grid -->
+       </li>
+       <li class="trending-item trending-item-featured">
+        <a href="/resource/fsac.1a34808/" id="featured_item">
+         <span class="trending-item-image-featured">
+          <img alt="" class="mobile" src="/static/home/images//trending/featured/f-women-workers-sm.jpg"/>
+          <img alt="" class="tablet" src="/static/home/images//trending/featured/f-women-workers-lg.jpg"/>
+         </span>
+         <span class="trending-item-text trending-item-text-featured">
+          <span class="trending-item-format">
+           Featured Item
+          </span>
+          Women Workers Having Lunch, 1943
+         </span>
+        </a>
+       </li>
+       <li class="trending-item">
+        <a href="/news/" id="trending_content_1">
+         <span class="trending-item-image">
+          <img alt="" src="/static/home/images/trending/evergreen/tj-lights-48079402371.jpg"/>
+         </span>
+         <span class="trending-item-text">
+          <span class="trending-item-format">
+           News
+          </span>
+          Get the Most Current News from the Library of Congress
+         </span>
+        </a>
+       </li>
+       <li class="trending-item">
+        <a href="/rr/main/irishamerican/" id="trending_content_2">
+         <span class="trending-item-image">
+          <img alt="" src="/static/home/images/trending/collections/irish-resources_480x309.jpg"/>
+         </span>
+         <span class="trending-item-text">
+          <span class="trending-item-format">
+           Guide
+          </span>
+          Guide to Irish American Resources
+         </span>
+        </a>
+       </li>
+       <li class="trending-item">
+        <a href="/events/" id="trending_content_3">
+         <span class="trending-item-image">
+          <img alt="" src="/static/home/images/trending/evergreen/virtualevents_480x309.jpg"/>
+         </span>
+         <span class="trending-item-text">
+          <span class="trending-item-format">
+           Events
+          </span>
+          View a Calendar of Upcoming Virtual Programs from the Library
+         </span>
+        </a>
+       </li>
+       <li class="trending-item">
+        <a href="/exhibits/" id="trending_content_4">
+         <span class="trending-item-image">
+          <img alt="" src="/static/home/images/trending/exhibits/exhibitions-evergreen-suffrage-48079406641_69c1146579_k.jpg"/>
+         </span>
+         <span class="trending-item-text">
+          <span class="trending-item-format">
+           Exhibitions
+          </span>
+          Visit Fascinating Library Exhibitions Online
+         </span>
+        </a>
+       </li>
+       <li class="trending-item">
+        <a href="/rr/print/coll/596_womphotoj.html" id="trending_content_5">
+         <span class="trending-item-image">
+          <img alt="" src="/static/home/images/trending/collections/t-women-photojournalists-02.jpg"/>
+         </span>
+         <span class="trending-item-text">
+          <span class="trending-item-format">
+           Research
+          </span>
+          Explore the Work of Women Photojournalists
+         </span>
+        </a>
+       </li>
+       <li class="trending-item">
+        <a href="http://blogs.loc.gov/international-collections/2021/02/now-online-japanese-rare-book-digital-collection/" id="trending_content_6">
+         <span class="trending-item-image">
+          <img alt="" src="/static/home/images//trending/collections/japan-book_480x309.jpg"/>
+         </span>
+         <span class="trending-item-text">
+          <span class="trending-item-format">
+           Blog
+          </span>
+          New Online: Rare Japanese Book Collection
+         </span>
+        </a>
+       </li>
+      </ul>
+     </section>
+     <style>
+      .your-library {
+  max-width: 85.71428571rem;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 2rem;
+  background-color: #fff;
+  box-sizing: border-box;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  background-color: #EFEFEF;
+}
+@media (max-width: 768px) {
+  .your-library {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+.your-library h2 {
+  font-family: inherit;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #242424;
+  margin: 0 0 1rem;
+  font-size: 2.5rem;
+  font-family: 'Roboto Slab', Arial, Helvetica, sans-serif;
+  font-size: 2.125rem;
+  text-align: center;
+  margin-bottom: 0.75rem;
+}
+.your-library h2 small,
+.your-library h2 .small {
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  font-weight: normal;
+  line-height: 1;
+  color: #242424;
+}
+.your-library h2 small.block,
+.your-library h2 .small.block {
+  display: block;
+  margin-bottom: 2px;
+}
+a .your-library h2 {
+  color: inherit !important;
+}
+.your-library h2 small,
+.your-library h2 .small {
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+}
+.your-library h2 small.match-header,
+.your-library h2 .small.match-header {
+  font-family: 'Roboto Slab', Arial, Helvetica, sans-serif;
+  text-transform: none;
+  font-weight: normal;
+  font-size: inherit;
+}
+.your-library h2 .subheading {
+  font-family: 'Roboto Slab', Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+  display: block;
+  margin-top: 5px;
+  text-transform: none;
+}
+.your-library .your-library-abstract {
+  text-align: center;
+}
+.your-library .your-library-links-container {
+  max-width: 85.71428571rem;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 2rem;
+  background-color: #fff;
+  box-sizing: border-box;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  margin-bottom: 10px;
+}
+@media (max-width: 768px) {
+  .your-library .your-library-links-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+.your-library .your-library-links-container .your-library-links {
+  padding-left: 0;
+  list-style: none;
+  display: -webkit-box;
+  /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+  display: -ms-flexbox;
+  /* TWEENER - IE 10 */
+  display: -webkit-flex;
+  /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+  display: -moz-box;
+  display: flex;
+  /* NEW, Spec - Firefox, Chrome, Opera */
+  -webkit-flex-flow: row wrap;
+  flex-flow: row wrap;
+  -webkit-flex-align: flex-start;
+  -webkit-align-items: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  margin: 0 -1rem;
+}
+ul .your-library .your-library-links-container .your-library-links {
+  padding-left: 40px;
+}
+.your-library .your-library-links-container .your-library-links > li {
+  -webkit-box-flex: 1;
+  /* OLD - iOS 6-, Safari 3.1-6 */
+  -webkit-flex: 1;
+  /* Safari 6.1+. iOS 7.1+, BB10 */
+  -ms-flex: 1;
+  /* IE 10 */
+  -moz-box-flex: 1;
+  flex: 1;
+  /* NEW, Spec - Firefox, Chrome, Opera */
+  min-width: 0;
+  /* firefox fix */
+  margin: 0 1rem;
+  box-sizing: border-box;
+  -webkit-box-flex: 0 0 calc(33.33333333% - 2rem) !important;
+  -webkit-flex: 0 0 calc(33.33333333% - 2rem) !important;
+  flex: 0 0 calc(33.33333333% - 2rem) !important;
+  -ms-flex: 0 1 auto;
+  /* ie fix */
+  width: calc(33.33333333% - 2rem);
+  /* ie fix */
+  max-width: calc(33.33333333% - 2rem);
+  /* moz fix */
+  text-align: center;
+  font-weight: bold;
+}
+.your-library .your-library-links-container .your-library-links > li a {
+  color: #242424;
+}
+.your-library .your-library-links-container .your-library-links > li a img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 1rem;
+}
+@media (max-width: 480px) {
+  .your-library .your-library-links-container .your-library-links > li {
+    -webkit-box-flex: 0 0 calc(100% - 2rem) !important;
+    -webkit-flex: 0 0 calc(100% - 2rem) !important;
+    flex: 0 0 calc(100% - 2rem) !important;
+    -ms-flex: 0 1 auto;
+    /* ie fix */
+    width: calc(100% - 2rem);
+    /* ie fix */
+    max-width: calc(100% - 2rem);
+    /* moz fix */
+    margin-bottom: 1rem;
+  }
+}
+.your-library .your-library-exhibitions-container {
+  max-width: 85.71428571rem;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 2rem;
+  background-color: #fff;
+  box-sizing: border-box;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+@media (max-width: 768px) {
+  .your-library .your-library-exhibitions-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+.your-library .your-library-exhibitions-container .your-library-exhibitions {
+  display: -webkit-box;
+  /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+  display: -ms-flexbox;
+  /* TWEENER - IE 10 */
+  display: -webkit-flex;
+  /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+  display: -moz-box;
+  display: flex;
+  /* NEW, Spec - Firefox, Chrome, Opera */
+  -webkit-flex-flow: row wrap;
+  flex-flow: row wrap;
+  -webkit-flex-align: flex-start;
+  -webkit-align-items: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  margin: 0 -1rem;
+}
+.your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition {
+  -webkit-box-flex: 1;
+  /* OLD - iOS 6-, Safari 3.1-6 */
+  -webkit-flex: 1;
+  /* Safari 6.1+. iOS 7.1+, BB10 */
+  -ms-flex: 1;
+  /* IE 10 */
+  -moz-box-flex: 1;
+  flex: 1;
+  /* NEW, Spec - Firefox, Chrome, Opera */
+  min-width: 0;
+  /* firefox fix */
+  margin: 0 1rem;
+  box-sizing: border-box;
+}
+.your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition > h3 {
+  font-family: inherit;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #242424;
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  margin: 0 0 0.5rem;
+}
+.your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition > h3 small,
+.your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition > h3 .small {
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  font-weight: normal;
+  line-height: 1;
+  color: #242424;
+}
+.your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition > h3 small.block,
+.your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition > h3 .small.block {
+  display: block;
+  margin-bottom: 2px;
+}
+a .your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition > h3 {
+  color: inherit !important;
+}
+@media (max-width: 992px) {
+  .your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition.news {
+    -webkit-box-flex: 0 0 calc(100% - 2rem) !important;
+    -webkit-flex: 0 0 calc(100% - 2rem) !important;
+    flex: 0 0 calc(100% - 2rem) !important;
+    -ms-flex: 0 1 auto;
+    /* ie fix */
+    width: calc(100% - 2rem);
+    /* ie fix */
+    max-width: calc(100% - 2rem);
+    /* moz fix */
+    -webkit-order: 1;
+    -moz-order: 1;
+    order: 1;
+    margin-bottom: 1rem;
+  }
+  .your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition.exhibitions {
+    -webkit-order: 2;
+    -moz-order: 2;
+    order: 2;
+  }
+  .your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition.events {
+    -webkit-order: 3;
+    -moz-order: 3;
+    order: 3;
+  }
+}
+@media (max-width: 768px) {
+  .your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition {
+    -webkit-box-flex: 0 0 calc(100% - 2rem) !important;
+    -webkit-flex: 0 0 calc(100% - 2rem) !important;
+    flex: 0 0 calc(100% - 2rem) !important;
+    -ms-flex: 0 1 auto;
+    /* ie fix */
+    width: calc(100% - 2rem);
+    /* ie fix */
+    max-width: calc(100% - 2rem);
+    /* moz fix */
+    margin-bottom: 2rem;
+  }
+}
+.your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition ul {
+  padding-left: 0;
+  list-style: none;
+}
+ul .your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition ul {
+  padding-left: 40px;
+}
+.your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition ul > li {
+  margin-bottom: 1rem;
+}
+.your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition ul > li > a {
+  color: #242424;
+  display: block;
+  position: relative;
+}
+.your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition ul > li > a.your-library-exhibition-item {
+  padding-left: 145px;
+}
+.your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition ul > li > a.your-library-exhibition-item .your-library-exhibition-image {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  width: 130px;
+}
+.your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition ul > li > a.your-library-exhibition-item .your-library-exhibition-image img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+@media (max-width: 992px) {
+  .your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition ul > li > a.your-library-exhibition-item {
+    /* padding-left: 105px; */
+  }
+  .your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition ul > li > a.your-library-exhibition-item .your-library-exhibition-image {
+    /* width: 90px; */
+  }
+}
+.your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition ul > li > a .your-library-exhibition-date,
+.your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition ul > li > a .your-library-news-date {
+  display: block;
+  color: #0076AD;
+  font-size: 12px;
+  font-weight: bold;
+}
+.your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition ul > li > a.your-library-events-item {
+  padding-left: 60px;
+}
+.your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition ul > li > a.your-library-events-item .your-library-events-date {
+  box-sizing: border-box;
+  display: inline-block;
+  position: absolute;
+  top: 4px;
+  left: 0;
+  width: 45px;
+  border-top: 3px solid #242424;
+  padding-top: 3px;
+}
+.your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition ul > li > a.your-library-events-item .your-library-events-date .month {
+  display: block;
+  text-align: center;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition ul > li > a.your-library-events-item .your-library-events-date .date {
+  display: block;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 1;
+}
+.your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition ul > li > a .your-library-events-type {
+  display: block;
+  color: #0076AD;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition ul > li > a .your-library-events-time {
+  display: block;
+  font-size: 12px;
+}
+.your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition.exhibitions ul > li,
+.your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition.events ul > li {
+  min-height: 92px;
+}
+@media (max-width: 992px) {
+  .your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition.exhibitions ul > li,
+  .your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition.events ul > li {
+    /* min-height: 60px; */
+  }
+}
+.your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition .your-library-exhibition-more,
+.your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition .your-library-events-more,
+.your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition .your-library-news-more {
+  font-size: 12px;
+  font-weight: bold;
+  margin: 0;
+}
+.your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition .your-library-exhibition-more {
+  padding-left: 145px;
+}
+@media (max-width: 992px) {
+  .your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition .your-library-exhibition-more {
+    /* padding-left: 105px; */
+  }
+}
+.your-library .your-library-exhibitions-container .your-library-exhibitions .your-library-exhibition .your-library-events-more {
+  padding-left: 60px;
+}
+     </style>
+     <section class="your-library">
+      <h2>
+       Your Library
+      </h2>
+      <p class="your-library-abstract">
+       Use the largest library in the world online or in person!
+       <a href="/about/">
+        More about the Library
+       </a>
+       .
+      </p>
+      <div class="your-library-links-container">
+       <ul class="your-library-links">
+        <li>
+         <a href="/visit/">
+          <img alt="" src="/static/home/images/your-library/01-PlanYourVisit.jpg"/>
+          Plan Your Visit
+         </a>
+        </li>
+        <li>
+         <a href="http://www.loc.gov/rr/">
+          <img alt="" src="/static/home/images/your-library/02-ResearchCenter.jpg"/>
+          Research Centers
+         </a>
+        </li>
+        <li>
+         <a href="http://www.loc.gov/rr/askalib/">
+          <img alt="" src="/static/home/images/your-library/03-AskLibrarian.jpg"/>
+          Ask a Librarian
+         </a>
+        </li>
+       </ul>
+      </div>
+     </section>
+     <script>
+      jQuery(function($){
+
+    $('.your-library-links li a').click(function() {
+        var label = $(this).text().trim();
+        UX.interaction($(this), 'Your Library', 'Click', label);
+    });
+
+});
+     </script>
+     <style>
+      .public-domain {
+  max-width: 85.71428571rem;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 2rem;
+  background-color: #fff;
+  box-sizing: border-box;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  background-color: #26333B;
+}
+@media (max-width: 768px) {
+  .public-domain {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+.public-domain h2 {
+  font-family: inherit;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #242424;
+  margin: 0 0 1rem;
+  font-size: 2.5rem;
+  font-family: 'Roboto Slab', Arial, Helvetica, sans-serif;
+  font-size: 2.125rem;
+  text-align: center;
+  margin-bottom: 0.75rem;
+  color: #fff;
+}
+.public-domain h2 small,
+.public-domain h2 .small {
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  font-weight: normal;
+  line-height: 1;
+  color: #242424;
+}
+.public-domain h2 small.block,
+.public-domain h2 .small.block {
+  display: block;
+  margin-bottom: 2px;
+}
+a .public-domain h2 {
+  color: inherit !important;
+}
+.public-domain h2 small,
+.public-domain h2 .small {
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+}
+.public-domain h2 small.match-header,
+.public-domain h2 .small.match-header {
+  font-family: 'Roboto Slab', Arial, Helvetica, sans-serif;
+  text-transform: none;
+  font-weight: normal;
+  font-size: inherit;
+}
+.public-domain h2 .subheading {
+  font-family: 'Roboto Slab', Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+  display: block;
+  margin-top: 5px;
+  text-transform: none;
+}
+.public-domain .public-domain-abstract {
+  text-align: center;
+  color: #fff;
+}
+.public-domain .public-domain-abstract a:link,
+.public-domain .public-domain-abstract a:visited,
+.public-domain .public-domain-abstract a:hover,
+.public-domain .public-domain-abstract a:focus,
+.public-domain .public-domain-abstract a:active {
+  color: #fff;
+}
+.public-domain .grid-view {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+  /* TWEENER - IE 10 */
+  /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+  /* NEW, Spec - Firefox, Chrome, Opera */
+  -webkit-flex-align: stretch;
+  -webkit-align-items: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  /* search results */
+  display: -webkit-box;
+  /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+  display: -ms-flexbox;
+  /* TWEENER - IE 10 */
+  display: -webkit-flex;
+  /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+  display: -moz-box;
+  display: flex;
+  /* NEW, Spec - Firefox, Chrome, Opera */
+  -webkit-flex-flow: row wrap;
+  flex-flow: row wrap;
+  -webkit-flex-align: flex-start;
+  -webkit-align-items: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  margin: 0 -1rem;
+}
+.public-domain .grid-view > li {
+  -webkit-box-flex: ;
+  /* OLD - iOS 6-, Safari 3.1-6 */
+  -webkit-flex: ;
+  /* Safari 6.1+. iOS 7.1+, BB10 */
+  -ms-flex: ;
+  /* IE 10 */
+  -moz-box-flex: ;
+  flex: ;
+  /* NEW, Spec - Firefox, Chrome, Opera */
+  min-width: 0;
+  /* firefox fix */
+  margin: 0 0.99950025rem;
+  box-sizing: border-box;
+  -webkit-box-flex: 0 0 calc(25% - 2rem) !important;
+  -webkit-flex: 0 0 calc(25% - 2rem) !important;
+  flex: 0 0 calc(25% - 2rem) !important;
+  -ms-flex: 0 1 auto;
+  /* ie fix */
+  width: calc(25% - 2rem);
+  /* ie fix */
+  max-width: calc(25% - 2rem);
+  /* moz fix */
+  margin-bottom: 2rem;
+  background-color: transparent;
+}
+.public-domain .grid-view > li figure img,
+.public-domain .grid-view > li .figure img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+@media (max-width: 992px) {
+  .public-domain .grid-view > li {
+    -webkit-box-flex: 0 0 calc(33.33333333% - 2rem) !important;
+    -webkit-flex: 0 0 calc(33.33333333% - 2rem) !important;
+    flex: 0 0 calc(33.33333333% - 2rem) !important;
+    -ms-flex: 0 1 auto;
+    /* ie fix */
+    width: calc(33.33333333% - 2rem);
+    /* ie fix */
+    max-width: calc(33.33333333% - 2rem);
+    /* moz fix */
+  }
+}
+@media (max-width: 768px) {
+  .public-domain .grid-view > li {
+    -webkit-box-flex: 0 0 calc(50% - 2rem) !important;
+    -webkit-flex: 0 0 calc(50% - 2rem) !important;
+    flex: 0 0 calc(50% - 2rem) !important;
+    -ms-flex: 0 1 auto;
+    /* ie fix */
+    width: calc(50% - 2rem);
+    /* ie fix */
+    max-width: calc(50% - 2rem);
+    /* moz fix */
+  }
+}
+@media (max-width: 480px) {
+  .public-domain .grid-view > li {
+    -webkit-box-flex: 0 0 calc(50% - 2rem) !important;
+    -webkit-flex: 0 0 calc(50% - 2rem) !important;
+    flex: 0 0 calc(50% - 2rem) !important;
+    -ms-flex: 0 1 auto;
+    /* ie fix */
+    width: calc(50% - 2rem);
+    /* ie fix */
+    max-width: calc(50% - 2rem);
+    /* moz fix */
+  }
+}
+.public-domain .grid-view > li.merge-cells {
+  -webkit-box-flex: 0 0 calc(100% - 2rem) !important;
+  -webkit-flex: 0 0 calc(100% - 2rem) !important;
+  flex: 0 0 calc(100% - 2rem) !important;
+  -ms-flex: 0 1 auto;
+  /* ie fix */
+  width: calc(100% - 2rem);
+  /* ie fix */
+  max-width: calc(100% - 2rem);
+  /* moz fix */
+}
+.public-domain .grid-view.gallery-view > li {
+  border: 1px solid #EFEFEF;
+  padding: 1rem;
+}
+.public-domain .grid-view.gallery-view > li figure,
+.public-domain .grid-view.gallery-view > li .figure {
+  margin-bottom: 1rem;
+}
+.public-domain .grid-view.list-view {
+  display: -webkit-box;
+  /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+  display: -ms-flexbox;
+  /* TWEENER - IE 10 */
+  display: -webkit-flex;
+  /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+  display: -moz-box;
+  display: flex;
+  /* NEW, Spec - Firefox, Chrome, Opera */
+  -webkit-flex-flow: row wrap;
+  flex-flow: row wrap;
+  -webkit-flex-align: stretch;
+  -webkit-align-items: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  margin: 0 0;
+}
+.public-domain .grid-view.list-view > li {
+  -webkit-box-flex: 1;
+  /* OLD - iOS 6-, Safari 3.1-6 */
+  -webkit-flex: 1;
+  /* Safari 6.1+. iOS 7.1+, BB10 */
+  -ms-flex: 1;
+  /* IE 10 */
+  -moz-box-flex: 1;
+  flex: 1;
+  /* NEW, Spec - Firefox, Chrome, Opera */
+  min-width: 0;
+  /* firefox fix */
+  margin: 0 0;
+  box-sizing: border-box;
+  -webkit-box-flex: 0 0 calc(100% - 0rem) !important;
+  -webkit-flex: 0 0 calc(100% - 0rem) !important;
+  flex: 0 0 calc(100% - 0rem) !important;
+  -ms-flex: 0 1 auto;
+  /* ie fix */
+  width: calc(100% - 0rem);
+  /* ie fix */
+  max-width: calc(100% - 0rem);
+  /* moz fix */
+}
+.public-domain .grid-view > li {
+  padding: 10px;
+  background-color: #fff;
+}
+.public-domain .grid-view > li figure {
+  margin: 0;
+}
+.public-domain .grid-view > li .description {
+  /* display: none; */
+}
+.public-domain .grid-view > li.show-more {
+  display: none;
+}
+.public-domain .public-domain-button-wrapper {
+  text-align: center;
+}
+.public-domain .public-domain-button-wrapper .public-domain-button {
+  margin: 1rem 0 0;
+  padding: 0 15px;
+  border-radius: 30px;
+  border: 1px solid #0076AD;
+  color: #0076AD;
+  background-color: #fff;
+  font-size: 14px;
+  font-weight: normal;
+}
+     </style>
+     <section class="public-domain">
+      <a id="reuse" name="reuse">
+      </a>
+      <h2>
+       Free to Use and Reuse: Presidential Papers, 1780s-1920s
+      </h2>
+      <p class="public-domain-abstract">
+      </p>
+      <p style="color: #fff">
+       The Library of Congress holds the papers of 23 presidents from George Washington to Calvin Coolidge, all of which have been digitized and are available online as 3.3 million images. The selected documents represent the variety of materials available in the papers as well as some of the most important texts. A
+       <a href="/item/prn-20-085/" style="color: #fff; text-decoration: underline">
+        press release
+       </a>
+       provides the web address for each collection. Browse more
+       <a href="/free-to-use/" style="color: #fff; text-decoration: underline">
+        content that is free to use and reuse
+        <i class="icon icon-angle-double-right">
+        </i>
+       </a>
+      </p>
+      <ul class="search-results grid-view public-domain-results">
+       <li id="featured_public_domain_1">
+        <figure>
+         <a href="/resource/mgw4.097_0243_0247/?sp=3" tabindex="-1">
+          <img alt="Draft of the Federal Constitution with marginal notes by George Washington, September 12, 1787. George Washington Papers, Manuscript Division." src="/static/portals/free-to-use/public-domain/presidential-papers/1.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mgw4.097_0243_0247/?sp=3">
+            <span>
+             Draft of the Federal Constitution with marginal notes by George Washington, September 12, 1787. George Washington Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li id="featured_public_domain_2">
+        <figure>
+         <a href="/resource/mal.4356500/?sp=1" tabindex="-1">
+          <img alt="Abraham Lincoln, Gettysburg Address,  delivered November 19, 1863 (Nicolay copy).  Abraham Lincoln Papers, Manuscript Division." src="/static/portals/free-to-use/public-domain/presidential-papers/2.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mal.4356500/?sp=1">
+            <span>
+             Abraham Lincoln, Gettysburg Address,  delivered November 19, 1863 (Nicolay copy).  Abraham Lincoln Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li id="featured_public_domain_3">
+        <figure>
+         <a href="/resource/mss38299.mss38299-430_0150_0192/?sp=11" tabindex="-1">
+          <img alt="Theodore Roosevelt, diary entry, February 14, 1884, recording his despair after the deaths of both his wife and mother on the same day. Theodore Roosevelt Papers, Manuscript Division." src="/static/portals/free-to-use/public-domain/presidential-papers/3.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss38299.mss38299-430_0150_0192/?sp=11">
+            <span>
+             Theodore Roosevelt, diary entry, February 14, 1884, recording his despair after the deaths of both his wife and mother on the same day. Theodore Roosevelt Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li id="featured_public_domain_4">
+        <figure>
+         <a href="/resource/mss16741.mss16741-088_0010_1133/?sp=203" tabindex="-1">
+          <img alt="Telegram from Congressman John Franklin Miller of Washington state to Calvin Coolidge’s secretary C. Bascom Slemp, September 30, 1924, requesting that he urge the president to call a special session of Congress so that members could return to see the Washington Senators play in the 1924 World Series. Calvin Coolidge Papers, Manuscript Division.
+" src="/static/portals/free-to-use/public-domain/presidential-papers/4.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss16741.mss16741-088_0010_1133/?sp=203">
+            <span>
+             Telegram from Congressman John Franklin Miller of Washington state to Calvin Coolidge’s secretary C. Bascom Slemp, September 30, 1924, requesting that he urge the president to call a special session of Congress so that members could return to see the Washington Senators play in the 1924 World Series. Calvin Coolidge Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li id="featured_public_domain_5">
+        <figure>
+         <a href="/item/mcc.053/" tabindex="-1">
+          <img alt="George Washington, inaugural address, April 30, 1789. George Washington Papers, Manuscript Division." src="/static/portals/free-to-use/public-domain/presidential-papers/5.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/item/mcc.053/">
+            <span>
+             George Washington, inaugural address, April 30, 1789. George Washington Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li id="featured_public_domain_6">
+        <figure>
+         <a href="/resource/mgw4.099_0334_0335/?sp=1" tabindex="-1">
+          <img alt="Farm report, George Augustine Washington to President George Washington, March 6, 1790, recording the births, sicknesses, and labor of slaves. George Washington Papers, Manuscript Division." src="/static/portals/free-to-use/public-domain/presidential-papers/6.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mgw4.099_0334_0335/?sp=1">
+            <span>
+             Farm report, George Augustine Washington to President George Washington, March 6, 1790, recording the births, sicknesses, and labor of slaves. George Washington Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li id="featured_public_domain_7">
+        <figure>
+         <a href="/resource/mgw2.024/?sp=228" tabindex="-1">
+          <img alt="George Washington, September 17, 1796, Farewell Address. George Washington Papers, Manuscript Division." src="/static/portals/free-to-use/public-domain/presidential-papers/7.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mgw2.024/?sp=228">
+            <span>
+             George Washington, September 17, 1796, Farewell Address. George Washington Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li id="featured_public_domain_8">
+        <figure>
+         <a href="/resource/mtj1.014_0207_0210/?sp=4" tabindex="-1">
+          <img alt="Thomas Jefferson, Map of the Federal District, March 31, 1791, drawn while Secretary of State. Thomas Jefferson Papers, Manuscript Division." src="/static/portals/free-to-use/public-domain/presidential-papers/8.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mtj1.014_0207_0210/?sp=4">
+            <span>
+             Thomas Jefferson, Map of the Federal District, March 31, 1791, drawn while Secretary of State. Thomas Jefferson Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li id="featured_public_domain_9">
+        <figure>
+         <a href="/resource/mtj1.028_0175_0176/?sp=1" tabindex="-1">
+          <img alt="Thomas Jefferson to Meriwether Lewis, cipher to use on the Lewis and Clark expedition, April 20, 1803. Thomas Jefferson Papers, Manuscript Division." src="/static/portals/free-to-use/public-domain/presidential-papers/9.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mtj1.028_0175_0176/?sp=1">
+            <span>
+             Thomas Jefferson to Meriwether Lewis, cipher to use on the Lewis and Clark expedition, April 20, 1803. Thomas Jefferson Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li id="featured_public_domain_10">
+        <figure>
+         <a href="https://www.loc.gov/exhibits/jefferson/jefffed.html#112" tabindex="-1">
+          <img alt="Thomas Jefferson, sixth annual message to Congress, December 2, 1806, putting into effect the Constitution’s ban on the slave trade after twenty years. Thomas Jefferson Papers, Manuscript Division.
+" src="/static/portals/free-to-use/public-domain/presidential-papers/10.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="https://www.loc.gov/exhibits/jefferson/jefffed.html#112">
+            <span>
+             Thomas Jefferson, sixth annual message to Congress, December 2, 1806, putting into effect the Constitution’s ban on the slave trade after twenty years. Thomas Jefferson Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li id="featured_public_domain_11">
+        <figure>
+         <a href="https://www.loc.gov/exhibits/jefferson/jeffleg.html#207 " tabindex="-1">
+          <img alt="Thomas Jefferson’s 1826 plan for his own tomb excluded mention of his role as third president of the United States. Thomas Jefferson Papers, Manuscript Division.
+" src="/static/portals/free-to-use/public-domain/presidential-papers/11.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="https://www.loc.gov/exhibits/jefferson/jeffleg.html#207 ">
+            <span>
+             Thomas Jefferson’s 1826 plan for his own tomb excluded mention of his role as third president of the United States. Thomas Jefferson Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li id="featured_public_domain_12">
+        <figure>
+         <a href="/resource/mjm.04_0319_0320" tabindex="-1">
+          <img alt="James Madison, notes for a speech on Constitutional amendments to constitute a Bill of Rights, June 8, 1789. James Madison Papers, Manuscript Division." src="/static/portals/free-to-use/public-domain/presidential-papers/12.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mjm.04_0319_0320">
+            <span>
+             James Madison, notes for a speech on Constitutional amendments to constitute a Bill of Rights, June 8, 1789. James Madison Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_13">
+        <figure>
+         <a href="/resource/mss33217.006/?sp=728" tabindex="-1">
+          <img alt="Former president John Adams to current president James Monroe regarding appointments to office, June 27, 1817. James Monroe Papers, Manuscript Division." data-src="/static/portals/free-to-use/public-domain/presidential-papers/13.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss33217.006/?sp=728">
+            <span>
+             Former president John Adams to current president James Monroe regarding appointments to office, June 27, 1817. James Monroe Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_14">
+        <figure>
+         <a href="/resource/mss27532a.OV1/?sp=1" tabindex="-1">
+          <img alt="Andrew Jackson, draft of first inaugural address, March 4, 1829. Andrew Jackson Papers, Manuscript Division." data-src="/static/portals/free-to-use/public-domain/presidential-papers/14.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss27532a.OV1/?sp=1">
+            <span>
+             Andrew Jackson, draft of first inaugural address, March 4, 1829. Andrew Jackson Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_15">
+        <figure>
+         <a href="/resource/mss36509.001_0011_0641/?sp=597" tabindex="-1">
+          <img alt="James K. Polk, diary entry, August 26, 1846, on his reasons for keeping a diary. James K. Polk Papers, Manuscript Division." data-src="/static/portals/free-to-use/public-domain/presidential-papers/15.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss36509.001_0011_0641/?sp=597">
+            <span>
+             James K. Polk, diary entry, August 26, 1846, on his reasons for keeping a diary. James K. Polk Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_16">
+        <figure>
+         <a href="/resource/mss42440.001_0027_0913/?sp=560" tabindex="-1">
+          <img alt="Arrangements for the presidential inauguration of Zachary Taylor, March 5, 1849.  Zachary Taylor Papers, Manuscript Division." data-src="/static/portals/free-to-use/public-domain/presidential-papers/16.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss42440.001_0027_0913/?sp=560">
+            <span>
+             Arrangements for the presidential inauguration of Zachary Taylor, March 5, 1849.  Zachary Taylor Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_17">
+        <figure>
+         <a href="/resource/mss36194.007_0009_0370/?sp=325" tabindex="-1">
+          <img alt="Franklin Pierce, draft of last annual message to Congress, December 2, 1856. Franklin Pierce Papers, Manuscript Division." data-src="/static/portals/free-to-use/public-domain/presidential-papers/17.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss36194.007_0009_0370/?sp=325">
+            <span>
+             Franklin Pierce, draft of last annual message to Congress, December 2, 1856. Franklin Pierce Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_18">
+        <figure>
+         <a href="/resource/mal.4500034/" tabindex="-1">
+          <img alt="Cigar box label featuring Republican presidential candidate Abraham Lincoln, 1860.  Abraham Lincoln Papers, Manuscript Division." data-src="/static/portals/free-to-use/public-domain/presidential-papers/18.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mal.4500034/">
+            <span>
+             Cigar box label featuring Republican presidential candidate Abraham Lincoln, 1860.  Abraham Lincoln Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_19">
+        <figure>
+         <a href="/resource/mal.0773800/?sp=12" tabindex="-1">
+          <img alt="Final copy of Abraham Lincoln’s first inaugural address, delivered on March 4, 1861, with handwritten closing paragraph. Abraham Lincoln Papers, Manuscript Division." data-src="/static/portals/free-to-use/public-domain/presidential-papers/19.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mal.0773800/?sp=12">
+            <span>
+             Final copy of Abraham Lincoln’s first inaugural address, delivered on March 4, 1861, with handwritten closing paragraph. Abraham Lincoln Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_20">
+        <figure>
+         <a href="/resource/mal.1723200/" tabindex="-1">
+          <img alt="Abraham Lincoln’s preliminary draft of an emancipation proclamation, first read to his cabinet on July 22, 1862.  Abraham Lincoln Papers, Manuscript Division.
+" data-src="/static/portals/free-to-use/public-domain/presidential-papers/20.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mal.1723200/">
+            <span>
+             Abraham Lincoln’s preliminary draft of an emancipation proclamation, first read to his cabinet on July 22, 1862.  Abraham Lincoln Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_21">
+        <figure>
+         <a href="/resource/mal.4361300/?sp=10" tabindex="-1">
+          <img alt="Abraham Lincoln, “cut-and-paste” reading copy of second inaugural address, delivered March 4, 1865.  Abraham Lincoln Papers, Manuscript Division.
+" data-src="/static/portals/free-to-use/public-domain/presidential-papers/21.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mal.4361300/?sp=10">
+            <span>
+             Abraham Lincoln, “cut-and-paste” reading copy of second inaugural address, delivered March 4, 1865.  Abraham Lincoln Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_22">
+        <figure>
+         <a href="/resource/mss27839.mss27839-047_0134_1103/?sp=38" tabindex="-1">
+          <img alt="Andrew Johnson, speech in the U.S. Senate, May 20, 1858, on the Homestead Bill before Congress.  Andrew Johnson Papers, Manuscript Division.
+" data-src="/static/portals/free-to-use/public-domain/presidential-papers/22.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss27839.mss27839-047_0134_1103/?sp=38">
+            <span>
+             Andrew Johnson, speech in the U.S. Senate, May 20, 1858, on the Homestead Bill before Congress.  Andrew Johnson Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_23">
+        <figure>
+         <a href="/resource/mss27839.mss27839-051_0376_1142/?sp=118" tabindex="-1">
+          <img alt="Expense account, 1865, reflecting African American steward William Slade’s grocery purchases for the Andrew Johnson White House.  Andrew Johnson Papers, Manuscript Division.
+" data-src="/static/portals/free-to-use/public-domain/presidential-papers/23.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss27839.mss27839-051_0376_1142/?sp=118">
+            <span>
+             Expense account, 1865, reflecting African American steward William Slade’s grocery purchases for the Andrew Johnson White House.  Andrew Johnson Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_24">
+        <figure>
+         <a href="/resource/mss23333.001_0816_1188/?sp=20" tabindex="-1">
+          <img alt="Ulysses S. Grant to Secretary of War Edwin M. Stanton, May 11, 1864. Ulysses S. Grant Papers, Manuscript Division.
+" data-src="/static/portals/free-to-use/public-domain/presidential-papers/24.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss23333.001_0816_1188/?sp=20">
+            <span>
+             Ulysses S. Grant to Secretary of War Edwin M. Stanton, May 11, 1864. Ulysses S. Grant Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_25">
+        <figure>
+         <a href="/resource/mss23333.001_0015_0815/?sp=787" tabindex="-1">
+          <img alt="Note exchanged between Ulysses S. Grant and his wife Julia, May 22, 1875, on the anniversary of their engagement.  Ulysses S. Grant Papers, Manuscript Division.
+" data-src="/static/portals/free-to-use/public-domain/presidential-papers/25.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss23333.001_0015_0815/?sp=787">
+            <span>
+             Note exchanged between Ulysses S. Grant and his wife Julia, May 22, 1875, on the anniversary of their engagement.  Ulysses S. Grant Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_26">
+        <figure>
+         <a href="/resource/mss21956.mss21956-014_0015_0448/?sp=254" tabindex="-1">
+          <img alt="Letter of introduction for James A. Garfield by Librarian of Congress Ainsworth Rand Spofford, July 10, 1867. James A. Garfield Papers,  Manuscript Division." data-src="/static/portals/free-to-use/public-domain/presidential-papers/26.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss21956.mss21956-014_0015_0448/?sp=254">
+            <span>
+             Letter of introduction for James A. Garfield by Librarian of Congress Ainsworth Rand Spofford, July 10, 1867. James A. Garfield Papers,  Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_27">
+        <figure>
+         <a href="/resource/mss21956.mss21956-003_0014_0336/?sp=323" tabindex="-1">
+          <img alt="James A. Garfield, final diary entry, July 1, 1881. James A. Garfield Papers,  Manuscript Division." data-src="/static/portals/free-to-use/public-domain/presidential-papers/27.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss21956.mss21956-003_0014_0336/?sp=323">
+            <span>
+             James A. Garfield, final diary entry, July 1, 1881. James A. Garfield Papers,  Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_28">
+        <figure>
+         <a href="/resource/mss11213.mss11213-001_0009_1270/?sp=344" tabindex="-1">
+          <img alt="Bill submitted to Chester Alan Arthur from cigar importer G. W. Faber, October 20, 1873. Chester Alan Arthur Papers, Manuscript Division.
+" data-src="/static/portals/free-to-use/public-domain/presidential-papers/28.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss11213.mss11213-001_0009_1270/?sp=344">
+            <span>
+             Bill submitted to Chester Alan Arthur from cigar importer G. W. Faber, October 20, 1873. Chester Alan Arthur Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_29">
+        <figure>
+         <a href="/resource/mss11213.mss11213-002_0009_1335/?sp=89" tabindex="-1">
+          <img alt="Letter, New Yorker Julia Sand to Chester Alan Arthur, March 1882, expressing her contempt for the Chinese exclusion bill then before Congress. Chester Alan Arthur Papers, Manuscript Division" data-src="/static/portals/free-to-use/public-domain/presidential-papers/29.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss11213.mss11213-002_0009_1335/?sp=89">
+            <span>
+             Letter, New Yorker Julia Sand to Chester Alan Arthur, March 1882, expressing her contempt for the Chinese exclusion bill then before Congress. Chester Alan Arthur Papers, Manuscript Division
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_30">
+        <figure>
+         <a href="/resource/mss16188.mss16188-064_0349_0656/?sp=212" tabindex="-1">
+          <img alt="Grover Cleveland, pictured on an 1888 presidential campaign ribbon. Grover Cleveland Papers, Manuscript Division." data-src="/static/portals/free-to-use/public-domain/presidential-papers/30.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss16188.mss16188-064_0349_0656/?sp=212">
+            <span>
+             Grover Cleveland, pictured on an 1888 presidential campaign ribbon. Grover Cleveland Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_31">
+        <figure>
+         <a href="/resource/mss25064.mss25064-008_0018_1181/?sp=755" tabindex="-1">
+          <img alt="Benjamin Harrison’s envelope reply, refusing to make a political deal at the June 1888 Republican nominating convention. Benjamin Harrison Papers, Manuscript Division.
+" data-src="/static/portals/free-to-use/public-domain/presidential-papers/31.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss25064.mss25064-008_0018_1181/?sp=755">
+            <span>
+             Benjamin Harrison’s envelope reply, refusing to make a political deal at the June 1888 Republican nominating convention. Benjamin Harrison Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_32">
+        <figure>
+         <a href="/resource/mss25064.mss25064-012_0018_1186/?sp=683" tabindex="-1">
+          <img alt="Broadside comparing the respective Civil War service of presidential candidates Benjamin Harrison and Grover Cleveland, 1888.  Benjamin Harrison Papers, Manuscript Division." data-src="/static/portals/free-to-use/public-domain/presidential-papers/32.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss25064.mss25064-012_0018_1186/?sp=683">
+            <span>
+             Broadside comparing the respective Civil War service of presidential candidates Benjamin Harrison and Grover Cleveland, 1888.  Benjamin Harrison Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_33">
+        <figure>
+         <a href="/resource/mss16188.mss16188-100_0015_0064/?sp=25" tabindex="-1">
+          <img alt="Grover Cleveland to his friend A. B. Farquhar, February 11, 1908, on being “an optimistic American” despite current events.  Grover Cleveland Papers, Manuscript Division.
+" data-src="/static/portals/free-to-use/public-domain/presidential-papers/33.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss16188.mss16188-100_0015_0064/?sp=25">
+            <span>
+             Grover Cleveland to his friend A. B. Farquhar, February 11, 1908, on being “an optimistic American” despite current events.  Grover Cleveland Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_34">
+        <figure>
+         <a href="/resource/mss32268.mss32268-003_0018_1139/?sp=755" tabindex="-1">
+          <img alt="William McKinley, draft message, April 11, 1898, regarding the use of U.S. military forces in Cuba. William McKinley Papers, Manuscript Division." data-src="/static/portals/free-to-use/public-domain/presidential-papers/34.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss32268.mss32268-003_0018_1139/?sp=755">
+            <span>
+             William McKinley, draft message, April 11, 1898, regarding the use of U.S. military forces in Cuba. William McKinley Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_35">
+        <figure>
+         <a href="/resource/mss38299.mss38299-454_0001_0688/?sp=107" tabindex="-1">
+          <img alt="Newspaper cartoon poking fun at New York City Police Commissioner Theodore Roosevelt, July 12, 1895.  Theodore Roosevelt Papers, Manuscript Division." data-src="/static/portals/free-to-use/public-domain/presidential-papers/35.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss38299.mss38299-454_0001_0688/?sp=107">
+            <span>
+             Newspaper cartoon poking fun at New York City Police Commissioner Theodore Roosevelt, July 12, 1895.  Theodore Roosevelt Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_36">
+        <figure>
+         <a href="/resource/mss38299.mss38299-024_0001_0920/?sp=95" tabindex="-1">
+          <img alt="Theodore Roosevelt, 1902 sketch of brands used to identify his cattle while a rancher.  Theodore Roosevelt Papers, Manuscript Division." data-src="/static/portals/free-to-use/public-domain/presidential-papers/36.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss38299.mss38299-024_0001_0920/?sp=95">
+            <span>
+             Theodore Roosevelt, 1902 sketch of brands used to identify his cattle while a rancher.  Theodore Roosevelt Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_37">
+        <figure>
+         <a href="/resource/mss38299a.00101/?sp=13" tabindex="-1">
+          <img alt="Theodore Roosevelt to son Archibald Roosevelt, September 28, 1907, on the White House antics of youngest child, Quentin.  Theodore Roosevelt Papers, Manuscript Division" data-src="/static/portals/free-to-use/public-domain/presidential-papers/37.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss38299a.00101/?sp=13">
+            <span>
+             Theodore Roosevelt to son Archibald Roosevelt, September 28, 1907, on the White House antics of youngest child, Quentin.  Theodore Roosevelt Papers, Manuscript Division
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_38">
+        <figure>
+         <a href="/resource/mss42234.mss42234-373_0020_0046/?sp=19" tabindex="-1">
+          <img alt="National Civil and Political League of American Negroes, Washington, D.C. Notice of meeting to support William H. Taft’s reelection, August 12, 1912. William H. Taft Papers, Manuscript Division. 
+" data-src="/static/portals/free-to-use/public-domain/presidential-papers/38.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss42234.mss42234-373_0020_0046/?sp=19">
+            <span>
+             National Civil and Political League of American Negroes, Washington, D.C. Notice of meeting to support William H. Taft’s reelection, August 12, 1912. William H. Taft Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_39">
+        <figure>
+         <a href="/resource/mss42234.mss42234-653_0020_0765/?sp=361" tabindex="-1">
+          <img alt="Photograph of William H. Taft at a microphone, undated. William H. Taft Papers, Manuscript Division. " data-src="/static/portals/free-to-use/public-domain/presidential-papers/39.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss42234.mss42234-653_0020_0765/?sp=361">
+            <span>
+             Photograph of William H. Taft at a microphone, undated. William H. Taft Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_40">
+        <figure>
+         <a href="/resource/mss42234.mss42234-653_0768_1169/?sp=61" tabindex="-1">
+          <img alt="Cartoon, “The Bluff,” predicting that Theodore Roosevelt would be the animating force in a Taft presidency, ca. 1908. William H. Taft Papers, Manuscript Division. 
+" data-src="/static/portals/free-to-use/public-domain/presidential-papers/40.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss42234.mss42234-653_0768_1169/?sp=61">
+            <span>
+             Cartoon, “The Bluff,” predicting that Theodore Roosevelt would be the animating force in a Taft presidency, ca. 1908. William H. Taft Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_41">
+        <figure>
+         <a href="/resource/mss46029a.00103/?sp=20" tabindex="-1">
+          <img alt="Courtship letter from President Woodrow Wilson to Edith Bolling Galt Wilson, May 6, 1915. Woodrow Wilson Papers, Manuscript Division." data-src="/static/portals/free-to-use/public-domain/presidential-papers/41.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss46029a.00103/?sp=20">
+            <span>
+             Courtship letter from President Woodrow Wilson to Edith Bolling Galt Wilson, May 6, 1915. Woodrow Wilson Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_42">
+        <figure>
+         <a href="/resource/mss46029a.00323/?sp=11" tabindex="-1">
+          <img alt="Woodrow Wilson’s signature, 1917, transformed into an inkblot in an unusual autograph book titled Your Hidden Skeleton (Philadelphia: John C. Winston Co., n.d.). Woodrow Wilson Papers, Manuscript Division.
+" data-src="/static/portals/free-to-use/public-domain/presidential-papers/42.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss46029a.00323/?sp=11">
+            <span>
+             Woodrow Wilson’s signature, 1917, transformed into an inkblot in an unusual autograph book titled Your Hidden Skeleton (Philadelphia: John C. Winston Co., n.d.). Woodrow Wilson Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_43">
+        <figure>
+         <a href="/resource/mss46029.mss46029-210_0018_1176/?sp=910" tabindex="-1">
+          <img alt="Carrie Chapman Catt to Woodrow Wilson, November 26, 1918, urging him to speak on behalf of the woman’s suffrage amendment. Woodrow Wilson Papers, Manuscript Division." data-src="/static/portals/free-to-use/public-domain/presidential-papers/43.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss46029.mss46029-210_0018_1176/?sp=910">
+            <span>
+             Carrie Chapman Catt to Woodrow Wilson, November 26, 1918, urging him to speak on behalf of the woman’s suffrage amendment. Woodrow Wilson Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_44">
+        <figure>
+         <a href="/resource/mss46029.mss46029-480_0018_0618/?sp=344" tabindex="-1">
+          <img alt="Woodrow Wilson's speech notes, in shorthand, for his &quot;Fourteen Points&quot; address, [8 January 1918]. Woodrow Wilson Papers, Manuscript Division.
+" data-src="/static/portals/free-to-use/public-domain/presidential-papers/44.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss46029.mss46029-480_0018_0618/?sp=344">
+            <span>
+             Woodrow Wilson's speech notes, in shorthand, for his "Fourteen Points" address, [8 January 1918]. Woodrow Wilson Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+       <li class="show-more" id="featured_public_domain_45">
+        <figure>
+         <a href="/resource/mss16741.mss16741-054_0010_1135/?sp=801" tabindex="-1">
+          <img alt="Photograph, James L. Callahan, Boston Globe, of newly sworn-in President Calvin Coolidge greeting eight-year-old Bernard “Pinkie” Sinay, in North Bennington, Vermont, August 3, 1923. Calvin Coolidge Papers, Manuscript Division.
+" data-src="/static/portals/free-to-use/public-domain/presidential-papers/45.jpg"/>
+         </a>
+        </figure>
+        <div class="description">
+         <div class="item-description">
+          <h2>
+           <a href="/resource/mss16741.mss16741-054_0010_1135/?sp=801">
+            <span>
+             Photograph, James L. Callahan, Boston Globe, of newly sworn-in President Calvin Coolidge greeting eight-year-old Bernard “Pinkie” Sinay, in North Bennington, Vermont, August 3, 1923. Calvin Coolidge Papers, Manuscript Division.
+            </span>
+           </a>
+          </h2>
+         </div>
+        </div>
+       </li>
+      </ul>
+      <div class="public-domain-button-wrapper">
+       <button class="public-domain-button">
+        Show More
+       </button>
+      </div>
+     </section>
+     <script>
+      jQuery(function($){
+    // public domain
+    var public_domain = $('.public-domain .grid-view').isotope({
+        
+        itemSelector: '.public-domain .grid-view > li',
+        percentPosition: true
+    });
+    public_domain.imagesLoaded().progress( function() {
+        public_domain.isotope('layout');
+    });
+
+    $('.public-domain-button').click(function() {
+        $('.public-domain-results .show-more img').each(function(i, img){
+            $(img).attr('src', $(img).attr('data-src'));
+        });
+        public_domain.imagesLoaded().progress( function() {
+            $('.public-domain-results .show-more').removeClass('show-more');
+            $('.public-domain-button').hide();
+            public_domain.isotope('layout');
+        });
+    });
+
+    $('.public-domain-results.search-results a').click(function(event) {
+        var item = $(this).closest('li'),
+            index = $(item).parent().children().index(item) + 1,
+            label = '[' + index + ']:' + item.text().trim();
+        UX.interaction($(this), 'Public Domain', 'Click', label);
+    });
+});
+     </script>
+    </div>
+   </div>
+   <style>
+    .footer {
+  background-color: #F6F6F6;
+  border-top: 1px solid #808080;
+  padding-top: 35px;
+}
+.footer a {
+  color: #242424;
+}
+@media print {
+  .footer {
+    display: none;
+  }
+}
+.footer-container {
+  max-width: 85.71428571rem;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 2rem;
+  background-color: transparent;
+  box-sizing: border-box;
+}
+@media (max-width: 768px) {
+  .footer-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+.footer-social-links-wrapper {
+  border-bottom: 1px solid #808080;
+  padding-bottom: 21px;
+  margin-bottom: 21px;
+  text-align: center;
+}
+.footer-social-title {
+  font-size: 18px;
+  font-weight: normal;
+  color: #242424;
+  display: inline-block;
+  margin: 0 28px 0 0;
+}
+@media (max-width: 992px) {
+  .footer-social-title {
+    display: block;
+    margin: 0 0 7px;
+  }
+}
+.footer-social-links {
+  padding-left: 0;
+  list-style: none;
+  margin: 0 -7px;
+  display: inline-block;
+  margin-bottom: 0;
+}
+ul .footer-social-links {
+  padding-left: 40px;
+}
+.footer-social-links > li {
+  display: inline-block;
+  margin: 0 7px;
+}
+.footer-social-links > li i {
+  font-size: 17.5px;
+}
+.footer-social-links > li span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+.footer-social-links > li a .icon-external-link {
+  font-size: inherit;
+}
+.footer-social-links > li.footer-social-link-rss a {
+  color: #F05129;
+}
+.footer-social-links > li.footer-social-link-email a {
+  color: #0076AD;
+}
+.footer-social-links > li.footer-social-link-survey {
+  border-left: 1px solid #808080;
+  padding-left: 28px;
+  margin-left: 14px;
+  font-size: 13px;
+}
+.footer-social-links > li.footer-social-link-survey a {
+  color: #0076AD;
+}
+@media (max-width: 992px) {
+  .footer-social-links > li.footer-social-link-survey {
+    border: none;
+    padding: 0;
+    display: block;
+    margin-top: 10.5px;
+  }
+}
+.footer-social-links > li.footer-social-link-itunesu {
+  font-size: 13px;
+}
+.footer-social-links > li.footer-social-link-itunesu a {
+  color: #0076AD;
+}
+@media (max-width: 992px) {
+  .footer-social-links {
+    display: block;
+  }
+}
+@media (min-width: 993px) {
+  .footer-row {
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6, BB7 */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+    display: -moz-box;
+    display: flex;
+    /* NEW, Spec - Firefox, Chrome, Opera */
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+    -webkit-flex-align: flex-start;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: flex-start;
+    align-items: flex-start;
+    margin: 0 -1rem;
+  }
+}
+.footer-links-wrapper .footer-links {
+  padding-left: 0;
+  list-style: none;
+  margin: 0 -8.75px;
+  margin-bottom: 0;
+  font-size: 12px;
+}
+ul .footer-links-wrapper .footer-links {
+  padding-left: 40px;
+}
+.footer-links-wrapper .footer-links > li {
+  display: inline-block;
+  margin: 0 8.75px;
+}
+.footer-links-wrapper .footer-links > li {
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+@media (max-width: 992px) {
+  .footer-links-wrapper {
+    text-align: center;
+    margin-bottom: 21px;
+  }
+}
+@media (min-width: 993px) {
+  .footer-links-wrapper {
+    -webkit-box-flex: 1;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    -webkit-flex: 1;
+    /* Safari 6.1+. iOS 7.1+, BB10 */
+    -ms-flex: 1;
+    /* IE 10 */
+    -moz-box-flex: 1;
+    flex: 1;
+    /* NEW, Spec - Firefox, Chrome, Opera */
+    min-width: 0;
+    /* firefox fix */
+    margin: 0 1rem;
+    box-sizing: border-box;
+  }
+}
+.intersites-links-wrapper {
+  margin: 0 14px;
+}
+@media (max-width: 992px) {
+  .intersites-links-wrapper {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: 0 28px;
+  }
+}
+.intersites-links {
+  padding-left: 0;
+  list-style: none;
+  margin: 0 -1rem;
+}
+ul .intersites-links {
+  padding-left: 40px;
+}
+.intersites-links > li {
+  display: inline-block;
+  margin: 0 1rem;
+}
+.intersites-links > li > a {
+  display: block;
+}
+.intersites-links > li > a span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+@media (max-width: 992px) {
+  .intersites-links > li > a {
+    margin: 5px 0;
+  }
+}
+.intersites-links > li.intersites-link-congress > a {
+  width: 125px;
+  height: 30px;
+  background-size: 125px 30px;
+  background: url("/static/images/congress-gov.svg?$Revision$") no-repeat;
+}
+.intersites-links > li.intersites-link-copyright > a {
+  width: 175px;
+  height: 30px;
+  background-size: 175px 30px;
+  background: url("/static/images/copyright-gov.svg?$Revision$") no-repeat;
+}
+@media (max-width: 992px) {
+  .intersites-links {
+    text-align: center;
+  }
+}
+   </style>
+   <script>
+    //UX Interaction Tracking
+jQuery(function($){
+    $('.footer-social-links li a').click(function(e){
+        var label = $(this).text().trim();
+        UX.interaction($(this), 'Follow', 'Click', label);
+    });
+    $('.footer-links li a').click(function(e){
+        var label = $(this).text().trim();
+        UX.interaction($(this), 'Footer', 'Click', label);
+    });
+});
+   </script>
+   <footer class="footer" role="contentinfo">
+    <div class="footer-container">
+     <div class="footer-social-links-wrapper">
+      <span class="footer-social-title">
+       <a href="/connect/">
+        Follow Us
+       </a>
+      </span>
+      <ul class="footer-social-links">
+       <li class="footer-social-link-email">
+        <a href="//loc.gov/subscribe/" title="Email">
+         <i class="icon icon-envelope-square">
+         </i>
+         <span>
+          Email
+         </span>
+        </a>
+       </li>
+       <li class="footer-social-link-facebook">
+        <a href="https://www.facebook.com/libraryofcongress/" title="Facebook">
+         <i class="image-icon facebook">
+         </i>
+         <span>
+          Facebook
+         </span>
+        </a>
+       </li>
+       <li class="footer-social-link-twitter">
+        <a href="https://www.twitter.com/librarycongress" title="Twitter">
+         <i class="image-icon twitter">
+         </i>
+         <span>
+          Twitter
+         </span>
+        </a>
+       </li>
+       <li class="footer-social-link-youtube">
+        <a href="https://www.youtube.com/libraryofcongress/" title="Youtube">
+         <i class="image-icon youtube">
+         </i>
+         <span>
+          Youtube
+         </span>
+        </a>
+       </li>
+       <li class="footer-social-link-pinterest">
+        <a href="https://www.pinterest.com/LibraryCongress/" title="Pinterest">
+         <i class="image-icon pinterest">
+         </i>
+         <span>
+          Pinterest
+         </span>
+        </a>
+       </li>
+       <li class="footer-social-link-flickr">
+        <a href="https://www.flickr.com/photos/library_of_congress/" title="Flickr">
+         <i class="image-icon flickr">
+         </i>
+         <span>
+          Flickr
+         </span>
+        </a>
+       </li>
+       <li class="footer-social-link-instagram">
+        <a href="https://instagram.com/librarycongress/" title="Instagram">
+         <i class="image-icon instagram">
+         </i>
+         <span>
+          Instagram
+         </span>
+        </a>
+       </li>
+       <li class="footer-social-link-itunes">
+        <a href="https://itunes.apple.com/us/artist/library-of-congress/id1280713133?mt=2" title="iTunes">
+         <i class="image-icon itunes">
+         </i>
+         <span>
+          iTunes
+         </span>
+        </a>
+       </li>
+       <li class="footer-social-link-survey">
+        <a href="https://www.research.net/r/libraryofcongress?site=homepage" title="Take our survey">
+         Take our survey
+         <i class="icon icon-external-link">
+          <span>
+           External
+          </span>
+         </i>
+        </a>
+       </li>
+      </ul>
+     </div>
+     <div class="footer-row">
+      <div class="footer-links-wrapper">
+       <ul class="footer-links">
+        <li>
+         <a href="/accessibility/">
+          Accessibility
+         </a>
+        </li>
+        <li>
+         <a href="/legal/">
+          Legal
+         </a>
+        </li>
+        <li>
+         <a href="/about/office-of-the-inspector-general/">
+          Inspector General
+         </a>
+        </li>
+        <li>
+         <a href="/legal/standard-disclaimer-for-external-links/">
+          External Link Disclaimer
+         </a>
+        </li>
+        <li>
+         <a href="//www.usa.gov/">
+          USA.gov
+         </a>
+        </li>
+        <li>
+         <a href="/careers/">
+          Careers
+         </a>
+        </li>
+        <li>
+         <a href="/contact/">
+          Contact
+         </a>
+        </li>
+        <li>
+         <a href="/news/">
+          Media
+         </a>
+        </li>
+        <li>
+         <a href="https://www.loc.gov/philanthropy/online-donation/fund/">
+          Donate
+         </a>
+        </li>
+        <li>
+         <a href="http://library-of-congress-shop.myshopify.com/">
+          Shop
+         </a>
+        </li>
+       </ul>
+      </div>
+      <div class="intersites-links-wrapper">
+       <ul class="intersites-links">
+        <li class="intersites-link-congress">
+         <a href="//www.congress.gov/">
+          <span>
+           Congress.gov
+          </span>
+         </a>
+        </li>
+        <li class="intersites-link-copyright">
+         <a href="http://copyright.gov">
+          <span>
+           United States Copyright Office
+          </span>
+         </a>
+        </li>
+       </ul>
+      </div>
+     </div>
+    </div>
+   </footer>
+   <style>
+    .back-to-top {
+  height: 50px;
+  font-size: 12px;
+  background-color: #F6F6F6;
+}
+.back-to-top a {
+  display: block;
+  position: fixed;
+  z-index: 99999;
+  bottom: 10px;
+  right: 10px;
+  text-align: center;
+  color: #fff !important;
+  text-decoration: none;
+  background-color: rgba(0, 118, 173, 0.85);
+  padding: 0 12px 0 10px;
+}
+.back-to-top a span {
+  display: inline-block;
+  height: 40px;
+  line-height: 40px;
+}
+.back-to-top a:hover,
+.back-to-top a:focus {
+  background-color: #0076ad;
+}
+   </style>
+   <script>
+    jQuery(function ($) {
+    var scroll_timer,
+        displayed = false,
+        $message = $('.back-to-top a').hide(),
+        $window = $(window),
+        top = $(document.body).children(0).position().top;
+
+    $("#back-to-top").click(function(event){
+        $window.scrollTop(0);
+        event.preventDefault();
+        return false;
+    });
+
+    $window.scroll(function () {
+        window.clearTimeout(scroll_timer);
+        scroll_timer = window.setTimeout(function () {
+            if($window.scrollTop() <= top){
+                displayed = false;
+                $message.fadeOut(800);
+            }else if(!displayed){
+                displayed = true;
+                $message.stop(true, true).show().click(function(){
+                    $message.fadeOut(800);
+                });
+            }
+        }, 100);
+    });
+
+    $("#back-to-top").click(function(e){
+        UX.interaction($(this), 'Footer', 'click', 'Back to top');
+    });
+});
+   </script>
+   <div class="back-to-top">
+    <a href="#" id="back-to-top">
+     <i class="icon icon-arrow-up">
+     </i>
+     <span>
+      Back to top
+     </span>
+    </a>
+   </div>
+   <script>
+    (function(){
+
+var data_listeners = {};
+
+
+window.addDataListener = function(channel, callback){
+    if(!data_listeners[channel]){
+        data_listeners[channel] = [];
+    }
+    data_listeners[channel].push(callback);
+    load_data(channel, callback);
+};
+
+
+/* 
+Uses local storage for messaging. Set message in local storage and
+clear it right away. This is a safe way how to communicate with other
+tabs while not leaving any traces. */
+window.broadcastData = function(channel, data, replay){
+    message_broadcast(channel, data, replay);
+};
+
+
+function message_broadcast(channel, data, replay){
+    var message = {
+        channel: channel,
+        data: data
+    }
+    localStorage.setItem('message', JSON.stringify(message));
+    localStorage.removeItem('message');
+
+    if(replay){
+        save_data(channel, data);
+    }
+};
+
+
+function message_receive(event){
+    var i,
+        channel,
+        data,
+        listeners,
+        listener,
+        message;
+
+    if(!event || event.key != 'message' || !event.newValue){ return; }
+
+    message = JSON.parse(event.newValue);
+    if(!message){ return; }
+
+    channel = message.channel
+    if(!channel){ return; }
+
+    listeners = data_listeners[channel];
+    if(!listeners){ return; }
+
+    data = message.data;
+    for(i = 0; i < listeners.length; i++){
+        listener = listeners[i];
+        listener(data);
+    }
+};
+
+
+function save_data(channel, data){
+    var saved_data = localStorage.getItem(channel),
+        keys,
+        i;
+
+    if(saved_data){
+        try {
+            saved_data = JSON.parse(saved_data);
+        } catch (error) {
+            // We loose the stored state, but dont end up in a vicous cycle
+            // never being able to save it again.
+            saved_data = {};
+        }
+    } else {
+        saved_data = {};
+    }
+    keys = Object.keys(data);
+    for(i = 0; i < keys.length; i++){
+        saved_data[keys[i]] = data[keys[i]];
+    }
+    localStorage.setItem(channel, JSON.stringify(saved_data));
+};
+
+
+function load_data(channel, callback){
+    var data = localStorage.getItem(channel);
+    if(data){
+        data = JSON.parse(data);
+        callback(data);
+    }
+};
+
+window.addEventListener('storage', message_receive);
+
+})();
+   </script>
+   <script defer="defer">
+    LOCSuggest = {
+	serviceUrl: 'https://www.loc.gov/search/suggest/'
+};
+MEDIA_URL = 'https://media.loc.gov';
+   </script>
+   <script defer="defer" src="/static/javascript/base.js" type="text/javascript">
+   </script>
+   <!--[if lt IE 9]>
+    <script src='/static/js/lib/html5shiv.js'></script>
+    <script src='/static/js/lib/selectivizr.js'></script>
+<![endif]-->
+   <script defer="defer">
+    PORTAL_FORM_KEY = '1a5996b92fdb68c0437d0385c83a4b70';
+   </script>
+   <script defer="defer">
+    jQuery(function($) {
+    /*
+        Grid and gallery layouts
+     */
+
+    var isotope_options = {
+        itemSelector: '.item'
+    };
+    // If in the grid or gallery style then make sure the
+    // pages are in order and there are no blank spaces
+    
+    
+
+    
+    $('.search-results.grid-view').isotope(isotope_options);
+    imagesLoaded( $('#results'), function() {
+        $('.search-results.grid-view').isotope(isotope_options);
+    });
+    
+
+    var $iconic = $(".iconic");
+    if ($iconic.length > 0) {
+        var loaded_count = 0;
+        $iconic.on("load", function() {
+            loaded_count++;
+            // trigger isotope every once in a while as the images are loading:
+            if (loaded_count % 5 === 0) {
+                $('.search-results.grid-view').isotope(isotope_options);
+            }
+        });
+    }
+});
+
+jQuery(function($) {
+    
+
+    var slider;
+    function create_slideshow($selector) {
+        slider = $selector.royalSlider({
+            fullscreen: {
+                enabled: true,
+                nativeFS: true
+            },
+            controlNavigation: 'thumbnails',
+            imageAlignCenter: true,
+            autoScaleSlider: false,
+            //autoScaleSliderHeight: 800,
+            loop: false,
+            navigateByClick: false,
+            numImagesToPreload: 2,
+            arrowsNav: true,
+            arrowsNavAutoHide: true,
+            arrowsNavHideOnTouch: true,
+            keyboardNavEnabled: true,
+            fadeinLoadedSlide: true,
+            //globalCaption: false,
+            //globalCaptionInside: true,
+            thumbs: {
+                appendSpan: true,
+                firstMargin: true,
+                spacing: 10
+            },
+            deeplinking: {
+                // deep linking options go here
+                enabled: true,
+                change: true,
+                prefix: 'slide-'
+            }
+        }).data("royalSlider");
+
+        $('.royalSlider').royalSlider("updateSliderSize", true);
+
+        
+        
+        if(slider){
+            slider.ev.on('rsAfterContentSet', function (e, slideObject) {
+                var img = slideObject.holder.find('img').eq(0);
+                if (img && img.length && slideObject.caption) {
+                    img.attr('alt', slideObject.caption.text());
+                }
+            });
+        }
+        return slider;
+    }
+
+    function create_overlay(highlight_id, left, top, width, height) {
+        return $('<div id="' + highlight_id + '" class="hit-highlight image-highlight" />')
+        .css({
+            'left': left + '%',
+            'top': top + '%',
+            'width': width + '%',
+            'height': height + '%',
+            'position': 'absolute',
+            'z-index': 10
+        });
+    }
+
+    function position_overlays(page_id, page_width, page_height, coords_list,
+            $image, $container, fudge) {
+        if (!($container.length)) {
+            // no actual search result for this page -- exit this function
+            return true;
+        }
+        $container.find('div.image-highlight').remove();
+        if (!coords_list) {
+            // coords data doesn't exist -- exit this function
+            return true;
+        }
+        var container_width = $container.width();
+        var container_height = $container.height();
+        
+        var image_marginLeft = $image[0].offsetLeft;
+        var image_marginTop = $image[0].offsetTop;
+        var image_width = $image.width();
+        var image_height = $image.height();
+
+        // The overlays are positioned relative to their parent, the
+        // $container, but they need to show up in the right place relative
+        // to the image.
+        // The $container can be larger than the image,
+        // so we take the ratio of the sizes and use it to scale the
+        // positions, widths, and heights of the highlight overlays.
+        // We also make the overlays a little larger so they're more visible
+        // and we shift them a little using the "fudge" numbers.
+        var marginLeft = image_marginLeft / container_width;
+        var marginTop = image_marginTop / container_height;
+        var scaleWidth = image_width / container_width;
+        var scaleHeight = image_height / container_height;
+
+        $.each(coords_list, function (index, coords) {
+            // word coordinates: [left, top, width, height]
+            var highlight_id = "highlight-" + page_id + '-' + index;
+
+            var overlay_left = 100 * (marginLeft + scaleWidth * coords[0] / page_width) + fudge.left;
+            var overlay_top = 100 * (marginTop + scaleHeight * coords[1] / page_height) + fudge.top;
+            var overlay_width = 100 * coords[2] / page_width * scaleWidth + fudge.width;
+            var overlay_height = 100 * coords[3] / page_height * scaleHeight + fudge.height;
+
+            var $highlight_overlay = create_overlay(highlight_id,
+                overlay_left, overlay_top, overlay_width, overlay_height);
+
+            $container.append($highlight_overlay);
+        });
+    }
+
+    var word_coordinates_pages;
+    
+    word_coordinates_pages = {};
+    
+
+    var get_$container;
+    var get_$image;
+    var fudge_numbers;
+
+    
+    
+    get_$container = function(page_id) {
+        return $("#highlights-container-" + page_id);
+    };
+    get_$image = function(page_id) {
+        return $("#iconic-segment-image-" + page_id);
+    };
+    fudge_numbers = {
+        left: -1.3,
+        top: -0.5,
+        width: 2.5,
+        height: 1.3
+    };
+
+    
+        if (!$.isEmptyObject(word_coordinates_pages)) {
+            var $iconic = $(".iconic");
+            var loaded = 0;
+            var loaded_total = $iconic.length;
+            // make sure we wait til all the images are loaded before we try to position the highlights on them:
+            $iconic.one("load", function() {
+                loaded++;
+                if (loaded === loaded_total) {
+                    $.each(word_coordinates_pages, function(page_id, page) {
+                        var $image = get_$image(page_id);
+                        var $container = get_$container(page_id);
+                        position_overlays(page_id, page.width, page.height, page.coords_list,
+                            $image, $container, fudge_numbers);
+                    });
+                }
+            }).each(function() {
+                // to make sure the "on load" event occurs even if the
+                // images are already cached:
+                if (this.complete) {
+                    $(this).load();
+                }
+            });
+        }
+        
+     
+
+
+    
+    $(window).resize(function() {
+        setTimeout(function() {
+            $.each(word_coordinates_pages, function(page_id, page) {
+                var $container = get_$container(page_id);
+                var $image = get_$image(page_id, $container);
+                position_overlays(page_id, page.width, page.height, page.coords_list,
+                    $image, $container, fudge_numbers);
+            });
+        }, 300);
+    });
+});
+   </script>
+  </div>
+  <script type="text/javascript">
+   if(window['_satellite']){
+    _satellite.pageBottom();
+}
+  </script>
+ </body>
+</html>

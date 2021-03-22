@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en-US">
+ <head>
+  <meta charset="utf-8"/>
+  <title>
+   Starfall Education: Kids Games, Movies, &amp; Books K-3
+  </title>
+  <meta content="At Starfall, children have fun while they learn - specializing in reading, phonics &amp; math - educational games, movies, books, songs, and more for children K-3." name="description"/>
+  <link href="/gi/_font/liberationsans/stylesheet.css" rel="stylesheet"/>
+  <link href="/gi/_font/liberationsansbold/stylesheet.css" rel="stylesheet"/>
+  <link href="/gi/_font/StarfallvBP/StarfallvBP.css" rel="stylesheet"/>
+  <script src="/h/_js/starfall/global/Cookies.js?ds=20200107">
+  </script>
+  <script src="/h/_js/jquery/jquery-3.2.1.min.js?ds=20200601">
+  </script>
+  <script src="/h/_js/createjs/createjs-v1.min.js?ds=20200131">
+  </script>
+  <script src="/h/_js/starfall/utils/PreloaderAn.js?ds=20210105">
+  </script>
+  <script src="/h/_js/starfall/global/Conversions.js">
+  </script>
+  <script src="/h/_js/vikram/hamburgermenu.js">
+  </script>
+  <script src="/h/_js/vikram/greenbar.js">
+  </script>
+  <script src="/h/_js/vikram/greenbarcontroller.js?ds=20190317">
+  </script>
+  <script src="/h/_js/vikram/resize-main.js">
+  </script>
+  <script src="/h/_js/vikram/main-index.js?ds=20200408">
+  </script>
+  <script src="/h/_js/vikram/main-controller.js?ds=20200408">
+  </script>
+  <style>
+   html {
+		-webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape while allowing user zoom */
+	}
+	body {
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+	a.skip-main {
+		left:-999px;
+		position:absolute;
+		top:auto;
+		width:1px;
+		height:1px;
+		overflow:hidden;
+		z-index:-999;
+	}
+	a.skip-main:focus, a.skip-main:active {
+		color: #fff;
+		background-color:#000;
+		left: auto;
+		top: auto;
+		width: 30%;
+		height: auto;
+		overflow:auto;
+		margin: 10px 35%;
+		padding:5px;
+		border-radius: 15px;
+		border:4px solid yellow;
+		text-align:center;
+		font-size:1.2em;
+		z-index:999;
+	}
+	a:focus {
+		outline-width: 2px;
+		outline-style: solid;
+		outline-color: red;
+	}
+	a.access {
+		font-size: 1.2em;
+		text-align:center;
+		display: inline-block;
+	}
+	a.link1 {
+		font-size: 1.2em;
+		text-align:center;
+		display: inline-block;
+	}
+	h1 {
+		font-size: 1.2em;
+		text-align:center;
+	}
+	.bottom-info-main {
+		display: none;
+		background-color: #67DC39;
+		border-top-color: #47AF08;
+		border-top: 3.25px solid #47AF08;
+		font-family: 'liberation_sansbold';
+		color: #003300;
+		position: relative;
+		margin-top: -85px;
+	}
+	.bottom-info-container {
+		padding: 10px 0px 20px 0px;
+		margin: auto;
+		width: 75%;
+	}
+	.bottom-info-copy {
+		font-size: 12pt;
+		line-height: 15pt;
+		padding-bottom: 15px;
+	}
+	.bottom-info-copyrights {
+		font-size: 10pt;
+		line-height: 12pt;
+		text-align: center;
+		width: 80%;
+		margin: auto;
+	}
+	.bottom-info-characters {
+		text-align: center;
+		position: relative;
+		width: 100%;
+		padding-bottom: 20px;
+	}
+	.bottom-info-characters img {
+		max-width: 60%;
+	}
+	.up-arrow {
+		right: 0px;
+		top: -15px;
+		width: 13%;
+		max-width: 70px;
+		position: absolute;
+	}
+	.up-arrow img {
+		max-width: 100%;
+	}
+	@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+		.bottom-info-copy {
+			font-size: 10pt;
+			line-height: 12pt;
+		}
+		.bottom-info-copyrights {
+			font-size: 8pt;
+			line-height: 10pt;
+			text-align: center;
+			width: 80%;
+			margin: auto;
+		}
+		h1 {
+			font-size: 12pt;
+			line-height: 14pt;
+			text-align: center;
+		}
+	}
+	@media only screen and (min-device-width : 481px) and (max-device-width : 1024px) {
+		.bottom-info-copy {
+			font-size: 12pt;
+			line-height: 14pt;
+		}
+		.bottom-info-copyrights {
+			font-size: 8pt;
+			line-height: 10pt;
+			text-align: center;
+			width: 80%;
+			margin: auto;
+		}
+		h1 {
+			font-size: 14pt;
+			line-height: 16pt;
+			text-align: center;
+		}
+	}
+	body > img[style="visibility: hidden;"]{ display: none; }
+  </style>
+  <script>
+   var IndexK = "/h/index-kindergarten.php";
+var IndexG = "/h/index-grades123.php";
+var greenBarColor = '#006600';
+var greenLineColor = '#99CA83';
+var SpecialDefinitions = {
+	type:0,
+	daysSinceExpired:0,
+	themeColors:{
+		bg_winter: "#62BBF3",
+		bg_valentine: "#FD9CB3",
+		bg_winter2: "#00CCFF",
+		bg_main: "#00CCFF"
+	},
+	links:{
+		"non_members":[
+			{"id":"kindergarten_mc","link":IndexK},
+			{"id":"grades123_mc","link":IndexG}
+		],
+		"expired":[
+			{"id":"kindergarten_mc","link":IndexK},
+			{"id":"grades123_mc","link":IndexG}
+		],
+		"members":[
+			{"id":"kindergarten_mc","link":IndexK},
+			{"id":"grades123_mc","link":IndexG}
+		],
+		"bottomMenu":[
+			{"name":"About","link":"https://teach.starfall.com/lv/info/about"},
+			{"name":"Help","link":"http://help.starfall.com"},
+			{"name":"Contact","link":"https://secure.starfall.com/lv/gated?forwardURL=https%3A%2F%2Fsecure.starfall.com%2Flv%2Fcontact&returnURL=https%3A%2F%2Fwww.starfall.com%2Fh%2Findex.php&label=Contact"},
+			{"name":"Terms","link":"https://teach.starfall.com/lv/info/terms"},
+			{"name":"Privacy","link":"https://teach.starfall.com/lv/info/privacy"}
+		]
+	},
+	greenBarLinks:[
+		{"id":"appIcon_btn", "link":""},
+		{"id":"store_btn", "link":"https://secure.starfall.com/lv/gated?forwardURL=https%3A%2F%2Fstore.starfall.com%2F&returnURL=https%3A%2F%2Fwww.starfall.com%2Fh%2Findex.php&label=The%20Starfall%20Store"},
+		{"id":"parentTeacherSettings_btn", "link":"https://teach.starfall.com/lv"},
+		{"id":"accountsSetting_btn", "link":"https://secure.starfall.com/lv/gated?forwardURL=https%3A%2F%2Fsecure.starfall.com%2Fmemb%2Faccount.php&returnURL=https%3A%2F%2Fwww.starfall.com%2Fh%2Findex.php&label=Account%20Settings"},
+		{"id":"accountExpired_btn", "link":"https://secure.starfall.com/memb/renew-now.php?ref=%2Fh%2Findex.php"},
+		{"id":"renew_btn", "link":"https://secure.starfall.com/memb/renew-now.php?ref=%2Fh%2Findex.php"},
+		{"id":"signin_btn", "link":"https://secure.starfall.com/memb/login1.php?signin=1"},
+		{"id":"howToJoin_btn", "link":"https://secure.starfall.com/lv/ways-to-join"}
+	],
+	greenBarColors:{
+		"mouseHoverColor":"#FFFF66",
+		"store_btn":"#F2BBFF",
+		"parentTeacherSettings_btn":"#B5ECF3",
+		"accountsSetting_btn":"#FFC138",
+		"accountExpired_btn":"#B5ECF3",
+		"renew_btn":"#FFC138",
+		"signin_btn":"#9CFF0A",
+		"howToJoin_btn":"#FFC138"
+	},
+	hamburgerLinks:{
+		"non_members":[
+			{"name":"About","link":"https://teach.starfall.com/lv/info/about"},
+			{"name":"Privacy","link":"https://teach.starfall.com/lv/info/privacy"},
+			{"name":"Help","link":"http://help.starfall.com"},
+			{"name":"Contact","link":"https://secure.starfall.com/lv/gated?forwardURL=https%3A%2F%2Fsecure.starfall.com%2Flv%2Fcontact&returnURL=https%3A%2F%2Fwww.starfall.com%2Fh%2Findex.php&label=Contact"},
+			{"name":"Store","link":"https://secure.starfall.com/lv/gated?forwardURL=https%3A%2F%2Fstore.starfall.com%2F&returnURL=https%3A%2F%2Fwww.starfall.com%2Fh%2Findex.php&label=The%20Starfall%20Store"},
+			{"name":"How to Join","link":"https://secure.starfall.com/lv/ways-to-join"},
+			{"name":"Preferences","link":"/h/preferences.php?returnURL=%2Fh%2Findex.php"}
+		],
+		"members":[
+			{"name":"About","link":"https://teach.starfall.com/lv/info/about"},
+			{"name":"Privacy","link":"https://teach.starfall.com/lv/info/privacy"},
+			{"name":"Help","link":"http://help.starfall.com"},
+			{"name":"Contact","link":"https://secure.starfall.com/lv/gated?forwardURL=https%3A%2F%2Fsecure.starfall.com%2Flv%2Fcontact&returnURL=https%3A%2F%2Fwww.starfall.com%2Fh%2Findex.php&label=Contact"},
+			{"name":"Account Settings", "link":"https://secure.starfall.com/lv/gated?forwardURL=https%3A%2F%2Fsecure.starfall.com%2Fmemb%2Faccount.php&returnURL=https%3A%2F%2Fwww.starfall.com%2Fh%2Findex.php&label=Account%20Settings"},
+			{"name":"Store","link":"https://secure.starfall.com/lv/gated?forwardURL=https%3A%2F%2Fstore.starfall.com%2F&returnURL=https%3A%2F%2Fwww.starfall.com%2Fh%2Findex.php&label=The%20Starfall%20Store"},
+			{"name":"Parent-Teacher Center","link":"https://teach.starfall.com/lv"},
+			{"name":"Preferences","link":"/h/preferences.php?returnURL=%2Fh%2Findex.php"}
+		],
+		"expired":[
+			{"name":"About","link":"https://teach.starfall.com/lv/info/about"},
+			{"name":"Privacy","link":"https://teach.starfall.com/lv/info/privacy"},
+			{"name":"Help","link":"http://help.starfall.com"},
+			{"name":"Contact","link":"https://secure.starfall.com/lv/gated?forwardURL=https%3A%2F%2Fsecure.starfall.com%2Flv%2Fcontact&returnURL=https%3A%2F%2Fwww.starfall.com%2Fh%2Findex.php&label=Contact"},
+			{"name":"Renew Now","link":"https://secure.starfall.com/memb/renew-now.php?ref=%2Fh%2Findex.php"},
+			{"name":"Store","link":"https://secure.starfall.com/lv/gated?forwardURL=https%3A%2F%2Fstore.starfall.com%2F&returnURL=https%3A%2F%2Fwww.starfall.com%2Fh%2Findex.php&label=The%20Starfall%20Store"},
+			{"name":"Parent-Teacher Center","link":"https://teach.starfall.com/lv"},
+			// {"name":"How to Join","link":"https://secure.starfall.com/lv/ways-to-join"},
+			{"name":"Preferences","link":"/h/preferences.php?returnURL=%2Fh%2Findex.php"}
+		],
+		"grace":[
+			{"name":"About","link":"https://teach.starfall.com/lv/info/about"},
+			{"name":"Privacy","link":"https://teach.starfall.com/lv/info/privacy"},
+			{"name":"Help","link":"http://help.starfall.com"},
+			{"name":"Contact","link":"https://secure.starfall.com/lv/gated?forwardURL=https%3A%2F%2Fsecure.starfall.com%2Flv%2Fcontact&returnURL=https%3A%2F%2Fwww.starfall.com%2Fh%2Findex.php&label=Contact"},
+			{"name":"Account Settings", "link":"https://secure.starfall.com/lv/gated?forwardURL=https%3A%2F%2Fsecure.starfall.com%2Fmemb%2Faccount.php&returnURL=https%3A%2F%2Fwww.starfall.com%2Fh%2Findex.php&label=Account%20Settings"},
+			{"name":"Renew Now","link":"https://secure.starfall.com/memb/renew-now.php?ref=%2Fh%2Findex.php"},
+			{"name":"Store","link":"https://secure.starfall.com/lv/gated?forwardURL=https%3A%2F%2Fstore.starfall.com%2F&returnURL=https%3A%2F%2Fwww.starfall.com%2Fh%2Findex.php&label=The%20Starfall%20Store"},
+			{"name":"Parent-Teacher Center","link":"https://teach.starfall.com/lv"},
+			{"name":"Preferences","link":"/h/preferences.php?returnURL=%2Fh%2Findex.php"}
+		],
+	},
+	hamburgerLinksMoble:{
+		"non_members":[
+			{"name":"About","link":"https://teach.starfall.com/lv/info/about"},
+			{"name":"Privacy","link":"https://teach.starfall.com/lv/info/privacy"},
+			{"name":"Help","link":"http://help.starfall.com"},
+			{"name":"Contact","link":"https://secure.starfall.com/lv/gated?forwardURL=https%3A%2F%2Fsecure.starfall.com%2Flv%2Fcontact&returnURL=https%3A%2F%2Fwww.starfall.com%2Fh%2Findex.php&label=Contact"},
+			{"name":"Store","link":"https://secure.starfall.com/lv/gated?forwardURL=https%3A%2F%2Fstore.starfall.com%2F&returnURL=https%3A%2F%2Fwww.starfall.com%2Fh%2Findex.php&label=The%20Starfall%20Store"},
+			{"name":"How to Join","link":"https://secure.starfall.com/lv/ways-to-join"},
+			{"name":"Preferences","link":"/h/preferences.php?returnURL=%2Fh%2Findex.php"}
+		],
+		"members":[
+			{"name":"About","link":"https://teach.starfall.com/lv/info/about"},
+			{"name":"Privacy","link":"https://teach.starfall.com/lv/info/privacy"},
+			{"name":"Help","link":"http://help.starfall.com"},
+			{"name":"Contact","link":"https://secure.starfall.com/lv/gated?forwardURL=https%3A%2F%2Fsecure.starfall.com%2Flv%2Fcontact&returnURL=https%3A%2F%2Fwww.starfall.com%2Fh%2Findex.php&label=Contact"},
+			{"name":"Account Settings", "link":"https://secure.starfall.com/lv/gated?forwardURL=https%3A%2F%2Fsecure.starfall.com%2Fmemb%2Faccount.php&returnURL=https%3A%2F%2Fwww.starfall.com%2Fh%2Findex.php&label=Account%20Settings"},
+			{"name":"Store","link":"https://secure.starfall.com/lv/gated?forwardURL=https%3A%2F%2Fstore.starfall.com%2F&returnURL=https%3A%2F%2Fwww.starfall.com%2Fh%2Findex.php&label=The%20Starfall%20Store"},
+			{"name":"Parent-Teacher Center","link":"https://teach.starfall.com/lv"},
+			{"name":"Preferences","link":"/h/preferences.php?returnURL=%2Fh%2Findex.php"}
+		],
+		"expired":[
+			{"name":"About","link":"https://teach.starfall.com/lv/info/about"},
+			{"name":"Privacy","link":"https://teach.starfall.com/lv/info/privacy"},
+			{"name":"Help","link":"http://help.starfall.com"},
+			{"name":"Contact","link":"https://secure.starfall.com/lv/gated?forwardURL=https%3A%2F%2Fsecure.starfall.com%2Flv%2Fcontact&returnURL=https%3A%2F%2Fwww.starfall.com%2Fh%2Findex.php&label=Contact"},
+			{"name":"Renew Now","link":"https://secure.starfall.com/memb/renew-now.php?ref=%2Fh%2Findex.php"},
+			{"name":"Store","link":"https://secure.starfall.com/lv/gated?forwardURL=https%3A%2F%2Fstore.starfall.com%2F&returnURL=https%3A%2F%2Fwww.starfall.com%2Fh%2Findex.php&label=The%20Starfall%20Store"},
+			{"name":"Parent-Teacher Center","link":"https://teach.starfall.com/lv"},
+			// {"name":"How to Join","link":"https://secure.starfall.com/lv/ways-to-join"},
+			{"name":"Preferences","link":"/h/preferences.php?returnURL=%2Fh%2Findex.php"}
+		],
+		"grace":[
+			{"name":"About","link":"https://teach.starfall.com/lv/info/about"},
+			{"name":"Privacy","link":"https://teach.starfall.com/lv/info/privacy"},
+			{"name":"Help","link":"http://help.starfall.com"},
+			{"name":"Contact","link":"https://secure.starfall.com/lv/gated?forwardURL=https%3A%2F%2Fsecure.starfall.com%2Flv%2Fcontact&returnURL=https%3A%2F%2Fwww.starfall.com%2Fh%2Findex.php&label=Contact"},
+			{"name":"Account Settings", "link":"https://secure.starfall.com/lv/gated?forwardURL=https%3A%2F%2Fsecure.starfall.com%2Fmemb%2Faccount.php&returnURL=https%3A%2F%2Fwww.starfall.com%2Fh%2Findex.php&label=Account%20Settings"},
+			{"name":"Renew Now","link":"https://secure.starfall.com/memb/renew-now.php?ref=%2Fh%2Findex.php"},
+			{"name":"Store","link":"https://secure.starfall.com/lv/gated?forwardURL=https%3A%2F%2Fstore.starfall.com%2F&returnURL=https%3A%2F%2Fwww.starfall.com%2Fh%2Findex.php&label=The%20Starfall%20Store"},
+			{"name":"Parent-Teacher Center","link":"https://teach.starfall.com/lv"},
+			{"name":"Preferences","link":"/h/preferences.php?returnURL=%2Fh%2Findex.php"}
+		],
+	},
+	bottomMenuFontColor:"#FFFFCC",
+	bottomMenuHoverColor:"#FFFF00",
+	// avatarBaseURL: "/h/me/me-xter/me-threequarter-front-optimize.php",
+	// avatarVariable: "",
+	backBtnImageURL:"_images/green-button.png",
+	starfallLogoURL:"_images/starfall-logo-main-index.png",
+	downloadAppiOSImageURL:"_images/downloadapp-ios.png",
+	downloadAppGenericImageURL:"_images/downloadapp-android.png"
+}
+var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation, backBtn;
+var stageWidth = 1024, stageHeight = 768, maxStageWidth = 1658, maxStageHeight = 768;
+var greenBar;
+var iPad, iPhone, android, isAndroidTablet, kindle;
+var backBtnImg, starfallLogoImg, iOSIconImg, genericIconImg;
+var holidayDeco, holidaySeason;
+function init() {
+	var uosType = '';
+	var uosSubType = '';
+	var deviceType = 'desktop';
+	iPad = (uosType == 'iPad') ? true : false;
+	iPhone = (uosType == 'iPhone') ? true : false;
+	android = (uosType == 'Android') ? true : false;
+	kindle = (uosSubType == 'kindle') ? true : false;
+	isAndroidTablet = (android && deviceType == 'tablet') ? true : false;
+
+	if (kindle) {
+		android = false;
+		isAndroidTablet = false;
+	}
+
+	var appIconLink = "https://secure.starfall.com/lv/gated?forwardURL=https%3A%2F%2Fstore.starfall.com%2Fapp-catalog&returnURL=https%3A%2F%2Fwww.starfall.com%2Fh%2Findex.php&label=The%20Starfall%20App%20Catalog"
+	if(iPhone||iPad){
+		appIconLink = "https://secure.starfall.com/lv/gated?forwardURL=http%3A%2F%2Fmore.starfall.com%2Finfo%2Fapps%2Fstarfall-education.php%3Fctsb%3D1%26dlab%3D0&returnURL=https%3A%2F%2Fwww.starfall.com%2Fh%2Findex.php&label=Starfall%20App%20Info%20for%20IOS"
+    } else if (android) {
+		appIconLink = "https://secure.starfall.com/lv/gated?forwardURL=http%3A%2F%2Fmore.starfall.com%2Finfo%2Fapps%2Fstarfall-education.php%3Fdlab%3D1%26ctsb%3D1&returnURL=https%3A%2F%2Fwww.starfall.com%2Fh%2Findex.php&label=Starfall%20App%20Info%20for%20Android"
+	} else if (kindle) {
+		appIconLink = "https://secure.starfall.com/lv/gated?forwardURL=https%3A%2F%2Fstore.starfall.com%2Fapp-catalog&returnURL=https%3A%2F%2Fwww.starfall.com%2Fh%2Findex.php&label=The%20Starfall%20App%20Catalog"
+	}
+	SpecialDefinitions.greenBarLinks[0]['link'] = appIconLink;
+	if(iPad || isAndroidTablet){
+		stageWidth = maxStageWidth = 1152;
+		stageHeight = maxStageHeight = 862;
+		$(".bottom-info-main").css("margin-top","-140px");
+		$(".bottom-info-characters").hide();
+	}
+	else if(!iPad&&!iPhone&&!android){
+		stageWidth = 1228;
+		maxStageWidth = 1970;
+		stageHeight = 768;
+		maxStageHeight = 768;
+		$(".bottom-info-characters").hide();
+	} else {
+		stageWidth = 1362;
+		maxStageWidth = 1970;
+		stageHeight = 768;
+		maxStageHeight = 1750;
+		$(".bottom-info-container").css("width","90%");
+		$(".bottom-info-copyrights").css("width","100%");
+		$(".bottom-info-main").css("margin-top","0px");
+		$(".up-arrow").click(function(){
+			$('html, body').animate({scrollTop : 0},500);
+		});
+	}
+	try {
+		var __info = (location.search) ? /n=([^&]+)/.exec(window.location.href)[1] : 'hideSeason';
+	} catch(err) {
+		//
+	}
+	if (__info == 'showSeason') {
+		// load holiday season deco
+		console.log('holidaySeason: earth');
+		holidaySeason = 'earth';
+		if (holidaySeason == 'winter' || holidaySeason == 'valentine' || holidaySeason == 'winter2') {
+			PreloaderAn.loadJS('/h/_js/seasonal/index-jump-'+holidaySeason+'.js', '04C97A8B0204D347AFAFE04B659937D8', onHolidayLoad);
+		} else {
+			onHolidayLoad(null);
+		}
+	} else {
+		onHolidayLoad(null);
+	}
+}
+function onHolidayLoad(__lib) {
+	holidayDeco = __lib;
+	//
+	canvas = document.getElementById("canvas");
+	anim_container = document.getElementById("animation_container");
+	dom_overlay_container = document.getElementById("dom_overlay_container");
+	var comp=AdobeAn.getComposition("A4BEC52A822046B3B0C5E9D2F18C3A38");
+	var lib=comp.getLibrary();
+	var loader = new createjs.LoadQueue(false);
+	loader.installPlugin(createjs.Sound);
+	loader.addEventListener("fileload", function(evt){handleFileLoad(evt,comp)});
+	loader.addEventListener("complete", function(evt){handleComplete(evt,comp)});
+	var lib=comp.getLibrary();
+	lib.properties.manifest.push({src:SpecialDefinitions.backBtnImageURL,id:"backButton"});
+	lib.properties.manifest.push({src:SpecialDefinitions.starfallLogoURL,id:"logo"});
+	lib.properties.manifest.push({src:SpecialDefinitions.downloadAppiOSImageURL,id:"iOSIcon"});
+	lib.properties.manifest.push({src:SpecialDefinitions.downloadAppGenericImageURL,id:"genericIcon"});
+	lib.properties.manifest.map(function(item){
+		item.loadTimeout = 300000;
+	});
+	loader.loadManifest(lib.properties.manifest);
+	if (ReadCookie("privacy")) {
+		$("#privacy").hide();
+	} else {
+		$("#privacy").show();
+	}
+}
+function handleFileLoad(evt, comp) {
+	var images=comp.getImages();
+	if (evt && (evt.item.type == "image")) {
+		images[evt.item.id] = evt.result;
+		if(evt.item.id=="backButton"){
+			backBtnImg = evt.result;
+		}
+		else if(evt.item.id=="logo"){
+			starfallLogoImg = evt.result;
+		}
+		else if(evt.item.id=="iOSIcon"){
+			iOSIconImg = evt.result;
+		}
+		else if(evt.item.id=="genericIcon"){
+			genericIconImg = evt.result;
+		}
+	}
+}
+function handleComplete(evt,comp) {
+	toggleLoader(false);
+	var lib=comp.getLibrary();
+	var ss=comp.getSpriteSheet();
+	var queue = evt.target;
+	var ssMetadata = lib.ssMetadata;
+	for(i=0; i<ssMetadata.length; i++) {
+		ss[ssMetadata[i].name] = new createjs.SpriteSheet( {"images": [queue.getResult(ssMetadata[i].name)], "frames": ssMetadata[i].frames} )
+	}
+	exportRoot = new lib.indexjump();
+	stage = new lib.Stage(canvas);
+	starfall.Resize.setup(stage,stageWidth,stageHeight,maxStageWidth,maxStageHeight,true);
+	starfall.Resize.events.addEventListener("resize",function(){
+		var browserZoomLevel =(!iPad&&!iPhone&&!android)? (window.devicePixelRatio):1;
+		$("body").width($("#animation_container").width());
+		var marigin;
+		if(iPad || isAndroidTablet){
+			marigin = Math.min(-80*stage.scaleX,Math.max(-80*stage.scaleX,-140*stage.scaleX));
+			$(".bottom-info-main").css("margin-top",marigin+"px");
+		}
+		else if(iPhone || (android&&!isAndroidTablet)){
+				$(".bottom-info-main").css("margin-top","0px");
+		}
+		else if(!iPad && !isAndroidTablet){
+			var marigin = Math.max(-85/browserZoomLevel,-85*stage.scaleX/browserZoomLevel);
+			$(".bottom-info-main").css("margin-top",marigin+"px");
+		}
+	});
+	var controller = new starfall.MainIndexController(exportRoot,lib);
+	stage.addChild(exportRoot);
+	stage.enableMouseOver(10);
+
+	addGreenBar();
+
+	fnStartAnimation = function() {
+		createjs.Ticker.framerate = 12; 
+	}
+	AdobeAn.compositionLoaded(lib.properties.id);
+	fnStartAnimation();
+}
+function updateStage(){
+	stage.update();
+}
+function toggleLoader(show){
+	if(show){
+		dom_overlay_container.style.display = "block";
+		canvas.style.display = "none";
+		$(".bottom-info-main").hide();
+	}
+	else{
+		dom_overlay_container.style.display = "none";
+		canvas.style.display = "block";
+		$(".bottom-info-main").show();
+	}
+}
+function addGreenBar(){
+	var hamburgerLinks;
+	var links = (iPad || iPhone || android)?SpecialDefinitions.hamburgerLinksMoble:SpecialDefinitions.hamburgerLinks;
+	if(SpecialDefinitions.type==0){
+		hamburgerLinks = links.non_members;
+	}
+	else if(SpecialDefinitions.type==1){
+		hamburgerLinks = links.expired;
+	}
+	else if(SpecialDefinitions.type==2){
+		hamburgerLinks = links.members;
+	}
+	else if(SpecialDefinitions.type==3){
+		hamburgerLinks = links.grace;
+	}
+	// check to add preferences
+	var pLevel = "www.";
+	if (pLevel != 'dev.') {
+ 		hamburgerLinks.pop();
+	}
+	greenBar = new starfall.GreenBarController(backBtnImg,starfallLogoImg,iOSIconImg,genericIconImg,SpecialDefinitions.greenBarLinks,SpecialDefinitions.greenBarColors,hamburgerLinks);
+	stage.addChild(greenBar.view);
+	greenBar.view.visible =false;
+	greenBar.view.back_btn.visible = false;
+	greenBar.view.backBtn_mc.visible = false;
+	greenBar.view.logo_mc.x -= 30;
+	greenBar.view.logo_btn.y = -3000;
+	starfall.Resize.events.addEventListener("resize",function(){
+		greenBar.view.y = -stage.y/stage.scaleY;
+		greenBar.view.visible = true;
+		updateStage();
+	});
+	//fix for safari on iOS to reload the webpage when we go to back page.
+	window.onpageshow = function (event) {
+		if (event.persisted) {
+			window.location.reload();
+		}
+	};
+}
+function ReadCookie(name) {
+	var cookiesLocal = Cookies.getLocalCookies();
+	return cookiesLocal['privacy'] || null;
+}
+function onPrivacyOK() {
+	Cookies.setLocalCookie('privacy', 'ok', true);
+	$("#privacy").hide();
+	$('html, body').animate({
+		scrollTop: 0
+	}, 500);
+}
+  </script>
+ </head>
+ <body onload="init();" style="margin:0px;background:#67DC39;">
+  <div style="font-family: 'Liberation Sans Regular';opacity:0;position:fixed">
+   .
+  </div>
+  <div style="font-family: 'liberation_sansbold';opacity:0;position:fixed">
+   .
+  </div>
+  <div style="font-family: 'VAGzStarBold';opacity:0;position:fixed">
+   .
+  </div>
+  <div id="animation_container">
+   <canvas height="768" id="canvas" style="position: absolute; display: block; background-color:#67DC39; -webkit-tap-highlight-color: transparent;" width="1024">
+   </canvas>
+   <div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; position: absolute; left: 0px; top: 0px; display: block; width:100%; height:100%">
+    <div id="_preload_div_" style="background:#67DC39; display: inline-block; height:100%; width: 100%; vertical-align:middle;position:absolute;left:0px;top:0px;text-align: center;">
+     <span style="display: inline-block; height: 100%; vertical-align: middle;">
+     </span>
+     <img src="_images/web-system-wide-loading-stars-GIF.gif" style="vertical-align: middle; max-width: 100%; max-height: 100%"/>
+    </div>
+   </div>
+  </div>
+  <div class="bottom-info-main">
+   <div class="bottom-info-container">
+    <div class="bottom-info-copy">
+     <div style="text-align: center;">
+      <a class="access" href="/h/accessibility.php">
+       Accessibility
+      </a>
+     </div>
+     <p id="privacy" style=" background-color: white; font-size: 1.1em; text-align:center; padding: 10px 25px 10px 25px;">
+      Starfall has no advertising, does not collect personal information from children, does not sell any information, and uses cookies only for internal website management. By using this site, you agree to our use of cookies and updated
+      <a href="https://teach.starfall.com/lv/info/privacy">
+       Privacy Policy
+      </a>
+      <a href="#" onclick="onPrivacyOK()">
+       OK
+      </a>
+     </p>
+     <h1>
+      At Starfall, children have fun while they learn.
+     </h1>
+     <p>
+      Starfall.com® opened in September 2002 as a free public service to teach children to read. Since then it has expanded to include language arts and mathematics for preschool, kindergarten, first grade, second grade, and third grade. Starfall’s emphasis on phonemic awareness, systematic sequential phonics, and common sight words in conjunction with audiovisual interactivity has proven effective in teaching emergent readers. Starfall activities are research-based and align with Individual and Common Core State Standards in English language arts and mathematics.
+     </p>
+     <p>
+      The program emphasizes exploration, play, and positive reinforcement—encouraging children to become confident and intrinsically motivated. Starfall is an educational alternative to other entertainment choices for children and is especially effective for special education, homeschooling, and English language development (ELD, ELL, ESL). It is widely used in schools that serve children with special needs and learning difficulties.
+     </p>
+     <p>
+      Our low-cost membership program expands the free content to include animated songs, mathematics, and reading activities spanning K-3. Membership also supports the production of new books, songs, educational games, and movies.
+     </p>
+     <p>
+      The program, provided by the Starfall Education Foundation, a nonprofit organization, was conceived by Dr. Stephen Schutz. As a child, Stephen had difficulty learning to read due to dyslexia. He wanted to create a website with untimed, multisensory interactive games that allow children to see, hear, and touch as they learn.
+     </p>
+     <div style="text-align: center;">
+      <a class="link1" href="https://teach.starfall.com/lv/info/privacy">
+       Privacy
+      </a>
+      |
+      <a class="link1" href="https://secure.starfall.com/lv/gated?forwardURL=https%3A%2F%2Fsecure.starfall.com%2Flv%2Fcontact&amp;returnURL=https%3A%2F%2Fwww.starfall.com%2Fh%2Findex.php&amp;label=Contact">
+       Contact
+      </a>
+     </div>
+    </div>
+    <div class="bottom-info-copyrights">
+     Brought to you by Zac the Rat.™ The Starfall Website is a program service of Starfall Education Foundation, a publicly supported nonprofit organization, 501(c)(3).  Starfall® and Starfall.com® are registered trademarks in the U.S., the European Union, and various other countries. Copyright © 2002–2021 by Starfall Education. All rights reserved.
+    </div>
+   </div>
+  </div>
+ </body>
+</html>

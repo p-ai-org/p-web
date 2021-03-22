@@ -1,0 +1,3187 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+ <head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-732206-2">
+  </script>
+  <script>
+   window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	
+	gtag('config', 'UA-732206-2');
+  </script>
+  <!-- Start GPT Tag -->
+  <script async="" src="https://securepubads.g.doubleclick.net/tag/js/gpt.js">
+  </script>
+  <script>
+   console.log("DFP: 1 - Setting up globals.");
+		var DFP_SETTINGS = {};
+		DFP_SETTINGS.site = 'www.govtech.com';
+		DFP_SETTINGS.path = '';
+		DFP_SETTINGS.urlName = '';
+		DFP_SETTINGS.contentId = '';
+    window.googletag = window.googletag || {cmd: []};
+    googletag.cmd.push(function() {
+			/*
+			// T2
+			googletag.defineSlot('/70114778/T2', [[728,90]], 'div-gpt-ad-4829501-1')
+								.setTargeting('site', ['www.govtech.com'])
+								.addService(googletag.pubads());
+
+			// R2
+			googletag.defineSlot('/70114778/R2', [[300,250]], 'div-gpt-ad-4829501-2')
+								.setTargeting('site', ['www.govtech.com'])
+								.addService(googletag.pubads());
+			*/
+			// Mob Adhesion
+			console.log("DFP: 2 - Configuring mob adhesion ad.");
+			var mobAdSlot = googletag.defineSlot('/70114778/Mobile_Adhesion', [[320,100]], 'mob-adhesion-slot')
+								.setTargeting('site', [DFP_SETTINGS.site])
+								.setTargeting('path', [DFP_SETTINGS.path])
+								.setTargeting('urlName', [DFP_SETTINGS.urlName])
+								.setTargeting('content-id', [DFP_SETTINGS.contentId])
+								.addService(googletag.pubads());
+			
+			googletag.pubads().enableSingleRequest();
+			googletag.enableServices();
+      
+			console.log("DFP: 3 - Listening for ad result.");
+      googletag.pubads().addEventListener('slotRenderEnded', function(event){
+        // Mob Adhesion
+        if( mobAdSlot === event.slot && !event.isEmpty ){
+          console.log("Found MobAdhesion slot");
+          //$('#mob-adhesion-slot').removeClass('hidden');
+        }
+      });
+      
+    });
+  </script>
+  <!-- End GPT Tag -->
+  <script>
+   // hide interstitial in case errors
+		setTimeout(function(){
+			console.log('Auto close interstitial.');
+			var intElem = document.createElement("style");
+			intElem.setAttribute("rel", "stylesheet");
+			intElem.innerHTML = "#interstitial { display: none; }";
+			document.head.appendChild(intElem);
+		},15000);
+
+		var interCurrentPath = '/';
+		var excludeContentId = '$cms.content.id';
+
+		// interstitial settings
+		var interExcludeSectionRaw = '/districts,/districts/awards,/districts/about,/districts/events,/districts/awards,/districts/news,/districts/podcasts,/districts/videos,/education/navigator,/education/navigator/numbers,/education/navigator/platform,/education/navigator/products,/smartcities,/navigator,/navigator/numbers,/navigator/platform,/navigator/products,/districts/media,/vmwarecloud,/infor,/future,/future/cloudscore,/salesforce,/oracle360,/oracle360/news,/oracle360/videos,/oracle360/events,/oracle360/partners,/oracle360/papers,/oracle360/about,/oracle360/infographic,/oracle360/cloud,/oracle360/mobile,/oracle360/connected,/oracle360/analytics,/oracle360/local,/oracle360/health,/oracle360/campus,/salesforce/wyoming,/oracle360/*,/oracle360/community,/salesforce/appexchange,/salesforce/trailblazers,/salesforce/news,/salesforce/papers,/bettercitizenexperience,/futureready*,/futureready,/futureready/news,/futureready/events,/futureready/covid-19,/futureready/papers,/futureready/awards,/education/saferschools,/cisco,/opengov,/oracle360/autonomous,/districts/covid-19,/futureready/socialsafetynet,/oracle360/leadingincrisis,/salesforce/covid-resources,/districts/papers,/master-class,/authors/Cisco-Articles.html,/publicsectorready,/publicsectorready/continuityofoperations,/publicsectorready/security,/publicsectorready/contracts,/publicsectorready/events,/publicsectorready/news,/publicsectorready*,/nextgen,/nextgen/events,/nextgen/news,/nextgen/it-modernization,/nextgen/workforce,/nextgen/cities-communities,/nextgen/security,/tanium,/fund-tech,/veritas,/education/dell,/local,/local/stories,/local/conversations,/local/resources,/districts/newsletters,/cybersecurity,/cybersecurity/news,/cybersecurity/conversations,/cybersecurity/resources,/districts/resources';
+		var interExcludeContentRaw = '422335023,422335593,3249343,452794863,474625203,474744043,475183093,484074711,487821191,493165881,499868212,482223131,502364571,505370201,505371011,505371542,505030532,507786381,424117004,567885672,569627481,569925902,569352362,569926042,566703271,570209311,570212651,570573541,570593101,571131722,572186732,572186912,572419571,572456551,572441072,572445112,572420382,571131722,572507851,572564622,572654672,572421241,572592661,572754931,572754951,573120581,573468231,573468231,573539031,573572191,573602021,573645841,573704751,573728471,573730111,573770851,573830041,573871591,573871451,573900691,573909561,573909931,573910041,573910871,573947161,573995821,574009391';
+		window.interstitialSettings = {};
+		window.interstitialSettings.excludeSection = interExcludeSectionRaw.split(',');
+		window.interstitialSettings.excludeContent = interExcludeContentRaw.split(',');
+		window.interstitialSettings.currentPath = interCurrentPath;
+		window.interstitialSettings.contentId = excludeContentId;
+
+		// billboard settings
+		var billboardExcludeSectionRaw = '/webinars,/100,/network,/health,/em/emergency-blogs/disaster-zone/, /computing,/salesforce,/oracle360,/oracle360/news,/oracle360/videos,/oracle360/events,/oracle360/partners,/oracle360/papers,/oracle360/about,/oracle360/infographic,/oracle360/cloud,/oracle360/mobile,/oracle360/connected,/oracle360/analytics,/oracle360/local,/oracle360/health,/oracle360/campus,/salesforce/wyoming,/oracle360*,/oracle360/community,/oracle360/autonomous,/salesforce/appexchange,/salesforce/trailblazers,/salesforce/news,/salesforce/papers,/futureready*,/futureready/covid-19,/publicsectorready,/publicsectorready/continuityofoperations,/publicsectorready/security,/publicsectorready/contracts,/publicsectorready/events,/publicsectorready/news,/publicsectorready/*';
+		var billboardExcludeContentRaw = '423919253,452794863,474625203,474744043,476865163,484074711,442394643,494143751,494708941,499868212,505370201,505371011,505917871,507057101,440932933,507435591,507786381,508517831,509920321,509970601,510074731,510072831,510076001,510666691,510670371,424117004,503634461,566776791,568503971,567782751,569627481,  569920411,569900491,569899081,569627481,570209311,570212651,570243591,570277821,570573541,570593101,570964661,570990601,571464561,571466731,571572641,571646671,571676851,571677011,571890681,571646671,571690521,571677011,571676851,571646671,571572641,571572281,571570951,571546651,571450111,571440781,571299491,571297921,570990601,570964661,570920601,571891861,572186732,572186912,572431421,572592661,572675851,572717391,572803951,572847831,572847941,572912451,573043281,573043221,573043511,573043681,573043511,573053301,573054171,573067521,57306734,573120581,573133241,573031691,573357021,573347181,573347181,573468231,573539031,573572191,573602021,573645751,573645841,573704751,573728471,573730111,573770851,573830041,573871591,573871451,573909561,573909931,573910041,573910871,573947161,573970851,573995821,574009391';
+		window.billboardSettings = {};
+		window.billboardSettings.excludeSection = billboardExcludeSectionRaw.split(',');
+		window.billboardSettings.excludeContent = billboardExcludeContentRaw.split(',');
+		window.billboardSettings.currentPath = interCurrentPath;
+		window.billboardSettings.contentId = excludeContentId;
+  </script>
+  <noscript>
+   <style>
+    #interstitial {
+			display:none !important;
+		}
+   </style>
+  </noscript>
+  <script>
+   function isMobileDevice() {
+		    return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+		};
+
+		var isIntWSSExcluded = window.interstitialSettings.excludeSection.indexOf(interCurrentPath) > -1 ? true : false;
+		var isIntContentExcluded = window.interstitialSettings.excludeContent.indexOf(excludeContentId) > -1 ? true : false;
+
+		//alert(isMobileDevice());
+	  if ( !isMobileDevice() && !isIntWSSExcluded && !isIntContentExcluded ) {
+
+			  var getCookie = function (name) {
+			  	var value = "; " + document.cookie;
+			  	var parts = value.split("; " + name + "=");
+			  	if (parts.length == 2) return parts.pop().split(";").shift();
+			  };
+
+			  // Get interstitial cookie
+			  var cookieVal = getCookie( 'intCookie' ); // return Boolean
+				
+				// check if intCookie is set
+			  if( cookieVal !== undefined ){
+			    console.log('Interstitial HAS BEEN SEEN. "intCookie" is set');
+					// hide interstitial 
+			    var intElem = document.createElement("style");
+			    intElem.setAttribute("rel", "stylesheet");
+			    intElem.innerHTML = "#interstitial { display: none; }";
+			    document.head.appendChild(intElem);
+			  } else {
+			    console.log('Interstitial NOT SEEN. intCookie not set');
+					// show interstitial 
+			    var intElem = document.createElement("style");
+			    intElem.setAttribute("rel", "stylesheet");
+			    intElem.innerHTML = "#interstitial { display: block; }";
+			    document.head.appendChild(intElem);
+			  }
+		} else {
+				// hide interstitial
+		    var intElem = document.createElement("style");
+		    intElem.setAttribute("rel", "stylesheet");
+		    intElem.innerHTML = "#interstitial { display: none; }";
+		    document.head.appendChild(intElem);
+		}
+  </script>
+  <!-- IMPLEMENT DO NOT TRACK   AND  EU GDPR ajax -->
+  <script>
+   var DNT = -1;
+var DNT_HEADER = -1;
+var DNT_COUNTRY = "unknown";
+var DNT_SEEN_COOKIE_STATEMENT = 0;
+var xdomainCookies = ['__utma','__utmb','__utmc','__utmt','__utmz'];
+
+var cookies = document.cookie.split(";");
+
+
+
+// first check if we have an existing cookie
+for (var i = 0; i < cookies.length; i++){
+	var spcook = cookies[i].split("=");
+	if( String(spcook[0]).trim() == 'DNT')
+	DNT = Number(spcook[1]);
+	else if( String(spcook[0]).trim() == 'DNT_HEADER')
+	DNT_HEADER = Number(spcook[1]);
+	else if( String(spcook[0]).trim() == 'DNT_COUNTRY')
+	DNT_COUNTRY = spcook[1];
+	else if(String(spcook[0]).trim() == 'DNT_SEEN_COOKIE_STATEMENT')
+	DNT_SEEN_COOKIE_STATEMENT = 1;
+}
+
+/* ****** IMPORTANT ***** DNT FUNCTIONALITY IS TEMPORARILY DISABLED UNTIL WE
+CAN PROPERLY SPEC AND DEAL WITH VARIABLES. ***************** */
+// var DNT = 0;
+// var DNT_HEADER = 1;
+// var DNT_COUNTRY = "United States";
+// var DNT_SEEN_COOKIE_STATEMENT = 1;
+
+function __enforceDNT() {
+	DNT = 1;
+	// NO. GA does not need to be disabled, setting _anonymizeIp instead.
+	// window['ga-disable-UA-2081253-1'] = true;  // governing
+	// window['ga-disable-UA-732206-2'] = true;  // govtech
+
+	var domain  = window.location.hostname;
+	var xdomain = domain.slice(domain.indexOf('.'));
+
+	// remove our tracking cookie
+	document.cookie = 'ef3_contact=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+
+	// remove Google cookies (using xdomain : .governing.com or .govtech  )
+	for (var i = 0; i < cookies.length; i++){
+		var spcook =  cookies[i].split("=");
+		var cookieName = String(spcook[0]).trim();
+		if(xdomainCookies.includes(cookieName))
+		document.cookie = cookieName +'=; Path=/; Domain=' + xdomain + '; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+	}
+}
+
+function __isNotEU(isNotEU) {
+	if( isNotEU ) {
+		console.log('is not EU');
+		// set cookies for next time;
+		var d = new Date();
+		d.setDate(d.getDate() + 30); // valid for 30 days
+		DNT = 0;
+		DNT_HEADER = 1;
+		DNT_COUNTRY = 'United States';
+		document.cookie = "DNT="+ DNT +"; Path=/; Expires="+d.toUTCString() +";" ;
+		document.cookie = "DNT_HEADER="+ DNT_HEADER +"; Path=/; Expires="+d.toUTCString() +";" ;
+		document.cookie = "DNT_COUNTRY="+ DNT_COUNTRY +"; Path=/; Expires="+d.toUTCString() +";" ;
+	} else {
+		console.log('is EU');
+		console.log('seen cookie statement '+ DNT_SEEN_COOKIE_STATEMENT);
+		console.log('DNT ', DNT);
+		if( DNT == -1 || DNT == 1 ) {
+			console.log('enforcing DNT');
+			__enforceDNT();
+		}
+	}
+}
+
+// if(DNT == -1 ){ // no cookie found, make ajax call
+
+	// var xhttp = new XMLHttpRequest();
+	// var rnd = Math.random() * 10000;
+	// var url = "/templates/common_check_country?rnd="+rnd;
+	// xhttp.open("GET", url, false); // synchronous !
+	// xhttp.send();
+	// console.log(xhttp.responseText);
+	// var resp = JSON.parse(xhttp.responseText);
+	//
+	// DNT = resp.DNT;
+	// DNT_HEADER = resp.DNT_HEADER;
+	// DNT_COUNTRY = resp.DNT_COUNTRY;
+
+	// this synchronous script call returns a soft boolean and triggers _isUS() below
+	var s = document.createElement('script');
+  s.src = 'https://analytics.erepublic.com/cms/geo/MjA3LjI0NC4xMDQuMTk5O1VuaXRlZCBTdGF0ZXM=.js';
+  s.type = "text/javascript";
+  s.async = false;                                 // <-- this is important
+  document.getElementsByTagName('head')[0].appendChild(s);
+
+
+// }
+
+if(DNT == 1){
+	console.log("DNT = 1");
+
+	__enforceDNT();
+}
+  </script>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+  <title>
+   Government Technology State &amp; Local Articles - e.Republic
+  </title>
+  <meta content="Government Technology has IT articles for state, local and city government. Find government news and events. GovTech is a division of e.Republic." name="description"/>
+  <meta content="www.govtech.com" name="wss"/>
+  <meta content="https://www.govtech.com" name="wssUrl"/>
+  <meta content="58080203190" property="fb:pages"/>
+  <meta content="6fde23837116ec868cad5f966cf08656" name="p:domain_verify"/>
+  <link href="https://media2.govtech.com/designimages/gt_favicon.ico" rel="icon" type="image/x-icon"/>
+  <meta content="X-HsOfNbpgrCBKZgw_PLvHDIwWcF7O5_2Cs2FCwwKAU" name="google-site-verification"/>
+  <meta content="YGeeEDFGk0P1HO8tlyROBmRbQvw1H3jzQqXhn0Q55a8" name="google-site-verification"/>
+  <link href="https://plus.google.com/107858487983828752143" rel="publisher"/>
+  <style amp-boilerplate="">
+   body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}
+  </style>
+  <noscript>
+   <style amp-boilerplate="">
+    body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}
+   </style>
+  </noscript>
+  <link href="//services.erepublic.com/fonts/ProximaNova/stylesheet.css" rel="stylesheet"/>
+  <link href="/includes/gt_2016_all.min.css?v=32108" rel="stylesheet"/>
+  <script>
+   /*<![CDATA[*/(function(w,a,b,d,s){w[a]=w[a]||{};w[a][b]=w[a][b]||{q:[],track:function(r,e,t){this.q.push({r:r,e:e,t:t||+new Date});}};var e=d.createElement(s);var f=d.getElementsByTagName(s)[0];e.async=1;e.src='//marketing.erepublic.com/cdnr/87/acton/bn/tracker/16245';f.parentNode.insertBefore(e,f);})(window,'ActOn','Beacon',document,'script');ActOn.Beacon.track();/*]]>*/
+  </script>
+  <script src="/includes/gt_2016_all.min.js?new=3295260">
+  </script>
+  <!-- AdSense -->
+  <script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js">
+  </script>
+  <script>
+   (adsbygoogle = window.adsbygoogle || []).push({
+		google_ad_client: "ca-pub-5318863293238952",
+		enable_page_level_ads: true
+		});
+  </script>
+  <!-- /AdSense -->
+  <script>
+   var googletag = googletag || {};
+	googletag.cmd = googletag.cmd || [];
+  </script>
+  <script language="Javascript">
+   var js="0.0";
+  </script>
+  <script language="Javascript1.0">
+   js="1.0";
+  </script>
+  <script language="Javascript1.1">
+   js="1.1";
+  </script>
+  <script language="Javascript1.2">
+   js="1.2";
+  </script>
+  <script language="Javascript1.3">
+   js="1.3";
+  </script>
+  <script language="Javascript1.4">
+   js="1.4";
+  </script>
+  <script language="Javascript1.5">
+   js="1.5";
+  </script>
+  <script language="Javascript1.6">
+   js="1.6";
+  </script>
+  <script language="Javascript1.7">
+   js="1.7";
+  </script>
+  <script language="Javascript1.8">
+   js="1.8";
+  </script>
+  <script language="Javascript1.9">
+   js="1.9";
+  </script>
+  <script language="javascript1.1" type="text/javascript">
+   <!-- 
+var bb=new Image();var _ti=910;var _q="";var na=(navigator.appName=="Netscape");var ns=(navigator.appName.substring(0,9)=="Microsoft");var _qDate=new Date();var _r=(document.referrer.indexOf(getdomain(location))>-1?"":document.referrer);_q+="&5="+parseInt(_qDate.getTimezoneOffset());_q+="&35="+parseInt(_qDate.toString().indexOf("aylight")>-1?1:0);_q+="&6=900475002";_q+="&7=475002";_q+="&8="+encodeURIComponent(document.location);_q+="&9="+encodeURIComponent(_r);_q+="&10="+encodeURIComponent(document.title);_q+="&11="+encodeURIComponent(navigator.userAgent);_q+="&12="+encodeURIComponent((na?navigator.language:navigator.userLanguage));_q+="&13="+((navigator.javaEnabled()?'1':'0'));_q+="&14="+encodeURIComponent(js);if(document.cookie.indexOf("cc")==-1)document.cookie="cc=t;";_q+="&15="+((document.cookie.indexOf("cc")==-1)?"0":"1");_q+="&16="+encodeURIComponent((screen.width+'x'+screen.height));_q+="&17="+encodeURIComponent(((ns)?screen.colorDepth:screen.pixelDepth));_q+="&18="+encodeURIComponent(Math.random());_q+="&19="+_ti;bb.src="https://s.clickability.com/s?"+_q;
+function setonclicks(a,b){var i=0;var retval=true;while(document.links[i]!=a){i++;}if(b.li[i])retval=b.li[i].oldonclick();bye(a);return retval;}
+function newonld(){if(hasonload)oldonld();lnks=new Object();var sze=document.links.length;lnks.li=new Array(sze);for (var i=0; i<sze; i++){if(document.links[i].onclick){lnks.li[i]=document.links[i];lnks.li[i].oldonclick=document.links[i].onclick;}eval("document.links[i].onclick=function(){return setonclicks(this,lnks);}");}}function bye(a){if(a.href.toLowerCase().indexOf('http')!=0)return true;if(getdomain(location)==getdomain(a))return true;if(a.href.toLowerCase().indexOf('http')!=0)return true;var _qc="https://s.clickability.com/s?19=912";_qc+="&6=900475002";_qc+="&7=475002";_qc+="&18="+encodeURIComponent(Math.random());_qc+="&100="+a.href;_qc+="&101="+encodeURIComponent(a.text);var cc=new Image();if(na){cc.src=_qc;pc(100);}else cc.src=_qc;return true;}function pc(a){d = new Date(); while (1){m =new Date(); df = m-d;if( df > a ) {break;}}}function getdomain(a){var i=a.host.indexOf(":");return (i>=0)?a.host.substring(0,i):a.host;}if(self['setupalready']){var dosetup = false;alert('There are two $imware.tracker calls on this page. Please alert Client Services');}else{var dosetup = true;var hasonload=false;}if(dosetup && ((window.screen)||((new Array()).toSource)||((new Array()).shift&&ns))&&(navigator.userAgent.indexOf('Mac')<0)){if(window.onload){oldonld=window.onload;hasonload=true;}window.onload=newonld;var setupalready = true;}//-->
+  </script>
+  <noscript>
+   <img alt="Clickability tracking pixel" height="1" src="https://s.clickability.com/s?19=990&amp;14=0&amp;6=900475002&amp;7=475002&amp;25=0&amp;18=0.6090077650246329" width="1"/>
+  </noscript>
+  <!-- $userRequest.getCookie("intCookie") -->
+  <!-- add a canonical url (hometarget)  per https://support.google.com/webmasters/answer/139066  -->
+  <link href="https://www.govtech.com" rel="canonical"/>
+  <!-- Retargeting -->
+  <script type="text/javascript">
+   (function() {
+		window._pa = window._pa || {};
+		// _pa.orderId = "myOrderId"; // OPTIONAL: attach unique conversion identifier to conversions
+		// _pa.revenue = "19.99"; // OPTIONAL: attach dynamic purchase values to conversions
+		// _pa.productId = "myProductId"; // OPTIONAL: Include product ID for use with dynamic ads
+	
+		var pa = document.createElement('script'); pa.type = 'text/javascript'; pa.async = true;
+		pa.src = ('https:' == document.location.protocol ? 'https:' : 'http:') + "//tag.marinsm.com/serve/5d83df4cf5507b1297000018.js";
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(pa, s);
+	})();
+  </script>
+  <!-- /Retargeting -->
+  <style type="text/css">
+   .btn-inherit{
+			background: #f47421;
+			color: white !important;
+			padding: 5px 20px;
+			text-transform: uppercase;
+			border-color: #c66424 !important;
+		}
+  </style>
+  <script type="text/javascript">
+   (function() {
+			/** CONFIGURATION START **/
+			var _sf_async_config = window._sf_async_config = (window._sf_async_config || {});
+			_sf_async_config.uid = 46219;
+			_sf_async_config.domain = 'govtech.com'; //CHANGE THIS
+			_sf_async_config.flickerControl = false;
+			_sf_async_config.useCanonical = true;
+			_sf_async_config.useCanonicalDomain = true;
+			_sf_async_config.sections = 'Editorial'; //CHANGE THIS TO YOUR SECTION NAME(s)
+			_sf_async_config.authors = ''; //CHANGE THIS TO YOUR AUTHOR NAME(s)
+			
+			/** CONFIGURATION END **/		
+			function loadChartbeat() {
+				var e = document.createElement('script');
+				var n = document.getElementsByTagName('script')[0];
+				e.type = 'text/javascript';
+				e.async = true;
+				e.src = '//static.chartbeat.com/js/chartbeat.js';;
+				n.parentNode.insertBefore(e, n);
+			}
+			
+			loadChartbeat();
+		})();
+  </script>
+  <script async="" src="//static.chartbeat.com/js/chartbeat_mab.js">
+  </script>
+ </head>
+ <body ng-controller="global">
+  <div class="hidden" content-id="" domain="www.govtech.com" id="adParamInfo" path="" type="" urlname="">
+  </div>
+  <div id="interstitial">
+   <style>
+    #interstitial {
+				position:fixed;
+				width:100%;
+				height:100%;
+				top:0;
+				left:0;
+				right:0;
+				bottom:0;
+				background: #EEF0F0;
+				z-index:100;
+			}
+			#interstitial > .header {
+				background-color: #092832;
+				width: 100%;
+				height: 125px;
+			}
+			#interstitial > .header .logo {
+				height: 100px;
+				margin: 10px 0;
+			}
+			#interstitial > .header .pull-right {
+				padding-top: 80px;
+			}
+			#interstitial > .header .close-button {
+				background: #f47421;
+				border:0;
+				font: 18px/24px proximanovathin;
+				padding: 2px 8px;
+				color:white;
+			}
+			#interstitial > .header .countdown {
+				font: 18px/24px proximanovathin;
+				color:white;
+			}
+			#interstitial > .sizer .ng-binding {
+				text-align: center;
+			}
+			.cdg-sublogo, .cde-sublogo {
+				width: 180px !important;
+			}
+			@media screen and (max-width: 768px) {
+				.cdg-sublogo, .cde-sublogo {
+						margin-top:10px;
+				}
+			}
+   </style>
+   <div class="header">
+    <div class="container">
+     <svg class="logo" id="Layer_1" inkscape:version="0.91 r13725" ng-if="!isEm&amp;&amp;!isCde" sodipodi:docname="gt_2016_logo_cropped.svg" version="1.1" viewbox="0 0 244.10001 130.89999" width="244.10001" x="0px" xml:space="preserve" xmlns="https://www.w3.org/2000/svg" xmlns:cc="https://creativecommons.org/ns#" xmlns:dc="https://purl.org/dc/elements/1.1/" xmlns:inkscape="https://www.inkscape.org/namespaces/inkscape" xmlns:rdf="https://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="https://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="https://www.w3.org/2000/svg" y="0px">
+      <metadata id="metadata31">
+       <rdf:rdf>
+        <cc:work rdf:about="">
+         <dc:format>
+          image/svg+xml
+         </dc:format>
+         <dc:type rdf:resource="https://purl.org/dc/dcmitype/StillImage">
+         </dc:type>
+         <dc:title>
+         </dc:title>
+        </cc:work>
+       </rdf:rdf>
+      </metadata>
+      <defs id="defs29">
+      </defs>
+      <sodipodi:namedview bordercolor="#666666" borderopacity="1" fit-margin-bottom="0" fit-margin-left="0" fit-margin-right="0" fit-margin-top="0" gridtolerance="10" guidetolerance="10" id="namedview27" inkscape:current-layer="Layer_1" inkscape:cx="-279.33898" inkscape:cy="68.1" inkscape:pageopacity="0" inkscape:pageshadow="2" inkscape:window-height="718" inkscape:window-maximized="0" inkscape:window-width="1341" inkscape:window-x="20" inkscape:window-y="43" inkscape:zoom="0.2979798" objecttolerance="10" pagecolor="#ffffff" showgrid="false">
+      </sodipodi:namedview>
+      <style id="style3">
+       .st0{opacity:.51}.st1{fill:#939598}.st2{fill:#FFF}.st3{fill:#BCBEC0}.st4{fill:#F47421}
+      </style>
+      <g id="g5" transform="translate(-139,-333.2)">
+       <g id="g7">
+        <g class="st0" id="g9" style="opacity:.51000001">
+         <g id="g11">
+          <path class="st1" d="m 270.5,452.5 c 0,4.3 1.9,5.2 4,5.2 1,0 2.2,-0.3 3.1,-1.3 l 0,-2 c -0.5,0.3 -1,0.5 -1.7,0.5 -0.9,0 -1.6,-0.3 -1.6,-2.1 l 0,-12.7 3.2,0 0,-2.6 -3.2,0 0,-8.6 -0.5,0 -2.9,1.9 0,6.6 -1.9,0 0,2.6 1.6,0 0,12.5 z m 12.8,5.2 c 3.4,0 5.3,-1.7 5.3,-5.5 l 0,-0.8 -3.1,0 0,0.6 c 0,2.1 -0.8,2.8 -1.7,2.8 -1.7,0 -2.1,-1.2 -2.1,-4.7 l 0,-2 6.6,0 c 0.3,-1.3 0.5,-3.1 0.5,-4.7 0,-4.8 -2.4,-6.3 -5,-6.3 -2.1,0 -5.8,0.6 -5.8,8.3 l 0,3.8 c -0.1,6.1 1.8,8.5 5.3,8.5 m -1.7,-12 0,-1.2 c 0,-3.4 0.6,-4.6 1.9,-4.6 1.2,0 1.8,1.1 1.8,3.7 0,0.5 0,1.6 -0.1,2.1 l -3.6,0 z m 13.4,12 c 3.3,0 5,-1.7 5,-5.5 l 0,-0.8 -3.2,0 0,0.6 c 0,2.1 -0.7,2.8 -1.4,2.8 -1.4,0 -1.9,-1.3 -1.9,-4.8 l 0,-5.7 c 0,-3.4 0.6,-4.5 1.8,-4.5 1.1,0 1.5,1.2 1.5,3.2 l 0,0.7 2.9,0 c 0.2,-0.6 0.2,-1.3 0.2,-2.2 0,-3 -1.9,-4.4 -4.6,-4.4 -2,0 -5.6,0.6 -5.6,8.3 l 0,3.8 c 0.1,5.8 2,8.5 5.3,8.5 m 6.5,-0.2 3.7,0 0,-16.2 c 0.6,-0.9 1.4,-1.4 2.1,-1.4 1,0 1.6,0.6 1.6,2.4 l 0,15.2 3.7,0 0,-15.3 c 0,-3.3 -1.3,-4.9 -3.7,-4.9 -1.4,0 -2.8,0.5 -3.9,1.9 l -0.1,-3.4 0,-6.9 -0.4,0 -2.9,1.8 0,0.2 0,26.6 z m 13.4,0 3.7,0 0,-16.2 c 0.6,-0.8 1.3,-1.4 2.1,-1.4 1,0 1.6,0.6 1.6,2.4 l 0,15.2 3.7,0 0,-15.3 c 0,-3.3 -1.3,-4.9 -3.7,-4.9 -1.5,0 -3,0.6 -4.2,2.4 l 0,0 -0.3,-2.1 -2.8,0 0,19.9 z m 18.4,0.2 c 2.3,0 5.5,-1 5.5,-8.8 l 0,-3.1 c 0,-7.9 -3.1,-8.5 -5.5,-8.5 -2.5,0 -5.6,0.7 -5.6,8.5 l 0,3.1 c 0,7.9 3.1,8.8 5.6,8.8 m 0,-2.8 c -1.4,0 -1.9,-1.2 -1.9,-5 l 0,-4.9 c 0,-3.8 0.5,-5 1.9,-5 1.3,0 1.8,1.3 1.8,5 l 0,4.9 c 0,3.8 -0.4,5 -1.8,5 m 7.4,2.6 3.7,0 0,-28.7 -0.6,0 -3,2 -0.1,0.1 0,26.6 z m 11,0.2 c 2.3,0 5.5,-1 5.5,-8.8 l 0,-3.1 c 0,-7.9 -3.1,-8.5 -5.5,-8.5 -2.5,0 -5.6,0.7 -5.6,8.5 l 0,3.1 c 0.1,7.9 3.1,8.8 5.6,8.8 m 0.1,-2.8 c -1.4,0 -1.9,-1.2 -1.9,-5 l 0,-4.9 c 0,-3.8 0.5,-5 1.9,-5 1.3,0 1.8,1.3 1.8,5 l 0,4.9 c -0.1,3.8 -0.5,5 -1.8,5 m 7.6,4 c -0.1,0.5 -0.2,0.9 -0.2,1.2 0,3.2 2.2,3.9 4.8,3.9 3.9,0 5.6,-2.8 5.6,-7.3 l 0,-19.2 -2.9,0 -0.3,2 c -0.5,-1.1 -1.5,-2.2 -3.5,-2.2 -1.5,0 -4.4,0.4 -4.4,6.9 l 0,5.3 c 0,6.8 3,7.2 4.3,7.2 1.5,0 2.5,-0.7 3.2,-1.6 l 0,3.2 c 0,2.4 -1,3 -2.1,3 -1.3,0 -2,-0.7 -2,-2.4 l -2.5,0 z m 4.7,-5.1 c -1.1,0 -1.9,-0.7 -1.9,-3.7 l 0,-6.6 c 0,-3 0.8,-3.6 1.8,-3.6 0.9,0 1.5,0.7 1.8,1.5 l 0,11 c -0.2,0.7 -0.7,1.4 -1.7,1.4 m 7.6,7.6 0,2.3 c 0.7,0.2 1.3,0.4 1.9,0.4 3.1,0 4.6,-1.9 5.3,-5.7 l 4.2,-20.8 -3.6,0 -1.7,11.1 -0.4,3.8 -0.1,0 -0.6,-3.8 -2.1,-11.1 -3.7,0 4.7,20.1 c -0.2,2.8 -1.7,4 -3.9,3.7" id="path13" inkscape:connector-curvature="0" style="fill:#939598">
+          </path>
+          <path class="st1" d="m 368.4,434.7 0,-16.8 c 0,-3.6 -1.5,-5.4 -4,-5.4 -1.6,0 -3.3,0.6 -4.6,2.6 l 0,0 -0.4,-2.3 -3.1,0 0,21.9 4,0 0,-17.7 c 0.6,-0.9 1.4,-1.5 2.3,-1.5 1.1,0 1.7,0.7 1.7,2.6 l 0,16.6 4.1,0 z m -13.7,-10.2 c 0.3,-1.4 0.5,-3.4 0.5,-5.1 0,-5.3 -2.6,-6.8 -5.5,-6.8 -2.3,0 -6.3,0.7 -6.3,9 l 0,4.1 c 0,0.7 0,1.3 0.1,1.8 l 1.9,0 0,5.8 c 1,1.1 2.3,1.5 3.8,1.5 3.8,0 5.8,-1.8 5.8,-6 l 0,-0.8 -3.4,0 0,0.7 c 0,2.3 -0.9,3 -1.9,3 -1.8,0 -2.3,-1.3 -2.3,-5.1 l 0,-2.2 7.3,0 z m -3.1,-5 c 0,0.6 0,1.8 -0.1,2.2 l -4,0 0,-1.3 c 0,-3.8 0.7,-5 2.1,-5 1.3,0.1 2,1.2 2,4.1 m -9.5,8.8 0,-10.4 c 0,-3.6 -1.5,-5.4 -4,-5.4 -1.6,0 -3.2,0.6 -4.5,2.5 -0.6,-1.7 -1.8,-2.5 -3.5,-2.5 -1.6,0 -3.3,0.6 -4.5,2.6 l 0,0 -0.3,-2.3 -3.1,0 0,21.9 4,0 0,-17.7 c 0.6,-0.9 1.4,-1.5 2.1,-1.5 1.3,0 1.9,0.7 1.9,2.6 l 0,16.6 4,0 0,-17.1 c 0,-0.2 0,-0.4 0,-0.6 0.6,-0.9 1.4,-1.5 2.1,-1.5 1.3,0 1.9,0.7 1.9,2.6 l 0,16.6 1.5,0 0,-4.7 2.4,-1.7 z m -25.6,6.4 4,0 0,-16.8 c 0,-3.6 -1.5,-5.4 -4,-5.4 -1.6,0 -3.3,0.6 -4.6,2.6 l 0,0 -0.4,-2.3 -3.1,0 0,21.9 4,0 0,-17.7 c 0.6,-0.9 1.4,-1.5 2.3,-1.5 1.1,0 1.7,0.7 1.7,2.6 l 0,16.6 z M 307,419.8 c 0.3,-0.9 0.5,-2.2 0.5,-3 0,-2.8 -1.1,-4.3 -3.4,-4.3 -1.2,0 -2.4,0.8 -3.3,2.5 l -0.3,-2.2 -2.9,0 0,21.9 2.9,0 0,-4.7 1.1,-0.8 0,-12.6 c 0.4,-0.7 0.9,-1.2 1.6,-1.2 0.6,0 1.1,0.5 1.1,2.3 l 0,2 2.7,0 z m -11,4.7 c 0.3,-1.4 0.5,-3.4 0.5,-5.1 0,-5.3 -2.6,-6.8 -5.5,-6.8 -2.3,0 -6.3,0.7 -6.3,9 l 0,4.1 c 0,6.5 2.1,9.2 5.8,9.2 3.8,0 5.8,-1.8 5.8,-6 l 0,-0.8 -3.4,0 0,0.7 c 0,2.3 -0.9,3 -1.9,3 -1.8,0 -2.3,-1.3 -2.3,-5.1 l 0,-2.2 7.3,0 z m -3.2,-5 c 0,0.6 0,1.8 -0.1,2.2 l -4,0 0,-1.3 c 0,-3.8 0.7,-5 2.1,-5 1.3,0.1 2,1.2 2,4.1 m -12.6,15.2 5,-21.9 -3.9,0 -2.1,11.6 -0.6,4.7 -0.1,0 -0.5,-4.7 -2.1,-11.6 -4,0 4.9,21.9 3.4,0 z m -7.9,-12.9 c 0,-8.6 -3.4,-9.3 -6,-9.3 -2.7,0 -6.1,0.8 -6.1,9.3 l 0,3.4 c 0,8.6 3.3,9.6 6.1,9.6 1.1,0 2.3,-0.2 3.4,-1.1 l 0,-3.7 2.4,-1.6 c 0.1,-0.9 0.2,-1.9 0.2,-3.1 l 0,-3.5 z m -4,4.6 c 0,4.1 -0.5,5.5 -2,5.5 -1.5,0 -2.1,-1.4 -2.1,-5.5 l 0,-5.4 c 0,-4.1 0.6,-5.5 2.1,-5.5 1.4,0 2,1.4 2,5.5 l 0,5.4 z m -9.1,7.4 0,-21 -3.2,0 -0.4,2.2 c -0.6,-1.2 -1.7,-2.4 -3.8,-2.4 -1.6,0 -4.8,0.4 -4.8,7.5 l 0,5.8 c 0,7.4 3.2,7.9 4.7,7.9 1.7,0 2.8,-0.8 3.5,-1.7 l 0,3.4 c 0,2.7 -1.1,3.3 -2.3,3.3 -1.4,0 -2.1,-0.7 -2.1,-2.6 l -2.8,0 c -0.1,0.5 -0.2,1 -0.2,1.3 0,3.5 2.4,4.3 5.2,4.3 4.4,-0.1 6.2,-3.1 6.2,-8 m -4,-4.8 c -0.4,0.8 -1,1.6 -2,1.6 -1.2,0 -2,-0.7 -2,-4 l 0,-7.2 c 0,-3.3 0.8,-4 2,-4 1,0 1.6,0.7 2,1.6 l 0,12 z" id="path15" inkscape:connector-curvature="0" style="fill:#939598">
+          </path>
+          <path class="st1" d="m 371,429.5 c 0,4.3 1.9,5.2 4,5.2 1,0 2.2,-0.3 3.1,-1.3 l 0,-2 c -0.5,0.3 -1,0.5 -1.7,0.5 -0.9,0 -1.6,-0.3 -1.6,-2.1 l 0,-12.7 3.2,0 0,-2.6 -3.2,0 0,-8.6 -0.5,0 -2.9,1.9 0,6.6 -1.9,0 0,2.6 1.6,0 0,12.5 z" id="path17" inkscape:connector-curvature="0" style="fill:#939598">
+          </path>
+         </g>
+        </g>
+       </g>
+       <rect class="st2" height="112.2" id="rect19" style="fill:#fff" width="77.400002" x="148.10001" y="342.29999">
+       </rect>
+       <polygon class="st3" id="polygon21" points="139,333.3 139.2,453.2 145,458.2 145,333.2 " style="fill:#bcbec0">
+       </polygon>
+       <g id="g23">
+        <path class="st4" d="m 175.9,410.8 0,-34.7 c -1.2,-2.5 -3.1,-4.7 -5.9,-4.7 -3.4,0 -5.9,2 -5.9,11.5 l 0,20.9 c 0,9.5 2.5,11.6 5.9,11.6 3.1,0 4.9,-2.3 5.9,-4.6 m 45.1,29.8 c -2.9,3.5 -6.9,4.5 -10.5,4.5 -7,0 -13.6,-3 -13.6,-17.8 l 0,-42.5 -10.7,0 0,-8.9 11.8,0 0.1,-22.7 9.8,-6.6 1.6,0 0,29.2 11,0 0,8.9 -11,0 0,43.6 c 0,6 2.5,7 5.4,7 2.4,0 4.3,-0.6 6,-1.7 l 0,7 z m -33.4,-67.4 -3.8,0 0,13.9 3.8,0 0,37.4 c 0,14.2 -5.3,23.1 -17.8,23.1 -8.4,0 -15.3,-2.5 -15.3,-12.5 0,-0.9 0.2,-2.2 0.6,-3.7 l 8.3,0 c 0,5.4 2,7.5 6.3,7.5 3.5,0 6.6,-1.7 6.6,-9.5 l 0,-10 c -2.1,2.7 -5.3,4.9 -10.2,4.9 -4.3,0 -13.7,-1.4 -13.7,-23 l 0,-16.7 c 0,-20.7 9.4,-21.9 14,-21.9 6.2,0 9.3,3.6 11,6.9 l 1.1,-6.3 9.1,0 0,9.9 z m 42.5,-40 -85.1,0 0,125.1 85.1,0 0,-125.1 z" id="path25" inkscape:connector-curvature="0" style="fill:#f47421">
+        </path>
+       </g>
+      </g>
+     </svg>
+     <div class="pull-right text-right">
+      <button class="close-button" ng-click="closeInterstitial()" style="color:black;">
+       CONTINUE TO SITE
+      </button>
+     </div>
+    </div>
+   </div>
+   <interstitial content-id="" ng-cloak="" path="_" site="www.govtech.com" url-name="">
+   </interstitial>
+  </div>
+  <style>
+   #mobAdB {
+			/*
+			background-color: white;
+			*/
+			z-index: 999;
+			text-align: center;
+			width: 100%;
+			position: fixed;
+			bottom: 0px;
+			display: inline-block;
+		}
+		#mobAdB .sizer div {
+			margin: auto;
+		}
+		.closeMobAdBtn {
+			background-color: black;
+			font-family: arial,sans-serif;
+			color: white;
+			font-weight: 1000;
+			font-size: 18px;
+			padding: 0px 8px;
+			border: 2px solid white;
+			border-radius: 29px;
+			position: absolute;
+			top: -10px;
+			left: 90%;
+			z-index:999;
+		}
+		#mob-adhesion-slot {
+			text-align: center;
+		}
+  </style>
+  <div class="visible-xs" id="mobAdB">
+   <div class="closeMobAdBtnDiv hidden">
+    <a href="#closeMobAd">
+     <span class="closeMobAdBtn">
+      x
+     </span>
+    </a>
+   </div>
+   <div id="mob-adhesion-slot">
+   </div>
+  </div>
+  <script>
+   $(document).ready(function(){
+			
+			var getCookie = function (name) {
+				var value = "; " + document.cookie;
+				var parts = value.split("; " + name + "=");
+				if (parts.length == 2) return parts.pop().split(";").shift();
+			};
+
+			//var mobAdTest = window.location.search.indexOf('?mobad=test') > -1 ? true : false;
+
+			// if mobile device and not homepage
+			if( isMobileDevice() ){
+				console.log('is mobile');
+				// exclude from sections
+				var intIsSponsored = $('.article-sponsored').length > 0 ? true : false;
+				var intIsResourceModule = false; //$('#rc_dart_ad').length > 0 ? true : false;
+				var intIsResourceModule2 = $('.exclude-inarticle').length > 0 ? true : false;
+
+				// eclude from settings in Sitewide Mobile Adhesion Settings
+				// Mobile Adhesion settings
+				var mobAdhesionExcludeSectionRaw = '/districts,/districts/news,/districts/about,/districts/events,/districts/podcasts,/districts/videos,/vmwaresecurity/,/education/saferschools,/infor,/districts/awards,/districts/media,/oracle360,/oracle360/*,/futureready,/bettercitizenexperience,/subscribe/newsletters,/opengov,/futureready/news,/futureready/papers,/futureready/events,/futureready/awards,/oracle360/autonomous,/districts/covid-19,/futureready/covid-19,/futureready/socialsafetynet,/salesforce/covid-resources,/districts/papers,/publicsectorready,/publicsectorready/continuityofoperations,/publicsectorready/security,/publicsectorready/contracts,/publicsectorready/events,/publicsectorready*,/nextgen,/nextgen/events,/nextgen/news,/nextgen/it-modernization,/nextgen/workforce,/nextgen/cities-communities,/nextgen/security,/tanium,/fund-tech,/veritas,/education/dell,/local,/local/stories,/local/conversations,/local/resources,/districts/newsletters,/cybersecurity,/cybersecurity/news,/cybersecurity/conversations,/cybersecurity/resources,/districts/resources';
+				var mobAdhesionExcludeContentRaw = '423919253,452794863,474625203,474744043,476865163,484074711,442394643,494143751,494708941,499868212,505370201,505371011,505917871,507057101,440932933,507435591,507786381,508517831,509920321,509970601,510074731,510072831,510076001,510666691,510670371,424117004,503634461,566776791,568503971,567782751,569627481,  569920411,569900491,569899081,569627481,570209311,570212651,570243591,570277821,570573541,570593101,570964661,570990601,571464561,571466731,571572641,571646671,571676851,571677011,571890681,571646671,571690521,571677011,571676851,571646671,571572641,571572281,571570951,571546651,571450111,571440781,571299491,571297921,570990601,570964661,570920601,571891861,571131722,572186732,572186912,572419571,572456551,572507851,572592661,572421241,572754931,572754951,573347181,573539031,573572191,573602021,573645751,573645751,573645841,573704751,573728471,573730111,573770851,573830041,573871591,573871451,573900691,573900691,573909561,573909931,573910041,573910871,573947161,573970851,573995821,574009391';
+				window.mobAdhesionSettings = {};
+				window.mobAdhesionSettings.excludeSection = mobAdhesionExcludeSectionRaw.split(',');
+				window.mobAdhesionSettings.excludeContent = mobAdhesionExcludeContentRaw.split(',');
+				
+				var isMobAdhesionExcluded = window.mobAdhesionSettings.excludeSection.indexOf(interCurrentPath) > -1 ? true : false;
+				var isMobAdhesionContentExcluded = window.mobAdhesionSettings.excludeContent.indexOf(excludeContentId) > -1 ? true : false;
+				
+				// check wildcard subsections
+				if( interCurrentPath.indexOf('/') == 0 ){
+					var pathParts = interCurrentPath.replace('/', '').split('/');
+				} else {
+					var pathParts = interCurrentPath.split('/');
+				}
+				
+				// check for subsections
+				if( pathParts.length == 2 ){
+					var isSubSectionExcluded = window.mobAdhesionSettings.excludeSection.indexOf('/'+pathParts[0]+'/*') > -1 ? true : false;
+				}
+				
+				if( pathParts.length == 3 ){
+					var isSubSectionExcluded = window.mobAdhesionSettings.excludeSection.indexOf('/'+pathParts[0]+'/'+pathParts[1]+'/*') > -1 ? true : false;
+				}
+
+				// if test, ignore conditions
+				if( window.location.search.indexOf('moad=1') == -1 ){
+
+					console.log("DFP: 4.0 - Check if mobile device: " +isMobileDevice() );
+					if( !isMobileDevice() ){
+						console.log('NOT a mobile device, Mobile_Adhesion will not be displayed.');
+						$('#mobAdB').remove();
+					}
+
+					console.log("DFP: 4.1 - Check exclude section.");
+					if( isSubSectionExcluded ){
+						console.log('Mobile_Adhesion is excluded from sub section per Sitewide Settings [493635451]');
+						$('#mobAdB').remove();
+					}
+
+					console.log("DFP: 4.2 - Check exclude section #2.");
+					if( isMobAdhesionExcluded || isMobAdhesionContentExcluded ){
+						console.log('Mobile_Adhesion is excluded from this section per Sitewide Settings [493635451]');
+						$('#mobAdB').remove();
+					}
+
+					console.log("DFP: 4.3 - Check exclude from sponsored.");
+					if( intIsSponsored ){
+						console.log('Sponsored, removing mobile Mobile_Adhesion');
+						$('#mobAdB').remove();
+					}
+
+					// remove if resource module
+					/* Sep 24, 2019: remove this logic
+					if( intIsResourceModule || intIsResourceModule2 ){
+						console.log('Resource Module detected, removing mobile Mobile_Adhesion');
+						$('#mobAdB').remove();
+					}
+					*/
+
+					// Get Mobile_Adhesion cookie
+					var mobAdcookieVal = getCookie( 'mobAdCookie' ); // return Boolean
+
+					console.log("DFP: 4.5 - Check cookie if seen: " + (mobAdcookieVal !== undefined ? "seen" : "NOT seen"));
+					if( mobAdcookieVal !== undefined ){
+						//console.log('Mobile_Adhesion HAS BEEN seen. "mobAdCookie" is set');
+						//$('#mobAdB').remove(); // Show on all pageviews per Dennis @11-05-2020
+					}
+					
+				}
+
+				// load ads if '#mobAdB' isn't removed
+				if( $('#mobAdB').length != 0 ){
+
+					$('#mobAdB').removeClass('hidden');
+					// call ad 
+					console.log("DFP: 5 - Do ad call.");
+					googletag.cmd.push(function() { googletag.display('mob-adhesion-slot'); });
+					$('.closeMobAdBtnDiv').removeClass('hidden');
+
+					$('#mobAdB').on('click', '.closeMobAdBtn', function(e){
+						e.preventDefault();
+						$('#mobAdB').addClass('hidden');
+						$('#mobAdB').removeClass('visible-xs');
+						var d1 = new Date();
+						var expireDate = new Date ( d1 );
+						expireDate.setMinutes ( d1.getMinutes() + 20 ); // 20 minutes
+						var expiresTemp = "expires="+ expireDate.toUTCString();
+						document.cookie = "mobAdCookie=true;" + expiresTemp + ";path=/";
+					});
+				}
+				
+			}
+
+		});
+  </script>
+  <!-- COOKIE STATEMENT -->
+  <div id="id_cookie_statement" style="display:none;
+  background-color:red;
+  color:white;
+  padding:1rem; ">
+   This website uses cookies in order to offer you the most relevant information.
+   <button onclick="seen_cookie_statement()" style="background-color:#ededee;
+    float:right;
+    color:red;
+    margin-top:0;
+    padding:3px;
+    border:2px;
+    font-size:25px;
+    line-height:20px;
+    margin-left:15px;">
+    ×
+   </button>
+   <button onclick="learn_more()" style="background-color:#ededee;
+    float:right;
+    color:red;
+    margin-top:0;
+    padding:3px;
+    border:2px;
+    line-height:20px;
+    margin-left:15px;">
+    Learn More
+   </button>
+   <button onclick="i_accept()" style="background-color:#ededee;
+    float:right;
+    color:red;
+    margin-top:0;
+    padding:3px;
+    border:2px;
+    line-height:20px;
+    margin-left:15px;">
+    I Accept
+   </button>
+  </div>
+  <!-- COOKIE STATEMENT SCRIPT -->
+  <script>
+   if(typeof DNT != 'undefined' && DNT==1 &&  DNT_SEEN_COOKIE_STATEMENT != 1 ) {
+  document.querySelector('#id_cookie_statement').style.display='block';
+  // --> log that GDPR was shown.
+  (new Image()).src = '//analytics.erepublic.com/cms/timing/show_gdpr/'+((new Date()).getTime() - window.performance.timing.responseStart)+'.gif';
+}
+function seen_cookie_statement(){
+  var d = new Date();
+  d.setDate(d.getDate() + 30); // valid for 30 days
+  document.querySelector('#id_cookie_statement').style.display='none';
+  document.cookie = "DNT_SEEN_COOKIE_STATEMENT=1; Path=/; Expires="+d.toUTCString() +";" ;
+}
+function i_accept(){
+  var d = new Date();
+  d.setDate(d.getDate() + 30); // valid for 30 days
+  document.cookie = "DNT=0; Path=/; Expires="+d.toUTCString() +";" ;
+  var logger = new Image();
+  var ct = appCore && appCore.__persistentData && appCore.__persistentData.ef3_contact ? appCore.__persistentData.ef3_contact : 'unidentified';
+  logger.src = '//analytics.erepublic.com/cms/gdpr/'+btoa(ct+';207.244.104.199')+'.gif';
+  logger.addEventListener('load', function() {
+    location.reload();
+  });
+}
+function learn_more(){
+  window.location="//www.erepublic.com/privacy";
+}
+  </script>
+  <header ng-class="{'header-open':headerOpen}">
+   <div class="container">
+    <a href="/">
+     <svg height="130.89999" id="logo" inkscape:version="0.91 r13725" sodipodi:docname="gt_2016_logo_cropped.svg" version="1.1" viewbox="0 0 244.10001 130.89999" width="244.10001" x="0px" xml:space="preserve" xmlns="https://www.w3.org/2000/svg" xmlns:cc="https://creativecommons.org/ns#" xmlns:dc="https://purl.org/dc/elements/1.1/" xmlns:inkscape="https://www.inkscape.org/namespaces/inkscape" xmlns:rdf="https://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="https://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="https://www.w3.org/2000/svg" y="0px">
+      <style id="style3">
+       .st0{opacity:.51}.st1{fill:#939598}.st2{fill:#FFF}.st3{fill:#BCBEC0}.st4{fill:#F47421}
+      </style>
+      <g id="g5" transform="translate(-139,-333.2)">
+       <g id="g7">
+        <g class="st0" id="g9" style="opacity:.51000001">
+         <g id="g11">
+          <path class="st1" d="m 270.5,452.5 c 0,4.3 1.9,5.2 4,5.2 1,0 2.2,-0.3 3.1,-1.3 l 0,-2 c -0.5,0.3 -1,0.5 -1.7,0.5 -0.9,0 -1.6,-0.3 -1.6,-2.1 l 0,-12.7 3.2,0 0,-2.6 -3.2,0 0,-8.6 -0.5,0 -2.9,1.9 0,6.6 -1.9,0 0,2.6 1.6,0 0,12.5 z m 12.8,5.2 c 3.4,0 5.3,-1.7 5.3,-5.5 l 0,-0.8 -3.1,0 0,0.6 c 0,2.1 -0.8,2.8 -1.7,2.8 -1.7,0 -2.1,-1.2 -2.1,-4.7 l 0,-2 6.6,0 c 0.3,-1.3 0.5,-3.1 0.5,-4.7 0,-4.8 -2.4,-6.3 -5,-6.3 -2.1,0 -5.8,0.6 -5.8,8.3 l 0,3.8 c -0.1,6.1 1.8,8.5 5.3,8.5 m -1.7,-12 0,-1.2 c 0,-3.4 0.6,-4.6 1.9,-4.6 1.2,0 1.8,1.1 1.8,3.7 0,0.5 0,1.6 -0.1,2.1 l -3.6,0 z m 13.4,12 c 3.3,0 5,-1.7 5,-5.5 l 0,-0.8 -3.2,0 0,0.6 c 0,2.1 -0.7,2.8 -1.4,2.8 -1.4,0 -1.9,-1.3 -1.9,-4.8 l 0,-5.7 c 0,-3.4 0.6,-4.5 1.8,-4.5 1.1,0 1.5,1.2 1.5,3.2 l 0,0.7 2.9,0 c 0.2,-0.6 0.2,-1.3 0.2,-2.2 0,-3 -1.9,-4.4 -4.6,-4.4 -2,0 -5.6,0.6 -5.6,8.3 l 0,3.8 c 0.1,5.8 2,8.5 5.3,8.5 m 6.5,-0.2 3.7,0 0,-16.2 c 0.6,-0.9 1.4,-1.4 2.1,-1.4 1,0 1.6,0.6 1.6,2.4 l 0,15.2 3.7,0 0,-15.3 c 0,-3.3 -1.3,-4.9 -3.7,-4.9 -1.4,0 -2.8,0.5 -3.9,1.9 l -0.1,-3.4 0,-6.9 -0.4,0 -2.9,1.8 0,0.2 0,26.6 z m 13.4,0 3.7,0 0,-16.2 c 0.6,-0.8 1.3,-1.4 2.1,-1.4 1,0 1.6,0.6 1.6,2.4 l 0,15.2 3.7,0 0,-15.3 c 0,-3.3 -1.3,-4.9 -3.7,-4.9 -1.5,0 -3,0.6 -4.2,2.4 l 0,0 -0.3,-2.1 -2.8,0 0,19.9 z m 18.4,0.2 c 2.3,0 5.5,-1 5.5,-8.8 l 0,-3.1 c 0,-7.9 -3.1,-8.5 -5.5,-8.5 -2.5,0 -5.6,0.7 -5.6,8.5 l 0,3.1 c 0,7.9 3.1,8.8 5.6,8.8 m 0,-2.8 c -1.4,0 -1.9,-1.2 -1.9,-5 l 0,-4.9 c 0,-3.8 0.5,-5 1.9,-5 1.3,0 1.8,1.3 1.8,5 l 0,4.9 c 0,3.8 -0.4,5 -1.8,5 m 7.4,2.6 3.7,0 0,-28.7 -0.6,0 -3,2 -0.1,0.1 0,26.6 z m 11,0.2 c 2.3,0 5.5,-1 5.5,-8.8 l 0,-3.1 c 0,-7.9 -3.1,-8.5 -5.5,-8.5 -2.5,0 -5.6,0.7 -5.6,8.5 l 0,3.1 c 0.1,7.9 3.1,8.8 5.6,8.8 m 0.1,-2.8 c -1.4,0 -1.9,-1.2 -1.9,-5 l 0,-4.9 c 0,-3.8 0.5,-5 1.9,-5 1.3,0 1.8,1.3 1.8,5 l 0,4.9 c -0.1,3.8 -0.5,5 -1.8,5 m 7.6,4 c -0.1,0.5 -0.2,0.9 -0.2,1.2 0,3.2 2.2,3.9 4.8,3.9 3.9,0 5.6,-2.8 5.6,-7.3 l 0,-19.2 -2.9,0 -0.3,2 c -0.5,-1.1 -1.5,-2.2 -3.5,-2.2 -1.5,0 -4.4,0.4 -4.4,6.9 l 0,5.3 c 0,6.8 3,7.2 4.3,7.2 1.5,0 2.5,-0.7 3.2,-1.6 l 0,3.2 c 0,2.4 -1,3 -2.1,3 -1.3,0 -2,-0.7 -2,-2.4 l -2.5,0 z m 4.7,-5.1 c -1.1,0 -1.9,-0.7 -1.9,-3.7 l 0,-6.6 c 0,-3 0.8,-3.6 1.8,-3.6 0.9,0 1.5,0.7 1.8,1.5 l 0,11 c -0.2,0.7 -0.7,1.4 -1.7,1.4 m 7.6,7.6 0,2.3 c 0.7,0.2 1.3,0.4 1.9,0.4 3.1,0 4.6,-1.9 5.3,-5.7 l 4.2,-20.8 -3.6,0 -1.7,11.1 -0.4,3.8 -0.1,0 -0.6,-3.8 -2.1,-11.1 -3.7,0 4.7,20.1 c -0.2,2.8 -1.7,4 -3.9,3.7" id="path13" inkscape:connector-curvature="0" style="fill:#939598">
+          </path>
+          <path class="st1" d="m 368.4,434.7 0,-16.8 c 0,-3.6 -1.5,-5.4 -4,-5.4 -1.6,0 -3.3,0.6 -4.6,2.6 l 0,0 -0.4,-2.3 -3.1,0 0,21.9 4,0 0,-17.7 c 0.6,-0.9 1.4,-1.5 2.3,-1.5 1.1,0 1.7,0.7 1.7,2.6 l 0,16.6 4.1,0 z m -13.7,-10.2 c 0.3,-1.4 0.5,-3.4 0.5,-5.1 0,-5.3 -2.6,-6.8 -5.5,-6.8 -2.3,0 -6.3,0.7 -6.3,9 l 0,4.1 c 0,0.7 0,1.3 0.1,1.8 l 1.9,0 0,5.8 c 1,1.1 2.3,1.5 3.8,1.5 3.8,0 5.8,-1.8 5.8,-6 l 0,-0.8 -3.4,0 0,0.7 c 0,2.3 -0.9,3 -1.9,3 -1.8,0 -2.3,-1.3 -2.3,-5.1 l 0,-2.2 7.3,0 z m -3.1,-5 c 0,0.6 0,1.8 -0.1,2.2 l -4,0 0,-1.3 c 0,-3.8 0.7,-5 2.1,-5 1.3,0.1 2,1.2 2,4.1 m -9.5,8.8 0,-10.4 c 0,-3.6 -1.5,-5.4 -4,-5.4 -1.6,0 -3.2,0.6 -4.5,2.5 -0.6,-1.7 -1.8,-2.5 -3.5,-2.5 -1.6,0 -3.3,0.6 -4.5,2.6 l 0,0 -0.3,-2.3 -3.1,0 0,21.9 4,0 0,-17.7 c 0.6,-0.9 1.4,-1.5 2.1,-1.5 1.3,0 1.9,0.7 1.9,2.6 l 0,16.6 4,0 0,-17.1 c 0,-0.2 0,-0.4 0,-0.6 0.6,-0.9 1.4,-1.5 2.1,-1.5 1.3,0 1.9,0.7 1.9,2.6 l 0,16.6 1.5,0 0,-4.7 2.4,-1.7 z m -25.6,6.4 4,0 0,-16.8 c 0,-3.6 -1.5,-5.4 -4,-5.4 -1.6,0 -3.3,0.6 -4.6,2.6 l 0,0 -0.4,-2.3 -3.1,0 0,21.9 4,0 0,-17.7 c 0.6,-0.9 1.4,-1.5 2.3,-1.5 1.1,0 1.7,0.7 1.7,2.6 l 0,16.6 z M 307,419.8 c 0.3,-0.9 0.5,-2.2 0.5,-3 0,-2.8 -1.1,-4.3 -3.4,-4.3 -1.2,0 -2.4,0.8 -3.3,2.5 l -0.3,-2.2 -2.9,0 0,21.9 2.9,0 0,-4.7 1.1,-0.8 0,-12.6 c 0.4,-0.7 0.9,-1.2 1.6,-1.2 0.6,0 1.1,0.5 1.1,2.3 l 0,2 2.7,0 z m -11,4.7 c 0.3,-1.4 0.5,-3.4 0.5,-5.1 0,-5.3 -2.6,-6.8 -5.5,-6.8 -2.3,0 -6.3,0.7 -6.3,9 l 0,4.1 c 0,6.5 2.1,9.2 5.8,9.2 3.8,0 5.8,-1.8 5.8,-6 l 0,-0.8 -3.4,0 0,0.7 c 0,2.3 -0.9,3 -1.9,3 -1.8,0 -2.3,-1.3 -2.3,-5.1 l 0,-2.2 7.3,0 z m -3.2,-5 c 0,0.6 0,1.8 -0.1,2.2 l -4,0 0,-1.3 c 0,-3.8 0.7,-5 2.1,-5 1.3,0.1 2,1.2 2,4.1 m -12.6,15.2 5,-21.9 -3.9,0 -2.1,11.6 -0.6,4.7 -0.1,0 -0.5,-4.7 -2.1,-11.6 -4,0 4.9,21.9 3.4,0 z m -7.9,-12.9 c 0,-8.6 -3.4,-9.3 -6,-9.3 -2.7,0 -6.1,0.8 -6.1,9.3 l 0,3.4 c 0,8.6 3.3,9.6 6.1,9.6 1.1,0 2.3,-0.2 3.4,-1.1 l 0,-3.7 2.4,-1.6 c 0.1,-0.9 0.2,-1.9 0.2,-3.1 l 0,-3.5 z m -4,4.6 c 0,4.1 -0.5,5.5 -2,5.5 -1.5,0 -2.1,-1.4 -2.1,-5.5 l 0,-5.4 c 0,-4.1 0.6,-5.5 2.1,-5.5 1.4,0 2,1.4 2,5.5 l 0,5.4 z m -9.1,7.4 0,-21 -3.2,0 -0.4,2.2 c -0.6,-1.2 -1.7,-2.4 -3.8,-2.4 -1.6,0 -4.8,0.4 -4.8,7.5 l 0,5.8 c 0,7.4 3.2,7.9 4.7,7.9 1.7,0 2.8,-0.8 3.5,-1.7 l 0,3.4 c 0,2.7 -1.1,3.3 -2.3,3.3 -1.4,0 -2.1,-0.7 -2.1,-2.6 l -2.8,0 c -0.1,0.5 -0.2,1 -0.2,1.3 0,3.5 2.4,4.3 5.2,4.3 4.4,-0.1 6.2,-3.1 6.2,-8 m -4,-4.8 c -0.4,0.8 -1,1.6 -2,1.6 -1.2,0 -2,-0.7 -2,-4 l 0,-7.2 c 0,-3.3 0.8,-4 2,-4 1,0 1.6,0.7 2,1.6 l 0,12 z" id="path15" inkscape:connector-curvature="0" style="fill:#939598">
+          </path>
+          <path class="st1" d="m 371,429.5 c 0,4.3 1.9,5.2 4,5.2 1,0 2.2,-0.3 3.1,-1.3 l 0,-2 c -0.5,0.3 -1,0.5 -1.7,0.5 -0.9,0 -1.6,-0.3 -1.6,-2.1 l 0,-12.7 3.2,0 0,-2.6 -3.2,0 0,-8.6 -0.5,0 -2.9,1.9 0,6.6 -1.9,0 0,2.6 1.6,0 0,12.5 z" id="path17" inkscape:connector-curvature="0" style="fill:#939598">
+          </path>
+         </g>
+        </g>
+       </g>
+       <rect class="st2" height="112.2" id="rect19" style="fill:#fff" width="77.400002" x="148.10001" y="342.29999">
+       </rect>
+       <polygon class="st3" id="polygon21" points="139,333.3 139.2,453.2 145,458.2 145,333.2 " style="fill:#bcbec0">
+       </polygon>
+       <g id="g23">
+        <path class="st4" d="m 175.9,410.8 0,-34.7 c -1.2,-2.5 -3.1,-4.7 -5.9,-4.7 -3.4,0 -5.9,2 -5.9,11.5 l 0,20.9 c 0,9.5 2.5,11.6 5.9,11.6 3.1,0 4.9,-2.3 5.9,-4.6 m 45.1,29.8 c -2.9,3.5 -6.9,4.5 -10.5,4.5 -7,0 -13.6,-3 -13.6,-17.8 l 0,-42.5 -10.7,0 0,-8.9 11.8,0 0.1,-22.7 9.8,-6.6 1.6,0 0,29.2 11,0 0,8.9 -11,0 0,43.6 c 0,6 2.5,7 5.4,7 2.4,0 4.3,-0.6 6,-1.7 l 0,7 z m -33.4,-67.4 -3.8,0 0,13.9 3.8,0 0,37.4 c 0,14.2 -5.3,23.1 -17.8,23.1 -8.4,0 -15.3,-2.5 -15.3,-12.5 0,-0.9 0.2,-2.2 0.6,-3.7 l 8.3,0 c 0,5.4 2,7.5 6.3,7.5 3.5,0 6.6,-1.7 6.6,-9.5 l 0,-10 c -2.1,2.7 -5.3,4.9 -10.2,4.9 -4.3,0 -13.7,-1.4 -13.7,-23 l 0,-16.7 c 0,-20.7 9.4,-21.9 14,-21.9 6.2,0 9.3,3.6 11,6.9 l 1.1,-6.3 9.1,0 0,9.9 z m 42.5,-40 -85.1,0 0,125.1 85.1,0 0,-125.1 z" id="path25" inkscape:connector-curvature="0" style="fill:#f47421">
+        </path>
+       </g>
+      </g>
+     </svg>
+    </a>
+    <nav>
+     <a class="search pull-right visible-md visible-lg" href="#" ng-click="toggleHeader();loadGoogleSearch()">
+      <svg fill="#F47421" height="20" viewbox="0 0 24 24" width="20" xmlns="https://www.w3.org/2000/svg">
+       <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z">
+       </path>
+       <path d="M0 0h24v24H0z" fill="none">
+       </path>
+      </svg>
+     </a>
+     <span class="links">
+      <a href="https://www.govtech.com/magazines/gt/Government-Technology-March-2021.html?promo_code=topnav">
+       MAGAZINE
+      </a>
+      <a href="https://newsletters.govtech.com?promo_code=header" target="_blank">
+       NEWSLETTERS
+      </a>
+      <a href="/events?promo_code=topnav">
+       EVENTS
+      </a>
+      <a href="https://papers.govtech.com?promo_code=header" target="_blank">
+       PAPERS
+      </a>
+      <a href="/navigator?promo_code=topnav">
+       NAVIGATOR
+      </a>
+      <div class="dropdown">
+       <a class="dropdown-toggle" href="#">
+        SECTIONS
+       </a>
+       <div class="dropdown-menu">
+        <a class="dropdown-item" href="/education?promo_code=topnav">
+         CENTER FOR DIGITAL EDUCATION
+        </a>
+        <a class="dropdown-item" href="/cdg?promo_code=topnav">
+         CENTER FOR DIGITAL GOVERNMENT
+        </a>
+        <a class="dropdown-item" href="/em?promo_code=topnav">
+         EMERGENCY MANAGEMENT
+        </a>
+        <a class="dropdown-item" href="/fs?promo_code=topnav">
+         FUTURESTRUCTURE
+        </a>
+        <a class="dropdown-item" href="/districts?promo_code=topnav">
+         SPECIAL DISTRICTS
+        </a>
+        <a class="dropdown-item" href="/dc?promo_code=topnav">
+         DIGITAL COMMUNITIES
+        </a>
+        <a class="dropdown-item" href="/cdg/dspi?promo_code=topnav">
+         DIGITAL STATES PERFORMANCE INSTITUTE
+        </a>
+        <div style="border-top:1px solid #666; margin-bottom:10px;">
+        </div>
+        <a class="dropdown-item" href="/top-25?promo_code=topnav">
+         TOP 25
+        </a>
+        <a class="dropdown-item" href="/100?promo_code=topnav">
+         GOVTECH 100
+        </a>
+       </div>
+      </div>
+      <a href="/search">
+       SEARCH
+      </a>
+     </span>
+     <span class="sub-links">
+      <a href="/biz?promo_code=topnav">
+       GovTech Biz
+      </a>
+      <a href="/products?promo_code=topnav">
+       Emerging Tech
+      </a>
+      <a href="/gov-experience?promo_code=topnav">
+       Gov Experience
+      </a>
+      <a href="/cybersecurity/news/?promo_code=topnav">
+       SPECIAL: Cyber Initiative
+      </a>
+      <a href="/topics?promo_code=topnav">
+       More
+      </a>
+     </span>
+     <span class="toggles pull-right">
+      <a class="menu-hamburger" href="#" ng-click="toggleHeader();loadGoogleSearch()">
+       <svg fill="#FFFFFF" height="20" viewbox="0 0 24 24" width="20" xmlns="https://www.w3.org/2000/svg">
+        <path d="M0 0h24v24H0z" fill="none">
+        </path>
+        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z">
+        </path>
+       </svg>
+      </a>
+     </span>
+    </nav>
+    <div id="google_search" ng-show="headerOpen">
+     <svg class="uil-default" height="23px" preserveaspectratio="xMidYMid" viewbox="0 0 100 100" width="23px" xmlns="https://www.w3.org/2000/svg">
+      <rect class="bk" fill="none" height="100" width="100" x="0" y="0">
+      </rect>
+      <rect fill="#f47421" height="20" rx="2" ry="2" transform="rotate(0 50 50) translate(0 -35)" width="3" x="48.5" y="40">
+       <animate attributename="opacity" begin="0s" dur="1s" from="1" repeatcount="indefinite" to="0">
+       </animate>
+      </rect>
+      <rect fill="#f47421" height="20" rx="2" ry="2" transform="rotate(18 50 50) translate(0 -35)" width="3" x="48.5" y="40">
+       <animate attributename="opacity" begin="0.05s" dur="1s" from="1" repeatcount="indefinite" to="0">
+       </animate>
+      </rect>
+      <rect fill="#f47421" height="20" rx="2" ry="2" transform="rotate(36 50 50) translate(0 -35)" width="3" x="48.5" y="40">
+       <animate attributename="opacity" begin="0.1s" dur="1s" from="1" repeatcount="indefinite" to="0">
+       </animate>
+      </rect>
+      <rect fill="#f47421" height="20" rx="2" ry="2" transform="rotate(54 50 50) translate(0 -35)" width="3" x="48.5" y="40">
+       <animate attributename="opacity" begin="0.15s" dur="1s" from="1" repeatcount="indefinite" to="0">
+       </animate>
+      </rect>
+      <rect fill="#f47421" height="20" rx="2" ry="2" transform="rotate(72 50 50) translate(0 -35)" width="3" x="48.5" y="40">
+       <animate attributename="opacity" begin="0.2s" dur="1s" from="1" repeatcount="indefinite" to="0">
+       </animate>
+      </rect>
+      <rect fill="#f47421" height="20" rx="2" ry="2" transform="rotate(90 50 50) translate(0 -35)" width="3" x="48.5" y="40">
+       <animate attributename="opacity" begin="0.25s" dur="1s" from="1" repeatcount="indefinite" to="0">
+       </animate>
+      </rect>
+      <rect fill="#f47421" height="20" rx="2" ry="2" transform="rotate(108 50 50) translate(0 -35)" width="3" x="48.5" y="40">
+       <animate attributename="opacity" begin="0.3s" dur="1s" from="1" repeatcount="indefinite" to="0">
+       </animate>
+      </rect>
+      <rect fill="#f47421" height="20" rx="2" ry="2" transform="rotate(126 50 50) translate(0 -35)" width="3" x="48.5" y="40">
+       <animate attributename="opacity" begin="0.35s" dur="1s" from="1" repeatcount="indefinite" to="0">
+       </animate>
+      </rect>
+      <rect fill="#f47421" height="20" rx="2" ry="2" transform="rotate(144 50 50) translate(0 -35)" width="3" x="48.5" y="40">
+       <animate attributename="opacity" begin="0.4s" dur="1s" from="1" repeatcount="indefinite" to="0">
+       </animate>
+      </rect>
+      <rect fill="#f47421" height="20" rx="2" ry="2" transform="rotate(162 50 50) translate(0 -35)" width="3" x="48.5" y="40">
+       <animate attributename="opacity" begin="0.45s" dur="1s" from="1" repeatcount="indefinite" to="0">
+       </animate>
+      </rect>
+      <rect fill="#f47421" height="20" rx="2" ry="2" transform="rotate(180 50 50) translate(0 -35)" width="3" x="48.5" y="40">
+       <animate attributename="opacity" begin="0.5s" dur="1s" from="1" repeatcount="indefinite" to="0">
+       </animate>
+      </rect>
+      <rect fill="#f47421" height="20" rx="2" ry="2" transform="rotate(198 50 50) translate(0 -35)" width="3" x="48.5" y="40">
+       <animate attributename="opacity" begin="0.55s" dur="1s" from="1" repeatcount="indefinite" to="0">
+       </animate>
+      </rect>
+      <rect fill="#f47421" height="20" rx="2" ry="2" transform="rotate(216 50 50) translate(0 -35)" width="3" x="48.5" y="40">
+       <animate attributename="opacity" begin="0.6s" dur="1s" from="1" repeatcount="indefinite" to="0">
+       </animate>
+      </rect>
+      <rect fill="#f47421" height="20" rx="2" ry="2" transform="rotate(234 50 50) translate(0 -35)" width="3" x="48.5" y="40">
+       <animate attributename="opacity" begin="0.65s" dur="1s" from="1" repeatcount="indefinite" to="0">
+       </animate>
+      </rect>
+      <rect fill="#f47421" height="20" rx="2" ry="2" transform="rotate(252 50 50) translate(0 -35)" width="3" x="48.5" y="40">
+       <animate attributename="opacity" begin="0.7s" dur="1s" from="1" repeatcount="indefinite" to="0">
+       </animate>
+      </rect>
+      <rect fill="#f47421" height="20" rx="2" ry="2" transform="rotate(270 50 50) translate(0 -35)" width="3" x="48.5" y="40">
+       <animate attributename="opacity" begin="0.75s" dur="1s" from="1" repeatcount="indefinite" to="0">
+       </animate>
+      </rect>
+      <rect fill="#f47421" height="20" rx="2" ry="2" transform="rotate(288 50 50) translate(0 -35)" width="3" x="48.5" y="40">
+       <animate attributename="opacity" begin="0.8s" dur="1s" from="1" repeatcount="indefinite" to="0">
+       </animate>
+      </rect>
+      <rect fill="#f47421" height="20" rx="2" ry="2" transform="rotate(306 50 50) translate(0 -35)" width="3" x="48.5" y="40">
+       <animate attributename="opacity" begin="0.85s" dur="1s" from="1" repeatcount="indefinite" to="0">
+       </animate>
+      </rect>
+      <rect fill="#f47421" height="20" rx="2" ry="2" transform="rotate(324 50 50) translate(0 -35)" width="3" x="48.5" y="40">
+       <animate attributename="opacity" begin="0.9s" dur="1s" from="1" repeatcount="indefinite" to="0">
+       </animate>
+      </rect>
+      <rect fill="#f47421" height="20" rx="2" ry="2" transform="rotate(342 50 50) translate(0 -35)" width="3" x="48.5" y="40">
+       <animate attributename="opacity" begin="0.95s" dur="1s" from="1" repeatcount="indefinite" to="0">
+       </animate>
+      </rect>
+     </svg>
+     <gcse:search>
+     </gcse:search>
+    </div>
+   </div>
+  </header>
+  <div class="container">
+   <div id="subsite_logo">
+   </div>
+   <div class="hidden-xs" id="t2_ad">
+    <!-- $req.param('i1test') /  -->
+    <ad ad-size="[[728,90]]" ad-unit="T2" content-id="" path="" site="www.govtech.com" url-name="">
+    </ad>
+   </div>
+  </div>
+  <style>
+   header .sponsor-logo {
+    width: 150px;
+    float: right;
+    margin-top: 25px;
+}
+.section-header {
+	background: url('') no-repeat center center;
+	background-size: cover !important;
+	padding: 2.5%;
+	min-height: 160px;
+}
+.page-module,
+.highlight-module .module-body {
+	padding: 30px 0 10px 0;
+}
+h1 {
+	margin-top:0;
+	font: 36px/1em ProximaNovaBold, arial;
+}
+h1 a {
+	margin-top:0;
+	font: 36px/1em ProximaNovaBold, arial;
+}
+h2 {
+	margin-top:0;
+	line-height: 1em;
+	font-family: ProximaNovaSemibold, arial;
+}
+h6, h6 a {
+	font-size: 9px;
+	line-height: 1em;
+	letter-spacing: 1px;
+	margin-top: 10px;
+	color: #f47421;
+	text-transform: uppercase;
+	font-family: ProximaNovaRegular, arial;
+}
+h6 .date {
+	color: #6d6d6d;
+}
+h1 a, h2 a, h3 a {
+	color: #333;
+}
+h2.section-text {
+	color: #fff;
+	margin: 10px 0 0;
+	line-height: .9em;
+	font-size: 2.5em;
+}
+h2.section-text span {
+	color: #efc018;
+}
+.section-logo svg {
+	margin-top: 10px;
+}
+.feature-article {
+   	margin-bottom: 15px;
+}
+.feature-article h1 {
+	margin-bottom: 5px;
+}
+.feature-article h3 {
+	font-family: times;
+	margin-top: 0;
+	font-style: italic;
+	font-size: 21px;
+	font-weight: normal;
+}
+.feature-article h6, .queue-products-list .sub-feature-article h6 {
+	font-size: 12px;
+	text-transform: uppercase;
+}
+.feature-module .feature-article {
+   	min-height: 200px;
+	background-color: #666;
+}
+.feature-module .feature-article h2 {
+    position: absolute;
+    color: #ffffff;
+    padding: 20px;
+    margin-right: 15px;
+    text-shadow: 1px 1px 4px #000000;
+}
+.feature-module .feature-article h2 a {
+    color: #ffffff;
+}
+.feature-module .sub-feature-article {
+	margin-bottom: 10px;
+	border-bottom: 1px solid #ccc;
+	padding-bottom: 10px;
+}
+.feature-module .sub-feature-article:last-child,
+.topic-module .sub-feature-article:last-child {
+	border: none;
+}
+.topic-module .sub-feature-article {
+	margin-bottom: 20px;
+	border-bottom: 1px solid #ccc;
+	padding-bottom: 10px;
+}
+.topic-module {
+	margin-top: 30px;
+}
+.author-box {
+    background-color: #EEEEEE;
+    padding: 20px;
+}
+form input {
+	padding: 0px;
+	color: #333;
+}
+.btn {
+	border: 1px solid #999;
+	color: #999;
+	border-radius: 0;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	margin-top: -3px;
+	font-size: 10px;
+	padding: 5px 8px;
+}
+.btn:hover,
+.btn.active {
+	background: #999;
+	color: #fff;
+	border-radius: 0;
+}
+.sub-feature-article {
+	margin-bottom: 25px;
+}
+.sub-feature-article h2 {
+	margin-top:0;
+	font-size: 18px;
+	margin-bottom: 5px;
+	line-height: 1em;
+}
+.sub-feature-article h6 {
+	font-size: 9px;
+}
+.caption {
+	color: #999;
+	text-align: right;
+	width: 100%;
+	text-transform: uppercase;
+	font-size: .75em;
+	padding: 2px 0;
+	margin-bottom: 10px;
+}
+.caption a {
+	color: #999;
+}
+.boxed {
+	background-color: #eee;
+	padding: 20px 30px;
+	border: 10px solid white;
+	min-height: 225px;
+	overflow: hiddden;
+}
+.boxed .sub-feature-article {
+	margin-bottom: 0;
+}
+div[id^="ad_id"] {
+	background-color: #ccc;
+	margin: 0 auto;
+}
+.t2-ad-module {
+	margin-bottom: 20px;
+}
+.page-module .ad-wrap {
+	margin-bottom: 0;
+	margin-top: -30px;
+}
+.page-module .row .ad-wrap {
+	margin-bottom: 20px;
+	margin-top: 0;
+}
+.three-col-module .feature h2,
+.page-module .feature h2
+ {
+	font-size: 21px;
+	line-height: 1em;
+	margin-bottom: 5px;
+}
+.three-col-module .feature h6,
+.page-module .feature h6,
+ {
+	margin-top: 0;
+}
+.three-col-module .sub-feature-article h2,
+.page-module .sub-feature-article h2,
+.sponsor-module .sub-feature-article h2 {
+	font-size: 18px;
+	line-height: 1em;
+}
+.module-header {
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	text-align: center;
+	margin-bottom: 30px;
+	margin-left: -6%;
+	width: 112%;
+}
+.module-header > span {
+	display: inline-block;
+	background: #f47421;
+	color: white;
+	font-size: 16px;
+	font-weight: 300;
+	letter-spacing: 4px;
+	padding: 5px 20px;
+	margin: -1px auto;
+	text-transform: uppercase;
+}
+.em-topics-module .module-header {
+    border-top: 0;
+    border-bottom: 5px solid #f47421;
+    text-align: left;
+    width: 100%;
+    margin-left: 0;
+    padding-bottom: 5px;
+}
+.em-topics-module .module-header > span {
+    color: #333;
+    background: none;
+    margin: 0;
+    padding: 0;
+}
+.newsletter-module {
+	background: url("//images.centerdigitaled.com/designimages/gt-newsletter-bg.jpg") right center/cover no-repeat #999999;
+}
+.newsletter-module h2,
+.newsletter-module span {
+	background: #f47421;
+	color: white;
+	font-size: 16px;
+	font-weight: 300;
+	letter-spacing: 4px;
+	padding: 5px 20px;
+	text-transform: uppercase;
+}
+.newsletter-module p {
+	font: 36px/1em ProximaNovaBold, arial;
+}
+.newsletter-module .feature-article {
+	padding: 40px 20px;
+	margin-bottom:0;
+}
+.newsletter-module form input {
+    padding: 3px 6px;
+	color: #333;
+	border: none;
+}
+.newsletter-module form .btn {
+    background: #333;
+    border: 1px solid #333;
+    color: #fff
+}
+.video-module {
+    background-color: #333;
+    color: #aaa;
+    margin-top: 20px;
+}
+.video-module h2, .video-module h2 a {
+    color: #aaa;
+}
+.video-module .feature-article {
+    padding: 40px 20px;
+    margin-bottom:0;
+}
+.sponsor-module {
+	margin-bottom: 20px;
+}
+.sponsor-module .module-header {
+	margin-bottom: 0;
+}
+.sponsor-module .module-body {
+	background-color: #eee;
+}
+.sponsor-module .col-md-4 {
+    padding: 40px 20px 20px;
+    margin-bottom: 0;
+}
+.highlight-module .module-header {
+	margin-left: 40px;
+	margin-right: 40px;
+}
+.highlight-module .module-body {
+	margin-bottom: 30px;
+	background-color: #eee;
+}
+.highlight-module .module-body .row > div:last-child {
+	padding-right: 8%;
+}
+.highlight-module .module-body h1 {
+	font-family: times;
+	font-weight: 500;
+}
+.highlight-module .module-body h3 {
+	font-family: proximanovabold, arial;
+	font-style: normal;
+}
+.highlight-module .module-body button {
+	background: black;
+	color:white;
+	border:0;
+}
+.highlight-module .module-body input {
+	width: 50%;
+	margin-left: 5px;
+}
+.tweet-module {
+	color: white;
+	padding: 0px 10% 60px 10%;
+	margin-bottom: -30px;
+	background: url("//images.centerdigitaled.com/designimages/gt-question-bg.jpg") center center/cover no-repeat #092832;
+}
+.data-module {
+	color: white;
+	padding-bottom: 30px;
+	margin-bottom: -30px;
+	background-color: #092832;
+	min-height: 540px;
+}
+.data-module p {
+    font-size: 1.15em;
+}
+.platforms-module {
+	color: white;
+	padding-bottom: 30px;
+	background-color: #092832;
+	background-image: linear-gradient(to bottom, #092832, #05181E);
+}
+.tweet-module .quote {
+	max-width: 800px;
+	padding-left
+}
+.tweet-module .quote,
+.tweet-module .quote a {
+	color: #fff;
+	font-weight: 500;
+	font: 36px/1em ProximaNovaBold, arial
+}
+.tweet-module .btn {
+	border: 1px solid #fff;
+	color: #fff;
+}
+.tweet-module .btn:hover {
+	background: #fff;
+	color: #092832;
+	border-radius: 0;
+}
+.tweet-module .module-header {
+	margin-bottom: 40px;
+	border-top: none;
+	border-bottom: none;
+}
+.tweet-module .module-header > span,
+.data-module .module-header > span,
+.dplatforms-module .module-header > span {
+	margin: 0;
+}
+.data-module .module-header,
+.platforms-module .module-header {
+	margin-bottom: 20px;
+	border-top: none;
+	border-bottom: none;
+}
+.data-module .module-header p {
+	margin-top: 15px;
+}
+.data-module h2 a {
+	color: #ffffff;
+}
+.data-module .carousel-control.left,
+.data-module .carousel-control.right {
+	font-size: 5em;
+	margin-top: 11%;
+	background: none;
+}
+.quote-module {
+	padding: 30px 0;
+	background: #C7C8CA;
+	margin: 20px 0;
+}
+.quote-module .quote {
+    color: #092832;
+    font-weight: 500;
+    font: 36px/1em ProximaNovaBold, arial;
+    margin-bottom: 10px;
+}
+.b1-ad-module {
+	padding: 20px;
+}
+.b1-ad-module .sizer > div {
+	margin: 20px auto;
+}
+.b1-ad-module .sizer {
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+}
+  </style>
+  <!--[if IE]>
+	<style>
+		div[id^="ad_id"] {
+			background: none !important;
+		}
+	</style>
+<![endif]-->
+  <style>
+   @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+		div[id^="ad_id"] {
+			background: none !important;
+		}
+	}
+  </style>
+  <section class="page index">
+   <div class="page-module" moduleid="413560873">
+    <!-- COMMON Module / gt_2016_featured_module.html v54 / modified: 2020-01-31 14:06:54.0 -->
+    <div class="container">
+     <div class="row">
+      <div class="col-md-6">
+       <div class="feature-article">
+        <a href="https://www.govtech.com/workforce/Rhode-Island-and-Google-Deliver-Virtual-Career-Center.html">
+         <img alt="digital illustration of an AI brain" border="0" class="img-responsive" height="528" src="https://media2.govtech.com/images/940*528/shutterstock_1714003999.jpg" title="digital illustration of an AI brain" width="940"/>
+        </a>
+        <div class="caption">
+        </div>
+        <h1>
+         <a href="https://www.govtech.com/workforce/Rhode-Island-and-Google-Deliver-Virtual-Career-Center.html">
+          Rhode Island and Google Deliver Virtual Career Center
+         </a>
+        </h1>
+        <h6>
+         <span class="date">
+          March 19, 2021
+         </span>
+        </h6>
+       </div>
+      </div>
+      <div class="col-md-3">
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/education/higher-ed/AvePoint-Launches-SaaS-Platform-for-Higher-Education.html">
+          AvePoint Launches SaaS Platform for Higher Education
+         </a>
+        </h2>
+        <h6>
+         <span class="date">
+          March 19, 2021
+         </span>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/biz/Consultancy-Aims-to-Help-Small-Governments-Design-for-Humans.html">
+          Consultancy Aims to Help Small Governments Design for Humans
+         </a>
+        </h2>
+        <h6>
+         <span class="date">
+          March 19, 2021
+         </span>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/network/Texas-Looking-Hard-at-Strategies-for-Better-Broadband-Access.html">
+          Texas Looking Hard at Strategies for Better Broadband Access
+         </a>
+        </h2>
+        <h6>
+         <span class="date">
+          March 19, 2021
+         </span>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/education/k-12/Tennessee-Web-Portal-Connects-2000-Teachers-With-Jobs.html">
+          Tennessee Web Portal Connects 2,000 Teachers With Jobs
+         </a>
+        </h2>
+        <h6>
+         <span class="date">
+          March 19, 2021
+         </span>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/civic/Biden-White-House-Makes-Government-IT-Great-Again.html">
+          Biden White House Makes Government IT Great Again
+         </a>
+        </h2>
+        <h6>
+         <span class="date">
+          March 19, 2021
+         </span>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/computing/Gov-Lamont-Kicks-Off-State-IT-Centralization-in-Connecticut.html">
+          Gov. Lamont Kicks Off State IT Centralization in Connecticut
+         </a>
+        </h2>
+        <h6>
+         <span class="date">
+          March 18, 2021
+         </span>
+        </h6>
+       </div>
+      </div>
+      <div class="col-md-3">
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/biz/Misinformation-Plagues-Government-Can-Technology-Help.html">
+          Misinformation Plagues Government. Can Technology Help?
+         </a>
+        </h2>
+        <h6>
+         <span class="date">
+          March 18, 2021
+         </span>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/analytics/State-Chief-Data-Officers-Prove-Key-to-Coronavirus-Response.html">
+          State Chief Data Officers Prove Key to Coronavirus Response
+         </a>
+        </h2>
+        <h6>
+         <span class="date">
+          March 18, 2021
+         </span>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/network/North-Carolina-Unveils-Template-for-Digital-Inclusion-Plans.html">
+          North Carolina Unveils Template for Digital Inclusion Plans
+         </a>
+        </h2>
+        <h6>
+         <span class="date">
+          March 18, 2021
+         </span>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/fs/Oregon-Tests-Voluntary-Road-Use-Fee-to-Shore-Up-Gas-Tax.html">
+          Oregon Tests Voluntary Road-Use Fee to Shore Up Gas Tax
+         </a>
+        </h2>
+        <h6>
+         <span class="date">
+          March 18, 2021
+         </span>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/computing/Indianapolis-Doubles-Down-on-Digital-Transformation-Plan.html">
+          Indianapolis Doubles Down on Digital Transformation Plan
+         </a>
+        </h2>
+        <h6>
+         <span class="date">
+          March 18, 2021
+         </span>
+        </h6>
+       </div>
+       <h6>
+        <a class="btn" href="/news">
+         View More
+        </a>
+       </h6>
+      </div>
+     </div>
+    </div>
+    <hr style="border:none;"/>
+    <div class="col-md-4">
+     <!-- -->
+     <!-- Desktop -->
+     <!-- Tablet -->
+     <div class="ad-wrap visible-sm-block d-none d-sm-block d-md-none d-lg-none">
+      <ad ad-size="[[640,480]]" ad-unit="AL640" id="" path="" site="www.govtech.com">
+      </ad>
+     </div>
+     <!-- Mobile -->
+    </div>
+   </div>
+   <div class="tweet-module" moduleid="413562853">
+    <!-- COMMON Module / gt_2016_question_module.html v3 / modified: 2019-01-28 16:59:22.0 -->
+    <div class="module-header">
+     <span>
+      QUESTION OF THE DAY
+     </span>
+    </div>
+    <div class="quote">
+     <a href="https://www.govtech.com/question-of-the-day/How-many-electric-bicycles-were-sold-in-Germany-last-year.html?utm_source=gt&amp;utm_campaign=home">
+      How many electric bicycles were sold in Germany last year?
+     </a>
+    </div>
+   </div>
+   <div class="page-module" moduleid="414455013">
+    <!-- COMMON Module / gt_2016_magazine_module.html v23 / modified: 2019-12-04 11:10:02.0 -->
+    <div class="module-header">
+     <span>
+      Latest Issue
+     </span>
+    </div>
+    <div class="container">
+     <div class="row">
+      <div class="col-md-3 col-sm-3 feature">
+       <a href="https://www.govtech.com/magazines/gt/Government-Technology-March-2021.html">
+        <img alt="cover of Government Technology Magazine March 2021" border="0" class="img-responsive" height="298" src="https://media2.govtech.com/images/250*298/GT03_cover_2021.jpg" title="cover of Government Technology Magazine March 2021" width="250"/>
+       </a>
+       <h6>
+        <a class="btn" href="/subscribe">
+         Subscribe
+        </a>
+       </h6>
+      </div>
+      <div class="col-md-5 col-sm-9">
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/computing/Have-State-Unemployment-Insurance-Systems-Recovered-from-COVID-19.html">
+          Have State Unemployment Insurance Systems Recovered from COVID-19?
+         </a>
+        </h2>
+        <h6>
+         <a href="https://www.govtech.com/authors/Jed-Pressgrove.html" rel="author">
+          Jed Pressgrove
+         </a>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/opinion/Digital-Government-Is-Only-Successful-If-It-Works-for-All.html">
+          Digital Government Is Only Successful If It Works for All
+         </a>
+        </h2>
+        <h6>
+         <a href="https://www.govtech.com/authors/Noelle-Knell.html" rel="author">
+          Noelle Knell
+         </a>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/policy/Passed-Pandemic-Relief-Bill-Supports-Gov-Web-Domains.html">
+          Passed Omnibus Spending Bill Supports .Gov Web Domains
+         </a>
+        </h2>
+        <h6>
+         <a href="https://www.govtech.com/authors/Andrew-Westrope.html" rel="author">
+          Andrew Westrope
+         </a>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/security/StateRAMP-to-Offer-State-Local-Government-Secure-Vendor-Pool.html">
+          StateRAMP to Offer State, Local Government Secure Vendor Pool
+         </a>
+        </h2>
+        <h6>
+         <a href="https://www.govtech.com/authors/Skip-Descant.html" rel="author">
+          Skip Descant
+         </a>
+        </h6>
+       </div>
+      </div>
+      <div class="clearfix visible-sm">
+      </div>
+      <div class="col-md-4">
+       <!-- -->
+       <!-- Desktop -->
+       <div class="ad-wrap visible-lg-block visible-md-block d-none d-sm-none d-md-block d-lg-block">
+        <ad ad-size="[[300,250]]" ad-unit="R2" id="" path="" site="www.govtech.com">
+        </ad>
+       </div>
+       <!-- Tablet -->
+       <!-- Mobile -->
+       <div class="ad-wrap visible-xs-block d-none d-sm-block d-md-none d-lg-none">
+        <ad ad-size="[[300,250]]" ad-unit="R2" id="" path="" site="www.govtech.com">
+        </ad>
+       </div>
+       <!-- -->
+       <!-- Desktop -->
+       <!-- Tablet -->
+       <div class="ad-wrap visible-sm-block d-none d-sm-block d-md-none d-lg-none">
+        <ad ad-size="[[640,480]]" ad-unit="AL640" id="" path="" site="www.govtech.com">
+        </ad>
+       </div>
+       <!-- Mobile -->
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="sponsor-module data-module" moduleid="573869401">
+    <!-- COMMON HTML Module / common_html_module v13 / modified: 2017-05-10 13:30:43.0 -->
+    <div class="module-body">
+     <div class="container">
+      <div class="carousel slide" data-ride="carousel" id="micrositeCarousel">
+       <div class="carousel-inner" role="listbox">
+        <div class="item active">
+         <div class="row">
+          <div class="col-md-7">
+           <a href="https://www.govtech.com/cybersecurity" target="_blank">
+            <img alt="Cybersecurity Resilience Microsite" src="https://media.erepublic.com/image/CyberResilience_Headers-770.jpg"/>
+           </a>
+          </div>
+          <div class="col-md-5" style="margin-top: 30px;">
+           <h2>
+            <a href="https://www.govtech.com/cybersecurity" style="color: #000;" target="_blank">
+             Cybersecurity Resilience
+            </a>
+           </h2>
+           <h6>
+            <span class="date">
+             Special Project: Sponsor Content
+            </span>
+           </h6>
+           <h6>
+            <a class="btn" href="https://www.govtech.com/cybersecurity" style="color:#fff;background-color:#ff1400;border: 0;padding: 1rem 1.5rem;font-weight: bold; margin-top: 5px;" target="_blank">
+             View Resources
+            </a>
+           </h6>
+           <div class="row" style="margin-top: 30px;">
+            <div class="col-xs-12">
+             <img alt="Cybersecurity Resilience Sponsors" src="https://media.erepublic.com/image/Cybersecurity-sponsor-logos_3_18r.png" width="444"/>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div class="item">
+         <div class="row">
+          <div class="col-md-7">
+           <a href="https://www.governing.com/futureofwork" target="_blank">
+            <img alt="Future of Work Microsite" src="https://media.erepublic.com/image/GOV20-HEADERS-Future-of-Work_770x513.jpg"/>
+           </a>
+          </div>
+          <div class="col-md-5" style="margin-top: 30px;">
+           <h2>
+            <a href="https://www.governing.com/futureofwork" style="color: #000;" target="_blank">
+             The Future of Work
+            </a>
+           </h2>
+           <h6>
+            <span class="date">
+             Special Project: Sponsor Content
+            </span>
+           </h6>
+           <h6>
+            <a class="btn" href="https://www.governing.com/futureofwork" style="color:#fff;background-color:#ff1400;border: 0;padding: 1rem 1.5rem;font-weight: bold; margin-top: 5px;" target="_blank">
+             View Resources
+            </a>
+           </h6>
+           <div class="row" style="margin-top: 30px;">
+            <div class="col-xs-12">
+             <img alt="Future of Work Sponsors" src="https://media.erepublic.com/image/Future-of-work-sponsor-logos_1_26.png" width="444"/>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+       <!-- Controls -->
+       <a class="left carousel-control" data-slide="prev" href="#micrositeCarousel" role="button">
+        &lt;
+       </a>
+       <a class="right carousel-control" data-slide="next" href="#micrositeCarousel" role="button">
+        &gt;
+       </a>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="data-module" moduleid="505068121">
+    <!-- COMMON Module / gt_2016_data_module.html v15 / modified: 2020-02-10 11:17:56.0 -->
+    <div class="module-header">
+     <span>
+      Data
+     </span>
+     <div class="container">
+      <p class="text-center">
+       View our latest data-driven stories, where we aggregate information on technology use in state and local government.
+      </p>
+     </div>
+    </div>
+    <div class="container">
+     <div class="carousel slide" data-ride="carousel" id="moduleCarousel">
+      <div class="carousel-inner" role="listbox">
+       <div class="item active">
+        <div class="col-md-6">
+         <a href="https://www.govtech.com/data/Data-How-to-Write-a-Better-COVID-19-Vaccine-Email.html">
+          <img alt="A bar graph." class="feature-image" layout="responsive" src="https://media2.govtech.com/images/GRANICUS_COVID19_VACCINE_EMAILS_BIZ_VIZ.JPG"/>
+         </a>
+         <div class="caption">
+         </div>
+        </div>
+        <div class="col-md-6">
+         <h2>
+          <a href="https://www.govtech.com/data/Data-How-to-Write-a-Better-COVID-19-Vaccine-Email.html">
+           Data: How to Write a Better COVID-19 Vaccine Email
+          </a>
+         </h2>
+         <h6>
+          <a href="https://www.govtech.com/authors/Ben-Miller.html" rel="author">
+           Ben Miller
+          </a>
+          /
+          <span class="date">
+           Mar 15, 2021
+          </span>
+         </h6>
+         <p>
+          Granicus, which has a wealth of data on the performance of emails sent from government to the public, has released statistics on which kinds of emails about the COVID-19 vaccines do best. Here are the big takeaways.
+         </p>
+        </div>
+       </div>
+       <div class="item">
+        <div class="col-md-6">
+         <a href="https://www.govtech.com/computing/Governors-on-Tech-Broadband-and-Telehealth-Top-the-2021-Agenda.html">
+          <img alt="interactive map of Government Technology's evaluation of the 2021 State of the States speeches from U.S. governors" class="feature-image" layout="responsive" src="https://media2.govtech.com/images/sots_2021_11.JPG"/>
+         </a>
+         <div class="caption">
+         </div>
+        </div>
+        <div class="col-md-6">
+         <h2>
+          <a href="https://www.govtech.com/computing/Governors-on-Tech-Broadband-and-Telehealth-Top-the-2021-Agenda.html">
+           Governors on Tech: Broadband and Telehealth Top the 2021 Agenda
+          </a>
+         </h2>
+         <h6>
+          GT Editorial Staff /
+          <span class="date">
+           Jan 29, 2021
+          </span>
+         </h6>
+         <p>
+          State of the State addresses signal strong support for connecting citizens with investments in broadband expansion, more online services and virtual health-care delivery.
+         </p>
+        </div>
+       </div>
+       <div class="item">
+        <div class="col-md-6">
+         <a href="https://www.govtech.com/data/Data-FirstNets-Subscription-Base-Grew-40-Last-Year.html">
+          <img alt="A woman uses a laptop in an ambulance" class="feature-image" layout="responsive" src="https://media2.govtech.com/images/ATT_FIRSTNET_AMBULANCE_LAPTOP.jpg"/>
+         </a>
+         <div class="caption">
+         </div>
+        </div>
+        <div class="col-md-6">
+         <h2>
+          <a href="https://www.govtech.com/data/Data-FirstNets-Subscription-Base-Grew-40-Last-Year.html">
+           Data: FirstNet's Subscription Base Grew 67% Last Year
+          </a>
+         </h2>
+         <h6>
+          <a href="https://www.govtech.com/authors/Ben-Miller.html" rel="author">
+           Ben Miller
+          </a>
+          /
+          <span class="date">
+           Feb 22, 2021
+          </span>
+         </h6>
+         <p>
+          The nationwide communications network for public safety has come a long way since it started operating in 2018. New numbers from AT&amp;T, the company hired to build out the network, illustrate how it continues to grow.
+         </p>
+        </div>
+       </div>
+       <div class="item">
+        <div class="col-md-6">
+         <a href="https://www.govtech.com/data/Survey-Shows-CARES-Act-Helped-Government-With-Pandemic-Tech.html">
+          <img alt="The majority of local governments in an OpenGov survey had either used or were considering using CARES Act funding for technology" class="feature-image" layout="responsive" src="https://media2.govtech.com/images/opengov_zogby_survey_cares_act.JPG"/>
+         </a>
+         <div class="caption">
+         </div>
+        </div>
+        <div class="col-md-6">
+         <h2>
+          <a href="https://www.govtech.com/data/Survey-Shows-CARES-Act-Helped-Government-With-Pandemic-Tech.html">
+           Survey Shows CARES Act Helped Government With Pandemic Tech
+          </a>
+         </h2>
+         <h6>
+          <a href="https://www.govtech.com/authors/Ben-Miller.html" rel="author">
+           Ben Miller
+          </a>
+          /
+          <span class="date">
+           Nov 25, 2020
+          </span>
+         </h6>
+         <p>
+          There have been many success stories about government rapidly and effectively responding to the needs of the pandemic with technology. A new survey sheds some light on how the CARES Act helped make that happen.
+         </p>
+        </div>
+       </div>
+       <div class="item">
+        <div class="col-md-6">
+         <a href="https://www.govtech.com/data/Data-Telework-Rates-Still-High-for-Government-but-Falling.html">
+          <img alt="Rates of employees teleworking because of COVID-19 across government" class="feature-image" layout="responsive" src="https://media2.govtech.com/images/GOVT_TELEWORK_012221.JPG"/>
+         </a>
+         <div class="caption">
+         </div>
+        </div>
+        <div class="col-md-6">
+         <h2>
+          <a href="https://www.govtech.com/data/Data-Telework-Rates-Still-High-for-Government-but-Falling.html">
+           Data: Telework Rates Still High for Government, but Falling
+          </a>
+         </h2>
+         <h6>
+          <a href="https://www.govtech.com/authors/Ben-Miller.html" rel="author">
+           Ben Miller
+          </a>
+          /
+          <span class="date">
+           Sep 14, 2020
+          </span>
+         </h6>
+         <p>
+          Federal data show that government was able to quickly transition to telework at rates comparable to many other industries. They also shed light on trends over time, as well as differences at state and local levels.
+         </p>
+        </div>
+       </div>
+       <div class="item">
+        <div class="col-md-6">
+         <a href="https://www.govtech.com/data/Monthly-Updates-Government-Employment-During-the-Pandemic.html">
+          <img alt="BLS data on state and local government employment during the pandemic" class="feature-image" layout="responsive" src="https://media2.govtech.com/images/bls_slg_pandemic_employment_5.JPG"/>
+         </a>
+         <div class="caption">
+         </div>
+        </div>
+        <div class="col-md-6">
+         <h2>
+          <a href="https://www.govtech.com/data/Monthly-Updates-Government-Employment-During-the-Pandemic.html">
+           Monthly Updates: Government Employment During the Pandemic
+          </a>
+         </h2>
+         <h6>
+          <a href="https://www.govtech.com/authors/Ben-Miller.html" rel="author">
+           Ben Miller
+          </a>
+          /
+          <span class="date">
+           Aug 12, 2020
+          </span>
+         </h6>
+         <p>
+          A regularly updated look at how a historic pandemic has changed the public-sector workforce, month by month and sector by sector. Plus, is seasonally adjusted data missing something important?
+         </p>
+        </div>
+       </div>
+       <div class="item">
+        <div class="col-md-6">
+         <a href="https://www.govtech.com/data/Tracking-the-Rapid-Rise-in-Unemployment-Insurance-Claims.html">
+          <img alt="Unemployment insurance claims indexed to February 1" class="feature-image" layout="responsive" src="https://media2.govtech.com/images/UI_INDEX_35.JPG"/>
+         </a>
+         <div class="caption">
+         </div>
+        </div>
+        <div class="col-md-6">
+         <h2>
+          <a href="https://www.govtech.com/data/Tracking-the-Rapid-Rise-in-Unemployment-Insurance-Claims.html">
+           Tracking the Rapid Rise in Unemployment Insurance Claims
+          </a>
+         </h2>
+         <h6>
+          <a href="https://www.govtech.com/authors/Ben-Miller.html" rel="author">
+           Ben Miller
+          </a>
+          /
+          <span class="date">
+           Apr 20, 2020
+          </span>
+         </h6>
+         <p>
+          Every state in the country is currently going through a historic, gargantuan rise in unemployment insurance claims. Numbers from the U.S. Department of Labor help to show when, where and how much.
+         </p>
+        </div>
+       </div>
+      </div>
+      <!-- Controls -->
+      <a class="left carousel-control" data-slide="prev" href="#moduleCarousel" role="button">
+       &lt;
+      </a>
+      <a class="right carousel-control" data-slide="next" href="#moduleCarousel" role="button">
+       &gt;
+      </a>
+     </div>
+    </div>
+   </div>
+   <div class="page-module" moduleid="570607511">
+    <!-- COMMON Module / gt_2016_webinars_combined.html v8 / modified: 2021-03-17 10:22:49.0 -->
+    <style>
+     .webinar_date {
+		font-weight:bold;
+		font-size:12px;
+	}
+    </style>
+    <div class="module-header">
+     <span>
+      Webinars
+     </span>
+    </div>
+    <div class="container">
+     <div class="row">
+      <div class="col-sm-6">
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/webinars/The-Gov-Tech-Show-Clearing-Up-the-Cloud-135954.html?promo_code=homepage">
+          The Gov Tech Show: Clearing Up the Cloud
+         </a>
+        </h2>
+        <h6>
+         <span class="webinar_date">
+          March 23, 10AM PDT
+         </span>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/webinars/Risky-Business-How-Cybersecurity-Threats-Are-Evolving-and-What-To-Do-About-It-135486.html?promo_code=homepage">
+          Risky Business: How Cybersecurity Threats Are Evolving and What To Do About It
+         </a>
+        </h2>
+        <h6>
+         <span class="webinar_date">
+          March 23, 10AM PDT
+         </span>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/webinars/High-Velocity-Service-Management-3A-Delivering-Constituent-Services-Better-2C-Faster-and-Cheaper-135953.html?promo_code=homepage">
+          High-Velocity Service Management: Delivering Constituent Services Better, Faster and Cheaper
+         </a>
+        </h2>
+        <h6>
+         <span class="webinar_date">
+          March 23, 11AM PDT
+         </span>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/webinars/Keeping-Modernization-Moving-Forward-in-2021-136383.html?promo_code=homepage">
+          Keeping Modernization Moving Forward in 2021
+         </a>
+        </h2>
+        <h6>
+         <span class="webinar_date">
+          March 24, 10AM PDT
+         </span>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/webinars/Unlock-Your-Datas-Potential-in-the-Cloud-131356.html?promo_code=homepage">
+          Unlock Your Data's Potential in the Cloud
+         </a>
+        </h2>
+        <h6>
+         <span class="webinar_date">
+          March 24, 11AM PDT
+         </span>
+        </h6>
+       </div>
+      </div>
+      <div class="col-sm-6">
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/webinars/Get-Recognized-for-Transforming-Your-Government-Experience-137663.html?promo_code=homepage">
+          Get Recognized for Transforming Your Government Experience!
+         </a>
+        </h2>
+        <h6>
+         <span class="webinar_date">
+          March 25, 10AM PDT
+         </span>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/webinars/The-Next-Big-Attack-How-Agencies-Can-Protect-Themselves-from-Evolving-Cyber-Threats-127281.html?promo_code=homepage">
+          The Next Big Attack: How Agencies Can Protect Themselves from Evolving Cyber Threats
+         </a>
+        </h2>
+        <h6>
+         <span class="webinar_date">
+          March 25, 11AM PDT
+         </span>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/webinars/How-Transportation-is-Modernizing-for-a-More-Resilient-Future-137011.html?promo_code=homepage">
+          How Transportation is Modernizing for a More Resilient Future
+         </a>
+        </h2>
+        <h6>
+         <span class="webinar_date">
+          March 29, 9AM PDT
+         </span>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/webinars/A-Turnkey-Joint-Solution-for-Managing-Emergency-Rent-Relief-136874.html?promo_code=homepage">
+          A Turnkey Joint Solution for Managing Emergency Rent Relief
+         </a>
+        </h2>
+        <h6>
+         <span class="webinar_date">
+          March 30, 10AM PDT
+         </span>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/webinars/Building-a-Better-Bot-Optimizing-Chatbots-for-Government-Services-137722.html?promo_code=homepage">
+          Building a Better Bot: Optimizing Chatbots for Government Services
+         </a>
+        </h2>
+        <h6>
+         <span class="webinar_date">
+          March 30, 11AM PDT
+         </span>
+        </h6>
+       </div>
+      </div>
+     </div>
+     <div class="row text-center">
+      <h6>
+       <a class="btn" href="/events/?tab=webinars">
+        View More
+       </a>
+      </h6>
+     </div>
+    </div>
+   </div>
+   <div class="sponsor-module" moduleid="572898401">
+    <!-- COMMON HTML Module / common_html_module v13 / modified: 2017-05-10 13:30:43.0 -->
+    <div class="module-body">
+     <div class="container">
+      <div class="row">
+       <div class="col-md-7">
+        <a href="https://masterclass.govtech.com/?promo_code=homepage" target="_blank">
+         <img alt="" src="https://media.governing.com/designimages/MasterClass_770x513.jpg"/>
+        </a>
+       </div>
+       <div class="col-md-5" style="margin-top: 30px;">
+        <h2 style="font-size: 21px; font-weight: 300; letter-spacing: 4px; font-family: 'Helvetica Neue';">
+         FEATURED CLASSES
+        </h2>
+        <div class="row">
+         <div class="col-md-6">
+          <h3>
+           <a href="https://masterclass.govtech.com/Master-Class-on-Reimagining-Your-Enterprise-Cloud-Strategy-134774.html?promo_code=homepage" target="_blank">
+            Reimagining Your Enterprise Cloud Strategy
+           </a>
+          </h3>
+          <h6>
+           <a class="btn" href="https://masterclass.govtech.com/Master-Class-on-Reimagining-Your-Enterprise-Cloud-Strategy-134774.html?promo_code=homepage" style="color:#fff;background-color:#f47421;border: 0;padding: 1rem 1.5rem;font-weight: bold; margin-top: 5px;" target="_blank">
+            Learn Now
+           </a>
+          </h6>
+          <h3>
+           How to Develop a Strategy for Disaster Recovery and Continuity of Government
+          </h3>
+          <h6>
+           <a class="btn" href="https://masterclass.govtech.com/?promo_code=homepage" style="color:#fff;background-color:#f47421;border: 0;padding: 1rem 1.5rem;font-weight: bold; margin-top: 5px;" target="_blank">
+            COMING SOON
+           </a>
+          </h6>
+         </div>
+         <div class="col-md-6">
+          <h3>
+           <a href="https://masterclass.govtech.com/How-to-Securely-Collaborate-in-the-New-Normal-137386.html?promo_code=homepage" target="_blank">
+            How to Securely Collaborate in the New Normal
+           </a>
+          </h3>
+          <h6>
+           <a class="btn" href="https://masterclass.govtech.com/How-to-Securely-Collaborate-in-the-New-Normal-137386.html?promo_code=homepage" style="color:#fff;background-color:#f47421;border: 0;padding: 1rem 1.5rem;font-weight: bold; margin-top: 5px;" target="_blank">
+            Learn Now
+           </a>
+          </h6>
+          <h3>
+           How to Build a Future-Proof Cybersecurity Practice
+          </h3>
+          <h6>
+           <a class="btn" href="https://masterclass.govtech.com/?promo_code=homepage" style="color:#fff;background-color:#f47421;border: 0;padding: 1rem 1.5rem;font-weight: bold; margin-top: 5px;" target="_blank">
+            Coming Soon
+           </a>
+          </h6>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="page-module" moduleid="413563123">
+    <!-- COMMON Module / gt_2016_headlines_module.html v6 / modified: 2019-10-15 16:06:58.0 -->
+    <div class="module-header">
+     <span>
+      More Headlines
+     </span>
+    </div>
+    <div class="container">
+     <div class="row">
+      <div class="col-md-6">
+       <div class="feature-article">
+        <a href="https://www.govtech.com/network/Wisconsin-Counties-to-Receive-28-4M-in-State-Internet-Funds.html">
+         <img alt="" border="0" class="img-responsive" height="627" src="https://media2.govtech.com/images/940*627/shutterstock_5541229661.jpg" title="" width="940"/>
+        </a>
+        <div class="caption">
+        </div>
+        <h1>
+         <a href="https://www.govtech.com/network/Wisconsin-Counties-to-Receive-28-4M-in-State-Internet-Funds.html">
+          Wisconsin Counties to Receive $28.4M in State Internet Funds
+         </a>
+        </h1>
+        <h6>
+         <span class="date">
+          March 19, 2021
+         </span>
+        </h6>
+       </div>
+      </div>
+      <div class="col-md-3">
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/policy/West-Virginia-Anti-Doxxing-Bill-Kicked-Back-for-Clarity.html">
+          West Virginia Anti-Doxxing Bill Kicked Back for Clarity
+         </a>
+        </h2>
+        <h6>
+         <span class="date">
+          March 19, 2021
+         </span>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/security/Oklahoma-Lawmakers-Consider-Criminalizing-Ransomware.html">
+          Oklahoma Lawmakers Consider Criminalizing Ransomware
+         </a>
+        </h2>
+        <h6>
+         <span class="date">
+          March 18, 2020
+         </span>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/education/k-12/Tennessee-Web-Portal-Connects-2000-Teachers-With-Jobs.html">
+          Tennessee Web Portal Connects 2,000 Teachers With Jobs
+         </a>
+        </h2>
+        <h6>
+         <span class="date">
+          March 19, 2021
+         </span>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/public-safety/California-County-Turns-to-AI-Technology-to-Spot-Wildfires.html">
+          California County Turns to AI Technology to Spot Wildfires
+         </a>
+        </h2>
+        <h6>
+         <span class="date">
+          March 19, 2021
+         </span>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/public-safety/Police-and-Civilians-Disagree-on-When-Body-Camera-Footage-Should-Be-Made-Public.html">
+          Police and Civilians Disagree on When Body Camera Footage Should Be Made Public
+         </a>
+        </h2>
+        <h6>
+         <span class="date">
+          March 19, 2021
+         </span>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/education/higher-ed/Tech-Job-Training-Center-Under-Construction-in-Cleveland.html">
+          Tech Job Training Center Under Construction in Cleveland
+         </a>
+        </h2>
+        <h6>
+         <span class="date">
+          March 19, 2021
+         </span>
+        </h6>
+       </div>
+      </div>
+      <div class="col-md-3">
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/education/higher-ed/Openly-Licensed-Content-Could-Replace-Pricey-Textbooks.html">
+          Openly Licensed Content Could Replace Pricey Textbooks
+         </a>
+        </h2>
+        <h6>
+         <span class="date">
+          March 19, 2021
+         </span>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/network/US-Senators-Introduce-Broadband-Infrastructure-Bill.html">
+          U.S. Senators Introduce Broadband Infrastructure Bill
+         </a>
+        </h2>
+        <h6>
+         <span class="date">
+          March 18, 2021
+         </span>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/fs/Quebecs-Electric-Vehicle-Shift-Offers-Lessons-for-Maine.html">
+          Quebec’s Electric Vehicle Shift Offers Lessons for Maine
+         </a>
+        </h2>
+        <h6>
+         <span class="date">
+          March 18, 2021
+         </span>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/fs/Massachusetts-City-Votes-for-Fees-on-Public-EV-Charging.html">
+          Massachusetts City Votes for Fees on Public EV Charging
+         </a>
+        </h2>
+        <h6>
+         <span class="date">
+          March 18, 2021
+         </span>
+        </h6>
+       </div>
+       <div class="sub-feature-article">
+        <h2>
+         <a href="https://www.govtech.com/education/k-12/Indiana-Legislation-Threatens-Lower-Paying-CTE-Programs.html">
+          Indiana Legislation Threatens Lower-Paying CTE Programs
+         </a>
+        </h2>
+        <h6>
+         <span class="date">
+          March 18, 2021
+         </span>
+        </h6>
+       </div>
+       <h6>
+        <a class="btn" href="news">
+         View More
+        </a>
+       </h6>
+      </div>
+     </div>
+    </div>
+    <hr style="border:none;"/>
+    <div class="col-md-4">
+     <!-- -->
+     <!-- Desktop -->
+     <!-- Tablet -->
+     <div class="ad-wrap visible-sm-block d-none d-sm-block d-md-none d-lg-none">
+      <ad ad-size="[[640,480]]" ad-unit="AL640" id="" path="" site="www.govtech.com">
+      </ad>
+     </div>
+     <!-- Mobile -->
+    </div>
+   </div>
+   <div class="newsletter-module" moduleid="415034273">
+    <!-- COMMON HTML Module / common_html_module v13 / modified: 2017-05-10 13:30:43.0 -->
+    <div class="container">
+     <div class="row">
+      <div class="col-md-6">
+       <div class="feature-article">
+        <h2>
+         Get GovTech Today - Free
+        </h2>
+        <p>
+         Keep on top of the latest tech news/trends with our free daily brief.
+        </p>
+        <form action="https://cms.erepublic.com/common/forms/ajax_form/247" class="ajax-form quick-sub ng-pristine ng-valid" id="id_newslettershort" name="GTNewsletters ">
+         <input name="promo_code" type="hidden" value="gt_newsletter_web_homepage-feature"/>
+         <input class="thick" id="email" name="email" placeholder="Email Address" type="email" value=""/>
+         <input name="quickSub" type="hidden" value="true"/>
+         <a class="btn" data-ac-submit="">
+          Subscribe
+         </a>
+        </form>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="page-module" moduleid="513453601">
+    <!-- COMMON HTML Module / common_html_module v13 / modified: 2017-05-10 13:30:43.0 -->
+    <div class="module-header">
+     <span>
+      Special Projects
+     </span>
+    </div>
+    <div class="container">
+     <div class="row">
+      <div class="col-md-3">
+       <a href="https://www.govtech.com/nextgen?promo_code=homepage">
+        <img alt="Cisco Next Generation Government" src="https://media.governing.com/images/GT20_Cisco-Microsite-Elements-770.jpg" style="margin-bottom:20px;"/>
+       </a>
+      </div>
+      <div class="col-md-3">
+       <a href="https://www.govtech.com/futureready?promo_code=homepage">
+        <img alt="Future Ready" src="https://media.governing.com/designimages/Google-Future-Ready-770-Homepage-Tile-COVID.jpg" style="margin-bottom:20px;"/>
+       </a>
+      </div>
+      <div class="col-md-3">
+       <a href="https://www.govtech.com/oracle360?promo_code=homepage">
+        <img alt="" src="https://media.governing.com/designimages/GT20-WEB-ADS-Oracle-360-Microsite-770x513.jpg" style="margin-bottom:20px;"/>
+       </a>
+      </div>
+      <div class="col-md-3">
+       <a href="https://www.govtech.com/salesforce?promo_code=homepage">
+        <img alt="Salesforce: We Help Government Manage Through Crisis" src="https://media.erepublic.com/image/GOV20-Microsite-tile-Salesforce.jpg" style="margin-bottom:20px;"/>
+       </a>
+      </div>
+     </div>
+     <div class="row">
+      <div class="col-md-3">
+       <a href="https://www.govtech.com/local/?promo_code=homepage">
+        <img alt="AWS" src="https://media.erepublic.com/image/AWS_Headers-770.jpg" style="margin-bottom:20px;"/>
+       </a>
+      </div>
+      <div class="col-md-3">
+       <a href="https://www.govtech.com/districts?promo_code=homepage">
+        <img alt="Special Districts Program" src="https://media.governing.com/designimages/GT19-WEB-AD-Special-Districts-770x513.jpg" style="margin-bottom:20px;"/>
+       </a>
+      </div>
+      <div class="col-md-3">
+       <a href="https://www.govtech.com/publicsectorready?promo_code=homepage">
+        <img alt="Verizon Public Sector Ready" src="https://media.governing.com/designimages/vz-public_sector_ready-770x513.jpg" style="margin-bottom:20px;"/>
+       </a>
+      </div>
+      <div class="col-md-3">
+       <a href="https://www.governing.com/smarter?promo_code=homepage">
+        <img alt="IBM" src="https://media.governing.com/images/IBM_microsite_tile_770x513_200713.jpg" style="margin-bottom:20px;"/>
+       </a>
+      </div>
+     </div>
+     <div class="row">
+      <div class="col-md-3">
+       <a href="https://www.govtech.com/veritas/">
+        <img alt="Veritas" src="https://media.governing.com/images/GT20-Veritas-Site-_headers_new-770x513.jpg" style="margin-bottom:20px;"/>
+       </a>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
+  <style>
+   footer {
+	font-size: 12px;
+	letter-spacing: 1px;
+	padding-top: 15px;
+}
+footer .container {
+    margin-bottom: 0;
+}
+footer h4 {
+	color: #f47421;
+	font-size: 12px;
+	letter-spacing: 1px;
+	margin-bottom: 5px;
+	text-transform: uppercase;
+}
+footer div {
+	margin-bottom: 5px;
+}
+footer svg.logo {
+	width: 160px;
+}
+footer div.header {
+	color: #f47421;
+	font-size: 12px;
+	letter-spacing: 1px;
+	margin-bottom: 5px;
+	text-transform: uppercase;
+}
+footer #site_info_links a {
+	margin-right: 10px;
+}
+footer #site_social svg {
+	width: 20px;
+}
+footer #slim-footer {
+	display:none;
+}
+  </style>
+  <div class="platforms-module">
+   <div class="module-header" style="margin-bottom:0px;">
+    <span>
+     <a href="//www.erepublic.com" style="color:inherit;font-familyt:inherit">
+      E.REPUBLIC Platforms &amp; Programs
+     </a>
+    </span>
+   </div>
+   <div class="feature-module">
+    <div class="container">
+     <div class="row">
+      <div class="col-sm-2 col-xs-6" style="min-height: 100px;display:flex;">
+       <a href="//www.governing.com" style="display:flex;">
+        <svg class="logo dark" id="Layer_1" style="width:180px;" version="1.1" viewbox="0 -5 297.5 40" width="290px" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px">
+         <style type="text/css">
+          .logo.dark .st0{fill:#ffffff;}
+							.logo.dark .st1{fill:#ffffff;}
+							.logo.dark .st2{fill:#ffffff;}
+         </style>
+         <g>
+          <g>
+           <polygon class="st0" points="106.4,32.7 102.8,40.2 130.1,40.2 130.1,32.7">
+           </polygon>
+           <polygon class="st0" points="113.7,17.6 110.1,25.2 124,25.2 124,17.6">
+           </polygon>
+           <polygon class="st0" points="120.9,2.2 117.5,9.8 130.1,9.8 130.1,2.2">
+           </polygon>
+           <g>
+            <path class="st1" d="M23.7,18.8l-3.5,7.3h10.6c-0.3,0.9-0.8,1.7-1.3,2.4c-0.7,0.9-1.5,1.7-2.4,2.4c-0.9,0.7-2,1.2-3.1,1.6
+										C23,32.8,21.8,33,20.6,33c-1.6,0-3.1-0.3-4.5-1c-1.4-0.7-2.6-1.5-3.7-2.6c-1-1.1-1.9-2.4-2.5-3.8c-0.6-1.4-0.9-3-0.9-4.6
+										c0-1.6,0.3-3.1,0.9-4.5c0.6-1.5,1.4-2.7,2.5-3.8c1-1.1,2.3-2,3.7-2.6c1.4-0.7,2.9-1,4.5-1c1.9,0,3.7,0.5,5.3,1.5
+										c1.7,1,3,2.3,4,3.8l0.3,0.4l6.8-4.2l-0.3-0.4c-1.7-2.6-4-4.7-6.8-6.3c-2.8-1.6-6-2.4-9.3-2.4c-2.7,0-5.2,0.5-7.6,1.5
+										c-2.4,1-4.4,2.4-6.2,4.2s-3.2,3.8-4.2,6.2S1.1,18.3,1.1,21c0,2.7,0.5,5.2,1.5,7.5c1,2.3,2.4,4.4,4.2,6.2c1.8,1.8,3.9,3.2,6.2,4.2
+										c2.4,1,4.9,1.5,7.6,1.5c2.4,0,4.8-0.4,7-1.2s4.2-2,5.8-3.4c1.7-1.5,3.1-3.2,4.2-5.2c1.1-2,1.7-4.2,1.9-6.6c0-0.3,0-0.7,0-1.2
+										c0-0.5,0-1,0-1.6c0-0.6,0-1.2,0-1.9l0-0.5L23.7,18.8L23.7,18.8z">
+            </path>
+            <polygon class="st1" points="106.5,2.2 97,22.7 87.5,2.2 78.7,2.2 96.5,39.8 97.5,39.8 115.4,2.2">
+            </polygon>
+            <path class="st1" d="M75.9,7.2C74.1,5.4,72.1,4,69.7,3s-4.9-1.5-7.6-1.5c-2.7,0-5.2,0.5-7.6,1.5c-2.3,1-4.4,2.4-6.2,4.2
+										c-1.8,1.8-3.2,3.8-4.2,6.2s-1.5,4.9-1.5,7.6c0,2.7,0.5,5.2,1.5,7.6s2.4,4.4,4.2,6.2s3.8,3.2,6.2,4.2s4.9,1.5,7.6,1.5
+										c2.7,0,5.2-0.5,7.6-1.5s4.4-2.4,6.2-4.2s3.2-3.8,4.2-6.2c1-2.3,1.5-4.9,1.5-7.6c0-2.7-0.5-5.2-1.5-7.6C79,11,77.6,8.9,75.9,7.2z
+										 M66.6,10c1.4,0.7,2.6,1.5,3.6,2.6c1,1.1,1.9,2.4,2.5,3.8c0.6,1.5,0.9,3,0.9,4.5c0,1.6-0.3,3.1-0.9,4.6c-0.6,1.4-1.4,2.7-2.5,3.8
+										s-2.3,2-3.6,2.6c-2.7,1.3-6.2,1.3-8.9,0c-1.4-0.7-2.6-1.5-3.6-2.6s-1.9-2.4-2.5-3.8c-0.6-1.4-0.9-3-0.9-4.6
+										c0-1.6,0.3-3.1,0.9-4.5c0.6-1.5,1.4-2.7,2.5-3.8c1-1.1,2.3-2,3.6-2.6c1.4-0.7,2.9-1,4.4-1C63.7,9,65.2,9.3,66.6,10z">
+            </path>
+           </g>
+           <polygon class="st0" points="194.8,2.4 194.8,23.9 171.4,2.4 170,2.4 170,40 178,40 178,18.8 201.3,40 202.8,40 202.8,2.4">
+           </polygon>
+           <path class="st0" d="M165.6,39.2c-2.9-3.9-5.8-7.9-8.7-11.8c2.1-1,3.9-2.4,5.2-4.4c1.4-2.1,2.2-4.7,2.2-7.5c0-1.9-0.3-3.7-1-5.3
+									c-0.6-1.6-1.5-3-2.7-4.2c-1.1-1.2-2.5-2.1-4.1-2.7c-1.6-0.6-3.4-1-5.3-1h-17.1V40h8V28.3h6.2c1.4,1.9,2.7,3.8,4,5.7
+									c1.4,1.9,2.8,3.8,4.3,5.8l0.1,0.2h9.6L165.6,39.2z M142,9.6h9.1c1.1,0,2,0.2,2.7,0.6c0.7,0.4,1.2,0.9,1.5,1.5
+									c0.4,0.6,0.6,1.3,0.7,1.9c0.1,0.7,0.2,1.3,0.2,1.8c0,1-0.2,1.8-0.5,2.5c-0.3,0.7-0.7,1.3-1.2,1.8c-0.5,0.5-1,0.8-1.6,1
+									c-0.6,0.2-1.2,0.3-1.8,0.3h-9.1L142,9.6L142,9.6z">
+           </path>
+           <g>
+            <rect class="st0" height="37.5" width="8" x="208.3" y="2.4">
+            </rect>
+            <polygon class="st0" points="246.1,23.9 222.8,2.5 222.7,2.4 221.3,2.4 221.3,40 229.3,40 229.3,18.8 252.5,39.8 252.6,40 
+										254.1,40 254.1,2.4 246.1,2.4">
+            </polygon>
+            <path class="st0" d="M280.6,18.8l-3.5,7.3h10.6c-0.3,0.9-0.8,1.7-1.3,2.4c-0.7,0.9-1.5,1.7-2.4,2.4c-0.9,0.7-2,1.2-3.1,1.6
+										c-1.1,0.4-2.3,0.5-3.5,0.5c-1.6,0-3.1-0.3-4.5-1c-1.4-0.7-2.6-1.5-3.6-2.6c-1-1.1-1.9-2.4-2.5-3.8c-0.6-1.4-0.9-3-0.9-4.6
+										c0-1.6,0.3-3.1,0.9-4.5c0.6-1.5,1.4-2.7,2.5-3.8c1-1.1,2.3-2,3.6-2.6c1.4-0.7,2.9-1,4.5-1c1.9,0,3.7,0.5,5.3,1.5
+										c1.6,1,3,2.3,4,3.8l0.3,0.4l6.9-4.2l-0.3-0.4c-1.7-2.6-4-4.7-6.9-6.3s-6-2.4-9.3-2.4c-2.7,0-5.2,0.5-7.5,1.5
+										c-2.4,1-4.4,2.4-6.2,4.2s-3.2,3.8-4.2,6.2s-1.5,4.9-1.5,7.6c0,2.7,0.5,5.2,1.5,7.5s2.5,4.4,4.2,6.2c1.8,1.8,3.8,3.2,6.2,4.2
+										s4.9,1.5,7.5,1.5c2.4,0,4.8-0.4,7-1.2s4.2-2,5.9-3.4c1.7-1.5,3.1-3.2,4.2-5.2c1.1-2,1.7-4.2,1.9-6.6c0-0.3,0-0.7,0-1.2
+										c0-0.5,0-1,0-1.6c0-0.6,0-1.2,0-1.9l0-0.5L280.6,18.8L280.6,18.8z">
+            </path>
+           </g>
+          </g>
+          <g>
+           <path class="st2" d="M290.5,59.2c0.2,0.2,0.5,0.3,0.8,0.4s0.6,0.2,0.9,0.3c0.3,0.1,0.7,0.1,1.1,0.1c0.5,0,0.9-0.1,1.3-0.2
+									c0.4-0.1,0.7-0.3,1-0.5s0.5-0.5,0.6-0.8c0.1-0.3,0.2-0.7,0.2-1.1c0-0.4,0-0.7-0.2-0.9c-0.1-0.3-0.2-0.5-0.4-0.7s-0.4-0.3-0.6-0.4
+									s-0.5-0.2-0.7-0.3c-0.2-0.1-0.5-0.1-0.7-0.2s-0.4-0.1-0.6-0.1c-0.2-0.1-0.4-0.1-0.6-0.2c-0.2-0.1-0.4-0.1-0.6-0.2
+									c-0.2-0.1-0.3-0.2-0.5-0.3s-0.2-0.2-0.2-0.4s0-0.3,0.1-0.4c0.1-0.1,0.2-0.2,0.4-0.3s0.3-0.1,0.5-0.2s0.3-0.1,0.5-0.1
+									c0.4,0,0.8,0.1,1.1,0.2c0.4,0.1,0.7,0.3,1.1,0.6l0.9-1.2c-0.2-0.2-0.5-0.3-0.7-0.5c-0.2-0.1-0.5-0.2-0.7-0.3
+									c-0.2-0.1-0.5-0.2-0.8-0.2c-0.3,0-0.6-0.1-0.9-0.1s-0.7,0-1.1,0.1s-0.7,0.2-1,0.4c-0.3,0.2-0.5,0.4-0.8,0.8
+									c-0.2,0.3-0.3,0.7-0.3,1.2c0,0.3,0,0.6,0.2,0.9c0.1,0.2,0.2,0.4,0.4,0.6s0.4,0.3,0.6,0.4c0.2,0.1,0.5,0.2,0.7,0.3s0.5,0.1,0.7,0.2
+									c0.2,0,0.4,0.1,0.6,0.1c0.2,0,0.5,0.1,0.7,0.2c0.2,0.1,0.4,0.1,0.6,0.2c0.2,0.1,0.3,0.2,0.4,0.3s0.1,0.3,0.1,0.4
+									c0,0.1,0,0.3-0.1,0.4s-0.2,0.2-0.3,0.3c-0.1,0.1-0.3,0.2-0.5,0.2c-0.2,0.1-0.4,0.1-0.7,0.1c-0.5,0-0.9-0.1-1.4-0.3
+									s-0.9-0.4-1.3-0.7l-0.9,1.3C290,58.9,290.3,59,290.5,59.2 M287,52.9v-1.4h-6v8.2h6v-1.4h-4.5v-1.9h4V55h-4v-2.1L287,52.9L287,52.9
+									z M277.5,51.5h-1.6v8.2h1.6V51.5z M273.1,51.5h-6.3v1.4h2.4v6.8h1.6v-6.8h2.4V51.5z M264.2,51.5h-1.6v8.2h1.6V51.5z M255.6,58.4
+									v-6.8h-1.6v8.2h5.9v-1.4H255.6z M247.6,54.6l1.2,2.5h-2.4L247.6,54.6z M245.1,59.8l0.6-1.3h3.9l0.6,1.3h1.7l-4.2-8.2h-0.2
+									l-4.2,8.2H245.1z M240.4,57.1c-0.1,0.2-0.3,0.3-0.4,0.5s-0.3,0.3-0.5,0.4c-0.2,0.1-0.4,0.2-0.6,0.3s-0.4,0.1-0.7,0.1
+									c-0.4,0-0.7-0.1-1.1-0.2s-0.6-0.4-0.9-0.6s-0.4-0.6-0.6-0.9s-0.2-0.7-0.2-1.1c0-0.4,0.1-0.7,0.2-1.1s0.3-0.6,0.6-0.9
+									s0.5-0.5,0.9-0.6s0.7-0.2,1.1-0.2c0.2,0,0.5,0,0.7,0.1c0.2,0.1,0.4,0.2,0.6,0.3c0.2,0.1,0.4,0.3,0.5,0.4c0.2,0.2,0.3,0.3,0.4,0.5
+									l1.5-0.6c-0.2-0.3-0.4-0.6-0.7-0.9c-0.3-0.3-0.6-0.5-0.9-0.7c-0.3-0.2-0.7-0.3-1-0.4s-0.8-0.2-1.1-0.2c-0.6,0-1.1,0.1-1.6,0.3
+									c-0.5,0.2-1,0.5-1.4,0.9c-0.4,0.4-0.7,0.8-0.9,1.3c-0.2,0.5-0.3,1.1-0.3,1.7s0.1,1.1,0.3,1.7c0.2,0.5,0.5,1,0.9,1.3
+									c0.4,0.4,0.8,0.7,1.4,0.9c0.5,0.2,1.1,0.3,1.6,0.3c0.4,0,0.8-0.1,1.1-0.2s0.7-0.2,1-0.4c0.3-0.2,0.6-0.4,0.9-0.7
+									c0.3-0.3,0.5-0.6,0.7-0.9L240.4,57.1z M228.3,53.1c0.3,0.2,0.6,0.4,0.9,0.6s0.4,0.6,0.6,0.9s0.2,0.7,0.2,1.1
+									c0,0.4-0.1,0.7-0.2,1.1s-0.3,0.6-0.6,0.9c-0.2,0.3-0.5,0.5-0.9,0.6s-0.7,0.2-1.1,0.2c-0.4,0-0.7-0.1-1.1-0.2
+									c-0.3-0.2-0.6-0.4-0.9-0.6s-0.4-0.6-0.6-0.9c-0.1-0.3-0.2-0.7-0.2-1.1c0-0.4,0.1-0.7,0.2-1.1s0.3-0.6,0.6-0.9
+									c0.2-0.2,0.5-0.5,0.9-0.6s0.7-0.2,1.1-0.2C227.6,52.8,227.9,52.9,228.3,53.1 M228.9,59.6c0.5-0.2,1-0.5,1.4-0.9
+									c0.4-0.4,0.7-0.8,0.9-1.3c0.2-0.5,0.3-1.1,0.3-1.7c0-0.6-0.1-1.1-0.3-1.7s-0.5-1-0.9-1.4s-0.8-0.7-1.4-0.9
+									c-0.5-0.2-1.1-0.3-1.7-0.3c-0.6,0-1.1,0.1-1.6,0.3c-0.5,0.2-1,0.5-1.4,0.9c-0.4,0.4-0.7,0.8-0.9,1.4c-0.2,0.5-0.3,1.1-0.3,1.7
+									c0,0.6,0.1,1.2,0.3,1.7c0.2,0.5,0.5,1,0.9,1.3c0.4,0.4,0.8,0.7,1.4,0.9c0.5,0.2,1.1,0.3,1.6,0.3C227.8,59.9,228.4,59.8,228.9,59.6
+									 M217,58.4v-6.8h-1.6v8.2h5.9v-1.4H217z M201.5,52.9h1.7c0.3,0,0.6,0,0.9,0.1s0.6,0.2,0.8,0.4s0.4,0.5,0.6,0.8s0.2,0.8,0.2,1.4
+									s-0.1,1-0.2,1.4s-0.4,0.6-0.6,0.8c-0.2,0.2-0.5,0.3-0.8,0.4s-0.6,0.1-0.9,0.1h-1.7L201.5,52.9L201.5,52.9z M204.7,59.5
+									c0.5-0.2,0.9-0.4,1.3-0.8c0.4-0.4,0.7-0.8,0.9-1.3c0.2-0.5,0.3-1.1,0.3-1.8c0-0.6-0.1-1.2-0.3-1.8c-0.2-0.5-0.5-1-0.9-1.3
+									c-0.8-0.7-1.7-1-2.9-1h-3.2v8.2h3.2C203.7,59.8,204.2,59.7,204.7,59.5 M196.6,59.8v-8.2h-1.6v5l-5.4-5h-0.2v8.2h1.6v-4.9l5.4,4.9
+									H196.6z M182.8,54.6l1.2,2.5h-2.4L182.8,54.6z M180.2,59.8l0.6-1.3h3.9l0.6,1.3h1.7l-4.2-8.2h-0.2l-4.2,8.2H180.2z M165.4,59.2
+									c0.2,0.2,0.5,0.3,0.8,0.4s0.6,0.2,0.9,0.3c0.3,0.1,0.7,0.1,1.1,0.1c0.5,0,0.9-0.1,1.3-0.2s0.7-0.3,1-0.5s0.5-0.5,0.6-0.8
+									s0.2-0.7,0.2-1.1c0-0.4-0.1-0.7-0.2-0.9s-0.2-0.5-0.4-0.7s-0.4-0.3-0.6-0.4s-0.4-0.2-0.7-0.3s-0.4-0.1-0.7-0.2s-0.4-0.1-0.6-0.1
+									c-0.2-0.1-0.4-0.1-0.6-0.2c-0.2-0.1-0.4-0.1-0.6-0.2c-0.2-0.1-0.3-0.2-0.5-0.3c-0.1-0.1-0.2-0.2-0.2-0.4s0.1-0.3,0.1-0.4
+									c0.1-0.1,0.2-0.2,0.4-0.3c0.1-0.1,0.3-0.1,0.5-0.2c0.2,0,0.3-0.1,0.5-0.1c0.4,0,0.8,0.1,1.1,0.2s0.7,0.3,1.1,0.6l0.9-1.2
+									c-0.2-0.2-0.5-0.3-0.7-0.5c-0.2-0.1-0.4-0.2-0.7-0.3c-0.2-0.1-0.5-0.2-0.8-0.2c-0.3,0-0.6-0.1-0.9-0.1s-0.7,0-1.1,0.1
+									c-0.4,0.1-0.7,0.2-1,0.4c-0.3,0.2-0.6,0.4-0.8,0.8c-0.2,0.3-0.3,0.7-0.3,1.2c0,0.3,0.1,0.6,0.2,0.9c0.1,0.2,0.2,0.4,0.4,0.6
+									s0.4,0.3,0.6,0.4c0.2,0.1,0.4,0.2,0.7,0.3s0.5,0.1,0.7,0.2c0.2,0,0.4,0.1,0.6,0.1c0.2,0,0.5,0.1,0.7,0.2c0.2,0.1,0.4,0.1,0.6,0.2
+									c0.2,0.1,0.3,0.2,0.4,0.3c0.1,0.1,0.1,0.3,0.1,0.4c0,0.1,0,0.3-0.1,0.4s-0.2,0.2-0.3,0.3s-0.3,0.2-0.5,0.2
+									c-0.2,0.1-0.4,0.1-0.7,0.1c-0.5,0-0.9-0.1-1.4-0.3s-0.9-0.4-1.3-0.7l-0.9,1.3C164.9,58.9,165.1,59,165.4,59.2 M161.9,52.9v-1.4
+									h-6.1v8.2h6.1v-1.4h-4.5v-1.9h4V55h-4v-2.1L161.9,52.9L161.9,52.9z M153.3,51.5H147v1.4h2.4v6.8h1.6v-6.8h2.4L153.3,51.5
+									L153.3,51.5z M142.3,54.6l1.2,2.5h-2.4L142.3,54.6z M139.7,59.8l0.6-1.3h3.9l0.6,1.3h1.7l-4.2-8.2h-0.2l-4.2,8.2H139.7z
+									 M137.6,51.5h-6.3v1.4h2.4v6.8h1.6v-6.8h2.4L137.6,51.5L137.6,51.5z M123.7,59.2c0.2,0.2,0.5,0.3,0.8,0.4s0.6,0.2,0.9,0.3
+									c0.3,0.1,0.7,0.1,1.1,0.1c0.5,0,0.9-0.1,1.3-0.2c0.4-0.1,0.7-0.3,1-0.5s0.5-0.5,0.6-0.8s0.2-0.7,0.2-1.1c0-0.4-0.1-0.7-0.2-0.9
+									c-0.1-0.3-0.2-0.5-0.4-0.7s-0.4-0.3-0.6-0.4s-0.5-0.2-0.7-0.3s-0.4-0.1-0.7-0.2s-0.4-0.1-0.6-0.1c-0.2-0.1-0.4-0.1-0.6-0.2
+									c-0.2-0.1-0.4-0.1-0.6-0.2c-0.2-0.1-0.3-0.2-0.5-0.3c-0.1-0.1-0.2-0.2-0.2-0.4s0.1-0.3,0.1-0.4c0.1-0.1,0.2-0.2,0.4-0.3
+									c0.1-0.1,0.3-0.1,0.5-0.2c0.2,0,0.3-0.1,0.5-0.1c0.4,0,0.8,0.1,1.1,0.2s0.7,0.3,1.1,0.6l0.9-1.2c-0.2-0.2-0.5-0.3-0.7-0.5
+									c-0.2-0.1-0.4-0.2-0.7-0.3c-0.2-0.1-0.5-0.2-0.8-0.2c-0.3,0-0.6-0.1-0.9-0.1s-0.7,0-1.1,0.1c-0.4,0.1-0.7,0.2-1,0.4
+									s-0.6,0.4-0.8,0.8s-0.3,0.7-0.3,1.2c0,0.3,0.1,0.6,0.2,0.9s0.2,0.4,0.4,0.6s0.4,0.3,0.6,0.4c0.2,0.1,0.4,0.2,0.7,0.3
+									s0.5,0.1,0.7,0.2c0.2,0,0.4,0.1,0.6,0.1c0.2,0,0.5,0.1,0.7,0.2c0.2,0.1,0.4,0.1,0.6,0.2c0.2,0.1,0.3,0.2,0.4,0.3s0.1,0.3,0.1,0.4
+									c0,0.1,0,0.3-0.1,0.4s-0.2,0.2-0.3,0.3s-0.3,0.2-0.5,0.2c-0.2,0.1-0.4,0.1-0.7,0.1c-0.5,0-0.9-0.1-1.4-0.3s-0.9-0.4-1.3-0.7
+									l-0.9,1.3C123.2,58.9,123.4,59,123.7,59.2 M114.6,52.9v-1.4h-6v8.2h1.6v-3.3h4V55h-4v-2C110.1,52.9,114.6,52.9,114.6,52.9z
+									 M102.5,53.1c0.3,0.2,0.6,0.4,0.8,0.6s0.4,0.6,0.6,0.9s0.2,0.7,0.2,1.1c0,0.4-0.1,0.7-0.2,1.1s-0.3,0.6-0.6,0.9
+									c-0.2,0.3-0.5,0.5-0.8,0.6c-0.3,0.2-0.7,0.2-1.1,0.2c-0.4,0-0.7-0.1-1.1-0.2s-0.6-0.4-0.8-0.6S99.1,57,99,56.7
+									c-0.1-0.3-0.2-0.7-0.2-1.1c0-0.4,0.1-0.7,0.2-1.1s0.3-0.6,0.6-0.9c0.2-0.2,0.5-0.5,0.8-0.6s0.7-0.2,1.1-0.2
+									C101.8,52.8,102.2,52.9,102.5,53.1 M103.1,59.6c0.5-0.2,1-0.5,1.3-0.9c0.4-0.4,0.7-0.8,0.9-1.3c0.2-0.5,0.3-1.1,0.3-1.7
+									c0-0.6-0.1-1.1-0.3-1.7s-0.5-1-0.9-1.4s-0.8-0.7-1.3-0.9c-0.5-0.2-1.1-0.3-1.7-0.3c-0.6,0-1.1,0.1-1.7,0.3c-0.5,0.2-1,0.5-1.3,0.9
+									c-0.4,0.4-0.7,0.8-0.9,1.4c-0.2,0.5-0.3,1.1-0.3,1.7c0,0.6,0.1,1.2,0.3,1.7c0.2,0.5,0.5,1,0.9,1.3c0.4,0.4,0.8,0.7,1.3,0.9
+									c0.5,0.2,1.1,0.3,1.7,0.3C102,59.9,102.6,59.8,103.1,59.6">
+           </path>
+           <g>
+            <polygon class="st1" points="21.8,59.8 27.9,59.8 27.9,58.3 23.4,58.3 23.4,56.4 27.4,56.4 27.4,55 23.4,55 23.4,52.9 27.9,52.9 
+										27.9,51.5 21.8,51.5">
+            </polygon>
+            <polygon class="st1" points="36.3,59.8 37.8,59.8 37.8,56.4 41.8,56.4 41.8,55 37.8,55 37.8,52.9 42.3,52.9 42.3,51.5 36.3,51.5">
+            </polygon>
+            <polygon class="st1" points="17,55.1 13,55.1 13,51.5 11.4,51.5 11.4,59.8 13,59.8 13,56.5 17,56.5 17,59.8 18.6,59.8 18.6,51.5 
+										17,51.5">
+            </polygon>
+            <polygon class="st1" points="2.6,52.9 4.9,52.9 4.9,59.8 6.5,59.8 6.5,52.9 8.9,52.9 8.9,51.5 2.6,51.5">
+            </polygon>
+            <path class="st1" d="M68.8,56.4c0,0.4-0.1,0.8-0.2,1s-0.3,0.5-0.5,0.6c-0.2,0.2-0.4,0.3-0.6,0.3c-0.2,0.1-0.4,0.1-0.6,0.1
+										s-0.4,0-0.6-0.1s-0.4-0.2-0.6-0.3c-0.2-0.2-0.4-0.4-0.5-0.6c-0.1-0.3-0.2-0.6-0.2-1v-4.9h-1.6v4.9c0,0.5,0.1,1,0.2,1.4
+										s0.4,0.8,0.7,1.1c0.3,0.3,0.7,0.5,1.1,0.7s0.9,0.2,1.4,0.2c0.5,0,1-0.1,1.5-0.2s0.8-0.4,1.1-0.7c0.3-0.3,0.5-0.7,0.7-1.1
+										c0.2-0.4,0.2-0.9,0.2-1.4v-4.9h-1.6L68.8,56.4L68.8,56.4z">
+            </path>
+            <polygon class="st1" points="89.2,52.9 89.2,51.5 83.2,51.5 83.2,59.8 89.2,59.8 89.2,58.3 84.8,58.3 84.8,56.4 88.7,56.4 
+										88.7,55 84.8,55 84.8,52.9">
+            </polygon>
+            <path class="st1" d="M79.7,56c0.3-0.5,0.5-1,0.5-1.6c0-0.4-0.1-0.8-0.2-1.1s-0.3-0.7-0.6-0.9s-0.5-0.4-0.9-0.6
+										c-0.3-0.1-0.7-0.2-1.2-0.2h-3.7v8.2h1.6v-2.6h1.6c0.3,0.4,0.6,0.9,0.9,1.3c0.3,0.4,0.6,0.9,1,1.3h1.9c-0.7-0.9-1.4-1.8-2.1-2.8
+										C79,56.8,79.4,56.5,79.7,56z M77.8,55.7c-0.2,0.1-0.3,0.1-0.4,0.1h-2.2v-2.8h2.2c0.3,0,0.5,0.1,0.7,0.2c0.2,0.1,0.3,0.2,0.4,0.4
+										c0.1,0.2,0.2,0.3,0.2,0.5c0,0.2,0,0.3,0,0.4c0,0.2,0,0.4-0.1,0.6c-0.1,0.2-0.2,0.3-0.3,0.4C78.1,55.5,78,55.6,77.8,55.7z">
+            </path>
+            <polygon class="st1" points="54.5,52.9 56.9,52.9 56.9,59.8 58.4,59.8 58.4,52.9 60.8,52.9 60.8,51.5 54.5,51.5">
+            </polygon>
+            <path class="st1" d="M50.5,56.4c0,0.4-0.1,0.8-0.2,1s-0.3,0.5-0.5,0.6c-0.2,0.2-0.4,0.3-0.6,0.3c-0.2,0.1-0.4,0.1-0.6,0.1
+										s-0.4,0-0.6-0.1s-0.4-0.2-0.6-0.3c-0.2-0.2-0.4-0.4-0.5-0.6c-0.1-0.3-0.2-0.6-0.2-1v-4.9h-1.6v4.9c0,0.5,0.1,1,0.2,1.4
+										s0.4,0.8,0.7,1.1c0.3,0.3,0.7,0.5,1.1,0.7s0.9,0.2,1.5,0.2c0.5,0,1-0.1,1.5-0.2s0.8-0.4,1.1-0.7c0.3-0.3,0.5-0.7,0.7-1.1
+										c0.2-0.4,0.2-0.9,0.2-1.4v-4.9h-1.6L50.5,56.4L50.5,56.4z">
+            </path>
+           </g>
+          </g>
+         </g>
+        </svg>
+       </a>
+      </div>
+      <div class="col-sm-2 col-xs-6" style="min-height: 100px;display:flex;">
+       <a href="/em" style="display:flex;">
+        <svg id="em_logo" style="width:100%;" version="1.1" viewbox="-20 30 245 125" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px">
+         <g>
+          <g>
+           <path d="M27.2,117.8H4.6V117h1c0.1,0,0.3,0,0.5,0c0.2,0,0.4-0.1,0.6-0.1c0.2-0.1,0.4-0.1,0.6-0.2
+	              c0.2-0.1,0.4-0.2,0.5-0.3c0.1-0.1,0.3-0.3,0.4-0.4c0.1-0.2,0.2-0.4,0.3-0.6c0.1-0.3,0.1-0.6,0.2-1c0-0.4,0.1-1,0.1-1.6V93.8
+	              c0-1.9-0.2-3-0.6-3.4c-0.3-0.3-0.6-0.5-1-0.6c-0.4-0.2-1-0.2-1.5-0.2h-1v-0.8h22.6l0.3,6.3h-0.8c-0.1-0.4-0.2-0.8-0.3-1.2
+	              c-0.1-0.4-0.2-0.8-0.3-1.1s-0.3-0.7-0.5-1c-0.2-0.3-0.5-0.6-0.9-0.8c-0.4-0.2-0.9-0.4-1.4-0.5c-0.6-0.1-1.3-0.2-2.2-0.2h-8v11.5
+	              h6.4c1,0,1.8-0.1,2.3-0.2c0.6-0.2,1-0.4,1.3-0.8c0.3-0.3,0.5-0.8,0.6-1.3c0.1-0.5,0.3-1.2,0.3-1.9h0.8v10.1H24
+	              c-0.1-0.8-0.2-1.4-0.3-2c-0.1-0.6-0.3-1-0.6-1.3c-0.3-0.3-0.7-0.6-1.3-0.8c-0.6-0.2-1.3-0.3-2.3-0.3H13v9.6c0,0.5,0,0.9,0,1.3
+	              s0.1,0.7,0.2,1c0.1,0.3,0.4,0.5,0.7,0.7c0.3,0.2,0.9,0.3,1.5,0.3h4.9c1.2,0,2.2-0.1,2.9-0.2s1.5-0.4,2.1-0.8
+	              c0.6-0.4,1.2-1,1.7-1.7c0.5-0.7,1.1-1.7,1.8-2.9h0.9L27.2,117.8z" fill="#ffffff">
+           </path>
+           <path d="M49.1,117.8v-0.7h0.8c0.5,0,1-0.1,1.3-0.2c0.3-0.1,0.6-0.4,0.8-0.7c0.1-0.2,0.2-0.5,0.3-0.9
+	              c0.1-0.4,0.1-1,0.1-1.7V97.7l-9.2,20.1h-0.6l-9.2-20.1v15.9c0,1.5,0.2,2.4,0.5,2.8c0.4,0.5,1.1,0.7,2.1,0.7h0.8v0.7h-8.2v-0.7h0.8
+	              c0.5,0,0.9-0.1,1.3-0.2s0.6-0.4,0.9-0.7c0.1-0.2,0.2-0.5,0.3-0.9c0.1-0.4,0.1-1,0.1-1.7V98.1c0-0.8-0.1-1.3-0.1-1.8
+	              c-0.1-0.4-0.3-0.8-0.6-1c-0.1-0.1-0.3-0.2-0.4-0.3c-0.1-0.1-0.3-0.1-0.5-0.2c-0.2-0.1-0.4-0.1-0.7-0.1c-0.3,0-0.6-0.1-0.9-0.1V94
+	              h6.7l8.7,18.7L52.6,94h6.8v0.6h-0.8c-1,0-1.7,0.3-2.2,0.9c-0.1,0.2-0.2,0.5-0.3,1c-0.1,0.4-0.1,1-0.1,1.7v15.6
+	              c0,1.5,0.2,2.4,0.5,2.8c0.4,0.5,1.1,0.7,2.1,0.7h0.8v0.7H49.1z" fill="#ffffff">
+           </path>
+           <path d="M78.9,117.8H60.4v-0.7h0.8c0.1,0,0.2,0,0.4,0c0.2,0,0.3-0.1,0.5-0.1c0.2-0.1,0.4-0.1,0.5-0.2
+	              c0.2-0.1,0.3-0.2,0.4-0.3c0.1-0.1,0.2-0.2,0.3-0.3c0.1-0.1,0.2-0.3,0.2-0.5c0.1-0.2,0.1-0.5,0.1-0.8s0.1-0.8,0.1-1.3V98.1
+	              c0-1.5-0.1-2.4-0.4-2.8c-0.2-0.2-0.5-0.4-0.8-0.5s-0.8-0.2-1.3-0.2h-0.8V94H79l0.3,5.2h-0.7c-0.1-0.3-0.2-0.7-0.2-1
+	              c-0.1-0.3-0.1-0.6-0.3-0.9c-0.1-0.3-0.3-0.6-0.4-0.8c-0.2-0.3-0.4-0.4-0.7-0.6c-0.3-0.2-0.7-0.3-1.2-0.4c-0.5-0.1-1.1-0.1-1.8-0.1
+	              h-6.6v9.4h5.3c0.8,0,1.5-0.1,1.9-0.2c0.4-0.1,0.8-0.3,1.1-0.6c0.3-0.3,0.4-0.6,0.5-1.1c0.1-0.4,0.2-1,0.3-1.5H77v8.3h-0.7
+	              c-0.1-0.6-0.2-1.2-0.3-1.6c-0.1-0.4-0.3-0.8-0.5-1.1c-0.3-0.3-0.6-0.5-1.1-0.6c-0.4-0.1-1.1-0.2-1.9-0.2h-5.3v7.9
+	              c0,0.4,0,0.7,0,1.1c0,0.3,0.1,0.6,0.2,0.8c0.1,0.2,0.3,0.4,0.6,0.6s0.7,0.2,1.3,0.2h4c1,0,1.8-0.1,2.4-0.2
+	              c0.6-0.1,1.2-0.4,1.7-0.7c0.5-0.3,0.9-0.8,1.4-1.4c0.4-0.6,0.9-1.4,1.5-2.4h0.7L78.9,117.8z" fill="#ffffff">
+           </path>
+           <path d="M103.7,126.9l-14.2-20.3c-0.3,0-0.6,0-0.8,0.1c-0.2,0-0.4,0-0.6,0s-0.3,0-0.5,0c-0.2,0-0.3,0-0.5-0.1v6.9
+	              c0,1.5,0.2,2.4,0.5,2.8c0.4,0.5,1.1,0.8,2,0.8h0.9v0.7H80.2v-0.7h0.9c1,0,1.8-0.3,2.2-1c0.2-0.3,0.4-1.2,0.4-2.6V98.2
+	              c0-1.5-0.1-2.4-0.4-2.8c-0.3-0.3-0.5-0.4-0.9-0.6c-0.3-0.1-0.7-0.2-1.2-0.2h-0.9V94h8.5c1.2,0,2.3,0.1,3.3,0.1s1.7,0.2,2.3,0.4
+	              c0.6,0.2,1.2,0.5,1.7,0.8s1,0.8,1.3,1.2c0.4,0.5,0.7,1,0.9,1.6c0.2,0.6,0.3,1.2,0.3,1.9c0,0.8-0.1,1.4-0.3,2.1
+	              c-0.2,0.6-0.6,1.2-1,1.8c-0.5,0.5-1.1,1-1.8,1.4s-1.5,0.7-2.5,0.9l4.7,6.9c0.5,0.8,1,1.4,1.5,1.9s7.1,10,7.5,10.3
+	              c0.5,0.3,1,0.5,1.5,0.7c0.5,0.1,1.1,0.3,1.8,0.3v0.7L103.7,126.9L103.7,126.9z M94.5,98.3c-0.2-0.6-0.6-1.2-1-1.6
+	              c-0.4-0.4-1-0.8-1.6-1c-0.6-0.3-1.3-0.4-2.1-0.4c-0.6,0-1.5,0.1-2.7,0.3v10h1c1.2,0,2.1-0.1,3-0.4c0.8-0.3,1.5-0.6,2.1-1.1
+	              c0.6-0.4,1-1,1.2-1.7c0.3-0.6,0.4-1.3,0.4-2.1C94.9,99.6,94.7,98.9,94.5,98.3z" fill="#ffffff">
+           </path>
+           <path d="M123,105.3c-0.9,0-1.6,0.3-1.9,0.9c-0.1,0.2-0.2,0.5-0.3,1c-0.1,0.4-0.1,1-0.1,1.6v7.3
+	              c-1.3,0.8-2.7,1.3-4.1,1.7c-1.4,0.4-2.8,0.5-4.4,0.5c-2.1,0-3.9-0.3-5.6-1c-1.6-0.6-3-1.5-4.2-2.6s-2-2.4-2.6-3.9
+	              c-0.6-1.5-0.9-3.1-0.9-4.8c0-1,0.1-2,0.3-3c0.2-1,0.5-2,1-3c0.4-1,1-1.9,1.6-2.7c0.6-0.8,1.4-1.6,2.4-2.2c0.9-0.6,2-1.1,3.1-1.5
+	              s2.4-0.5,3.8-0.5c1,0,1.9,0.1,2.6,0.2c0.8,0.2,1.4,0.3,1.9,0.5c0.5,0.2,1,0.4,1.3,0.5c0.3,0.2,0.6,0.2,0.9,0.2
+	              c0.1,0,0.2,0,0.3-0.1c0.1,0,0.2-0.1,0.3-0.2c0.1-0.1,0.1-0.3,0.2-0.5c0.1-0.2,0.1-0.4,0.1-0.8h0.7l0.6,7.6h-0.6
+	              c-0.4-1.2-0.8-2.1-1.4-2.9c-0.5-0.8-1.2-1.5-1.8-2c-0.7-0.5-1.4-0.9-2.2-1.1c-0.8-0.2-1.6-0.3-2.5-0.3c-1.4,0-2.7,0.3-3.8,0.8
+	              c-1.1,0.6-2.1,1.3-2.8,2.3c-0.8,1-1.3,2.1-1.7,3.4c-0.4,1.3-0.6,2.7-0.6,4.3c0,1.7,0.2,3.3,0.7,4.7s1.1,2.7,2,3.7
+	              c0.8,1,1.9,1.8,3,2.4c1.2,0.6,2.4,0.9,3.8,0.9c0.9,0,1.7-0.1,2.6-0.3c0.8-0.2,1.7-0.5,2.5-1v-6.9c0-0.8,0-1.3-0.1-1.8
+	              c-0.1-0.4-0.2-0.8-0.5-1c-0.2-0.3-0.6-0.4-1-0.5c-0.4-0.1-0.9-0.1-1.6-0.2v-0.6h9.3v0.6H123z" fill="#ffffff">
+           </path>
+           <path d="M140,117.8h-18.5v-0.7h0.8c0.1,0,0.2,0,0.4,0c0.2,0,0.3-0.1,0.5-0.1c0.2-0.1,0.4-0.1,0.5-0.2
+	              c0.2-0.1,0.3-0.2,0.4-0.3c0.1-0.1,0.2-0.2,0.3-0.3c0.1-0.1,0.2-0.3,0.2-0.5c0.1-0.2,0.1-0.5,0.1-0.8s0.1-0.8,0.1-1.3V98.1
+	              c0-1.5-0.1-2.4-0.4-2.8c-0.2-0.2-0.5-0.4-0.8-0.5c-0.4-0.1-0.8-0.2-1.3-0.2h-0.8V94H140l0.3,5.2h-0.7c-0.1-0.3-0.2-0.7-0.2-1
+	              c-0.1-0.3-0.1-0.6-0.3-0.9s-0.3-0.6-0.4-0.8c-0.2-0.3-0.4-0.4-0.7-0.6c-0.3-0.2-0.7-0.3-1.2-0.4c-0.5-0.1-1.1-0.1-1.8-0.1h-6.6
+	              v9.4h5.3c0.8,0,1.5-0.1,1.9-0.2c0.4-0.1,0.8-0.3,1.1-0.6s0.4-0.6,0.5-1.1c0.1-0.4,0.2-1,0.3-1.5h0.7v8.3h-0.7
+	              c-0.1-0.6-0.2-1.2-0.3-1.6c-0.1-0.4-0.3-0.8-0.5-1.1c-0.3-0.3-0.6-0.5-1.1-0.6s-1.1-0.2-1.9-0.2h-5.2v7.9c0,0.4,0,0.7,0,1.1
+	              c0,0.3,0.1,0.6,0.2,0.8c0.1,0.2,0.3,0.4,0.6,0.6s0.7,0.2,1.3,0.2h4c1,0,1.8-0.1,2.4-0.2c0.6-0.1,1.2-0.4,1.7-0.7
+	              c0.5-0.3,0.9-0.8,1.4-1.4c0.4-0.6,0.9-1.4,1.5-2.4h0.7L140,117.8z" fill="#ffffff">
+           </path>
+           <path d="M165.3,94.6c-0.5,0-1,0.1-1.3,0.2c-0.4,0.1-0.6,0.4-0.8,0.6c-0.1,0.2-0.2,0.5-0.3,1s-0.1,1-0.1,1.6v19.8
+	              h-0.6L146.4,99v14.7c0,1.5,0.2,2.4,0.5,2.8c0.4,0.5,1.1,0.7,2.1,0.7h0.8v0.7h-8.3v-0.7h0.8c0.5,0,1-0.1,1.3-0.2
+	              c0.4-0.1,0.6-0.4,0.8-0.7c0.3-0.3,0.4-1.2,0.4-2.6V97c-0.1-0.1-0.3-0.3-0.4-0.6c-0.2-0.3-0.4-0.6-0.7-0.8
+	              c-0.3-0.3-0.7-0.5-1.2-0.7c-0.5-0.2-1.1-0.3-1.7-0.3V94h5.8l14.6,17.9V98.1c0-1.5-0.2-2.4-0.5-2.8c-0.4-0.5-1.1-0.8-2.1-0.8h-0.8
+	              V94h8.3v0.6H165.3z" fill="#ffffff">
+           </path>
+           <path d="M183.3,115.2c-0.7,0.8-1.4,1.4-2.2,1.9c-0.8,0.5-1.7,0.8-2.6,1c-1,0.2-2,0.3-3.1,0.3c-1.8,0-3.5-0.3-4.9-1
+	              c-1.4-0.6-2.6-1.5-3.5-2.6c-0.9-1.1-1.6-2.4-2.1-3.9c-0.5-1.5-0.7-3-0.7-4.7c0-1.2,0.1-2.3,0.4-3.4c0.2-1.1,0.6-2.1,1-3.1
+	              c0.4-1,1-1.8,1.7-2.6c0.6-0.8,1.4-1.5,2.4-2.1c0.9-0.6,1.9-1,3-1.3c1.1-0.3,2.2-0.5,3.5-0.5c0.9,0,1.7,0.1,2.4,0.3
+	              c0.7,0.2,1.3,0.4,1.8,0.6c0.5,0.2,0.9,0.4,1.2,0.6c0.3,0.2,0.6,0.3,0.8,0.3c0.3,0,0.6-0.1,0.9-0.4s0.4-0.7,0.6-1.3h0.6l0.6,8.2
+	              h-0.6c-0.4-1.2-0.8-2.3-1.3-3.1c-0.5-0.9-1.1-1.6-1.8-2.1c-0.7-0.5-1.4-1-2.2-1.2c-0.8-0.3-1.7-0.4-2.6-0.4
+	              c-1.2,0-2.4,0.2-3.4,0.7c-1,0.5-1.9,1.2-2.7,2.2c-0.8,1-1.3,2.2-1.7,3.7c-0.4,1.5-0.6,3.2-0.6,5.2c0,1.7,0.2,3.3,0.6,4.6
+	              c0.4,1.3,1,2.4,1.8,3.3c0.8,0.9,1.7,1.6,2.8,2.1c1.1,0.4,2.3,0.7,3.7,0.7c0.8,0,1.5-0.1,2.2-0.2c0.7-0.1,1.3-0.4,1.9-0.8
+	              c0.6-0.4,1.3-0.9,1.9-1.5s1.3-1.5,2-2.4l0.5,0.4C184.7,113.5,184,114.4,183.3,115.2z" fill="#ffffff">
+           </path>
+           <path d="M210.9,89.5c-0.2,0-0.4,0-0.7,0.1c-0.3,0.1-0.6,0.2-0.9,0.3c-0.3,0.1-0.7,0.3-1,0.6
+	              c-0.3,0.3-0.7,0.5-1,0.9c-0.3,0.3-0.6,0.7-1,1.2c-0.3,0.5-0.8,1.1-1.2,1.8l-7,11v7.2c0,1.8,0.2,2.9,0.6,3.4
+	              c0.5,0.6,1.3,0.9,2.6,0.9h0.9v0.8h-12.5V117h1c0.6,0,1.1-0.1,1.5-0.3c0.4-0.2,0.8-0.5,1.1-0.9c0.1-0.2,0.2-0.6,0.3-1.1
+	              c0.1-0.5,0.1-1.2,0.1-2.1v-6.9l-7.9-12.1c-0.5-0.7-0.9-1.3-1.2-1.8c-0.3-0.5-0.7-0.9-1.1-1.2c-0.4-0.3-0.8-0.5-1.3-0.8
+	              c-0.5-0.3-1.1-0.4-1.7-0.4v-0.8H193v0.8h-0.6c-0.2,0-0.4,0-0.8,0.1c-0.3,0.1-0.6,0.1-0.9,0.3c-0.3,0.1-0.5,0.3-0.7,0.6
+	              c-0.2,0.3-0.3,0.6-0.3,1c0,0.2,0.1,0.6,0.3,1.1c0.2,0.5,0.5,1.1,1,1.8l6.2,9.4l5.8-9c0.6-1,1-1.8,1.2-2.4c0.2-0.6,0.1-1.2-0.3-1.7
+	              c-0.1-0.1-0.2-0.3-0.3-0.4c-0.1-0.1-0.3-0.2-0.5-0.3c-0.2-0.1-0.4-0.2-0.7-0.2c-0.3-0.1-0.6-0.1-1-0.1v-0.8h10.1v0.8H210.9z" fill="#ffffff">
+           </path>
+          </g>
+          <g>
+           <path d="M118.4,125.4l-2.4-5.1l0,0h-2v0.3h0.1c0.1,0,0.2,0,0.3,0c0.1,0,0.1,0,0.2,0c0.1,0,0.1,0,0.1,0.1
+	              c0,0,0.1,0.1,0.1,0.1c0.1,0.1,0.1,0.1,0.1,0.3c0,0.1,0,0.3,0,0.5v4.4c0,0.2,0,0.3,0,0.5c0,0.1-0.1,0.2-0.1,0.2
+	              c-0.1,0.1-0.1,0.1-0.2,0.2c-0.1,0-0.2,0.1-0.3,0.1H114v0.3h2.4v-0.3h-0.3c-0.3,0-0.4-0.1-0.5-0.2c-0.1-0.1-0.1-0.3-0.1-0.7v-4.2
+	              l2.5,5.4l0,0h0.3l2.5-5.4v4.2c0,0.2,0,0.3,0,0.5c0,0.1-0.1,0.2-0.1,0.2c-0.1,0.1-0.1,0.1-0.2,0.2c-0.1,0-0.2,0.1-0.3,0.1h-0.3v0.3
+	              h3v-0.3h-0.3c-0.3,0-0.4-0.1-0.5-0.2c-0.1-0.1-0.1-0.3-0.1-0.7v-4.4c0-0.2,0-0.3,0-0.4c0-0.1,0-0.2,0.1-0.2
+	              c0.1-0.1,0.3-0.2,0.6-0.2h0.3v-0.3h-2L118.4,125.4z" fill="#ffffff">
+           </path>
+           <path d="M131.5,126.7c-0.1,0-0.2-0.1-0.3-0.1c-0.1-0.1-0.2-0.2-0.2-0.3c-0.1-0.1-0.2-0.3-0.3-0.6l-2.3-5.6l0-0.1
+	              h-0.3l-2.4,5.6c-0.1,0.2-0.2,0.3-0.2,0.5c-0.1,0.1-0.1,0.3-0.2,0.3s-0.2,0.2-0.3,0.2c-0.1,0.1-0.2,0.1-0.3,0.1h-0.1v0.3h2.2v-0.3
+	              h-0.1c-0.2,0-0.4-0.1-0.5-0.1s-0.2-0.1-0.2-0.2c0-0.1,0-0.1,0-0.3s0.1-0.3,0.1-0.4l0.4-1h2.5l0.4,0.9c0.1,0.1,0.1,0.3,0.1,0.4
+	              s0.1,0.2,0,0.3c0,0.1-0.1,0.1-0.1,0.2s-0.3,0.1-0.4,0.1h-0.1v0.3h2.8v-0.3h-0.1C131.7,126.8,131.6,126.8,131.5,126.7z M129,124.3
+	              h-2.1l1.1-2.5L129,124.3z" fill="#ffffff">
+           </path>
+           <path d="M138.4,120.5h0.3c0.3,0,0.4,0.1,0.5,0.2c0.1,0.1,0.1,0.2,0.1,0.7v3.7l-4-4.9h-1.7v0.3h0.1
+	              c0.2,0,0.3,0,0.5,0.1c0.1,0.1,0.2,0.1,0.3,0.2c0.1,0.1,0.1,0.1,0.2,0.2c0.1,0.1,0.1,0.1,0.1,0.2v4.7c0,0.4-0.1,0.6-0.1,0.7
+	              c-0.1,0.1-0.1,0.1-0.2,0.2c-0.1,0-0.2,0.1-0.3,0.1h-0.3v0.3h2.5v-0.3h-0.3c-0.3,0-0.4-0.1-0.5-0.2c-0.1-0.1-0.1-0.3-0.1-0.7v-4
+	              l4.3,5.2l0,0h0.3v-5.7c0-0.2,0-0.3,0-0.4c0-0.1,0-0.2,0.1-0.2c0.1-0.1,0.1-0.1,0.2-0.2c0.1,0,0.2-0.1,0.3-0.1h0.3v-0.3h-2.5
+	              L138.4,120.5L138.4,120.5z" fill="#ffffff">
+           </path>
+           <path d="M149.5,126.7c-0.1,0-0.2-0.1-0.3-0.1c-0.1-0.1-0.2-0.2-0.2-0.3c-0.1-0.1-0.2-0.3-0.3-0.6l-2.3-5.6l0-0.1
+	              h-0.3l-2.4,5.6c-0.1,0.2-0.2,0.3-0.2,0.5c-0.1,0.1-0.1,0.3-0.2,0.3s-0.2,0.2-0.3,0.2c-0.1,0.1-0.2,0.1-0.3,0.1h-0.1v0.3h2.2v-0.3
+	              h-0.1c-0.2,0-0.4-0.1-0.5-0.1c-0.1,0-0.2-0.1-0.2-0.2c0-0.1,0-0.1,0-0.3s0.1-0.3,0.1-0.4l0.4-1h2.5l0.4,0.9
+	              c0.1,0.1,0.1,0.3,0.1,0.4s0.1,0.2,0,0.3c0,0.1-0.1,0.1-0.1,0.2s-0.3,0.1-0.4,0.1h-0.1v0.3h2.8v-0.3h-0.1
+	              C149.7,126.8,149.6,126.8,149.5,126.7z M147.1,124.3H145l1.1-2.5L147.1,124.3z" fill="#ffffff">
+           </path>
+           <path d="M156.2,123.6L156.2,123.6c0.2,0,0.4,0,0.5,0.1c0.1,0,0.2,0.1,0.2,0.1c0.1,0.1,0.1,0.1,0.1,0.3
+	              c0,0.1,0,0.3,0,0.5v1.9c-0.2,0.1-0.4,0.2-0.6,0.3s-0.5,0.1-0.7,0.1c-0.4,0-0.7-0.1-1-0.2c-0.3-0.2-0.6-0.4-0.8-0.7
+	              c-0.2-0.3-0.4-0.6-0.5-1c-0.1-0.4-0.2-0.8-0.2-1.3c0-0.4,0.1-0.8,0.2-1.2c0.1-0.4,0.3-0.7,0.5-1c0.2-0.3,0.4-0.5,0.8-0.6
+	              c0.3-0.1,0.6-0.2,1-0.2c0.3,0,0.5,0,0.7,0.1s0.4,0.2,0.6,0.3c0.2,0.1,0.3,0.3,0.5,0.5c0.1,0.2,0.3,0.5,0.4,0.8l0,0.1h0.3l-0.2-2.3
+	              h-0.3v0.1c0,0.1,0,0.1,0,0.2c0,0.1,0,0.1-0.1,0.1c0,0,0,0,0,0h0c-0.1,0-0.1,0-0.2-0.1c-0.1-0.1-0.2-0.1-0.4-0.1
+	              c-0.1-0.1-0.3-0.1-0.6-0.1c-0.2-0.1-0.5-0.1-0.8-0.1c-0.4,0-0.8,0.1-1.1,0.2c-0.3,0.1-0.6,0.3-0.9,0.4c-0.3,0.2-0.5,0.4-0.7,0.6
+	              c-0.2,0.3-0.3,0.5-0.5,0.8c-0.1,0.3-0.2,0.6-0.3,0.8s-0.1,0.6-0.1,0.9c0,0.5,0.1,1,0.3,1.4s0.4,0.8,0.8,1.1
+	              c0.3,0.3,0.7,0.6,1.2,0.8c0.5,0.2,1,0.3,1.6,0.3c0.4,0,0.8-0.1,1.2-0.2c0.4-0.1,0.8-0.3,1.2-0.5l0,0v-2.1c0-0.2,0-0.3,0-0.4
+	              c0-0.1,0-0.2,0.1-0.3c0.1-0.1,0.2-0.2,0.5-0.2h0.2v-0.3h-2.8V123.6z" fill="#ffffff">
+           </path>
+           <path d="M166.5,125.3c-0.1,0.3-0.3,0.5-0.4,0.7c-0.1,0.2-0.2,0.3-0.4,0.4s-0.3,0.2-0.4,0.2c-0.2,0-0.4,0.1-0.7,0.1
+	              h-1.1c-0.1,0-0.3,0-0.3-0.1c-0.1,0-0.1-0.1-0.1-0.1c0-0.1,0-0.1,0-0.2v-2.4h1.4c0.2,0,0.4,0,0.5,0.1c0.1,0,0.2,0.1,0.3,0.2
+	              c0.1,0.1,0.1,0.2,0.1,0.3c0,0.1,0.1,0.3,0.1,0.4v0.1h0.3v-2.5h-0.3v0.1c0,0.2-0.1,0.3-0.1,0.4c0,0.1-0.1,0.2-0.1,0.3
+	              c-0.1,0.1-0.1,0.1-0.3,0.1s-0.3,0.1-0.5,0.1h-1.4v-2.5h1.8c0.2,0,0.4,0,0.5,0c0.1,0,0.2,0.1,0.3,0.1c0.1,0.1,0.1,0.1,0.2,0.2
+	              c0.1,0.1,0.1,0.1,0.1,0.2c0,0.1,0.1,0.2,0.1,0.3c0,0.1,0,0.2,0.1,0.3v0.1h0.3l-0.1-1.6h-5.3v0.3h0.3c0.1,0,0.3,0,0.3,0.1
+	              c0.1,0,0.2,0.1,0.2,0.1c0,0.1,0.1,0.2,0.1,0.7v4.4c0,0.1,0,0.3,0,0.4c0,0.1,0,0.2,0,0.2s0,0.1-0.1,0.1c0,0-0.1,0.1-0.1,0.1
+	              c0,0-0.1,0.1-0.1,0.1c-0.1,0-0.1,0-0.1,0.1c-0.1,0-0.1,0-0.1,0c0,0-0.1,0-0.1,0h-0.3v0.3h5.3l0.6-1.9L166.5,125.3L166.5,125.3z" fill="#ffffff">
+           </path>
+           <path d="M173.1,125.4l-2.4-5.1l0,0h-2v0.3h0.1c0.1,0,0.2,0,0.3,0c0.1,0,0.1,0,0.2,0c0.1,0,0.1,0,0.1,0.1
+	              c0,0,0.1,0.1,0.1,0.1c0.1,0.1,0.1,0.1,0.1,0.3c0,0.1,0,0.3,0,0.5v4.4c0,0.2,0,0.3,0,0.5c0,0.1-0.1,0.2-0.1,0.2
+	              c-0.1,0.1-0.1,0.1-0.2,0.2c-0.1,0-0.2,0.1-0.3,0.1h-0.3v0.3h2.4v-0.3h-0.3c-0.3,0-0.4-0.1-0.5-0.2c-0.1-0.1-0.1-0.3-0.1-0.7v-4.2
+	              l2.5,5.4l0,0h0.3l2.5-5.4v4.2c0,0.2,0,0.3,0,0.5c0,0.1-0.1,0.2-0.1,0.2c-0.1,0.1-0.1,0.1-0.2,0.2c-0.1,0-0.2,0.1-0.3,0.1h-0.3v0.3
+	              h3v-0.3h-0.3c-0.3,0-0.4-0.1-0.5-0.2c-0.1-0.1-0.1-0.3-0.1-0.7v-4.4c0-0.2,0-0.3,0-0.4c0-0.1,0-0.2,0.1-0.2
+	              c0.1-0.1,0.3-0.2,0.6-0.2h0.3v-0.3h-2L173.1,125.4z" fill="#ffffff">
+           </path>
+           <path d="M185.1,125.3c-0.1,0.3-0.3,0.5-0.4,0.7c-0.1,0.2-0.2,0.3-0.4,0.4s-0.3,0.2-0.4,0.2c-0.2,0-0.4,0.1-0.7,0.1
+	              H182c-0.1,0-0.3,0-0.3-0.1c-0.1,0-0.1-0.1-0.1-0.1c0-0.1,0-0.1,0-0.2v-2.4h1.4c0.2,0,0.4,0,0.5,0.1c0.1,0,0.2,0.1,0.3,0.2
+	              c0.1,0.1,0.1,0.2,0.1,0.3c0,0.1,0.1,0.3,0.1,0.4v0.1h0.3v-2.5H184v0.1c0,0.2-0.1,0.3-0.1,0.4c0,0.1-0.1,0.2-0.1,0.3
+	              c-0.1,0.1-0.1,0.1-0.3,0.1c-0.1,0-0.3,0.1-0.5,0.1h-1.4v-2.5h1.8c0.2,0,0.4,0,0.5,0c0.1,0,0.2,0.1,0.3,0.1s0.1,0.1,0.2,0.2
+	              c0.1,0.1,0.1,0.1,0.1,0.2c0,0.1,0.1,0.2,0.1,0.3c0,0.1,0,0.2,0.1,0.3v0.1h0.3l-0.1-1.6h-5.3v0.3h0.3c0.1,0,0.3,0,0.3,0.1
+	              c0.1,0,0.2,0.1,0.2,0.1c0,0.1,0.1,0.2,0.1,0.7v4.4c0,0.1,0,0.3,0,0.4c0,0.1,0,0.2,0,0.2s0,0.1-0.1,0.1c0,0-0.1,0.1-0.1,0.1
+	              s-0.1,0.1-0.1,0.1c-0.1,0-0.1,0-0.1,0.1c-0.1,0-0.1,0-0.1,0c0,0-0.1,0-0.1,0h-0.3v0.3h5.3l0.6-1.9L185.1,125.3L185.1,125.3z" fill="#ffffff">
+           </path>
+           <path d="M192,120.5h0.3c0.3,0,0.4,0.1,0.5,0.2c0.1,0.1,0.1,0.2,0.1,0.7v3.7l-4-4.9h-1.7v0.3h0.1
+	              c0.2,0,0.3,0,0.5,0.1c0.1,0.1,0.2,0.1,0.3,0.2s0.1,0.1,0.2,0.2c0.1,0.1,0.1,0.1,0.1,0.2v4.7c0,0.4-0.1,0.6-0.1,0.7
+	              s-0.1,0.1-0.2,0.2s-0.2,0.1-0.3,0.1h-0.3v0.3h2.5v-0.3h-0.3c-0.3,0-0.4-0.1-0.5-0.2c-0.1-0.1-0.1-0.3-0.1-0.7v-4l4.3,5.2l0,0h0.3
+	              v-5.7c0-0.2,0-0.3,0-0.4c0-0.1,0-0.2,0.1-0.2c0.1-0.1,0.1-0.1,0.2-0.2c0.1,0,0.2-0.1,0.3-0.1h0.3v-0.3H192L192,120.5L192,120.5z" fill="#ffffff">
+           </path>
+           <path d="M202.3,120.2h-5.7l-0.1,1.7h0.4v-0.1c0-0.4,0.2-0.7,0.4-0.9c0.1,0,0.1-0.1,0.1-0.1s0.1-0.1,0.2-0.1
+	              c0.1,0,0.1,0,0.2,0s0.2,0,0.3,0h0.7v5.1c0,0.2,0,0.3,0,0.5c0,0.1-0.1,0.2-0.1,0.2c-0.1,0.1-0.1,0.1-0.2,0.2
+	              c-0.1,0-0.2,0.1-0.3,0.1h-0.3v0.3h3v-0.3h-0.3c-0.3,0-0.4-0.1-0.5-0.2c0,0-0.1-0.1-0.1-0.3c0-0.1,0-0.3,0-0.5v-5.1h0.9
+	              c0.2,0,0.4,0,0.5,0.1s0.3,0.1,0.3,0.2c0,0,0.1,0.1,0.1,0.1c0,0.1,0.1,0.1,0.1,0.1c0,0.1,0.1,0.1,0.1,0.2c0,0.1,0,0.2,0.1,0.3v0.1
+	              h0.3L202.3,120.2z" fill="#ffffff">
+           </path>
+          </g>
+         </g>
+        </svg>
+       </a>
+      </div>
+      <div class="col-sm-2 col-xs-6" style="min-height: 100px;display:flex;">
+       <a href="/navigator" style="display:flex;width:100%;">
+        <img alt="" src="https://media.erepublic.com/image/Nav_Logo_Rev.svg" style="padding:15px 0px;width:100%;margin-top:15px"/>
+       </a>
+      </div>
+      <div class="col-sm-2 col-xs-6" style="min-height: 100px;display:flex;">
+       <a href="//www.techwire.net" style="display:flex">
+        <img src="https://media.erepublic.com/image/Techwire_Logo_Rev.svg" style="height:110px;"/>
+       </a>
+      </div>
+      <div class="col-sm-2 col-xs-6" style="min-height: 100px;display:flex;">
+       <a href="/cdg" style="display:flex;justify-content:center;">
+        <svg id="Layer_1" style="width:81%;" version="1.1" viewbox="0 -15 324 151.52" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px">
+         <style type="text/css">
+          .st0{fill:#FFFFFF;opacity:1;}
+         </style>
+         <g>
+          <g>
+           <path class="st0" d="M5.44,95.93c0,0.79,0.62,1.51,1.4,1.51h17.95c15.06,0,27.38-12.46,27.38-27.86c0-15.24-12.33-27.7-27.38-27.7
+			H6.84c-0.78,0-1.4,0.71-1.4,1.51V95.93z M13.39,89.89V49.41h10.3c11.47,0,19.82,8.49,19.82,20.16c0,11.75-8.35,20.32-19.82,20.32
+			H13.39z M69.19,95.93c0,0.79,0.7,1.51,1.48,1.51h5.15c0.78,0,1.48-0.71,1.48-1.51V42.8c0-0.79-0.7-1.51-1.48-1.51h-5.15
+			c-0.78,0-1.48,0.71-1.48,1.51V95.93z M94.77,69.73c0,15.88,12.56,28.5,28.09,28.5c11.31,0,19.35-5.24,19.35-5.24
+			c0.31-0.24,0.62-0.87,0.62-1.27c0-6.35-0.08-12.86-0.08-19.21c0-0.8-0.62-1.51-1.41-1.51h-14.2c-0.86,0-1.48,0.63-1.48,1.51v4.61
+			c0,0.79,0.62,1.43,1.48,1.43h7.65v8.89c-0.78,0.32-5.23,2.7-11.7,2.7c-11.08,0-19.58-9.53-19.58-20.56
+			c0-11.12,8.51-20.64,19.58-20.64c4.76,0,9.59,2.14,13.26,5.4c0.78,0.71,1.4,0.79,2.03,0.08c1.17-1.27,2.34-2.46,3.51-3.73
+			c0.62-0.64,0.55-1.59-0.08-2.22c-5.3-4.61-11.47-7.38-18.96-7.38C107.34,41.07,94.77,53.85,94.77,69.73 M159.1,95.93
+			c0,0.79,0.7,1.51,1.48,1.51h5.15c0.78,0,1.48-0.71,1.48-1.51V43.37c0-0.79-0.7-1.51-1.48-1.51h-5.15c-0.78,0-1.48,0.71-1.48,1.51
+			V95.93z M197.92,95.93c0,0.79,0.7,1.51,1.48,1.51h5.15c0.78,0,1.48-0.71,1.48-1.51v-46.6h12.72c0.86,0,1.48-0.71,1.48-1.51v-4.45
+			c0-0.79-0.63-1.51-1.48-1.51H185.2c-0.86,0-1.48,0.71-1.48,1.51v4.45c0,0.8,0.63,1.51,1.48,1.51h12.72V95.93z M224.43,97.44h5.96
+			c0.94,0,1.56-0.63,1.8-1.19c1.56-3.65,3.2-7.22,4.76-10.88h25.51l25.64,52.22c0.31,0.71,0.86,1.19,1.79,1.19h4.92
+			c1.17,0,1.79-1.03,1.33-2.06l-44.59-94.78c-0.23-0.47-0.93-0.87-1.33-0.87h-0.78c-0.39,0-1.09,0.4-1.33,0.87l-23.95,53.43
+			c-0.47,1.03,0.16,2.06,1.33,2.06 M239.99,78.54l9.52-21.75h0.39l9.59,21.75H239.99z M291.47,95.93c0,0.79,0.62,1.51,1.48,1.51
+			h27.77c0.86,0,1.48-0.71,1.48-1.51v-4.37c0-0.8-0.62-1.51-1.48-1.51h-21.14V43.37c0-0.79-0.7-1.51-1.48-1.51h-5.15
+			c-0.86,0-1.48,0.71-1.48,1.51V95.93z">
+           </path>
+           <path class="st0" d="M4.31,126.56c0,7.18,5.78,12.89,12.92,12.89c5.2,0,8.9-2.37,8.9-2.37c0.14-0.11,0.28-0.4,0.28-0.57
+			c0-2.87-0.03-5.82-0.03-8.69c0-0.36-0.29-0.68-0.65-0.68H19.2c-0.39,0-0.68,0.29-0.68,0.68v2.08c0,0.36,0.29,0.65,0.68,0.65h3.52
+			v4.02c-0.36,0.14-2.4,1.22-5.38,1.22c-5.1,0-9.01-4.31-9.01-9.3c0-5.03,3.91-9.33,9.01-9.33c2.19,0,4.41,0.97,6.1,2.44
+			c0.36,0.32,0.64,0.36,0.93,0.04c0.54-0.58,1.08-1.11,1.62-1.69c0.28-0.29,0.25-0.72-0.04-1c-2.44-2.08-5.28-3.34-8.72-3.34
+			C10.08,113.6,4.31,119.38,4.31,126.56 M31.66,126.56c0,7.18,5.71,12.89,12.89,12.89c7.18,0,12.92-5.71,12.92-12.89
+			c0-7.18-5.75-12.96-12.92-12.96C37.36,113.6,31.66,119.38,31.66,126.56 M35.25,126.56c0-5.1,4.2-9.37,9.3-9.37
+			c5.13,0,9.33,4.27,9.33,9.37c0,5.13-4.2,9.3-9.33,9.3C39.45,135.86,35.25,131.69,35.25,126.56 M71.47,139.05
+			c0.11,0.21,0.36,0.39,0.61,0.39h0.36c0.28,0,0.5-0.18,0.61-0.39l11.02-24.16c0.22-0.46-0.07-0.93-0.61-0.93h-2.55
+			c-0.32,0-0.54,0.21-0.61,0.39l-7.9,17.77h-0.21l-7.9-17.77c-0.07-0.18-0.33-0.39-0.61-0.39h-2.55c-0.54,0-0.82,0.47-0.61,0.93
+			L71.47,139.05z M89.13,138.41c0,0.36,0.29,0.68,0.68,0.68h14.36c0.4,0,0.68-0.32,0.68-0.68v-1.98c0-0.36-0.29-0.68-0.68-0.68
+			H92.83v-7.72h9.58c0.36,0,0.68-0.29,0.68-0.68v-2.01c0-0.36-0.32-0.68-0.68-0.68h-9.58v-7.32h11.34c0.4,0,0.68-0.32,0.68-0.68
+			v-2.01c0-0.36-0.29-0.68-0.68-0.68H89.81c-0.39,0-0.68,0.32-0.68,0.68V138.41z M111.71,138.41c0,0.36,0.29,0.68,0.68,0.68h2.33
+			c0.36,0,0.68-0.32,0.68-0.68v-9.15h5.42l4.77,9.51c0.07,0.14,0.28,0.32,0.57,0.32h2.8c0.61,0,0.86-0.57,0.61-1.04l-4.92-9.12
+			c3.12-1.26,5.31-3.99,5.31-7.29c0-4.27-3.52-7.68-7.83-7.68h-9.76c-0.4,0-0.68,0.32-0.68,0.68V138.41z M115.48,126.17v-8.72h6.39
+			c2.33,0,4.38,1.94,4.38,4.27c0,2.48-2.05,4.45-4.38,4.45H115.48z M137.01,138.41c0,0.36,0.32,0.68,0.68,0.68h2.26
+			c0.4,0,0.68-0.32,0.68-0.68v-17.48h0.04l15.58,18.52h0.93c0.36,0,0.68-0.29,0.68-0.64v-24.16c0-0.36-0.32-0.68-0.68-0.68h-2.3
+			c-0.39,0-0.68,0.32-0.68,0.68v16.98h-0.04l-15.58-18.02h-0.89c-0.36,0-0.68,0.29-0.68,0.65V138.41z M164.54,138.26
+			c-0.07,0.5,0.18,0.82,0.68,0.82h2.34c0.29,0,0.61-0.25,0.65-0.5l2.58-16.05h0.15l6.5,16.51c0.07,0.21,0.32,0.39,0.61,0.39h0.65
+			c0.32,0,0.54-0.18,0.61-0.39l6.46-16.51h0.11l2.66,16.05c0.07,0.25,0.36,0.5,0.68,0.5h2.33c0.5,0,0.76-0.32,0.65-0.82l-4.41-24.12
+			c-0.07-0.28-0.36-0.54-0.65-0.54h-0.57c-0.25,0-0.54,0.18-0.61,0.4l-7.46,18.34h-0.15l-7.5-18.34c-0.07-0.22-0.39-0.4-0.61-0.4
+			h-0.57c-0.29,0-0.57,0.25-0.65,0.54L164.54,138.26z M198.9,138.41c0,0.36,0.28,0.68,0.68,0.68h14.36c0.39,0,0.68-0.32,0.68-0.68
+			v-1.98c0-0.36-0.29-0.68-0.68-0.68H202.6v-7.72h9.58c0.36,0,0.68-0.29,0.68-0.68v-2.01c0-0.36-0.32-0.68-0.68-0.68h-9.58v-7.32
+			h11.34c0.39,0,0.68-0.32,0.68-0.68v-2.01c0-0.36-0.29-0.68-0.68-0.68h-14.36c-0.4,0-0.68,0.32-0.68,0.68V138.41z M221.48,138.41
+			c0,0.36,0.32,0.68,0.68,0.68h2.26c0.4,0,0.68-0.32,0.68-0.68v-17.48h0.04l15.58,18.52h0.93c0.36,0,0.68-0.29,0.68-0.64v-24.16
+			c0-0.36-0.32-0.68-0.68-0.68h-2.3c-0.39,0-0.68,0.32-0.68,0.68v16.98h-0.04l-15.58-18.02h-0.9c-0.36,0-0.68,0.29-0.68,0.65V138.41
+			z M254.18,138.41c0,0.36,0.32,0.68,0.68,0.68h2.37c0.36,0,0.68-0.32,0.68-0.68v-21.07h5.85c0.4,0,0.68-0.32,0.68-0.68v-2.01
+			c0-0.36-0.29-0.68-0.68-0.68h-15.43c-0.4,0-0.68,0.32-0.68,0.68v2.01c0,0.36,0.29,0.68,0.68,0.68h5.85V138.41z">
+           </path>
+           <path class="st0" d="M6.84,18.47c0,4.35,3.49,7.8,7.84,7.8c1.93,0,3.8-0.67,5.28-2.1c0.15-0.15,0.2-0.44,0.02-0.59l-1-0.98
+			c-0.13-0.11-0.33-0.13-0.52,0.02c-1.04,0.81-2.15,1.44-3.73,1.44c-3.11,0-5.47-2.58-5.47-5.63c0-3.04,2.34-5.65,5.45-5.65
+			c1.35,0,2.74,0.56,3.76,1.45c0.2,0.2,0.39,0.2,0.54,0l0.95-0.98c0.17-0.17,0.17-0.44-0.02-0.61c-1.48-1.28-3.06-2.02-5.25-2.02
+			C10.33,10.63,6.84,14.13,6.84,18.47 M27.45,25.64c0,0.22,0.17,0.41,0.41,0.41h8.69c0.24,0,0.41-0.2,0.41-0.41v-1.19
+			c0-0.22-0.17-0.41-0.41-0.41h-6.86v-4.67h5.8c0.22,0,0.41-0.17,0.41-0.41v-1.22c0-0.21-0.2-0.41-0.41-0.41h-5.8v-4.43h6.86
+			c0.24,0,0.41-0.2,0.41-0.41v-1.21c0-0.22-0.17-0.41-0.41-0.41h-8.69c-0.24,0-0.41,0.19-0.41,0.41V25.64z M44.63,25.64
+			c0,0.22,0.2,0.41,0.41,0.41h1.36c0.24,0,0.41-0.2,0.41-0.41V15.06h0.02l9.43,11.2h0.56c0.22,0,0.41-0.17,0.41-0.39V11.26
+			c0-0.22-0.2-0.41-0.41-0.41h-1.39c-0.24,0-0.41,0.2-0.41,0.41v10.27h-0.02l-9.43-10.9h-0.54c-0.22,0-0.41,0.17-0.41,0.39V25.64z
+			 M67.93,25.64c0,0.22,0.2,0.41,0.41,0.41h1.43c0.22,0,0.41-0.2,0.41-0.41V12.89h3.54c0.24,0,0.41-0.2,0.41-0.41v-1.21
+			c0-0.22-0.17-0.41-0.41-0.41h-9.34c-0.24,0-0.41,0.19-0.41,0.41v1.21c0,0.22,0.17,0.41,0.41,0.41h3.54V25.64z M80.88,25.64
+			c0,0.22,0.17,0.41,0.41,0.41h8.69c0.24,0,0.41-0.2,0.41-0.41v-1.19c0-0.22-0.17-0.41-0.41-0.41h-6.86v-4.67h5.8
+			c0.21,0,0.41-0.17,0.41-0.41v-1.22c0-0.21-0.2-0.41-0.41-0.41h-5.8v-4.43h6.86c0.24,0,0.41-0.2,0.41-0.41v-1.21
+			c0-0.22-0.17-0.41-0.41-0.41h-8.69c-0.24,0-0.41,0.19-0.41,0.41V25.64z M98.06,25.64c0,0.22,0.17,0.41,0.41,0.41h1.41
+			c0.22,0,0.41-0.2,0.41-0.41V20.1h3.28l2.89,5.76c0.04,0.09,0.17,0.2,0.35,0.2h1.69c0.37,0,0.52-0.35,0.37-0.63l-2.97-5.52
+			c1.89-0.76,3.21-2.41,3.21-4.41c0-2.59-2.13-4.65-4.73-4.65h-5.91c-0.24,0-0.41,0.19-0.41,0.41V25.64z M100.34,18.23v-5.28h3.87
+			c1.41,0,2.65,1.17,2.65,2.59c0,1.5-1.24,2.7-2.65,2.7H100.34z M125.36,25.64c0,0.22,0.17,0.41,0.41,0.41h1.41
+			c0.22,0,0.41-0.2,0.41-0.41v-5.71h5.8c0.21,0,0.41-0.2,0.41-0.41v-1.2c0-0.22-0.2-0.41-0.41-0.41h-5.8v-5.02h6.86
+			c0.24,0,0.41-0.2,0.41-0.41v-1.21c0-0.22-0.17-0.41-0.41-0.41h-8.69c-0.24,0-0.41,0.19-0.41,0.41V25.64z M140.93,18.47
+			c0,4.35,3.45,7.8,7.8,7.8s7.82-3.45,7.82-7.8c0-4.34-3.47-7.84-7.82-7.84S140.93,14.13,140.93,18.47 M143.1,18.47
+			c0-3.08,2.54-5.67,5.63-5.67c3.1,0,5.65,2.59,5.65,5.67c0,3.11-2.54,5.63-5.65,5.63C145.64,24.1,143.1,21.58,143.1,18.47
+			 M164.3,25.64c0,0.22,0.17,0.41,0.41,0.41h1.41c0.22,0,0.41-0.2,0.41-0.41V20.1h3.28l2.89,5.76c0.04,0.09,0.17,0.2,0.35,0.2h1.69
+			c0.37,0,0.52-0.35,0.37-0.63l-2.97-5.52c1.89-0.76,3.21-2.41,3.21-4.41c0-2.59-2.13-4.65-4.74-4.65h-5.91
+			c-0.24,0-0.41,0.19-0.41,0.41V25.64z M166.58,18.23v-5.28h3.87c1.41,0,2.65,1.17,2.65,2.59c0,1.5-1.24,2.7-2.65,2.7H166.58z">
+           </path>
+          </g>
+         </g>
+        </svg>
+       </a>
+      </div>
+      <div class="col-sm-2 col-xs-6" style="min-height: 100px;display:flex;">
+       <a href="/education" style="display:flex;">
+        <svg id="Layer_1" style="width:80%;" version="1.1" viewbox="0 -15 320 150" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px">
+         <style type="text/css">
+          .st0{fill:#FFFFFF;opacity:1;}
+         </style>
+         <g>
+          <path class="st0" d="M290.33,91.42c0,0.8,0.63,1.53,1.5,1.53h28.1c0.87,0,1.5-0.72,1.5-1.53v-4.42c0-0.8-0.63-1.53-1.5-1.53h-21.39
+		V38.26c0-0.8-0.71-1.52-1.5-1.52h-5.21c-0.87,0-1.5,0.72-1.5,1.52V91.42z M238.78,73.84l9.63-22h0.39l9.71,22H238.78z M224.1,92.95
+		h4.97c0.95,0,1.58-0.64,1.82-1.21c1.58-3.69,3.24-7.31,4.81-11h25.81l24.91,51.96c0.32,0.72,0.87,1.21,1.81,1.21h4.97
+		c1.18,0,1.81-1.05,1.34-2.09l-44.09-95.01c-0.24-0.48-0.95-0.88-1.34-0.88h-0.79c-0.39,0-1.11,0.4-1.34,0.88l-24.23,54.04
+		C222.29,91.9,222.92,92.95,224.1,92.95 M196.23,91.42c0,0.8,0.71,1.53,1.5,1.53h5.21c0.79,0,1.5-0.72,1.5-1.53V44.29h12.86
+		c0.87,0,1.5-0.72,1.5-1.53v-4.5c0-0.8-0.63-1.52-1.5-1.52h-33.94c-0.87,0-1.5,0.72-1.5,1.52v4.5c0,0.8,0.63,1.53,1.5,1.53h12.86
+		V91.42z M157.22,91.42c0,0.8,0.71,1.53,1.5,1.53h5.21c0.79,0,1.5-0.72,1.5-1.53V38.26c0-0.8-0.71-1.52-1.5-1.52h-5.21
+		c-0.79,0-1.5,0.72-1.5,1.52V91.42z M92.41,64.92c0,16.06,12.71,28.83,28.41,28.83c11.44,0,19.57-5.3,19.57-5.3
+		c0.32-0.24,0.63-0.88,0.63-1.28c0-6.42-0.08-13.01-0.08-19.43c0-0.8-0.63-1.53-1.42-1.53h-14.36c-0.87,0-1.5,0.64-1.5,1.53v4.66
+		c0,0.8,0.63,1.45,1.5,1.45h7.73v8.99c-0.79,0.32-5.29,2.73-11.84,2.73c-11.21,0-19.81-9.64-19.81-20.8
+		c0-11.24,8.6-20.88,19.81-20.88c4.81,0,9.71,2.17,13.42,5.46c0.79,0.72,1.42,0.8,2.05,0.08c1.18-1.28,2.37-2.49,3.55-3.77
+		c0.63-0.64,0.55-1.61-0.08-2.25c-5.37-4.66-11.6-7.47-19.18-7.47C105.12,35.93,92.41,48.86,92.41,64.92 M67.07,91.42
+		c0,0.8,0.71,1.53,1.5,1.53h5.21c0.79,0,1.5-0.72,1.5-1.53V37.68c0-0.8-0.71-1.52-1.5-1.52h-5.21c-0.79,0-1.5,0.72-1.5,1.52V91.42z
+		 M10.62,85.32V44.37h10.42c11.6,0,20.05,8.59,20.05,20.4c0,11.88-8.44,20.56-20.05,20.56H10.62z M2.57,91.42
+		c0,0.8,0.63,1.53,1.42,1.53h18.15c15.23,0,27.7-12.61,27.7-28.19c0-15.42-12.47-28.03-27.7-28.03H3.99c-0.79,0-1.42,0.72-1.42,1.52
+		V91.42z">
+          </path>
+          <path class="st0" d="M238.38,133.99c0,0.36,0.33,0.69,0.69,0.69h2.29c0.4,0,0.69-0.33,0.69-0.69V116.3h0.04l15.76,18.74h0.94
+		c0.36,0,0.69-0.29,0.69-0.65v-24.44c0-0.36-0.33-0.69-0.69-0.69h-2.32c-0.4,0-0.69,0.33-0.69,0.69v17.18h-0.04l-15.76-18.23h-0.91
+		c-0.36,0-0.69,0.29-0.69,0.65V133.99z M203.81,122c0-5.16,4.25-9.48,9.41-9.48c5.19,0,9.44,4.32,9.44,9.48
+		c0,5.19-4.25,9.41-9.44,9.41C208.06,131.41,203.81,127.2,203.81,122 M200.18,122c0,7.26,5.77,13.04,13.04,13.04
+		c7.26,0,13.07-5.77,13.07-13.04c0-7.26-5.81-13.11-13.07-13.11C205.95,108.89,200.18,114.74,200.18,122 M184.31,133.99
+		c0,0.36,0.33,0.69,0.69,0.69h2.4c0.36,0,0.69-0.33,0.69-0.69v-24.04c0-0.36-0.33-0.69-0.69-0.69H185c-0.36,0-0.69,0.33-0.69,0.69
+		V133.99z M163.11,133.99c0,0.36,0.33,0.69,0.69,0.69h2.4c0.36,0,0.69-0.33,0.69-0.69v-21.32h5.92c0.4,0,0.69-0.33,0.69-0.69v-2.03
+		c0-0.36-0.29-0.69-0.69-0.69h-15.61c-0.4,0-0.69,0.33-0.69,0.69v2.03c0,0.36,0.29,0.69,0.69,0.69h5.92V133.99z M133.99,126.03
+		l4.43-9.95h0.18l4.47,9.95H133.99z M127.23,134.68h2.29c0.43,0,0.73-0.29,0.83-0.54c0.73-1.67,1.49-3.3,2.22-4.98h11.87l2.25,4.98
+		c0.14,0.33,0.4,0.54,0.83,0.54h2.29c0.54,0,0.83-0.47,0.62-0.94l-11.08-24.44c-0.11-0.22-0.43-0.4-0.62-0.4h-0.36
+		c-0.18,0-0.51,0.18-0.62,0.4l-11.15,24.44C126.4,134.2,126.69,134.68,127.23,134.68 M96,122c0,7.26,5.85,13.04,13.11,13.04
+		c3.23,0,6.35-1.13,8.82-3.52c0.25-0.25,0.33-0.73,0.04-0.98l-1.67-1.63c-0.22-0.18-0.54-0.22-0.87,0.04
+		c-1.74,1.34-3.6,2.4-6.25,2.4c-5.19,0-9.15-4.32-9.15-9.41s3.92-9.44,9.12-9.44c2.25,0,4.57,0.94,6.28,2.43
+		c0.33,0.33,0.65,0.33,0.91,0l1.6-1.63c0.29-0.29,0.29-0.73-0.04-1.02c-2.47-2.14-5.12-3.38-8.79-3.38
+		C101.85,108.89,96,114.74,96,122 M64.49,125.2c0,5.52,4.14,9.84,9.84,9.84c5.74,0,9.91-4.32,9.91-9.84v-15.25
+		c0-0.36-0.33-0.69-0.69-0.69h-2.43c-0.4,0-0.69,0.33-0.69,0.69v15.07c0,3.6-2.36,6.39-6.1,6.39c-3.7,0-6.03-2.83-6.03-6.46v-15
+		c0-0.36-0.29-0.69-0.69-0.69h-2.43c-0.36,0-0.69,0.33-0.69,0.69V125.2z M34.64,131.23v-18.52h4.79c5.34,0,9.22,3.89,9.22,9.22
+		c0,5.37-3.89,9.3-9.22,9.3H34.64z M30.93,133.99c0,0.36,0.29,0.69,0.65,0.69h8.35c7.01,0,12.75-5.7,12.75-12.75
+		c0-6.97-5.74-12.67-12.75-12.67h-8.35c-0.36,0-0.65,0.33-0.65,0.69V133.99z M2.65,133.99c0,0.36,0.29,0.69,0.69,0.69h14.52
+		c0.4,0,0.69-0.33,0.69-0.69v-2c0-0.36-0.29-0.69-0.69-0.69H6.39v-7.81h9.69c0.36,0,0.69-0.29,0.69-0.69v-2.03
+		c0-0.36-0.33-0.69-0.69-0.69H6.39v-7.41h11.47c0.4,0,0.69-0.33,0.69-0.69v-2.03c0-0.36-0.29-0.69-0.69-0.69H3.34
+		c-0.4,0-0.69,0.33-0.69,0.69V133.99z">
+          </path>
+          <path class="st0" d="M164.42,12.72V7.33h3.95c1.44,0,2.71,1.2,2.71,2.64c0,1.53-1.26,2.75-2.71,2.75H164.42z M162.09,20.28
+		c0,0.22,0.18,0.42,0.42,0.42h1.44c0.22,0,0.42-0.2,0.42-0.42v-5.65h3.35l2.95,5.88c0.04,0.09,0.18,0.2,0.36,0.2h1.73
+		c0.38,0,0.53-0.35,0.38-0.64l-3.04-5.63c1.93-0.77,3.28-2.46,3.28-4.5c0-2.64-2.17-4.74-4.83-4.74h-6.03
+		c-0.24,0-0.42,0.2-0.42,0.42V20.28z M140.98,12.96c0-3.15,2.6-5.79,5.74-5.79c3.17,0,5.77,2.64,5.77,5.79
+		c0,3.17-2.6,5.74-5.77,5.74C143.58,18.71,140.98,16.13,140.98,12.96 M138.77,12.96c0,4.44,3.52,7.96,7.96,7.96
+		c4.44,0,7.98-3.52,7.98-7.96c0-4.44-3.55-8-7.98-8C142.29,4.96,138.77,8.53,138.77,12.96 M123.14,20.28c0,0.22,0.18,0.42,0.42,0.42
+		H125c0.22,0,0.42-0.2,0.42-0.42v-5.83h5.92c0.22,0,0.42-0.2,0.42-0.42v-1.22c0-0.22-0.2-0.42-0.42-0.42h-5.92V7.26h7.01
+		c0.24,0,0.42-0.2,0.42-0.42V5.6c0-0.22-0.18-0.42-0.42-0.42h-8.87c-0.24,0-0.42,0.2-0.42,0.42V20.28z M97.86,12.72V7.33h3.95
+		c1.44,0,2.71,1.2,2.71,2.64c0,1.53-1.27,2.75-2.71,2.75H97.86z M95.54,20.28c0,0.22,0.18,0.42,0.42,0.42h1.44
+		c0.22,0,0.42-0.2,0.42-0.42v-5.65h3.35l2.95,5.88c0.04,0.09,0.18,0.2,0.36,0.2h1.73c0.38,0,0.53-0.35,0.38-0.64l-3.04-5.63
+		c1.93-0.77,3.28-2.46,3.28-4.5c0-2.64-2.17-4.74-4.83-4.74h-6.03c-0.24,0-0.42,0.2-0.42,0.42V20.28z M78.27,20.28
+		c0,0.22,0.18,0.42,0.42,0.42h8.87c0.24,0,0.42-0.2,0.42-0.42v-1.22c0-0.22-0.18-0.42-0.42-0.42h-7.01v-4.77h5.92
+		c0.22,0,0.42-0.18,0.42-0.42v-1.24c0-0.22-0.2-0.42-0.42-0.42h-5.92V7.26h7.01c0.24,0,0.42-0.2,0.42-0.42V5.6
+		c0-0.22-0.18-0.42-0.42-0.42h-8.87c-0.24,0-0.42,0.2-0.42,0.42V20.28z M65.32,20.28c0,0.22,0.2,0.42,0.42,0.42h1.46
+		c0.22,0,0.42-0.2,0.42-0.42V7.26h3.61c0.24,0,0.42-0.2,0.42-0.42V5.6c0-0.22-0.18-0.42-0.42-0.42H61.7c-0.24,0-0.42,0.2-0.42,0.42
+		v1.24c0,0.22,0.18,0.42,0.42,0.42h3.61V20.28z M41.79,20.28c0,0.22,0.2,0.42,0.42,0.42h1.4c0.24,0,0.42-0.2,0.42-0.42V9.48h0.02
+		l9.62,11.44h0.58c0.22,0,0.42-0.18,0.42-0.4V5.6c0-0.22-0.2-0.42-0.42-0.42h-1.42c-0.24,0-0.42,0.2-0.42,0.42v10.49h-0.02
+		L42.77,4.96h-0.55c-0.22,0-0.42,0.18-0.42,0.4V20.28z M24.52,20.28c0,0.22,0.18,0.42,0.42,0.42h8.87c0.24,0,0.42-0.2,0.42-0.42
+		v-1.22c0-0.22-0.18-0.42-0.42-0.42H26.8v-4.77h5.92c0.22,0,0.42-0.18,0.42-0.42v-1.24c0-0.22-0.2-0.42-0.42-0.42H26.8V7.26h7.01
+		c0.24,0,0.42-0.2,0.42-0.42V5.6c0-0.22-0.18-0.42-0.42-0.42h-8.87c-0.24,0-0.42,0.2-0.42,0.42V20.28z M3.75,12.96
+		c0,4.44,3.57,7.96,8,7.96c1.97,0,3.88-0.69,5.39-2.15c0.16-0.16,0.2-0.44,0.02-0.6l-1.02-1c-0.13-0.11-0.33-0.13-0.53,0.02
+		c-1.06,0.82-2.2,1.46-3.81,1.46c-3.17,0-5.59-2.64-5.59-5.74c0-3.1,2.39-5.76,5.56-5.76c1.37,0,2.79,0.58,3.84,1.48
+		c0.2,0.2,0.4,0.2,0.55,0l0.98-1c0.18-0.18,0.18-0.44-0.02-0.62c-1.51-1.31-3.13-2.06-5.36-2.06C7.32,4.96,3.75,8.53,3.75,12.96">
+          </path>
+         </g>
+        </svg>
+       </a>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <footer>
+   <div class="container text-center" id="slim-footer">
+    <svg class="logo" data-name="Layer 1" id="Layer_1" viewbox="20 0 150 75" xmlns="http://www.w3.org/2000/svg">
+     <defs>
+      <style>
+       .cls-1{fill:#a2a4a7;}
+      </style>
+     </defs>
+     <title>
+      GT Logo
+     </title>
+     <path class="cls-1" d="M48.83,55.64c0,4.4,1.93,5.28,4,5.28a3.82,3.82,0,0,0,3.09-1.32V57.54a3.2,3.2,0,0,1-1.76.5c-0.87,0-1.6-.31-1.6-2.07V43.08h3.24V40.44H52.55V31.79H52.07l-2.89,1.95,0,6.7h-1.9v2.65h1.57V55.64Zm12.88,5.26c3.47,0,5.35-1.68,5.35-5.51V54.61H64v0.63C64,57.38,63.1,58,62.19,58,60.5,58,60,56.85,60,53.32V51.26h6.72a23.12,23.12,0,0,0,.48-4.73c0-4.88-2.43-6.32-5.1-6.32-2.15,0-5.84.63-5.84,8.37v3.82c0,6,1.93,8.51,5.41,8.51M60,48.76V47.52c0-3.49.62-4.6,1.93-4.6s1.87,1.09,1.87,3.77c0,0.53,0,1.65-.06,2.07H60ZM73.6,60.91c3.37,0,5.07-1.68,5.07-5.51V54.61H75.46v0.63c0,2.13-.7,2.79-1.46,2.79-1.46,0-1.9-1.34-1.9-4.87V47.42c0-3.49.6-4.5,1.81-4.5s1.54,1.22,1.54,3.25v0.68h3a8.36,8.36,0,0,0,.25-2.19c0-3-1.9-4.46-4.65-4.46-2,0-5.69.63-5.69,8.37v3.82c0,5.74,1.84,8.51,5.25,8.51m6.58-.22H83.9V44.33A2.74,2.74,0,0,1,86,42.92c1.06,0,1.62.6,1.62,2.38V60.69h3.72V45.17c0-3.29-1.35-5-3.71-5a4.65,4.65,0,0,0-3.94,2L83.56,38.7v-7H83.14l-3,1.86V60.69Zm13.52,0h3.72V44.3a2.7,2.7,0,0,1,2.09-1.38c1.06,0,1.62.6,1.62,2.38V60.69h3.72V45.17c0-3.29-1.35-5-3.71-5a4.77,4.77,0,0,0-4.24,2.41v0l-0.34-2.16H93.7V60.69Zm18.6,0.22c2.34,0,5.57-1,5.57-8.91V48.82c0-8-3.13-8.62-5.56-8.62s-5.65.75-5.65,8.62V52c0,8,3,8.91,5.63,8.91m0-2.87c-1.4,0-1.93-1.25-1.93-5V48c0-3.79.53-5.09,1.93-5.09s1.81,1.3,1.81,5.09v5c0,3.79-.47,5-1.81,5m7.39,2.65h3.72v-29h-0.62l-3,2-0.06.11v27Zm11.2,0.22c2.34,0,5.57-1,5.57-8.91V48.82c0-8-3.13-8.62-5.56-8.62s-5.65.75-5.65,8.62V52c0,8,3,8.91,5.63,8.91m0-2.87c-1.4,0-1.93-1.25-1.93-5V48c0-3.79.53-5.09,1.93-5.09s1.81,1.3,1.81,5.09v5c0,3.79-.47,5-1.81,5m7.73,4a4.65,4.65,0,0,0-.19,1.18c0,3.19,2.18,4,4.85,4,4,0,5.65-2.85,5.65-7.37V40.42h-2.9l-0.34,2a3.69,3.69,0,0,0-3.5-2.2c-1.47,0-4.44.38-4.44,7v5.32c0,6.88,3,7.32,4.35,7.32a3.91,3.91,0,0,0,3.23-1.57v3.19c0,2.47-1,3-2.1,3-1.34,0-2-.66-2-2.4h-2.63ZM143.43,57c-1.09,0-1.88-.69-1.88-3.71V46.58c0-3,.78-3.66,1.87-3.66a2.17,2.17,0,0,1,1.87,1.49V55.48A2.07,2.07,0,0,1,143.43,57m7.66,7.63v2.28a5.68,5.68,0,0,0,2,.37c3.15,0,4.62-1.91,5.37-5.79l4.26-21H159l-1.72,11.21-0.43,3.87h-0.12l-0.62-3.87L154,40.44h-3.78L155,60.8c-0.12,2.87-1.66,4.1-3.91,3.78">
+     </path>
+     <path class="cls-1" d="M147.79,37.58v-17c0-3.6-1.48-5.43-4-5.43a5.21,5.21,0,0,0-4.63,2.64v0l-0.37-2.36h-3.13V37.58h4.07V19.68A2.94,2.94,0,0,1,142,18.17c1.16,0,1.77.66,1.77,2.6V37.58h4.06Zm-13.85-10.3a25.27,25.27,0,0,0,.53-5.17c0-5.33-2.65-6.91-5.58-6.91-2.35,0-6.38.69-6.38,9.14v4.18c0,0.66,0,1.27.07,1.86h2v5.89a5,5,0,0,0,3.89,1.56c3.79,0,5.85-1.83,5.85-6V30.94h-3.39v0.69c0,2.33-.93,3.05-1.93,3.05-1.85,0-2.36-1.3-2.36-5.16V27.28h7.34Zm-3.2-5c0,0.58,0,1.8-.06,2.26H126.6V23.2c0-3.81.67-5,2.1-5s2,1.19,2,4.11m-9.56,8.87V20.63c0-3.6-1.48-5.43-4-5.43a5.15,5.15,0,0,0-4.52,2.51,3.54,3.54,0,0,0-3.57-2.51,5.15,5.15,0,0,0-4.6,2.64v0l-0.35-2.36H101V37.58H105V19.68a2.83,2.83,0,0,1,2.12-1.51c1.32,0,1.88.66,1.88,2.6V37.58h4.07V20.29c0-.19,0-0.39,0-0.58a2.88,2.88,0,0,1,2.15-1.54c1.32,0,1.88.66,1.88,2.6V37.58h1.57V32.81ZM95.33,37.58H99.4v-17c0-3.6-1.48-5.43-4-5.43a5.21,5.21,0,0,0-4.63,2.64v0l-0.37-2.36H87.22V37.58h4.07V19.68a2.94,2.94,0,0,1,2.28-1.51c1.16,0,1.77.66,1.77,2.6V37.58ZM85.74,22.51a11.47,11.47,0,0,0,.55-3c0-2.86-1.09-4.31-3.42-4.31-1.22,0-2.46.83-3.34,2.51l-0.35-2.25h-3V37.58h2.93V32.81l1.14-.76V19.36a1.85,1.85,0,0,1,1.58-1.19c0.6,0,1.08.5,1.08,2.28v2.06h2.83ZM74.53,27.28a25.2,25.2,0,0,0,.53-5.17c0-5.33-2.65-6.91-5.58-6.91-2.35,0-6.38.69-6.38,9.14v4.18c0,6.59,2.11,9.3,5.91,9.3s5.85-1.83,5.85-6V30.94H71.48v0.69c0,2.33-.93,3.05-1.93,3.05-1.85,0-2.36-1.3-2.36-5.16V27.28h7.34Zm-3.2-5c0,0.58,0,1.8-.06,2.26H67.19V23.2c0-3.81.68-5,2.11-5s2,1.19,2,4.11M58.57,37.58l5-22.13H59.69L57.57,27.22,57,31.92H56.83L56.3,27.22,54.16,15.45h-4l5,22.13h3.47Zm-7.92-13c0-8.71-3.42-9.42-6.07-9.42s-6.17.82-6.17,9.42v3.47c0,8.74,3.33,9.74,6.15,9.74A5.24,5.24,0,0,0,48,36.69V32.84l2.42-1.62a23.72,23.72,0,0,0,.19-3.14V24.61Zm-4.08,4.56c0,4.15-.51,5.51-2,5.51s-2.11-1.37-2.11-5.51V23.73c0-4.15.58-5.56,2.11-5.56s2,1.41,2,5.56v5.45Zm-9.21,7.51V15.44H34.19l-0.37,2.18A4,4,0,0,0,30,15.21c-1.61,0-4.85.42-4.85,7.62v5.82c0,7.52,3.26,8,4.76,8a4.27,4.27,0,0,0,3.54-1.72v3.49c0,2.7-1.09,3.29-2.3,3.29C29.68,41.71,29,41,29,39.09H26.09a5.09,5.09,0,0,0-.21,1.28c0,3.49,2.38,4.35,5.3,4.35,4.32,0,6.17-3.12,6.17-8m-4-4.79a2.26,2.26,0,0,1-2,1.61c-1.19,0-2.06-.76-2.06-4V22.17c0-3.31.85-4,2-4a2.37,2.37,0,0,1,2,1.62v12.1Z">
+     </path>
+     <path class="cls-1" d="M150.36,32.4c0,4.4,1.93,5.28,4,5.28a3.82,3.82,0,0,0,3.09-1.32V34.3a3.2,3.2,0,0,1-1.76.5c-0.87,0-1.6-.31-1.6-2.07V19.84h3.24V17.19h-3.24V8.54H153.6l-2.89,1.95,0,6.7h-1.9v2.65h1.57V32.4Z">
+     </path>
+    </svg>
+    <p>
+     <a href="//www.erepublic.com">
+      © 2021 All rights reserved. e.Republic
+     </a>
+     <br/>
+     <a href="https://erepublic.secure.force.com/PrivacyRequest/">
+      California Residents - Do Not Sell My Personal Information
+     </a>
+    </p>
+   </div>
+   <div class="container text-left" id="full-footer">
+    <div class="row">
+     <div class="col-sm-4">
+      <h4 style="margin: 0 0 10px">
+       NEWSLETTERS
+      </h4>
+      <p>
+       <a href="http://newsletters.govtech.com?promo_code=footer" target="_blank">
+        SUBSCRIBE
+       </a>
+      </p>
+     </div>
+     <div class="col-sm-4">
+      <h4 style="margin: 0 0 10px">
+       <a href="/podcasts">
+        PODCASTS
+       </a>
+      </h4>
+      <p class="hidden-xs">
+       <a href="/podcasts/360">
+        GOVTECH360
+       </a>
+      </p>
+      <p class="hidden-xs">
+       <a href="/podcasts/arena">
+        IN THE ARENA
+       </a>
+      </p>
+      <br/>
+      <h4 style="margin: 0 0 10px">
+       SPONSORED
+      </h4>
+      <p class="hidden-xs">
+       <a href="/sponsored/videos">
+        VIRTUAL Q&amp;A WITH INDUSTRY EXPERTS
+       </a>
+      </p>
+     </div>
+     <div class="col-sm-4" id="site_info_links">
+      <p>
+       <a href="/about">
+        ABOUT
+       </a>
+      </p>
+      <p class="senior-fellows">
+       <a href="/cdg/senior-fellows/">
+        SENIOR FELLOWS
+       </a>
+      </p>
+      <p>
+       <a href="//www.erepublic.com/brands/govtech/">
+        ADVERTISE
+       </a>
+      </p>
+      <p>
+       <a href="https://erepublic.secure.force.com/ContactUs/?src=http://www.govtech.com/">
+        CONTACT
+       </a>
+      </p>
+      <p>
+       <a href="//www.erepublic.com/privacy/">
+        PRIVACY
+       </a>
+      </p>
+      <p>
+       <a href="https://erepublic.secure.force.com/PrivacyRequest/">
+        California Residents - Do Not Sell My Personal Information
+       </a>
+      </p>
+      <div id="site_social">
+       <a class="twitter" href="https://twitter.com/govtechnews" target="_blank">
+        <svg style="enable-background:new 0 0 97.75 97.75;" version="1.1" viewbox="0 0 97.75 97.75" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px">
+         <g>
+          <path d="M48.875,0C21.882,0,0,21.882,0,48.875S21.882,97.75,48.875,97.75S97.75,75.868,97.75,48.875S75.868,0,48.875,0z    M78.43,35.841c0.023,0.577,0.035,1.155,0.035,1.736c0,20.878-15.887,42.473-42.473,42.473c-8.127,0-16.04-2.319-22.883-6.708   c-0.143-0.091-0.202-0.268-0.145-0.427c0.057-0.158,0.218-0.256,0.383-0.237c1.148,0.137,2.322,0.205,3.487,0.205   c6.323,0,12.309-1.955,17.372-5.664c-6.069-0.512-11.285-4.619-13.161-10.478c-0.039-0.122-0.011-0.255,0.073-0.351   c0.085-0.096,0.215-0.138,0.339-0.115c1.682,0.319,3.392,0.34,5.04,0.072c-6.259-1.945-10.658-7.808-10.658-14.483l0.002-0.194   c0.003-0.127,0.072-0.243,0.182-0.306c0.109-0.064,0.245-0.065,0.355-0.003c1.632,0.906,3.438,1.488,5.291,1.711   c-3.597-2.867-5.709-7.213-5.709-11.862c0-2.682,0.71-5.318,2.054-7.623c0.06-0.103,0.166-0.169,0.284-0.178   c0.119-0.012,0.234,0.04,0.309,0.132c7.362,9.03,18.191,14.59,29.771,15.305c-0.193-0.972-0.291-1.974-0.291-2.985   c0-8.361,6.802-15.162,15.162-15.162c4.11,0,8.082,1.689,10.929,4.641c3.209-0.654,6.266-1.834,9.09-3.508   c0.129-0.077,0.291-0.065,0.41,0.028c0.116,0.094,0.164,0.25,0.118,0.394c-0.957,2.993-2.823,5.604-5.33,7.489   c2.361-0.411,4.652-1.105,6.831-2.072c0.146-0.067,0.319-0.025,0.424,0.098c0.104,0.124,0.113,0.301,0.023,0.435   C83.759,31.175,81.299,33.744,78.43,35.841z" fill="#FFFFFF">
+          </path>
+         </g>
+        </svg>
+       </a>
+       <a class="facebook" href="https://www.facebook.com/governmenttechnology" target="_blank">
+        <svg style="enable-background:new 0 0 97.75 97.75;" version="1.1" viewbox="0 0 97.75 97.75" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px">
+         <g>
+          <path d="M48.875,0C21.882,0,0,21.882,0,48.875S21.882,97.75,48.875,97.75S97.75,75.868,97.75,48.875S75.868,0,48.875,0z    M67.521,24.89l-6.76,0.003c-5.301,0-6.326,2.519-6.326,6.215v8.15h12.641L67.07,52.023H54.436v32.758H41.251V52.023H30.229V39.258   h11.022v-9.414c0-10.925,6.675-16.875,16.42-16.875l9.851,0.015V24.89L67.521,24.89z" fill="#FFFFFF">
+          </path>
+         </g>
+        </svg>
+       </a>
+       <a class="youtube" href="https://www.youtube.com/user/GovernmentTechnology" target="_blank">
+        <svg style="enable-background:new 0 0 97.75 97.75;" version="1.1" viewbox="0 0 97.75 97.75" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px">
+         <g>
+          <g>
+           <polygon fill="#FFFFFF" points="25.676,52.482 29.551,52.482 29.551,73.455 33.217,73.455 33.217,52.482 37.164,52.482 37.164,49.047     25.676,49.047   ">
+           </polygon>
+           <path d="M56.674,55.046c-1.212,0-2.343,0.662-3.406,1.972v-7.972h-3.295v24.409h3.295v-1.762c1.103,1.361,2.233,2.013,3.406,2.013    c1.311,0,2.193-0.69,2.633-2.044c0.221-0.771,0.334-1.982,0.334-3.665v-7.242c0-1.722-0.113-2.924-0.334-3.655    C58.868,55.736,57.984,55.046,56.674,55.046z M56.344,68.255c0,1.644-0.482,2.454-1.434,2.454c-0.541,0-1.092-0.259-1.643-0.811    V58.814c0.551-0.545,1.102-0.803,1.643-0.803c0.951,0,1.434,0.842,1.434,2.482V68.255z" fill="#FFFFFF">
+           </path>
+           <path d="M43.824,69.167c-0.731,1.033-1.422,1.542-2.084,1.542c-0.44,0-0.691-0.259-0.771-0.771c-0.03-0.106-0.03-0.508-0.03-1.28    v-13.39h-3.296v14.379c0,1.285,0.111,2.153,0.291,2.705c0.331,0.922,1.063,1.354,2.123,1.354c1.213,0,2.457-0.732,3.767-2.234    v1.984h3.298V55.268h-3.298V69.167z" fill="#FFFFFF">
+           </path>
+           <path d="M46.653,38.466c1.073,0,1.588-0.851,1.588-2.551v-7.731c0-1.701-0.515-2.548-1.588-2.548c-1.074,0-1.59,0.848-1.59,2.548    v7.731C45.063,37.616,45.579,38.466,46.653,38.466z" fill="#FFFFFF">
+           </path>
+           <path d="M48.875,0C21.882,0,0,21.882,0,48.875S21.882,97.75,48.875,97.75S97.75,75.868,97.75,48.875S75.868,0,48.875,0z     M54.311,22.86h3.321v13.532c0,0.781,0,1.186,0.04,1.295c0.073,0.516,0.335,0.78,0.781,0.78c0.666,0,1.365-0.516,2.104-1.559    V22.86h3.33v18.379h-3.33v-2.004c-1.326,1.52-2.59,2.257-3.805,2.257c-1.072,0-1.812-0.435-2.146-1.365    c-0.184-0.557-0.295-1.436-0.295-2.733V22.86L54.311,22.86z M41.733,28.853c0-1.965,0.334-3.401,1.042-4.33    c0.921-1.257,2.218-1.885,3.878-1.885c1.668,0,2.964,0.628,3.885,1.885c0.698,0.928,1.032,2.365,1.032,4.33v6.436    c0,1.954-0.334,3.403-1.032,4.322c-0.921,1.254-2.217,1.881-3.885,1.881c-1.66,0-2.957-0.627-3.878-1.881    c-0.708-0.919-1.042-2.369-1.042-4.322V28.853z M32.827,16.576l2.622,9.685l2.519-9.685h3.735L37.26,31.251v9.989h-3.692v-9.989    c-0.335-1.77-1.074-4.363-2.259-7.803c-0.778-2.289-1.589-4.585-2.367-6.872H32.827z M75.186,75.061    c-0.668,2.899-3.039,5.039-5.894,5.358c-6.763,0.755-13.604,0.759-20.42,0.755c-6.813,0.004-13.658,0-20.419-0.755    c-2.855-0.319-5.227-2.458-5.893-5.358c-0.951-4.129-0.951-8.638-0.951-12.89s0.012-8.76,0.962-12.89    c0.667-2.9,3.037-5.04,5.892-5.358c6.762-0.755,13.606-0.759,20.421-0.755c6.813-0.004,13.657,0,20.419,0.755    c2.855,0.319,5.227,2.458,5.896,5.358c0.948,4.13,0.942,8.638,0.942,12.89S76.137,70.932,75.186,75.061z" fill="#FFFFFF">
+           </path>
+           <path d="M67.17,55.046c-1.686,0-2.995,0.619-3.947,1.864c-0.699,0.92-1.018,2.342-1.018,4.285v6.371    c0,1.933,0.357,3.365,1.059,4.276c0.951,1.242,2.264,1.863,3.988,1.863c1.721,0,3.072-0.651,3.984-1.972    c0.4-0.584,0.66-1.245,0.77-1.975c0.031-0.33,0.07-1.061,0.07-2.124v-0.479h-3.361c0,1.32-0.043,2.053-0.072,2.232    c-0.188,0.881-0.662,1.321-1.473,1.321c-1.132,0-1.686-0.84-1.686-2.522v-3.226h6.592v-3.767c0-1.943-0.329-3.365-1.02-4.285    C70.135,55.666,68.824,55.046,67.17,55.046z M68.782,62.218h-3.296v-1.683c0-1.682,0.553-2.523,1.654-2.523    c1.09,0,1.642,0.842,1.642,2.523V62.218z" fill="#FFFFFF">
+           </path>
+          </g>
+         </g>
+        </svg>
+       </a>
+       <a class="linkedin" href="https://www.linkedin.com/company/government-technology/" target="_blank">
+        <svg style="enable-background:new 0 0 97.75 97.75;" version="1.1" viewbox="0 0 97.75 97.75" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px">
+         <g>
+          <path d="M48.875,0C21.882,0,0,21.882,0,48.875S21.882,97.75,48.875,97.75S97.75,75.868,97.75,48.875S75.868,0,48.875,0z    M30.562,81.966h-13.74V37.758h13.74V81.966z M23.695,31.715c-4.404,0-7.969-3.57-7.969-7.968c0.001-4.394,3.565-7.964,7.969-7.964   c4.392,0,7.962,3.57,7.962,7.964C31.657,28.146,28.086,31.715,23.695,31.715z M82.023,81.966H68.294V60.467   c0-5.127-0.095-11.721-7.142-11.721c-7.146,0-8.245,5.584-8.245,11.35v21.869H39.179V37.758h13.178v6.041h0.185   c1.835-3.476,6.315-7.14,13-7.14c13.913,0,16.481,9.156,16.481,21.059V81.966z" fill="#FFFFFF">
+          </path>
+         </g>
+        </svg>
+       </a>
+      </div>
+      <svg class="logo" data-name="Layer 1" id="Layer_1" viewbox="20 0 150 75" xmlns="http://www.w3.org/2000/svg">
+       <defs>
+        <style>
+         .cls-1{fill:#a2a4a7;}
+        </style>
+       </defs>
+       <title>
+        GT Logo
+       </title>
+       <path class="cls-1" d="M48.83,55.64c0,4.4,1.93,5.28,4,5.28a3.82,3.82,0,0,0,3.09-1.32V57.54a3.2,3.2,0,0,1-1.76.5c-0.87,0-1.6-.31-1.6-2.07V43.08h3.24V40.44H52.55V31.79H52.07l-2.89,1.95,0,6.7h-1.9v2.65h1.57V55.64Zm12.88,5.26c3.47,0,5.35-1.68,5.35-5.51V54.61H64v0.63C64,57.38,63.1,58,62.19,58,60.5,58,60,56.85,60,53.32V51.26h6.72a23.12,23.12,0,0,0,.48-4.73c0-4.88-2.43-6.32-5.1-6.32-2.15,0-5.84.63-5.84,8.37v3.82c0,6,1.93,8.51,5.41,8.51M60,48.76V47.52c0-3.49.62-4.6,1.93-4.6s1.87,1.09,1.87,3.77c0,0.53,0,1.65-.06,2.07H60ZM73.6,60.91c3.37,0,5.07-1.68,5.07-5.51V54.61H75.46v0.63c0,2.13-.7,2.79-1.46,2.79-1.46,0-1.9-1.34-1.9-4.87V47.42c0-3.49.6-4.5,1.81-4.5s1.54,1.22,1.54,3.25v0.68h3a8.36,8.36,0,0,0,.25-2.19c0-3-1.9-4.46-4.65-4.46-2,0-5.69.63-5.69,8.37v3.82c0,5.74,1.84,8.51,5.25,8.51m6.58-.22H83.9V44.33A2.74,2.74,0,0,1,86,42.92c1.06,0,1.62.6,1.62,2.38V60.69h3.72V45.17c0-3.29-1.35-5-3.71-5a4.65,4.65,0,0,0-3.94,2L83.56,38.7v-7H83.14l-3,1.86V60.69Zm13.52,0h3.72V44.3a2.7,2.7,0,0,1,2.09-1.38c1.06,0,1.62.6,1.62,2.38V60.69h3.72V45.17c0-3.29-1.35-5-3.71-5a4.77,4.77,0,0,0-4.24,2.41v0l-0.34-2.16H93.7V60.69Zm18.6,0.22c2.34,0,5.57-1,5.57-8.91V48.82c0-8-3.13-8.62-5.56-8.62s-5.65.75-5.65,8.62V52c0,8,3,8.91,5.63,8.91m0-2.87c-1.4,0-1.93-1.25-1.93-5V48c0-3.79.53-5.09,1.93-5.09s1.81,1.3,1.81,5.09v5c0,3.79-.47,5-1.81,5m7.39,2.65h3.72v-29h-0.62l-3,2-0.06.11v27Zm11.2,0.22c2.34,0,5.57-1,5.57-8.91V48.82c0-8-3.13-8.62-5.56-8.62s-5.65.75-5.65,8.62V52c0,8,3,8.91,5.63,8.91m0-2.87c-1.4,0-1.93-1.25-1.93-5V48c0-3.79.53-5.09,1.93-5.09s1.81,1.3,1.81,5.09v5c0,3.79-.47,5-1.81,5m7.73,4a4.65,4.65,0,0,0-.19,1.18c0,3.19,2.18,4,4.85,4,4,0,5.65-2.85,5.65-7.37V40.42h-2.9l-0.34,2a3.69,3.69,0,0,0-3.5-2.2c-1.47,0-4.44.38-4.44,7v5.32c0,6.88,3,7.32,4.35,7.32a3.91,3.91,0,0,0,3.23-1.57v3.19c0,2.47-1,3-2.1,3-1.34,0-2-.66-2-2.4h-2.63ZM143.43,57c-1.09,0-1.88-.69-1.88-3.71V46.58c0-3,.78-3.66,1.87-3.66a2.17,2.17,0,0,1,1.87,1.49V55.48A2.07,2.07,0,0,1,143.43,57m7.66,7.63v2.28a5.68,5.68,0,0,0,2,.37c3.15,0,4.62-1.91,5.37-5.79l4.26-21H159l-1.72,11.21-0.43,3.87h-0.12l-0.62-3.87L154,40.44h-3.78L155,60.8c-0.12,2.87-1.66,4.1-3.91,3.78">
+       </path>
+       <path class="cls-1" d="M147.79,37.58v-17c0-3.6-1.48-5.43-4-5.43a5.21,5.21,0,0,0-4.63,2.64v0l-0.37-2.36h-3.13V37.58h4.07V19.68A2.94,2.94,0,0,1,142,18.17c1.16,0,1.77.66,1.77,2.6V37.58h4.06Zm-13.85-10.3a25.27,25.27,0,0,0,.53-5.17c0-5.33-2.65-6.91-5.58-6.91-2.35,0-6.38.69-6.38,9.14v4.18c0,0.66,0,1.27.07,1.86h2v5.89a5,5,0,0,0,3.89,1.56c3.79,0,5.85-1.83,5.85-6V30.94h-3.39v0.69c0,2.33-.93,3.05-1.93,3.05-1.85,0-2.36-1.3-2.36-5.16V27.28h7.34Zm-3.2-5c0,0.58,0,1.8-.06,2.26H126.6V23.2c0-3.81.67-5,2.1-5s2,1.19,2,4.11m-9.56,8.87V20.63c0-3.6-1.48-5.43-4-5.43a5.15,5.15,0,0,0-4.52,2.51,3.54,3.54,0,0,0-3.57-2.51,5.15,5.15,0,0,0-4.6,2.64v0l-0.35-2.36H101V37.58H105V19.68a2.83,2.83,0,0,1,2.12-1.51c1.32,0,1.88.66,1.88,2.6V37.58h4.07V20.29c0-.19,0-0.39,0-0.58a2.88,2.88,0,0,1,2.15-1.54c1.32,0,1.88.66,1.88,2.6V37.58h1.57V32.81ZM95.33,37.58H99.4v-17c0-3.6-1.48-5.43-4-5.43a5.21,5.21,0,0,0-4.63,2.64v0l-0.37-2.36H87.22V37.58h4.07V19.68a2.94,2.94,0,0,1,2.28-1.51c1.16,0,1.77.66,1.77,2.6V37.58ZM85.74,22.51a11.47,11.47,0,0,0,.55-3c0-2.86-1.09-4.31-3.42-4.31-1.22,0-2.46.83-3.34,2.51l-0.35-2.25h-3V37.58h2.93V32.81l1.14-.76V19.36a1.85,1.85,0,0,1,1.58-1.19c0.6,0,1.08.5,1.08,2.28v2.06h2.83ZM74.53,27.28a25.2,25.2,0,0,0,.53-5.17c0-5.33-2.65-6.91-5.58-6.91-2.35,0-6.38.69-6.38,9.14v4.18c0,6.59,2.11,9.3,5.91,9.3s5.85-1.83,5.85-6V30.94H71.48v0.69c0,2.33-.93,3.05-1.93,3.05-1.85,0-2.36-1.3-2.36-5.16V27.28h7.34Zm-3.2-5c0,0.58,0,1.8-.06,2.26H67.19V23.2c0-3.81.68-5,2.11-5s2,1.19,2,4.11M58.57,37.58l5-22.13H59.69L57.57,27.22,57,31.92H56.83L56.3,27.22,54.16,15.45h-4l5,22.13h3.47Zm-7.92-13c0-8.71-3.42-9.42-6.07-9.42s-6.17.82-6.17,9.42v3.47c0,8.74,3.33,9.74,6.15,9.74A5.24,5.24,0,0,0,48,36.69V32.84l2.42-1.62a23.72,23.72,0,0,0,.19-3.14V24.61Zm-4.08,4.56c0,4.15-.51,5.51-2,5.51s-2.11-1.37-2.11-5.51V23.73c0-4.15.58-5.56,2.11-5.56s2,1.41,2,5.56v5.45Zm-9.21,7.51V15.44H34.19l-0.37,2.18A4,4,0,0,0,30,15.21c-1.61,0-4.85.42-4.85,7.62v5.82c0,7.52,3.26,8,4.76,8a4.27,4.27,0,0,0,3.54-1.72v3.49c0,2.7-1.09,3.29-2.3,3.29C29.68,41.71,29,41,29,39.09H26.09a5.09,5.09,0,0,0-.21,1.28c0,3.49,2.38,4.35,5.3,4.35,4.32,0,6.17-3.12,6.17-8m-4-4.79a2.26,2.26,0,0,1-2,1.61c-1.19,0-2.06-.76-2.06-4V22.17c0-3.31.85-4,2-4a2.37,2.37,0,0,1,2,1.62v12.1Z">
+       </path>
+       <path class="cls-1" d="M150.36,32.4c0,4.4,1.93,5.28,4,5.28a3.82,3.82,0,0,0,3.09-1.32V34.3a3.2,3.2,0,0,1-1.76.5c-0.87,0-1.6-.31-1.6-2.07V19.84h3.24V17.19h-3.24V8.54H153.6l-2.89,1.95,0,6.7h-1.9v2.65h1.57V32.4Z">
+       </path>
+      </svg>
+      <p>
+       <a href="//www.erepublic.com">
+        © 2021 All rights reserved. e.Republic
+       </a>
+      </p>
+     </div>
+    </div>
+   </div>
+  </footer>
+  <script>
+   $(document).ready(function(){
+		$( document ).ajaxStop(function() {
+				console.warn( "All ajax calls completed, do scroll." );
+			setTimeout( function(){ $(window).trigger('scroll'); }, 500 );
+			});
+	});
+  </script>
+  <div data-ac-module="https://cms.erepublic.com/common/dynamic_modules/newsletter_nag">
+  </div>
+  <div data-ac-module="https://cms.erepublic.com/common/dynamic_modules/webinar_nag">
+  </div>
+  <div data-ac-module="https://cms.erepublic.com/common/dynamic_modules/magazine_nag">
+  </div>
+  <!-- LinkedIn Tracking for Paid -->
+  <script type="text/javascript">
+   _linkedin_partner_id = "570164"; window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || []; window._linkedin_data_partner_ids.push(_linkedin_partner_id);
+  </script>
+  <script type="text/javascript">
+   (function(){var s = document.getElementsByTagName("script")[0]; var b = document.createElement("script"); b.type = "text/javascript";b.async = true; b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js"; s.parentNode.insertBefore(b, s);})();
+  </script>
+  <noscript>
+   <img alt="" height="1" src="https://dc.ads.linkedin.com/collect/?pid=570164&amp;fmt=gif" style="display:none;" width="1"/>
+  </noscript>
+  <!-- /LinkedIn Tracking for Paid -->
+  <!-- Facebook Pixel Code -->
+  <script>
+   !function(f,b,e,v,n,t,s)
+	{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+	n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+	if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+	n.queue=[];t=b.createElement(e);t.async=!0;
+	t.src=v;s=b.getElementsByTagName(e)[0];
+	s.parentNode.insertBefore(t,s)}(window, document,'script',
+	'https://connect.facebook.net/en_US/fbevents.js');
+	fbq('init', 'your-pixel-id-goes-here');
+	fbq('track', 'PageView');
+  </script>
+  <noscript>
+   <img height="1" src="https://www.facebook.com/tr?id=your-pixel-id-goes-here&amp;ev=PageView&amp;noscript=1" style="display:none" width="1"/>
+  </noscript>
+  <!-- End Facebook Pixel Code -->
+  <!-- Twitter universal website tag code -->
+  <script>
+   !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+	},s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+	a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+	// Insert Twitter Pixel ID and Standard Event data below
+	twq('init','o1brw');
+	twq('track','PageView');
+  </script>
+  <!-- End Twitter universal website tag code -->
+  <script>
+   var img = new Image();
+img.src = "https://analytics.erepublic.com/cms/module/lg/MjA3LjI0NC4xMDQuMTk5O1VuaXRlZCBTdGF0ZXM=.gif";
+  </script>
+ </body>
+</html>

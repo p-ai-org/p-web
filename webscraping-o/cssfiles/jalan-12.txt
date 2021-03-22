@@ -1,0 +1,1207 @@
+@charset "shift_jis";
+
+/* ===========================
+	選択地図ボタンのＣＳＳ
+=========================== */
+.airmap_btn_box{position: relative;}
+.airmap_btn_box .from-to-parts{*width: 542px;}
+div#block-01 .airmap_btn_box div.search-panel div.step dl dd select#dep_bap,
+div#block-01 .airmap_btn_box div.search-panel div.step dl dd select#dep_aap,
+div#block-01 .airmap_btn_box div.search-panel div.step dl dd select#arr_bap,
+div#block-01 .airmap_btn_box div.search-panel div.step dl dd select#arr_aap,
+div#block-01 .airmap_btn_box div.search-panel div.step dl dd select#dep_bap_ana,
+div#block-01 .airmap_btn_box div.search-panel div.step dl dd select#dep_aap_ana,
+div#block-01 .airmap_btn_box div.search-panel div.step dl dd select#arr_bap_ana,
+div#block-01 .airmap_btn_box div.search-panel div.step dl dd select#arr_aap_ana{
+	width: 99px;
+	margin-right: 0;
+}
+
+div#block-01 div.search-panel div.step img.img_airmap_btn{
+	vertical-align: top !important;
+	margin: 0 8px 0 3px;
+}
+
+/* ===========================
+	選択地図の共通ＣＳＳ
+=========================== */
+
+/* 外枠 */
+.airport_map_wrap{
+	position: absolute;
+	top: 40px;
+	z-index: 1001;
+	border: 1px solid #ffffff;
+	display: none;
+}
+
+/* ===== 選択リスト ===== */
+/* 選択肢のテキスト */
+.airmap_select_area{
+	position: relative;
+	background-color: #fff8e0;
+	width: 682px;
+	padding: 8px 9px;
+	border-bottom: 3px solid #ffc500;
+}
+.airmap_select_area .airmap_select_text{
+	float: left;
+	background: url("/dp/images/map_image/title_select_text.png") no-repeat top left;
+	width: 306px;
+	height: 26px;
+	margin: 9px 0px 8px 4px;
+}
+
+/* 行きの出発空港を選択してください。 */
+.airmap_select_area .airmap_select_text.airmap_text_wayto_dep{
+	background-position: 0 0;
+}
+
+/* 行きの到着空港を選択してください。 */
+.airmap_select_area .airmap_select_text.airmap_text_wayto_arr{
+	background-position: 0 -31px;
+}
+
+/* 帰りの出発空港を選択してください。 */
+.airmap_select_area .airmap_select_text.airmap_text_backto_dep{
+	background-position: 0 -62px;
+}
+
+/* 帰りの到着空港を選択してください。 */
+.airmap_select_area .airmap_select_text.airmap_text_backto_arr{
+	background-position: 0 -93px;
+}
+
+/* 出発空港＆到着空港 */
+.airmap_select_area ul.airmap_select_nav{
+	float: right;
+	display: inline-block;
+}
+.airmap_select_area ul.airmap_select_nav li{
+	float: left;
+	background: url("/dp/images/map_image/title_select_arrow.gif") no-repeat 4px 17px;
+	padding-left: 14px;
+}
+.airmap_select_area ul.airmap_select_nav li:first-child{
+	background: none;
+	padding-left: 0;
+}
+.airmap_select_area ul.airmap_select_nav li p{
+	min-width: 100px;
+	height: 28px;
+	padding: 6px;
+	background-color: #dddddd;
+	border-bottom: 3px solid #dddddd;
+	text-align: center;
+	color: #666666;
+	font-size: 12px;
+}
+.airmap_select_area ul.airmap_select_nav li p span{
+	font-weight: bold;
+}
+.airmap_select_area ul.airmap_select_nav li.airmap_active p{
+	background-color: #ff682c;
+	color: #ffffff;
+	border-bottom: 3px solid #e64c00;
+}
+
+/* ×ボタン */
+.airmap_select_area .airmap_btn_close{
+	z-index: 300;
+	position: absolute;
+	top: -16px;
+	right: -16px;
+	width: 29px;
+	height: 29px;
+	background: url("/dp/images/map_image/map_btn_close.png") no-repeat top left;
+	text-indent: -9999px;
+}
+
+.airmap_select_area .airmap_btn_close{
+	cursor: pointer;
+}
+
+/* ローディング */
+.airmap_loading{
+	width: 40px;
+	height: 40px;
+	border-radius: 5px;
+	background: #666 url("/dp/images/map_image/map_load.gif") no-repeat center center;
+	position: absolute;
+	z-index: 1002;
+	display: none;
+}
+
+/* ===== 選択マップ ===== */
+.airport_map_wrap .airmap_map_area{
+	width: 700px;
+	height: 520px;
+	padding-top: 20px;
+	background: #cff7ff url("/dp/images/map_image/map_bg.png") repeat-x;
+}
+.airport_map_wrap .airmap_map_area .airmap_image{
+	position: relative;
+	width: 700px;
+	height: 524px;
+	margin: 0 auto;
+}
+.airport_map_wrap .airmap_map_area .airmap_image li{
+	cursor: pointer;
+	margin: 0px;
+	padding: 0px;
+	position: absolute;
+	list-style: none;
+	font-size: 14px;
+}
+
+/* navi */
+.airport_map_wrap .airmap_map_area .airmap_image span{
+	display: block;
+	background-repeat: no-repeat;
+	text-indent: -9999px;
+	position: absolute;
+}
+
+/* ===== 『地域名』＆『全国地図に戻る』エリア ===== */
+.airport_map_wrap .airmap_map_area ul.airmap_title{
+	position: relative;
+	z-index: 300;
+}
+.airport_map_wrap .airmap_map_area ul.airmap_title li{
+	display: inline-block;
+	position: absolute;
+	background-position: 0 0;
+	width: 0;
+	height: 0;
+	background: url("/dp/images/map_image/title_select_logo.png") no-repeat top left;
+	text-indent: -9999px;
+}
+.airport_map_wrap .airmap_map_area ul.airmap_title li.airmap_name_place{
+	left: 20px;
+}
+.airport_map_wrap .airmap_map_area ul.airmap_title li.airmap_name_ana{
+	background-position: 0 0;
+	left: 20px;
+	width: 66px;
+	height: 22px;
+}
+.airport_map_wrap .airmap_map_area ul.airmap_title li.airmap_name_jal{
+	background-position: 0 -27px;
+	width: 66px;
+	height: 22px;
+	left: 20px;
+}
+.airport_map_wrap .airmap_map_area ul.airmap_title li.airmap_btn_return{
+	background-position: 0 -54px;
+	right: 0;
+	width: 137px;
+	height: 40px;
+	cursor: pointer;
+}
+.airport_map_wrap .airmap_map_area ul.airmap_title li.airmap_btn_return:hover{
+	background-position: 0 -99px;
+	width: 137px;
+	height: 40px;
+	right: 0;
+}
+
+
+/* ===== 飛行機ボタン ===== */
+.airport_map_wrap .airmap_map_area .airmap_btn_area li{
+	position: absolute;
+	background: url("/dp/images/map_image/map_btn_select.png") no-repeat top left;
+	background-position: 0 0;
+	width: 33px;
+	height: 38px;
+}
+.airport_map_wrap .airmap_map_area .airmap_btn_area li:hover{ background-position: 0 -38px;}
+
+
+/* disabledの時はhoverしても反応しないようにする */
+.airport_map_wrap .airmap_map_area .airmap_btn_area li.airmap_disabled:hover{
+	cursor: default !important; 
+	background-position: 0 0 !important; 
+}
+
+/* ===== 表示制御 ===== */
+.showAirMap {
+	display: block;
+}
+
+
+/* ===========================
+	日本全体地図×ANA
+=========================== */
+
+#airmap_japan_ana .airmap_map_area{
+	height: 540px;
+	padding-top: 0;
+}
+
+#airmap_japan_ana .airmap_map_area .airmap_image{
+	height: 540px;
+}
+
+/* ===== 『地域名』＆『全国地図に戻る』エリア ===== */
+#airmap_japan_ana .airmap_map_area ul.airmap_title li.airmap_name_place{background-position: 0 -144px; width: 76px; height: 44px; top:16px;}
+#airmap_japan_ana .airmap_map_area ul.airmap_title li.airmap_name_ana{top: 62px; left: 24px;}
+
+/* ===== 地図ボタン ===== */
+/* navi */
+#airmap_japan_ana .airmap_image span{background-image: url("/dp/images/map_image/nav_japan_ana.png"); width: 138px; height: 138px;}
+
+/* 通常時 */
+#airmap_japan_ana #icon_hokkaido_ana span{background-position: 0px 0px; top: 16px; left: 153px;}
+#airmap_japan_ana #icon_touhoku_ana span{background-position: 0px -138px; top: 50px; left: 92px;}
+#airmap_japan_ana #icon_chubu_ana span{background-position: 0px -276px; height: 148px; top: 120px; left: 91px;}
+#airmap_japan_ana #icon_kansai_ana span{background-position: 0px -424px; width: 158px; height: 158px; top: -156px; left: -91px;}
+#airmap_japan_ana #icon_kyushu_ana span{background-position: 0px -582px; height: 148px; top: -29px; left: -147px;}
+#airmap_japan_ana #icon_okinawa_ana span{background-position: 0px -730px; top: -23px;left: 106px;}
+
+/* hover時 */
+#airmap_japan_ana #icon_hokkaido_ana:hover span, #airmap_japan_ana #icon_hokkaido_ana.airmap_hover span{background-position: -160px 0px;}
+#airmap_japan_ana #icon_touhoku_ana:hover span, #airmap_japan_ana #icon_touhoku_ana.airmap_hover span{background-position: -160px -138px;}
+#airmap_japan_ana #icon_chubu_ana:hover span, #airmap_japan_ana #icon_chubu_ana.airmap_hover span{background-position: -160px -276px;}
+#airmap_japan_ana #icon_kansai_ana:hover span, #airmap_japan_ana #icon_kansai_ana.airmap_hover span{background-position: -160px -424px; width: 158px; height: 158px;}
+#airmap_japan_ana #icon_kyushu_ana:hover span, #airmap_japan_ana #icon_kyushu_ana.airmap_hover span{background-position: -160px -582px;}
+#airmap_japan_ana #icon_okinawa_ana:hover span, #airmap_japan_ana #icon_okinawa_ana.airmap_hover span{background-position: -160px -730px;}
+
+/* disabled時 */
+#airmap_japan_ana #icon_hokkaido_ana.airmap_disabled span{background-position: -320px 0px;}
+#airmap_japan_ana #icon_touhoku_ana.airmap_disabled span{background-position: -320px -138px;}
+#airmap_japan_ana #icon_chubu_ana.airmap_disabled span{background-position: -320px -276px;}
+#airmap_japan_ana #icon_kansai_ana.airmap_disabled span{background-position: -320px -424px; width: 158px; height: 158px;}
+#airmap_japan_ana #icon_kyushu_ana.airmap_disabled span{background-position: -320px -582px;}
+#airmap_japan_ana #icon_okinawa_ana.airmap_disabled span{background-position: -320px -730px;}
+
+
+/* ===== 地図の設定 ===== */
+/* 背景設定 */
+#airmap_japan_ana .airmap_image{
+	background: transparent url("/dp/images/map_image/map_japan.png") top left no-repeat;
+}
+
+/* 北海道 */
+#airmap_japan_ana #icon_hokkaido_ana{top: 12px; left: 383px; width: 192px; height: 118px;}
+#airmap_japan_ana #icon_hokkaido_ana:hover{background: url("/dp/images/map_image/map_japan.png") -383px -557px no-repeat;}
+
+/* 東北 */
+#airmap_japan_ana #icon_touhoku_ana{top: 122px; left: 380px; width: 64px; height: 124px;}
+#airmap_japan_ana #icon_touhoku_ana:hover{background: transparent url("/dp/images/map_image/map_japan.png") -380px -1212px no-repeat;}
+
+/* 中部 */
+#airmap_japan_ana #icon_chubu_ana{top: 199px; left: 307px; width: 112px; height: 105px;}
+#airmap_japan_ana #icon_chubu_ana:hover{background: transparent url("/dp/images/map_image/map_japan.png") -307px -1834px no-repeat;}
+
+/* 東海 */
+#airmap_japan_ana #icon_kansai_ana{top: 253px; left: 216px; width: 124px; height: 90px;}
+#airmap_japan_ana #icon_kansai_ana:hover{background: transparent url("/dp/images/map_image/map_japan.png") -216px -2433px no-repeat;}
+
+/* 九州 */
+#airmap_japan_ana #icon_kyushu_ana{top: 293px; left: 172px; width: 70px; height: 118px;}
+#airmap_japan_ana #icon_kyushu_ana:hover{background: transparent url("/dp/images/map_image/map_japan.png") -172px -3018px no-repeat;}
+
+/* 沖縄 */
+#airmap_japan_ana #icon_okinawa_ana{top: 411px; left: 128px; width: 114px; height: 110px;}
+#airmap_japan_ana #icon_okinawa_ana:hover{background: transparent url("/dp/images/map_image/map_japan.png") -128px -3681px no-repeat;}
+
+/* disabled時 */
+#airmap_japan_ana li.airmap_disabled:hover{
+	cursor: default !important;
+	background-position: 0px 0px !important;
+}
+
+
+
+/* ===========================
+	日本全体地図×JAL
+=========================== */
+
+#airmap_japan_jal .airmap_map_area{
+	height: 540px;
+	padding-top: 0;
+}
+
+#airmap_japan_jal .airmap_map_area .airmap_image{
+	height: 540px;
+}
+
+/* ===== 『地域名』＆『全国地図に戻る』エリア ===== */
+#airmap_japan_jal .airmap_map_area ul.airmap_title li.airmap_name_place{background-position: 0 -144px; width: 76px; height: 44px; top:16px;}
+#airmap_japan_jal .airmap_map_area ul.airmap_title li.airmap_name_jal{top: 62px; left: 24px;}
+
+/* ===== 地図ボタン ===== */
+/* navi */
+#airmap_japan_jal .airmap_image span{background-image: url("/dp/images/map_image/nav_japan_jal.png"); width: 138px; height: 138px;}
+
+/* 通常時 */
+#airmap_japan_jal #icon_hokkaido_jal span{background-position: 0px 0px; top: 16px; left: 153px;}
+#airmap_japan_jal #icon_touhoku_jal span{background-position: 0px -138px; top: 50px; left: 92px;}
+#airmap_japan_jal #icon_chubu_jal span{background-position: 0px -276px; width: 158px; top: 120px; left: 91px;}
+#airmap_japan_jal #icon_kansai_jal span{background-position: 0px -414px; width: 158px; height: 158px; top: -156px; left: -91px;}
+#airmap_japan_jal #icon_kyushu_jal span{background-position: 0px -572px; top: -29px; left: -147px;}
+#airmap_japan_jal #icon_okinawa_jal span{background-position: 0px -710px; top: -23px;left: 106px;}
+
+/* hover時 */
+#airmap_japan_jal #icon_hokkaido_jal:hover span, #airmap_japan_jal #icon_hokkaido_jal.airmap_hover span{background-position: -160px 0px;}
+#airmap_japan_jal #icon_touhoku_jal:hover span, #airmap_japan_jal #icon_touhoku_jal.airmap_hover span{background-position: -160px -138px;}
+#airmap_japan_jal #icon_chubu_jal:hover span, #airmap_japan_jal #icon_chubu_jal.airmap_hover span{background-position: -160px -276px; width: 158px;}
+#airmap_japan_jal #icon_kansai_jal:hover span, #airmap_japan_jal #icon_kansai_jal.airmap_hover span{background-position: -160px -414px; width: 158px; height: 158px;}
+#airmap_japan_jal #icon_kyushu_jal:hover span, #airmap_japan_jal #icon_kyushu_jal.airmap_hover span{background-position: -160px -572px;}
+#airmap_japan_jal #icon_okinawa_jal:hover span, #airmap_japan_jal #icon_okinawa_jal.airmap_hover span{background-position: -160px -710px;}
+
+/* disabled時 */
+#airmap_japan_jal #icon_hokkaido_jal.airmap_disabled span{background-position: -320px 0px;}
+#airmap_japan_jal #icon_touhoku_jal.airmap_disabled span{background-position: -320px -138px;}
+#airmap_japan_jal #icon_chubu_jal.airmap_disabled span{background-position: -320px -276px; width: 158px;}
+#airmap_japan_jal #icon_kansai_jal.airmap_disabled span{background-position: -320px -414px; width: 158px; height: 158px;}
+#airmap_japan_jal #icon_kyushu_jal.airmap_disabled span{background-position: -320px -572px;}
+#airmap_japan_jal #icon_okinawa_jal.airmap_disabled span{background-position: -320px -710px;}
+
+
+/* ===== 地図の設定 ===== */
+/* 背景設定 */
+#airmap_japan_jal .airmap_image{
+	background: transparent url("/dp/images/map_image/map_japan.png") top left no-repeat;
+}
+
+/* 北海道 */
+#airmap_japan_jal #icon_hokkaido_jal{top: 12px; left: 383px; width: 192px; height: 118px;}
+#airmap_japan_jal #icon_hokkaido_jal:hover{background: url("/dp/images/map_image/map_japan.png") -383px -557px no-repeat;}
+
+/* 東北 */
+#airmap_japan_jal #icon_touhoku_jal{top: 122px; left: 380px; width: 64px; height: 124px;}
+#airmap_japan_jal #icon_touhoku_jal:hover{background: transparent url("/dp/images/map_image/map_japan.png") -380px -1212px no-repeat;}
+
+/* 中部 */
+#airmap_japan_jal #icon_chubu_jal{top: 199px; left: 307px; width: 112px; height: 105px;}
+#airmap_japan_jal #icon_chubu_jal:hover{background: transparent url("/dp/images/map_image/map_japan.png") -307px -1834px no-repeat;}
+
+/* 東海 */
+#airmap_japan_jal #icon_kansai_jal{top: 253px; left: 216px; width: 124px; height: 90px;}
+#airmap_japan_jal #icon_kansai_jal:hover{background: transparent url("/dp/images/map_image/map_japan.png") -216px -2433px no-repeat;}
+
+/* 九州 */
+#airmap_japan_jal #icon_kyushu_jal{top: 293px; left: 172px; width: 70px; height: 118px;}
+#airmap_japan_jal #icon_kyushu_jal:hover{background: transparent url("/dp/images/map_image/map_japan.png") -172px -3018px no-repeat;}
+
+/* 沖縄 */
+#airmap_japan_jal #icon_okinawa_jal{top: 411px; left: 128px; width: 114px; height: 110px;}
+#airmap_japan_jal #icon_okinawa_jal:hover{background: transparent url("/dp/images/map_image/map_japan.png") -128px -3681px no-repeat;}
+
+/* disabled時 */
+#airmap_japan_jal li.airmap_disabled:hover{
+	cursor: default !important;
+	background-position: 0px 0px !important;
+}
+
+
+
+/* ===========================
+	北海道×ANA
+=========================== */
+
+/* ===== 地図の設定 ===== */
+#airmap_hokkaido_ana .airmap_image{position: relative; background: transparent url("/dp/images/map_image/map_hokkaido_ana.png") top left no-repeat;}
+
+
+/* ===== 『地域名』＆『全国地図に戻る』エリア ===== */
+#airmap_hokkaido_ana .airmap_map_area ul.airmap_title li.airmap_name_place{ background-position: 0 -193px; width: 107px; height: 40px;}
+#airmap_hokkaido_ana .airmap_map_area ul.airmap_title li.airmap_name_ana{ top: 42px; left: 40px;}
+
+
+/* ===== 地図ボタン ===== */
+#airmap_hokkaido_ana .airmap_image span{background-image: url("/dp/images/map_image/nav_hokkaido.png"); width: 111px; height: 75px;}
+
+/* 通常時 */
+#airmap_hokkaido_ana li#icon_HKD span{top: 24px; left: 43px; background-position: 0px 0px;}
+#airmap_hokkaido_ana li#icon_SPK span{top: -69px; left: -208px; background-position: 0px -75px;}
+#airmap_hokkaido_ana li#icon_AKJ span{top: -70px; left: -231px; background-position: 0px -150px;}
+#airmap_hokkaido_ana li#icon_OBO span{top: 55px; left: 29px; background-position: 0px -225px;}
+#airmap_hokkaido_ana li#icon_KUH span{top: 118px; left: 107px; background-position: 0px -300px;}
+#airmap_hokkaido_ana li#icon_MMB span{top: -127px; left: 90px; background-position: 0px -375px;}
+#airmap_hokkaido_ana li#icon_RIS span{top: 41px; left: -104px; background-position: 0px -450px;}
+#airmap_hokkaido_ana li#icon_WKJ span{top: -15px; left: 63px; background-position: 0px -525px;}
+#airmap_hokkaido_ana li#icon_MBE span{top: -76px; left: 58px; background-position: 0px -600px;}
+#airmap_hokkaido_ana li#icon_SHB span{top: 62px; left: 54px; background-position: 0px -675px;}
+
+/* hover時 */
+#airmap_hokkaido_ana li#icon_HKD:hover span, #airmap_hokkaido_ana li#icon_HKD.airmap_hover span{background-position: -111px 0;}
+#airmap_hokkaido_ana li#icon_SPK:hover span, #airmap_hokkaido_ana li#icon_SPK.airmap_hover span{background-position: -111px -75px;}
+#airmap_hokkaido_ana li#icon_AKJ:hover span, #airmap_hokkaido_ana li#icon_AKJ.airmap_hover span{background-position: -111px -150px;}
+#airmap_hokkaido_ana li#icon_OBO:hover span, #airmap_hokkaido_ana li#icon_OBO.airmap_hover span{background-position: -111px -225px;}
+#airmap_hokkaido_ana li#icon_KUH:hover span, #airmap_hokkaido_ana li#icon_KUH.airmap_hover span{background-position: -111px -300px;}
+#airmap_hokkaido_ana li#icon_MMB:hover span, #airmap_hokkaido_ana li#icon_MMB.airmap_hover span{background-position: -111px -375px;}
+#airmap_hokkaido_ana li#icon_RIS:hover span, #airmap_hokkaido_ana li#icon_RIS.airmap_hover span{background-position: -111px -450px;}
+#airmap_hokkaido_ana li#icon_WKJ:hover span, #airmap_hokkaido_ana li#icon_WKJ.airmap_hover span{background-position: -111px -525px;}
+#airmap_hokkaido_ana li#icon_MBE:hover span, #airmap_hokkaido_ana li#icon_MBE.airmap_hover span{background-position: -111px -600px;}
+#airmap_hokkaido_ana li#icon_SHB:hover span, #airmap_hokkaido_ana li#icon_SHB.airmap_hover span{background-position: -111px -675px;}
+
+/* disabled時 */
+#airmap_hokkaido_ana li#icon_HKD.airmap_disabled span{background-position: -222px 0;}
+#airmap_hokkaido_ana li#icon_SPK.airmap_disabled span{background-position: -222px -75px;}
+#airmap_hokkaido_ana li#icon_AKJ.airmap_disabled span{background-position: -222px -150px;}
+#airmap_hokkaido_ana li#icon_OBO.airmap_disabled span{background-position: -222px -225px;}
+#airmap_hokkaido_ana li#icon_KUH.airmap_disabled span{background-position: -222px -300px;}
+#airmap_hokkaido_ana li#icon_MMB.airmap_disabled span{background-position: -222px -375px;}
+#airmap_hokkaido_ana li#icon_RIS.airmap_disabled span{background-position: -222px -450px;}
+#airmap_hokkaido_ana li#icon_WKJ.airmap_disabled span{background-position: -222px -525px;}
+#airmap_hokkaido_ana li#icon_MBE.airmap_disabled span{background-position: -222px -600px;}
+#airmap_hokkaido_ana li#icon_SHB.airmap_disabled span{background-position: -222px -675px;}
+
+
+/* ===== 飛行機ボタンの位置設定 ===== */
+#airmap_hokkaido_ana li#icon_HKD{top: 406px; left: 173px;}
+#airmap_hokkaido_ana li#icon_SPK{top: 294px; left: 226px;}
+#airmap_hokkaido_ana li#icon_AKJ{top: 214px; left: 296px;}
+#airmap_hokkaido_ana li#icon_OBO{top: 338px; left: 362px;}
+#airmap_hokkaido_ana li#icon_KUH{top: 262px; left: 438px;}
+#airmap_hokkaido_ana li#icon_MMB{top: 183px; left: 446px;}
+#airmap_hokkaido_ana li#icon_RIS{top: 21px; left: 209px;}
+#airmap_hokkaido_ana li#icon_WKJ{top: 9px; left: 244px;}
+#airmap_hokkaido_ana li#icon_MBE{top: 131px; left: 364px;}
+#airmap_hokkaido_ana li#icon_SHB{top: 218px; left: 511px;}
+
+
+
+/* ===========================
+	北海道×JAL
+=========================== */
+
+/* ===== 地図の設定 ===== */
+#airmap_hokkaido_jal .airmap_image{position: relative; background: transparent url("/dp/images/map_image/map_hokkaido_jal.png?update=20160829") top left no-repeat;}
+
+
+/* ===== 『地域名』＆『全国地図に戻る』エリア ===== */
+#airmap_hokkaido_jal .airmap_map_area ul.airmap_title li.airmap_name_place{ background-position: 0 -193px; width: 107px; height: 40px;}
+#airmap_hokkaido_jal .airmap_map_area ul.airmap_title li.airmap_name_jal{ top: 42px; left: 40px;}
+
+
+/* ===== 地図ボタン ===== */
+#airmap_hokkaido_jal .airmap_image span{background-image: url("/dp/images/map_image/nav_hokkaido.png?update=20160817"); width: 111px; height: 75px;}
+
+/* 通常時 */
+#airmap_hokkaido_jal li#icon_HKD span{top: 25px; left: 43px; background-position: 0px 0px;}
+#airmap_hokkaido_jal li#icon_SPK span{top: -20px; left: -211px; background-position: 0px -75px;}
+#airmap_hokkaido_jal li#icon_AKJ span{top: -122px; left: -171px; background-position: 0px -150px;}
+#airmap_hokkaido_jal li#icon_OBO span{top: 54px; left: 29px; background-position: 0px -225px;}
+#airmap_hokkaido_jal li#icon_KUH span{top: 28px; left: 76px; background-position: 0px -300px;}
+#airmap_hokkaido_jal li#icon_MMB span{top: -100px; left: -4px; background-position: 0px -375px;}
+#airmap_hokkaido_jal li#icon_RIS span{top: -14px; left: 123px; background-position: 0px -450px;}
+#airmap_hokkaido_jal li#icon_OIR span{top: 73px; left: -59px; background-position: 0px -825px;}
+#airmap_hokkaido_jal li#icon_OKD span{top: -88px; left: -186px; background-position: 0px -750px;}
+
+/* hover時 */
+#airmap_hokkaido_jal li#icon_HKD:hover span, #airmap_hokkaido_jal li#icon_HKD.airmap_hover span{background-position: -111px 0;}
+#airmap_hokkaido_jal li#icon_SPK:hover span, #airmap_hokkaido_jal li#icon_SPK.airmap_hover span{background-position: -111px -75px;}
+#airmap_hokkaido_jal li#icon_AKJ:hover span, #airmap_hokkaido_jal li#icon_AKJ.airmap_hover span{background-position: -111px -150px;}
+#airmap_hokkaido_jal li#icon_OBO:hover span, #airmap_hokkaido_jal li#icon_OBO.airmap_hover span{background-position: -111px -225px;}
+#airmap_hokkaido_jal li#icon_KUH:hover span, #airmap_hokkaido_jal li#icon_KUH.airmap_hover span{background-position: -111px -300px;}
+#airmap_hokkaido_jal li#icon_MMB:hover span, #airmap_hokkaido_jal li#icon_MMB.airmap_hover span{background-position: -111px -375px;}
+#airmap_hokkaido_jal li#icon_RIS:hover span, #airmap_hokkaido_jal li#icon_RIS.airmap_hover span{background-position: -111px -450px;}
+#airmap_hokkaido_jal li#icon_OIR:hover span, #airmap_hokkaido_jal li#icon_OIR.airmap_hover span{background-position: -111px -825px;}
+#airmap_hokkaido_jal li#icon_OKD:hover span, #airmap_hokkaido_jal li#icon_OKD.airmap_hover span{background-position: -111px -750px;}
+
+/* disabled時 */
+#airmap_hokkaido_jal li#icon_HKD.airmap_disabled span{background-position: -222px 0;}
+#airmap_hokkaido_jal li#icon_SPK.airmap_disabled span{background-position: -222px -75px;}
+#airmap_hokkaido_jal li#icon_AKJ.airmap_disabled span{background-position: -222px -150px;}
+#airmap_hokkaido_jal li#icon_OBO.airmap_disabled span{background-position: -222px -225px;}
+#airmap_hokkaido_jal li#icon_KUH.airmap_disabled span{background-position: -222px -300px;}
+#airmap_hokkaido_jal li#icon_MMB.airmap_disabled span{background-position: -222px -375px;}
+#airmap_hokkaido_jal li#icon_RIS.airmap_disabled span{background-position: -222px -450px;}
+#airmap_hokkaido_jal li#icon_OIR.airmap_disabled span{background-position: -222px -825px;}
+#airmap_hokkaido_jal li#icon_OKD.airmap_disabled span{background-position: -222px -750px;}
+
+
+/* ===== 飛行機ボタンの位置設定 ===== */
+#airmap_hokkaido_jal li#icon_HKD{top: 406px; left: 173px;}
+#airmap_hokkaido_jal li#icon_SPK{top: 294px; left: 226px;}
+#airmap_hokkaido_jal li#icon_AKJ{top: 214px; left: 296px;}
+#airmap_hokkaido_jal li#icon_OBO{top: 338px; left: 362px;}
+#airmap_hokkaido_jal li#icon_KUH{top: 262px; left: 438px;}
+#airmap_hokkaido_jal li#icon_MMB{top: 183px; left: 446px;}
+#airmap_hokkaido_jal li#icon_RIS{top: 22px; left: 208px;}
+#airmap_hokkaido_jal li#icon_WKJ{top: 23px; left: 260px;}
+#airmap_hokkaido_jal li#icon_MBE{top: 131px; left: 364px;}
+#airmap_hokkaido_jal li#icon_SHB{top: 234px; left: 511px;}
+#airmap_hokkaido_jal li#icon_SHB{top: 234px; left: 511px;}
+#airmap_hokkaido_jal li#icon_RIS{top: 20px; left: 208px;}
+#airmap_hokkaido_jal li#icon_OIR{top: 367px; left: 63px;}
+#airmap_hokkaido_jal li#icon_OKD{top: 267px; left: 210px;}
+
+
+
+/* ===========================
+	東北×ANA
+=========================== */
+
+/* ===== 地図の設定 ===== */
+#airmap_touhoku_ana .airmap_image{position: relative; background: transparent url("/dp/images/map_image/map_touhoku_ana.png") top left no-repeat;}
+
+
+/* ===== 『地域名』＆『全国地図に戻る』エリア ===== */
+#airmap_touhoku_ana .airmap_map_area ul.airmap_title li.airmap_name_place{ background-position: 0 -238px; width: 107px; height: 41px;}
+#airmap_touhoku_ana .airmap_map_area ul.airmap_title li.airmap_name_ana{ top: 42px; left: 42px;}
+
+
+/* ===== 地図ボタン ===== */
+#airmap_touhoku_ana .airmap_image span{background-image: url("/dp/images/map_image/nav_touhoku.png"); width: 111px; height: 75px;}
+
+/* 通常時 */
+#airmap_touhoku_ana li#icon_AOJ span{top: -63px; left: -182px; background-position: 0px 0px;}
+#airmap_touhoku_ana li#icon_ONJ span{top: -22px; left: -166px; background-position: 0px -75px;}
+#airmap_touhoku_ana li#icon_AXT span{top: 17px; left: -211px; background-position: 0px -150px;}
+#airmap_touhoku_ana li#icon_SYO span{top: 38px; left: -134px; background-position: 0px -225px;}
+#airmap_touhoku_ana li#icon_FKS span{top: -71px; left: 104px; background-position: 0px -300px;}
+#airmap_touhoku_ana li#icon_SDJ span{top: -75px; left: 141px; background-position: 0px -375px;}
+
+/* hover時 */
+#airmap_touhoku_ana li#icon_AOJ:hover span, #airmap_touhoku_ana li#icon_AOJ.airmap_hover span{background-position: -111px 0;}
+#airmap_touhoku_ana li#icon_ONJ:hover span, #airmap_touhoku_ana li#icon_ONJ.airmap_hover span{background-position: -111px -75px;}
+#airmap_touhoku_ana li#icon_AXT:hover span, #airmap_touhoku_ana li#icon_AXT.airmap_hover span{background-position: -111px -150px;}
+#airmap_touhoku_ana li#icon_SYO:hover span, #airmap_touhoku_ana li#icon_SYO.airmap_hover span{background-position: -111px -225px;}
+#airmap_touhoku_ana li#icon_FKS:hover span, #airmap_touhoku_ana li#icon_FKS.airmap_hover span{background-position: -111px -300px;}
+#airmap_touhoku_ana li#icon_SDJ:hover span, #airmap_touhoku_ana li#icon_SDJ.airmap_hover span{background-position: -111px -375px;}
+
+/* disabled時 */
+#airmap_touhoku_ana li#icon_AOJ.airmap_disabled span{background-position: -222px 0;}
+#airmap_touhoku_ana li#icon_ONJ.airmap_disabled span{background-position: -222px -75px;}
+#airmap_touhoku_ana li#icon_AXT.airmap_disabled span{background-position: -222px -150px;}
+#airmap_touhoku_ana li#icon_SYO.airmap_disabled span{background-position: -222px -225px;}
+#airmap_touhoku_ana li#icon_FKS.airmap_disabled span{background-position: -222px -300px;}
+#airmap_touhoku_ana li#icon_SDJ.airmap_disabled span{background-position: -222px -375px;}
+
+/* ===== 飛行機ボタンの位置設定 ===== */
+#airmap_touhoku_ana li#icon_AOJ{top: 73px; left: 341px;}
+#airmap_touhoku_ana li#icon_ONJ{top: 150px; left: 334px;}
+#airmap_touhoku_ana li#icon_AXT{top: 200px; left: 302px;}
+#airmap_touhoku_ana li#icon_SYO{top: 294px; left: 268px;}
+#airmap_touhoku_ana li#icon_FKS{top: 442px; left: 316px;}
+#airmap_touhoku_ana li#icon_SDJ{top: 308px; left: 374px;}
+
+
+
+/* ===========================
+	東北×JAL
+=========================== */
+
+/* ===== 地図の設定 ===== */
+#airmap_touhoku_jal .airmap_image{position: relative; background: transparent url("/dp/images/map_image/map_touhoku_jal.png") top left no-repeat;}
+
+
+/* ===== 『地域名』＆『全国地図に戻る』エリア ===== */
+#airmap_touhoku_jal .airmap_map_area ul.airmap_title li.airmap_name_place{ background-position: 0 -238px; width: 107px; height: 41px;}
+#airmap_touhoku_jal .airmap_map_area ul.airmap_title li.airmap_name_jal{ top: 42px; left: 42px;}
+
+
+/* ===== 地図ボタン ===== */
+#airmap_touhoku_jal .airmap_image span{background-image: url("/dp/images/map_image/nav_touhoku.png"); width: 111px; height: 75px;}
+
+/* 通常時 */
+#airmap_touhoku_jal li#icon_AOJ span{top: -63px; left: -182px; background-position: 0px 0px;}
+#airmap_touhoku_jal li#icon_AXT span{top: -70px; left: -188px; background-position: 0px -150px;}
+#airmap_touhoku_jal li#icon_SDJ span{top: 61px; left: 45px; background-position: 0px -375px;}
+#airmap_touhoku_jal li#icon_MSJ span{top: 42px; left: 109px; background-position: 0px -450px;}
+#airmap_touhoku_jal li#icon_HNA span{top: 49px; left: 82px; background-position: 0px -525px;}
+#airmap_touhoku_jal li#icon_GAJ span{top: -71px; left: -200px; background-position: 0px -600px;}
+
+/* hover時 */
+#airmap_touhoku_jal li#icon_AOJ:hover span, #airmap_touhoku_jal li#icon_AOJ.airmap_hover span{background-position: -111px 0;}
+#airmap_touhoku_jal li#icon_AXT:hover span, #airmap_touhoku_jal li#icon_AXT.airmap_hover span{background-position: -111px -150px;}
+#airmap_touhoku_jal li#icon_SDJ:hover span, #airmap_touhoku_jal li#icon_SDJ.airmap_hover span{background-position: -111px -375px;}
+#airmap_touhoku_jal li#icon_MSJ:hover span, #airmap_touhoku_jal li#icon_MSJ.airmap_hover span{background-position: -111px -450px;}
+#airmap_touhoku_jal li#icon_HNA:hover span, #airmap_touhoku_jal li#icon_HNA.airmap_hover span{background-position: -111px -525px;}
+#airmap_touhoku_jal li#icon_GAJ:hover span, #airmap_touhoku_jal li#icon_GAJ.airmap_hover span{background-position: -111px -600px;}
+
+/* disabled時 */
+#airmap_touhoku_jal li#icon_AOJ.airmap_disabled span{background-position: -222px 0;}
+#airmap_touhoku_jal li#icon_AXT.airmap_disabled span{background-position: -222px -150px;}
+#airmap_touhoku_jal li#icon_SDJ.airmap_disabled span{background-position: -222px -375px;}
+#airmap_touhoku_jal li#icon_MSJ.airmap_disabled span{background-position: -222px -450px;}
+#airmap_touhoku_jal li#icon_HNA.airmap_disabled span{background-position: -222px -525px;}
+#airmap_touhoku_jal li#icon_GAJ.airmap_disabled span{background-position: -222px -600px;}
+
+
+/* ===== 飛行機ボタンの位置設定 ===== */
+#airmap_touhoku_jal li#icon_AOJ{top: 73px; left: 341px;}
+#airmap_touhoku_jal li#icon_AXT{top: 197px; left: 306px;}
+#airmap_touhoku_jal li#icon_SDJ{top: 308px; left: 374px;}
+#airmap_touhoku_jal li#icon_MSJ{top: 66px; left: 402px;}
+#airmap_touhoku_jal li#icon_HNA{top: 204px; left: 410px;}
+#airmap_touhoku_jal li#icon_GAJ{top: 316px; left: 318px;}
+
+
+
+/* ===========================
+	中部×ANA
+=========================== */
+
+/* ===== 地図の設定 ===== */
+#airmap_chubu_ana .airmap_map_area{height: 540px; padding-top: 0;}
+#airmap_chubu_ana .airmap_image{position: relative; height: 540px; background: transparent url("/dp/images/map_image/map_chubu_ana.png") top left no-repeat;}
+
+/* ===== 『地域名』＆『全国地図に戻る』エリア ===== */
+#airmap_chubu_ana .airmap_map_area ul.airmap_title li{top: 16px;}
+#airmap_chubu_ana .airmap_map_area ul.airmap_title li.airmap_name_place{ background-position: 0 -284px; width: 162px; height: 74px;}
+#airmap_chubu_ana .airmap_map_area ul.airmap_title li.airmap_name_ana{top: 92px; left: 70px;}
+
+
+/* ===== 地図ボタン ===== */
+#airmap_chubu_ana .airmap_image span{background-image: url("/dp/images/map_image/nav_chubu.png"); width: 111px; height: 75px;}
+
+/* 通常時 */
+#airmap_chubu_ana li#icon_NRT span{top: -72px; left: 56px; background-position: 0px 0px;}
+#airmap_chubu_ana li#icon_HND span{top: 57px; left: 70px; background-position: 0px -75px;}
+#airmap_chubu_ana li#icon_OIM span{top: -104px; left: -39px; background-position: 0px -150px;}
+#airmap_chubu_ana li#icon_HAC span{top: -70px; left: -129px; background-position: 0px -225px;}
+#airmap_chubu_ana li#icon_KIJ span{top: -49px; left: 56px; background-position: 0px -300px;}
+#airmap_chubu_ana li#icon_TOY span{top: -95px; left: 68px; background-position: 0px -375px;}
+#airmap_chubu_ana li#icon_NTQ span{top: -70px; left: 69px; background-position: 0px -450px;}
+#airmap_chubu_ana li#icon_KMQ span{top: -109px; left: -93px; background-position: 0px -525px;}
+#airmap_chubu_ana li#icon_NGO span{top: -23px; left: -119px; background-position: 0px -675px;}
+#airmap_chubu_ana li#icon_FSZ span{top: -20px; left: 65px; background-position: 0px -750px;}
+
+/* hover時 */
+#airmap_chubu_ana li#icon_NRT:hover span, #airmap_chubu_ana li#icon_NRT.airmap_hover span{background-position: -111px 0px;}
+#airmap_chubu_ana li#icon_HND:hover span, #airmap_chubu_ana li#icon_HND.airmap_hover span{background-position: -111px -75px;}
+#airmap_chubu_ana li#icon_OIM:hover span, #airmap_chubu_ana li#icon_OIM.airmap_hover span{background-position: -111px -150px;}
+#airmap_chubu_ana li#icon_HAC:hover span, #airmap_chubu_ana li#icon_HAC.airmap_hover span{background-position: -111px -225px;}
+#airmap_chubu_ana li#icon_KIJ:hover span, #airmap_chubu_ana li#icon_KIJ.airmap_hover span{background-position: -111px -300px;}
+#airmap_chubu_ana li#icon_TOY:hover span, #airmap_chubu_ana li#icon_TOY.airmap_hover span{background-position: -111px -375px;}
+#airmap_chubu_ana li#icon_NTQ:hover span, #airmap_chubu_ana li#icon_NTQ.airmap_hover span{background-position: -111px -450px;}
+#airmap_chubu_ana li#icon_KMQ:hover span, #airmap_chubu_ana li#icon_KMQ.airmap_hover span{background-position: -111px -525px;}
+#airmap_chubu_ana li#icon_NGO:hover span, #airmap_chubu_ana li#icon_NGO.airmap_hover span{background-position: -111px -675px;}
+#airmap_chubu_ana li#icon_FSZ:hover span, #airmap_chubu_ana li#icon_FSZ.airmap_hover span{background-position: -111px -750px;}
+
+/* disabled時 */
+#airmap_chubu_ana li#icon_NRT.airmap_disabled span{background-position: -222px 0px;}
+#airmap_chubu_ana li#icon_HND.airmap_disabled span{background-position: -222px -75px;}
+#airmap_chubu_ana li#icon_OIM.airmap_disabled span{background-position: -222px -150px;}
+#airmap_chubu_ana li#icon_HAC.airmap_disabled span{background-position: -222px -225px;}
+#airmap_chubu_ana li#icon_KIJ.airmap_disabled span{background-position: -222px -300px;}
+#airmap_chubu_ana li#icon_TOY.airmap_disabled span{background-position: -222px -375px;}
+#airmap_chubu_ana li#icon_NTQ.airmap_disabled span{background-position: -222px -450px;}
+#airmap_chubu_ana li#icon_KMQ.airmap_disabled span{background-position: -222px -525px;}
+#airmap_chubu_ana li#icon_NGO.airmap_disabled span{background-position: -222px -675px;}
+#airmap_chubu_ana li#icon_FSZ.airmap_disabled span{background-position: -222px -750px;}
+
+/* ===== 飛行機ボタンの位置設定 ===== */
+#airmap_chubu_ana li#icon_NRT{top: 340px; left: 500px;}
+#airmap_chubu_ana li#icon_HND{top: 380px; left: 427px;}
+#airmap_chubu_ana li#icon_OIM{top: 180px; left: 614px;}
+#airmap_chubu_ana li#icon_HAC{top: 422px; left: 668px;}
+#airmap_chubu_ana li#icon_KIJ{top: 79px; left: 340px;}
+#airmap_chubu_ana li#icon_TOY{top: 255px; left: 154px;}
+#airmap_chubu_ana li#icon_NTQ{top: 149px; left: 130px;}
+#airmap_chubu_ana li#icon_KMQ{top: 246px; left: 96px;}
+#airmap_chubu_ana li#icon_NGO{top: 466px; left: 129px;}
+#airmap_chubu_ana li#icon_FSZ{top: 470px; left: 269px;}
+
+
+
+/* ===========================
+ 中部×JAL
+=========================== */
+
+/* ===== 地図の設定 ===== */
+#airmap_chubu_jal .airmap_map_area{height: 540px; padding-top: 0;}
+#airmap_chubu_jal .airmap_image{position: relative; height: 540px; background: transparent url("/dp/images/map_image/map_chubu_jal.png") top left no-repeat;}
+
+/* ===== 『地域名』＆『全国地図に戻る』エリア ===== */
+#airmap_chubu_jal .airmap_map_area ul.airmap_title li{top: 16px;}
+#airmap_chubu_jal .airmap_map_area ul.airmap_title li.airmap_name_place{ background-position: 0 -284px; width: 162px; height: 74px;}
+#airmap_chubu_jal .airmap_map_area ul.airmap_title li.airmap_name_jal{top: 92px; left: 70px;}
+
+
+/* ===== 地図ボタン ===== */
+#airmap_chubu_jal .airmap_image span{background-image: url("/dp/images/map_image/nav_chubu.png"); width: 111px; height: 75px;}
+
+/* 通常時 */
+#airmap_chubu_jal li#icon_NRT span{top: -72px; left: 56px; background-position: 0px 0px;}
+#airmap_chubu_jal li#icon_HND span{top: 57px; left: 70px; background-position: 0px -75px;}
+#airmap_chubu_jal li#icon_KIJ span{top: -49px; left: 56px; background-position: 0px -300px;}
+#airmap_chubu_jal li#icon_KMQ span{top: -109px; left: -93px; background-position: 0px -525px;}
+#airmap_chubu_jal li#icon_MMJ span{top: -132px; left: -74px; background-position: 0px -600px;}
+#airmap_chubu_jal li#icon_NGO span{top: -23px; left: -119px; background-position: 0px -675px;}
+#airmap_chubu_jal li#icon_FSZ span{top: -20px; left: 64px; background-position: 0px -750px;}
+#airmap_chubu_jal li#icon_NKM span{top: -81px; left: -172px; background-position: 0px -825px;}
+
+/* hover時 */
+#airmap_chubu_jal li#icon_NRT:hover span, #airmap_chubu_jal li#icon_NRT.airmap_hover span{background-position: -111px 0px;}
+#airmap_chubu_jal li#icon_HND:hover span, #airmap_chubu_jal li#icon_HND.airmap_hover span{background-position: -111px -75px;}
+#airmap_chubu_jal li#icon_KIJ:hover span, #airmap_chubu_jal li#icon_KIJ.airmap_hover span{background-position: -111px -300px;}
+#airmap_chubu_jal li#icon_KMQ:hover span, #airmap_chubu_jal li#icon_KMQ.airmap_hover span{background-position: -111px -525px;}
+#airmap_chubu_jal li#icon_MMJ:hover span, #airmap_chubu_jal li#icon_MMJ.airmap_hover span{background-position: -111px -600px;}
+#airmap_chubu_jal li#icon_NGO:hover span, #airmap_chubu_jal li#icon_NGO.airmap_hover span{background-position: -111px -675px;}
+#airmap_chubu_jal li#icon_FSZ:hover span, #airmap_chubu_jal li#icon_FSZ.airmap_hover span{background-position: -111px -750px;}
+#airmap_chubu_jal li#icon_NKM:hover span, #airmap_chubu_jal li#icon_NKM.airmap_hover span{background-position: -111px -825px;}
+
+/* disabled時 */
+#airmap_chubu_jal li#icon_NRT.airmap_disabled span{background-position: -222px 0;}
+#airmap_chubu_jal li#icon_HND.airmap_disabled span{background-position: -222px -75px;}
+#airmap_chubu_jal li#icon_KIJ.airmap_disabled span{background-position: -222px -300px;}
+#airmap_chubu_jal li#icon_KMQ.airmap_disabled span{background-position: -222px -525px;}
+#airmap_chubu_jal li#icon_MMJ.airmap_disabled span{background-position: -222px -600px;}
+#airmap_chubu_jal li#icon_NGO.airmap_disabled span{background-position: -222px -675px;}
+#airmap_chubu_jal li#icon_FSZ.airmap_disabled span{background-position: -222px -750px;}
+#airmap_chubu_jal li#icon_NKM.airmap_disabled span{background-position: -222px -825px;}
+
+/* ===== 飛行機ボタンの位置設定 ===== */
+#airmap_chubu_jal li#icon_NRT{top: 340px; left: 500px;}
+#airmap_chubu_jal li#icon_HND{top: 380px; left: 427px;}
+#airmap_chubu_jal li#icon_KIJ{top: 78px; left: 340px;}
+#airmap_chubu_jal li#icon_KMQ{top: 245px; left: 95px;}
+#airmap_chubu_jal li#icon_MMJ{top: 266px; left: 275px;}
+#airmap_chubu_jal li#KARI_01{top: 313px; left: 236px;}
+#airmap_chubu_jal li#icon_NGO{top: 466px; left: 129px;}
+#airmap_chubu_jal li#icon_FSZ{top: 479px; left: 257px;}
+#airmap_chubu_jal li#icon_NKM{top: 435px; left: 175px;}
+
+
+
+/* ===========================
+	関西×ANA
+=========================== */
+
+/* ===== 地図の設定 ===== */
+#airmap_kansai_ana .airmap_image{position: relative; background: transparent url("/dp/images/map_image/map_kansai_ana.png") top left no-repeat;}
+
+
+/* ===== 『地域名』＆『全国地図に戻る』エリア ===== */
+#airmap_kansai_ana .airmap_map_area ul.airmap_title li.airmap_name_place{ background-position: 0 -363px; width: 217px; height: 74px;}
+#airmap_kansai_ana .airmap_map_area ul.airmap_title li.airmap_name_ana{ top: 76px; left: 98px;}
+
+
+/* ===== 地図ボタン ===== */
+#airmap_kansai_ana .airmap_image span{background-image: url("/dp/images/map_image/nav_kansai.png"); width: 106px; height: 60px;}
+
+/* 通常時 */
+#airmap_kansai_ana li#icon_TJH span{top: 354px; left: 305px; background-position: 0px 0px;}
+#airmap_kansai_ana li#icon_ITM span{top: -111px; left: 80px; background-position: 0px -60px;}
+#airmap_kansai_ana li#icon_KIX span{top: 38px; left: 118px; background-position: 0px -120px;}
+#airmap_kansai_ana li#icon_UKB span{top: -54px; left: -103px; background-position: 0px -300px;}
+#airmap_kansai_ana li#icon_OKJ span{top: -193px; left: 34px; background-position: 0px -360px;}
+#airmap_kansai_ana li#icon_HIJ span{top: -30px; left: -225px; background-position: 0px -420px;}
+#airmap_kansai_ana li#icon_IWK span{top: -6px; left: 67px; background-position: 0px -480px;}
+#airmap_kansai_ana li#icon_UBJ span{top: 53px; left: -34px; background-position: 0px -540px;}
+#airmap_kansai_ana li#icon_TTJ span{top: -54px; left: 99px; background-position: 0px -600px;}
+#airmap_kansai_ana li#icon_YGJ span{top: -96px; left: -34px; background-position: 0px -660px;}
+#airmap_kansai_ana li#icon_IWJ span{top: -73px; left: -108px; background-position: 0px -720px;}
+#airmap_kansai_ana li#icon_TAK span{top: 156px; left: 5px; background-position: 0px -780px;}
+#airmap_kansai_ana li#icon_TKS span{top: 85px; left: -35px; background-position: 0px -840px;}
+#airmap_kansai_ana li#icon_MYJ span{top: 103px; left: -78px; background-position: 0px -900px;}
+#airmap_kansai_ana li#icon_KCZ span{top: 64px; left: -74px; background-position: 0px -960px;}
+
+/* hover時 */
+#airmap_kansai_ana li#icon_TJH:hover span, #airmap_kansai_ana li#icon_TJH.airmap_hover span{background-position: -106px 0px;}
+#airmap_kansai_ana li#icon_ITM:hover span, #airmap_kansai_ana li#icon_ITM.airmap_hover span{background-position: -106px -60px;}
+#airmap_kansai_ana li#icon_KIX:hover span, #airmap_kansai_ana li#icon_KIX.airmap_hover span{background-position: -106px -120px;}
+#airmap_kansai_ana li#icon_UKB:hover span, #airmap_kansai_ana li#icon_UKB.airmap_hover span{background-position: -106px -300px;}
+#airmap_kansai_ana li#icon_OKJ:hover span, #airmap_kansai_ana li#icon_OKJ.airmap_hover span{background-position: -106px -360px;}
+#airmap_kansai_ana li#icon_HIJ:hover span, #airmap_kansai_ana li#icon_HIJ.airmap_hover span{background-position: -106px -420px;}
+#airmap_kansai_ana li#icon_IWK:hover span, #airmap_kansai_ana li#icon_IWK.airmap_hover span{background-position: -106px -480px;}
+#airmap_kansai_ana li#icon_UBJ:hover span, #airmap_kansai_ana li#icon_UBJ.airmap_hover span{background-position: -106px -540px;}
+#airmap_kansai_ana li#icon_TTJ:hover span, #airmap_kansai_ana li#icon_TTJ.airmap_hover span{background-position: -106px -600px;}
+#airmap_kansai_ana li#icon_YGJ:hover span, #airmap_kansai_ana li#icon_YGJ.airmap_hover span{background-position: -106px -660px;}
+#airmap_kansai_ana li#icon_IWJ:hover span, #airmap_kansai_ana li#icon_IWJ.airmap_hover span{background-position: -106px -720px;}
+#airmap_kansai_ana li#icon_TAK:hover span, #airmap_kansai_ana li#icon_TAK.airmap_hover span{background-position: -106px -780px;}
+#airmap_kansai_ana li#icon_TKS:hover span, #airmap_kansai_ana li#icon_TKS.airmap_hover span{background-position: -106px -840px;}
+#airmap_kansai_ana li#icon_MYJ:hover span, #airmap_kansai_ana li#icon_MYJ.airmap_hover span{background-position: -106px -900px;}
+#airmap_kansai_ana li#icon_KCZ:hover span, #airmap_kansai_ana li#icon_KCZ.airmap_hover span{background-position: -106px -960px;}
+
+/* disabled時 */
+#airmap_kansai_ana li#icon_TJH.airmap_disabled span{background-position: -212px 0px;}
+#airmap_kansai_ana li#icon_ITM.airmap_disabled span{background-position: -212px -60px;}
+#airmap_kansai_ana li#icon_KIX.airmap_disabled span{background-position: -212px -120px;}
+#airmap_kansai_ana li#icon_UKB.airmap_disabled span{background-position: -212px -300px;}
+#airmap_kansai_ana li#icon_OKJ.airmap_disabled span{background-position: -212px -360px;}
+#airmap_kansai_ana li#icon_HIJ.airmap_disabled span{background-position: -212px -420px;}
+#airmap_kansai_ana li#icon_IWK.airmap_disabled span{background-position: -212px -480px;}
+#airmap_kansai_ana li#icon_UBJ.airmap_disabled span{background-position: -212px -540px;}
+#airmap_kansai_ana li#icon_TTJ.airmap_disabled span{background-position: -212px -600px;}
+#airmap_kansai_ana li#icon_YGJ.airmap_disabled span{background-position: -212px -660px;}
+#airmap_kansai_ana li#icon_IWJ.airmap_disabled span{background-position: -212px -720px;}
+#airmap_kansai_ana li#icon_TAK.airmap_disabled span{background-position: -212px -780px;}
+#airmap_kansai_ana li#icon_TKS.airmap_disabled span{background-position: -212px -840px;}
+#airmap_kansai_ana li#icon_MYJ.airmap_disabled span{background-position: -212px -900px;}
+#airmap_kansai_ana li#icon_KCZ.airmap_disabled span{background-position: -212px -960px;}
+
+/* ===== 飛行機ボタンの位置設定 ===== */
+#airmap_kansai_ana li#icon_TJH{top: 358px; left: 305px;}
+#airmap_kansai_ana li#icon_KIX{top: 243px; left: 464px;}
+#airmap_kansai_ana li#icon_UKB{top: 218px; left: 456px;}
+#airmap_kansai_ana li#icon_ITM{top: 185px; left: 502px;}
+#airmap_kansai_ana li#icon_OKJ{top: 191px; left: 316px;}
+#airmap_kansai_ana li#icon_HIJ{top: 224px; left: 229px;}
+#airmap_kansai_ana li#icon_IWK{top: 266px; left: 143px;}
+#airmap_kansai_ana li#icon_UBJ{top: 297px; left: 43px;}
+#airmap_kansai_ana li#icon_TTJ{top: 80px; left: 363px;}
+#airmap_kansai_ana li#icon_YGJ{top: 88px; left: 257px;}
+#airmap_kansai_ana li#icon_IWJ{top: 184px; left: 112px;}
+#airmap_kansai_ana li#icon_TAK{top: 266px; left: 362px;}
+#airmap_kansai_ana li#icon_TKS{top: 268px; left: 402px;}
+#airmap_kansai_ana li#icon_MYJ{top: 319px; left: 195px;}
+#airmap_kansai_ana li#icon_KCZ{top: 358px; left: 305px;}
+
+
+
+/* ===========================
+	関西×JAL
+=========================== */
+
+/* ===== 地図の設定 ===== */
+#airmap_kansai_jal .airmap_image{position: relative; background: transparent url("/dp/images/map_image/map_kansai_jal.png") top left no-repeat;}
+
+
+/* ===== 『地域名』＆『全国地図に戻る』エリア ===== */
+#airmap_kansai_jal .airmap_map_area ul.airmap_title li.airmap_name_place{ background-position: 0 -363px; width: 217px; height: 74px;}
+#airmap_kansai_jal .airmap_map_area ul.airmap_title li.airmap_name_jal{ top: 76px; left: 98px;}
+
+
+/* ===== 地図ボタン ===== */
+#airmap_kansai_jal .airmap_image span{background-image: url("/dp/images/map_image/nav_kansai.png"); width: 106px; height: 60px;}
+
+/* 通常時 */
+#airmap_kansai_jal li#icon_TJH span{top: -92px; left: 18px; background-position: 0px 0px;}
+#airmap_kansai_jal li#icon_ITM span{top: -111px; left: 80px; background-position: 0px -60px;}
+#airmap_kansai_jal li#icon_KIX span{top: 145px; left: 118px; background-position: 0px -120px;}
+#airmap_kansai_jal li#icon_UKB span{top: -54px; left: -103px; background-position: 0px -300px;}
+#airmap_kansai_jal li#icon_SHM span{top: -49px; left: 78px; background-position: 0px -180px;}
+#airmap_kansai_jal li#icon_OKI span{top: -8px; left: 54px; background-position: 0px -240px;}
+#airmap_kansai_jal li#icon_OKJ span{top: -136px; left: -34px; background-position: 0px -360px;}
+#airmap_kansai_jal li#icon_HIJ span{top: -38px; left: -216px; background-position: 0px -420px;}
+#airmap_kansai_jal li#icon_UBJ span{top: 54px; left: -34px; background-position: 0px -540px;}
+#airmap_kansai_jal li#icon_TAK span{top: 156px; left: 5px; background-position: 0px -780px;}
+#airmap_kansai_jal li#icon_TKS span{top: 85px; left: -35px; background-position: 0px -840px;}
+#airmap_kansai_jal li#icon_MYJ span{top: 103px; left: -78px; background-position: 0px -900px;}
+#airmap_kansai_jal li#icon_KCZ span{top: 64px; left: -74px; background-position: 0px -960px;}
+#airmap_kansai_jal li#icon_IZO span{top: 9px; left: -167px; background-position: 0px -1020px;}
+
+/* hover時 */
+#airmap_kansai_jal li#icon_TJH:hover span, #airmap_kansai_jal li#icon_TJH.airmap_hover span{background-position: -106px 0px;}
+#airmap_kansai_jal li#icon_ITM:hover span, #airmap_kansai_jal li#icon_ITM.airmap_hover span{background-position: -106px -60px;}
+#airmap_kansai_jal li#icon_KIX:hover span, #airmap_kansai_jal li#icon_KIX.airmap_hover span{background-position: -106px -120px;}
+#airmap_kansai_jal li#icon_UKB:hover span, #airmap_kansai_jal li#icon_UKB.airmap_hover span{background-position: -106px -300px;}
+#airmap_kansai_jal li#icon_SHM:hover span, #airmap_kansai_jal li#icon_SHM.airmap_hover span{background-position: -106px -180px;}
+#airmap_kansai_jal li#icon_OKI:hover span, #airmap_kansai_jal li#icon_OKI.airmap_hover span{background-position: -106px -240px;}
+#airmap_kansai_jal li#icon_OKJ:hover span, #airmap_kansai_jal li#icon_OKJ.airmap_hover span{background-position: -106px -360px;}
+#airmap_kansai_jal li#icon_HIJ:hover span, #airmap_kansai_jal li#icon_HIJ.airmap_hover span{background-position: -106px -420px;}
+#airmap_kansai_jal li#icon_UBJ:hover span, #airmap_kansai_jal li#icon_UBJ.airmap_hover span{background-position: -106px -540px;}
+#airmap_kansai_jal li#icon_TAK:hover span, #airmap_kansai_jal li#icon_TAK.airmap_hover span{background-position: -106px -780px;}
+#airmap_kansai_jal li#icon_TKS:hover span, #airmap_kansai_jal li#icon_TKS.airmap_hover span{background-position: -106px -840px;}
+#airmap_kansai_jal li#icon_MYJ:hover span, #airmap_kansai_jal li#icon_MYJ.airmap_hover span{background-position: -106px -900px;}
+#airmap_kansai_jal li#icon_KCZ:hover span, #airmap_kansai_jal li#icon_KCZ.airmap_hover span{background-position: -106px -960px;}
+#airmap_kansai_jal li#icon_IZO:hover span, #airmap_kansai_jal li#icon_IZO.airmap_hover span{background-position: -106px -1020px;}
+
+/* disabled時 */
+#airmap_kansai_jal li#icon_TJH.airmap_disabled span{background-position: -212px 0px;}
+#airmap_kansai_jal li#icon_ITM.airmap_disabled span{background-position: -212px -60px;}
+#airmap_kansai_jal li#icon_KIX.airmap_disabled span{background-position: -212px -120px;}
+#airmap_kansai_jal li#icon_UKB.airmap_disabled span{background-position: -212px -300px;}
+#airmap_kansai_jal li#icon_SHM.airmap_disabled span{background-position: -212px -180px;}
+#airmap_kansai_jal li#icon_OKI.airmap_disabled span{background-position: -212px -240px;}
+#airmap_kansai_jal li#icon_OKJ.airmap_disabled span{background-position: -212px -360px;}
+#airmap_kansai_jal li#icon_HIJ.airmap_disabled span{background-position: -212px -420px;}
+#airmap_kansai_jal li#icon_UBJ.airmap_disabled span{background-position: -212px -540px;}
+#airmap_kansai_jal li#icon_TAK.airmap_disabled span{background-position: -212px -780px;}
+#airmap_kansai_jal li#icon_TKS.airmap_disabled span{background-position: -212px -840px;}
+#airmap_kansai_jal li#icon_MYJ.airmap_disabled span{background-position: -212px -900px;}
+#airmap_kansai_jal li#icon_KCZ.airmap_disabled span{background-position: -212px -960px;}
+#airmap_kansai_jal li#icon_IZO.airmap_disabled span{background-position: -212px -1020px;}
+
+
+/* ===== 飛行機ボタンの位置設定 ===== */
+#airmap_kansai_jal li#icon_TJH{top: 87px; left: 418px;}
+#airmap_kansai_jal li#icon_KIX{top: 243px; left: 464px;}
+#airmap_kansai_jal li#icon_UKB{top: 218px; left: 456px;}
+#airmap_kansai_jal li#icon_ITM{top: 185px; left: 502px;}
+#airmap_kansai_jal li#icon_SHM{top: 351px; left: 504px;}
+#airmap_kansai_jal li#icon_OKI{top: 2px; left: 262px;}
+#airmap_kansai_jal li#icon_OKJ{top: 191px; left: 319px;}
+#airmap_kansai_jal li#icon_HIJ{top: 224px; left: 229px;}
+#airmap_kansai_jal li#icon_UBJ{top: 297px; left: 43px;}
+#airmap_kansai_jal li#icon_TAK{top: 266px; left: 362px;}
+#airmap_kansai_jal li#icon_TKS{top: 267px; left: 402px;}
+#airmap_kansai_jal li#icon_MYJ{top: 319px; left: 195px;}
+#airmap_kansai_jal li#icon_KCZ{top: 358px; left: 305px;}
+#airmap_kansai_jal li#icon_IZO{top: 107px; left: 211px;}
+
+
+
+/* ===========================
+	九州×ANA
+=========================== */
+
+/* ===== 地図の設定 ===== */
+
+#airmap_kyushu_ana .airmap_map_area{height: 540px; padding-top: 0;}
+#airmap_kyushu_ana .airmap_image{position: relative; height: 540px; background: transparent url("/dp/images/map_image/map_kyushu_ana.png") top left no-repeat;}
+
+/* ===== 『地域名』＆『全国地図に戻る』エリア ===== */
+#airmap_kyushu_ana .airmap_map_area ul.airmap_title li{top: 16px;}
+#airmap_kyushu_ana .airmap_map_area ul.airmap_title li.airmap_name_place{ background-position: 0 -442px; width: 96px; height: 41px;}
+#airmap_kyushu_ana .airmap_map_area ul.airmap_title li.airmap_name_ana{ top: 57px; left: 40px;}
+
+/* ===== 地図ボタン ===== */
+#airmap_kyushu_ana .airmap_image span{background-image: url("/dp/images/map_image/nav_kyushu.png"); width: 111px; height: 75px;}
+
+/* 通常時 */
+#airmap_kyushu_ana li#icon_OIT span{top: 22px; left: 92px; background-position: 0px 0px;}
+#airmap_kyushu_ana li#icon_KKJ span{top: -18px; left: 158px; background-position: 0px -75px;}
+#airmap_kyushu_ana li#icon_IKI span{top: -19px; left: -145px; background-position: 0px -150px;}
+#airmap_kyushu_ana li#icon_TSJ span{top: -16px; left: 45px; background-position: 0px -225px;}
+#airmap_kyushu_ana li#icon_HSG span{top: -13px; left: -236px; background-position: 0px -300px;}
+#airmap_kyushu_ana li#icon_FUK span{top: -89px; left: 84px; background-position: 0px -375px;}
+#airmap_kyushu_ana li#icon_KMJ span{top: 18px; left: 188px; background-position: 0px -450px;}
+#airmap_kyushu_ana li#icon_NGS span{top: 98px; left: -103px; background-position: 0px -525px;}
+#airmap_kyushu_ana li#icon_FUJ span{top: 47px; left: -142px; background-position: 0px -600px;}
+#airmap_kyushu_ana li#icon_KMI span{top: 8px; left: 80px; background-position: 0px -675px;}
+#airmap_kyushu_ana li#icon_KOJ span{top: 31px; left: -206px; background-position: 0px -750px;}
+
+/* hover時 */
+#airmap_kyushu_ana li#icon_OIT:hover span, #airmap_kyushu_ana li#icon_OIT.airmap_hover span{background-position: -111px 0px;}
+#airmap_kyushu_ana li#icon_KKJ:hover span, #airmap_kyushu_ana li#icon_KKJ.airmap_hover span{background-position: -111px -75px;}
+#airmap_kyushu_ana li#icon_IKI:hover span, #airmap_kyushu_ana li#icon_IKI.airmap_hover span{background-position: -111px -150px;}
+#airmap_kyushu_ana li#icon_TSJ:hover span, #airmap_kyushu_ana li#icon_TSJ.airmap_hover span{background-position: -111px -225px;}
+#airmap_kyushu_ana li#icon_HSG:hover span, #airmap_kyushu_ana li#icon_HSG.airmap_hover span{background-position: -111px -300px;}
+#airmap_kyushu_ana li#icon_FUK:hover span, #airmap_kyushu_ana li#icon_FUK.airmap_hover span{background-position: -111px -375px;}
+#airmap_kyushu_ana li#icon_KMJ:hover span, #airmap_kyushu_ana li#icon_KMJ.airmap_hover span{background-position: -111px -450px;}
+#airmap_kyushu_ana li#icon_NGS:hover span, #airmap_kyushu_ana li#icon_NGS.airmap_hover span{background-position: -111px -525px;}
+#airmap_kyushu_ana li#icon_FUJ:hover span, #airmap_kyushu_ana li#icon_FUJ.airmap_hover span{background-position: -111px -600px;}
+#airmap_kyushu_ana li#icon_KMI:hover span, #airmap_kyushu_ana li#icon_KMI.airmap_hover span{background-position: -111px -675px;}
+#airmap_kyushu_ana li#icon_KOJ:hover span, #airmap_kyushu_ana li#icon_KOJ.airmap_hover span{background-position: -111px -750px;}
+
+/* disabled時 */
+#airmap_kyushu_ana li#icon_OIT.airmap_disabled span{background-position: -222px 0px;}
+#airmap_kyushu_ana li#icon_KKJ.airmap_disabled span{background-position: -222px -75px;}
+#airmap_kyushu_ana li#icon_IKI.airmap_disabled span{background-position: -222px -150px;}
+#airmap_kyushu_ana li#icon_TSJ.airmap_disabled span{background-position: -222px -225px;}
+#airmap_kyushu_ana li#icon_HSG.airmap_disabled span{background-position: -222px -300px;}
+#airmap_kyushu_ana li#icon_FUK.airmap_disabled span{background-position: -222px -375px;}
+#airmap_kyushu_ana li#icon_KMJ.airmap_disabled span{background-position: -222px -450px;}
+#airmap_kyushu_ana li#icon_NGS.airmap_disabled span{background-position: -222px -525px;}
+#airmap_kyushu_ana li#icon_FUJ.airmap_disabled span{background-position: -222px -600px;}
+#airmap_kyushu_ana li#icon_KMI.airmap_disabled span{background-position: -222px -675px;}
+#airmap_kyushu_ana li#icon_KOJ.airmap_disabled span{background-position: -222px -750px;}
+
+/* ===== 飛行機ボタンの位置設定 ===== */
+#airmap_kyushu_ana li#icon_OIT{top: 149px; left: 435px;}
+#airmap_kyushu_ana li#icon_KKJ{top: 102px; left: 369px;}
+#airmap_kyushu_ana li#icon_IKI{top: 107px; left: 247px;}
+#airmap_kyushu_ana li#icon_TSJ{top: 35px; left: 208px;}
+#airmap_kyushu_ana li#icon_HSG{top: 181px; left: 291px;}
+#airmap_kyushu_ana li#icon_FUK{top: 113px; left: 325px;}
+#airmap_kyushu_ana li#icon_KMJ{top: 238px; left: 338px;}
+#airmap_kyushu_ana li#icon_NGS{top: 200px; left: 269px;}
+#airmap_kyushu_ana li#icon_FUJ{top: 211px; left: 175px;}
+#airmap_kyushu_ana li#icon_KMI{top: 332px; left: 412px;}
+#airmap_kyushu_ana li#icon_KOJ{top: 354px; left: 342px;}
+
+
+
+/* ===========================
+ 九州×JAL
+=========================== */
+
+/* ===== 地図の設定 ===== */
+
+#airmap_kyushu_jal .airmap_map_area{height: 540px; padding-top: 0;}
+#airmap_kyushu_jal .airmap_image{position: relative; height: 540px; background: transparent url("/dp/images/map_image/map_kyushu_jal.png?update=20160829") top left no-repeat;}
+
+/* ===== 『地域名』＆『全国地図に戻る』エリア ===== */
+#airmap_kyushu_jal .airmap_map_area ul.airmap_title li{top: 16px;}
+#airmap_kyushu_jal .airmap_map_area ul.airmap_title li.airmap_name_place{ background-position: 0 -442px; width: 96px; height: 41px;}
+#airmap_kyushu_jal .airmap_map_area ul.airmap_title li.airmap_name_jal{ top: 57px; left: 40px;}
+
+/* ===== 地図ボタン ===== */
+#airmap_kyushu_jal .airmap_image span{background-image: url("/dp/images/map_image/nav_kyushu.png?update=20160829"); width: 111px; height: 75px;}
+
+/* 通常時 */
+#airmap_kyushu_jal li#icon_OIT span{top: 22px; left: 92px; background-position: 0px 0px;}
+#airmap_kyushu_jal li#icon_KKJ span{top: -18px; left: 158px; background-position: 0px -75px;}
+#airmap_kyushu_jal li#icon_TSJ span{top: -16px; left: 47px; background-position: 0px -225px;}
+#airmap_kyushu_jal li#icon_HSG span{top: -12px; left: -236px; background-position: 0px -300px;}
+#airmap_kyushu_jal li#icon_FUK span{top: -88px; left: 84px; background-position: 0px -375px;}
+#airmap_kyushu_jal li#icon_KMJ span{top: 16px; left: 188px; background-position: 0px -450px;}
+#airmap_kyushu_jal li#icon_NGS span{top: -79px; left: -198px; background-position: 0px -525px;}
+#airmap_kyushu_jal li#icon_KMI span{top: 8px; left: 80px; background-position: 0px -675px;}
+#airmap_kyushu_jal li#icon_KOJ span{top: -30px; left: -207px; background-position: 0px -750px;}
+#airmap_kyushu_jal li#icon_TNE span{top: -43px; left: 73px; background-position: 0px -825px;}
+#airmap_kyushu_jal li#icon_KUM span{top: -81px; left: -198px; background-position: 0px -900px;}
+#airmap_kyushu_jal li#icon_AXJ span{top: -18px; left: -257px; background-position: 0px -975px;}
+
+/* hover時 */
+#airmap_kyushu_jal li#icon_OIT:hover span, #airmap_kyushu_jal li#icon_OIT.airmap_hover span{background-position: -111px 0px;}
+#airmap_kyushu_jal li#icon_KKJ:hover span, #airmap_kyushu_jal li#icon_KKJ.airmap_hover span{background-position: -111px -75px;}
+#airmap_kyushu_jal li#icon_TSJ:hover span, #airmap_kyushu_jal li#icon_TSJ.airmap_hover span{background-position: -111px -225px;}
+#airmap_kyushu_jal li#icon_HSG:hover span, #airmap_kyushu_jal li#icon_HSG.airmap_hover span{background-position: -111px -300px;}
+#airmap_kyushu_jal li#icon_FUK:hover span, #airmap_kyushu_jal li#icon_FUK.airmap_hover span{background-position: -111px -375px;}
+#airmap_kyushu_jal li#icon_KMJ:hover span, #airmap_kyushu_jal li#icon_KMJ.airmap_hover span{background-position: -111px -450px;}
+#airmap_kyushu_jal li#icon_NGS:hover span, #airmap_kyushu_jal li#icon_NGS.airmap_hover span{background-position: -111px -525px;}
+#airmap_kyushu_jal li#icon_KMI:hover span, #airmap_kyushu_jal li#icon_KMI.airmap_hover span{background-position: -111px -675px;}
+#airmap_kyushu_jal li#icon_KOJ:hover span, #airmap_kyushu_jal li#icon_KOJ.airmap_hover span{background-position: -111px -750px;}
+#airmap_kyushu_jal li#icon_TNE:hover span, #airmap_kyushu_jal li#icon_TNE.airmap_hover span{background-position: -111px -825px;}
+#airmap_kyushu_jal li#icon_KUM:hover span, #airmap_kyushu_jal li#icon_KUM.airmap_hover span{background-position: -111px -900px;}
+#airmap_kyushu_jal li#icon_AXJ:hover span, #airmap_kyushu_jal li#icon_AXJ.airmap_hover span{background-position: -111px -975px;}
+
+/* disabled時 */
+#airmap_kyushu_jal li#icon_OIT.airmap_disabled span{background-position: -222px 0px;}
+#airmap_kyushu_jal li#icon_KKJ.airmap_disabled span{background-position: -222px -75px;}
+#airmap_kyushu_jal li#icon_TSJ.airmap_disabled span{background-position: -222px -225px;}
+#airmap_kyushu_jal li#icon_HSG.airmap_disabled span{background-position: -222px -300px;}
+#airmap_kyushu_jal li#icon_FUK.airmap_disabled span{background-position: -222px -375px;}
+#airmap_kyushu_jal li#icon_KMJ.airmap_disabled span{background-position: -222px -450px;}
+#airmap_kyushu_jal li#icon_NGS.airmap_disabled span{background-position: -222px -525px;}
+#airmap_kyushu_jal li#icon_KMI.airmap_disabled span{background-position: -222px -675px;}
+#airmap_kyushu_jal li#icon_KOJ.airmap_disabled span{background-position: -222px -750px;}
+#airmap_kyushu_jal li#icon_TNE.airmap_disabled span{background-position: -222px -825px;}
+#airmap_kyushu_jal li#icon_KUM.airmap_disabled span{background-position: -222px -900px;}
+#airmap_kyushu_jal li#icon_AXJ.airmap_disabled span{background-position: -222px -975px;}
+
+/* ===== 飛行機ボタンの位置設定 ===== */
+#airmap_kyushu_jal li#icon_OIT{top: 148px; left: 435px;}
+#airmap_kyushu_jal li#icon_KKJ{top: 101px; left: 369px;}
+#airmap_kyushu_jal li#icon_TSJ{top: 35px; left: 208px;}
+#airmap_kyushu_jal li#icon_HSG{top: 180px; left: 291px;}
+#airmap_kyushu_jal li#icon_FUK{top: 112px; left: 325px;}
+#airmap_kyushu_jal li#icon_KMJ{top: 239px; left: 338px;}
+#airmap_kyushu_jal li#icon_NGS{top: 199px; left: 269px;}
+#airmap_kyushu_jal li#icon_KMI{top: 332px; left: 412px;}
+#airmap_kyushu_jal li#icon_KOJ{top: 354px; left: 343px;}
+#airmap_kyushu_jal li#icon_TNE{top: 466px; left: 369px;}
+#airmap_kyushu_jal li#icon_KUM{top: 491px; left: 330px;}
+#airmap_kyushu_jal li#icon_AXJ{top: 257px; left: 289px;}
+
+
+
+/* ===========================
+	沖縄×ANA
+=========================== */
+
+/* ===== 地図の設定 ===== */
+#airmap_okinawa_ana .airmap_image{position: relative; background: transparent url("/dp/images/map_image/map_okinawa_ana.png") top left no-repeat;}
+
+
+/* ===== 『地域名』＆『全国地図に戻る』エリア ===== */
+#airmap_okinawa_ana .airmap_map_area ul.airmap_title li.airmap_name_place{ top:3px; background-position: 0 -488px; width: 210px; height: 40px;}
+#airmap_okinawa_ana .airmap_map_area ul.airmap_title li.airmap_name_ana{ top: 45px; left: 85px;}
+
+
+/* ===== 地図ボタン ===== */
+#airmap_okinawa_ana .airmap_image span{background-image: url("/dp/images/map_image/nav_okinawa.png"); width: 106px; height: 60px;}
+
+/* 通常時 */
+#airmap_okinawa_ana li#icon_OKA span{top: -74px;left: -83px; background-position: 0px -300px;}
+#airmap_okinawa_ana li#icon_MMY span{top: -51px; left: 147px; background-position: 0px -540px;}
+#airmap_okinawa_ana li#icon_ISG span{top: 30px; left: 45px; background-position: 0px -660px;}
+
+/* hover時 */
+#airmap_okinawa_ana li#icon_OKA:hover span, #airmap_okinawa_ana li#icon_OKA.airmap_hover span{background-position: -106px -300px;}
+#airmap_okinawa_ana li#icon_MMY:hover span, #airmap_okinawa_ana li#icon_MMY.airmap_hover span{background-position: -106px -540px;}
+#airmap_okinawa_ana li#icon_ISG:hover span, #airmap_okinawa_ana li#icon_ISG.airmap_hover span{background-position: -106px -660px;}
+
+/* disabled時 */
+#airmap_okinawa_ana li#icon_OKA.airmap_disabled span{background-position: -212px -300px;}
+#airmap_okinawa_ana li#icon_MMY.airmap_disabled span{background-position: -212px -540px;}
+#airmap_okinawa_ana li#icon_ISG.airmap_disabled span{background-position: -212px -660px;}
+
+
+/* ===== 飛行機ボタンの位置設定 ===== */
+#airmap_okinawa_ana li#icon_OKA{top: 239px; left: 307px;}
+#airmap_okinawa_ana li#icon_MMY{top: 355px; left: 197px;}
+#airmap_okinawa_ana li#icon_ISG{top: 413px; left: 131px;}
+
+
+
+/* ===========================
+	沖縄×JAL
+=========================== */
+
+/* ===== 地図の設定 ===== */
+#airmap_okinawa_jal .airmap_image{position: relative; background: transparent url("/dp/images/map_image/map_okinawa_jal.png") top left no-repeat;}
+
+
+/* ===== 『地域名』＆『全国地図に戻る』エリア ===== */
+#airmap_okinawa_jal .airmap_map_area ul.airmap_title li.airmap_name_place{ top:3px; background-position: 0 -488px; width: 210px; height: 40px;}
+#airmap_okinawa_jal .airmap_map_area ul.airmap_title li.airmap_name_jal{ top: 45px; left: 85px;}
+
+
+/* ===== 地図ボタン ===== */
+#airmap_okinawa_jal .airmap_image span{background-image: url("/dp/images/map_image/nav_okinawa.png"); width: 106px; height: 60px;}
+
+/* 通常時 */
+#airmap_okinawa_jal li#icon_KKX span{top: 50px;left: 54px; background-position: 0px -0px;}
+#airmap_okinawa_jal li#icon_ASJ span{top: -10px; left: -166px; background-position: 0px -60px;}
+#airmap_okinawa_jal li#icon_TKN span{top: 52px; left: 56px; background-position: 0px -120px;}
+#airmap_okinawa_jal li#icon_OKE span{top: 97px; left: 11px; background-position: 0px -180px;}
+#airmap_okinawa_jal li#icon_RNJ span{top: -56px;left: -153px; background-position: 0px -240px;}
+#airmap_okinawa_jal li#icon_OKA span{top: -74px;left: -83px; background-position: 0px -300px;}
+#airmap_okinawa_jal li#icon_KTD span{top: 81px;left: -32px; background-position: 0px -360px;}
+#airmap_okinawa_jal li#icon_MMD span{top: 122px; left: -122px; background-position: 0px -420px;}
+#airmap_okinawa_jal li#icon_UEO span{top: -93px; left: -180px; background-position: 0px -480px;}
+#airmap_okinawa_jal li#icon_MMY span{top: -51px; left: 147px; background-position: 0px -540px;}
+#airmap_okinawa_jal li#icon_TRA span{top: -5px; left: 136px; background-position: 0px -600px;}
+#airmap_okinawa_jal li#icon_ISG span{top: 30px; left: 45px; background-position: 0px -660px;}
+#airmap_okinawa_jal li#icon_OGN span{top: -144px;left: 12px; background-position: 0px -720px;}
+
+/* hover時 */
+#airmap_okinawa_jal li#icon_KKX:hover span, #airmap_okinawa_jal li#icon_KKX.airmap_hover span{background-position: -106px 0px;}
+#airmap_okinawa_jal li#icon_ASJ:hover span, #airmap_okinawa_jal li#icon_ASJ.airmap_hover span{background-position: -106px -60px;}
+#airmap_okinawa_jal li#icon_TKN:hover span, #airmap_okinawa_jal li#icon_TKN.airmap_hover span{background-position: -106px -120px;}
+#airmap_okinawa_jal li#icon_OKE:hover span, #airmap_okinawa_jal li#icon_OKE.airmap_hover span{background-position: -106px -180px;}
+#airmap_okinawa_jal li#icon_RNJ:hover span, #airmap_okinawa_jal li#icon_RNJ.airmap_hover span{background-position: -106px -240px;}
+#airmap_okinawa_jal li#icon_OKA:hover span, #airmap_okinawa_jal li#icon_OKA.airmap_hover span{background-position: -106px -300px;}
+#airmap_okinawa_jal li#icon_KTD:hover span, #airmap_okinawa_jal li#icon_KTD.airmap_hover span{background-position: -106px -360px;}
+#airmap_okinawa_jal li#icon_MMD:hover span, #airmap_okinawa_jal li#icon_MMD.airmap_hover span{background-position: -106px -420px;}
+#airmap_okinawa_jal li#icon_UEO:hover span, #airmap_okinawa_jal li#icon_UEO.airmap_hover span{background-position: -106px -480px;}
+#airmap_okinawa_jal li#icon_MMY:hover span, #airmap_okinawa_jal li#icon_MMY.airmap_hover span{background-position: -106px -540px;}
+#airmap_okinawa_jal li#icon_TRA:hover span, #airmap_okinawa_jal li#icon_TRA.airmap_hover span{background-position: -106px -600px;}
+#airmap_okinawa_jal li#icon_ISG:hover span, #airmap_okinawa_jal li#icon_ISG.airmap_hover span{background-position: -106px -660px;}
+#airmap_okinawa_jal li#icon_OGN:hover span, #airmap_okinawa_jal li#icon_OGN.airmap_hover span{background-position: -106px -720px;}
+
+/* disabled時 */
+#airmap_okinawa_jal li#icon_KKX.airmap_disabled span{background-position: -212px 0px;}
+#airmap_okinawa_jal li#icon_ASJ.airmap_disabled span{background-position: -212px -60px;}
+#airmap_okinawa_jal li#icon_TKN.airmap_disabled span{background-position: -212px -120px;}
+#airmap_okinawa_jal li#icon_OKE.airmap_disabled span{background-position: -212px -180px;}
+#airmap_okinawa_jal li#icon_RNJ.airmap_disabled span{background-position: -212px -240px;}
+#airmap_okinawa_jal li#icon_OKA.airmap_disabled span{background-position: -212px -300px;}
+#airmap_okinawa_jal li#icon_KTD.airmap_disabled span{background-position: -212px -360px;}
+#airmap_okinawa_jal li#icon_MMD.airmap_disabled span{background-position: -212px -420px;}
+#airmap_okinawa_jal li#icon_UEO.airmap_disabled span{background-position: -212px -480px;}
+#airmap_okinawa_jal li#icon_MMY.airmap_disabled span{background-position: -212px -540px;}
+#airmap_okinawa_jal li#icon_TRA.airmap_disabled span{background-position: -212px -600px;}
+#airmap_okinawa_jal li#icon_ISG.airmap_disabled span{background-position: -212px -660px;}
+#airmap_okinawa_jal li#icon_OGN.airmap_disabled span{background-position: -212px -720px;}
+
+
+/* ===== 飛行機ボタンの位置設定 ===== */
+#airmap_okinawa_jal li#icon_KKX{top: 17px; left: 531px;}
+#airmap_okinawa_jal li#icon_ASJ{top: 1px; left: 504px;}
+#airmap_okinawa_jal li#icon_TKN{top: 78px; left: 440px;}
+#airmap_okinawa_jal li#icon_OKE{top: 116px; left: 400px;}
+#airmap_okinawa_jal li#icon_RNJ{top: 153px; left: 378px;}
+#airmap_okinawa_jal li#icon_OKA{top: 239px; left: 307px;}
+#airmap_okinawa_jal li#icon_KTD{top: 196px; left: 621px;}
+#airmap_okinawa_jal li#icon_MMD{top: 210px; left: 600px;}
+#airmap_okinawa_jal li#icon_UEO{top: 233px; left: 199px;}
+#airmap_okinawa_jal li#icon_MMY{top: 355px; left: 197px;}
+#airmap_okinawa_jal li#icon_TRA{top: 384px; left: 166px;}
+#airmap_okinawa_jal li#icon_ISG{top: 413px; left: 131px;}
+#airmap_okinawa_jal li#icon_OGN{top: 397px; left: 25px;}
+
+/* ===== overlay ===== */
+#overlay {
+	background-color: #000;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0.7;
+	-moz-opacity: 0.7;
+	-webkit-opacity: 0.7;
+	 filter: alpha(opacity=70);
+	z-index: 1000;
+}

@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta content="width=device-width" name="viewport"/>
+  <meta charset="utf-8"/>
+  <script type="text/javascript">
+   window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var o=e[n]={exports:{}};t[n][0].call(o.exports,function(e){var o=t[n][1][e];return r(o||e)},o,o.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<n.length;o++)r(n[o]);return r}({1:[function(t,e,n){function r(t){try{s.console&&console.log(t)}catch(e){}}var o,i=t("ee"),a=t(25),s={};try{o=localStorage.getItem("__nr_flags").split(","),console&&"function"==typeof console.log&&(s.console=!0,o.indexOf("dev")!==-1&&(s.dev=!0),o.indexOf("nr_dev")!==-1&&(s.nrDev=!0))}catch(c){}s.nrDev&&i.on("internal-error",function(t){r(t.stack)}),s.dev&&i.on("fn-err",function(t,e,n){r(n.stack)}),s.dev&&(r("NR AGENT IN DEVELOPMENT MODE"),r("flags: "+a(s,function(t,e){return t}).join(", ")))},{}],2:[function(t,e,n){function r(t,e,n,r,s){try{l?l-=1:o(s||new UncaughtException(t,e,n),!0)}catch(f){try{i("ierr",[f,c.now(),!0])}catch(d){}}return"function"==typeof u&&u.apply(this,a(arguments))}function UncaughtException(t,e,n){this.message=t||"Uncaught error with no additional information",this.sourceURL=e,this.line=n}function o(t,e){var n=e?null:c.now();i("err",[t,n])}var i=t("handle"),a=t(26),s=t("ee"),c=t("loader"),f=t("gos"),u=window.onerror,d=!1,p="nr@seenError",l=0;c.features.err=!0,t(1),window.onerror=r;try{throw new Error}catch(h){"stack"in h&&(t(13),t(12),"addEventListener"in window&&t(6),c.xhrWrappable&&t(14),d=!0)}s.on("fn-start",function(t,e,n){d&&(l+=1)}),s.on("fn-err",function(t,e,n){d&&!n[p]&&(f(n,p,function(){return!0}),this.thrown=!0,o(n))}),s.on("fn-end",function(){d&&!this.thrown&&l>0&&(l-=1)}),s.on("internal-error",function(t){i("ierr",[t,c.now(),!0])})},{}],3:[function(t,e,n){t("loader").features.ins=!0},{}],4:[function(t,e,n){function r(){L++,C=g.hash,this[u]=y.now()}function o(){L--,g.hash!==C&&i(0,!0);var t=y.now();this[h]=~~this[h]+t-this[u],this[d]=t}function i(t,e){E.emit("newURL",[""+g,e])}function a(t,e){t.on(e,function(){this[e]=y.now()})}var s="-start",c="-end",f="-body",u="fn"+s,d="fn"+c,p="cb"+s,l="cb"+c,h="jsTime",m="fetch",v="addEventListener",w=window,g=w.location,y=t("loader");if(w[v]&&y.xhrWrappable){var x=t(10),b=t(11),E=t(8),O=t(6),R=t(13),P=t(7),T=t(14),N=t(9),M=t("ee"),S=M.get("tracer");t(16),y.features.spa=!0;var C,L=0;M.on(u,r),M.on(p,r),M.on(d,o),M.on(l,o),M.buffer([u,d,"xhr-done","xhr-resolved"]),O.buffer([u]),R.buffer(["setTimeout"+c,"clearTimeout"+s,u]),T.buffer([u,"new-xhr","send-xhr"+s]),P.buffer([m+s,m+"-done",m+f+s,m+f+c]),E.buffer(["newURL"]),x.buffer([u]),b.buffer(["propagate",p,l,"executor-err","resolve"+s]),S.buffer([u,"no-"+u]),N.buffer(["new-jsonp","cb-start","jsonp-error","jsonp-end"]),a(T,"send-xhr"+s),a(M,"xhr-resolved"),a(M,"xhr-done"),a(P,m+s),a(P,m+"-done"),a(N,"new-jsonp"),a(N,"jsonp-end"),a(N,"cb-start"),E.on("pushState-end",i),E.on("replaceState-end",i),w[v]("hashchange",i,!0),w[v]("load",i,!0),w[v]("popstate",function(){i(0,L>1)},!0)}},{}],5:[function(t,e,n){function r(t){}if(window.performance&&window.performance.timing&&window.performance.getEntriesByType){var o=t("ee"),i=t("handle"),a=t(13),s=t(12),c="learResourceTimings",f="addEventListener",u="resourcetimingbufferfull",d="bstResource",p="resource",l="-start",h="-end",m="fn"+l,v="fn"+h,w="bstTimer",g="pushState",y=t("loader");y.features.stn=!0,t(8),"addEventListener"in window&&t(6);var x=NREUM.o.EV;o.on(m,function(t,e){var n=t[0];n instanceof x&&(this.bstStart=y.now())}),o.on(v,function(t,e){var n=t[0];n instanceof x&&i("bst",[n,e,this.bstStart,y.now()])}),a.on(m,function(t,e,n){this.bstStart=y.now(),this.bstType=n}),a.on(v,function(t,e){i(w,[e,this.bstStart,y.now(),this.bstType])}),s.on(m,function(){this.bstStart=y.now()}),s.on(v,function(t,e){i(w,[e,this.bstStart,y.now(),"requestAnimationFrame"])}),o.on(g+l,function(t){this.time=y.now(),this.startPath=location.pathname+location.hash}),o.on(g+h,function(t){i("bstHist",[location.pathname+location.hash,this.startPath,this.time])}),f in window.performance&&(window.performance["c"+c]?window.performance[f](u,function(t){i(d,[window.performance.getEntriesByType(p)]),window.performance["c"+c]()},!1):window.performance[f]("webkit"+u,function(t){i(d,[window.performance.getEntriesByType(p)]),window.performance["webkitC"+c]()},!1)),document[f]("scroll",r,{passive:!0}),document[f]("keypress",r,!1),document[f]("click",r,!1)}},{}],6:[function(t,e,n){function r(t){for(var e=t;e&&!e.hasOwnProperty(u);)e=Object.getPrototypeOf(e);e&&o(e)}function o(t){s.inPlace(t,[u,d],"-",i)}function i(t,e){return t[1]}var a=t("ee").get("events"),s=t("wrap-function")(a,!0),c=t("gos"),f=XMLHttpRequest,u="addEventListener",d="removeEventListener";e.exports=a,"getPrototypeOf"in Object?(r(document),r(window),r(f.prototype)):f.prototype.hasOwnProperty(u)&&(o(window),o(f.prototype)),a.on(u+"-start",function(t,e){var n=t[1],r=c(n,"nr@wrapped",function(){function t(){if("function"==typeof n.handleEvent)return n.handleEvent.apply(n,arguments)}var e={object:t,"function":n}[typeof n];return e?s(e,"fn-",null,e.name||"anonymous"):n});this.wrapped=t[1]=r}),a.on(d+"-start",function(t){t[1]=this.wrapped||t[1]})},{}],7:[function(t,e,n){function r(t,e,n){var r=t[e];"function"==typeof r&&(t[e]=function(){var t=i(arguments),e={};o.emit(n+"before-start",[t],e);var a;e[m]&&e[m].dt&&(a=e[m].dt);var s=r.apply(this,t);return o.emit(n+"start",[t,a],s),s.then(function(t){return o.emit(n+"end",[null,t],s),t},function(t){throw o.emit(n+"end",[t],s),t})})}var o=t("ee").get("fetch"),i=t(26),a=t(25);e.exports=o;var s=window,c="fetch-",f=c+"body-",u=["arrayBuffer","blob","json","text","formData"],d=s.Request,p=s.Response,l=s.fetch,h="prototype",m="nr@context";d&&p&&l&&(a(u,function(t,e){r(d[h],e,f),r(p[h],e,f)}),r(s,"fetch",c),o.on(c+"end",function(t,e){var n=this;if(e){var r=e.headers.get("content-length");null!==r&&(n.rxSize=r),o.emit(c+"done",[null,e],n)}else o.emit(c+"done",[t],n)}))},{}],8:[function(t,e,n){var r=t("ee").get("history"),o=t("wrap-function")(r);e.exports=r;var i=window.history&&window.history.constructor&&window.history.constructor.prototype,a=window.history;i&&i.pushState&&i.replaceState&&(a=i),o.inPlace(a,["pushState","replaceState"],"-")},{}],9:[function(t,e,n){function r(t){function e(){c.emit("jsonp-end",[],p),t.removeEventListener("load",e,!1),t.removeEventListener("error",n,!1)}function n(){c.emit("jsonp-error",[],p),c.emit("jsonp-end",[],p),t.removeEventListener("load",e,!1),t.removeEventListener("error",n,!1)}var r=t&&"string"==typeof t.nodeName&&"script"===t.nodeName.toLowerCase();if(r){var o="function"==typeof t.addEventListener;if(o){var a=i(t.src);if(a){var u=s(a),d="function"==typeof u.parent[u.key];if(d){var p={};f.inPlace(u.parent,[u.key],"cb-",p),t.addEventListener("load",e,!1),t.addEventListener("error",n,!1),c.emit("new-jsonp",[t.src],p)}}}}}function o(){return"addEventListener"in window}function i(t){var e=t.match(u);return e?e[1]:null}function a(t,e){var n=t.match(p),r=n[1],o=n[3];return o?a(o,e[r]):e[r]}function s(t){var e=t.match(d);return e&&e.length>=3?{key:e[2],parent:a(e[1],window)}:{key:t,parent:window}}var c=t("ee").get("jsonp"),f=t("wrap-function")(c);if(e.exports=c,o()){var u=/[?&](?:callback|cb)=([^&#]+)/,d=/(.*)\.([^.]+)/,p=/^(\w+)(\.|$)(.*)$/,l=["appendChild","insertBefore","replaceChild"];Node&&Node.prototype&&Node.prototype.appendChild?f.inPlace(Node.prototype,l,"dom-"):(f.inPlace(HTMLElement.prototype,l,"dom-"),f.inPlace(HTMLHeadElement.prototype,l,"dom-"),f.inPlace(HTMLBodyElement.prototype,l,"dom-")),c.on("dom-start",function(t){r(t[0])})}},{}],10:[function(t,e,n){var r=t("ee").get("mutation"),o=t("wrap-function")(r),i=NREUM.o.MO;e.exports=r,i&&(window.MutationObserver=function(t){return this instanceof i?new i(o(t,"fn-")):i.apply(this,arguments)},MutationObserver.prototype=i.prototype)},{}],11:[function(t,e,n){function r(t){var e=a.context(),n=s(t,"executor-",e),r=new f(n);return a.context(r).getCtx=function(){return e},a.emit("new-promise",[r,e],e),r}function o(t,e){return e}var i=t("wrap-function"),a=t("ee").get("promise"),s=i(a),c=t(25),f=NREUM.o.PR;e.exports=a,f&&(window.Promise=r,["all","race"].forEach(function(t){var e=f[t];f[t]=function(n){function r(t){return function(){a.emit("propagate",[null,!o],i),o=o||!t}}var o=!1;c(n,function(e,n){Promise.resolve(n).then(r("all"===t),r(!1))});var i=e.apply(f,arguments),s=f.resolve(i);return s}}),["resolve","reject"].forEach(function(t){var e=f[t];f[t]=function(t){var n=e.apply(f,arguments);return t!==n&&a.emit("propagate",[t,!0],n),n}}),f.prototype["catch"]=function(t){return this.then(null,t)},f.prototype=Object.create(f.prototype,{constructor:{value:r}}),c(Object.getOwnPropertyNames(f),function(t,e){try{r[e]=f[e]}catch(n){}}),a.on("executor-start",function(t){t[0]=s(t[0],"resolve-",this),t[1]=s(t[1],"resolve-",this)}),a.on("executor-err",function(t,e,n){t[1](n)}),s.inPlace(f.prototype,["then"],"then-",o),a.on("then-start",function(t,e){this.promise=e,t[0]=s(t[0],"cb-",this),t[1]=s(t[1],"cb-",this)}),a.on("then-end",function(t,e,n){this.nextPromise=n;var r=this.promise;a.emit("propagate",[r,!0],n)}),a.on("cb-end",function(t,e,n){a.emit("propagate",[n,!0],this.nextPromise)}),a.on("propagate",function(t,e,n){this.getCtx&&!e||(this.getCtx=function(){if(t instanceof Promise)var e=a.context(t);return e&&e.getCtx?e.getCtx():this})}),r.toString=function(){return""+f})},{}],12:[function(t,e,n){var r=t("ee").get("raf"),o=t("wrap-function")(r),i="equestAnimationFrame";e.exports=r,o.inPlace(window,["r"+i,"mozR"+i,"webkitR"+i,"msR"+i],"raf-"),r.on("raf-start",function(t){t[0]=o(t[0],"fn-")})},{}],13:[function(t,e,n){function r(t,e,n){t[0]=a(t[0],"fn-",null,n)}function o(t,e,n){this.method=n,this.timerDuration=isNaN(t[1])?0:+t[1],t[0]=a(t[0],"fn-",this,n)}var i=t("ee").get("timer"),a=t("wrap-function")(i),s="setTimeout",c="setInterval",f="clearTimeout",u="-start",d="-";e.exports=i,a.inPlace(window,[s,"setImmediate"],s+d),a.inPlace(window,[c],c+d),a.inPlace(window,[f,"clearImmediate"],f+d),i.on(c+u,r),i.on(s+u,o)},{}],14:[function(t,e,n){function r(t,e){d.inPlace(e,["onreadystatechange"],"fn-",s)}function o(){var t=this,e=u.context(t);t.readyState>3&&!e.resolved&&(e.resolved=!0,u.emit("xhr-resolved",[],t)),d.inPlace(t,g,"fn-",s)}function i(t){y.push(t),h&&(b?b.then(a):v?v(a):(E=-E,O.data=E))}function a(){for(var t=0;t<y.length;t++)r([],y[t]);y.length&&(y=[])}function s(t,e){return e}function c(t,e){for(var n in t)e[n]=t[n];return e}t(6);var f=t("ee"),u=f.get("xhr"),d=t("wrap-function")(u),p=NREUM.o,l=p.XHR,h=p.MO,m=p.PR,v=p.SI,w="readystatechange",g=["onload","onerror","onabort","onloadstart","onloadend","onprogress","ontimeout"],y=[];e.exports=u;var x=window.XMLHttpRequest=function(t){var e=new l(t);try{u.emit("new-xhr",[e],e),e.addEventListener(w,o,!1)}catch(n){try{u.emit("internal-error",[n])}catch(r){}}return e};if(c(l,x),x.prototype=l.prototype,d.inPlace(x.prototype,["open","send"],"-xhr-",s),u.on("send-xhr-start",function(t,e){r(t,e),i(e)}),u.on("open-xhr-start",r),h){var b=m&&m.resolve();if(!v&&!m){var E=1,O=document.createTextNode(E);new h(a).observe(O,{characterData:!0})}}else f.on("fn-end",function(t){t[0]&&t[0].type===w||a()})},{}],15:[function(t,e,n){function r(t){if(!i(t))return null;var e=window.NREUM;if(!e.loader_config)return null;var n=(e.loader_config.accountID||"").toString()||null,r=(e.loader_config.agentID||"").toString()||null,s=(e.loader_config.trustKey||"").toString()||null;if(!n||!r)return null;var c=a.generateCatId(),f=a.generateCatId(),u=Date.now(),d=o(c,f,u,n,r,s);return{header:d,guid:c,traceId:f,timestamp:u}}function o(t,e,n,r,o,i){var a="btoa"in window&&"function"==typeof window.btoa;if(!a)return null;var s={v:[0,1],d:{ty:"Browser",ac:r,ap:o,id:t,tr:e,ti:n}};return i&&r!==i&&(s.d.tk=i),btoa(JSON.stringify(s))}function i(t){var e=!1,n=!1,r={};if("init"in NREUM&&"distributed_tracing"in NREUM.init&&(r=NREUM.init.distributed_tracing,n=!!r.enabled),n)if(t.sameOrigin)e=!0;else if(r.allowed_origins instanceof Array)for(var o=0;o<r.allowed_origins.length;o++){var i=s(r.allowed_origins[o]);if(t.hostname===i.hostname&&t.protocol===i.protocol&&t.port===i.port){e=!0;break}}return n&&e}var a=t(23),s=t(17);e.exports={generateTracePayload:r,shouldGenerateTrace:i}},{}],16:[function(t,e,n){function r(t){var e=this.params,n=this.metrics;if(!this.ended){this.ended=!0;for(var r=0;r<p;r++)t.removeEventListener(d[r],this.listener,!1);e.aborted||(n.duration=a.now()-this.startTime,this.loadCaptureCalled||4!==t.readyState?null==e.status&&(e.status=0):i(this,t),n.cbTime=this.cbTime,u.emit("xhr-done",[t],t),s("xhr",[e,n,this.startTime]))}}function o(t,e){var n=c(e),r=t.params;r.host=n.hostname+":"+n.port,r.pathname=n.pathname,t.parsedOrigin=c(e),t.sameOrigin=t.parsedOrigin.sameOrigin}function i(t,e){t.params.status=e.status;var n=v(e,t.lastSize);if(n&&(t.metrics.rxSize=n),t.sameOrigin){var r=e.getResponseHeader("X-NewRelic-App-Data");r&&(t.params.cat=r.split(", ").pop())}t.loadCaptureCalled=!0}var a=t("loader");if(a.xhrWrappable){var s=t("handle"),c=t(17),f=t(15).generateTracePayload,u=t("ee"),d=["load","error","abort","timeout"],p=d.length,l=t("id"),h=t(21),m=t(20),v=t(18),w=window.XMLHttpRequest;a.features.xhr=!0,t(14),t(7),u.on("new-xhr",function(t){var e=this;e.totalCbs=0,e.called=0,e.cbTime=0,e.end=r,e.ended=!1,e.xhrGuids={},e.lastSize=null,e.loadCaptureCalled=!1,t.addEventListener("load",function(n){i(e,t)},!1),h&&(h>34||h<10)||window.opera||t.addEventListener("progress",function(t){e.lastSize=t.loaded},!1)}),u.on("open-xhr-start",function(t){this.params={method:t[0]},o(this,t[1]),this.metrics={}}),u.on("open-xhr-end",function(t,e){"loader_config"in NREUM&&"xpid"in NREUM.loader_config&&this.sameOrigin&&e.setRequestHeader("X-NewRelic-ID",NREUM.loader_config.xpid);var n=f(this.parsedOrigin);n&&n.header&&(e.setRequestHeader("newrelic",n.header),this.dt=n)}),u.on("send-xhr-start",function(t,e){var n=this.metrics,r=t[0],o=this;if(n&&r){var i=m(r);i&&(n.txSize=i)}this.startTime=a.now(),this.listener=function(t){try{"abort"!==t.type||o.loadCaptureCalled||(o.params.aborted=!0),("load"!==t.type||o.called===o.totalCbs&&(o.onloadCalled||"function"!=typeof e.onload))&&o.end(e)}catch(n){try{u.emit("internal-error",[n])}catch(r){}}};for(var s=0;s<p;s++)e.addEventListener(d[s],this.listener,!1)}),u.on("xhr-cb-time",function(t,e,n){this.cbTime+=t,e?this.onloadCalled=!0:this.called+=1,this.called!==this.totalCbs||!this.onloadCalled&&"function"==typeof n.onload||this.end(n)}),u.on("xhr-load-added",function(t,e){var n=""+l(t)+!!e;this.xhrGuids&&!this.xhrGuids[n]&&(this.xhrGuids[n]=!0,this.totalCbs+=1)}),u.on("xhr-load-removed",function(t,e){var n=""+l(t)+!!e;this.xhrGuids&&this.xhrGuids[n]&&(delete this.xhrGuids[n],this.totalCbs-=1)}),u.on("addEventListener-end",function(t,e){e instanceof w&&"load"===t[0]&&u.emit("xhr-load-added",[t[1],t[2]],e)}),u.on("removeEventListener-end",function(t,e){e instanceof w&&"load"===t[0]&&u.emit("xhr-load-removed",[t[1],t[2]],e)}),u.on("fn-start",function(t,e,n){e instanceof w&&("onload"===n&&(this.onload=!0),("load"===(t[0]&&t[0].type)||this.onload)&&(this.xhrCbStart=a.now()))}),u.on("fn-end",function(t,e){this.xhrCbStart&&u.emit("xhr-cb-time",[a.now()-this.xhrCbStart,this.onload,e],e)}),u.on("fetch-before-start",function(t){var e,n=t[1]||{};"string"==typeof t[0]?e=t[0]:t[0]&&t[0].url&&(e=t[0].url),e&&(this.parsedOrigin=c(e),this.sameOrigin=this.parsedOrigin.sameOrigin);var r=f(this.parsedOrigin);if(r&&r.header){var o=r.header;if("string"==typeof t[0]){var i={};for(var a in n)i[a]=n[a];i.headers=new Headers(n.headers||{}),i.headers.set("newrelic",o),this.dt=r,t.length>1?t[1]=i:t.push(i)}else t[0]&&t[0].headers&&(t[0].headers.append("newrelic",o),this.dt=r)}})}},{}],17:[function(t,e,n){var r={};e.exports=function(t){if(t in r)return r[t];var e=document.createElement("a"),n=window.location,o={};e.href=t,o.port=e.port;var i=e.href.split("://");!o.port&&i[1]&&(o.port=i[1].split("/")[0].split("@").pop().split(":")[1]),o.port&&"0"!==o.port||(o.port="https"===i[0]?"443":"80"),o.hostname=e.hostname||n.hostname,o.pathname=e.pathname,o.protocol=i[0],"/"!==o.pathname.charAt(0)&&(o.pathname="/"+o.pathname);var a=!e.protocol||":"===e.protocol||e.protocol===n.protocol,s=e.hostname===document.domain&&e.port===n.port;return o.sameOrigin=a&&(!e.hostname||s),"/"===o.pathname&&(r[t]=o),o}},{}],18:[function(t,e,n){function r(t,e){var n=t.responseType;return"json"===n&&null!==e?e:"arraybuffer"===n||"blob"===n||"json"===n?o(t.response):"text"===n||"document"===n||""===n||void 0===n?o(t.responseText):void 0}var o=t(20);e.exports=r},{}],19:[function(t,e,n){function r(){}function o(t,e,n){return function(){return i(t,[f.now()].concat(s(arguments)),e?null:this,n),e?void 0:this}}var i=t("handle"),a=t(25),s=t(26),c=t("ee").get("tracer"),f=t("loader"),u=NREUM;"undefined"==typeof window.newrelic&&(newrelic=u);var d=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],p="api-",l=p+"ixn-";a(d,function(t,e){u[e]=o(p+e,!0,"api")}),u.addPageAction=o(p+"addPageAction",!0),u.setCurrentRouteName=o(p+"routeName",!0),e.exports=newrelic,u.interaction=function(){return(new r).get()};var h=r.prototype={createTracer:function(t,e){var n={},r=this,o="function"==typeof e;return i(l+"tracer",[f.now(),t,n],r),function(){if(c.emit((o?"":"no-")+"fn-start",[f.now(),r,o],n),o)try{return e.apply(this,arguments)}catch(t){throw c.emit("fn-err",[arguments,this,t],n),t}finally{c.emit("fn-end",[f.now()],n)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(t,e){h[e]=o(l+e)}),newrelic.noticeError=function(t,e){"string"==typeof t&&(t=new Error(t)),i("err",[t,f.now(),!1,e])}},{}],20:[function(t,e,n){e.exports=function(t){if("string"==typeof t&&t.length)return t.length;if("object"==typeof t){if("undefined"!=typeof ArrayBuffer&&t instanceof ArrayBuffer&&t.byteLength)return t.byteLength;if("undefined"!=typeof Blob&&t instanceof Blob&&t.size)return t.size;if(!("undefined"!=typeof FormData&&t instanceof FormData))try{return JSON.stringify(t).length}catch(e){return}}}},{}],21:[function(t,e,n){var r=0,o=navigator.userAgent.match(/Firefox[\/\s](\d+\.\d+)/);o&&(r=+o[1]),e.exports=r},{}],22:[function(t,e,n){function r(t,e){var n=t.getEntries();n.forEach(function(t){"first-paint"===t.name?c("timing",["fp",Math.floor(t.startTime)]):"first-contentful-paint"===t.name&&c("timing",["fcp",Math.floor(t.startTime)])})}function o(t,e){var n=t.getEntries();n.length>0&&c("lcp",[n[n.length-1]])}function i(t){if(t instanceof u&&!p){var e,n=Math.round(t.timeStamp);e=n>1e12?Date.now()-n:f.now()-n,p=!0,c("timing",["fi",n,{type:t.type,fid:e}])}}if(!("init"in NREUM&&"page_view_timing"in NREUM.init&&"enabled"in NREUM.init.page_view_timing&&NREUM.init.page_view_timing.enabled===!1)){var a,s,c=t("handle"),f=t("loader"),u=NREUM.o.EV;if("PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){a=new PerformanceObserver(r),s=new PerformanceObserver(o);try{a.observe({entryTypes:["paint"]}),s.observe({entryTypes:["largest-contentful-paint"]})}catch(d){}}if("addEventListener"in document){var p=!1,l=["click","keydown","mousedown","pointerdown","touchstart"];l.forEach(function(t){document.addEventListener(t,i,!1)})}}},{}],23:[function(t,e,n){function r(){function t(){return e?15&e[n++]:16*Math.random()|0}var e=null,n=0,r=window.crypto||window.msCrypto;r&&r.getRandomValues&&(e=r.getRandomValues(new Uint8Array(31)));for(var o,i="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx",a="",s=0;s<i.length;s++)o=i[s],"x"===o?a+=t().toString(16):"y"===o?(o=3&t()|8,a+=o.toString(16)):a+=o;return a}function o(){function t(){return e?15&e[n++]:16*Math.random()|0}var e=null,n=0,r=window.crypto||window.msCrypto;r&&r.getRandomValues&&Uint8Array&&(e=r.getRandomValues(new Uint8Array(31)));for(var o=[],i=0;i<16;i++)o.push(t().toString(16));return o.join("")}e.exports={generateUuid:r,generateCatId:o}},{}],24:[function(t,e,n){function r(t,e){if(!o)return!1;if(t!==o)return!1;if(!e)return!0;if(!i)return!1;for(var n=i.split("."),r=e.split("."),a=0;a<r.length;a++)if(r[a]!==n[a])return!1;return!0}var o=null,i=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var s=navigator.userAgent,c=s.match(a);c&&s.indexOf("Chrome")===-1&&s.indexOf("Chromium")===-1&&(o="Safari",i=c[1])}e.exports={agent:o,version:i,match:r}},{}],25:[function(t,e,n){function r(t,e){var n=[],r="",i=0;for(r in t)o.call(t,r)&&(n[i]=e(r,t[r]),i+=1);return n}var o=Object.prototype.hasOwnProperty;e.exports=r},{}],26:[function(t,e,n){function r(t,e,n){e||(e=0),"undefined"==typeof n&&(n=t?t.length:0);for(var r=-1,o=n-e||0,i=Array(o<0?0:o);++r<o;)i[r]=t[e+r];return i}e.exports=r},{}],27:[function(t,e,n){e.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(t,e,n){function r(){}function o(t){function e(t){return t&&t instanceof r?t:t?c(t,s,i):i()}function n(n,r,o,i){if(!p.aborted||i){t&&t(n,r,o);for(var a=e(o),s=m(n),c=s.length,f=0;f<c;f++)s[f].apply(a,r);var d=u[y[n]];return d&&d.push([x,n,r,a]),a}}function l(t,e){g[t]=m(t).concat(e)}function h(t,e){var n=g[t];if(n)for(var r=0;r<n.length;r++)n[r]===e&&n.splice(r,1)}function m(t){return g[t]||[]}function v(t){return d[t]=d[t]||o(n)}function w(t,e){f(t,function(t,n){e=e||"feature",y[n]=e,e in u||(u[e]=[])})}var g={},y={},x={on:l,addEventListener:l,removeEventListener:h,emit:n,get:v,listeners:m,context:e,buffer:w,abort:a,aborted:!1};return x}function i(){return new r}function a(){(u.api||u.feature)&&(p.aborted=!0,u=p.backlog={})}var s="nr@context",c=t("gos"),f=t(25),u={},d={},p=e.exports=o();p.backlog=u},{}],gos:[function(t,e,n){function r(t,e,n){if(o.call(t,e))return t[e];var r=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,e,{value:r,writable:!0,enumerable:!1}),r}catch(i){}return t[e]=r,r}var o=Object.prototype.hasOwnProperty;e.exports=r},{}],handle:[function(t,e,n){function r(t,e,n,r){o.buffer([t],r),o.emit(t,e,n)}var o=t("ee").get("handle");e.exports=r,r.ee=o},{}],id:[function(t,e,n){function r(t){var e=typeof t;return!t||"object"!==e&&"function"!==e?-1:t===window?0:a(t,i,function(){return o++})}var o=1,i="nr@id",a=t("gos");e.exports=r},{}],loader:[function(t,e,n){function r(){if(!E++){var t=b.info=NREUM.info,e=l.getElementsByTagName("script")[0];if(setTimeout(u.abort,3e4),!(t&&t.licenseKey&&t.applicationID&&e))return u.abort();f(y,function(e,n){t[e]||(t[e]=n)}),c("mark",["onload",a()+b.offset],null,"api");var n=l.createElement("script");n.src="https://"+t.agent,e.parentNode.insertBefore(n,e)}}function o(){"complete"===l.readyState&&i()}function i(){c("mark",["domContent",a()+b.offset],null,"api")}function a(){return O.exists&&performance.now?Math.round(performance.now()):(s=Math.max((new Date).getTime(),s))-b.offset}var s=(new Date).getTime(),c=t("handle"),f=t(25),u=t("ee"),d=t(24),p=window,l=p.document,h="addEventListener",m="attachEvent",v=p.XMLHttpRequest,w=v&&v.prototype;NREUM.o={ST:setTimeout,SI:p.setImmediate,CT:clearTimeout,XHR:v,REQ:p.Request,EV:p.Event,PR:p.Promise,MO:p.MutationObserver};var g=""+location,y={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-spa-1167.min.js"},x=v&&w&&w[h]&&!/CriOS/.test(navigator.userAgent),b=e.exports={offset:s,now:a,origin:g,features:{},xhrWrappable:x,userAgent:d};t(19),t(22),l[h]?(l[h]("DOMContentLoaded",i,!1),p[h]("load",r,!1)):(l[m]("onreadystatechange",o),p[m]("onload",r)),c("mark",["firstbyte",s],null,"api");var E=0,O=t(27)},{}],"wrap-function":[function(t,e,n){function r(t){return!(t&&t instanceof Function&&t.apply&&!t[a])}var o=t("ee"),i=t(26),a="nr@original",s=Object.prototype.hasOwnProperty,c=!1;e.exports=function(t,e){function n(t,e,n,o){function nrWrapper(){var r,a,s,c;try{a=this,r=i(arguments),s="function"==typeof n?n(r,a):n||{}}catch(f){p([f,"",[r,a,o],s])}u(e+"start",[r,a,o],s);try{return c=t.apply(a,r)}catch(d){throw u(e+"err",[r,a,d],s),d}finally{u(e+"end",[r,a,c],s)}}return r(t)?t:(e||(e=""),nrWrapper[a]=t,d(t,nrWrapper),nrWrapper)}function f(t,e,o,i){o||(o="");var a,s,c,f="-"===o.charAt(0);for(c=0;c<e.length;c++)s=e[c],a=t[s],r(a)||(t[s]=n(a,f?s+o:o,i,s))}function u(n,r,o){if(!c||e){var i=c;c=!0;try{t.emit(n,r,o,e)}catch(a){p([a,n,r,o])}c=i}}function d(t,e){if(Object.defineProperty&&Object.keys)try{var n=Object.keys(t);return n.forEach(function(n){Object.defineProperty(e,n,{get:function(){return t[n]},set:function(e){return t[n]=e,e}})}),e}catch(r){p([r])}for(var o in t)s.call(t,o)&&(e[o]=t[o]);return e}function p(e){try{t.emit("internal-error",e)}catch(n){}}return t||(t=o),n.inPlace=f,n.flag=a,n}},{}]},{},["loader",2,16,5,3,4]);
+;NREUM.loader_config={accountID:"1042168",trustKey:"1042168",agentID:"477521021",licenseKey:"4feae813d0",applicationID:"477521021"}
+;NREUM.info={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",licenseKey:"4feae813d0",applicationID:"477521021",sa:1}
+  </script>
+  <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
+  <meta content="news" name="mpr-site"/>
+  <meta content="MPR News" name="title"/>
+  <meta content="Minnesota's Online Source for News That Matters" name="description"/>
+  <meta content="@MPRNews" name="twitter:site"/>
+  <meta content="on" name="twitter:widgets:csp"/>
+  <meta content="summary_large_image" name="twitter:card"/>
+  <meta content="MPR News" name="twitter:title"/>
+  <meta content="https://www.mprnews.org/opengraph-fallback.png" name="twitter:image"/>
+  <meta content="MPR News" property="og:site_name"/>
+  <meta content="MPR News" property="og:title"/>
+  <meta content="https://www.mprnews.org/opengraph-fallback.png" property="og:image"/>
+  <meta content="Minnesota's Online Source for News That Matters" property="og:description"/>
+  <meta content="website" property="og:type"/>
+  <link href="/favicon.png" rel="icon" type="image/png"/>
+  <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <link href="/apple-touch-icon.png" rel="apple-touch-icon"/>
+  <link href="https://fonts.googleapis.com/css?family=Noto+Serif:400,400i|Roboto+Condensed:400,700|Roboto:400,700|Montserrat:500,700&amp;display=swap&amp;subset=latin-ext" rel="stylesheet"/>
+  <meta content="homepage" name="mpr-content-topic"/>
+  <meta content="99142348590" property="fb:pages"/>
+  <title>
+   MPR News
+  </title>
+  <meta content="on" name="twitter:dnt"/>
+  <meta content="3mdQkyZQ0hy2oLHqV_shtyaKyvb-xVslxgr2kdV8RQw" name="google-site-verification"/>
+  <meta content="99142348590" property="fb:pages"/>
+  <meta content="27" name="next-head-count"/>
+  <link as="style" href="/_next/static/css/5aa7e4ebddb984775616.css" rel="preload"/>
+  <link data-n-g="" href="/_next/static/css/5aa7e4ebddb984775616.css" rel="stylesheet"/>
+  <noscript data-n-css="true">
+  </noscript>
+  <link as="script" href="/_next/static/chunks/main-4c902c750de810b5c42a.js" rel="preload"/>
+  <link as="script" href="/_next/static/chunks/webpack-e067438c4cf4ef2ef178.js" rel="preload"/>
+  <link as="script" href="/_next/static/chunks/framework.9e16d9bffee4570c2cfd.js" rel="preload"/>
+  <link as="script" href="/_next/static/chunks/fdac8464db5b75e9d45c879ce8cf566707c00765.900c1821aac641de88a4.js" rel="preload"/>
+  <link as="script" href="/_next/static/chunks/37fea0ed2861bc9fa3869ef61bd38648f551133b.02cb96245d33da53b2da.js" rel="preload"/>
+  <link as="script" href="/_next/static/chunks/1b19ec6c9dc257b3b04d2d73f4c55452c3de2a03.0b28a93925049e7d3e94.js" rel="preload"/>
+  <link as="script" href="/_next/static/chunks/10c00a131b215c8e836b30afef60e8e55c2c4c40.14781a835076ab4dd731.js" rel="preload"/>
+  <link as="script" href="/_next/static/chunks/eb298438e9703e36b6e5dda0cfd7f9cd1c6fdc34.1abd644a0ce3220d552b.js" rel="preload"/>
+  <link as="script" href="/_next/static/chunks/886ceea11f6ead3de24c3a173b80adad0cf062a7.ba36ed3bf7053fb5f8ee.js" rel="preload"/>
+  <link as="script" href="/_next/static/chunks/59023199b271d43b3653d494344afa1cad990f27.4e9902c30ad46b6863f6.js" rel="preload"/>
+  <link as="script" href="/_next/static/chunks/f6078781a05fe1bcb0902d23dbbb2662c8d200b3.080ab73e36f5c227c713.js" rel="preload"/>
+  <link as="script" href="/_next/static/chunks/ca2afcce3c70a05090821854c54eacfd3e13af47.a9c5868c64bea496db57.js" rel="preload"/>
+  <link as="script" href="/_next/static/chunks/pages/_app-de89bb921d78626d0ba0.js" rel="preload"/>
+  <link as="script" href="/_next/static/chunks/pages/index-78531badf19b1b155e34.js" rel="preload"/>
+ </head>
+ <body>
+  <div id="__next">
+   <div class="headerContainer">
+    <header class="header is-closed" data-testid="header">
+     <a class="header_logo" data-testid="relativeLink" href="/">
+      <div class="header_logoImg">
+       <svg class="" height="32px" viewbox="0 0 235 32" width="235px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <g fill="none" fill-rule="evenodd" id="235x32" stroke="none" stroke-width="1">
+         <path d="M33.9,0.8v30.2h-7.2l0.5-21.5l0.1-3l-0.3,1.1c-0.4,1.7-0.4,1.9-0.8,3.2l-5.7,20.3H14L8.5,11.6L7.1,6.2 C7.3,8.6,7.3,9.1,7.4,12l0.4,19.1H0.5V0.8h11.1l4.6,17l1.1,4.8c0.4-2.1,0.5-2.3,0.8-3.7l4.8-18.1H33.9z" fill="#001826">
+         </path>
+         <path d="M40.2,0.8h12.2c5,0,9.4,0,12,3.8c1.2,1.7,1.7,4.2,1.7,6.2c0,1.7-0.3,3.3-1,4.7c-2.6,5.4-8.2,5.5-12.3,5.6h-5 v9.9h-7.6V0.8z M47.7,6.4v9.2h4.5c2.8,0,6.3-0.1,6.3-4.8c0-4.4-3.8-4.4-6-4.4H47.7z" fill="#001826">
+         </path>
+         <path d="M69.7,0.8h13.6c3.2,0,7.1,0.1,9.9,3.1c1.4,1.6,2.4,4,2.4,6.7c0,6.1-4.2,7.6-6.2,8.4l7,12.1H88l-6-10.8h-4.8 v10.8h-7.6V0.8z M77.2,6.5v8.2h6.3c1.1,0,4.5-0.1,4.5-4.2c0-3.9-2.8-4-4.4-4H77.2z" fill="#001826">
+         </path>
+         <path d="M109.6,3.7c0.9-0.9,1.4-1.6,3-2.3c1.4-0.6,3.3-1.1,5.4-1.1c1.8,0,3.8,0.3,5.3,1.2c3.1,1.7,3.9,4.3,3.9,9v20.4 h-8.7V14c0-2.7-0.1-3.7-0.4-4.5c-0.7-1.6-2.2-2.3-3.9-2.3c-4.6,0-4.6,3.7-4.6,7.4v16.1h-8.8V1.1h8.9V3.7z" fill="#129DC0">
+         </path>
+         <path d="M160.9,23.2c-1,1.5-2.1,3-3.6,4.5c-2.6,2.4-6.5,4.2-11.3,4.2c-8.9,0-15.1-5.7-15.1-15.4 C131,9.3,134.5,0,146.3,0c1.8,0,6.9,0.2,10.7,4.3c3.9,4.2,4.1,10,4.2,13.4H140c-0.1,3.7,2.1,7.4,6.8,7.4c4.8,0,6.5-3.1,7.5-5.3 L160.9,23.2z M152.2,12.2c-0.2-1.3-0.4-2.9-1.7-4.2c-1.1-1.1-2.7-1.7-4.3-1.7c-2.1,0-3.6,1-4.5,1.9c-1.2,1.3-1.5,2.7-1.8,3.9 H152.2z" fill="#129DC0">
+         </path>
+         <path d="M170.8,1l4.2,20.9L179.5,1h9.4l4.1,21l4.7-21h9.1l-8.9,29.8h-9.5l-4.4-19.9l-4.5,19.9h-9.7L161.5,1H170.8z" fill="#129DC0">
+         </path>
+         <path d="M211.3,20.8c2.4,2.3,5.4,4.1,8.7,4.1c2.1,0,5.3-0.7,5.3-2.9c0-1-0.6-1.4-1.1-1.7c-1.3-0.7-3.4-0.9-5.1-1.1 c-1.3-0.2-2.7-0.5-4-0.9c-1.8-0.5-3.7-1.3-5-2.6c-1.3-1.3-2.2-3.4-2.2-5.6c0-4.9,4.2-10,12.6-10c7,0,11.3,3,13.3,4.5l-5.4,5 c-2.8-2.2-5.4-3-7.5-3c-3.4,0-4.2,1.4-4.2,2.2c0,1.7,1.9,2.1,4.7,2.6c6,1.1,13,2.7,13,9.8c0,7-7.1,10.5-14.1,10.5 c-8.3,0-12.6-4-14.5-5.8L211.3,20.8z" fill="#129DC0">
+         </path>
+        </g>
+       </svg>
+       <span class="invisible">
+        MPR News
+       </span>
+      </div>
+     </a>
+     <div class="header_navBg" data-testid="header-closenav">
+     </div>
+    </header>
+   </div>
+   <div class="playerWrapper">
+    <div aria-label="Audio Player" class="player js-player is-live" data-src='[{"url":"https://nis.stream.publicradio.org/nis.aac","type":"audio/aac"},{"url":"https://nis.stream.publicradio.org/nis.mp3","type":"audio/mpeg"}]' id="player" role="region">
+    </div>
+   </div>
+   <main class="main">
+    <div class="container">
+     <div class="page-purpose" data-mpr-content-topic="homepage">
+      <div class="home">
+       <div class="home_first">
+        <div class="teaserContainer">
+         <article class="teaser">
+          <a class="teaser_link" data-testid="relativeLink" href="/story/2021/03/21/latest-on-covid19-in-mn">
+           <div class="teaser_image">
+            <img alt="A man in a car gets a shot." class="content_thumbnail" sizes="(max-width: 590px) 95vw, (max-width: 890px) 45vw, 900px" src="https://img.apmcdn.org/493ce6bc431d35baaa434ffa446e39630f6fabf2/uncropped/3ec466-20210305-drive-up-vaccine-03-600.jpg" srcset="https://img.apmcdn.org/493ce6bc431d35baaa434ffa446e39630f6fabf2/widescreen/3c6e8b-20210305-drive-up-vaccine-03-400.jpg 400w,https://img.apmcdn.org/493ce6bc431d35baaa434ffa446e39630f6fabf2/widescreen/b5cced-20210305-drive-up-vaccine-03-600.jpg 600w,https://img.apmcdn.org/493ce6bc431d35baaa434ffa446e39630f6fabf2/widescreen/17c862-20210305-drive-up-vaccine-03-1000.jpg 1000w,https://img.apmcdn.org/493ce6bc431d35baaa434ffa446e39630f6fabf2/widescreen/d5c878-20210305-drive-up-vaccine-03-1400.jpg 1400w,https://img.apmcdn.org/493ce6bc431d35baaa434ffa446e39630f6fabf2/widescreen/d387fb-20210305-drive-up-vaccine-03-2000.jpg 2000w"/>
+           </div>
+           <div class="teaser_content">
+            <div class="teaser_header">
+             <h2 class="hdg hdg-2">
+              Latest on COVID-19 in MN: More than a quarter of Minnesotans have at least one vaccine dose
+             </h2>
+            </div>
+            <div class="teaser_body userContent">
+             More than a quarter of Minnesota residents have received at least one dose of a COVID-19 vaccine, officials announced Sunday. That’s as newly confirmed COVID-19 cases in the state have trended upward in recent weeks.
+            </div>
+           </div>
+          </a>
+         </article>
+         <ul class="related related-teaser">
+          <li class="related_item">
+           <span class="related_prefix">
+            Sign up
+           </span>
+           <a class="related_link" data-testid="externalLink" href="https://cloud.connect.mpr.org/mprnews_covid">
+            Analysis of COVID-19 data in Minnesota
+           </a>
+          </li>
+         </ul>
+        </div>
+       </div>
+       <div class="home_main">
+        <div class="vList vList-collection">
+         <div>
+          <div class="teaserContainer">
+           <article class="teaser">
+            <a class="teaser_link" data-testid="relativeLink" href="/story/2021/03/20/after-leaving-isle-royale-on-an-ice-bridge-wolf-made-epic-journey">
+             <div class="teaser_image">
+              <img alt="A map showing the path of a wolf" class="content_thumbnail" sizes="(max-width: 590px) 95vw, (max-width: 890px) 45vw, 900px" src="https://img.apmcdn.org/053c52df77fa17dd4307b31d8a1faf40e17b3977/uncropped/2c2bb7-20210319-wolf01-2146.png"/>
+             </div>
+             <div class="teaser_content">
+              <div class="teaser_header">
+               <h2 class="hdg hdg-2">
+                After leaving Isle Royale on an ice bridge, wolf made epic journey
+               </h2>
+              </div>
+              <div class="teaser_body userContent">
+               A recently published study details the epic journey of a lone female wolf after leaving Isle Royale National Park on an ice bridge. The wolf was one of the first relocated to the park as part of a landmark effort to bolster the wolf population on the Lake Superior island.
+              </div>
+             </div>
+            </a>
+           </article>
+          </div>
+         </div>
+         <div class="teaserContainer">
+          <article class="teaser teaser-condensed">
+           <div class="teaser_button">
+            <button class="playButton" type="button">
+             <span class="playButton_button">
+              <svg class="icon icon-play" height="24" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+               <path d="M8 6.82v10.36c0 .79.87 1.27 1.54.84l8.14-5.18c.62-.39.62-1.29 0-1.69L9.54 5.98C8.87 5.55 8 6.03 8 6.82z">
+               </path>
+              </svg>
+             </span>
+             <span class="playButton_label">
+              31min 50sec
+             </span>
+            </button>
+           </div>
+           <a class="teaser_link" data-testid="relativeLink" href="/story/2021/03/19/four-questions-ethics-of-covid-vaccine-eligibility">
+            <div class="teaser_image">
+             <img alt="A sign reads covid-19 vaccine near people standing in line. " class="content_thumbnail" sizes="120px" src="https://img.apmcdn.org/f87949a09a74b7724cc218d68b1b9f35a8f812e1/uncropped/9d72a2-20210121-covid-vaccine-clinic-02-600.jpg" srcset="https://img.apmcdn.org/f87949a09a74b7724cc218d68b1b9f35a8f812e1/thumbnail/a41992-20210121-covid-vaccine-clinic-02-120.jpg 120w,https://img.apmcdn.org/f87949a09a74b7724cc218d68b1b9f35a8f812e1/thumbnail/090853-20210121-covid-vaccine-clinic-02-300.jpg 300w"/>
+            </div>
+            <div class="teaser_content">
+             <div class="teaser_header">
+              <h2 class="hdg hdg-2">
+               4 questions to help sort through the ethics of getting a COVID vaccine before you’re eligible
+              </h2>
+             </div>
+             <div class="teaser_body userContent">
+              Opportunities to get the COVID-19 vaccine are expanding, but not everyone is eligible yet. Still, people are sometimes finding themselves in situations that might allow them to jump the line. What questions should you consider, according to an ethicist, if you find yourself in a similar circumstance?
+             </div>
+            </div>
+           </a>
+          </article>
+          <ul class="related related-teaser">
+           <li class="related_item">
+            <span class="related_prefix">
+             More discussion
+            </span>
+            <a class="related_link" data-testid="relativeLink" href="/episode/2021/03/19/davis-is-it-ok-to-jump-the-line-for-the-covid19-vaccine">
+             About the ethics of the vaccine rollout
+            </a>
+           </li>
+           <li class="related_item">
+            <span class="related_prefix">
+             Everything you need to know
+            </span>
+            <a class="related_link" data-testid="relativeLink" href="/story/2021/01/19/how-to-get-your-covid19-vaccine-in-minnesota-what-you-need-to-know">
+             About getting the COVID-19 vaccine in Minnesota
+            </a>
+           </li>
+           <li class="related_item">
+            <span class="related_prefix">
+             Vaccine Connector
+            </span>
+            <a class="related_link" data-testid="relativeLink" href="/story/2021/02/18/state-launches-vaccine-connector-to-alert-minnesotans-when-theyre-eligible-for-covid-shots">
+             Online tool will tell Minnesotans when they're eligible for COVID shots
+            </a>
+           </li>
+          </ul>
+         </div>
+         <div class="teaserContainer">
+          <article class="teaser teaser-condensed">
+           <div class="teaser_button">
+            <button class="playButton" type="button">
+             <span class="playButton_button">
+              <svg class="icon icon-play" height="24" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+               <path d="M8 6.82v10.36c0 .79.87 1.27 1.54.84l8.14-5.18c.62-.39.62-1.29 0-1.69L9.54 5.98C8.87 5.55 8 6.03 8 6.82z">
+               </path>
+              </svg>
+             </span>
+             <span class="playButton_label">
+              4min 18sec
+             </span>
+            </button>
+           </div>
+           <a class="teaser_link" data-testid="relativeLink" href="/story/2021/03/19/chauvin-trial-jury-george-floyd">
+            <div class="teaser_image">
+             <img alt="A man in a face mask sits behind a desk." class="content_thumbnail" sizes="120px" src="https://img.apmcdn.org/98035a758e6ceaff4db4820a9ec12e9f71d0baa8/uncropped/a0e349-20210319-cahill-991.png" srcset="https://img.apmcdn.org/98035a758e6ceaff4db4820a9ec12e9f71d0baa8/thumbnail/820488-20210319-cahill-120.png 120w,https://img.apmcdn.org/98035a758e6ceaff4db4820a9ec12e9f71d0baa8/thumbnail/cc9be2-20210319-cahill-300.png 300w"/>
+            </div>
+            <div class="teaser_content">
+             <div class="teaser_header">
+              <h2 class="hdg hdg-2">
+               Chauvin trial: Judge won't delay, move trial; jury selection continues
+              </h2>
+             </div>
+             <div class="teaser_body userContent">
+              Judge Peter Cahill on Friday acknowledged there was no optimal time or location in Minnesota to escape the publicity around the high-profile case. Thirteen jurors have been seated and jury selection will resume Monday.
+             </div>
+            </div>
+           </a>
+          </article>
+          <ul class="related related-teaser">
+           <li class="related_item">
+            <span class="related_prefix">
+             Thursday
+            </span>
+            <a class="related_link" data-testid="relativeLink" href="/story/2021/03/18/chauvin-trial-jury-george-floyd">
+             12th juror chosen
+            </a>
+           </li>
+           <li class="related_item">
+            <span class="related_prefix">
+             Decoding the questions
+            </span>
+            <a class="related_link" data-testid="relativeLink" href="/story/2021/03/17/explainer-whats-behind-some-chauvin-jury-questions">
+             What's behind some Chauvin jury questions?
+            </a>
+           </li>
+           <li class="related_item">
+            <span class="related_prefix">
+             Mpls. church
+            </span>
+            <a class="related_link" data-testid="relativeLink" href="/story/2021/03/18/minneapolis-church-holds-safe-space-to-deal-with-trauma-after-the-death-of-george-floyd">
+             A 'safe space' to deal with trauma after Floyd's death
+            </a>
+           </li>
+          </ul>
+         </div>
+         <div class="teaserContainer">
+          <article class="teaser teaser-condensed">
+           <a class="teaser_link" data-testid="relativeLink" href="/story/2021/03/19/sahan-from-minnesota-asian-american-women-mourn-georgia-spa-victims">
+            <div class="teaser_image">
+             <img alt="Four people wearing masks hold signs with #StopAsianHate" class="content_thumbnail" sizes="120px" src="https://img.apmcdn.org/17ab4ab647f0d657afd816d2cafd1fa7933b4b83/widescreen/d6aa09-20210319-sahan-aapi-ralley01-600.jpg" srcset="https://img.apmcdn.org/17ab4ab647f0d657afd816d2cafd1fa7933b4b83/thumbnail/794efb-20210319-sahan-aapi-ralley01-120.jpg 120w,https://img.apmcdn.org/17ab4ab647f0d657afd816d2cafd1fa7933b4b83/thumbnail/e73ea4-20210319-sahan-aapi-ralley01-300.jpg 300w"/>
+            </div>
+            <div class="teaser_content">
+             <div class="teaser_header">
+              <h2 class="hdg hdg-2">
+               From Minnesota, Asian American women mourn Georgia spa victims
+              </h2>
+             </div>
+             <div class="teaser_body userContent">
+              Police initially said the Atlanta spa killings, in which six Asian women were among the dead, wasn’t a hate crime. But Minnesota’s Asian women say that added insult to grievous injury.
+             </div>
+            </div>
+           </a>
+          </article>
+          <ul class="related related-teaser">
+           <li class="related_item">
+            <span class="related_prefix">
+             Listen from NPR
+            </span>
+            <a class="related_link" data-testid="externalLink" href="https://www.npr.org/2021/03/18/978616852/a-history-of-anti-asian-racism-plus-married-at-first-sight">
+             A history of anti-Asian racism
+            </a>
+           </li>
+           <li class="related_item">
+            <span class="related_prefix">
+             How to be an ally
+            </span>
+            <a class="related_link" data-testid="relativeLink" href="/story/2020/05/19/spotlight-on-asian-discrimination-covid19">
+             For Asian Americans facing racism
+            </a>
+           </li>
+          </ul>
+         </div>
+         <div class="teaserContainer">
+          <article class="teaser teaser-condensed">
+           <a class="teaser_link" data-testid="relativeLink" href="/story/2021/03/21/rapid-covid19-vaccine-rollout-backfired-in-some-us-states">
+            <div class="teaser_image">
+             <img alt="Virus Outbreak Vaccine Rollout" class="content_thumbnail" sizes="120px" src="https://img.apmcdn.org/ee361819fe746cd2c6323dade72b5e4311d439a0/normal/cc8d85-20210321-vaccine01-600.jpg" srcset="https://img.apmcdn.org/ee361819fe746cd2c6323dade72b5e4311d439a0/thumbnail/c662fb-20210321-vaccine01-120.jpg 120w,https://img.apmcdn.org/ee361819fe746cd2c6323dade72b5e4311d439a0/thumbnail/86c7a0-20210321-vaccine01-300.jpg 300w"/>
+            </div>
+            <div class="teaser_content">
+             <div class="teaser_header">
+              <h2 class="hdg hdg-2">
+               A rapid COVID-19 vaccine rollout backfired in some U.S. states
+              </h2>
+             </div>
+             <div class="teaser_body userContent">
+              Despite the clamor to speed up the U.S. vaccination drive against COVID-19 and get the country back to normal, the first three months of the rollout suggest faster is not necessarily better.
+             </div>
+            </div>
+           </a>
+          </article>
+         </div>
+         <div class="teaserContainer">
+          <article class="teaser teaser-condensed">
+           <a class="teaser_link" data-testid="relativeLink" href="/story/2021/03/21/npr-california-has-a-new-idea-for-homes-at-risk-from-rising-seas-buy-rent-retreat">
+            <div class="teaser_image">
+             <img alt="People walk along the beach" class="content_thumbnail" sizes="120px" src="https://img.apmcdn.org/a2e159476bbd5d6668fc6e12aff12d5fa8145f36/normal/2f2a22-20210321-beach01-600.jpg" srcset="https://img.apmcdn.org/a2e159476bbd5d6668fc6e12aff12d5fa8145f36/thumbnail/4f07b4-20210321-beach01-120.jpg 120w,https://img.apmcdn.org/a2e159476bbd5d6668fc6e12aff12d5fa8145f36/thumbnail/97e36a-20210321-beach01-300.jpg 300w"/>
+            </div>
+            <div class="teaser_content">
+             <div class="teaser_header">
+              <h2 class="hdg hdg-2">
+               California has a new idea for homes at risk from rising seas: buy, rent, retreat
+              </h2>
+             </div>
+             <div class="teaser_body userContent">
+              Sea level rise is threatening billions of dollars’ worth of coastal property. A California lawmaker is proposing a novel way to retreat from the threat: buying and then renting out properties as long as they're habitable.
+             </div>
+            </div>
+           </a>
+          </article>
+         </div>
+         <div class="teaserContainer">
+          <article class="teaser teaser-condensed">
+           <a class="teaser_link" data-testid="relativeLink" href="/story/2021/03/21/npr-miami-beach-issues-curfew-to-curb-spring-break-virus-knocks-vcu-from-march-madne">
+            <div class="teaser_image">
+             <img alt="Police officers keep an eye on a crowd" class="content_thumbnail" sizes="120px" src="https://img.apmcdn.org/97a615d1cc10759d87d2117e243a324c3c6d6d07/normal/f98072-20210321-miami01-600.jpg" srcset="https://img.apmcdn.org/97a615d1cc10759d87d2117e243a324c3c6d6d07/thumbnail/1a5ef0-20210321-miami01-120.jpg 120w,https://img.apmcdn.org/97a615d1cc10759d87d2117e243a324c3c6d6d07/thumbnail/d1ca0c-20210321-miami01-300.jpg 300w"/>
+            </div>
+            <div class="teaser_content">
+             <div class="teaser_header">
+              <h2 class="hdg hdg-2">
+               Miami Beach issues curfew to curb spring break crowds; COVID knocks VCU from March Madness
+              </h2>
+             </div>
+             <div class="teaser_body userContent">
+              "Too many people are coming here right now," Miami Beach Mayor Dan Gelber said on Saturday as he proclaimed a 72-hour state of emergency to address swelling crowds and fears of fueling new a surge in cases.
+             </div>
+            </div>
+           </a>
+          </article>
+         </div>
+         <div class="teaserContainer">
+          <article class="teaser teaser-condensed">
+           <a class="teaser_link" data-testid="relativeLink" href="/story/2021/03/21/austin-makes-first-trip-to-afghanistan-as-us-defense-secretary">
+            <div class="teaser_image">
+             <img alt="Defense officials review a line of military troops" class="content_thumbnail" sizes="120px" src="https://img.apmcdn.org/bd685d92a0253603636f694fb95018b56dad73c4/widescreen/dd4afa-20210321-kabul01-600.jpg" srcset="https://img.apmcdn.org/bd685d92a0253603636f694fb95018b56dad73c4/thumbnail/092c0e-20210321-kabul01-120.jpg 120w,https://img.apmcdn.org/bd685d92a0253603636f694fb95018b56dad73c4/thumbnail/97fad0-20210321-kabul01-300.jpg 300w"/>
+            </div>
+            <div class="teaser_content">
+             <div class="teaser_header">
+              <h2 class="hdg hdg-2">
+               Austin makes first trip to Afghanistan as U.S. defense secretary
+              </h2>
+             </div>
+             <div class="teaser_body userContent">
+              U.S. Defense Secretary Lloyd Austin arrived Sunday in Kabul on his first trip to Afghanistan as Pentagon chief, amid swirling questions about how long American troops will remain in the country.
+             </div>
+            </div>
+           </a>
+          </article>
+         </div>
+         <div class="teaserContainer">
+          <article class="teaser teaser-condensed">
+           <div class="teaser_button">
+            <button class="playButton" type="button">
+             <span class="playButton_button">
+              <svg class="icon icon-play" height="24" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+               <path d="M8 6.82v10.36c0 .79.87 1.27 1.54.84l8.14-5.18c.62-.39.62-1.29 0-1.69L9.54 5.98C8.87 5.55 8 6.03 8 6.82z">
+               </path>
+              </svg>
+             </span>
+             <span class="playButton_label">
+              4min 16sec
+             </span>
+            </button>
+           </div>
+           <a class="teaser_link" data-testid="relativeLink" href="/story/2021/03/21/npr-amid-a-wave-of-targeted-killings-in-afghanistan-shes-no-11-on-a-murder-list">
+            <div class="teaser_image">
+             <img alt="Fatima Roshanian, a journalist, scaled back her movements after she found her name on three different lists circulating on Afghan social media, claiming to be of people the Taliban want to kill." class="content_thumbnail" sizes="120px" src="https://media.npr.org/assets/img/2021/03/16/hayeri_npr_nimrokh_0131_slide-bc49322099e237ef560b12d614bf7e8d1165c786.jpg?s=600" srcset="https://media.npr.org/assets/img/2021/03/16/hayeri_npr_nimrokh_0131_slide-bc49322099e237ef560b12d614bf7e8d1165c786.jpg?s=12 200w"/>
+            </div>
+            <div class="teaser_content">
+             <div class="teaser_header">
+              <h2 class="hdg hdg-2">
+               Amid a wave of targeted killings in Afghanistan, she's No. 11 on a 'murder list'
+              </h2>
+             </div>
+             <div class="teaser_body userContent">
+              Journalist Fatima Roshanian has faced threats before, but she and many other Afghans say the risk to their lives is more serious than ever. "People are being killed every day, everywhere," she says.
+             </div>
+            </div>
+           </a>
+          </article>
+         </div>
+         <div class="teaserContainer">
+          <article class="teaser teaser-condensed">
+           <a class="teaser_link" data-testid="relativeLink" href="/story/2021/03/21/npr-too-much-focusing-is-draining-heres-a-better-strategy">
+            <div class="teaser_image">
+             <img alt="A seafoam green egg timer set to 20 minutes sits atop a stack of closed books in front of a light blue backdrop covered in cutouts of white clouds." class="content_thumbnail" sizes="120px" src="https://media.npr.org/assets/img/2021/03/19/life-kit_focus-final_slide-a396278caa637a2c5caefc48f24e3a8e8cf3d015.jpg?s=600" srcset="https://media.npr.org/assets/img/2021/03/19/life-kit_focus-final_slide-a396278caa637a2c5caefc48f24e3a8e8cf3d015.jpg?s=12 200w"/>
+            </div>
+            <div class="teaser_content">
+             <div class="teaser_header">
+              <h2 class="hdg hdg-2">
+               Too much focusing can be draining. Here's a better strategy
+              </h2>
+             </div>
+             <div class="teaser_body userContent">
+              Dr. Srini Pillay believes "unfocusing" your mind, or purposefully letting it wander, is key to improving focus overall.  The brain, he says, does its best work when it's allowed to toggle between focus and unfocus.
+             </div>
+            </div>
+           </a>
+          </article>
+         </div>
+         <div class="teaserContainer">
+          <article class="teaser teaser-condensed">
+           <div class="teaser_button">
+            <button class="playButton" type="button">
+             <span class="playButton_button">
+              <svg class="icon icon-play" height="24" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+               <path d="M8 6.82v10.36c0 .79.87 1.27 1.54.84l8.14-5.18c.62-.39.62-1.29 0-1.69L9.54 5.98C8.87 5.55 8 6.03 8 6.82z">
+               </path>
+              </svg>
+             </span>
+             <span class="playButton_label">
+              4min 51sec
+             </span>
+            </button>
+           </div>
+           <a class="teaser_link" data-testid="relativeLink" href="/story/2021/03/21/npr-vaccinating-children-seen-as-a-key-step-toward-covid-19-herd-immunity">
+            <div class="teaser_image">
+             <img alt="Nurse manager Lucy Golding draws up doses of the Moderna COVID-19 vaccine March 14 in Stamford, Conn. Moderna has begun enrolling infants and young children into a vaccine trial." class="content_thumbnail" sizes="120px" src="https://media.npr.org/assets/img/2021/03/17/gettyimages-1307085204-e9cda0ae4cae84e38d7d53497f70b741f05c5e15.jpg?s=600" srcset="https://media.npr.org/assets/img/2021/03/17/gettyimages-1307085204-e9cda0ae4cae84e38d7d53497f70b741f05c5e15.jpg?s=12 200w"/>
+            </div>
+            <div class="teaser_content">
+             <div class="teaser_header">
+              <h2 class="hdg hdg-2">
+               Vaccinating children seen as a key step toward COVID-19 herd immunity
+              </h2>
+             </div>
+             <div class="teaser_body userContent">
+              Moderna has begun testing its vaccine on children as young as 6 months old. A principal investigator in the trial says getting children vaccinated would be "a step getting back to our normal life."
+             </div>
+            </div>
+           </a>
+          </article>
+         </div>
+         <div class="teaserContainer">
+          <article class="teaser teaser-condensed">
+           <a class="teaser_link" data-testid="relativeLink" href="/story/2021/03/21/npr-protesters-europe-clash-with-police-over-covid-19-lockdowns">
+            <div class="teaser_image">
+             <img alt="Demonstrators march down a street" class="content_thumbnail" sizes="120px" src="https://img.apmcdn.org/aeff3ea5a6f16ef963e897353cb7ab3e99593d31/normal/f1c09a-20210321-london01-600.jpg" srcset="https://img.apmcdn.org/aeff3ea5a6f16ef963e897353cb7ab3e99593d31/thumbnail/2672d6-20210321-london01-120.jpg 120w,https://img.apmcdn.org/aeff3ea5a6f16ef963e897353cb7ab3e99593d31/thumbnail/332147-20210321-london01-300.jpg 300w"/>
+            </div>
+            <div class="teaser_content">
+             <div class="teaser_header">
+              <h2 class="hdg hdg-2">
+               Protesters in Germany, U.K. clash with police over COVID-19 lockdowns
+              </h2>
+             </div>
+             <div class="teaser_body userContent">
+              Anger at restrictions imposed to contain the coronavirus pandemic spilled into the streets of Germany and the U.K. on Saturday, while case numbers across Europe are surging once again.
+             </div>
+            </div>
+           </a>
+          </article>
+         </div>
+         <div class="teaserContainer">
+          <article class="teaser teaser-condensed">
+           <a class="teaser_link" data-testid="relativeLink" href="/story/2021/03/20/hundreds-in-atlanta-rally-against-hate-demand-justice-after-shootings">
+            <div class="teaser_image">
+             <img alt="Demonstrators take to the streets of Atlanta" class="content_thumbnail" sizes="120px" src="https://img.apmcdn.org/98023d593c67302abe6827c33adf479e7569451b/normal/7ecd68-20210320-atlanta03-600.jpg" srcset="https://img.apmcdn.org/98023d593c67302abe6827c33adf479e7569451b/thumbnail/1659a4-20210320-atlanta03-120.jpg 120w,https://img.apmcdn.org/98023d593c67302abe6827c33adf479e7569451b/thumbnail/99db11-20210320-atlanta03-300.jpg 300w"/>
+            </div>
+            <div class="teaser_content">
+             <div class="teaser_header">
+              <h2 class="hdg hdg-2">
+               Hundreds in Atlanta rally against hate, demand justice after shootings
+              </h2>
+             </div>
+             <div class="teaser_body userContent">
+              "I know there's a lot of fear in the Asian American community — fear to walk outside their door, fear to go to their businesses," said Georgia state Rep. Sam Park. "I want to tell anyone who may be scared today: Do not be afraid. This is our home. This is our country. And we will not go back."
+             </div>
+            </div>
+           </a>
+          </article>
+         </div>
+         <div class="teaserContainer">
+          <article class="teaser teaser-condensed">
+           <a class="teaser_link" data-testid="relativeLink" href="/story/2021/03/20/shooting-deaths-in-st-paul-investigated-as-murdersuicide">
+            <div class="teaser_image">
+            </div>
+            <div class="teaser_content">
+             <div class="teaser_header">
+              <h2 class="hdg hdg-2">
+               Shooting deaths in St. Paul investigated as murder-suicide
+              </h2>
+             </div>
+             <div class="teaser_body userContent">
+              St. Paul police said the shooting deaths of a man and woman found outside a home Saturday appears to be a murder-suicide case.
+             </div>
+            </div>
+           </a>
+          </article>
+         </div>
+         <div class="teaserContainer">
+          <article class="teaser teaser-condensed">
+           <a class="teaser_link" data-testid="relativeLink" href="/story/2021/03/20/npr-new-lockdowns-in-europe-as-covid-19-cases-soar-pakistans-pm-tests-positive">
+            <div class="teaser_image">
+             <img alt="Travelers waited to flee Paris at the Montparnasse Train Station on Friday ahead of a new lockdown announced by the government in response to a surge in cases of the coronavirus." class="content_thumbnail" sizes="120px" src="https://media.npr.org/assets/img/2021/03/20/gettyimages-1231810102-d48f295a88a4d639508cc0dfcfc33f88c53e7a50.jpg?s=600" srcset="https://media.npr.org/assets/img/2021/03/20/gettyimages-1231810102-d48f295a88a4d639508cc0dfcfc33f88c53e7a50.jpg?s=12 200w"/>
+            </div>
+            <div class="teaser_content">
+             <div class="teaser_header">
+              <h2 class="hdg hdg-2">
+               New lockdowns in Europe as COVID-19 cases soar; Pakistan's PM tests positive
+              </h2>
+             </div>
+             <div class="teaser_body userContent">
+              Several European countries have imposed new lockdown restrictions as COVID-19 cases are surging. In Pakistan, Prime Minister Imran Khan is self-isolating at home after testing positive for the virus.
+             </div>
+            </div>
+           </a>
+          </article>
+         </div>
+         <div class="teaserContainer">
+          <article class="teaser teaser-condensed">
+           <a class="teaser_link" data-testid="relativeLink" href="/story/2021/03/20/npr-glynn-lunney-nasa-flight-director-with-a-key-role-in-saving-apollo-13-dies-at-84">
+            <div class="teaser_image">
+             <img alt="Glynn Lunney, seen here in 2015, was awarded the Presidential Medal of Freedom as part of the Apollo 13 mission operations team." class="content_thumbnail" sizes="120px" src="https://media.npr.org/assets/img/2021/03/20/jsc2015e074325-c49258099c4e2c9fc510d4ad05457211e2634740.jpg?s=600" srcset="https://media.npr.org/assets/img/2021/03/20/jsc2015e074325-c49258099c4e2c9fc510d4ad05457211e2634740.jpg?s=12 200w"/>
+            </div>
+            <div class="teaser_content">
+             <div class="teaser_header">
+              <h2 class="hdg hdg-2">
+               Glynn Lunney, NASA flight director with a key role in saving Apollo 13 crew, dies at 84
+              </h2>
+             </div>
+             <div class="teaser_body userContent">
+              Lunney, who played an integral role in the agency's Apollo program, died Friday. He was credited for his quick decision-making during the race to save the lives of the Apollo 13 astronauts.
+             </div>
+            </div>
+           </a>
+          </article>
+         </div>
+         <div class="teaserContainer">
+          <article class="teaser teaser-condensed">
+           <div class="teaser_button">
+            <button class="playButton" type="button">
+             <span class="playButton_button">
+              <svg class="icon icon-play" height="24" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+               <path d="M8 6.82v10.36c0 .79.87 1.27 1.54.84l8.14-5.18c.62-.39.62-1.29 0-1.69L9.54 5.98C8.87 5.55 8 6.03 8 6.82z">
+               </path>
+              </svg>
+             </span>
+             <span class="playButton_label">
+              3min 47sec
+             </span>
+            </button>
+           </div>
+           <a class="teaser_link" data-testid="relativeLink" href="/story/2021/03/20/npr-the-celebration-over-deb-haaland-now-faces-a-long-to-do-list-at-interior">
+            <div class="teaser_image">
+             <img alt="Deb Haaland, who made history this week by becoming the first indigenous interior secretary, promised to begin repairing a legacy of abuses committed by the federal government toward tribes." class="content_thumbnail" sizes="120px" src="https://media.npr.org/assets/img/2021/03/19/deb-haaland_custom-e0b8de82362f1f31d105f4222ecccbee0e252247.jpg?s=600" srcset="https://media.npr.org/assets/img/2021/03/19/deb-haaland_custom-e0b8de82362f1f31d105f4222ecccbee0e252247.jpg?s=12 200w"/>
+            </div>
+            <div class="teaser_content">
+             <div class="teaser_header">
+              <h2 class="hdg hdg-2">
+               The celebration over, Deb Haaland now faces a long to-do list at Interior
+              </h2>
+             </div>
+             <div class="teaser_body userContent">
+              Interior Secretary Deb Haaland has a long and seemingly insurmountable to-do list, including a pledge to begin repairing a legacy of broken treaties and other abuses against tribes.
+             </div>
+            </div>
+           </a>
+          </article>
+         </div>
+         <div class="teaserContainer">
+          <article class="teaser teaser-condensed">
+           <a class="teaser_link" data-testid="relativeLink" href="/story/2021/03/19/npr-mens-and-womens-ncaa-march-madness-facilities-separate-and-unequal-spark-uproar">
+            <div class="teaser_image">
+             <img alt="Connecticut guard Saylor Poffenbarger (4) is defended by St. John's guard Danaijah Williams (24) and forward Cecilia Holmberg (11) during the fourth quarter of an NCAA college basketball game in New York last month. The women's NCAA championship begins Sunday." class="content_thumbnail" sizes="120px" src="https://media.npr.org/assets/img/2021/03/19/ncaa-women-b4020a2176d542c780d62e34806b5f66e769143b.jpg?s=600" srcset="https://media.npr.org/assets/img/2021/03/19/ncaa-women-b4020a2176d542c780d62e34806b5f66e769143b.jpg?s=12 200w"/>
+            </div>
+            <div class="teaser_content">
+             <div class="teaser_header">
+              <h2 class="hdg hdg-2">
+               Men's and women's NCAA March Madness facilities, separate and unequal, spark uproar
+              </h2>
+             </div>
+             <div class="teaser_body userContent">
+              When female athletes saw the workout room the NCAA provided for the women’s basketball tournament bubble — and compared it to the men's — they cried foul. NCAA officials belatedly acknowledged the disparity.
+             </div>
+            </div>
+           </a>
+          </article>
+         </div>
+         <div class="teaserContainer">
+          <article class="teaser teaser-condensed">
+           <a class="teaser_link" data-testid="relativeLink" href="/story/2021/03/20/south-dakota-governor-pushes-changes-to-transgender-sports-ban">
+            <div class="teaser_image">
+             <img alt="Legislature Transgender Sports" class="content_thumbnail" sizes="120px" src="https://img.apmcdn.org/4899c8eab5f9d24ceaa60fe312ddb51d2f506346/normal/b5cc28-20210320-southdakota01-600.jpg" srcset="https://img.apmcdn.org/4899c8eab5f9d24ceaa60fe312ddb51d2f506346/thumbnail/aecd23-20210320-southdakota01-120.jpg 120w,https://img.apmcdn.org/4899c8eab5f9d24ceaa60fe312ddb51d2f506346/thumbnail/73a0b1-20210320-southdakota01-300.jpg 300w"/>
+            </div>
+            <div class="teaser_content">
+             <div class="teaser_header">
+              <h2 class="hdg hdg-2">
+               South Dakota governor pushes changes to transgender sports ban
+              </h2>
+             </div>
+             <div class="teaser_body userContent">
+              Noem's proposal would limit the ban to high school and elementary sports and exclude collegiate athletics. Opponents of the bill had warned it would cause the state to lose out on millions of dollars if it prompted the NCAA to withdraw tournaments from South Dakota.
+             </div>
+            </div>
+           </a>
+          </article>
+         </div>
+        </div>
+        <div class="hList home_more">
+         <div>
+          <a class="btn btn-primary" data-testid="relativeLink" href="/health/covid-19">
+           <span>
+            COVID-19
+           </span>
+           <svg class="icon icon-chevronRight" height="24px" viewbox="0 0 24 24" width="24px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z">
+            </path>
+            <path d="M0 0h24v24H0z" fill="none">
+            </path>
+           </svg>
+          </a>
+         </div>
+         <div>
+          <a class="btn btn-primary" data-testid="relativeLink" href="/story/2020/10/30/changemakers-indigenous-minnesotans-making-history">
+           <span>
+            ChangeMakers
+           </span>
+           <svg class="icon icon-chevronRight" height="24px" viewbox="0 0 24 24" width="24px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z">
+            </path>
+            <path d="M0 0h24v24H0z" fill="none">
+            </path>
+           </svg>
+          </a>
+         </div>
+         <div>
+          <a class="btn btn-primary" data-testid="relativeLink" href="/social-issues/race">
+           <span>
+            Racial Justice
+           </span>
+           <svg class="icon icon-chevronRight" height="24px" viewbox="0 0 24 24" width="24px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z">
+            </path>
+            <path d="M0 0h24v24H0z" fill="none">
+            </path>
+           </svg>
+          </a>
+         </div>
+        </div>
+       </div>
+       <div class="home_rail">
+       </div>
+       <aside class="home_sidebar">
+        <div class="sidebar">
+         <div class="section-sm">
+          <div class="ad" id="mpr-mr-ads">
+           <div class="ad_slot ad_slot-mr" id="mpr-ad-1">
+           </div>
+           <div class="ad_textWrapper">
+            <div class="ad_text">
+             Providing Support for MPR.
+            </div>
+            <div class="link">
+             <a class="ad_link" data-testid="relativeLink" href="/underwriting">
+              Learn More
+             </a>
+            </div>
+           </div>
+          </div>
+         </div>
+         <div class="section section-sm">
+          <div class="hList">
+           <a class="link link-plain" data-testid="relativeLink" href="/schedule/sun">
+            Program Schedule
+           </a>
+           <a class="link link-plain" data-testid="externalLink" href="https://www.mpr.org/listen/stations">
+            Station Directory
+           </a>
+          </div>
+         </div>
+         <div class="section-sm">
+         </div>
+         <div class="section-sm">
+          <div class="ad" id="mpr-mr-ads">
+           <div class="ad_slot ad_slot-mr" id="mpr-ad-2">
+           </div>
+           <div class="ad_textWrapper">
+            <div class="ad_text">
+             Providing Support for MPR.
+            </div>
+            <div class="link">
+             <a class="ad_link" data-testid="relativeLink" href="/underwriting">
+              Learn More
+             </a>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </aside>
+       <div class="home_footer">
+        <div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </main>
+  </div>
+  <script id="__NEXT_DATA__" type="application/json">
+   {"props":{"pageProps":{"data":{"homeList":{"id":"01DFP59WMP8E6R21MP777ATRJX","title":"Homepage","description":"{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\"}]}","descriptionText":"","results":{"items":[{"id":"01F18WHSX93BWKB8KHT2NY15KR","title":"Latest on COVID-19 in MN: More than a quarter of Minnesotans have at least one vaccine dose","canonicalSlug":"2021/03/21/latest-on-covid19-in-mn","resourceType":"story","description":"{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"text\":\"More than a quarter of Minnesota residents have received at least one dose of a COVID-19 vaccine, officials announced Sunday. That’s as newly confirmed COVID-19 cases in the state have trended upward in recent weeks. \",\"type\":\"text\"}]}]}","descriptionText":"More than a quarter of Minnesota residents have received at least one dose of a COVID-19 vaccine, officials announced Sunday. That’s as newly confirmed COVID-19 cases in the state have trended upward in recent weeks. \n","primaryVisuals":{"video":null,"thumbnail":{"aspect_ratios":{"thumbnail":{"instances":[{"width":120,"height":90,"url":"https://img.apmcdn.org/493ce6bc431d35baaa434ffa446e39630f6fabf2/thumbnail/c64116-20210305-drive-up-vaccine-03-120.jpg","__typename":"Instance"},{"width":300,"height":226,"url":"https://img.apmcdn.org/493ce6bc431d35baaa434ffa446e39630f6fabf2/thumbnail/c0f64d-20210305-drive-up-vaccine-03-300.jpg","__typename":"Instance"}],"__typename":"AspectRatio"},"widescreen":{"instances":[{"width":400,"height":225,"url":"https://img.apmcdn.org/493ce6bc431d35baaa434ffa446e39630f6fabf2/widescreen/3c6e8b-20210305-drive-up-vaccine-03-400.jpg","__typename":"Instance"},{"width":600,"height":337,"url":"https://img.apmcdn.org/493ce6bc431d35baaa434ffa446e39630f6fabf2/widescreen/b5cced-20210305-drive-up-vaccine-03-600.jpg","__typename":"Instance"},{"width":1000,"height":562,"url":"https://img.apmcdn.org/493ce6bc431d35baaa434ffa446e39630f6fabf2/widescreen/17c862-20210305-drive-up-vaccine-03-1000.jpg","__typename":"Instance"},{"width":1400,"height":786,"url":"https://img.apmcdn.org/493ce6bc431d35baaa434ffa446e39630f6fabf2/widescreen/d5c878-20210305-drive-up-vaccine-03-1400.jpg","__typename":"Instance"},{"width":2000,"height":1123,"url":"https://img.apmcdn.org/493ce6bc431d35baaa434ffa446e39630f6fabf2/widescreen/d387fb-20210305-drive-up-vaccine-03-2000.jpg","__typename":"Instance"}],"__typename":"AspectRatio"},"uncropped":{"instances":[{"url":"https://img.apmcdn.org/493ce6bc431d35baaa434ffa446e39630f6fabf2/uncropped/bf850c-20210305-drive-up-vaccine-03-400.jpg","width":400,"height":267,"__typename":"Instance"},{"url":"https://img.apmcdn.org/493ce6bc431d35baaa434ffa446e39630f6fabf2/uncropped/3ec466-20210305-drive-up-vaccine-03-600.jpg","width":600,"height":400,"__typename":"Instance"},{"url":"https://img.apmcdn.org/493ce6bc431d35baaa434ffa446e39630f6fabf2/uncropped/db4676-20210305-drive-up-vaccine-03-1000.jpg","width":1000,"height":667,"__typename":"Instance"},{"url":"https://img.apmcdn.org/493ce6bc431d35baaa434ffa446e39630f6fabf2/uncropped/fad556-20210305-drive-up-vaccine-03-1400.jpg","width":1400,"height":933,"__typename":"Instance"},{"url":"https://img.apmcdn.org/493ce6bc431d35baaa434ffa446e39630f6fabf2/uncropped/1ede8a-20210305-drive-up-vaccine-03-2000.jpg","width":2000,"height":1333,"__typename":"Instance"}],"__typename":"AspectRatio"},"__typename":"AspectRatioList"},"contentArea":"MPR News","dateTaken":"2021-03-05T00:00:00+00:00","dateline":"Bloomington, Minn.","fallback":"https://img.apmcdn.org/493ce6bc431d35baaa434ffa446e39630f6fabf2/uncropped/3ec466-20210305-drive-up-vaccine-03-600.jpg","longCaption":"Eugene Heiberger receives the Johnson \u0026 Johnson COVID-19 vaccine through the window of his car at a HealthPartners drive-up vaccination site in Bloomington, Minn., on March 5.","shortCaption":"A man in a car gets a shot.","xid":520072,"__typename":"Image"},"__typename":"PrimaryVisual"},"audio":[],"collectionRelatedLinks":[{"url":"https://cloud.connect.mpr.org/mprnews_covid","title":"Analysis of COVID-19 data in Minnesota","prefix":"Sign up","__typename":"CollectionRelatedLink"}],"__typename":"Story"},{"id":"01F15WAJSJXVDG8W22HG34HBQA","title":"After leaving Isle Royale on an ice bridge, wolf made epic journey ","canonicalSlug":"2021/03/20/after-leaving-isle-royale-on-an-ice-bridge-wolf-made-epic-journey","resourceType":"story","description":"{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"text\":\"A recently published study details the epic journey of a lone female wolf after leaving Isle Royale National Park on an ice bridge. The wolf was one of the first relocated to the park as part of a landmark effort to bolster the wolf population on the Lake Superior island. \",\"type\":\"text\"}]}]}","descriptionText":"A recently published study details the epic journey of a lone female wolf after leaving Isle Royale National Park on an ice bridge. The wolf was one of the first relocated to the park as part of a landmark effort to bolster the wolf population on the Lake Superior island. \n","primaryVisuals":{"video":null,"thumbnail":{"aspect_ratios":{"thumbnail":{"instances":[{"width":120,"height":90,"url":"https://img.apmcdn.org/053c52df77fa17dd4307b31d8a1faf40e17b3977/thumbnail/cdc01b-20210319-wolf01-120.png","__typename":"Instance"},{"width":300,"height":226,"url":"https://img.apmcdn.org/053c52df77fa17dd4307b31d8a1faf40e17b3977/thumbnail/afb983-20210319-wolf01-300.png","__typename":"Instance"}],"__typename":"AspectRatio"},"widescreen":null,"uncropped":{"instances":[{"url":"https://img.apmcdn.org/053c52df77fa17dd4307b31d8a1faf40e17b3977/uncropped/2c2bb7-20210319-wolf01-2146.png","width":2146,"height":1644,"__typename":"Instance"}],"__typename":"AspectRatio"},"__typename":"AspectRatioList"},"contentArea":"MPR News","dateTaken":null,"dateline":"","fallback":"https://img.apmcdn.org/053c52df77fa17dd4307b31d8a1faf40e17b3977/uncropped/2c2bb7-20210319-wolf01-2146.png","longCaption":"This map charts the GPS locations from Oct. 2, 2018 to Sept. 29, 2019 of Wolf 003F that was introduced to Isle Royale National Park in the fall of 2018. The wolf left the island on an ice bridge in January the following year.","shortCaption":"A map showing the path of a wolf","xid":520727,"__typename":"Image"},"__typename":"PrimaryVisual"},"audio":[],"collectionRelatedLinks":[],"__typename":"Story"},{"id":"01F13YC65CMMT674296SS5PQAM","title":"4 questions to help sort through the ethics of getting a COVID vaccine before you’re eligible","canonicalSlug":"2021/03/19/four-questions-ethics-of-covid-vaccine-eligibility","resourceType":"story","description":"{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"text\":\"Opportunities to get the COVID-19 vaccine are expanding, but not everyone is eligible yet. Still, people are sometimes finding themselves in situations that might allow them to jump the line. What questions should you consider, according to an ethicist, if you find yourself in a similar circumstance? \",\"type\":\"text\"}]}]}","descriptionText":"Opportunities to get the COVID-19 vaccine are expanding, but not everyone is eligible yet. Still, people are sometimes finding themselves in situations that might allow them to jump the line. What questions should you consider, according to an ethicist, if you find yourself in a similar circumstance? \n","primaryVisuals":{"video":null,"thumbnail":{"aspect_ratios":{"thumbnail":{"instances":[{"width":120,"height":90,"url":"https://img.apmcdn.org/f87949a09a74b7724cc218d68b1b9f35a8f812e1/thumbnail/a41992-20210121-covid-vaccine-clinic-02-120.jpg","__typename":"Instance"},{"width":300,"height":226,"url":"https://img.apmcdn.org/f87949a09a74b7724cc218d68b1b9f35a8f812e1/thumbnail/090853-20210121-covid-vaccine-clinic-02-300.jpg","__typename":"Instance"}],"__typename":"AspectRatio"},"widescreen":{"instances":[{"width":400,"height":225,"url":"https://img.apmcdn.org/f87949a09a74b7724cc218d68b1b9f35a8f812e1/widescreen/807dd7-20210121-covid-vaccine-clinic-02-400.jpg","__typename":"Instance"},{"width":600,"height":337,"url":"https://img.apmcdn.org/f87949a09a74b7724cc218d68b1b9f35a8f812e1/widescreen/50923d-20210121-covid-vaccine-clinic-02-600.jpg","__typename":"Instance"},{"width":1000,"height":562,"url":"https://img.apmcdn.org/f87949a09a74b7724cc218d68b1b9f35a8f812e1/widescreen/0cef62-20210121-covid-vaccine-clinic-02-1000.jpg","__typename":"Instance"},{"width":1400,"height":786,"url":"https://img.apmcdn.org/f87949a09a74b7724cc218d68b1b9f35a8f812e1/widescreen/5a6f3d-20210121-covid-vaccine-clinic-02-1400.jpg","__typename":"Instance"},{"width":2000,"height":1123,"url":"https://img.apmcdn.org/f87949a09a74b7724cc218d68b1b9f35a8f812e1/widescreen/51403b-20210121-covid-vaccine-clinic-02-2000.jpg","__typename":"Instance"}],"__typename":"AspectRatio"},"uncropped":{"instances":[{"url":"https://img.apmcdn.org/f87949a09a74b7724cc218d68b1b9f35a8f812e1/uncropped/f8fc59-20210121-covid-vaccine-clinic-02-400.jpg","width":400,"height":267,"__typename":"Instance"},{"url":"https://img.apmcdn.org/f87949a09a74b7724cc218d68b1b9f35a8f812e1/uncropped/9d72a2-20210121-covid-vaccine-clinic-02-600.jpg","width":600,"height":400,"__typename":"Instance"},{"url":"https://img.apmcdn.org/f87949a09a74b7724cc218d68b1b9f35a8f812e1/uncropped/08aa43-20210121-covid-vaccine-clinic-02-1000.jpg","width":1000,"height":667,"__typename":"Instance"},{"url":"https://img.apmcdn.org/f87949a09a74b7724cc218d68b1b9f35a8f812e1/uncropped/bc4349-20210121-covid-vaccine-clinic-02-1400.jpg","width":1400,"height":933,"__typename":"Instance"},{"url":"https://img.apmcdn.org/f87949a09a74b7724cc218d68b1b9f35a8f812e1/uncropped/ffd554-20210121-covid-vaccine-clinic-02-2000.jpg","width":2000,"height":1333,"__typename":"Instance"}],"__typename":"AspectRatio"},"__typename":"AspectRatioList"},"contentArea":"MPR News","dateTaken":"2021-01-21T00:00:00+00:00","dateline":"Brooklyn Center, Minn.","fallback":"https://img.apmcdn.org/f87949a09a74b7724cc218d68b1b9f35a8f812e1/uncropped/9d72a2-20210121-covid-vaccine-clinic-02-600.jpg","longCaption":"People stand in line to receive COVID-19 vaccinations in January at the Earle Brown Heritage Center in Brooklyn Center, Minn. ","shortCaption":"A sign reads covid-19 vaccine near people standing in line. ","xid":517431,"__typename":"Image"},"__typename":"PrimaryVisual"},"audio":[{"id":"01F15X5TBDYZ5VHD2Q6W61FP6R","title":"MPR News with Angela Davis -A look at the ethics of the vaccine rollout","durationHms":null,"encodings":[{"httpFilePath":"https://play.publicradio.org/unreplaced_ua/o/minnesota/podcasts/angela-davis/2021/03/19/A_look_at_the_ethics_of_the_vaccine_rollout_20210319_64.mp3","playFilePath":"https://play.publicradio.org/%user_agent/o/minnesota/podcasts/angela-davis/2021/03/19/A_look_at_the_ethics_of_the_vaccine_rollout_20210319_64.mp3","filename":"/minnesota/podcasts/angela-davis/2021/03/19/A_look_at_the_ethics_of_the_vaccine_rollout_20210319_64.mp3","durationMs":"1910334","__typename":"Encoding"}],"__typename":"Audio"}],"collectionRelatedLinks":[{"url":"https://www.mprnews.org/episode/2021/03/19/davis-is-it-ok-to-jump-the-line-for-the-covid19-vaccine","title":"About the ethics of the vaccine rollout","prefix":"More discussion","__typename":"CollectionRelatedLink"},{"url":"https://www.mprnews.org/story/2021/01/19/how-to-get-your-covid19-vaccine-in-minnesota-what-you-need-to-know","title":"About getting the COVID-19 vaccine in Minnesota","prefix":"Everything you need to know","__typename":"CollectionRelatedLink"},{"url":"https://www.mprnews.org/story/2021/02/18/state-launches-vaccine-connector-to-alert-minnesotans-when-theyre-eligible-for-covid-shots","title":"Online tool will tell Minnesotans when they're eligible for COVID shots","prefix":"Vaccine Connector ","__typename":"CollectionRelatedLink"}],"__typename":"Story"},{"id":"01F13RD37EW5802A2BXDRS5P6X","title":"Chauvin trial: Judge won't delay, move trial; jury selection continues","canonicalSlug":"2021/03/19/chauvin-trial-jury-george-floyd","resourceType":"story","description":"{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"text\":\"Judge Peter Cahill on Friday acknowledged there was no optimal time or location in Minnesota to escape the publicity around the high-profile case. Thirteen jurors have been seated and jury selection will resume Monday.\",\"type\":\"text\"}]}]}","descriptionText":"Judge Peter Cahill on Friday acknowledged there was no optimal time or location in Minnesota to escape the publicity around the high-profile case. Thirteen jurors have been seated and jury selection will resume Monday.\n","primaryVisuals":{"video":null,"thumbnail":{"aspect_ratios":{"thumbnail":{"instances":[{"width":120,"height":90,"url":"https://img.apmcdn.org/98035a758e6ceaff4db4820a9ec12e9f71d0baa8/thumbnail/820488-20210319-cahill-120.png","__typename":"Instance"},{"width":300,"height":226,"url":"https://img.apmcdn.org/98035a758e6ceaff4db4820a9ec12e9f71d0baa8/thumbnail/cc9be2-20210319-cahill-300.png","__typename":"Instance"}],"__typename":"AspectRatio"},"widescreen":null,"uncropped":{"instances":[{"url":"https://img.apmcdn.org/98035a758e6ceaff4db4820a9ec12e9f71d0baa8/uncropped/a0e349-20210319-cahill-991.png","width":991,"height":531,"__typename":"Instance"}],"__typename":"AspectRatio"},"__typename":"AspectRatioList"},"contentArea":"MPR News","dateTaken":null,"dateline":"","fallback":"https://img.apmcdn.org/98035a758e6ceaff4db4820a9ec12e9f71d0baa8/uncropped/a0e349-20210319-cahill-991.png","longCaption":"Hennepin County Judge Peter Cahill announces his decision on certain evidence being admissible during pretrial motions during the trial of Derek Chauvin Friday. ","shortCaption":"A man in a face mask sits behind a desk.","xid":520682,"__typename":"Image"},"__typename":"PrimaryVisual"},"audio":[{"id":"01F16HRCZT8R54SMPN62GA5RJ8","title":"Chauvin trial: Judge won't delay, move trial; jury selection continues","durationHms":null,"encodings":[{"httpFilePath":"https://play.publicradio.org/unreplaced_ua/o/minnesota/news/features/2021/03/19/chauvin-friday_20210319_64.mp3","playFilePath":"https://play.publicradio.org/%user_agent/o/minnesota/news/features/2021/03/19/chauvin-friday_20210319_64.mp3","filename":"/minnesota/news/features/2021/03/19/chauvin-friday_20210319_64.mp3","durationMs":"258324","__typename":"Encoding"}],"__typename":"Audio"},{"id":"01F15M5AEYC1RDAQTKK6RNVF2M","title":"MPR News host Cathy Wurzer talks with MPR's Brandt Williams and Washington County Attorney Pete Orput in advance of Judge Cahill's announcement on Friday","durationHms":null,"encodings":[{"httpFilePath":"https://play.publicradio.org/unreplaced_ua/o/minnesota/news/features/2021/03/19/210319_brandt_orput_20210319_64.mp3","playFilePath":"https://play.publicradio.org/%user_agent/o/minnesota/news/features/2021/03/19/210319_brandt_orput_20210319_64.mp3","filename":"/minnesota/news/features/2021/03/19/210319_brandt_orput_20210319_64.mp3","durationMs":"529972","__typename":"Encoding"}],"__typename":"Audio"}],"collectionRelatedLinks":[{"url":"https://www.mprnews.org/story/2021/03/18/chauvin-trial-jury-george-floyd","title":"12th juror chosen","prefix":"Thursday","__typename":"CollectionRelatedLink"},{"url":"https://www.mprnews.org/story/2021/03/17/explainer-whats-behind-some-chauvin-jury-questions","title":"What's behind some Chauvin jury questions?","prefix":"Decoding the questions","__typename":"CollectionRelatedLink"},{"url":"https://www.mprnews.org/story/2021/03/18/minneapolis-church-holds-safe-space-to-deal-with-trauma-after-the-death-of-george-floyd","title":"A 'safe space' to deal with trauma after Floyd's death","prefix":"Mpls. church","__typename":"CollectionRelatedLink"}],"__typename":"Story"},{"id":"01F15CK70YNFD7RTY5FJ4HRE26","title":"From Minnesota, Asian American women mourn Georgia spa victims","canonicalSlug":"2021/03/19/sahan-from-minnesota-asian-american-women-mourn-georgia-spa-victims","resourceType":"story","description":"{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"text\":\"Police initially said the Atlanta spa killings, in which six Asian women were among the dead, wasn’t a hate crime. But Minnesota’s Asian women say that added insult to grievous injury.\",\"type\":\"text\"}]}]}","descriptionText":"Police initially said the Atlanta spa killings, in which six Asian women were among the dead, wasn’t a hate crime. But Minnesota’s Asian women say that added insult to grievous injury.\n","primaryVisuals":{"video":null,"thumbnail":{"aspect_ratios":{"thumbnail":{"instances":[{"width":120,"height":90,"url":"https://img.apmcdn.org/17ab4ab647f0d657afd816d2cafd1fa7933b4b83/thumbnail/794efb-20210319-sahan-aapi-ralley01-120.jpg","__typename":"Instance"},{"width":300,"height":226,"url":"https://img.apmcdn.org/17ab4ab647f0d657afd816d2cafd1fa7933b4b83/thumbnail/e73ea4-20210319-sahan-aapi-ralley01-300.jpg","__typename":"Instance"}],"__typename":"AspectRatio"},"widescreen":{"instances":[{"width":400,"height":225,"url":"https://img.apmcdn.org/17ab4ab647f0d657afd816d2cafd1fa7933b4b83/widescreen/40bd98-20210319-sahan-aapi-ralley01-400.jpg","__typename":"Instance"},{"width":600,"height":337,"url":"https://img.apmcdn.org/17ab4ab647f0d657afd816d2cafd1fa7933b4b83/widescreen/d6aa09-20210319-sahan-aapi-ralley01-600.jpg","__typename":"Instance"},{"width":1000,"height":561,"url":"https://img.apmcdn.org/17ab4ab647f0d657afd816d2cafd1fa7933b4b83/widescreen/f2f381-20210319-sahan-aapi-ralley01-1000.jpg","__typename":"Instance"},{"width":1131,"height":635,"url":"https://img.apmcdn.org/17ab4ab647f0d657afd816d2cafd1fa7933b4b83/widescreen/1110de-20210319-sahan-aapi-ralley01-1131.jpg","__typename":"Instance"}],"__typename":"AspectRatio"},"uncropped":{"instances":[{"url":"https://img.apmcdn.org/17ab4ab647f0d657afd816d2cafd1fa7933b4b83/uncropped/e96cfe-20210319-sahan-aapi-ralley01-400.jpg","width":400,"height":267,"__typename":"Instance"},{"url":"https://img.apmcdn.org/17ab4ab647f0d657afd816d2cafd1fa7933b4b83/uncropped/b26573-20210319-sahan-aapi-ralley01-600.jpg","width":600,"height":400,"__typename":"Instance"},{"url":"https://img.apmcdn.org/17ab4ab647f0d657afd816d2cafd1fa7933b4b83/uncropped/91b23f-20210319-sahan-aapi-ralley01-1000.jpg","width":1000,"height":667,"__typename":"Instance"},{"url":"https://img.apmcdn.org/17ab4ab647f0d657afd816d2cafd1fa7933b4b83/uncropped/5e6d70-20210319-sahan-aapi-ralley01-1200.jpg","width":1200,"height":800,"__typename":"Instance"}],"__typename":"AspectRatio"},"__typename":"AspectRatioList"},"contentArea":"MPR News","dateTaken":null,"dateline":"","fallback":"https://img.apmcdn.org/17ab4ab647f0d657afd816d2cafd1fa7933b4b83/widescreen/d6aa09-20210319-sahan-aapi-ralley01-600.jpg","longCaption":"Protesters stand with signs at a rally to show support for communities experiencing anti-Asian racism in Minneapolis.","shortCaption":"Four people wearing masks hold signs with #StopAsianHate","xid":520683,"__typename":"Image"},"__typename":"PrimaryVisual"},"audio":[],"collectionRelatedLinks":[{"url":"https://www.npr.org/2021/03/18/978616852/a-history-of-anti-asian-racism-plus-married-at-first-sight","title":"A history of anti-Asian racism","prefix":"Listen from NPR","__typename":"CollectionRelatedLink"},{"url":"https://www.mprnews.org/story/2020/05/19/spotlight-on-asian-discrimination-covid19","title":"For Asian Americans facing racism","prefix":"How to be an ally","__typename":"CollectionRelatedLink"}],"__typename":"Story"},{"id":"01F1BAFJN4Z7E1TCPKNEM6ZRWR","title":"A rapid COVID-19 vaccine rollout backfired in some U.S. states","canonicalSlug":"2021/03/21/rapid-covid19-vaccine-rollout-backfired-in-some-us-states","resourceType":"story","description":"{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"text\":\"Despite the clamor to speed up the U.S. vaccination drive against COVID-19 and get the country back to normal, the first three months of the rollout suggest faster is not necessarily better.\",\"type\":\"text\"}]}]}","descriptionText":"Despite the clamor to speed up the U.S. vaccination drive against COVID-19 and get the country back to normal, the first three months of the rollout suggest faster is not necessarily better.\n","primaryVisuals":{"video":null,"thumbnail":{"aspect_ratios":{"thumbnail":{"instances":[{"width":120,"height":90,"url":"https://img.apmcdn.org/ee361819fe746cd2c6323dade72b5e4311d439a0/thumbnail/c662fb-20210321-vaccine01-120.jpg","__typename":"Instance"},{"width":300,"height":226,"url":"https://img.apmcdn.org/ee361819fe746cd2c6323dade72b5e4311d439a0/thumbnail/86c7a0-20210321-vaccine01-300.jpg","__typename":"Instance"}],"__typename":"AspectRatio"},"widescreen":{"instances":[{"width":400,"height":225,"url":"https://img.apmcdn.org/ee361819fe746cd2c6323dade72b5e4311d439a0/widescreen/f3aea3-20210321-vaccine01-400.jpg","__typename":"Instance"},{"width":600,"height":337,"url":"https://img.apmcdn.org/ee361819fe746cd2c6323dade72b5e4311d439a0/widescreen/82262f-20210321-vaccine01-600.jpg","__typename":"Instance"},{"width":1000,"height":562,"url":"https://img.apmcdn.org/ee361819fe746cd2c6323dade72b5e4311d439a0/widescreen/a44f2a-20210321-vaccine01-1000.jpg","__typename":"Instance"},{"width":1400,"height":787,"url":"https://img.apmcdn.org/ee361819fe746cd2c6323dade72b5e4311d439a0/widescreen/b81e3f-20210321-vaccine01-1400.jpg","__typename":"Instance"},{"width":2000,"height":1124,"url":"https://img.apmcdn.org/ee361819fe746cd2c6323dade72b5e4311d439a0/widescreen/c81278-20210321-vaccine01-2000.jpg","__typename":"Instance"}],"__typename":"AspectRatio"},"uncropped":{"instances":[{"url":"https://img.apmcdn.org/ee361819fe746cd2c6323dade72b5e4311d439a0/uncropped/29a1a4-20210321-vaccine01-400.jpg","width":400,"height":267,"__typename":"Instance"},{"url":"https://img.apmcdn.org/ee361819fe746cd2c6323dade72b5e4311d439a0/uncropped/2c493f-20210321-vaccine01-600.jpg","width":600,"height":400,"__typename":"Instance"},{"url":"https://img.apmcdn.org/ee361819fe746cd2c6323dade72b5e4311d439a0/uncropped/f7cb6f-20210321-vaccine01-1000.jpg","width":1000,"height":667,"__typename":"Instance"},{"url":"https://img.apmcdn.org/ee361819fe746cd2c6323dade72b5e4311d439a0/uncropped/887467-20210321-vaccine01-1400.jpg","width":1400,"height":933,"__typename":"Instance"},{"url":"https://img.apmcdn.org/ee361819fe746cd2c6323dade72b5e4311d439a0/uncropped/81cd7b-20210321-vaccine01-2000.jpg","width":2000,"height":1333,"__typename":"Instance"}],"__typename":"AspectRatio"},"__typename":"AspectRatioList"},"contentArea":"MPR News","dateTaken":"2021-01-11T00:00:00+00:00","dateline":"West Palm Beach, FL, USA","fallback":"https://img.apmcdn.org/ee361819fe746cd2c6323dade72b5e4311d439a0/normal/cc8d85-20210321-vaccine01-600.jpg","longCaption":"Century Village residents wait before appointments are handed out for the COVID-19 vaccine in West Palm Beach, Fla., on Jan. 11. Despite the clamor to speed up the U.S. vaccination drive against COVID-19, the first three months of the rollout suggest faster is not necessarily better. ","shortCaption":"Virus Outbreak Vaccine Rollout","xid":520777,"__typename":"Image"},"__typename":"PrimaryVisual"},"audio":[],"collectionRelatedLinks":[],"__typename":"Story"},{"id":"01F1B12AD5AAC4ZRNRFJST76NR","title":"California has a new idea for homes at risk from rising seas: buy, rent, retreat","canonicalSlug":"2021/03/21/npr-california-has-a-new-idea-for-homes-at-risk-from-rising-seas-buy-rent-retreat","resourceType":"story","description":"{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"text\":\"Sea level rise is threatening billions of dollars’ worth of coastal property. A California lawmaker is proposing a novel way to retreat from the threat: buying and then renting out properties as long as they're habitable. \",\"type\":\"text\"}]}]}","descriptionText":"Sea level rise is threatening billions of dollars’ worth of coastal property. A California lawmaker is proposing a novel way to retreat from the threat: buying and then renting out properties as long as they're habitable. \n","primaryVisuals":{"video":null,"thumbnail":{"aspect_ratios":{"thumbnail":{"instances":[{"width":120,"height":90,"url":"https://img.apmcdn.org/a2e159476bbd5d6668fc6e12aff12d5fa8145f36/thumbnail/4f07b4-20210321-beach01-120.jpg","__typename":"Instance"},{"width":300,"height":226,"url":"https://img.apmcdn.org/a2e159476bbd5d6668fc6e12aff12d5fa8145f36/thumbnail/97e36a-20210321-beach01-300.jpg","__typename":"Instance"}],"__typename":"AspectRatio"},"widescreen":{"instances":[{"width":400,"height":225,"url":"https://img.apmcdn.org/a2e159476bbd5d6668fc6e12aff12d5fa8145f36/widescreen/bb5803-20210321-beach01-400.jpg","__typename":"Instance"},{"width":600,"height":337,"url":"https://img.apmcdn.org/a2e159476bbd5d6668fc6e12aff12d5fa8145f36/widescreen/4bd4af-20210321-beach01-600.jpg","__typename":"Instance"},{"width":1000,"height":562,"url":"https://img.apmcdn.org/a2e159476bbd5d6668fc6e12aff12d5fa8145f36/widescreen/38bd39-20210321-beach01-1000.jpg","__typename":"Instance"},{"width":1400,"height":787,"url":"https://img.apmcdn.org/a2e159476bbd5d6668fc6e12aff12d5fa8145f36/widescreen/9ec21c-20210321-beach01-1400.jpg","__typename":"Instance"},{"width":2000,"height":1124,"url":"https://img.apmcdn.org/a2e159476bbd5d6668fc6e12aff12d5fa8145f36/widescreen/6b86bb-20210321-beach01-2000.jpg","__typename":"Instance"}],"__typename":"AspectRatio"},"uncropped":{"instances":[{"url":"https://img.apmcdn.org/a2e159476bbd5d6668fc6e12aff12d5fa8145f36/uncropped/83e380-20210321-beach01-400.jpg","width":400,"height":266,"__typename":"Instance"},{"url":"https://img.apmcdn.org/a2e159476bbd5d6668fc6e12aff12d5fa8145f36/uncropped/db90db-20210321-beach01-600.jpg","width":600,"height":399,"__typename":"Instance"},{"url":"https://img.apmcdn.org/a2e159476bbd5d6668fc6e12aff12d5fa8145f36/uncropped/5dff4d-20210321-beach01-1000.jpg","width":1000,"height":665,"__typename":"Instance"},{"url":"https://img.apmcdn.org/a2e159476bbd5d6668fc6e12aff12d5fa8145f36/uncropped/e75058-20210321-beach01-1400.jpg","width":1400,"height":931,"__typename":"Instance"},{"url":"https://img.apmcdn.org/a2e159476bbd5d6668fc6e12aff12d5fa8145f36/uncropped/ba3294-20210321-beach01-2000.jpg","width":2000,"height":1330,"__typename":"Instance"}],"__typename":"AspectRatio"},"__typename":"AspectRatioList"},"contentArea":"MPR News","dateTaken":null,"dateline":"Malibu, California, United States","fallback":"https://img.apmcdn.org/a2e159476bbd5d6668fc6e12aff12d5fa8145f36/normal/2f2a22-20210321-beach01-600.jpg","longCaption":"People walk along the beach past multi-million dollar homes in Malibu, Calif., in September 2018. ","shortCaption":"People walk along the beach","xid":520776,"__typename":"Image"},"__typename":"PrimaryVisual"},"audio":[],"collectionRelatedLinks":[],"__typename":"Story"},{"id":"01F1AYJNMF7GNA6PH4QJP2X4YN","title":"Miami Beach issues curfew to curb spring break crowds; COVID knocks VCU from March Madness","canonicalSlug":"2021/03/21/npr-miami-beach-issues-curfew-to-curb-spring-break-virus-knocks-vcu-from-march-madne","resourceType":"story","description":"{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"text\":\"\\\"Too many people are coming here right now,\\\" Miami Beach Mayor Dan Gelber said on Saturday as he proclaimed a 72-hour state of emergency to address swelling crowds and fears of fueling new a surge in cases.\",\"type\":\"text\"}]}]}","descriptionText":"\"Too many people are coming here right now,\" Miami Beach Mayor Dan Gelber said on Saturday as he proclaimed a 72-hour state of emergency to address swelling crowds and fears of fueling new a surge in cases.\n","primaryVisuals":{"video":null,"thumbnail":{"aspect_ratios":{"thumbnail":{"instances":[{"width":120,"height":90,"url":"https://img.apmcdn.org/97a615d1cc10759d87d2117e243a324c3c6d6d07/thumbnail/1a5ef0-20210321-miami01-120.jpg","__typename":"Instance"},{"width":300,"height":226,"url":"https://img.apmcdn.org/97a615d1cc10759d87d2117e243a324c3c6d6d07/thumbnail/d1ca0c-20210321-miami01-300.jpg","__typename":"Instance"}],"__typename":"AspectRatio"},"widescreen":{"instances":[{"width":400,"height":225,"url":"https://img.apmcdn.org/97a615d1cc10759d87d2117e243a324c3c6d6d07/widescreen/d3fdb9-20210321-miami01-400.jpg","__typename":"Instance"},{"width":600,"height":337,"url":"https://img.apmcdn.org/97a615d1cc10759d87d2117e243a324c3c6d6d07/widescreen/338a77-20210321-miami01-600.jpg","__typename":"Instance"},{"width":1000,"height":562,"url":"https://img.apmcdn.org/97a615d1cc10759d87d2117e243a324c3c6d6d07/widescreen/6331a0-20210321-miami01-1000.jpg","__typename":"Instance"},{"width":1400,"height":786,"url":"https://img.apmcdn.org/97a615d1cc10759d87d2117e243a324c3c6d6d07/widescreen/ed0bed-20210321-miami01-1400.jpg","__typename":"Instance"},{"width":2000,"height":1123,"url":"https://img.apmcdn.org/97a615d1cc10759d87d2117e243a324c3c6d6d07/widescreen/90ac9d-20210321-miami01-2000.jpg","__typename":"Instance"}],"__typename":"AspectRatio"},"uncropped":{"instances":[{"url":"https://img.apmcdn.org/97a615d1cc10759d87d2117e243a324c3c6d6d07/uncropped/063e29-20210321-miami01-400.jpg","width":400,"height":277,"__typename":"Instance"},{"url":"https://img.apmcdn.org/97a615d1cc10759d87d2117e243a324c3c6d6d07/uncropped/a5c0e1-20210321-miami01-600.jpg","width":600,"height":415,"__typename":"Instance"},{"url":"https://img.apmcdn.org/97a615d1cc10759d87d2117e243a324c3c6d6d07/uncropped/d4aa34-20210321-miami01-1000.jpg","width":1000,"height":691,"__typename":"Instance"},{"url":"https://img.apmcdn.org/97a615d1cc10759d87d2117e243a324c3c6d6d07/uncropped/854aa0-20210321-miami01-1400.jpg","width":1400,"height":968,"__typename":"Instance"},{"url":"https://img.apmcdn.org/97a615d1cc10759d87d2117e243a324c3c6d6d07/uncropped/1977e7-20210321-miami01-2000.jpg","width":2000,"height":1383,"__typename":"Instance"}],"__typename":"AspectRatio"},"__typename":"AspectRatioList"},"contentArea":"MPR News","dateTaken":"2021-03-19T00:00:00+00:00","dateline":"Miami Beach, Florida, United States","fallback":"https://img.apmcdn.org/97a615d1cc10759d87d2117e243a324c3c6d6d07/normal/f98072-20210321-miami01-600.jpg","longCaption":"Police officers keep an eye on crowds of people walking along Ocean Drive on Friday in Miami Beach, Fla. ","shortCaption":"Police officers keep an eye on a crowd","xid":520775,"__typename":"Image"},"__typename":"PrimaryVisual"},"audio":[],"collectionRelatedLinks":[],"__typename":"Story"},{"id":"01F1AKYTFJ9MHZWCNTSFQH6D1B","title":"Austin makes first trip to Afghanistan as U.S. defense secretary ","canonicalSlug":"2021/03/21/austin-makes-first-trip-to-afghanistan-as-us-defense-secretary","resourceType":"story","description":"{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"text\":\"U.S. Defense Secretary Lloyd Austin arrived Sunday in Kabul on his first trip to Afghanistan as Pentagon chief, amid swirling questions about how long American troops will remain in the country.\",\"type\":\"text\"}]}]}","descriptionText":"U.S. Defense Secretary Lloyd Austin arrived Sunday in Kabul on his first trip to Afghanistan as Pentagon chief, amid swirling questions about how long American troops will remain in the country.\n","primaryVisuals":{"video":null,"thumbnail":{"aspect_ratios":{"thumbnail":{"instances":[{"width":120,"height":90,"url":"https://img.apmcdn.org/bd685d92a0253603636f694fb95018b56dad73c4/thumbnail/092c0e-20210321-kabul01-120.jpg","__typename":"Instance"},{"width":300,"height":226,"url":"https://img.apmcdn.org/bd685d92a0253603636f694fb95018b56dad73c4/thumbnail/97fad0-20210321-kabul01-300.jpg","__typename":"Instance"}],"__typename":"AspectRatio"},"widescreen":{"instances":[{"width":400,"height":225,"url":"https://img.apmcdn.org/bd685d92a0253603636f694fb95018b56dad73c4/widescreen/daa716-20210321-kabul01-400.jpg","__typename":"Instance"},{"width":600,"height":337,"url":"https://img.apmcdn.org/bd685d92a0253603636f694fb95018b56dad73c4/widescreen/dd4afa-20210321-kabul01-600.jpg","__typename":"Instance"},{"width":1000,"height":562,"url":"https://img.apmcdn.org/bd685d92a0253603636f694fb95018b56dad73c4/widescreen/7217d4-20210321-kabul01-1000.jpg","__typename":"Instance"},{"width":1400,"height":787,"url":"https://img.apmcdn.org/bd685d92a0253603636f694fb95018b56dad73c4/widescreen/9e8b2a-20210321-kabul01-1400.jpg","__typename":"Instance"},{"width":2000,"height":1124,"url":"https://img.apmcdn.org/bd685d92a0253603636f694fb95018b56dad73c4/widescreen/bcbf0c-20210321-kabul01-2000.jpg","__typename":"Instance"}],"__typename":"AspectRatio"},"uncropped":{"instances":[{"url":"https://img.apmcdn.org/bd685d92a0253603636f694fb95018b56dad73c4/uncropped/b42fa3-20210321-kabul01-400.jpg","width":400,"height":267,"__typename":"Instance"},{"url":"https://img.apmcdn.org/bd685d92a0253603636f694fb95018b56dad73c4/uncropped/ffef20-20210321-kabul01-600.jpg","width":600,"height":400,"__typename":"Instance"},{"url":"https://img.apmcdn.org/bd685d92a0253603636f694fb95018b56dad73c4/uncropped/cf0dc2-20210321-kabul01-1000.jpg","width":1000,"height":667,"__typename":"Instance"},{"url":"https://img.apmcdn.org/bd685d92a0253603636f694fb95018b56dad73c4/uncropped/21d78c-20210321-kabul01-1400.jpg","width":1400,"height":933,"__typename":"Instance"},{"url":"https://img.apmcdn.org/bd685d92a0253603636f694fb95018b56dad73c4/uncropped/d2f5de-20210321-kabul01-2000.jpg","width":2000,"height":1333,"__typename":"Instance"}],"__typename":"AspectRatio"},"__typename":"AspectRatioList"},"contentArea":"MPR News","dateTaken":"2021-03-21T00:00:00+00:00","dateline":"Kabul, AFG","fallback":"https://img.apmcdn.org/bd685d92a0253603636f694fb95018b56dad73c4/widescreen/dd4afa-20210321-kabul01-600.jpg","longCaption":"U.S. Defense Secretary Lloyd Austin (center) walks with Acting Afghan Minister of Defense Yasin Zia as they review an honor guard at the presidential palace in Kabul, Afghanistan, on Sunday. ","shortCaption":"Defense officials review a line of military troops","xid":520769,"__typename":"Image"},"__typename":"PrimaryVisual"},"audio":[],"collectionRelatedLinks":[],"__typename":"Story"},{"id":"01F1AJ5S5N8CX8307BFMJSEZZW","title":"Amid a wave of targeted killings in Afghanistan, she's No. 11 on a 'murder list'","canonicalSlug":"2021/03/21/npr-amid-a-wave-of-targeted-killings-in-afghanistan-shes-no-11-on-a-murder-list","resourceType":"story","description":"{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"text\":\"Journalist Fatima Roshanian has faced threats before, but she and many other Afghans say the risk to their lives is more serious than ever. \\\"People are being killed every day, everywhere,\\\" she says.\",\"type\":\"text\"}]}]}","descriptionText":"Journalist Fatima Roshanian has faced threats before, but she and many other Afghans say the risk to their lives is more serious than ever. \"People are being killed every day, everywhere,\" she says.\n","primaryVisuals":{"video":null,"thumbnail":{"aspect_ratios":{"thumbnail":{"instances":[{"width":200,"height":133,"url":"https://media.npr.org/assets/img/2021/03/16/hayeri_npr_nimrokh_0131_slide-bc49322099e237ef560b12d614bf7e8d1165c786.jpg?s=12","__typename":"Instance"}],"__typename":"AspectRatio"},"widescreen":{"instances":[{"width":400,"height":224,"url":"https://media.npr.org/assets/img/2021/03/16/hayeri_npr_nimrokh_0131_wide-94a0d7210a40b70b8af2ffe2fed421aba0dfa040.jpg?s=400","__typename":"Instance"},{"width":600,"height":337,"url":"https://media.npr.org/assets/img/2021/03/16/hayeri_npr_nimrokh_0131_wide-94a0d7210a40b70b8af2ffe2fed421aba0dfa040.jpg?s=600","__typename":"Instance"},{"width":1000,"height":562,"url":"https://media.npr.org/assets/img/2021/03/16/hayeri_npr_nimrokh_0131_wide-94a0d7210a40b70b8af2ffe2fed421aba0dfa040.jpg?s=1000","__typename":"Instance"},{"width":1400,"height":787,"url":"https://media.npr.org/assets/img/2021/03/16/hayeri_npr_nimrokh_0131_wide-94a0d7210a40b70b8af2ffe2fed421aba0dfa040.jpg?s=1400","__typename":"Instance"},{"width":2000,"height":1124,"url":"https://media.npr.org/assets/img/2021/03/16/hayeri_npr_nimrokh_0131_wide-94a0d7210a40b70b8af2ffe2fed421aba0dfa040.jpg?s=2000","__typename":"Instance"}],"__typename":"AspectRatio"},"uncropped":{"instances":[{"url":"https://media.npr.org/assets/img/2021/03/16/hayeri_npr_nimrokh_0131_slide-bc49322099e237ef560b12d614bf7e8d1165c786.jpg?s=400","width":400,"height":266,"__typename":"Instance"},{"url":"https://media.npr.org/assets/img/2021/03/16/hayeri_npr_nimrokh_0131_slide-bc49322099e237ef560b12d614bf7e8d1165c786.jpg?s=600","width":600,"height":399,"__typename":"Instance"},{"url":"https://media.npr.org/assets/img/2021/03/16/hayeri_npr_nimrokh_0131_slide-bc49322099e237ef560b12d614bf7e8d1165c786.jpg?s=1000","width":1000,"height":666,"__typename":"Instance"},{"url":"https://media.npr.org/assets/img/2021/03/16/hayeri_npr_nimrokh_0131_slide-bc49322099e237ef560b12d614bf7e8d1165c786.jpg?s=1400","width":1400,"height":933,"__typename":"Instance"},{"url":"https://media.npr.org/assets/img/2021/03/16/hayeri_npr_nimrokh_0131_slide-bc49322099e237ef560b12d614bf7e8d1165c786.jpg?s=2000","width":2000,"height":1333,"__typename":"Instance"}],"__typename":"AspectRatio"},"__typename":"AspectRatioList"},"contentArea":"NPR","dateTaken":null,"dateline":null,"fallback":"https://media.npr.org/assets/img/2021/03/16/hayeri_npr_nimrokh_0131_slide-bc49322099e237ef560b12d614bf7e8d1165c786.jpg?s=600","longCaption":"Fatima Roshanian, a journalist, scaled back her movements after she found her name on three different lists circulating on Afghan social media, claiming to be of people the Taliban want to kill.","shortCaption":"Fatima Roshanian, a journalist, scaled back her movements after she found her name on three different lists circulating on Afghan social media, claiming to be of people the Taliban want to kill.","xid":977817747,"__typename":"Image"},"__typename":"PrimaryVisual"},"audio":[{"id":"01F1AJ5T6BB5YPMSJDX080ZXMK","title":"Listen to the Story","durationHms":"00:04:16","encodings":[{"httpFilePath":"https://ondemand.npr.org/anon.npr-mp3/npr/wesun/2021/03/20210321_wesun_amid_a_wave_of_targeted_killings_in_afghanistan_shes_no_11_on_a_murder_list.mp3?orgId=1\u0026topicId=1004\u0026d=256\u0026p=10\u0026story=977797909\u0026ft=nprml\u0026f=977797909","playFilePath":"https://ondemand.npr.org/anon.npr-mp3/npr/wesun/2021/03/20210321_wesun_amid_a_wave_of_targeted_killings_in_afghanistan_shes_no_11_on_a_murder_list.mp3?orgId=1\u0026topicId=1004\u0026d=256\u0026p=10\u0026story=977797909\u0026ft=nprml\u0026f=977797909","filename":"https://ondemand.npr.org/anon.npr-mp3/npr/wesun/2021/03/20210321_wesun_amid_a_wave_of_targeted_killings_in_afghanistan_shes_no_11_on_a_murder_list.mp3?orgId=1\u0026topicId=1004\u0026d=256\u0026p=10\u0026story=977797909\u0026ft=nprml\u0026f=977797909","durationMs":"256000","__typename":"Encoding"},{"httpFilePath":"https://ondemand.npr.org/npr-mp4/npr/wesun/2021/03/20210321_wesun_amid_a_wave_of_targeted_killings_in_afghanistan_shes_no_11_on_a_murder_list.mp4?orgId=1\u0026topicId=1004\u0026d=256\u0026p=10\u0026story=977797909\u0026ft=nprml\u0026f=977797909","playFilePath":"https://ondemand.npr.org/npr-mp4/npr/wesun/2021/03/20210321_wesun_amid_a_wave_of_targeted_killings_in_afghanistan_shes_no_11_on_a_murder_list.mp4?orgId=1\u0026topicId=1004\u0026d=256\u0026p=10\u0026story=977797909\u0026ft=nprml\u0026f=977797909","filename":"https://ondemand.npr.org/npr-mp4/npr/wesun/2021/03/20210321_wesun_amid_a_wave_of_targeted_killings_in_afghanistan_shes_no_11_on_a_murder_list.mp4?orgId=1\u0026topicId=1004\u0026d=256\u0026p=10\u0026story=977797909\u0026ft=nprml\u0026f=977797909","durationMs":"256000","__typename":"Encoding"}],"__typename":"Audio"}],"collectionRelatedLinks":[],"__typename":"Story"},{"id":"01F1ADGKAB0T9J1TN3KP6EBRQT","title":"Too much focusing can be draining. Here's a better strategy","canonicalSlug":"2021/03/21/npr-too-much-focusing-is-draining-heres-a-better-strategy","resourceType":"story","description":"{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"text\":\"Dr. Srini Pillay believes \\\"unfocusing\\\" your mind, or purposefully letting it wander, is key to improving focus overall.  The brain, he says, does its best work when it's allowed to toggle between focus and unfocus.\",\"type\":\"text\"}]}]}","descriptionText":"Dr. Srini Pillay believes \"unfocusing\" your mind, or purposefully letting it wander, is key to improving focus overall.  The brain, he says, does its best work when it's allowed to toggle between focus and unfocus.\n","primaryVisuals":{"video":null,"thumbnail":{"aspect_ratios":{"thumbnail":{"instances":[{"width":200,"height":133,"url":"https://media.npr.org/assets/img/2021/03/19/life-kit_focus-final_slide-a396278caa637a2c5caefc48f24e3a8e8cf3d015.jpg?s=12","__typename":"Instance"}],"__typename":"AspectRatio"},"widescreen":{"instances":[{"width":400,"height":224,"url":"https://media.npr.org/assets/img/2021/03/19/life-kit_focus-final_wide-afae84e99bfae1c0a3acc443624aec213dddc895.jpg?s=400","__typename":"Instance"},{"width":600,"height":337,"url":"https://media.npr.org/assets/img/2021/03/19/life-kit_focus-final_wide-afae84e99bfae1c0a3acc443624aec213dddc895.jpg?s=600","__typename":"Instance"},{"width":1000,"height":562,"url":"https://media.npr.org/assets/img/2021/03/19/life-kit_focus-final_wide-afae84e99bfae1c0a3acc443624aec213dddc895.jpg?s=1000","__typename":"Instance"},{"width":1400,"height":787,"url":"https://media.npr.org/assets/img/2021/03/19/life-kit_focus-final_wide-afae84e99bfae1c0a3acc443624aec213dddc895.jpg?s=1400","__typename":"Instance"},{"width":2000,"height":1124,"url":"https://media.npr.org/assets/img/2021/03/19/life-kit_focus-final_wide-afae84e99bfae1c0a3acc443624aec213dddc895.jpg?s=2000","__typename":"Instance"}],"__typename":"AspectRatio"},"uncropped":{"instances":[{"url":"https://media.npr.org/assets/img/2021/03/19/life-kit_focus-final_slide-a396278caa637a2c5caefc48f24e3a8e8cf3d015.jpg?s=400","width":400,"height":266,"__typename":"Instance"},{"url":"https://media.npr.org/assets/img/2021/03/19/life-kit_focus-final_slide-a396278caa637a2c5caefc48f24e3a8e8cf3d015.jpg?s=600","width":600,"height":400,"__typename":"Instance"},{"url":"https://media.npr.org/assets/img/2021/03/19/life-kit_focus-final_slide-a396278caa637a2c5caefc48f24e3a8e8cf3d015.jpg?s=1000","width":1000,"height":666,"__typename":"Instance"},{"url":"https://media.npr.org/assets/img/2021/03/19/life-kit_focus-final_slide-a396278caa637a2c5caefc48f24e3a8e8cf3d015.jpg?s=1400","width":1400,"height":933,"__typename":"Instance"},{"url":"https://media.npr.org/assets/img/2021/03/19/life-kit_focus-final_slide-a396278caa637a2c5caefc48f24e3a8e8cf3d015.jpg?s=2000","width":2000,"height":1333,"__typename":"Instance"}],"__typename":"AspectRatio"},"__typename":"AspectRatioList"},"contentArea":"NPR","dateTaken":null,"dateline":null,"fallback":"https://media.npr.org/assets/img/2021/03/19/life-kit_focus-final_slide-a396278caa637a2c5caefc48f24e3a8e8cf3d015.jpg?s=600","longCaption":"","shortCaption":"A seafoam green egg timer set to 20 minutes sits atop a stack of closed books in front of a light blue backdrop covered in cutouts of white clouds.","xid":979193089,"__typename":"Image"},"__typename":"PrimaryVisual"},"audio":[],"collectionRelatedLinks":[],"__typename":"Story"},{"id":"01F1AB2FPG65AXMEFSHQ2Y6Y0Y","title":"Vaccinating children seen as a key step toward COVID-19 herd immunity","canonicalSlug":"2021/03/21/npr-vaccinating-children-seen-as-a-key-step-toward-covid-19-herd-immunity","resourceType":"story","description":"{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"text\":\"Moderna has begun testing its vaccine on children as young as 6 months old. A principal investigator in the trial says getting children vaccinated would be \\\"a step getting back to our normal life.\\\" \",\"type\":\"text\"}]}]}","descriptionText":"Moderna has begun testing its vaccine on children as young as 6 months old. A principal investigator in the trial says getting children vaccinated would be \"a step getting back to our normal life.\" \n","primaryVisuals":{"video":null,"thumbnail":{"aspect_ratios":{"thumbnail":{"instances":[{"width":200,"height":149,"url":"https://media.npr.org/assets/img/2021/03/17/gettyimages-1307085204-e9cda0ae4cae84e38d7d53497f70b741f05c5e15.jpg?s=12","__typename":"Instance"}],"__typename":"AspectRatio"},"widescreen":{"instances":[{"width":400,"height":225,"url":"https://media.npr.org/assets/img/2021/03/17/gettyimages-1307085204_wide-aa5081c50bc9b99470dcefcc9e8a9bac219517c5.jpg?s=400","__typename":"Instance"},{"width":600,"height":337,"url":"https://media.npr.org/assets/img/2021/03/17/gettyimages-1307085204_wide-aa5081c50bc9b99470dcefcc9e8a9bac219517c5.jpg?s=600","__typename":"Instance"},{"width":1000,"height":562,"url":"https://media.npr.org/assets/img/2021/03/17/gettyimages-1307085204_wide-aa5081c50bc9b99470dcefcc9e8a9bac219517c5.jpg?s=1000","__typename":"Instance"},{"width":1400,"height":787,"url":"https://media.npr.org/assets/img/2021/03/17/gettyimages-1307085204_wide-aa5081c50bc9b99470dcefcc9e8a9bac219517c5.jpg?s=1400","__typename":"Instance"},{"width":2000,"height":1125,"url":"https://media.npr.org/assets/img/2021/03/17/gettyimages-1307085204_wide-aa5081c50bc9b99470dcefcc9e8a9bac219517c5.jpg?s=2000","__typename":"Instance"}],"__typename":"AspectRatio"},"uncropped":{"instances":[{"url":"https://media.npr.org/assets/img/2021/03/17/gettyimages-1307085204-e9cda0ae4cae84e38d7d53497f70b741f05c5e15.jpg?s=400","width":400,"height":299,"__typename":"Instance"},{"url":"https://media.npr.org/assets/img/2021/03/17/gettyimages-1307085204-e9cda0ae4cae84e38d7d53497f70b741f05c5e15.jpg?s=600","width":600,"height":449,"__typename":"Instance"},{"url":"https://media.npr.org/assets/img/2021/03/17/gettyimages-1307085204-e9cda0ae4cae84e38d7d53497f70b741f05c5e15.jpg?s=1000","width":1000,"height":749,"__typename":"Instance"},{"url":"https://media.npr.org/assets/img/2021/03/17/gettyimages-1307085204-e9cda0ae4cae84e38d7d53497f70b741f05c5e15.jpg?s=1400","width":1400,"height":1048,"__typename":"Instance"},{"url":"https://media.npr.org/assets/img/2021/03/17/gettyimages-1307085204-e9cda0ae4cae84e38d7d53497f70b741f05c5e15.jpg?s=2000","width":2000,"height":1498,"__typename":"Instance"}],"__typename":"AspectRatio"},"__typename":"AspectRatioList"},"contentArea":"NPR","dateTaken":null,"dateline":null,"fallback":"https://media.npr.org/assets/img/2021/03/17/gettyimages-1307085204-e9cda0ae4cae84e38d7d53497f70b741f05c5e15.jpg?s=600","longCaption":"Nurse manager Lucy Golding draws up doses of the Moderna COVID-19 vaccine March 14 in Stamford, Conn. Moderna has begun enrolling infants and young children into a vaccine trial.","shortCaption":"Nurse manager Lucy Golding draws up doses of the Moderna COVID-19 vaccine March 14 in Stamford, Conn. Moderna has begun enrolling infants and young children into a vaccine trial.","xid":978181120,"__typename":"Image"},"__typename":"PrimaryVisual"},"audio":[{"id":"01F1AB2GAZHNFEPFTWPAJZHNH7","title":"Listen to the Story","durationHms":"00:04:51","encodings":[{"httpFilePath":"https://ondemand.npr.org/anon.npr-mp3/npr/me/2021/03/20210317_me_moderna_begins_enrolling_children_as_young_as_6_months_in_vaccine_trial.mp3?orgId=1\u0026topicId=1030\u0026aggIds=812054919\u0026d=291\u0026story=978175931\u0026ft=nprml\u0026f=978175931","playFilePath":"https://ondemand.npr.org/anon.npr-mp3/npr/me/2021/03/20210317_me_moderna_begins_enrolling_children_as_young_as_6_months_in_vaccine_trial.mp3?orgId=1\u0026topicId=1030\u0026aggIds=812054919\u0026d=291\u0026story=978175931\u0026ft=nprml\u0026f=978175931","filename":"https://ondemand.npr.org/anon.npr-mp3/npr/me/2021/03/20210317_me_moderna_begins_enrolling_children_as_young_as_6_months_in_vaccine_trial.mp3?orgId=1\u0026topicId=1030\u0026aggIds=812054919\u0026d=291\u0026story=978175931\u0026ft=nprml\u0026f=978175931","durationMs":"291000","__typename":"Encoding"},{"httpFilePath":"https://ondemand.npr.org/npr-mp4/npr/me/2021/03/20210317_me_moderna_begins_enrolling_children_as_young_as_6_months_in_vaccine_trial.mp4?orgId=1\u0026topicId=1030\u0026aggIds=812054919\u0026d=291\u0026story=978175931\u0026ft=nprml\u0026f=978175931","playFilePath":"https://ondemand.npr.org/npr-mp4/npr/me/2021/03/20210317_me_moderna_begins_enrolling_children_as_young_as_6_months_in_vaccine_trial.mp4?orgId=1\u0026topicId=1030\u0026aggIds=812054919\u0026d=291\u0026story=978175931\u0026ft=nprml\u0026f=978175931","filename":"https://ondemand.npr.org/npr-mp4/npr/me/2021/03/20210317_me_moderna_begins_enrolling_children_as_young_as_6_months_in_vaccine_trial.mp4?orgId=1\u0026topicId=1030\u0026aggIds=812054919\u0026d=291\u0026story=978175931\u0026ft=nprml\u0026f=978175931","durationMs":"291000","__typename":"Encoding"}],"__typename":"Audio"}],"collectionRelatedLinks":[],"__typename":"Story"},{"id":"01F1A7NC26F9HVYNVMQ6XC4XZM","title":"Protesters in Germany, U.K. clash with police over COVID-19 lockdowns","canonicalSlug":"2021/03/21/npr-protesters-europe-clash-with-police-over-covid-19-lockdowns","resourceType":"story","description":"{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"text\":\"Anger at restrictions imposed to contain the coronavirus pandemic spilled into the streets of Germany and the U.K. on Saturday, while case numbers across Europe are surging once again.\",\"type\":\"text\"}]}]}","descriptionText":"Anger at restrictions imposed to contain the coronavirus pandemic spilled into the streets of Germany and the U.K. on Saturday, while case numbers across Europe are surging once again.\n","primaryVisuals":{"video":null,"thumbnail":{"aspect_ratios":{"thumbnail":{"instances":[{"width":120,"height":90,"url":"https://img.apmcdn.org/aeff3ea5a6f16ef963e897353cb7ab3e99593d31/thumbnail/2672d6-20210321-london01-120.jpg","__typename":"Instance"},{"width":300,"height":226,"url":"https://img.apmcdn.org/aeff3ea5a6f16ef963e897353cb7ab3e99593d31/thumbnail/332147-20210321-london01-300.jpg","__typename":"Instance"}],"__typename":"AspectRatio"},"widescreen":{"instances":[{"width":400,"height":225,"url":"https://img.apmcdn.org/aeff3ea5a6f16ef963e897353cb7ab3e99593d31/widescreen/861363-20210321-london01-400.jpg","__typename":"Instance"},{"width":600,"height":337,"url":"https://img.apmcdn.org/aeff3ea5a6f16ef963e897353cb7ab3e99593d31/widescreen/ab83b9-20210321-london01-600.jpg","__typename":"Instance"},{"width":1000,"height":562,"url":"https://img.apmcdn.org/aeff3ea5a6f16ef963e897353cb7ab3e99593d31/widescreen/58245f-20210321-london01-1000.jpg","__typename":"Instance"},{"width":1400,"height":787,"url":"https://img.apmcdn.org/aeff3ea5a6f16ef963e897353cb7ab3e99593d31/widescreen/eff0bd-20210321-london01-1400.jpg","__typename":"Instance"},{"width":2000,"height":1124,"url":"https://img.apmcdn.org/aeff3ea5a6f16ef963e897353cb7ab3e99593d31/widescreen/e164a7-20210321-london01-2000.jpg","__typename":"Instance"}],"__typename":"AspectRatio"},"uncropped":{"instances":[{"url":"https://img.apmcdn.org/aeff3ea5a6f16ef963e897353cb7ab3e99593d31/uncropped/d50bfa-20210321-london01-400.jpg","width":400,"height":267,"__typename":"Instance"},{"url":"https://img.apmcdn.org/aeff3ea5a6f16ef963e897353cb7ab3e99593d31/uncropped/886631-20210321-london01-600.jpg","width":600,"height":400,"__typename":"Instance"},{"url":"https://img.apmcdn.org/aeff3ea5a6f16ef963e897353cb7ab3e99593d31/uncropped/f935f7-20210321-london01-1000.jpg","width":1000,"height":667,"__typename":"Instance"},{"url":"https://img.apmcdn.org/aeff3ea5a6f16ef963e897353cb7ab3e99593d31/uncropped/4f7df4-20210321-london01-1400.jpg","width":1400,"height":934,"__typename":"Instance"},{"url":"https://img.apmcdn.org/aeff3ea5a6f16ef963e897353cb7ab3e99593d31/uncropped/32947d-20210321-london01-2000.jpg","width":2000,"height":1334,"__typename":"Instance"}],"__typename":"AspectRatio"},"__typename":"AspectRatioList"},"contentArea":"MPR News","dateTaken":null,"dateline":"London, United Kingdom","fallback":"https://img.apmcdn.org/aeff3ea5a6f16ef963e897353cb7ab3e99593d31/normal/f1c09a-20210321-london01-600.jpg","longCaption":"Demonstrators march against the ongoing coronavirus restrictions during an anti-lockdown protest in central London on Saturday. ","shortCaption":"Demonstrators march down a street","xid":520762,"__typename":"Image"},"__typename":"PrimaryVisual"},"audio":[],"collectionRelatedLinks":[],"__typename":"Story"},{"id":"01F18X9BMASTRFFXY5QHV2QGST","title":"Hundreds in Atlanta rally against hate, demand justice after shootings","canonicalSlug":"2021/03/20/hundreds-in-atlanta-rally-against-hate-demand-justice-after-shootings","resourceType":"story","description":"{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"text\":\"\\\"I know there's a lot of fear in the Asian American community — fear to walk outside their door, fear to go to their businesses,\\\" said Georgia state Rep. Sam Park. \\\"I want to tell anyone who may be scared today: Do not be afraid. This is our home. This is our country. And we will not go back.\\\"\",\"type\":\"text\"}]}]}","descriptionText":"\"I know there's a lot of fear in the Asian American community — fear to walk outside their door, fear to go to their businesses,\" said Georgia state Rep. Sam Park. \"I want to tell anyone who may be scared today: Do not be afraid. This is our home. This is our country. And we will not go back.\"\n","primaryVisuals":{"video":null,"thumbnail":{"aspect_ratios":{"thumbnail":{"instances":[{"width":120,"height":90,"url":"https://img.apmcdn.org/98023d593c67302abe6827c33adf479e7569451b/thumbnail/1659a4-20210320-atlanta03-120.jpg","__typename":"Instance"},{"width":300,"height":226,"url":"https://img.apmcdn.org/98023d593c67302abe6827c33adf479e7569451b/thumbnail/99db11-20210320-atlanta03-300.jpg","__typename":"Instance"}],"__typename":"AspectRatio"},"widescreen":{"instances":[{"width":400,"height":225,"url":"https://img.apmcdn.org/98023d593c67302abe6827c33adf479e7569451b/widescreen/505f29-20210320-atlanta03-400.jpg","__typename":"Instance"},{"width":600,"height":337,"url":"https://img.apmcdn.org/98023d593c67302abe6827c33adf479e7569451b/widescreen/7cff13-20210320-atlanta03-600.jpg","__typename":"Instance"},{"width":1000,"height":562,"url":"https://img.apmcdn.org/98023d593c67302abe6827c33adf479e7569451b/widescreen/3faf0c-20210320-atlanta03-1000.jpg","__typename":"Instance"},{"width":1400,"height":787,"url":"https://img.apmcdn.org/98023d593c67302abe6827c33adf479e7569451b/widescreen/ceb76d-20210320-atlanta03-1400.jpg","__typename":"Instance"},{"width":2000,"height":1124,"url":"https://img.apmcdn.org/98023d593c67302abe6827c33adf479e7569451b/widescreen/4c1922-20210320-atlanta03-2000.jpg","__typename":"Instance"}],"__typename":"AspectRatio"},"uncropped":{"instances":[{"url":"https://img.apmcdn.org/98023d593c67302abe6827c33adf479e7569451b/uncropped/9c506d-20210320-atlanta03-400.jpg","width":400,"height":267,"__typename":"Instance"},{"url":"https://img.apmcdn.org/98023d593c67302abe6827c33adf479e7569451b/uncropped/66d01b-20210320-atlanta03-600.jpg","width":600,"height":400,"__typename":"Instance"},{"url":"https://img.apmcdn.org/98023d593c67302abe6827c33adf479e7569451b/uncropped/1df820-20210320-atlanta03-1000.jpg","width":1000,"height":667,"__typename":"Instance"},{"url":"https://img.apmcdn.org/98023d593c67302abe6827c33adf479e7569451b/uncropped/a689e1-20210320-atlanta03-1400.jpg","width":1400,"height":933,"__typename":"Instance"},{"url":"https://img.apmcdn.org/98023d593c67302abe6827c33adf479e7569451b/uncropped/8fbc01-20210320-atlanta03-2000.jpg","width":2000,"height":1333,"__typename":"Instance"}],"__typename":"AspectRatio"},"__typename":"AspectRatioList"},"contentArea":"MPR News","dateTaken":"2021-03-20T00:00:00+00:00","dateline":"Atlanta, Georgia, United States","fallback":"https://img.apmcdn.org/98023d593c67302abe6827c33adf479e7569451b/normal/7ecd68-20210320-atlanta03-600.jpg","longCaption":"Demonstrators take to the streets of Atlanta to show support for Asian American and Pacific Islander communities on Saturday in Atlanta, after a series of shootings earlier in the week left eight people dead, six of whom were Asian women. ","shortCaption":"Demonstrators take to the streets of Atlanta","xid":520748,"__typename":"Image"},"__typename":"PrimaryVisual"},"audio":[],"collectionRelatedLinks":[],"__typename":"Story"},{"id":"01F18THDPTJAVYGFDRMEM7DPY5","title":"Shooting deaths in St. Paul investigated as murder-suicide","canonicalSlug":"2021/03/20/shooting-deaths-in-st-paul-investigated-as-murdersuicide","resourceType":"story","description":"{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"text\":\"St. Paul police said the shooting deaths of a man and woman found outside a home Saturday appears to be a murder-suicide case.\",\"type\":\"text\"}]}]}","descriptionText":"St. Paul police said the shooting deaths of a man and woman found outside a home Saturday appears to be a murder-suicide case.\n","primaryVisuals":{"video":null,"thumbnail":null,"__typename":"PrimaryVisual"},"audio":[],"collectionRelatedLinks":[],"__typename":"Story"},{"id":"01F18PY93VHK7Y3KCPJMTK4VSD","title":"New lockdowns in Europe as COVID-19 cases soar; Pakistan's PM tests positive","canonicalSlug":"2021/03/20/npr-new-lockdowns-in-europe-as-covid-19-cases-soar-pakistans-pm-tests-positive","resourceType":"story","description":"{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"text\":\"Several European countries have imposed new lockdown restrictions as COVID-19 cases are surging. In Pakistan, Prime Minister Imran Khan is self-isolating at home after testing positive for the virus. \",\"type\":\"text\"}]}]}","descriptionText":"Several European countries have imposed new lockdown restrictions as COVID-19 cases are surging. In Pakistan, Prime Minister Imran Khan is self-isolating at home after testing positive for the virus. \n","primaryVisuals":{"video":null,"thumbnail":{"aspect_ratios":{"thumbnail":{"instances":[{"width":200,"height":150,"url":"https://media.npr.org/assets/img/2021/03/20/gettyimages-1231810102-d48f295a88a4d639508cc0dfcfc33f88c53e7a50.jpg?s=12","__typename":"Instance"}],"__typename":"AspectRatio"},"widescreen":{"instances":[{"width":400,"height":224,"url":"https://media.npr.org/assets/img/2021/03/20/gettyimages-1231810102_wide-94133c74ec9ba59758952db6cf695c427990cf91.jpg?s=400","__typename":"Instance"},{"width":600,"height":337,"url":"https://media.npr.org/assets/img/2021/03/20/gettyimages-1231810102_wide-94133c74ec9ba59758952db6cf695c427990cf91.jpg?s=600","__typename":"Instance"},{"width":1000,"height":562,"url":"https://media.npr.org/assets/img/2021/03/20/gettyimages-1231810102_wide-94133c74ec9ba59758952db6cf695c427990cf91.jpg?s=1000","__typename":"Instance"},{"width":1400,"height":787,"url":"https://media.npr.org/assets/img/2021/03/20/gettyimages-1231810102_wide-94133c74ec9ba59758952db6cf695c427990cf91.jpg?s=1400","__typename":"Instance"},{"width":2000,"height":1124,"url":"https://media.npr.org/assets/img/2021/03/20/gettyimages-1231810102_wide-94133c74ec9ba59758952db6cf695c427990cf91.jpg?s=2000","__typename":"Instance"}],"__typename":"AspectRatio"},"uncropped":{"instances":[{"url":"https://media.npr.org/assets/img/2021/03/20/gettyimages-1231810102-d48f295a88a4d639508cc0dfcfc33f88c53e7a50.jpg?s=400","width":400,"height":300,"__typename":"Instance"},{"url":"https://media.npr.org/assets/img/2021/03/20/gettyimages-1231810102-d48f295a88a4d639508cc0dfcfc33f88c53e7a50.jpg?s=600","width":600,"height":450,"__typename":"Instance"},{"url":"https://media.npr.org/assets/img/2021/03/20/gettyimages-1231810102-d48f295a88a4d639508cc0dfcfc33f88c53e7a50.jpg?s=1000","width":1000,"height":750,"__typename":"Instance"},{"url":"https://media.npr.org/assets/img/2021/03/20/gettyimages-1231810102-d48f295a88a4d639508cc0dfcfc33f88c53e7a50.jpg?s=1400","width":1400,"height":1050,"__typename":"Instance"},{"url":"https://media.npr.org/assets/img/2021/03/20/gettyimages-1231810102-d48f295a88a4d639508cc0dfcfc33f88c53e7a50.jpg?s=2000","width":2000,"height":1500,"__typename":"Instance"}],"__typename":"AspectRatio"},"__typename":"AspectRatioList"},"contentArea":"NPR","dateTaken":null,"dateline":null,"fallback":"https://media.npr.org/assets/img/2021/03/20/gettyimages-1231810102-d48f295a88a4d639508cc0dfcfc33f88c53e7a50.jpg?s=600","longCaption":"Travelers waited to flee Paris at the Montparnasse Train Station on Friday ahead of a new lockdown announced by the government in response to a surge in cases of the coronavirus.","shortCaption":"Travelers waited to flee Paris at the Montparnasse Train Station on Friday ahead of a new lockdown announced by the government in response to a surge in cases of the coronavirus.","xid":979512351,"__typename":"Image"},"__typename":"PrimaryVisual"},"audio":[],"collectionRelatedLinks":[],"__typename":"Story"},{"id":"01F18HFYDVRR14BNMGQ335HYT9","title":"Glynn Lunney, NASA flight director with a key role in saving Apollo 13 crew, dies at 84","canonicalSlug":"2021/03/20/npr-glynn-lunney-nasa-flight-director-with-a-key-role-in-saving-apollo-13-dies-at-84","resourceType":"story","description":"{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"text\":\"Lunney, who played an integral role in the agency's Apollo program, died Friday. He was credited for his quick decision-making during the race to save the lives of the Apollo 13 astronauts.\",\"type\":\"text\"}]}]}","descriptionText":"Lunney, who played an integral role in the agency's Apollo program, died Friday. He was credited for his quick decision-making during the race to save the lives of the Apollo 13 astronauts.\n","primaryVisuals":{"video":null,"thumbnail":{"aspect_ratios":{"thumbnail":{"instances":[{"width":200,"height":150,"url":"https://media.npr.org/assets/img/2021/03/20/jsc2015e074325-c49258099c4e2c9fc510d4ad05457211e2634740.jpg?s=12","__typename":"Instance"}],"__typename":"AspectRatio"},"widescreen":{"instances":[{"width":400,"height":225,"url":"https://media.npr.org/assets/img/2021/03/20/jsc2015e074325_wide-1dcce1e622be64a3209213b2afcde122da258b0c.jpg?s=400","__typename":"Instance"},{"width":600,"height":337,"url":"https://media.npr.org/assets/img/2021/03/20/jsc2015e074325_wide-1dcce1e622be64a3209213b2afcde122da258b0c.jpg?s=600","__typename":"Instance"},{"width":1000,"height":562,"url":"https://media.npr.org/assets/img/2021/03/20/jsc2015e074325_wide-1dcce1e622be64a3209213b2afcde122da258b0c.jpg?s=1000","__typename":"Instance"},{"width":1400,"height":787,"url":"https://media.npr.org/assets/img/2021/03/20/jsc2015e074325_wide-1dcce1e622be64a3209213b2afcde122da258b0c.jpg?s=1400","__typename":"Instance"},{"width":2000,"height":1125,"url":"https://media.npr.org/assets/img/2021/03/20/jsc2015e074325_wide-1dcce1e622be64a3209213b2afcde122da258b0c.jpg?s=2000","__typename":"Instance"}],"__typename":"AspectRatio"},"uncropped":{"instances":[{"url":"https://media.npr.org/assets/img/2021/03/20/jsc2015e074325-c49258099c4e2c9fc510d4ad05457211e2634740.jpg?s=400","width":400,"height":300,"__typename":"Instance"},{"url":"https://media.npr.org/assets/img/2021/03/20/jsc2015e074325-c49258099c4e2c9fc510d4ad05457211e2634740.jpg?s=600","width":600,"height":450,"__typename":"Instance"},{"url":"https://media.npr.org/assets/img/2021/03/20/jsc2015e074325-c49258099c4e2c9fc510d4ad05457211e2634740.jpg?s=1000","width":1000,"height":750,"__typename":"Instance"},{"url":"https://media.npr.org/assets/img/2021/03/20/jsc2015e074325-c49258099c4e2c9fc510d4ad05457211e2634740.jpg?s=1400","width":1400,"height":1050,"__typename":"Instance"},{"url":"https://media.npr.org/assets/img/2021/03/20/jsc2015e074325-c49258099c4e2c9fc510d4ad05457211e2634740.jpg?s=2000","width":2000,"height":1500,"__typename":"Instance"}],"__typename":"AspectRatio"},"__typename":"AspectRatioList"},"contentArea":"NPR","dateTaken":null,"dateline":null,"fallback":"https://media.npr.org/assets/img/2021/03/20/jsc2015e074325-c49258099c4e2c9fc510d4ad05457211e2634740.jpg?s=600","longCaption":"Glynn Lunney, seen here in 2015, was awarded the Presidential Medal of Freedom as part of the Apollo 13 mission operations team.","shortCaption":"Glynn Lunney, seen here in 2015, was awarded the Presidential Medal of Freedom as part of the Apollo 13 mission operations team.","xid":979541017,"__typename":"Image"},"__typename":"PrimaryVisual"},"audio":[],"collectionRelatedLinks":[],"__typename":"Story"},{"id":"01F18DZVS9S9PJW9HAX3PXP384","title":"The celebration over, Deb Haaland now faces a long to-do list at Interior","canonicalSlug":"2021/03/20/npr-the-celebration-over-deb-haaland-now-faces-a-long-to-do-list-at-interior","resourceType":"story","description":"{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"text\":\"Interior Secretary Deb Haaland has a long and seemingly insurmountable to-do list, including a pledge to begin repairing a legacy of broken treaties and other abuses against tribes. \",\"type\":\"text\"}]}]}","descriptionText":"Interior Secretary Deb Haaland has a long and seemingly insurmountable to-do list, including a pledge to begin repairing a legacy of broken treaties and other abuses against tribes. \n","primaryVisuals":{"video":null,"thumbnail":{"aspect_ratios":{"thumbnail":{"instances":[{"width":200,"height":133,"url":"https://media.npr.org/assets/img/2021/03/19/deb-haaland_custom-e0b8de82362f1f31d105f4222ecccbee0e252247.jpg?s=12","__typename":"Instance"}],"__typename":"AspectRatio"},"widescreen":{"instances":[{"width":400,"height":224,"url":"https://media.npr.org/assets/img/2021/03/19/deb-haaland_wide-641707c9a0de73d4587dee85630f7c919b8d2c96.jpg?s=400","__typename":"Instance"},{"width":600,"height":337,"url":"https://media.npr.org/assets/img/2021/03/19/deb-haaland_wide-641707c9a0de73d4587dee85630f7c919b8d2c96.jpg?s=600","__typename":"Instance"},{"width":1000,"height":562,"url":"https://media.npr.org/assets/img/2021/03/19/deb-haaland_wide-641707c9a0de73d4587dee85630f7c919b8d2c96.jpg?s=1000","__typename":"Instance"},{"width":1400,"height":787,"url":"https://media.npr.org/assets/img/2021/03/19/deb-haaland_wide-641707c9a0de73d4587dee85630f7c919b8d2c96.jpg?s=1400","__typename":"Instance"},{"width":2000,"height":1124,"url":"https://media.npr.org/assets/img/2021/03/19/deb-haaland_wide-641707c9a0de73d4587dee85630f7c919b8d2c96.jpg?s=2000","__typename":"Instance"}],"__typename":"AspectRatio"},"uncropped":{"instances":[{"url":"https://media.npr.org/assets/img/2021/03/19/deb-haaland_custom-e0b8de82362f1f31d105f4222ecccbee0e252247.jpg?s=400","width":400,"height":266,"__typename":"Instance"},{"url":"https://media.npr.org/assets/img/2021/03/19/deb-haaland_custom-e0b8de82362f1f31d105f4222ecccbee0e252247.jpg?s=600","width":600,"height":399,"__typename":"Instance"},{"url":"https://media.npr.org/assets/img/2021/03/19/deb-haaland_custom-e0b8de82362f1f31d105f4222ecccbee0e252247.jpg?s=1000","width":1000,"height":666,"__typename":"Instance"},{"url":"https://media.npr.org/assets/img/2021/03/19/deb-haaland_custom-e0b8de82362f1f31d105f4222ecccbee0e252247.jpg?s=1400","width":1400,"height":932,"__typename":"Instance"},{"url":"https://media.npr.org/assets/img/2021/03/19/deb-haaland_custom-e0b8de82362f1f31d105f4222ecccbee0e252247.jpg?s=2000","width":2000,"height":1332,"__typename":"Instance"}],"__typename":"AspectRatio"},"__typename":"AspectRatioList"},"contentArea":"NPR","dateTaken":null,"dateline":null,"fallback":"https://media.npr.org/assets/img/2021/03/19/deb-haaland_custom-e0b8de82362f1f31d105f4222ecccbee0e252247.jpg?s=600","longCaption":"Deb Haaland, who made history this week by becoming the first indigenous interior secretary, promised to begin repairing a legacy of abuses committed by the federal government toward tribes.","shortCaption":"Deb Haaland, who made history this week by becoming the first indigenous interior secretary, promised to begin repairing a legacy of abuses committed by the federal government toward tribes.","xid":979266745,"__typename":"Image"},"__typename":"PrimaryVisual"},"audio":[{"id":"01F18DZW3ZR825AWBDMR3DEGQ5","title":"Listen to the Story","durationHms":"00:03:47","encodings":[{"httpFilePath":"https://ondemand.npr.org/anon.npr-mp3/npr/wesat/2021/03/20210320_wesat_the_celebration_over_deb_haaland_now_faces_a_long_to-do_list_at_interior.mp3?orgId=1\u0026topicId=1025\u0026d=227\u0026p=7\u0026story=978936494\u0026ft=nprml\u0026f=978936494","playFilePath":"https://ondemand.npr.org/anon.npr-mp3/npr/wesat/2021/03/20210320_wesat_the_celebration_over_deb_haaland_now_faces_a_long_to-do_list_at_interior.mp3?orgId=1\u0026topicId=1025\u0026d=227\u0026p=7\u0026story=978936494\u0026ft=nprml\u0026f=978936494","filename":"https://ondemand.npr.org/anon.npr-mp3/npr/wesat/2021/03/20210320_wesat_the_celebration_over_deb_haaland_now_faces_a_long_to-do_list_at_interior.mp3?orgId=1\u0026topicId=1025\u0026d=227\u0026p=7\u0026story=978936494\u0026ft=nprml\u0026f=978936494","durationMs":"227000","__typename":"Encoding"},{"httpFilePath":"https://ondemand.npr.org/npr-mp4/npr/wesat/2021/03/20210320_wesat_the_celebration_over_deb_haaland_now_faces_a_long_to-do_list_at_interior.mp4?orgId=1\u0026topicId=1025\u0026d=227\u0026p=7\u0026story=978936494\u0026ft=nprml\u0026f=978936494","playFilePath":"https://ondemand.npr.org/npr-mp4/npr/wesat/2021/03/20210320_wesat_the_celebration_over_deb_haaland_now_faces_a_long_to-do_list_at_interior.mp4?orgId=1\u0026topicId=1025\u0026d=227\u0026p=7\u0026story=978936494\u0026ft=nprml\u0026f=978936494","filename":"https://ondemand.npr.org/npr-mp4/npr/wesat/2021/03/20210320_wesat_the_celebration_over_deb_haaland_now_faces_a_long_to-do_list_at_interior.mp4?orgId=1\u0026topicId=1025\u0026d=227\u0026p=7\u0026story=978936494\u0026ft=nprml\u0026f=978936494","durationMs":"227000","__typename":"Encoding"}],"__typename":"Audio"}],"collectionRelatedLinks":[],"__typename":"Story"},{"id":"01F18AXHAFKKW59TWQCM2ZKY3Y","title":"Men's and women's NCAA March Madness facilities, separate and unequal, spark uproar","canonicalSlug":"2021/03/19/npr-mens-and-womens-ncaa-march-madness-facilities-separate-and-unequal-spark-uproar","resourceType":"story","description":"{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"text\":\"When female athletes saw the workout room the NCAA provided for the women’s basketball tournament bubble — and compared it to the men's — they cried foul. NCAA officials belatedly acknowledged the disparity.\",\"type\":\"text\"}]}]}","descriptionText":"When female athletes saw the workout room the NCAA provided for the women’s basketball tournament bubble — and compared it to the men's — they cried foul. NCAA officials belatedly acknowledged the disparity.\n","primaryVisuals":{"video":null,"thumbnail":{"aspect_ratios":{"thumbnail":{"instances":[{"width":200,"height":150,"url":"https://media.npr.org/assets/img/2021/03/19/ncaa-women-b4020a2176d542c780d62e34806b5f66e769143b.jpg?s=12","__typename":"Instance"}],"__typename":"AspectRatio"},"widescreen":{"instances":[{"width":400,"height":225,"url":"https://media.npr.org/assets/img/2021/03/19/ncaa-women_wide-38c76475ca2453bb69e425261c014d26cc880586.jpg?s=400","__typename":"Instance"},{"width":600,"height":337,"url":"https://media.npr.org/assets/img/2021/03/19/ncaa-women_wide-38c76475ca2453bb69e425261c014d26cc880586.jpg?s=600","__typename":"Instance"},{"width":1000,"height":562,"url":"https://media.npr.org/assets/img/2021/03/19/ncaa-women_wide-38c76475ca2453bb69e425261c014d26cc880586.jpg?s=1000","__typename":"Instance"},{"width":1400,"height":787,"url":"https://media.npr.org/assets/img/2021/03/19/ncaa-women_wide-38c76475ca2453bb69e425261c014d26cc880586.jpg?s=1400","__typename":"Instance"},{"width":2000,"height":1125,"url":"https://media.npr.org/assets/img/2021/03/19/ncaa-women_wide-38c76475ca2453bb69e425261c014d26cc880586.jpg?s=2000","__typename":"Instance"}],"__typename":"AspectRatio"},"uncropped":{"instances":[{"url":"https://media.npr.org/assets/img/2021/03/19/ncaa-women-b4020a2176d542c780d62e34806b5f66e769143b.jpg?s=400","width":400,"height":300,"__typename":"Instance"},{"url":"https://media.npr.org/assets/img/2021/03/19/ncaa-women-b4020a2176d542c780d62e34806b5f66e769143b.jpg?s=600","width":600,"height":450,"__typename":"Instance"},{"url":"https://media.npr.org/assets/img/2021/03/19/ncaa-women-b4020a2176d542c780d62e34806b5f66e769143b.jpg?s=1000","width":1000,"height":750,"__typename":"Instance"},{"url":"https://media.npr.org/assets/img/2021/03/19/ncaa-women-b4020a2176d542c780d62e34806b5f66e769143b.jpg?s=1400","width":1400,"height":1050,"__typename":"Instance"},{"url":"https://media.npr.org/assets/img/2021/03/19/ncaa-women-b4020a2176d542c780d62e34806b5f66e769143b.jpg?s=2000","width":2000,"height":1500,"__typename":"Instance"}],"__typename":"AspectRatio"},"__typename":"AspectRatioList"},"contentArea":"NPR","dateTaken":null,"dateline":null,"fallback":"https://media.npr.org/assets/img/2021/03/19/ncaa-women-b4020a2176d542c780d62e34806b5f66e769143b.jpg?s=600","longCaption":"Connecticut guard Saylor Poffenbarger (4) is defended by St. John's guard Danaijah Williams (24) and forward Cecilia Holmberg (11) during the fourth quarter of an NCAA college basketball game in New York last month. The women's NCAA championship begins Sunday.","shortCaption":"Connecticut guard Saylor Poffenbarger (4) is defended by St. John's guard Danaijah Williams (24) and forward Cecilia Holmberg (11) during the fourth quarter of an NCAA college basketball game in New York last month. The women's NCAA championship begins Sunday.","xid":979414766,"__typename":"Image"},"__typename":"PrimaryVisual"},"audio":[],"collectionRelatedLinks":[],"__typename":"Story"},{"id":"01F188X588K7JG3R4T48KPSECS","title":"South Dakota governor pushes changes to transgender sports ban","canonicalSlug":"2021/03/20/south-dakota-governor-pushes-changes-to-transgender-sports-ban","resourceType":"story","description":"{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"text\":\"Noem's proposal would limit the ban to high school and elementary sports and exclude collegiate athletics. Opponents of the bill had warned it would cause the state to lose out on millions of dollars if it prompted the NCAA to withdraw tournaments from South Dakota.\",\"type\":\"text\"}]}]}","descriptionText":"Noem's proposal would limit the ban to high school and elementary sports and exclude collegiate athletics. Opponents of the bill had warned it would cause the state to lose out on millions of dollars if it prompted the NCAA to withdraw tournaments from South Dakota.\n","primaryVisuals":{"video":null,"thumbnail":{"aspect_ratios":{"thumbnail":{"instances":[{"width":120,"height":90,"url":"https://img.apmcdn.org/4899c8eab5f9d24ceaa60fe312ddb51d2f506346/thumbnail/aecd23-20210320-southdakota01-120.jpg","__typename":"Instance"},{"width":300,"height":226,"url":"https://img.apmcdn.org/4899c8eab5f9d24ceaa60fe312ddb51d2f506346/thumbnail/73a0b1-20210320-southdakota01-300.jpg","__typename":"Instance"}],"__typename":"AspectRatio"},"widescreen":{"instances":[{"width":400,"height":225,"url":"https://img.apmcdn.org/4899c8eab5f9d24ceaa60fe312ddb51d2f506346/widescreen/faa6f4-20210320-southdakota01-400.jpg","__typename":"Instance"},{"width":600,"height":337,"url":"https://img.apmcdn.org/4899c8eab5f9d24ceaa60fe312ddb51d2f506346/widescreen/cd3bdf-20210320-southdakota01-600.jpg","__typename":"Instance"},{"width":1000,"height":562,"url":"https://img.apmcdn.org/4899c8eab5f9d24ceaa60fe312ddb51d2f506346/widescreen/34f97e-20210320-southdakota01-1000.jpg","__typename":"Instance"},{"width":1400,"height":786,"url":"https://img.apmcdn.org/4899c8eab5f9d24ceaa60fe312ddb51d2f506346/widescreen/483fa0-20210320-southdakota01-1400.jpg","__typename":"Instance"},{"width":2000,"height":1123,"url":"https://img.apmcdn.org/4899c8eab5f9d24ceaa60fe312ddb51d2f506346/widescreen/ff25ee-20210320-southdakota01-2000.jpg","__typename":"Instance"}],"__typename":"AspectRatio"},"uncropped":{"instances":[{"url":"https://img.apmcdn.org/4899c8eab5f9d24ceaa60fe312ddb51d2f506346/uncropped/e65234-20210320-southdakota01-400.jpg","width":400,"height":267,"__typename":"Instance"},{"url":"https://img.apmcdn.org/4899c8eab5f9d24ceaa60fe312ddb51d2f506346/uncropped/cfe708-20210320-southdakota01-600.jpg","width":600,"height":400,"__typename":"Instance"},{"url":"https://img.apmcdn.org/4899c8eab5f9d24ceaa60fe312ddb51d2f506346/uncropped/5591bb-20210320-southdakota01-1000.jpg","width":1000,"height":667,"__typename":"Instance"},{"url":"https://img.apmcdn.org/4899c8eab5f9d24ceaa60fe312ddb51d2f506346/uncropped/8b9671-20210320-southdakota01-1400.jpg","width":1400,"height":933,"__typename":"Instance"},{"url":"https://img.apmcdn.org/4899c8eab5f9d24ceaa60fe312ddb51d2f506346/uncropped/dfc03f-20210320-southdakota01-2000.jpg","width":2000,"height":1333,"__typename":"Instance"}],"__typename":"AspectRatio"},"__typename":"AspectRatioList"},"contentArea":"MPR News","dateTaken":"2021-03-11T00:00:00+00:00","dateline":"Piere, SD, USA","fallback":"https://img.apmcdn.org/4899c8eab5f9d24ceaa60fe312ddb51d2f506346/normal/b5cc28-20210320-southdakota01-600.jpg","longCaption":"Advocates for transgender people march from the South Dakota governor's mansion to the Capitol in Pierre, S.D., on March 11 to protest a proposed ban on transgender girls and women from female sports leagues.","shortCaption":"Legislature Transgender Sports","xid":520739,"__typename":"Image"},"__typename":"PrimaryVisual"},"audio":[],"collectionRelatedLinks":[],"__typename":"Story"}],"__typename":"CollectionResultsPage"},"__typename":"Collection"},"updraft":{"id":"01DFP29RKTFT43S2P43DR3XQ1Z","results":{"items":[{"id":"01F1BFFP1AN34CM8M63FBQHW3T","title":"Lighter winds Monday; soggy Monday night into Wednesday","resourceType":"story","canonicalSlug":"2021/03/21/lighter-winds-monday-soggy-monday-night-into-wednesday","__typename":"Story"}],"__typename":"CollectionResultsPage"},"__typename":"Collection"},"alertConfig":{"slug":"mprnews/info-alert","json":"{\r\n  \"info\": {\r\n    \"alert\": false,\r\n    \"show_on\": [\r\n      \"home\",\r\n      \"story\",\r\n      \"episode\",\r\n      \"page\",\r\n      \"collection\"\r\n    ],\r\n    \"url\": \"https://live.mprnews.org/Event/Severe_weather_2\",\r\n    \"prefix\": \"Live:\",\r\n    \"title\": \"Severe, possibly tornadic, weather moves across Minnesota and Wisconsin\"\r\n  }\r\n}","__typename":"Potlatch"},"homeStoryConfig":{"slug":"mprnews/homepage-stories","json":"{\r\n  \"top_story_blowout\": false,\r\n  \"promoted_stories\": 2\r\n}","__typename":"Potlatch"},"electionConfig":{"slug":"mprnews/election-widget-2020","json":"{\r\n  \"states\": [],\r\n  \"show_delegate_count\": false,\r\n  \"show_election_logo\": false\r\n}","__typename":"Potlatch"},"racesConfig":{"slug":"mprnews/election-control","json":"{\r\n  \"results_on\": false,\r\n  \"widgets\": [\r\n    {\r\n      \"widget\": \"president\"\r\n    }\r\n  ]\r\n}","__typename":"Potlatch"},"covidConfig":{"slug":"mprnews/covid-19-sidebar-links","json":"{\r\n  \"links\": [\r\n    {\r\n      \"title\": \"What to know: Minnesota's latest virus restrictions\",\r\n      \"href\": \"https://www.mprnews.org/story/2021/03/12/baseball-prom-and-weddings-minn-pulls-back-on-some-covid19-restrictions\",\r\n      \"isLive\": false\r\n    },\r\n    {\r\n      \"title\": \"FAQ: Minnesota's vaccine rollout\",\r\n      \"href\": \"https://www.mprnews.org/story/2021/01/19/how-to-get-your-covid19-vaccine-in-minnesota-what-you-need-to-know\",\r\n      \"isLive\": false\r\n    },\r\n    {\r\n      \"title\": \"Newsletter: COVID-19 in Minnesota\",\r\n      \"href\": \"https://cloud.connect.mpr.org/mprnews_covid\",\r\n      \"isLive\": false\r\n    },\r\n    {\r\n      \"title\": \"Daily updates: Subscribe to MN Today podcast\",\r\n      \"href\": \"https://www.mprnews.org/podcasts/minnesota-today\",\r\n      \"isLive\": false\r\n    }\r\n  ]\r\n}","__typename":"Potlatch"},"trialConfig":{"slug":"mprnews/the-trial-of-derek-chauvin","json":"{\r\n  \"links\": [\r\n    {\r\n      \"title\": \"Jury selection\",\r\n      \"href\": \"https://www.facebook.com/watch/99142348590/932342457575827\",\r\n      \"isLive\": false\r\n    },\r\n    {\r\n      \"title\": \"Key questions, answered\",\r\n      \"href\": \"https://www.mprnews.org/story/2021/03/05/what-you-need-to-know-about-the-chauvin-trial\",\r\n      \"isLive\": false\r\n    },\r\n    {\r\n      \"title\": \"Remembering George Floyd\",\r\n      \"href\": \"https://www.mprnews.org/story/2021/03/08/remembering-george-floyd\",\r\n      \"isLive\": false\r\n    }\r\n  ]\r\n}","__typename":"Potlatch"}},"errorCode":false}},"page":"/","query":{},"buildId":"oNELmob0f9l9nwGg6xSR7","isFallback":false,"gip":true}
+  </script>
+  <script nomodule="" src="/_next/static/chunks/polyfills-a0be429a396e2c414383.js">
+  </script>
+  <script async="" src="/_next/static/chunks/main-4c902c750de810b5c42a.js">
+  </script>
+  <script async="" src="/_next/static/chunks/webpack-e067438c4cf4ef2ef178.js">
+  </script>
+  <script async="" src="/_next/static/chunks/framework.9e16d9bffee4570c2cfd.js">
+  </script>
+  <script async="" src="/_next/static/chunks/fdac8464db5b75e9d45c879ce8cf566707c00765.900c1821aac641de88a4.js">
+  </script>
+  <script async="" src="/_next/static/chunks/37fea0ed2861bc9fa3869ef61bd38648f551133b.02cb96245d33da53b2da.js">
+  </script>
+  <script async="" src="/_next/static/chunks/1b19ec6c9dc257b3b04d2d73f4c55452c3de2a03.0b28a93925049e7d3e94.js">
+  </script>
+  <script async="" src="/_next/static/chunks/10c00a131b215c8e836b30afef60e8e55c2c4c40.14781a835076ab4dd731.js">
+  </script>
+  <script async="" src="/_next/static/chunks/eb298438e9703e36b6e5dda0cfd7f9cd1c6fdc34.1abd644a0ce3220d552b.js">
+  </script>
+  <script async="" src="/_next/static/chunks/886ceea11f6ead3de24c3a173b80adad0cf062a7.ba36ed3bf7053fb5f8ee.js">
+  </script>
+  <script async="" src="/_next/static/chunks/59023199b271d43b3653d494344afa1cad990f27.4e9902c30ad46b6863f6.js">
+  </script>
+  <script async="" src="/_next/static/chunks/f6078781a05fe1bcb0902d23dbbb2662c8d200b3.080ab73e36f5c227c713.js">
+  </script>
+  <script async="" src="/_next/static/chunks/ca2afcce3c70a05090821854c54eacfd3e13af47.a9c5868c64bea496db57.js">
+  </script>
+  <script async="" src="/_next/static/chunks/pages/_app-de89bb921d78626d0ba0.js">
+  </script>
+  <script async="" src="/_next/static/chunks/pages/index-78531badf19b1b155e34.js">
+  </script>
+  <script async="" src="/_next/static/oNELmob0f9l9nwGg6xSR7/_buildManifest.js">
+  </script>
+  <script async="" src="/_next/static/oNELmob0f9l9nwGg6xSR7/_ssgManifest.js">
+  </script>
+ </body>
+</html>

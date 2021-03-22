@@ -1,0 +1,972 @@
+<!--#set var="is_main" value="1" -->
+<!--#if expr="$REQUEST_URI = /\/(articles|news)\/(\d+)\/?/" -->
+<!--#set var="is_main" value="0" -->
+<!--#endif -->
+<!--#if expr="$HTTP_COOKIE = /region=([^;]+);?/"-->
+<!--#set var="region_c" value="$1" -->
+<!--#endif -->
+<!--#if expr="$REQUEST_URI = /\/([a-z0-9]+)?\/?/" -->
+<!--#set var="region_u" value="$1" -->
+<!--#endif -->
+<!--#set var="region" value="" -->
+<!--#if expr="$is_main = 1" -->
+<!--#set var="region" value="$region_u" -->
+<!--#else -->
+<!--#set var="region" value="$region_c" -->
+<!--#endif -->
+<!--#if expr="$QUERY_STRING = /story_id=(\d+)/"-->
+<!--#set var="story_id" value="$1"-->
+<!--#endif -->
+<!--#if expr="$QUERY_STRING = /pressrelease=1/"-->
+<!--#set var="pressrelease" value="1"-->
+<!--#endif -->
+<!--#if expr="$HTTP_COOKIE = /desktop=1;?/"-->
+<!--#set var="desktop" value="1" -->
+<!--#endif -->
+<!DOCTYPE html>
+<html lang="ru" ng-app="uraruMobile">
+ <head>
+  <title ng-bind-html="metaService &amp;&amp; metaService.metaTitle('Новости РИА URA.RU');">
+   Новости РИА URA.RU
+  </title>
+  <meta content="text/html; charset=utf-8;" http-equiv="Content-Type"/>
+  <meta content="width=640" name="viewport"/>
+  <meta content="новости, политика, аналитика, экономика, УрФО, Екатеринбург, Челябинск, Курган, Тюмень, ХМАО, ЯНАО, Пермский край, Россель, Мишарин, Чернецкий, Чиркунов, Свердловская область, Тунгусов, Кокшаров" name="Keywords" ng-attr-content="{{ metaService.metaKeywords('новости, политика, аналитика, экономика, УрФО, Екатеринбург, Челябинск, Курган, Тюмень, ХМАО, ЯНАО, Пермский край, Россель, Мишарин, Чернецкий, Чиркунов, Свердловская область, Тунгусов, Кокшаров') }}"/>
+  <meta content="Эксклюзивные политические, экономические новости и события в реальном времени. Обзоры, аналитика. Только на URA.RU" name="Description" ng-attr-content="{{ metaService.metaDescription('Эксклюзивные политические, экономические новости и события в реальном времени. Обзоры, аналитика. Только на URA.RU') }}"/>
+  <meta content="Новости РИА URA.RU" ng-attr-content="{{ metaService.ogTitle('Новости РИА URA.RU') }}" property="og:title"/>
+  <meta content="Читайте на URA.RU" ng-attr-content="{{ metaService.ogDescription('Читайте на URA.RU') }}" property="og:description"/>
+  <meta content="https://ura.news" ng-attr-content="{{ metaService.ogUrl('https://ura.news') }}" property="og:url"/>
+  <meta content="204956386294609" ng-attr-content="{{ metaService.fbAppId('204956386294609') }}" property="fb:app_id"/>
+  <meta content="summary_large_image" name="twitter:card" ng-attr-content="{{ metaService.twitterCard('summary_large_image') }}"/>
+  <meta content="@ura_ru" name="twitter:site" ng-attr-content="{{ metaService.twitterSite('@ura_ru') }}"/>
+  <meta content="@ura_ru" name="twitter:creator" ng-attr-content="{{ metaService.twitterCreator('@ura_ru') }}"/>
+  <meta content="Новости РИА URA.RU" name="twitter:title" ng-attr-content="{{ metaService.twitterTitle('Новости РИА URA.RU') }}"/>
+  <meta content="Читайте на URA.RU" name="twitter:description" ng-attr-content="{{ metaService.twitterDescription('Читайте на URA.RU') }}"/>
+  <meta content="https://s.ura.news/img_pda/fbimage.jpg" ng-attr-content="{{ metaService.ogImage('https://s.ura.news/img_pda/fbimage.jpg') }}" property="og:image"/>
+  <meta content="https://s.ura.news/img_pda/fbimage.jpg" name="twitter:image" ng-attr-content="{{ metaService.ogImage('https://s.ura.news/img_pda/fbimage.jpg') }}"/>
+  <link href="/favicon.ico?3" rel="shortcut icon" type="image/x-icon"/>
+  <link href="/apple-touch-icon.png?v=4" rel="apple-touch-icon"/>
+  <link color="#1964E7" href="/safari-pinned-tab.svg" rel="mask-icon"/>
+  <meta content="#1964E7" name="theme-color"/>
+  <meta content="browserconfig.xml" name="msapplication-config"/>
+  <link href="https://ura.news/rss" rel="alternate" title="URA.RU RSS" type="application/rss+xml"/>
+  <link href="https://ura.news" rel="canonical"/>
+  <link href="https://s.ura.news/css_pda/main.min.css?v=2021.02-08" rel="stylesheet"/>
+  <link href="https://s.ura.news/css_pda/social-likes/social-likes_light.min.css?v=2021.02-08" rel="stylesheet"/>
+  <!-- Ad-Fox -->
+  <link href="//static.criteo.net" rel="dns-prefetch"/>
+  <link href="//bidder.criteo.com" rel="dns-prefetch"/>
+  <link as="script" crossorigin="anonymous" href="//static.criteo.net/js/ld/publishertag.js" rel="preload"/>
+  <link href="https://gum.criteo.com" rel="preconnect"/>
+  <link href="https://static.criteo.net" rel="preconnect"/>
+  <link href="https://exchange.buzzoola.com" rel="preconnect"/>
+  <link href="https://pb.adriver.ru" rel="preconnect"/>
+  <link href="https://ad.mail.ru" rel="preconnect"/>
+  <link crossorigin="" href="https://ads.betweendigital.com" rel="preconnect"/>
+  <script async="" src="https://yastatic.net/pcode/adfox/header-bidding.js">
+  </script>
+  <script>
+   var adfoxBiddersMap = {
+        "criteo": "843514",
+        "rtbhouse": "869408",
+        "betweenDigital": "869406",
+        "segmento": "1511072",
+        "adriver": "991279",
+        "adfox_tn-inpool": "1033132",
+        "adfox_adsmart": "1033289",
+        "hybrid": "1511090",
+        "otm": "1511088",
+        "buzzoola": "1505361",
+        "myTarget": "843516"
+    };
+    var adUnits = [{
+            // pda.ura.ru / Новости и статьи / mC1
+            "code": "adfox_150185695616156003",
+            "sizes": [
+                [560, 300],
+                [640, 300]
+            ],
+            "bids": [{
+                    "bidder": "rtbhouse",
+                    "params": {
+                        "placementId": "Q287hUeoSqseUSOFES2G"
+                    }
+                },
+                {
+                    "bidder": "betweenDigital",
+                    "params": {
+                        "placementId": "3388280"
+                    }
+                },
+                {
+                    "bidder": "myTarget",
+                    "params": {
+                        "placementId": "330489"
+                    }
+                }
+            ]
+        },
+        {
+            // pda.ura.ru / Главная и регионы / mC2
+            "code": "adfox_150185717293482185",
+            "sizes": [
+                [560, 300],
+                [640, 400]
+            ],
+            "bids": [{
+                    "bidder": "criteo",
+                    "params": {
+                        "placementId": "1566081"
+                    }
+                },
+                {
+                    "bidder": "betweenDigital",
+                    "params": {
+                        "placementId": "2820063"
+                    }
+                },
+                {
+                    "bidder": "rtbhouse",
+                    "params": {
+                        "placementId": "XNbR6jDQXHuE7Kxs8ScF",
+                    }
+                },
+                {
+                    "bidder": "buzzoola",
+                    "params": {
+                        "placementId": "1220511"
+                    }
+                },
+                {
+                    "bidder": "otm",
+                    "params": {
+                        "placementId": "7721"
+                    }
+                },
+                {
+                    "bidder": "segmento",
+                    "params": {
+                        "placementId": "363"
+                    }
+                },
+                {
+                    "bidder": "hybrid",
+                    "params": {
+                        "placementId": "5fbcf59887e6fb44c019779f"
+                    }
+                },
+                {
+                    "bidder": "myTarget",
+                    "params": {
+                        "placementId": "266683"
+                    }
+                }
+            ]
+        },
+        {
+            // pda.ura.ru / Новости и статьи / C4m
+            "code": "adfox_152283823454891427",
+            "sizes": [
+                [560, 300],
+                [640, 300]
+            ],
+            "bids": [{
+                    "bidder": "criteo",
+                    "params": {
+                        "placementId": "1566081"
+                    }
+                },
+                {
+                    "bidder": "myTarget",
+                    "params": {
+                        "placementId": "266703"
+                    }
+                },
+                {
+                    "bidder": "rtbhouse",
+                    "params": {
+                        "placementId": "XNbR6jDQXHuE7Kxs8ScF",
+                    }
+                },
+                {
+                    "bidder": "segmento",
+                    "params": {
+                        "placementId": "363"
+                    }
+                },
+                {
+                    "bidder": "hybrid",
+                    "params": {
+                        "placementId": "5fbcf5e387e6fb44c01977a0"
+                    }
+                },
+                {
+                    "bidder": "adfox_adsmart",
+                    "params": {
+                        "p1": "cgiix",
+                        "p2": "ul"
+                    }
+                },
+                {
+                    "bidder": "betweenDigital",
+                    "params": {
+                        "placementId": "3437190"
+                    }
+                },
+            ]
+        }
+    ];
+    var userTimeout = 1200;
+    window.YaHeaderBiddingSettings = {
+        biddersMap: adfoxBiddersMap,
+        adUnits: adUnits,
+        timeout: userTimeout
+    };
+  </script>
+  <script crossorigin="anonymous" defer="" src="https://yastatic.net/pcode/adfox/loader.js">
+  </script>
+  <!-- END-Ad-Fox -->
+  <!-- Google -->
+  <script type="text/javascript">
+   var googletag = googletag || {};
+    googletag.cmd = googletag.cmd || [];
+    (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') +
+            '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+    })();
+  </script>
+  <!-- END-Google -->
+  <!-- Facebook Pixel Code -->
+  <script>
+   ! function(f, b, e, v, n, t, s) {
+        if (f.fbq) return;
+        n = f.fbq = function() {
+            n.callMethod ?
+                n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+        };
+        if (!f._fbq) f._fbq = n;
+        n.push = n;
+        n.loaded = !0;
+        n.version = '2.0';
+        n.queue = [];
+        t = b.createElement(e);
+        t.async = !0;
+        t.src = v;
+        s = b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t, s)
+    }(window,
+        document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+
+    fbq('init', '1436811319895604');
+    fbq('track', "PageView");
+  </script>
+  <noscript>
+   <img height="1" src="https://www.facebook.com/tr?id=1436811319895604&amp;ev=PageView&amp;noscript=1" style="display:none" width="1"/>
+  </noscript>
+  <!-- End Facebook Pixel Code -->
+  <!-- VK Pixel Code -->
+  <script type="text/javascript">
+   (window.Image ? (new Image()) : document.createElement('img')).src = 'https://vk.com/rtrg?p=VK-RTRG-216666-fy3ng';
+  </script>
+  <!-- End VK Pixel Code -->
+  <script encoding="utf8" type="text/javascript">
+   (function() {
+        var sm = document.createElement("script");
+        sm.type = "text/javascript";
+        sm.async = true;
+        sm.src = "//counter.24smi.info/counter.js";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(sm, s);
+    })();
+  </script>
+  <!--#if expr="$pressrelease" -->
+  <style>
+   .official-comment{background:#c1dcff;}
+  </style>
+  <!--#endif-->
+ </head>
+ <body ng-controller="UserCtrl" ng-style="eula.visible ? {'overflow':'hidden'} : {};">
+  <script type="text/javascript">
+   window.IMAGE_PATH = 'https://s.ura.news';
+	window.DESKTOP_HOST = 'https://ura.news';
+	window.PDA_HOST = 'https://m.ura.news';
+	window.STATIC_HOST = 'https://s.ura.news';
+    window.API_HOST =	'https://ura.news';
+	window.MOMENTY_LEFT_LINK = '<!--#echo var="momenty_in_left_type"-->';
+	window.IS_AB_SITE = 0;
+	window.ADDITION_DATA_TO_GA = {
+		pda_new: window.IS_AB_SITE,
+		pda_v: 'old'
+	};
+  </script>
+  <div id="fb-root">
+  </div>
+  <script>
+   (function(d, s, id){
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if(d.getElementById(id)) return;
+		js = d.createElement(s);
+		js.id = id;
+		js.src = "//connect.facebook.net/ru_RU/sdk.js#xfbml=1&appId=1379637825594264&version=v2.0";
+		fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
+  </script>
+  <script>
+   !function(d, s, id){
+		var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location)?'http':'https';
+		if(!d.getElementById(id)){
+			js = d.createElement(s);
+			js.id = id;
+			js.src = p+'://platform.twitter.com/widgets.js';
+			fjs.parentNode.insertBefore(js, fjs);
+		}
+	}(document, 'script', 'twitter-wjs');
+  </script>
+  <!-- Lentainform Pixel Code -->
+  <script>
+   if (window.self === window.top) {
+        (document.createElement('img')).src = document.location.protocol + '//autocounter.lentainform.com/1x1.gif?pid=51151' + '&referer=' + encodeURIComponent(window.document.referrer);
+    }
+  </script>
+  <!-- End Lentainform Pixel Code -->
+  <!--#if expr="$REQUEST_URI = /\/news\/1052393342/" -->
+  <!--#include virtual="/ssi/ads2.php"-->
+  <!--#endif-->
+  <!--#if expr="$DESKTOP" -->
+  <!--#include virtual="/ssi/desktop.php"-->
+  <!--#else-->
+  <!--#include virtual="/ssi/ads.php"-->
+  <!--#endif-->
+  <!--#include virtual="/ssi/header.php"-->
+  <div class="content">
+   <!--#if expr="$region" -->
+   <!--#include virtual="/ssi/menu_region.php?region=$region"-->
+   <!--#else-->
+   <!--#include virtual="/ssi/menu_region.php"-->
+   <!--#endif-->
+   <!--#if expr="$DATE_LOCAL != /(?:1[6-9]|2[0-8])-Feb-2021|(?:0[1-9]|1[0-6])-Mar-2021/" -->
+   <!--#elif expr="$region = svrd" -->
+   <!--#include virtual="/ssi/banner-taxcom.php?region=$region"-->
+   <!--#endif -->
+   <!--#include virtual="/ssi/main_top_story.php"-->
+   <!--#if expr="$region" -->
+   <!--#include virtual="/ssi/main_top_news.php?region=$region"-->
+   <!--#include virtual="/ssi/main_day_news.php?region=$region"-->
+   <!--#else-->
+   <!--#include virtual="/ssi/main_top_news.php"-->
+   <!--#include virtual="/ssi/main_day_news.php"-->
+   <!--#endif-->
+   <div class="list" data-last-date="2021-03-21" data-last-modified="Mon, 22 Mar 2021 11:19:30 GMT" data-region="" data-rubric="" id="main_list">
+    <div id="list_group_2021-03-22">
+     <div class="list-item" data-story-id="">
+      <a href="http://www.ura.news/news/1052476960">
+       <div class="time list-item-time">
+        16:04
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         Двух челябинских полицейских судят за взятку мясом косули
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item" data-story-id="">
+      <a href="http://www.ura.news/news/1052476951">
+       <div class="time list-item-time">
+        16:01
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         В Шадринске появился второй за неделю эксгибиционист в маске
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item" data-story-id="">
+      <a href="http://www.ura.news/news/1052476959">
+       <div class="time list-item-time">
+        15:57
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         В Кремле опасаются новой экономической угрозы со стороны США
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item list-item-article" data-story-id="691">
+      <a href="http://www.ura.news/news/1052476879">
+       <div class="list-item-title clear">
+        Источник: сенатора Пушкова заменят на бывшего мэра Перми
+       </div>
+       <div class="list-item-announce">
+        <div class="bg-cover list-item-announce-img" data-background-image="https://s.ura.news/pics/240/173/images/news/upload/news/476/879/1052476879/294832_Doklad_vrio_gubernatora_Maksima_Reshetnikova_na_plenarnom_zasedanii_Zakonodatelynogo_sobraniya_o_prioritetnih_napravleniyah_deyatelynosti_Pravitelystva_Permskogo_kraya_Permy_pushkov_250x0_3383.2334.0.0_280.jpg">
+        </div>
+        <div class="list-item-announce-text">
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item" data-story-id="">
+      <a href="http://www.ura.news/news/1052476954">
+       <div class="time list-item-time">
+        15:52
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         Депутат Госдумы предрек уход доллара с международного рынка
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item important" data-story-id="">
+      <a href="http://www.ura.news/news/1052476958">
+       <div class="time list-item-time">
+        15:51
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         Арестован губернатор Пензенской области. Фото
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item" data-story-id="">
+      <a href="http://www.ura.news/news/1052476919">
+       <div class="time list-item-time">
+        15:45
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         В курганском городе определят самых ленивых депутатов
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item list-item-article" data-story-id="">
+      <a href="http://www.ura.news/news/1052476846">
+       <div class="list-item-title clear">
+        Инсайд: в ГИБДД ХМАО — массовые увольнения
+       </div>
+       <div class="list-item-announce">
+        <div class="bg-cover list-item-announce-img" data-background-image="https://s.ura.news/pics/240/173/images/news/upload/news/476/846/1052476846/537861_Motovzvod_DPS_Magnitogorsk_nashivka_politsiya_gibdd_dps_250x0_5184.3456.0.0_280.jpg">
+        </div>
+        <div class="list-item-announce-text">
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item" data-story-id="">
+      <a href="http://www.ura.news/news/1052476949">
+       <div class="time list-item-time">
+        15:42
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         В Кургане у автобуса во время поездки отвалилось колесо. Видео
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item" data-story-id="">
+      <a href="http://www.ura.news/news/1052476953">
+       <div class="time list-item-time">
+        15:38
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         У бывшего шефа пермских дорожников и его жены отобрали коттедж
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item" data-story-id="">
+      <a href="http://www.ura.news/news/1052476950">
+       <div class="time list-item-time">
+        15:33
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         МИД России: США отказали Путину в разговоре с Байденом
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item list-item-article" data-story-id="686">
+      <a href="http://www.ura.news/news/1052476865">
+       <div class="list-item-title clear">
+        Источник: отвечать за дороги ЯНАО будет строитель Крымского моста
+       </div>
+       <div class="list-item-announce">
+        <div class="bg-cover list-item-announce-img" data-background-image="https://s.ura.news/pics/240/173/images/news/upload/news/476/865/1052476865/77925a17ad6e63180c27a1010c9e0ced_250x0_897.602.144.35_280.jpg">
+        </div>
+        <div class="list-item-announce-text">
+        </div>
+       </div>
+      </a>
+     </div>
+     <!--#include virtual="/ssi/ads_c2_main.php"-->
+     <div class="list-item" data-story-id="">
+      <a href="http://www.ura.news/news/1052476942">
+       <div class="time list-item-time">
+        15:29
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         В ХМАО в коррупционном скандале появился след из Челябинска
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item important" data-story-id="">
+      <a href="http://www.ura.news/news/1052476948">
+       <div class="time list-item-time">
+        15:28
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         Российские власти потратят миллиарды рублей на безработных
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item" data-story-id="">
+      <a href="http://www.ura.news/news/1052476935">
+       <div class="time list-item-time">
+        15:12
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         В Екатеринбурге сиделка и ее сын-рецидивист пытали пенсионерок
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item list-item-article" data-story-id="">
+      <a href="http://www.ura.news/news/1052476830">
+       <div class="list-item-title clear">
+        Политологи: задержанный пензенский глава — не главная цель силовиков
+       </div>
+       <div class="list-item-announce">
+        <div class="bg-cover list-item-announce-img" data-background-image="https://s.ura.news/pics/240/173/images/news/upload/news/476/830/1052476830/569069_Sudebnoe_zasedanie_po_ugolovnomu_delu_bivshego_direktora_Kurganskogo_lesopozharnogo_tsentra_Shestakova_Mihaila_Kurgan_skamyya_podsudimih_sud_kletka_konvoy_arest_naruchniki_250x0_5064.3376.0.0_280.jpg">
+        </div>
+        <div class="list-item-announce-text">
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item" data-story-id="">
+      <a href="http://www.ura.news/news/1052476943">
+       <div class="time list-item-time">
+        15:10
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         В челябинской ЕР ищут виноватого за проигрыш на выборах
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item important" data-story-id="">
+      <a href="http://www.ura.news/news/1052476945">
+       <div class="time list-item-time">
+        15:09
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         Кремль: почему не состоялся личный разговор Путина и Байдена
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item important" data-story-id="">
+      <a href="http://www.ura.news/news/1052476944">
+       <div class="time list-item-time">
+        15:00
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         Задержанного пензенского губернатора может сменить эсер. Заявление Миронова
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item list-item-article" data-story-id="674">
+      <a href="http://www.ura.news/articles/1036282062">
+       <div class="list-item-title clear">
+        Переиздание альбома от The Weeknd и сериал о снежном человеке
+       </div>
+       <div class="list-item-announce">
+        <div class="bg-cover list-item-announce-img" data-background-image="https://s.ura.news/pics/240/173/images/news/upload/articles/282/062/1036282062/40e81c2cb3b77762cd2de41a9361d14b_760x0_1023.679.0.0_420.jpg">
+        </div>
+        <div class="list-item-announce-text">
+         Рекомендации URA.RU на 22 марта
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item" data-story-id="">
+      <a href="http://www.ura.news/news/1052476939">
+       <div class="time list-item-time">
+        14:50
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         В Кремле допустили отставку пензенского губернатора
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item" data-story-id="704">
+      <a href="http://www.ura.news/news/1052476936">
+       <div class="time list-item-time">
+        14:45
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         Суд принял решение о расследовании госпитализации Навального
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item" data-story-id="">
+      <a href="http://www.ura.news/news/1052476940">
+       <div class="time list-item-time">
+        14:43
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         Челябинские дороги отремонтируют латексом
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item list-item-article" data-story-id="691">
+      <a href="http://www.ura.news/news/1052476819">
+       <div class="list-item-title clear">
+        В КПРФ рассказали о выдвижении Грудинина в Госдуму
+       </div>
+       <div class="list-item-announce">
+        <div class="bg-cover list-item-announce-img" data-background-image="https://s.ura.news/pics/240/173/images/news/upload/news/476/819/1052476819/362517_Press_konferentsiya_s_uchastiem_Gennadiya_Zyuganova_i_Pavla_Grudinina_Moskva_grudinin_pavel_250x0_3960.2640.0.0_280.jpg">
+        </div>
+        <div class="list-item-announce-text">
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item is_momenty" data-story-id="">
+      <a href="https://momenty.org/city/10228" rel="noreferrer" target="_blank">
+       <div class="time list-item-time">
+        14:37
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         Горожане требуют внести поправки в закон о реновации
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item" data-story-id="">
+      <a href="http://www.ura.news/news/1052476932">
+       <div class="time list-item-time">
+        14:35
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         Туристическим проектам в ЯНАО выделят миллионные субсидии
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item" data-story-id="651">
+      <a href="http://www.ura.news/news/1052476937">
+       <div class="time list-item-time">
+        14:30
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         Вице-губернатор ХМАО заболел коронавирусом
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item list-item-article" data-story-id="">
+      <a href="http://www.ura.news/news/1052476818">
+       <div class="list-item-title clear">
+        Глава «Садоводов России» рассказал о больших штрафах для дачников
+       </div>
+       <div class="list-item-announce">
+        <div class="bg-cover list-item-announce-img" data-background-image="https://s.ura.news/pics/240/173/images/news/upload/news/476/818/1052476818/367211_Sadovodcheskoe_obshtestvo_Plodovoe_Tyumeny_derevyanniy_dom_dacha_dachnie_uchastki_250x0_5760.3840.0.0_280.jpg">
+        </div>
+        <div class="list-item-announce-text">
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item" data-story-id="">
+      <a href="http://www.ura.news/news/1052476927">
+       <div class="time list-item-time">
+        14:12
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         Силовики предъявили претензии мэру Кургана из-за школьных обедов
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item" data-story-id="">
+      <a href="http://www.ura.news/news/1052476906">
+       <div class="time list-item-time">
+        14:12
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         Школы ЯНАО перестали убирать после массового сокращения персонала
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item" data-story-id="">
+      <a href="http://www.ura.news/news/1052476923">
+       <div class="time list-item-time">
+        14:11
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         Мэр Екатеринбурга уходит в первый отпуск, проработав три месяца
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item list-item-article" data-story-id="704">
+      <a href="http://www.ura.news/news/1052476777">
+       <div class="list-item-title clear">
+        Бывший силовик объяснил, как Навальный выходит в соцсети из колонии
+       </div>
+       <div class="list-item-announce">
+        <div class="bg-cover list-item-announce-img" data-background-image="https://s.ura.news/pics/240/173/images/news/upload/news/476/777/1052476777/397153_Miting_Libertarianskoy_partii_protiv_pensionnoy_reformi_Moskva_rossiyskiy_flag_protestuyushtie_navalyniy_aleksey_miting_trikolor_flag_rossii_selfi_so_zvezdoy_protest_250x0_5037.3358.0.0_280.jpg">
+        </div>
+        <div class="list-item-announce-text">
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item is_momenty" data-story-id="">
+      <a href="https://momenty.org/city/10225" rel="noreferrer" target="_blank">
+       <div class="time list-item-time">
+        13:50
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         Мошенники просят деньги от лица главных защитников скверов Екатеринбурга
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item" data-story-id="651">
+      <a href="http://www.ura.news/news/1052476930">
+       <div class="time list-item-time">
+        13:49
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         Ургант заболел коронавирусом
+         <span class="comm-sm">
+          1
+         </span>
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item" data-story-id="">
+      <a href="http://www.ura.news/news/1052476929">
+       <div class="time list-item-time">
+        13:45
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         На «курганской Рублевке» запустили муниципальную реформу
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item list-item-article" data-story-id="">
+      <a href="http://www.ura.news/news/1052476768">
+       <div class="list-item-title clear">
+        Климатологи: из-за глобального потепления север завалит снегом
+       </div>
+       <div class="list-item-announce">
+        <div class="bg-cover list-item-announce-img" data-background-image="https://s.ura.news/pics/240/173/images/news/upload/news/476/768/1052476768/593133_Snegopad_Chelyabinsk_sneg_pogoda_avtomobily_ostanovka_obshtestvennogo_transporta_snegopad_klimat_marshrutki_avtotransport_250x0_5981.3997.0.0_280.jpg">
+        </div>
+        <div class="list-item-announce-text">
+         А юг останется без осадков
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item" data-story-id="">
+      <a href="http://www.ura.news/news/1052476931">
+       <div class="time list-item-time">
+        13:44
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         Федеральный министр похвалил Пермский край
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item important" data-story-id="">
+      <a href="http://www.ura.news/news/1052476928">
+       <div class="time list-item-time">
+        13:42
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         Депутат Госдумы призвал пересмотреть тарифы ЖКХ
+         <span class="comm-sm">
+          1
+         </span>
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item" data-story-id="">
+      <a href="http://www.ura.news/news/1052476926">
+       <div class="time list-item-time">
+        13:38
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         Появилось видео страшной аварии на челябинской трассе М5
+         <span class="comm-sm">
+          3
+         </span>
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item list-item-article" data-story-id="93">
+      <a href="http://www.ura.news/news/1052476761">
+       <div class="list-item-title clear">
+        Спецназовец ВСУ пообещал убить россиян, которые приедут в Донбасс
+       </div>
+       <div class="list-item-announce">
+        <div class="bg-cover list-item-announce-img" data-background-image="https://s.ura.news/pics/240/173/images/news/upload/news/476/761/1052476761/476239_Ucheniya_po_gornoy_podgotovke_na_baze_trenirovochnogo_kompleksa_Ergaki_Krasnoyarskiy_kray_hrebet_Ergaki_v_Zapadnih_Sayanah_oruzhie_voyna_militarizatsiya_voenniy_ognestrelynoe_oruzhie_250x0_3572.2381.0.0_280.jpg">
+        </div>
+        <div class="list-item-announce-text">
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item important" data-story-id="">
+      <a href="http://www.ura.news/news/1052476920">
+       <div class="time list-item-time">
+        13:35
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         Автоэксперты предрекли важные изменения в экзаменах на права
+        </div>
+       </div>
+      </a>
+     </div>
+     <div class="list-item" data-story-id="">
+      <a href="http://www.ura.news/news/1052476918">
+       <div class="time list-item-time">
+        13:34
+       </div>
+       <div class="list-item-text">
+        <div class="list-item-title">
+         Тюменцы готовят пикеты, протестуя против строительства крематория
+         <span class="comm-sm">
+          2
+         </span>
+        </div>
+       </div>
+      </a>
+     </div>
+    </div>
+   </div>
+   <div class="btn" data-loading="загрузка..." id="btn_more">
+    загрузить еще
+   </div>
+   <!--#include virtual="/ssi/footer.php?is_main=$is_main"-->
+  </div>
+  <script src="https://s.ura.news/lib/jquery/jquery-1.11.1.min.js?v=2021.02-08">
+  </script>
+  <script src="https://s.ura.news/lib/autosize.js?v=2021.02-08">
+  </script>
+  <script src="https://s.ura.news/lib/angularjs/1.6.10/angular.min.js?v=2021.02-08">
+  </script>
+  <script src="https://s.ura.news/lib/angularjs/ng-infinite-scroll.js?v=2021.02-08">
+  </script>
+  <script src="https://s.ura.news/lib/angularjs/angular-scroll.js?v=2021.02-08">
+  </script>
+  <script src="https://s.ura.news/lib/bower_components/angular-md5/angular-md5.min.js?v=2021.02-08">
+  </script>
+  <script src="https://s.ura.news/lib/jquery/plugins/jquery.mobile-events.min.js?v=2021.02-08">
+  </script>
+  <script src="https://s.ura.news/lib/blueimp-gallery/js/blueimp-gallery.js?v=2021.02-08">
+  </script>
+  <script src="https://s.ura.news/lib/lozad/lozad.min.js">
+  </script>
+  <script>
+   window.config = {};
+    window.config.hiddenStories = [651,664];
+    window.config.currentRegion = '';
+
+    function mi_stat(mi, n, a, s, p, t) {
+        $.ajax({
+            url: 'https://p.ura.news/mi_stat.php?mi=' + mi + '&n=' + n + '&a=' + a + '&s=' + s + '&p=' + p + '&t=' + t,
+            type: 'get',
+            async: false,
+            timeout: 200,
+            crossDomain: true,
+            success: function(data) {}
+        });
+    }
+  </script>
+  <script defer="" src="https://s.ura.news/js_pda/main.min.js?v=2021.02-08">
+  </script>
+  <script defer="" src="https://s.ura.news/js_pda/app.min.js?v=2021.02-08">
+  </script>
+  <script defer="" src="https://s.ura.news/js_pda/social-likes/social-likes.light.min.js?v=2021.02-08">
+  </script>
+  <script defer="" src="//vk.com/js/api/openapi.js?149">
+  </script>
+  <!--Chartbeat-->
+  <!--<script type='text/javascript'>
+    var _sf_async_config = _sf_async_config || {};
+    /** CONFIGURATION START **/
+    _sf_async_config.sections = '';
+    _sf_async_config.authors = '';
+
+    /** CONFIGURATION END **/
+    (function() {
+        function loadChartbeat() {
+            window._sf_endpt = (new Date()).getTime();
+            var e = document.createElement('script');
+            e.setAttribute('language', 'javascript');
+            e.setAttribute('type', 'text/javascript');
+            e.setAttribute('src', '//static.chartbeat.co/js/chartbeat.js');
+            document.body.appendChild(e);
+        }
+        var oldonload = window.onload;
+        window.onload = (typeof window.onload != 'function')
+            ? loadChartbeat
+            : function() {
+            oldonload();
+            loadChartbeat();};
+    })();
+</script>-->
+  <!--END-Chartbeat-->
+ </body>
+</html>

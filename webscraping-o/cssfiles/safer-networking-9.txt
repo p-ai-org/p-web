@@ -1,0 +1,26 @@
+details, summary { display: block; }
+/* Apply a pointer cursor and style the background upon hover to indicate <summary> is a clickable element. */
+/* These styles can be applied regardless of whether the fallback is needed */
+summary { cursor: pointer; }
+
+/* The following styles are not really needed, since the jQuery script takes care of hiding/displaying the elements. */
+/* However, we’re still gonna use CSS as well to prevent FOUC in browsers that understand these selectors. */
+/* Remember: by default (and probably most of the time), the contents of the <details> element are hidden. */
+.no-details details &gt; * { display: none; }
+/* This doesn’t work very well in Firefox 3.6.x */
+/* .no-details details[open] &gt; * { display: block; } */
+/* The following doesn’t toggle correctly in WebKit:
+.no-details details &gt; summary:before { content: '► '; }
+.no-details details[open] &gt; summary:before { content: '▼ '; }
+*/
+/* And yes, it should really be ::before, but that doesn’t work in IE8 */
+.no-details details &gt; summary:before { float: left; width: 20px; content: '► '; }
+.no-details details.open &gt; summary:before { content: '▼ '; }
+/* For IE6 and IE7, who don’t support generated content, you could use padding-left + a background image instead */
+/* I really couldn’t be bothered though. */
+/*
+.no-details details &gt; summary { padding-left: 20px; background: url(img/arrow-sprite.png) no-repeat 0 0; }
+.no-details details.open &gt; summary { background-position: 0 -20px; }
+*/
+/* Make sure summary remains visible */
+.no-details details summary { display: block; }</details></summary>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <title>
+   Babel · The compiler for next generation JavaScript
+  </title>
+  <meta content="width=device-width" name="viewport"/>
+  <meta content="Docusaurus" name="generator"/>
+  <meta content="The compiler for next generation JavaScript" name="description"/>
+  <meta content="Babel · The compiler for next generation JavaScript" property="og:title"/>
+  <meta content="website" property="og:type"/>
+  <meta content="https://babeljs.io/" property="og:url"/>
+  <meta content="The compiler for next generation JavaScript" property="og:description"/>
+  <meta content="summary" name="twitter:card"/>
+  <link href="/img/favicon.png" rel="shortcut icon"/>
+  <link href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css" rel="stylesheet"/>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet"/>
+  <link href="https://babeljs.io/blog/atom.xml" rel="alternate" title="Babel Blog ATOM Feed" type="application/atom+xml"/>
+  <link href="https://babeljs.io/blog/feed.xml" rel="alternate" title="Babel Blog RSS Feed" type="application/rss+xml"/>
+  <script>
+   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+              ga('create', 'UA-114990275-1', 'auto');
+              ga('send', 'pageview');
+  </script>
+  <script defer="" src="https://unpkg.com/clipboard@2.0.0/dist/clipboard.min.js" type="text/javascript">
+  </script>
+  <script defer="" src="/js/code-blocks-buttons.js" type="text/javascript">
+  </script>
+  <script defer="" src="/scripts/repl-page-hacks.js" type="text/javascript">
+  </script>
+  <script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js">
+  </script>
+  <script>
+   document.addEventListener('DOMContentLoaded', function() {
+          addBackToTop(
+            {"zIndex":100}
+          )
+        });
+  </script>
+  <script src="/js/scrollSpy.js">
+  </script>
+  <link href="https://d33wubrfki0l68.cloudfront.net/css/6b99a630a50c05a34f5558bd9a68d90ad9fbc1d5/css/main.css" rel="stylesheet"/>
+  <script src="/js/codetabs.js">
+  </script>
+ </head>
+ <body>
+  <div class="fixedHeaderContainer">
+   <div class="headerWrapper wrapper">
+    <header>
+     <a href="/">
+      <img alt="Babel" class="logo" src="https://d33wubrfki0l68.cloudfront.net/7a197cfe44548cc1a3f581152af70a3051e11671/78df8/img/babel.svg"/>
+     </a>
+     <div class="navigationWrapper navigationSlider">
+      <nav class="slidingNav">
+       <ul class="nav-site nav-site-internal">
+        <li class="siteNavItemActive">
+         <a href="/docs/en/" target="_self">
+          Docs
+         </a>
+        </li>
+        <li class="">
+         <a href="/setup" target="_self">
+          Setup
+         </a>
+        </li>
+        <li class="">
+         <a href="/repl" target="_self">
+          Try it out
+         </a>
+        </li>
+        <li class="">
+         <a href="/videos" target="_self">
+          Videos
+         </a>
+        </li>
+        <li class="">
+         <a href="/blog/" target="_self">
+          Blog
+         </a>
+        </li>
+        <li class="navSearchWrapper reactNavSearchWrapper">
+         <input id="search_input_react" placeholder="Search" title="Search" type="text"/>
+        </li>
+        <li class="">
+         <a href="https://opencollective.com/babel" target="_self">
+          Donate
+         </a>
+        </li>
+        <li class="">
+         <a href="/team" target="_self">
+          Team
+         </a>
+        </li>
+        <li class="">
+         <a href="https://github.com/babel/babel" target="_self">
+          GitHub
+         </a>
+        </li>
+       </ul>
+      </nav>
+     </div>
+    </header>
+   </div>
+  </div>
+  <div class="navPusher">
+   <div>
+    <div class="hero">
+     <a href="https://teespring.com/babel-christmas?pr=FLAVORTOWN">
+      <div class="homepage-banner">
+       Get Babel Holiday Apparel 👕
+      </div>
+     </a>
+     <div class="hero__container">
+      <h1>
+       Babel is a JavaScript compiler.
+      </h1>
+      <p>
+       Use next generation JavaScript, today.
+      </p>
+      <div class="hero__announcement">
+       <span>
+        <strong>
+         Babel 7.13 is released!
+        </strong>
+        Please read our
+        <a href="blog/2021/02/22/7.13.0">
+         blog post
+        </a>
+        for highlights and
+        <a href="https://github.com/babel/babel/releases/tag/v7.13.0">
+         changelog
+        </a>
+        for more details!
+       </span>
+      </div>
+      <div class="hero-repl" hidden="">
+       <div class="hero-repl__editor">
+        <div class="hero-repl__pane hero-repl__pane--left">
+         <h3>
+          Put in next-gen JavaScript
+         </h3>
+         <div class="hero-repl__code" id="hero-repl-in">
+         </div>
+        </div>
+        <div class="hero-repl__pane hero-repl__pane--right">
+         <h3>
+          Get browser-compatible JavaScript out
+         </h3>
+         <div class="hero-repl__code" id="hero-repl-out">
+         </div>
+         <div class="hero-repl__error">
+         </div>
+        </div>
+       </div>
+       <script defer="" src="https://unpkg.com/@babel/standalone@^7.0.0/babel.min.js">
+       </script>
+       <script defer="" src="https://unpkg.com/ace-builds@1.3.3/src-min-noconflict/ace.js">
+       </script>
+       <script defer="" src="/js/build/minirepl.js">
+       </script>
+      </div>
+      <h3>
+       Special Sponsor
+      </h3>
+      <div class="sponsors-tier" style="margin:10px 0">
+       <a href="https://www.handshake.org" target="_blank" title="Handshake">
+        <img alt="Sponsored by Handshake" src="https://handshake.org/images/landing/logo-light.svg" style="width:180px"/>
+        <div style="color:#b7b8b7">
+         Decentralized certificate authority and naming
+        </div>
+       </a>
+      </div>
+     </div>
+    </div>
+    <div class="mainContainer" style="padding:0">
+     <div class="container" style="background-color:#f6f6f6;padding-bottom:20px">
+      <div class="wrapper">
+       <div class="gridBlock">
+        <div class="blockElement" style="font-size:18px;max-width:800px;padding:45px 0 7px;margin:0 auto">
+         <p>
+          Learn more about Babel with our
+          <a href="/docs/en/index.html">
+           getting started guide
+          </a>
+          or check out some
+          <a href="/en/videos.html">
+           videos
+          </a>
+          on the people and concepts behind it.
+         </p>
+         <p>
+          We're a small group of
+          <a href="/en/team.html">
+           volunteers
+          </a>
+          that spend their free time maintaining this project, funded by the community. If Babel has benefited you in your work, becoming a
+          <a href="https://github.com/babel/babel/blob/master/CONTRIBUTING.md">
+           contributor
+          </a>
+          or
+          <a href="https://opencollective.com/babel">
+           sponsoring
+          </a>
+          might just be a great way to give back!
+         </p>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="container paddingBottom">
+      <div class="wrapper productShowcaseSection">
+       <div class="sponsor-tiers" id="sponsors">
+        <h3>
+         Open Collective Sponsors
+        </h3>
+        <div>
+         <ul class="sponsors-tier tier-base-support-sponsor">
+          <li>
+           <a href="https://tech.trivago.com/opensource/" rel="noopener sponsored" target="_blank" title="Trivago">
+            <img alt="Sponsored by Trivago" src="https://images.opencollective.com/trivago/9bdcb07/logo.png"/>
+           </a>
+          </li>
+          <li>
+           <a href="https://www.gatsbyjs.com/" rel="noopener sponsored" target="_blank" title="Gatsby">
+            <img alt="Sponsored by Gatsby" src="https://images.opencollective.com/gatsbyjs/2aecbd6/logo/256.png"/>
+           </a>
+          </li>
+          <li>
+           <a href="https://www.airbnb.com/" rel="noopener sponsored" target="_blank" title="Airbnb">
+            <img alt="Sponsored by Airbnb" src="https://images.opencollective.com/airbnb/d327d66/logo.png"/>
+           </a>
+          </li>
+         </ul>
+        </div>
+        <div>
+         <ul class="sponsors-tier tier-gold-sponsors">
+          <li>
+           <a href="https://www.salesforce.com" rel="noopener sponsored" target="_blank" title="Salesforce">
+            <img alt="Sponsored by Salesforce" src="https://images.opencollective.com/salesforce/ca8f997/logo.png"/>
+           </a>
+          </li>
+         </ul>
+        </div>
+        <div>
+         <ul class="sponsors-tier tier-silver-sponsors">
+          <li>
+           <a href="https://retool.com/" rel="noopener sponsored" target="_blank" title="Retool">
+            <img alt="Sponsored by Retool" src="https://images.opencollective.com/retool/98ea68e/logo.png"/>
+           </a>
+          </li>
+          <li>
+           <a href="https://casinority.com/au/" rel="noopener sponsored" target="_blank" title="Casinority Australia">
+            <img alt="Sponsored by Casinority Australia" src="https://images.opencollective.com/casinority-australia/6f18bae/avatar.png"/>
+           </a>
+          </li>
+          <li>
+           <a href="https://codecademy.com" rel="noopener sponsored" target="_blank" title="Codecademy">
+            <img alt="Sponsored by Codecademy" src="https://images.opencollective.com/codecademy/d56a48d/logo.png"/>
+           </a>
+          </li>
+          <li>
+           <a href="https://www.nettikasinot.media/" rel="noopener sponsored" target="_blank" title="Nettikasinot.media">
+            <img alt="Sponsored by Nettikasinot.media" src="https://images.opencollective.com/nettikasinot-media/2dba7da/logo.png"/>
+           </a>
+          </li>
+          <li>
+           <a href="https://www.japanesecasino.com/" rel="noopener sponsored" target="_blank" title="Japanesecasino">
+            <img alt="Sponsored by Japanesecasino" src="https://images.opencollective.com/japanesecasino/b0ffe3c/logo.png"/>
+           </a>
+          </li>
+          <li>
+           <a href="https://webflow.com" rel="noopener sponsored" target="_blank" title="Webflow">
+            <img alt="Sponsored by Webflow" src="https://images.opencollective.com/webflow/f4a161b/logo.png"/>
+           </a>
+          </li>
+          <li>
+           <a href="https://vercel.com" rel="noopener sponsored" target="_blank" title="Vercel">
+            <img alt="Sponsored by Vercel" src="https://images.opencollective.com/vercel/7ee187e/logo.png"/>
+           </a>
+          </li>
+          <li>
+           <a href="https://elastic.co" rel="noopener sponsored" target="_blank" title="Elastic">
+            <img alt="Sponsored by Elastic" src="https://images.opencollective.com/elastic/dce5929/logo.png"/>
+           </a>
+          </li>
+          <li>
+           <a href="https://discordapp.com" rel="noopener sponsored" target="_blank" title="Discord">
+            <img alt="Sponsored by Discord" src="https://images.opencollective.com/discordapp/7e3d9a9/logo.png"/>
+           </a>
+          </li>
+          <li>
+           <a href="https://www.firesticktricks.com" rel="noopener sponsored" target="_blank" title="Fire Stick Tricks">
+            <img alt="Sponsored by Fire Stick Tricks" src="https://images.opencollective.com/fire-stick-tricks/b8fbe2c/logo.png"/>
+           </a>
+          </li>
+          <li>
+           <a href="https://www.bitmex.com" rel="noopener sponsored" target="_blank" title="BitMEX">
+            <img alt="Sponsored by BitMEX" src="https://images.opencollective.com/bitmex/88df0a7/logo.png"/>
+           </a>
+          </li>
+         </ul>
+         <div class="section promoSection">
+          <div class="promoRow">
+           <div class="pluginRowBlock">
+            <div class="pluginWrapper buttonWrapper">
+             <a class="button" href="https://opencollective.com/babel" target="_blank">
+              Become a sponsor
+             </a>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <footer class="nav-footer" id="footer">
+    <section class="sitemap">
+     <a class="nav-home" href="/">
+      <img alt="Babel" height="58" src="https://d33wubrfki0l68.cloudfront.net/7a197cfe44548cc1a3f581152af70a3051e11671/78df8/img/babel.svg" width="66"/>
+     </a>
+     <div>
+      <h5>
+       Docs
+      </h5>
+      <a href="/docs/en/learn.html">
+       Learn ES2015
+      </a>
+     </div>
+     <div>
+      <h5>
+       Community
+      </h5>
+      <a href="/en/videos.html">
+       Videos
+      </a>
+      <a href="/en/users.html">
+       User Showcase
+      </a>
+      <a href="http://stackoverflow.com/questions/tagged/babeljs" rel="noopener noreferrer" target="_blank">
+       Stack Overflow
+      </a>
+      <a href="https://babeljs.slack.com/">
+       Slack Channel
+      </a>
+      <a href="https://twitter.com/babeljs" rel="noopener noreferrer" target="_blank">
+       Twitter
+      </a>
+     </div>
+     <div>
+      <h5>
+       More
+      </h5>
+      <a href="/blog">
+       Blog
+      </a>
+      <a href="https://github.com/babel">
+       GitHub Org
+      </a>
+      <a href="https://github.com/babel/babel">
+       GitHub Repo
+      </a>
+      <a href="https://github.com/babel/website">
+       Website Repo
+      </a>
+      <a href="https://old.babeljs.io">
+       Old 6.x Site
+      </a>
+      <a href="http://henryzoo.com/babel.github.io">
+       Old 5.x Site
+      </a>
+     </div>
+    </section>
+   </footer>
+  </div>
+  <script src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js" type="text/javascript">
+  </script>
+  <script>
+   document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+  </script>
+  <script>
+   var search = docsearch({
+                
+                apiKey: 'd42906b043c5422ea07b44fd49c40a0d',
+                indexName: 'babeljs',
+                inputSelector: '#search_input_react'
+              });
+  </script>
+ </body>
+</html>

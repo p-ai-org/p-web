@@ -1,0 +1,71 @@
+<html>
+ <head>
+  <script type="text/javascript">
+   function callAjax(url, fallbackUrl, callback){
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function(){
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200){
+            callback(xmlhttp.responseText);
+        }
+    }
+    xmlhttp.open("GET", url, true);
+    xmlhttp.timeout = 3000; // time in milliseconds
+    xmlhttp.ontimeout = function() {
+        console.log("countrycode xhr request timed out");
+        window.location.replace(fallbackUrl);
+    }
+    xmlhttp.send();
+}
+
+function findInLocales(locales, cookielocale) {
+    var i = 0;
+    var found = "";
+    while (i < locales.length && !found) {
+        if (locales[i].substring(2) === '_' + cookielocale.toLowerCase()) {
+            found = locales[i];
+        }
+        i++;
+    }
+    return found;
+}
+
+function geoResetURL(locales) {
+    var windowReplacement = window.location.href;
+    var regex = /\/[a-zA-Z][a-zA-Z]_[a-zA-Z][a-zA-Z]\//;
+    var regextest =  /[a-zA-Z][a-zA-Z]_[a-zA-Z][a-zA-Z]/;
+    windowReplacement = windowReplacement.replace('.geo.', '.');
+    var match = document.cookie.match(new RegExp('(^| )usr_locale=([^;]+)'));
+    var cookielocale = '';
+    if (match != null && match.length > 2) {cookielocale = match[2];}
+    if (!cookielocale.match(regextest)) {
+        var result;
+        var code = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        callAjax( '/services/countrycode?'+code, windowReplacement,
+                function (result) {
+                    var jsonresult = result.replace(/[()]/g, '');
+                    cookielocale = findInLocales(locales, (JSON.parse(jsonresult)).address.country_code);
+                    if (locales.indexOf(cookielocale) != -1) {
+                        windowReplacement = windowReplacement.replace(regex, '/' + cookielocale + '/');
+                    }
+                  window.location.replace(windowReplacement);
+                });
+    } else {
+        if (locales.indexOf(cookielocale) != -1) {
+            windowReplacement = windowReplacement.replace(regex, '/' + cookielocale + '/'); 
+        }
+        window.location.replace(windowReplacement);
+    }
+}
+
+(function () { 
+var locales = ['en_si','de_at','en_au','es_ar','en_be','pt_br','en_ca','fr_ca','es_cl','zh_cn','es_co','cs_cz','da_dk','fi_fi','fr_fr','de_de','el_gr','en_hk','hu_hu','en_is','en_in','en_id','id_id','en_ie','it_it','ja_jp','ko_kr','en_lu','en_my','es_mx','en_ae','fr_ma','nl_nl','en_nz','no_no','es_pe','en_ph','pl_pl','pt_pt','ro_ro','ru_ru','en_sa','en_sg','sk_sk','en_za','es_es','sv_se','de_ch','fr_ch','zh_tw','en_th','th_th','tr_tr','ru_ua','en_gb','en_us','en_xx']; 
+geoResetURL(locales); 
+  }) ();
+  </script>
+ </head>
+ <body>
+  <p>
+   Redirecting ...
+  </p>
+ </body>
+</html>

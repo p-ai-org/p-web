@@ -1,0 +1,439 @@
+/* - at.kss - */
+/* https://www.enea.it/portal_kss/at.kss?original=1 */
+/* */
+input.blurrable:blur,
+select.blurrable:blur,
+textarea.blurrable:blur {
+action-server:                kssValidateField;
+kssValidateField-fieldname:   kssAttr('atfieldname', true);
+kssValidateField-value:       currentFormVar();
+kssValidateField-uid:         kssAttr('atuid', true);
+}
+form[action=criterion_edit_form] input.blurrable:blur,
+form[action=criterion_edit_form] select.blurrable:blur,
+form[action=criterion_edit_form] textarea.blurrable:blur {
+action-cancel: kssValidateField;
+}
+.inlineEditable:click {
+evt-click-allowbubbling: true;
+action-server: replaceField;
+replaceField-fieldname: kssAttr('atfieldname', true);
+replaceField-macro: kssAttr('macro', true);
+replaceField-templateId: kssAttr('templateId', true);
+replaceField-uid: kssAttr('atuid', true);
+replaceField-target: kssAttr('target', true);
+replaceField-edit: true;
+}
+form.inlineForm input[name=kss-save]:click {
+evt-click-preventdefault: true;
+action-server: saveField;
+saveField-fieldname: kssAttr('atfieldname', true);
+saveField-kssSubmitForm: currentForm();
+saveField-macro: kssAttr('macro', true);
+saveField-templateId: kssAttr('templateId', true);
+saveField-uid: kssAttr('atuid', true);
+saveField-target: kssAttr('target', true);
+}
+/* */
+form.inlineForm input[name=kss-cancel]:click {
+evt-click-preventdefault: true;
+action-server: replaceWithView;
+replaceWithView-fieldname: kssAttr('atfieldname', true);
+replaceWithView-macro: kssAttr('macro', true);
+replaceWithView-templateId: kssAttr('templateId', true);
+replaceWithView-uid: kssAttr('atuid', true);
+replaceWithView-target: kssAttr('target', true);
+replaceWithView-edit: true;
+}
+form.inlineForm input.blurrable:keypress(inlineescape),
+form.inlineForm select.blurrable:keypress(inlineescape),
+form.inlineForm textarea.blurrable:keypress(inlineescape) {
+evt-keypress-keycodes: '27';
+action-server: replaceWithView;
+replaceWithView-fieldname: kssAttr('atfieldname', true);
+replaceWithView-macro: kssAttr('macro', true);
+replaceWithView-templateId: kssAttr('templateId', true);
+replaceWithView-uid: kssAttr('atuid', true);
+replaceWithView-target: kssAttr('target', true);
+replaceWithView-edit: true;
+}
+/* */
+form.inlineForm input[type="text"].blurrable:keydown,
+form.inlineForm input[type="text"].blurrable:keypress {
+evt-keydown-preventdefault: true;
+evt-keydown-keycodes: 13;
+evt-keypress-preventdefault: true;
+evt-keypress-keycodes: 13;
+}
+form.inlineForm input[type="text"].blurrable:keyup {
+evt-keyup-preventdefault: true;
+evt-keyup-keycodes: 13;
+action-client: log;
+action-server: saveField;
+saveField-fieldname: kssAttr('atfieldname', true);
+saveField-kssSubmitForm: currentForm();
+saveField-macro: kssAttr('macro', true);
+saveField-templateId: kssAttr('templateId', true);
+saveField-uid: kssAttr('atuid', true);
+saveField-target: kssAttr('target', true);
+}
+.inlineEditable a:click {
+evt-click-preventbubbling: true;
+}
+
+
+/* - plone.kss - */
+/* https://www.enea.it/portal_kss/plone.kss?original=1 */
+/* */
+/* */
+/* */
+body:load {
+action-client: addClass;
+addClass-value: kssActive;
+}
+ul.contentViews li a:plone-formProtectionChecked {
+action-server: replaceContentRegion;
+replaceContentRegion-tabid: nodeAttr(id, true);
+replaceContentRegion-url: nodeAttr(href);
+replaceContentRegion-error: plone-followLink;
+action-client: plone-removeLockProtection;
+}
+iframe.kupu-editor-iframe:load {
+action-client: plone-initKupu;
+}
+#content:load {
+evt-load-initial: false;
+action-client: initializeCollapsible;
+}
+#content .inlineEditable:load {
+evt-load-initial: false;
+action-client: bindExternalLinks;
+}
+/* */
+div.portlet-deferred:load {
+action-server: refreshPortlet;
+refreshPortlet-portlethash: kssAttr(portlethash, True);
+}
+#contentActionMenus:load {
+evt-load-initial: false;
+action-client: bindActionMenus;
+}
+/* */
+/* */
+#contextSetDefaultPage:click {
+evt-click-preventdefault: False;
+action-cancel: changeViewTemplate;
+}
+#folderChangeDefaultPage:click {
+evt-click-preventdefault: False;
+action-cancel: changeViewTemplate;
+}
+/* */
+a.actionicon-object_buttons-cut:click {
+evt-click-preventdefault: True;
+evt-click-allowbubbling: True;
+action-server: cutObject;
+}
+a.actionicon-object_buttons-copy:click {
+evt-click-preventdefault: True;
+evt-click-allowbubbling: True;
+action-server: copyObject;
+}
+#plone-contentmenu-workflow dd.actionMenuContent a:click {
+evt-click-preventdefault: True;
+evt-click-allowbubbling: True;
+action-server: changeWorkflowState;
+changeWorkflowState-url: nodeAttr(href);
+}
+#plone-contentmenu-workflow dd.actionMenuContent a.kssIgnore:click {
+evt-click-preventdefault: False;
+action-cancel: changeWorkflowState;
+}
+a.kssCalendarChange:click {
+evt-click-preventdefault:      true;
+action-server:                 refreshCalendar;
+refreshCalendar-portlethash:   kssAttr(portlethash, True);
+refreshCalendar-year:          kssAttr(year);
+refreshCalendar-month:         kssAttr(month);
+}
+/* */
+#kss-spinner:spinneron {
+action-client: setStyle;
+setStyle-name: display;
+setStyle-value: block;
+}
+#kss-spinner:spinneroff {
+action-client: setStyle;
+setStyle-name: display;
+setStyle-value: none;
+}
+form.enableFormTabbing:load {
+evt-load-initial: false;
+action-client: plone-initFormTabs;
+}
+form.enableUnloadProtection:load {
+evt-load-initial: false;
+action-client: plone-initFormProtection;
+}
+form.enableUnlockProtection:load {
+evt-load-initial: false;
+action-client: plone-initLockingProtection;
+}
+/* */
+div.inlineEditable:load {
+evt-load-initial: false;
+action-client: plone-removeLockProtection;
+}
+#sharing-save-button:click {
+evt-click-preventdefault: true;
+action-server: updateSharingInfo;
+updateSharingInfo-kssSubmitForm: currentForm();
+updateSharingInfo-error: plone-submitCurrentForm;
+}
+#sharing-user-group-search:keyup {
+evt-keyup-preventdefault: true;
+evt-keyup-keycodes: 13;
+action-server: updateSharingInfo;
+updateSharingInfo-kssSubmitForm: currentForm();
+}
+/* */
+#kupu-save-button:load {
+action-client: setStyle;
+setStyle-name: display;
+setStyle-value: inline;
+}
+button.kupu-save:click {
+action-server: savekupu;
+savekupu-text: currentFormVarFromKssAttr("atfieldname", true);
+savekupu-fieldname: kssAttr("atfieldname", true);
+}
+/* */
+body:load {
+action-client: plone-initShiftDetection;
+}
+#folderlisting-main-table input[type="checkbox"]:change {
+action-client: plone-createCheckBoxSelection;
+plone-createCheckBoxSelection-group: 'table.listing input[type="checkbox"]';
+}
+#folderlisting-main-table input[type="checkbox"]:change {
+action-client: toggleClass;
+toggleClass-kssSelector: parentnode("table.listing tbody tr");
+toggleClass-classname: "selected";
+}
+/* */
+.update-selection:click, #listing-table .column:click {
+action-server: update_table url(kssAttr("serveraction", true));
+evt-click-preventdefault: True;
+update_table-pagenumber: currentFormVar('pagenumber');
+update_table-show_all: currentFormVar('show_all');
+update_table-sort_on: currentFormVar('sort_on');
+}
+#foldercontents-show-batched:click {
+update_table-show_all: "false";
+}
+#foldercontents-show-all:click {
+update_table-show_all: "true";
+update_table-pagenumber: "1";
+}
+#foldercontents-title-column:click {
+update_table-sort_on: "sortable_title";
+}
+#foldercontents-modified-column:click {
+update_table-sort_on: "modified";
+}
+#foldercontents-status-column:click {
+update_table-sort_on: "review_state";
+}
+#foldercontents-selectall:click {
+update_table-select: 'screen';
+}
+#foldercontents-selectall-completebatch:click {
+update_table-select: 'all';
+}
+#foldercontents-clearselection:click {
+update_table-select: 'none';
+}
+#folderlisting-main-table:load {
+action-client: plone-initDragAndDrop;
+plone-initDragAndDrop-table: '#listing-table';
+}
+#folderlisting-main-table:load {
+action-client: plone-initCheckBoxSelection;
+}
+/* */
+#kupu-save-button:load {
+action-client: setStyle;
+setStyle-name: display;
+setStyle-value: inline;
+}
+div.kupu-save-message:timeout {
+evt-timeout-delay: 2000;
+evt-timeout-repeat: '';
+action-client: deleteNode;
+}
+#portal-message:timeout {
+evt-timeout-delay: 2000;
+evt-timeout-repeat: '';
+action-client: deleteNode;
+}
+/* */
+/* */
+/* */
+/* */
+/* */
+#lock-icon:load{
+action-server: updateLockInfo;
+}
+
+
+/* - ++resource++plone.app.form.kss - */
+/* https://www.enea.it/portal_kss/++resource++plone.app.form.kss?original=1 */
+.formlibInlineValidation input[type="text"]:blur {
+action-server: kss_formlib_inline_validation;
+kss_formlib_inline_validation-formname:    kssAttr('formname', true);
+kss_formlib_inline_validation-fieldname:   kssAttr('fieldname', true);
+kss_formlib_inline_validation-value:       currentFormVar();
+kss_formlib_inline_validation-kssSubmitForm: currentForm();
+}
+.formlibInlineValidation input[type="password"]:blur {
+action-server: kss_formlib_inline_validation;
+kss_formlib_inline_validation-formname:    kssAttr('formname', true);
+kss_formlib_inline_validation-fieldname:   kssAttr('fieldname', true);
+kss_formlib_inline_validation-value:       currentFormVar();
+kss_formlib_inline_validation-kssSubmitForm: currentForm();
+}
+.formlibInlineValidation input[type="checkbox"]:blur {
+action-server: kss_formlib_inline_validation;
+kss_formlib_inline_validation-formname:    kssAttr('formname', true);
+kss_formlib_inline_validation-fieldname:   kssAttr('fieldname', true);
+kss_formlib_inline_validation-value:       currentFormVar();
+kss_formlib_inline_validation-kssSubmitForm: currentForm();
+}
+.formlibInlineValidation input[type="radio"]:blur {
+action-server: kss_formlib_inline_validation;
+kss_formlib_inline_validation-formname:    kssAttr('formname', true);
+kss_formlib_inline_validation-fieldname:   kssAttr('fieldname', true);
+kss_formlib_inline_validation-value:       currentFormVar();
+kss_formlib_inline_validation-kssSubmitForm: currentForm();
+}
+.formlibInlineValidation select:blur {
+action-server: kss_formlib_inline_validation;
+kss_formlib_inline_validation-formname:    kssAttr('formname', true);
+kss_formlib_inline_validation-fieldname:   kssAttr('fieldname', true);
+kss_formlib_inline_validation-value:       currentFormVar();
+kss_formlib_inline_validation-kssSubmitForm: currentForm();
+}
+.formlibInlineValidation textarea:blur {
+action-server: kss_formlib_inline_validation;
+kss_formlib_inline_validation-formname:    kssAttr('formname', true);
+kss_formlib_inline_validation-fieldname:   kssAttr('fieldname', true);
+kss_formlib_inline_validation-value:       currentFormVar();
+kss_formlib_inline_validation-kssSubmitForm: currentForm();
+}
+/* */
+.formlibInlineEditable:click {
+evt-click-allowbubbling: true;
+action-server: kss_formlib_inline_edit_begin;
+kss_formlib_inline_edit_begin-formname: kssAttr('formname', true);
+kss_formlib_inline_edit_begin-fieldname: kssAttr('fieldname');
+kss_formlib_inline_edit_begin-structure: kssAttr('structure');
+}
+.formlibInlineEditable a:click {
+evt-click-preventbubbling: true;
+}
+.formlibInlineEditable form.formlibInlineForm:click {
+evt-click-allowbubbling: true;
+evt-click-preventbubbling: true;
+}
+/* */
+form.formlibInlineForm input[type="text"]:keyup {
+evt-keyup-preventdefault: true;
+evt-keyup-keycodes: 13;
+action-server: kss_formlib_inline_edit_save;
+kss_formlib_inline_edit_save-kssSubmitForm: currentForm();
+kss_formlib_inline_edit_save-formname: kssAttr('formname', true);
+kss_formlib_inline_edit_save-fieldname: kssAttr('fieldname', true);
+kss_formlib_inline_edit_save-structure: kssAttr('structure', true);
+}
+form.formlibInlineForm input[type="text"]:keydown {
+evt-keydown-preventdefault: true;
+evt-keydown-keycodes: 13;
+action-client: log;
+}
+form.formlibInlineForm input[type="text"]:keypress {
+evt-keypress-preventdefault: true;
+evt-keypress-keycodes: 13;
+action-client: log;
+}
+form.formlibInlineForm input[name=kss-save]:click {
+evt-click-preventdefault: true;
+action-server: kss_formlib_inline_edit_save;
+kss_formlib_inline_edit_save-kssSubmitForm: currentForm();
+kss_formlib_inline_edit_save-formname: kssAttr('formname', true);
+kss_formlib_inline_edit_save-fieldname: kssAttr('fieldname', true);
+kss_formlib_inline_edit_save-structure: kssAttr('structure', true);
+}
+/* */
+form.formlibInlineForm input:keypress(inlineescape) {
+evt-keypress-keycodes: '27';
+action-server: kss_formlib_inline_edit_cancel;
+kss_formlib_inline_edit_cancel-fieldname: kssAttr('fieldname', true);
+}
+form.formlibInlineForm select:keypress(inlineescape) {
+evt-keypress-keycodes: '27';
+action-server: kss_formlib_inline_edit_cancel;
+kss_formlib_inline_edit_cancel-fieldname: kssAttr('fieldname', true);
+}
+form.formlibInlineForm textarea:keypress(inlineescape) {
+evt-keypress-keycodes: '27';
+action-server: kss_formlib_inline_edit_cancel;
+kss_formlib_inline_edit_cancel-fieldname: kssAttr('fieldname', true);
+}
+form.formlibInlineForm input[name=kss-cancel]:click {
+evt-click-preventdefault: true;
+action-server: kss_formlib_inline_edit_cancel;
+kss_formlib_inline_edit_cancel-fieldname: kssAttr('fieldname', true);
+}
+
+
+/* - linguaplone.kss - */
+/* https://www.enea.it/portal_kss/linguaplone.kss?original=1 */
+.canonicalLanguage .inlineEditable:click {
+action-cancel: replaceField;
+}
+.canonicalLanguage:load {
+action-client: removeClass;
+removeClass-value: kssActive;
+removeClass-kssSelector: body;
+}
+
+
+/* - ++resource++plone.app.z3cform - */
+/* https://www.enea.it/portal_kss/++resource++plone.app.z3cform?original=1 */
+.z3cformInlineValidation input[type="text"]:blur,
+.z3cformInlineValidation input[type="password"]:blur,
+.z3cformInlineValidation input[type="checkbox"]:blur,
+.z3cformInlineValidation input[type="radio"]:blur,
+.z3cformInlineValidation select:blur,
+.z3cformInlineValidation textarea:blur {
+action-server: kss_z3cform_inline_validation;
+kss_z3cform_inline_validation-formname:      kssAttr('formname', true);
+kss_z3cform_inline_validation-fieldname:     kssAttr('fieldname', true);
+kss_z3cform_inline_validation-fieldset:      kssAttr('fieldset', true);
+kss_z3cform_inline_validation-value:         currentFormVar();
+kss_z3cform_inline_validation-kssSubmitForm: currentForm();
+}
+
+
+/* - ploneformgen.kss - */
+/* https://www.enea.it/portal_kss/ploneformgen.kss?original=1 */
+.pfg-form input.blurrable:blur {
+action-cancel: kssValidateField;
+}
+.pfg-form select.blurrable:blur {
+action-cancel: kssValidateField;
+}
+.pfg-form textarea.blurrable:blur {
+action-cancel: kssValidateField;
+}
+

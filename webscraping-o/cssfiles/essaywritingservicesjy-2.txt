@@ -1,0 +1,323 @@
+/*******************************************************************************
+ Copyright (c) 2013-5 AccessibilityOz        http://www.accessibilityoz.com.au/
+ ------------------------------------------------------------------------------
+ OzPlayer [2.0] =&gt; sample transcript styles
+ ------------------------------------------------------------------------------
+*******************************************************************************/
+
+
+
+/* transcript expander */
+.ozplayer-expander
+{
+	/* n.b. display is essential for html5 elements */
+	display:block;
+	
+	margin:10px 0 0 0;
+	
+	/* set auto width so it expands to the size of its container 
+	   or you can set a specific width e.g. to match the transcript width */
+	width:auto;
+	width:644px;
+}
+
+
+
+/* transcript expander =&gt; trigger */
+.ozplayer-expander summary
+{
+	/* n.b. relative positioning keeps the focus caret above the transcript */
+	position:relative;
+	z-index:2000;
+	
+	/* n.b. display is essential for html5 elements */
+	display:block;
+
+	padding:3px 10px 5px 10px;
+
+	border:2px solid #101010;
+
+	background:#202020;
+	color:#fff;
+
+	cursor:default;
+}
+
+
+/* transcript expander =&gt; trigger =&gt; twisty */
+.ozplayer-expander summary span
+{
+	display:inline-block;
+	
+	width:1em;
+	
+	margin:0 0.6em 0 0;
+	
+	font-size:0.8em;
+}
+
+
+
+
+
+
+
+/* transcript container */
+.ozplayer-transcript
+{
+	/* n.b. relative positioning will be enforced by the script */
+	position:relative;
+	z-index:1000;
+	
+	margin:10px 0 0 0;
+	padding:4px 20px 16px 20px;
+	
+	/* set auto width so it expands to the size of its container 
+	   or you can set a specific width e.g. to match the video width */
+	width:auto;
+	width:600px;
+	
+	/* limit the height with overflow-y, then playback will auto-scroll it
+	   (or you can set auto height to have the whole transcript visible) */
+	height:9.5em;
+	overflow-y:auto;
+
+	/* allow vertical resizing (where supported) */
+	resize:vertical;
+	
+	border:2px solid #101010;
+	
+	text-align:left;
+
+	background:#f5f5f5;
+}
+
+
+
+/* transcript container when it's inside the expander */
+.ozplayer-expander .ozplayer-transcript
+{
+	margin-top:0;
+
+	border-top:none;
+}
+
+
+
+/* transcript text color for all inner elements */
+.ozplayer-transcript, 
+.ozplayer-transcript *
+{
+	color:#333;
+}
+
+
+
+/* negate resizing for inner elements */
+.ozplayer-transcript *
+{
+	resize:none;
+}
+
+
+
+
+
+
+
+
+/* transcript print styles */
+@media print
+{
+
+	/* transcript container when it's inside the expander */
+	.ozplayer-expander .ozplayer-transcript
+	{
+		display:block !important;
+	}
+	
+	
+	
+	/* transcript colors for all elements */
+	.ozplayer-expander summary,
+	.ozplayer-transcript, 
+	.ozplayer-transcript *
+	{
+		/* black and white is best for print */
+		background:#fff;
+		color:#000;
+	}
+	
+	
+
+	/* transcript container */
+	.ozplayer-transcript
+	{
+		/* expand to auto height so there's no scrolling overflow */
+		height:auto;
+		overflow-y:visible;
+	
+		/* negate vertical resizing */
+		resize:none;
+	}
+	
+}
+
+
+
+
+
+
+
+/* transcript =&gt; single caption cue */
+.ozplayer-transcript blockquote
+{
+	margin:0 0 0 40px;
+	padding:0;
+}
+
+
+
+/* transcript =&gt; single additional transcript cue */
+.ozplayer-transcript div
+{
+	margin:0 0 0 12px;
+	padding:0;
+}
+
+
+
+
+
+
+
+/* transcript =&gt; single cue =&gt; cue lines (one or more per cue) */
+.ozplayer-transcript p
+{
+	/* n.b. using padding-top for spacing so there's always space above 
+	   each cue, then it's not right up to the edge when auto-scrolled */
+	padding:12px 0 0 0;
+	margin:0;
+}
+
+
+
+/* transcript =&gt; single caption cue =&gt; cue lines =&gt; quotation wrapper (one per line) */
+.ozplayer-transcript p q
+{
+	quotes:none;
+}
+.ozplayer-transcript p q::before,
+.ozplayer-transcript p q::after
+{
+	content:"";
+	display:none;
+}
+
+
+
+/* transcript =&gt; single cue =&gt; cue lines =&gt; voice prefix */
+.ozplayer-transcript p cite
+{
+	display:inline-block;
+	margin:0;
+	padding:0;
+	
+	border:none;
+
+	font-weight:bold;
+	font-style:normal;
+	text-transform:uppercase;
+}
+
+
+
+/* transcript =&gt; single cue =&gt; cue lines =&gt; active cue wrapper */
+.ozplayer-transcript p mark
+{
+	/* n.b. this needs relative positioning 
+	   as a context for the active cue pointer */
+	position:relative;
+	
+	display:block;
+	padding:4px 8px;
+	margin:-4px -8px;
+	
+	border:none;
+	
+	-moz-border-radius:2px;
+	-webkit-border-radius:2px;
+	border-radius:2px;
+	
+	text-decoration:none;
+	
+	background:#ffc;
+	color:#000;
+	
+	-moz-box-shadow:0 0 0 1px #aaa;
+	-webkit-box-shadow:0 0 0 1px #aaa;
+	box-shadow:0 0 0 1px #aaa;
+}
+
+
+
+/* transcript =&gt; single cue =&gt; cue lines =&gt; active cue pointer */
+.ozplayer-transcript p mark abbr
+{
+	position:absolute;
+	
+	display:block;
+	margin:0;
+	padding:0;
+	
+	border:none;
+	
+	/* define the pointer icon in the middle of the container */
+	background:url("transcript-cue.png") no-repeat 0 50%;
+	
+	/* match position and width to the icon width */
+	left:-16px;
+	width:16px;
+	
+	/* set margin to fine-tune its offset relative to the text */
+	margin:0 0 0 -4px;
+
+	/* hide the fallback glyph so it's only seen without CSS
+	   using text-indent so it still creates the element's height
+	   then overflow so the indented text disappears outside the box */
+	text-indent:-2em;
+	overflow:hidden;
+}
+
+
+
+/* n.b. hide additional active-cue pointers within a single cue 
+   so that cues with multiple lines only show the fist pointer */
+.ozplayer-transcript p + p mark abbr
+{
+	visibility:hidden;
+}
+
+
+
+
+
+
+
+/* transcript =&gt; messages (loading, error, end of transcript) */
+.ozplayer-transcript &gt; p:last-child
+{
+	padding-bottom:16px;
+	
+	/* use visual caps for the end of transcript message 
+	   since using literal caps affects how screenreaders read it 
+	   e.g. "END" would be read as initials rather than as a word */
+	text-transform:uppercase;
+}
+.ozplayer-transcript &gt; p:last-child *
+{
+	/* negate visual caps for loading and error messages */
+	text-transform:none;
+}
+
+

@@ -1,0 +1,49 @@
+/* Override some Ultimenu CSS to remove the :hover functionality and use click instead.
+ * @see /themes/basic/js/ultimenu-override.js
+*/
+
+
+
+@media screen and (min-width: 1024px) {
+  /* Force hover to stay hidden */
+  .ultimenu--hover &gt; li:hover &gt; .ultimenu__flyout {
+    visibility: hidden !important;
+    opacity: 0;
+    max-height: 0;
+    z-index: 1000;
+  }
+
+  /* Force focus anywhere in li to show  */
+  .ultimenu--hover &gt; li:focus-within .ultimenu__flyout {
+    visibility: visible !important;
+    opacity: 1;
+    max-height: none;
+  }
+  .ultimenu--hover &gt; li &gt; .ultimenu__link:focus {
+    /*background-color: #f00;*/
+  }
+
+  /* This works until you click (so the link loses focus */
+  .ultimenu--hover &gt; li &gt; .ultimenu__link:focus ~ .ultimenu__flyout {
+    visibility: visible !important;
+    opacity: 1 !important;
+    max-height: none !important;
+  }
+  /* This uses the js which adds link-focus to all children */
+  .ultimenu--hover &gt; li.focus-within &gt; .ultimenu__link ~ .ultimenu__flyout {
+    visibility: visible !important;
+    opacity: 1 !important;
+    max-height: none !important;
+  }
+}
+
+/* Fix for Safari - allow normal hover behaviour */
+@media not all and (min-resolution: .001dpcm) {
+  @media {
+    .ultimenu--hover &gt; li:hover &gt; .ultimenu__flyout {
+        visibility: visible !important;
+        opacity: 1 !important;
+        max-height: none !important;
+    }
+  }
+}

@@ -1,0 +1,680 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <meta content="upgrade-insecure-requests" http-equiv="Content-Security-Policy"/>
+  <title>
+   Pensoft Publishers
+  </title>
+  <meta content="" name="description"/>
+  <meta content="" name="keywords"/>
+  <meta content="" name="author"/>
+  <meta content="global" name="distribution"/>
+  <meta content="index, follow, all" name="robots"/>
+  <link href="/i/ico/pensoft.ico" rel="SHORTCUT ICON"/>
+  <link href="/lib/css/flexboxgrid.min.css" rel="stylesheet" type="text/css"/>
+  <link href="/lib/css/def.css?v=1615382050" media="all" rel="stylesheet" title="default" type="text/css"/>
+  <link href="/lib/css/global.css?v=1615304953" media="all" rel="stylesheet" title="default" type="text/css"/>
+  <link href="/lib/css/ui.dynatree.css?v=1463057607" media="all" rel="stylesheet" title="default" type="text/css"/>
+  <link href="/lib/ui-lightness/jquery-ui-1.8.24.custom.css?v=1463057607" media="all" rel="stylesheet" title="default" type="text/css"/>
+  <link href="/lib/css/flags.css?v=1565709512" media="all" rel="stylesheet" title="default" type="text/css"/>
+  <link href="/lib/css/publisher_1.css?v=1609249492" media="all" rel="stylesheet" title="default" type="text/css"/>
+  <script src="/lib/js/jquery.js?v=1463057607" type="text/javascript">
+  </script>
+  <script src="/lib/js/jquery_ui.js?v=1463057607" type="text/javascript">
+  </script>
+  <script src="/lib/js/jquery.blockUI.js?v=1490799359" type="text/javascript">
+  </script>
+  <script src="/lib/js/jquery.dynatree.js?v=1565709512" type="text/javascript">
+  </script>
+  <script src="/lib/js/jquery.simplemodal.js?v=1490799359" type="text/javascript">
+  </script>
+  <script src="/lib/js/jquery_form.js?v=1463057607" type="text/javascript">
+  </script>
+  <script src="/lib/js/jquery.tokeninput.js?v=1490799359" type="text/javascript">
+  </script>
+  <script src="/lib/js/ajaxupload.3.5.js?v=1599555712" type="text/javascript">
+  </script>
+  <script src="/lib/js/global.js?v=1608044332" type="text/javascript">
+  </script>
+  <script src="/lib/js/def.js?v=1615209703" type="text/javascript">
+  </script>
+  <script src="/lib/js/bowser.js?v=1512637095" type="text/javascript">
+  </script>
+  <script src="https://www.gstatic.com/charts/loader.js" type="text/javascript">
+  </script>
+  <script type="text/javascript">
+   $(document).ready(function(){
+						init_lang_switcher()
+						gBrowserSession = bowser;
+						setTimeout(function(){
+							
+						}, 500);
+						
+//            			if(window.location.hash == "#Browse-Journals"){
+//            				url = "/page.php?"+window.location.search+"#Browse-Journals";
+//            				newurl = addParam(url, "fragment", "Browse-Journals");
+//            				window.location.href = newurl;
+//            			}
+						if(location.hash == "#Browse-Journals"){
+							window.open("/browse_journals", "_blank");
+							window.location.href = "/journals";
+						}
+						if(location.hash == "#Books"){
+							window.open("https://books.pensoft.net/", "_blank");
+							window.location.href = "/books";
+						}
+						if(location.hash == "#E-Books"){
+							window.open("https://books.pensoft.net/", "_blank");
+							window.location.href = "/books";
+						}
+						if(location.hash == "#Advanced-books"){
+							window.open("https://ab.pensoft.net/", "_blank");
+							window.location.href = "/books";
+						}
+						if(location.hash == "#OpenNewJournal"){
+							setTimeout(function(){
+								publishRequestPopUp('new');
+							}, 1000);
+						}
+
+//                        if($(".tabs").length){
+//							var stickyNavTop = $(".tabs").offset().top - 60;                         
+//							var stickyNav = function(){
+//								var scrollTop = $(window).scrollTop();
+//							      
+//								if (scrollTop > stickyNavTop) {
+//								    $(".tabs").addClass("sticky");
+//								} else {
+//								    $(".tabs").removeClass("sticky");
+//								}
+//							};
+//							 
+//							stickyNav();                        
+//							$(window).scroll(function() {
+//							    stickyNav();
+//							});
+//						}
+
+						$('ul.tabs').each(function(){
+							// For each set of tabs, we want to keep track of
+							// which tab is active and its associated content
+							var $active, $content, $links = $(this).find('a');
+
+							// If the location.hash matches one of the links, use that as the active tab.
+							// If no match is found, use the first link as the initial active tab.
+							$active = $($links.filter("[href='"+location.hash+"']")[0] || $links[0]);
+							$active.addClass('active');
+
+							$content = $($active[0].hash);
+
+							// Hide the remaining content
+							$links.not($active).each(function () {
+							  $(this.hash).hide();
+							});
+
+							// Bind the click event handler
+							$(this).find("a").click(function(e){
+
+								// Make the old tab inactive.
+								$active.removeClass('active');
+								$content.hide();
+
+								// Update the variables with the new link and content
+								$active = $(this);
+								$content = $(this.hash);
+
+								location.hash = $active[0].hash;
+
+								if(location.hash == "#Browse-Journals"){
+									window.open("/browse_journals", "_blank");
+									window.location.href = "/journals";
+								}
+								if(location.hash == "#Books"){
+									window.open("https://books.pensoft.net/", "_blank");
+									window.location.href = "/books";
+								}
+								if(location.hash == "#E-Books"){
+									window.open("https://ebooks.pensoft.net/", "_blank");
+									window.location.href = "/books";
+								}
+								if(location.hash == "#Advanced-books"){
+									window.open("https://ab.pensoft.net/", "_blank");
+									window.location.href = "/books";
+								}
+
+//            					if(window.location.hash == "#Browse-Journals"){
+//            						url = "/page.php?page_id=82839#Browse-Journals";
+//            						newurl = addParam(url, "fragment", "Browse-Journals");
+//            						window.location.href = newurl;
+//            					}else{
+//            						url = "/page.php?page_id="+getURLParameter("page_id")+$active[0].hash;
+//            						window.location.href = url;
+//            						window.scrollTo(0, 0);
+//            					}
+
+
+
+								// Make the tab active.
+								$active.addClass('active');
+								$content.show();
+
+								// Prevent the anchor's default click action
+								e.preventDefault();
+							});
+						});
+					});
+  </script>
+  <script async="" defer="" src="https://www.google.com/recaptcha/api.js">
+  </script>
+ </head>
+ <body class="g- pensoft home">
+  <div class="main">
+   <div class="head sticky">
+    <div class="logo">
+     <a href="/" title="Pensoft">
+     </a>
+    </div>
+    <div class="header_menu">
+     <a href="#" id="menu-icon">
+     </a>
+     <div class="menuholder">
+      <ul>
+       <li>
+        <a href="/about">
+         About
+        </a>
+       </li>
+       <li>
+        <a href="/journals">
+         Journals
+        </a>
+        <ul class="dropdown">
+         <li>
+          <a href="/services-authors">
+           Author Services
+          </a>
+         </li>
+         <li>
+          <a href="/services-journals">
+           Services for Journals
+          </a>
+         </li>
+         <li>
+          <a href="/browse-journals">
+           Browse Journals
+          </a>
+         </li>
+        </ul>
+       </li>
+       <li>
+        <a href="/books">
+         Books
+        </a>
+        <ul class="dropdown">
+         <li>
+          <a href="/services-books">
+           Services
+          </a>
+         </li>
+         <li>
+          <a href="/open-access-books">
+           Open Access Books
+          </a>
+         </li>
+         <li>
+          <a href="/conventional-books">
+           Conventional Books
+          </a>
+         </li>
+        </ul>
+       </li>
+       <li>
+        <a href="/conferences">
+         Conferences
+        </a>
+        <ul class="dropdown">
+         <li>
+          <a href="/services-conferences">
+           Services
+          </a>
+         </li>
+         <li>
+          <a href="/conference-abstract">
+           Conference Abstracts
+          </a>
+         </li>
+         <li>
+          <a href="/conference-proceedings">
+           Conference Proceedings
+          </a>
+         </li>
+        </ul>
+       </li>
+       <li>
+        <a href="/research-projects">
+         Projects
+        </a>
+        <ul class="dropdown">
+         <li>
+          <a href="/services-projects">
+           Services
+          </a>
+         </li>
+         <li>
+          <a href="/projects">
+           Projects
+          </a>
+         </li>
+         <li>
+          <a href="/partners">
+           Partners
+          </a>
+         </li>
+        </ul>
+       </li>
+       <li>
+        <a href="/platforms">
+         Platforms &amp; Websites
+        </a>
+       </li>
+       <li>
+        <a href="http://blog.pensoft.net/" target="_blank">
+         Blog &amp; News
+        </a>
+       </li>
+       <li>
+        <a href="/contacts">
+         Contacts
+        </a>
+       </li>
+      </ul>
+     </div>
+     <!-- end of menuholder -->
+    </div>
+    <div class="flex-set end-xs login_register_or_profile">
+     <div class="loginOrRegister login_register">
+      <a class="register" href="/register.php">
+       Register
+      </a>
+      |
+      <a class="login" href="/login.php">
+       Login
+      </a>
+     </div>
+    </div>
+   </div>
+   <!-- END header -->
+   <div class="row middle-xs header-image">
+    <div class="wrapper">
+     <h1>
+      Science Publisher &amp; Technology Provider
+     </h1>
+     <div class="hideLogin">
+      <div class="loginOrRegister login_register">
+       <a class="register" href="/register.php">
+        Register
+       </a>
+       |
+       <a class="login" href="/login.php">
+        Login
+       </a>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="row between-lg around-md center-xs homepage_boxes">
+    <div class="col-lg-3 col-md-6 col-xs-12 publishing_box">
+     <a href="/journals">
+      <span class="publishing_box_titile">
+       Journal Publishing
+      </span>
+      <span class="journal_publishing">
+      </span>
+     </a>
+    </div>
+    <div class="col-lg-3 col-md-6 col-xs-12 publishing_box">
+     <a href="/books">
+      <span class="publishing_box_titile">
+       Book Publishing
+      </span>
+      <span class="book_publishing">
+      </span>
+     </a>
+    </div>
+    <div class="col-lg-3 col-md-6 col-xs-12 publishing_box">
+     <a href="/research-projects">
+      <span class="publishing_box_titile">
+       Research Projects
+      </span>
+      <span class="researach_projects">
+      </span>
+     </a>
+    </div>
+    <div class="col-lg-3 col-md-6 col-xs-12 publishing_box">
+     <a href="/platforms">
+      <span class="publishing_box_titile">
+       Platforms &amp; websites
+      </span>
+      <span class="platforms_and_websites">
+      </span>
+     </a>
+    </div>
+   </div>
+   <div class="P-PopUp" id="P-General-Popup-Content">
+   </div>
+   <div class="popup-background" style="display:none">
+   </div>
+   <div class="warningCookie" id="warningCookie">
+    <div class="row arownd-xs middle-xs">
+     <div class="col-xs center-xs pwt_additional_class">
+      <p>
+       This website uses cookies in order to improve your web experience.
+       <a href="https://pensoft.net/terms#Cookies" target="_blank">
+        Read our Cookies Policy
+       </a>
+      </p>
+     </div>
+     <div class="col-xs-2">
+      <a id="removeWarningCookie">
+       OK
+      </a>
+     </div>
+    </div>
+   </div>
+   <script type="text/javascript">
+    if( document.cookie.indexOf("WarningCookie") ===-1){
+				$("#warningCookie").show();
+			}else{
+				$("#warningCookie").remove();
+				sessionStorage.removeItem("WarningCookieSession");
+			}
+			
+			if(sessionStorage.getItem("WarningCookieSession") == "YES"){
+				$("#warningCookie").remove();
+			}
+			
+			$("#removeWarningCookie").click(function () {
+				SetCookie('WarningCookie','OK',365) /* expires in 365 days*/
+				$("#warningCookie").remove();
+				sessionStorage.removeItem("WarningCookieSession");
+			});
+			
+			$("#closeWarningCookie").click(function () {
+				sessionStorage.setItem("WarningCookieSession", "YES");
+				$("#warningCookie").remove();
+			});
+   </script>
+  </div>
+  <!-- END main -->
+  <footer class="footer">
+   <div class="">
+    <div class="row top-xs between-xs f_content" id="footer-accordion">
+     <div class="col-md col-sm col-xs-6">
+      <div class="footer_menuholder">
+       <div class="about_foot footer-accordion-toggle">
+        ABOUT PENSOFT
+       </div>
+       <ul>
+        <li>
+         <a href="https://pensoft.net/about#Company-profile">
+          Company Profile
+         </a>
+        </li>
+        <li>
+         <a href="https://pensoft.net/about#Innovations-tools">
+          Innovations &amp; Tools
+         </a>
+        </li>
+        <li>
+         <a href="https://pensoft.net/about#Open-access-policy">
+          Open Access Policies
+         </a>
+        </li>
+        <li>
+         <a href="https://pensoft.net/terms">
+          Terms of Use
+         </a>
+        </li>
+        <li>
+         <a href="https://pensoft.net/editorial-policies">
+          Editorial Policies
+         </a>
+        </li>
+       </ul>
+      </div>
+     </div>
+     <div class="col-md col-sm col-xs-6">
+      <div class="footer_menuholder padding_right">
+       <div class="products_foot footer-accordion-toggle">
+        PRODUCTS
+       </div>
+       <ul>
+        <li>
+         <a href="https://pensoft.net/browse-journals">
+          Journals
+         </a>
+        </li>
+        <li>
+         <a href="https://ab.pensoft.net/">
+          Advanced Books
+         </a>
+        </li>
+        <li>
+         <a href="https://books.pensoft.net/">
+          Conventional Books
+         </a>
+        </li>
+        <li>
+         <a href="https://aca.pensoft.net/">
+          Conference Abstracts
+         </a>
+        </li>
+        <li>
+         <a href="https://ap.pensoft.net/">
+          Conference Proceedings
+         </a>
+        </li>
+       </ul>
+      </div>
+     </div>
+     <div class="col-md col-sm col-xs-6">
+      <div class="footer_menuholder padding_right">
+       <div class="products_foot footer-accordion-toggle">
+        SERVICES
+       </div>
+       <ul>
+        <li>
+         <a href="https://pensoft.net/services-authors">
+          For Authors
+         </a>
+        </li>
+        <li>
+         <a href="https://pensoft.net/services-journals">
+          For Journals
+         </a>
+        </li>
+        <li>
+         <a href="https://pensoft.net/services-books">
+          For Books
+         </a>
+        </li>
+        <li>
+         <a href="https://pensoft.net/services-conferences">
+          For Conferences
+         </a>
+        </li>
+        <li>
+         <a href="https://pensoft.net/for-organisations">
+          For Organisations
+         </a>
+        </li>
+       </ul>
+      </div>
+     </div>
+     <div class="col-md col-sm col-xs-6">
+      <div class="footer_menuholder">
+       <div class="other_foot footer-accordion-toggle">
+        PROJECTS
+       </div>
+       <ul>
+        <li>
+         <a href="https://pensoft.net/projects">
+          Research Projects
+         </a>
+        </li>
+        <li>
+         <a href="https://pensoft.net/services-projects">
+          Services
+         </a>
+        </li>
+        <li>
+         <a href="https://pensoft.net/partners">
+          Partners
+         </a>
+        </li>
+        <li class="hide">
+         <a href="https://pensoft.net/media">
+          Brochure
+         </a>
+        </li>
+       </ul>
+      </div>
+     </div>
+     <div class="col-md col-sm col-xs-6">
+      <div class="footer_menuholder">
+       <div class="other_foot footer-accordion-toggle">
+        ARPHA
+       </div>
+       <ul>
+        <li>
+         <a href="https://arphahub.com/about/platform">
+          ARPHA Publishing Platform
+         </a>
+        </li>
+        <li>
+         <a href="https://arphahub.com/manual">
+          ARPHA Manual
+         </a>
+        </li>
+        <li>
+         <a href="https://arphahub.com/about/pricing_plans">
+          ARPHA Pricing
+         </a>
+        </li>
+        <li>
+         <a href="https://pensoft.net/web-services">
+          Web Services
+         </a>
+        </li>
+       </ul>
+      </div>
+     </div>
+     <div class="col-md col-sm col-xs-6">
+      <div class="footer_menuholder">
+       <div class="contact_foot footer-accordion-toggle">
+        GET IN TOUCH
+       </div>
+       <ul>
+        <li>
+         <a href="https://pensoft.net/contacts">
+          Contacts
+         </a>
+        </li>
+        <li>
+         <a href="javascript:void(0);" onclick="publishRequestPopUp('publish', '', 1);">
+          Publishing Inquiry
+         </a>
+        </li>
+        <li>
+         <a href="javascript:void(0);" onclick="publishRequestPopUp('migrate', '', 1);">
+          Migrate Your Journal
+         </a>
+        </li>
+        <li>
+         <a href="javascript:void(0);" onclick="publishRequestPopUp('new', '', 1);">
+          Open a New Journal
+         </a>
+        </li>
+       </ul>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="foot">
+    <div class="">
+     <ul class="row foot_content">
+      <li class="col-md-3 first-md col-sm-4 col-xs-12">
+       <div class="row middle-xs nowrap start-md center-xs">
+        Follow PENSOFT
+        <a class="facebook" href="https://www.facebook.com/Pensoft/" target="_blank" title="Facebook">
+        </a>
+        <a class="twitter" href="https://twitter.com/Pensoft" target="_blank" title="Twitter">
+        </a>
+        <a class="linkedin" href="https://www.linkedin.com/company/pensoft-publishers/" target="_blank" title="LinkedIn">
+        </a>
+        <a class="youtube" href="https://www.youtube.com/user/PensoftPublishers/videos" target="_blank" title="Youtube">
+        </a>
+       </div>
+      </li>
+      <li class="col-md-2 first-md col-sm start-md center-xs col-xs-12">
+       <a href="https://blog.pensoft.net/">
+        Blog &amp; News
+       </a>
+       <a class="textbox_button" href="https://blog.pensoft.net/#email-subscribers-form-2">
+        Subscribe
+       </a>
+      </li>
+      <li class="col-md-2 first-md col-sm-2 col-xs-12 center-md center-xs first-xs">
+       <a href="/media">
+        Media Center
+       </a>
+      </li>
+      <li class="col-md-1 first-md col-sm col-xs-12 center-md center-xs first-xs hide">
+       <a href="/terms">
+        FAQ
+       </a>
+      </li>
+      <li class="col-md col-sm col-xs-12 end-md center-xs">
+       © Pensoft Publishers 2021
+      </li>
+     </ul>
+    </div>
+   </div>
+  </footer>
+  <div id="modal">
+  </div>
+  <div class="popup-background" style="display:none">
+  </div>
+  <div class="P-PopUp" id="feedback-popup_PublishArticle" style="display: none;">
+   <div class="popup-inner-wrapper">
+    <div id="popup-content">
+     <div tabindex="-1">
+      <div class="P-PopUp-Main-Holder">
+       <div class="P-PopUp-Close-Btn" onclick="popUp(window.close, 'feedback-popup_PublishArticle', 'feedback-popup_PublishArticle'); return false;">
+       </div>
+       <div class="P-PopUp-Content">
+        <div class="P-PopUp-Title">
+         Article Publishing
+        </div>
+        <div class="P-PopUp-Content-Inner-Tables">
+         <div class="publish-article-content">
+          If you want to publish an article, please visit the Browse Journals page and select a journal.
+         </div>
+        </div>
+       </div>
+       <div class="P-PopUp-Footer-Holder">
+        <div class="submit-btn btn pub-art" id="feedback-submit-btn" onclick="window.location.href='/browse_journals'; return false;">
+         Browse Journals
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="P-Clear">
+    </div>
+   </div>
+  </div>
+ </body>
+</html>

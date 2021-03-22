@@ -1,0 +1,1 @@
+.js-sys-ranking-disappear{display:none}

@@ -1,0 +1,3278 @@
+/*
+  Running Squiz Matrix
+  Developed by Squiz - http://www.squiz.net
+  Squiz, Squiz Matrix, MySource, MySource Matrix and Squiz.net are registered Trademarks of Squiz Pty Ltd
+  Page generated: 22 March 2021 13:18:18
+*/
+
+
+/*
+ *  University of Western Sydney
+ *  Author: Pete Rawlings @ http://www.reactive.com
+ *  Copyright © 2012, http://www.reactive.com
+ *  All rights reserved.
+ */
+
+/* NORMALIZE.CSS 2011-08-12T17:28 UTC · http://github.com/necolas/normalize.css
+------------------------------------------------------------------------------------------------------------*/
+
+article, aside, details, figcaption, figure, footer, header, hgroup, nav, section { display:block }
+audio, canvas, video { display:inline-block; *display:inline; *zoom:1 }
+audio:not([controls]) { display:none }
+[hidden] { display:none }
+html { font-size:100%; overflow-y:scroll; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100% }
+body { margin:0 }
+body, button, input, select, textarea { font-family:sans-serif }
+a:link, a:visited  {color: #3975C2;}
+a:hover, a:active {outline:0;}
+a:hover, a:focus {color: #000000;}
+abbr[title] { border-bottom:1px dotted }
+b, strong { font-weight:bold }
+blockquote { margin:1em 40px }
+dfn { font-style:italic }
+mark { background:#ff0; color:#000 }
+pre, code, kbd, samp { font-family:monospace, serif; _font-family:'courier new', monospace; font-size:1em }
+pre { white-space:pre; white-space:pre-wrap; word-wrap:break-word }
+q { quotes:none }
+q:before, q:after { content:''; content:none }
+small { font-size:75% }
+sub, sup { font-size:75%; line-height:0; position:relative; vertical-align:baseline }
+sup { top:-0.5em }
+sub { bottom:-0.25em }
+ul, ol { margin:1em 0; padding:0 0 0 40px }
+dd { margin:0 0 0 40px }
+nav ul, nav ol { list-style:none; list-style-image:none }
+img { border:0; -ms-interpolation-mode:bicubic }
+svg:not(:root) { overflow:hidden }
+figure { margin:0 }
+form { margin:0 }
+fieldset { margin:0; padding:0; border:0 }
+legend { border:0; *margin-left:-7px }
+button, input, select, textarea { font-size:100%; margin:0; vertical-align:baseline; *vertical-align:middle }
+button, input { line-height:normal; *overflow:visible }
+table button, table input { *overflow:auto }
+button, html input[type="button"], input[type="reset"], input[type="submit"] { cursor:pointer; -webkit-appearance:button }
+input[type="checkbox"], input[type="radio"] { box-sizing:border-box; padding:0 }
+input[type="search"] { -webkit-appearance:textfield; -moz-box-sizing:content-box; -webkit-box-sizing:content-box; box-sizing:content-box }
+input[type="search"]::-webkit-search-decoration { -webkit-appearance:none }
+button::-moz-focus-inner, input::-moz-focus-inner { border:0; padding:0 }
+textarea { overflow:auto; vertical-align:top; resize: none; }
+table {border-collapse:collapse; border-spacing:0}
+
+
+/* TYPOGRAPHY
+------------------------------------------------------------------------------------------------------------*/
+
+body {
+ background: #fff repeat 0 0; 
+ color: #5c5c5c; 
+ font: normal normal normal 62.5%/1.5 sans-serif; 
+ font-family: arial, sans-serif; 
+}
+
+em {font-style:italic}
+a, input[type=button], input[type=submit], button {cursor:pointer}
+ol li {padding: 5px 0;}
+
+/*reset ems on nested styles*/
+li p, li li, li a, p a, p span {font-size: 1em}
+li &gt; p {margin-top: 0}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+/* Embedded fonts - the Mo' Bulletproof syntax - http://www.fontspring.com/blog/the-new-bulletproof-font-face-syntax 
+    go to http://www.fontsquirrel.com/fontface/generator to create the different formats for different browsers etc
+ */
+@font-face {
+  font-family: 'helvStd';
+  src: url('https://www.westernsydney.edu.au/__data/assets/file/0003/372144/helveticaneueltstd-roman-webfont.eot?v=0.12.6');
+  src: url('https://www.westernsydney.edu.au/__data/assets/file/0003/372144/helveticaneueltstd-roman-webfont.eot?v=0.12.6?#iefix') format('embedded-opentype'),
+    url('https://www.westernsydney.edu.au/__data/assets/file/0005/372146/helveticaneueltstd-roman-webfont.woff?v=0.12.6') format('woff'),
+    url('https://www.westernsydney.edu.au/__data/assets/file/0004/372145/helveticaneueltstd-roman-webfont.ttf?v=0.12.6') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'helvLght';
+  src: url('https://www.westernsydney.edu.au/__data/assets/file/0017/372140/helveticaneueltstd-lt-webfont.eot?v=0.12.6');
+  src: url('https://www.westernsydney.edu.au/__data/assets/file/0017/372140/helveticaneueltstd-lt-webfont.eot?v=0.12.6?#iefix') format('embedded-opentype'),
+    url('https://www.westernsydney.edu.au/__data/assets/file/0019/372142/helveticaneueltstd-lt-webfont.woff?v=0.12.6') format('woff'),
+    url('https://www.westernsydney.edu.au/__data/assets/file/0018/372141/helveticaneueltstd-lt-webfont.ttf?v=0.12.6') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* TESTING FONT FACES */
+
+@font-face {
+  font-family: Fira;
+  font-style: normal;
+  font-weight: 600;
+  src:     url(https://www.westernsydney.edu.au/__data/assets/file/0007/579616/helveticaneueltstd-md-webfont.eot?v=0.10.6) format('eot'),
+           url(https://www.westernsydney.edu.au/__data/assets/file/0006/579615/helveticaneueltstd-md-webfont.ttf?v=0.10.6) format('truetype'),
+           url(https://www.westernsydney.edu.au/__data/assets/file/0005/579614/helveticaneueltstd-md-webfont.woff?v=0.10.6) format('woff');
+}
+
+@font-face {
+  font-family: Fira;
+  font-style: normal;
+  font-weight: 900;
+  src:     url(https://www.westernsydney.edu.au/__data/assets/file/0011/578720/helveticaneueltstd-bd-webfont.eot?v=0.10.6) format('eot'),
+           url(https://www.westernsydney.edu.au/__data/assets/file/0004/578722/helveticaneueltstd-bd-webfont.ttf?v=0.10.6) format('truetype'),
+           url(https://www.westernsydney.edu.au/__data/assets/file/0005/578723/helveticaneueltstd-bd-webfont.woff?v=0.10.6) format('woff');
+}
+
+
+/*header styles*/
+
+h1, .h1,
+h2, .h2,
+h3, .h3,
+h4, .h4,
+h5, .h5, 
+.helvStd {font-family: 'helvStd', helvetica, arial, sans-serif; color:#444444; line-height: 1;}
+.helvStd {line-height: 1.5}
+.helvLght {font-family: 'helvLght', helvetica, arial, sans-serif; font-weight: lighter;}
+
+h1, .h1 {font-size: 2.91em; font-family: 'helvLght', helvetica, arial, sans-serif; font-weight: lighter }
+h2, .h2 {font-size: 2.1em; font-family: 'helvLght', helvetica, arial, sans-serif; font-weight: lighter }
+h3, .h3 {font-size: 1.5em; font-family: 'helvLght', helvetica, arial, sans-serif;}
+h4, .h4 {font-size: 1.29em; font-family: 'helvetica', arial, sans-serif;}
+h5, .h5 {font-size: 1.19em; font-family: 'helvetica', arial, sans-serif;}
+
+h2 {margin: 20px 0 10px;}
+h4 {margin: 15px 0 10px;}
+h5 {margin: 10px 0;}
+
+.h1__lighter {color: white; border-bottom: 2px solid #406ca5; padding: 0 0 10px 0;}
+.h1__blue {color: #3975c2;}
+.home h1, .landing1 h1 {display: none;}
+    .home .col1 h1 {display: block;}
+
+h2.H2_blue_bg {background: url('https://www.westernsydney.edu.au/__data/assets/image/0009/383589/H2_enhance_solid2.jpg?v=0.12.7') 0 0 no-repeat; color: #ffffff; padding-left: 10px;}
+
+.col3 h4 {color: #333333; font-family: 'helvLght',helvetica,arial,sans-serif; font-weight: lighter; margin: 0;}
+
+.h__bord_pad {border-bottom: 1px dashed #DFE0E1; padding-bottom: 15px; margin-bottom: 0px; margin-top: 20px;}
+.h2__a {color: #000;}
+.h2__light {font-weight: lighter;}
+.h2_m__small {margin-bottom: 4px}
+.h2__fb {margin-top:0; float: left; width: 111px; font-weight: lighter}
+.h4__light {color: #333; font-family: 'helvLght', helvetica, arial, sans-serif; font-weight: lighter;}
+.h4__darker {color: #333; font-family: 'helvStd', helvetica, arial, sans-serif;}
+.a__footer .h2__light {color: #000; margin-bottom: 11px}
+.txt__a {font-size: 1.1em;}
+
+
+/*list styles*/
+
+.side_nav {padding: 0; list-style: none; width: 168px;}
+  .side_nav &gt; li &gt; a  {border-top: 1px dashed #dfe0e1; padding:12px 0 10px 15px; display: block;}
+    .side_nav &gt; li &gt; a:hover, .side_nav &gt; li &gt; a:focus {background-color: #fafafa;}
+.col2_future_aside .side_nav &gt; li:first-child a  {border: 0}
+
+.inside-landing-1 .col2 ul, 
+.inside-landing-2.col2 ul, 
+.inside .col2 ul, 
+.inside-1-col .col2 ul, 
+.inside-2-col .col2 ul, 
+.inside-3-col .col2 ul, 
+.lst__content {
+  padding: 0; 
+    margin: 10px;
+}
+  .inside-landing-1 .col2 ul li, 
+  .inside-landing-2.col2 ul li, 
+  .inside .col2 ul li, 
+  .inside-1-col .col2 ul li, 
+  .inside-2-col .col2 ul li, 
+  .inside-3-col .col2 ul li, 
+  .lst__content_li {
+    background: url('https://www.westernsydney.edu.au/__data/assets/image/0004/383485/list_arrow_blue.png?v=0.11.6') 1px 7px no-repeat; 
+      list-style: none; 
+      color: #5c5c5c; 
+      padding: 5px 0 5px 22px; 
+      color: #5c5c5c;
+  }
+
+.lst__items {list-style: none; border-bottom: 1px solid #dfe0e1; float: left; padding: 20px 0 10px 0; width: 100%;}
+.lst__items___wider {width: 476px;}
+
+.side_nav__items {width: 250px;}
+.tab_content .side_nav__items {width: 476px;}
+
+.side_nav__dates {width: 380px;}
+  .side_nav__dates p {width: 290px;}
+.side_nav__date {width: 105px; padding: 0 0 55px 0;}
+  .home .side_nav__date {padding: 0 0 30px 0;}
+.s_nav__dates_wider {width:476px}
+  .s_nav__dates_wider p {width: 411px}
+
+.lst__items_date {list-style: none; padding: 10px 0; overflow: hidden;}
+  .lst__items_date p {float: left;}
+.items_date {background: transparent url('https://www.westernsydney.edu.au/__data/assets/image/0005/372119/bg_date.png?v=0.12.6') 0 0 no-repeat; width: 41px; height: 41px; position: relative; padding-left:20px}
+
+
+.date_month, 
+.date_day {position:absolute; font-size: 9px; top: 3px; left: 14px; color: #fff } 
+.date_day {font-size: 20px; color:#333333; top: 13px;  width: 32px; text-align: center; left: 5px } 
+
+.ul__reset {margin:0; padding:0; list-style:none}
+
+#content form li {background: none repeat scroll 0 0 transparent;}
+
+
+/*link styles*/
+
+a {text-decoration: none; border-bottom: 1px dotted #9d9d9d;}
+
+.a__extra {background: url('https://www.westernsydney.edu.au/__data/assets/image/0007/372148/icn_sprite.png?v=0.12.6') -192px 4px no-repeat; display: block; padding-left: 12px; color: #666666;text-decoration: none;font-weight: bold;}
+.a__extraSideNav {background: url('https://www.westernsydney.edu.au/__data/assets/image/0007/372148/icn_sprite.png?v=0.12.6') -192px 16px no-repeat; border: 0;}
+  a.a__extra:link {color: #3975C2;}
+  a.a__extra:hover, a.a__extra:focus {color: #000000;}
+    
+.a__sideNav_sub  {border: 0; color: #888888; text-decoration: none; margin-left: -7px;}
+
+.col1 .sideNav_sub {list-style: none; list-style: none;padding: 0;margin: 0 0 0 17px;}
+  .col1 .sideNav_sub li {line-height: 1.2em; padding: 4px 0;}
+    .col1 .sideNav_sub li:last-child {padding: 4px 0 10px;}
+          .col1 .sideNav_sub li li:last-child {padding-bottom: 0;}
+              .col1 .sideNav_sub li li li:last-child {padding-bottom: 0;}
+                
+.col1 .side_nav li a {color: #5C5C5C;}
+  .col1 .side_nav li a.subNav_active {color: #265a9d;}
+
+.col1 .h2 a {color: #5C5C5C; border: none;}
+
+.a__topLinks {color: #000; font-family: 'helvStd', helvetica, arial, sans-serif; padding:0 10px; border-right: 1px solid #dddedf; text-decoration: none; font-size: 1.1em; border:0;}
+  .a__topLinks:hover, .a__topLinks:focus {color: #434343;}
+
+.a__b {color: #353535; border-bottom: 1px dotted #9D9D9D}
+  .a__b:hover {color: #000000;}
+
+    .a__c {color: #5c5c5c; font-weight: normal;}
+
+h2 a:link, h2 a:visited,
+h2 a:link, h2 a:visited,
+h4 a:link, h4 a:visited,
+h5 a:link, h5 a:visited {border-bottom: none;}
+
+.a__header_links li {margin-bottom: 3px;}
+  .a__header_links li a {color: #fff; border: none; font-size: 1.1em}
+    .a__header_links li a:hover, .a__header_links li a:focus {border-bottom: 1px dashed #9d9d9d; padding-bottom: 3px;}
+
+.top_header_bar &gt; ul, .sign_in_dd {margin: 7px 10px 0 0; padding: 5px 0 0 0; list-style: none; height: 21px;}
+  .top_header_bar ul li {float: left; display: inline;}
+  .top_header_bar &gt; ul &gt; li:first-child .a__topLinks {padding-left:0;}
+    .top_header_bar ul li a {color: #5C5C5C;}
+
+.body_tagline {
+  font-size: 1.1em; 
+    line-height: 1.3;
+}
+
+  .inside-landing-1 .col2 .body_tagline, 
+  .inside-landing-2 .col2 .body_tagline, 
+  .inside .col2 .body_tagline, 
+  .inside-1-col .col2 .body_tagline, 
+  .inside-2-col .col2 .body_tagline {
+    font-family: 'helvLght',helvetica,arial,sans-serif;
+      font-weight: lighter;
+    }
+  .body_tagline a:link {
+      color: #3975C2;
+    }
+  .body_tagline a:hover, 
+  .body_tagline a:focus {
+      color: #000000;
+    }
+    
+.light_text{color: #fff}
+.lighter_text {color: #888888;}
+.light_text__a {color:#707070}    
+.darker_text {color: #000;}
+.smaller_text {font-size: 0.9em;}
+.sub_text {font-weight: normal; display: block; line-height: 1.4;}
+
+.h__bord_pad .btn_link {margin-top:12px}
+  .h__bord_pad .btn_link span {font-size: 0.325em; padding-top: 1px; font-family: arial, helvetica;}
+  .ie7 .h__bord_pad .btn_link {margin-top:-40px}
+
+.backtotop {background: transparent url('https://www.westernsydney.edu.au/__data/assets/image/0007/372148/icn_sprite.png?v=0.12.6') -77px -745px no-repeat; padding: 5px 25px 5px 0; font-size: 2.0em border: 0; color: #5c5c5c; font-weight: lighter; position: absolute; bottom: 44px;}
+  .ie7 .backtotop {background-position: -79px -742px;}
+
+.footer_top h5 a, .footer_top p a:link, .footer_top p a:visited {color: #FFFFFF;}
+    
+.a__footer li a {color: #265A9D;font-weight: bold;padding-bottom: 0px;border-bottom: 1px dotted #265A9D;}
+  .a__footer li a:hover, .a__footer li a:focus {border-bottom: 1px dotted #000000; color: #000000; padding:0}
+
+.a__s_arrw {background: transparent url('https://www.westernsydney.edu.au/__data/assets/image/0007/372148/icn_sprite.png?v=0.12.6') 15px -781px no-repeat; font-weight:normal;}
+  .a__s_arrw:hover {font-weight: bold;}
+
+.tabs_link {position: absolute;top: 19px; right: 24px;}
+
+a.external:link, a.external:visited {
+    padding: 0 15px 0 0;
+}
+
+.col1 a img:hover, 
+.col2 a img:hover, 
+.col3 a img:hover {
+  opacity: 0.8;
+    filter: alpha(opacity = 80);
+}
+
+
+/*text_resize*/
+
+.text_resize {width: 50px; float: right; padding: 8px 8px 0 7px;}
+.txt_small {font-size:10px; border: none; margin-right: 5px}
+.txt_normal {font-size: 12px; border: none; margin-right: 5px}
+.txt_large {font-size: 14px; border: none; margin-right: 5px}
+
+
+/* print icon */
+
+.print_icon {
+  background: url('https://www.westernsydney.edu.au/__data/assets/image/0004/381154/printer-icon.png?v=0.11.6') no-repeat scroll left top transparent;
+  border-bottom: 0 none;
+  float: right;
+  margin: 10px 20px 0 0;
+  padding: 20px 20px 0 0;
+}
+
+
+/* external link icon */
+
+.col2  img.external, 
+.col3 .rbox img.external {
+  display: inline;
+  padding: 0;
+}
+
+/* Forms - Accessible Matrix Custom Forms */
+
+.sq-form-required-field {
+    color: #a94442;
+    font-weight: bold;
+}
+.survey-form .sq-form-section {
+    margin-bottom: 2em;
+}
+.survey-form .sq-form-section:after,
+.survey-form .sq-form-question:after {
+    clear: both;
+    content: "";
+    display: table;
+}
+.survey-form .sq-form-section-title {
+    font-family: 'helvLght', helvetica, arial, sans-serif;
+    font-size: 1.5em;
+    line-height: 1;
+    padding: 0px;
+    margin: 0.5em 0px;
+}
+.survey-form .sq-form-question,
+.survey-form .sq-form-question-title,
+.survey-form .sq-form-question-answer {
+    float: left;
+}
+.survey-form .sq-form-question {
+    clear: both;
+    border-top: 1px solid #dfe0e1;
+    width: 100%;
+}
+.survey-form .sq-form-question:first-of-type {
+    border-top-width: 3px;
+}
+.survey-form .sq-form-question-title,
+.survey-form .sq-form-question-answer {
+    box-sizing: border-box;
+    padding: 10px;
+}
+.survey-form .sq-form-question-title {
+    width: 40%;
+    padding-left: 30px;
+}
+.survey-form .sq-form-question-answer {
+    width: 60%;
+}
+/* Assumption: all radio checkboxes in a survey will always be displayed horizontally */
+.survey-form .sq-form-question-option-list .sq-form-question-title,
+.survey-form .sq-form-question-option-list .sq-form-question-answer {
+    width: 100%;
+}
+.survey-form .sq-form-question-option-list .sq-form-question-answer {
+    padding-top: 0px;
+    padding-left: 30px;
+}
+/* Specificity overrides */
+.inside-3-col .col2 .sq-form-question-option-list .sq-form-question-answer ul {
+    margin: 0px;
+}
+.inside-3-col .col2 .sq-form-question-option-list .sq-form-question-answer ul li {
+    display: block;
+    float: left;
+    padding: 0px;
+    margin-right: 2em;
+}
+.inside-3-col .col2 .sq-form-question-option-list .sq-form-question-answer ul li:last-of-type {
+    margin-right: 0px;
+}
+
+/*blue button*/
+
+.btn_link {
+  background: transparent url('https://www.westernsydney.edu.au/__data/assets/image/0007/372148/icn_sprite.png?v=0.12.6') right -930px no-repeat;  
+  display: block;
+  float: left;
+  height: 20px;
+  margin-right: 6px;
+  padding-right: 14px;
+  text-decoration: none;
+  border: 0;
+}
+  .btn_link span {
+    background: transparent url('https://www.westernsydney.edu.au/__data/assets/image/0007/372148/icn_sprite.png?v=0.12.6') 0 -910px no-repeat;
+    color: #ffffff;
+    display: block;
+        font-size: 0.9em;
+    font-weight:bold;
+    line-height: 18px;
+    padding: 0px 7px 5px 9px;
+  }
+  .btn_link:hover {
+    background-position: right -980px;
+  }
+    .btn_link:hover span {
+      background-position: 0 -957px; color: #fff;
+    }
+
+        
+/*reverse blue button*/
+
+.btn_link_light_blue {
+  background: transparent url('https://www.westernsydney.edu.au/__data/assets/image/0007/372148/icn_sprite.png?v=0.12.6') right -980px no-repeat;  
+}
+  .btn_link_light_blue span {
+    background: transparent url('https://www.westernsydney.edu.au/__data/assets/image/0007/372148/icn_sprite.png?v=0.12.6') 0 -957px no-repeat;
+  }
+  .btn_link_light_blue:hover {
+    background-position: right -930px;
+  }
+    .btn_link_light_blue:hover span {
+      background-position: 0 -910px; color: #fff;
+    }
+
+.btn_link_lighter_b {
+  background: transparent url('https://www.westernsydney.edu.au/__data/assets/image/0007/372148/icn_sprite.png?v=0.12.6') right -1525px no-repeat;  
+}
+  .btn_link_lighter_b span {
+    background: transparent url('https://www.westernsydney.edu.au/__data/assets/image/0007/372148/icn_sprite.png?v=0.12.6') 0 -1504px no-repeat;
+  }
+  .btn_link_lighter_b:hover {
+    background-position: right -980px;
+  }
+    .btn_link_lighter_b:hover span {
+    background-position: 0 -957px; color: #fff;
+  }
+
+
+/*table style*/
+
+table    {
+  border-top: 3px solid #DFE0E1; 
+    border-right: 1px solid #FFFFFF; 
+  border-bottom: 1px solid #FFFFFF; 
+  border-left: 1px solid #FFFFFF; 
+    width: 100%; 
+}
+  th    {
+      background-color: #FFFFFF;
+        border-top: 3px solid #DFE0E1;
+    border-left: 1px solid #FFFFFF; 
+        border-right: 1px solid #FFFFFF; 
+        padding:5px 10px 5px 30px; 
+        text-align: left;
+  }
+  td    {
+      border-left: 1px solid #FFFFFF; 
+        border-right: 1px solid #FFFFFF; 
+        border-top: 1px solid #DFE0E1; 
+        padding:10px 10px 10px 30px; 
+        text-align: left;
+  }
+  caption {
+    color: #333333;
+    font-size: 1.1em;
+    font-weight: bolder;
+    margin-bottom: 10px;
+      text-align: left;
+  }
+    table p {
+      font-size: 1em;
+    }
+
+table.no-heavy-cell-padding td, table.no-heavy-cell-padding th {padding: 4px}
+
+.table-horizontal td,
+.table-horizontal th {
+    vertical-align: top;
+}
+.table-horizontal td {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.table-horizontal th {
+    padding-left: 10px;
+    border-top-width: 1px;
+}
+
+/* STRUCTURE
+------------------------------------------------------------------------------------------------------------*/
+
+.bg_topLeft {background: #f2f2f2; height: 40px; width: 50%; position: absolute; left:0; z-index: 1;}
+  .ie7 .bg_topLeft {margin-top: 10px}
+.bg_middleLeft {background: #f2f2f2; height: 100%; width: 50%; position: absolute; left:0; top: 740px; z-index: -1;}
+.bg_middleRight {background: #2d5e9c; height: 500px; width: 50%; position: absolute; right:0; top: 240px; z-index: 1;}
+
+.quicklinks {background-color: #000; min-width: 100%;position: absolute;left: 0;z-index: 20;padding-bottom: 30px; top: -173px; display: block; height: 153px;}
+  .ie7 .quicklinks { top: -170px;}
+  .quicklinks span.h4 {color: #FFFFFF; font-size: 1.6em; font-weight: bold; line-height: 50px;}
+.quicklinks_inner {margin: 0 auto; position: relative; width: 994px; height: 153px;}
+  .ie7 .quicklinks_inner {margin-top:20px}
+
+a.quicklinks_tab {display: block; width: 68px; height: 30px; background: transparent url('https://www.westernsydney.edu.au/__data/assets/image/0007/372148/icn_sprite.png?v=0.12.6') 0 -284px no-repeat; font-weight: bold; border: 0;color: white;padding-left: 13px;margin: 3px 0 0 10px;border-right: 1px solid #4d4d4d;float: left;line-height: 30px;}
+a.quicklinks_tab_active {background-position: -194px -299px; }
+
+.search_tab {position: absolute; bottom:-70px; right: 0; background: transparent url('https://www.westernsydney.edu.au/__data/assets/image/0005/372128/bg_search.png?v=0.12.6') top left no-repeat; width: 224px; height: 40px;  }
+  .ie7 .search_tab { bottom: -48px}
+
+.page { margin:0 auto; width: 994px; position: relative; z-index: 10; background: url('https://www.westernsydney.edu.au/__data/assets/image/0019/372124/bg_main_shdow.png?v=0.13.6') top left repeat-y; padding-bottom: 50px}
+  .inside-1-col, .inside-2-col, .inside-2-col-right {background: url('https://www.westernsydney.edu.au/__data/assets/image/0010/376264/bg_main_shdow_no_rhc.png?v=0.12.6') top left repeat-y;}
+    
+.page_inner {background: url('https://www.westernsydney.edu.au/__data/assets/image/0017/372122/bg_large_top.png?v=0.13.6') top left no-repeat; font-size: 1.2em; min-height: 509px; padding-top: 58px; position: relative; width:994px;}
+  .inside-1-col .page_inner, .inside-2-col .page_inner, .inside-2-col-right .page_inner {background: url('https://www.westernsydney.edu.au/__data/assets/image/0009/376263/bg_large_top_no_rhc.png?v=0.12.6') top left no-repeat;}        
+        
+.page_shadow { background: url('https://www.westernsydney.edu.au/__data/assets/image/0017/372131/bg_shdw.png?v=0.12.6') top left repeat-y; position: absolute;top: 652px; height: 300px;}
+.page_bg_future {background: url('https://www.westernsydney.edu.au/__data/assets/image/0003/372126/bg_page_future.png?v=0.12.6') -15px top repeat-y;}
+
+.top_header_bar {background: #f2f2f2 url('https://www.westernsydney.edu.au/__data/assets/image/0019/372133/bg_top_gray.png?v=0.12.6') top left repeat-x;height: 40px; margin: 10px 0 0 0;padding-right: 222px; padding-left: 10px; position: relative; z-index: 200}
+  .ie8 .top_header_bar {margin-top:12px; height: 38px}
+
+.header_main {background: white; height: 170px; padding-top: 20px; padding-left: 10px; position: relative; z-index: 150;}
+.header_main .mobile {display: none;}
+.header_main .mobile a {border: none;}
+.header_search {background: url('https://www.westernsydney.edu.au/__data/assets/image/0005/372128/bg_search.png?v=0.12.6') top left repeat-x;}
+
+.footer {overflow:hidden; margin-top: 20px; padding-left: 10px;}
+  .ie7 .footer {margin-top: 40px}
+    .footer h5 {font-size: 2.2em;}
+    
+.footer_wrap {width: 50%; background: black url('https://www.westernsydney.edu.au/__data/assets/image/0016/372121/bg_footer_bk_bar.png?v=0.12.6') top right no-repeat; height: 55px;}
+.footer_top {height: 38px;background: url('https://www.westernsydney.edu.au/__data/assets/image/0018/372132/bg_top_crnr_foot.png?v=0.12.6') top right no-repeat;padding: 17px 10px 0 80px;}
+  .footer_top p {font-size: 1.2em; margin-top: 8px; width: 550px;}
+    .footer_top h5  {font-size: 2.2em; /*width: 281px;*/ margin:0 10px 0 0;}
+  .footer_top p, .footer_top h5 {color: #ffffff; float: left; line-height: 1;}
+
+.footer_inner {margin: -55px auto 0 auto;width: 993px;background: #000; height: 55px; position: relative; z-index: 50; }
+
+.footer_lower {margin:68px 0; padding-left: 10px;}
+  .footer_lower .footnote {float: right; font-weight: normal; font-size: 1.1em; text-align: right;}
+    
+.person {position: absolute; top: -107px; left: -71px; width: 130px; height: 161px;z-index: 30;}
+.birds {background: url('https://www.westernsydney.edu.au/__data/assets/image/0004/372118/bg_birds.png?v=0.12.6') top right no-repeat; position: absolute; top: -443px; left: -197px; width: 206px; height: 181px;z-index: 30;}
+
+.col1,.col2,.col3 {float: left;}
+.col1  {width: 168px; margin: 28px 0 60px 29px;}
+  .IE7 .col1 {margin-top: 0;}
+.col2  {width: 505px; margin-left: 30px;}
+.col3 {
+    width: 227px;
+}
+
+.home .col1, .col1__home {width: 250px; margin: 0 0 0 41px;}
+.home .col2, .col2__home {width: 415px; margin-bottom: 50px; }
+
+.landing1 .col1, .col1_future {width: 477px; margin: 0 0 0 45px; padding-right: 30px; position: relative; }
+.landing1 .col2, .col2_future_aside {background: none repeat scroll 0 0 #F5F6F6; width: 167px; margin-left: 0; padding: 0 27px 0 22px;}
+  .ie7 .col2_future_aside, .ie7 .col3__future  {margin-top: 17px}
+
+.col3__home {margin-left: 51px}
+.col3__future {margin-left: 0}
+
+.col1__title {width: 620px; margin-left: 40px; border-top: 1px dashed #DFE0E1; padding-top: 40px;}
+  .ie7 .col1__title {padding-bottom:15px}
+  .col1__title .h4__light {margin-top:4px;}
+
+.col2__home .col1__title {border-bottom: 1px dashed #DFE0E1;}
+
+.content_wrapper {width: 740px;}
+
+.c_wrap_wider {width: 800px;}
+
+.col_wide {width: 680px; padding: 0 0px 0 40px; clear: both;}
+
+
+/* page template specific */
+
+/* -- inside 2 column -- */
+.inside-2-col .c_wrap_wider {width: 980px;}
+.inside-2-col .col2 {width: 750px;}
+.inside-2-col .col3 {display: none;}
+.inside-2-col-right .col1 {display: none;}
+.inside-2-col-right .col2 {width: auto;}
+.inside-2-col-right .col3 {margin-top: 60px; display: block;}
+
+/* -- inside 1 column -- */
+.inside-1-col .c_wrap_wider {width: 980px;}
+.inside-1-col .col1 {display: none;}
+.inside-1-col .col2 {width: 950px;}
+.inside-1-col .col3 {display: none; margin-top: 60px;}
+
+.col1_links {width: 163px; float: left;}
+
+
+/* COMPONENTS
+------------------------------------------------------------------------------------------------------------*/
+
+/* Navigation */
+
+.img_border, 
+.grey-image-border {border: 7px solid #e1e1e1; margin-left: 30px }
+
+.logo_wrap {border-bottom: 1px solid #E0E0E0}
+.logo a {border: 0; display: block;}
+
+.navigation  {margin: 0;}
+  .navigation ul  {position: absolute;left: -999em;    top: 158px;}
+
+.navigation li  {
+  float: left; 
+    list-style: none; 
+    padding: 0 16px 0 16px;
+}
+    .navigation li a {
+        border-bottom: 3px solid #fff;
+        color: #000000;
+      float: left; 
+        font-size: 22px;
+        list-style: none; 
+        padding: 0 0 20px 0; 
+        text-decoration: none; 
+    }
+      .ie7 navigation li a, 
+        .ie8 navigation li a, 
+        .ie9 navigation li a {font-size: 25px;}
+        
+        .navigation li a:hover,
+        .navigation li a:focus,
+        .navigation li a.main_nav_active, 
+        .lvl1_asset_372366 .home, 
+        .lvl1_asset_372370 .future_students, 
+        .lvl1_asset_372374 .uws_students, 
+        .lvl1_asset_372378 .staff, 
+        .lvl1_asset_372382 .research, 
+        .lvl1_asset_372386 .alumni {
+          border-bottom: 3px solid #406ca5; 
+      }
+
+    .navigation li:hover ul {left: auto;}
+
+.main_nav_sub {margin: 0;padding: 0;}
+  .main_nav_sub &gt; li  {float: left; list-style: none; padding-top: 10px;}
+    .ie7 .main_nav_sub &gt; li  {position: relative;}
+    .main_nav_sub &gt; li a  {text-decoration: none; padding:0 12px; border-right: 1px solid #c2c2c2; border-bottom: 0; color: #5c5c5c; font-size: 12px;}
+      .ie7 .main_nav_sub &gt; li a span {zoom:1}
+      .main_nav_sub &gt; li a.no_border  {border-right:0;}
+      .main_nav_sub &gt; li a:hover, .main_nav_sub &gt; li a:focus  {color: #000000;}
+      .main_nav_sub &gt; li a:hover span, .main_nav_sub &gt; li a:focus span  {border-bottom: 3px solid #406ca5;}
+
+  .main_nav_sub &gt; li:hover .dropdown_wrap, .main_nav_sub &gt; li.sfhover .dropdown_wrap {left:auto;}
+    .ie7 .main_nav_sub &gt; li:hover .dropdown_wrap {left:0;}
+
+  .main_nav_sub .sub_active &gt; a {background-color:#242322; color:#fff; padding: 5px 12px; opacity: 0.94; filter: alpha(opacity = 94);}
+    .main_nav_sub .sub_active &gt; a:hover {color:#fff;}
+    .main_nav_sub .sub_active &gt; a span {border-bottom: 3px solid #406CA5;}
+        
+  .main_nav_sub  .dropdown_wrap  {padding: 3px 0 38px}
+      .ie7 .main_nav_sub  .dropdown_wrap  {padding: 0 0 38px}
+      .main_nav_sub .dropdown_wrap.reduceMargin {margin-left: -20px;}
+
+  .main_nav_sub .dropdown {background-color: #242322; opacity: 0.94;    filter: alpha(opacity = 94);}
+    .main_nav_sub .dropdown a {border:0}
+
+    
+/*forms*/
+input[type="text"] {overflow: hidden;}
+input[type="search"] {border: 0;}
+input.inputBlurPlaceholder {font-style: italic;    color: #666666;}
+
+.inp_wrap {position: relative;}
+
+.inp_w__search {width: 100px; float: right; margin: 8px 20px 0 0;}
+.inp_search {background: url('https://www.westernsydney.edu.au/__data/assets/image/0006/372129/bg_search_box.png?v=0.12.6') top left no-repeat; width: 77px; height: 16px; border: 0; padding: 2px 20px 2px 5px}
+  .ie7 .inp_search {padding: 3px 20px 0 5px;}
+
+.search_btn {position: absolute; top: 3px; right: 5px; background: url('https://www.westernsydney.edu.au/__data/assets/image/0007/372148/icn_sprite.png?v=0.12.6') 0 -235px no-repeat; width: 10px; height: 17px; text-indent: -999em; line-height: 0; border: 0;}
+  .ie7 .search_btn {width: 15px; top: 4px; right: 4px;}
+
+.ta__a {border: 0; padding: 5px; margin: 10px; width: 466px; height: 51px;} 
+.ta__comment {background: url('https://www.westernsydney.edu.au/__data/assets/image/0004/372136/bg_txt_area.png?v=0.12.6') top left no-repeat; width: 503px; height: 121px;}
+
+.i__search_btn {background: url('https://www.westernsydney.edu.au/__data/assets/image/0005/372137/btn_search.png?v=0.12.6') top left no-repeat; width: 67px; height: 20px; text-indent: -9999px; line-height: 0; border: 0; margin-top:2px}
+  .ie7 .i__search_btn {margin-top:5px}
+.inp__comment {margin-top: -22px; position: absolute; height: 20px;}
+  .inp__comment label, .i__search_btn {float:left;}
+
+.i__search_btn_b {background: url('https://www.westernsydney.edu.au/__data/assets/image/0006/372138/btn_search2.png?v=0.12.6') left top no-repeat;}
+
+.inp {border: 1px solid #dfe0e1; padding: 4px 5px;}
+.inp__a {margin: 0 5px 0 10px; width: 129px;}
+.inp__b {width: 157px; margin-bottom: 8px;}
+
+.sel {padding: 3px; width: 168px;}
+.sel__a {width: 168px;}
+.honeypot { display:none }
+
+
+/*black drop down from main sub nav*/
+
+.dropdown_wrap {background: transparent url('https://www.westernsydney.edu.au/__data/assets/image/0015/372120/bg_drop_down_hvr.png?v=0.12.6') 0 100% no-repeat; position: absolute;  left: -9999px; z-index: 1000;}
+
+.dropdown {margin: 0 0 1px; padding: 0; width: 186px;}
+  .dropdown li {display: block;}
+    .dropdown li a, 
+        .dropdown li a:hover, 
+        .dropdown li a:focus {display: block; padding: 7px 12px 7px 42px; color: #fff;}
+
+  .dropdown li.last {background-color: transparent;}
+    .dropdown li.last a, 
+        .dropdown li.last a:hover  {padding-bottom: 0; margin-bottom: 0}
+
+.main_nav_sub .dropdown_wrap .dropdown li a,
+.main_nav_sub .dropdown_wrap .dropdown li a:hover,
+.main_nav_sub .dropdown_wrap .dropdown li a:focus {color: #fff;}
+            
+.ie7 .main_nav_sub .dropdown_wrap {margin-top: 25px;}
+
+
+/*social media*/
+
+ul.social_media  {font-weight: bold; border-right: 1px solid #C2C2C2; padding-right: 39px; padding-top: 2px; margin-right: 0; width: 140px;}
+  ul.social_media li:first-child  {margin-top: -5px;font-weight: bold; padding-right: 5px;}
+
+.twitter, 
+.youtube,
+.facebook {background: url('https://www.westernsydney.edu.au/__data/assets/image/0007/372148/icn_sprite.png?v=0.12.6') 0 0 no-repeat; height: 17px; border:0; display: block;}
+
+.youtube {background-position: 0 -417px ;}
+.facebook {background-position: 0 -466px ;}
+.twitter {background-position: 0 -515px ;}
+
+.youtube_b, 
+.facebook_b,
+.twitter_b {height: 25px; text-indent: -9999px;width: 24px;float: left;margin-left: 6px;} 
+
+.youtube_b {background-position: 0 -1038px;}
+  .youtube_b:hover {background-position: -176px -1038px;}
+.facebook_b {background-position: 0 -1077px;}
+  .facebook_b:hover {background-position: -176px -1077px;}
+.twitter_b {background-position: 0 -1122px;}
+  .twitter_b:hover {background-position: -176px -1122px;}
+
+.fb {margin-top: 27px}
+
+.navigation {padding: 69px 0 0 0; overflow: hidden;}
+  .navigation li, 
+    .navigation a { float:left }
+
+.addblock {width: 163px;}
+
+.a__footer_lower  {border-bottom: 1px solid #E0E0E0; float: left; padding-bottom: 15px;margin-bottom: 15px;width: 100%;}
+  .a__footer_lower a {border: 0; font-weight: bold; font-size: 1.2em; }
+  .a__footer_lower a.no_border {border:0}
+
+.list_wrap  {width: 815px;margin-left: 20px;}
+  .list_wrap span {display: block}
+  .list_wrap .col1 {width: 271px; margin:0; font-weight: bold; color: #888; font-size: 1.2em}
+
+.share_this_toolbar {
+  float: right;
+    margin-top: 15px;
+    clear: both;
+}
+   
+   
+/*top bar drop down*/
+
+.top_header_bar .sign_in_dd {display: block; width: 74px;float: right; padding: 5px 0 0 7px; }
+  .top_header_bar .sign_in_dd:hover {background-color: #E7E7E7; padding-bottom: 10px;}
+  .top_header_bar .sign_in_dd:hover .dropdown_wrap {/*left:492px;*/left:457px!important;}
+  .top_header_bar .sign_in_dd a {color: #5c5c5c; border:0;}
+  .top_header_bar .sign_in_dd  &gt; li &gt; a {font-weight: bold; background: url('https://www.westernsydney.edu.au/__data/assets/image/0007/372148/icn_sprite.png?v=0.12.6') 61px -361px no-repeat;padding-right: 15px;font-size: 1.1em; color: #000}
+  .top_header_bar .sign_in_dd li .dropdown_wrap { background: url('https://www.westernsydney.edu.au/__data/assets/image/0016/372130/bg_search_signIn.png?v=0.12.6') bottom left no-repeat; }
+
+.sign_in__dd_ul {
+  background-color: #E7E7E7;
+  font-size: 1.2em;
+  margin-bottom: 37px;
+  margin-top: 12px;
+  overflow: hidden;
+  padding: 5px 0 0;
+}
+  .ie7 .sign_in__dd_ul {
+      margin-top: 23px; 
+        padding: 25px 0 0 0;
+    }
+  .sign_in__dd_ul .h3 {
+    color: #5C5C5C;
+    font-weight: bold;
+    line-height: 45px;
+    padding: 0 21px;
+  }
+  .sign_in__dd_ul ul {float: left;}
+  .sign_in__dd_ul ul li {float: left; padding: 0 0px 0 21px; width: 130px;}
+  .sign_in__dd_ul .dd_2 { width: 155px;}
+    
+.sign_in_drop_down {position: absolute;} 
+
+.dd_1 {width:150px;}
+  .dd_1 li,
+  .dd_2 li {background-color: #E7E7E7;}
+
+.sign_in__dd_ul .a__top_drop {font-weight: normal; border: 0;color: #5C5C5C; background-position: -194px 10px;  padding: 7px 16px; line-height: 1.1; }
+  .sign_in__dd_ul .a__top_drop:hover {padding: 7px 16px; font-weight: bold; color: #5C5C5C;}
+
+.wrap {float: left; background-color:#E7E7E7 ;}
+
+.b_left {border-left: 1px solid #d1d1d1;}
+
+
+/* right hand column */
+
+.col3 .rbox {
+  border-bottom: 1px dashed #9D9D9D;
+  padding-bottom: 25px;
+  position: relative;
+  max-width: 100%;
+}
+  .col3 .rbox h3 {
+      margin-bottom: 4px;
+        font-size: 2.1em;
+        font-weight: lighter;
+        color: #000000;
+    }
+    .col3 .rbox ul {
+        list-style: none;
+        padding: 0;
+    }
+      .col3 .rbox ul li {
+      background: url('https://www.westernsydney.edu.au/__data/assets/image/0007/372148/icn_sprite.png?v=0.12.6') no-repeat scroll -192px 4px transparent;
+      color: #666666;
+      font-weight: bold;
+      padding-left: 12px;
+      text-decoration: none;
+        }
+
+            .col3 .rbox ul li.contact_phone {
+        background-position: 0 -58px;
+        font-family: 'helvStd',helvetica,arial,sans-serif;
+                font-weight: normal;
+        line-height: 1.5;
+        padding: 3px 0 0 30px;
+      }
+            .col3 .rbox ul li.contact_email {
+              background-position: 0 -104px; 
+        font-family: 'helvStd',helvetica,arial,sans-serif;
+                font-weight: normal;
+                line-height: 1.5;
+                padding: 4px 0px 0 30px; 
+          }
+            .col3 .rbox ul li.contact_services {
+              background-position: 4px -147px; 
+        font-family: 'helvStd',helvetica,arial,sans-serif;
+                font-weight: normal;
+                line-height: 1.5;
+                padding: 6px 0 2px 30px; 
+          }
+          .col3 .rbox ul li a:link,
+            .col3 .rbox ul li a:visited {
+        border-bottom: 1px dotted #9D9D9D;
+      }
+            .col3 .rbox ul li a:hover, 
+                .col3 .rbox ul li a:focus {
+                  color: #000000;
+                }
+  
+    .col3 .rbox img {
+      display: block;
+      padding: 15px 0;
+    }
+      .col3 .rbox .oinw img {
+          display: inline;
+            padding: 0;
+        }
+  .col3 .rbox:last-child {
+      border-bottom: none;
+        padding-bottom: 25px;
+  }
+
+.col3 .noborder, 
+.col3 .noborder a {
+  border: none;
+}
+
+/* Clearfix */
+.col3-inner {
+    *zoom: 1;
+}
+.col3-inner:before,
+.col3-inner:after {
+    content: '';
+    display: table;
+    line-height: 0;
+}
+.col3-inner:after {
+    clear: both;
+}
+
+/* needed for padding issue */
+.col3 &gt; .col3-inner &gt; div {
+  box-sizing: border-box;
+  clear: both;
+  float: left;
+  padding-right: 30px;
+  padding-left: 30px;
+  width: 100%;
+}
+   .ie7 .col3 &gt; .col3-inner &gt; div,
+   .ie8 .col3 &gt; .col3-inner &gt; div {
+     float: none;
+   }
+.col3 &gt; .col3-inner &gt; div img{
+    max-width: 100%;
+}
+
+/* -- Future Students -- */
+/* Stretch to fit column */
+.col3 &gt; .col3-inner &gt; .menu-panel,
+.col3 &gt; .col3-inner &gt; .link-panel {
+    padding-right: 0px;
+    padding-left: 0px;
+}
+.menu-panel {
+    background-color: #2d5e9c;
+    text-transform: uppercase;
+    /* Stretch to cover right column padding */
+}
+.panel-title,
+.menu-panel ul,
+.menu-panel .panel-action a,
+.col3 &gt; .col3-inner &gt; .stats-panel {
+    padding-right: 12px;
+    padding-left: 12px;
+}
+.panel-title,
+.menu-panel .panel-action a {
+    font-size: 1.6em;
+    padding-top: 18px;
+    padding-bottom: 18px;
+}
+.panel-title {
+    background-color: #efefef;
+    color: #000;
+    font-weight: bold;
+}
+.menu-panel a:link,
+.menu-panel a:visited {
+    border-bottom: 0px none;
+}
+.menu-panel ul,
+.menu-panel li a:link,
+.menu-panel li a:visited {
+    color: #fff;
+}
+.menu-panel ul {
+    margin: 0px;
+    padding: 0px;
+}
+.menu-panel li {
+    list-style-type: none;
+    font-size: 1.2em;
+}
+.menu-panel li a {
+    display: block;
+    padding: 3px 12px;
+}
+.menu-panel li a:hover,
+.menu-panel li a:active {
+    color: #c0cfe1;
+}
+.menu-panel li a:before {
+    content: '';
+    display: inline-block;
+    overflow: hidden;
+    background: transparent url('https://www.westernsydney.edu.au/__data/assets/image/0011/756479/menu-panel-li.png?v=0.8.6') no-repeat 0px 0px;
+    margin-right: 6px;
+    width: 11px;
+    height: 12px;
+}
+.menu-panel li a:hover:before {
+    background-position: 0px -12px;
+}
+.menu-panel li a.active:link, 
+.menu-panel li a.active:visited {
+    color: #000;
+}
+.menu-panel li a.active:before {
+  background-position: 0px -23px;
+}
+.menu-panel li:first-child a {
+    padding-top: 14px;
+}
+.menu-panel li:last-child a {
+    padding-bottom: 14px;
+}
+.menu-panel .panel-action {
+    margin: 0px;
+}
+.menu-panel .panel-action a {
+    display: block;
+    background-color: #d80909;
+    text-align: center;
+}
+.menu-panel .panel-action a:link,
+.menu-panel .panel-action a:visited {
+    color: #fff;
+}
+.menu-panel .panel-action a:hover,
+.menu-panel .panel-action a:active {
+    background-color: #c71218;
+}
+.menu-panel .panel-action a:after {
+    content: '';
+    display: inline-block;
+    overflow: hidden;
+    background: transparent url('https://www.westernsydney.edu.au/__data/assets/image/0007/756511/panel-action.png?v=0.8.6') no-repeat 0px 0px;
+    margin-left: 6px;
+    /* Bottom of icon doesn't align nicely with text baseline */
+    margin-bottom: -1px;
+    width: 10px;
+    height: 18px;
+}
+.link-panel,
+.link-panel .panel-action:link,
+.link-panel .panel-action:visited {
+    color: #fff;
+}
+.ie8 .col3 &gt; .col3-inner &gt; .link-panel,
+.link-panel &gt; a {
+     float: left;
+}
+.link-panel img {
+    /* Prevent unwanted inline white space */
+    display: block;
+}
+.link-panel p,
+.link-panel .panel-action {
+    font-size: 1.1em;
+}
+.link-panel p {
+    margin: 9px 12px 0px;
+}
+.link-panel p:last-of-type {
+    margin-bottom: 9px;
+}
+.link-panel .panel-action {
+    /* Add float to ensure the link stays contained within the panel
+     * instead of popping out.
+     */
+    float: left;
+    background-color: rgba(0, 0, 0, 0.4);
+    text-transform: uppercase;
+    padding: 6px 9px;
+    margin-bottom: 9px;
+    margin-left: 12px;
+}
+.ie8 .link-panel .panel-action {
+    background-color: #000;
+}
+.link-panel .panel-action:link,
+.link-panel .panel-action:visited {
+    border-bottom: 0px none;
+}
+.link-panel .panel-action:hover,
+.link-panel .panel-action:active {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.link-panel .panel-action:after {
+    content: '&gt;';
+    margin-left: 0.5em;
+}
+.stats-panel {
+    text-transform: uppercase;
+}
+.ie8 .col3 &gt; .col3-inner &gt; .stats-panel {
+    float: left;
+}
+.stats-panel p {
+    margin: 20px 0px;
+}
+.stats-panel hr {
+    margin: 0px 18px;
+    border: 1px dashed #9d9d9d;
+}
+.stats-item {
+    position: relative;
+    font-size: 1.2em;
+    line-height: 1.2em;
+    margin-left: 48px;
+}
+.stats-item img {
+    position: absolute;
+    left: -48px;
+    top: 0px;
+    max-width: 40px;
+}
+.stats-item .stats-title {
+    color: #000;
+    font-weight: bold;
+}
+.stats-item .stats-sub-title {
+    color: #a1a1a1;
+}
+
+/*slider*/
+
+.slider {margin-left: 15px; width: 980px; height: 500px}
+  .slider div {position: absolute; height: 500px; top: 0;z-index: 10;}
+    
+.corner_top {z-index: 400;position: absolute;top: 0;left:0}
+
+.carousel_wrap {position: relative; width: 700px;padding-left: 30px;}
+  .ie7 .carousel_wrap,
+  .ie8 .carousel_wrap {padding: 0 30px 0 0;}
+    
+.img_wrap {position: relative; float: left;margin: 0 10px;width: 193px;}
+
+.sub_info {
+  background: url('https://www.westernsydney.edu.au/__data/assets/image/0003/372135/bg_trns_slider.png?v=0.12.6') repeat scroll left top transparent;
+  bottom: 4px;
+  color: #FFFFFF;
+  font-weight: bold;
+  height: 30px;
+  left: 0;
+  line-height: 1.2;
+  padding: 6px 10px;
+  position: absolute;
+  width: 172px;
+}
+
+a.prev, 
+a.next {
+  background: url('https://www.westernsydney.edu.au/__data/assets/image/0007/372148/icn_sprite.png?v=0.12.6') 0 -1193px no-repeat;
+  width: 45px;
+  height: 50px;
+  display: block;
+  position: absolute;
+  top: 85px;
+  border: none;
+  text-indent:-9999px; 
+  left: 0;
+}
+a.next {background-position: 0 -1376px; right: 0; left:auto}
+
+
+/*Inside landing page banner slideshow*/
+
+#hd_slideshow {
+    position: relative;
+}
+    #hd_slideshow a {
+        display: block;
+        width: 966px;
+        height: 120px;
+        border-bottom: none;
+        margin-left: 14px;
+        background: transparent url(https://www.westernsydney.edu.au/__data/assets/image/0003/375177/futurefirst.jpg?v=0.12.6) no-repeat 0 0;
+    }
+    #hd_slideshow #rotating-banner {
+      background: none repeat scroll 0 0 #2D5E9C;
+        margin-left: 15px;
+        width: 979px;
+        height: 120px;
+    }
+    #hd_slideshow #rotating-banner-blank {
+      background: none;
+        width: 979px;
+        height: 58px;
+    }
+#uws-curve {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 14px;
+    width: 93px;
+    height: 93px;
+    z-index: 20;
+    background: transparent url(https://www.westernsydney.edu.au/__data/assets/image/0007/375181/bg_top_slider.png?v=0.13.6) no-repeat 0 0;
+}
+
+span#next-banner-item,
+span#prev-banner-item {
+    position: absolute;
+    top: 95px;
+    z-index: 100;
+    height: 14px;
+    width: 43px;
+    cursor: pointer;
+}
+    span#next-banner-item {
+        background: url(https://www.westernsydney.edu.au/_designs/uws_main_2012/css/main.css/nextarrow2.gif) no-repeat 0 0;
+        right: 17px;
+    }
+    span#prev-banner-item {
+        background: url(https://www.westernsydney.edu.au/__data/assets/image/0004/375178/prevarrow.gif?v=0.12.6) no-repeat 0 0;
+        right: 70px;
+    }
+
+
+/*tabs*/
+
+.tabs { overflow:hidden;}
+  .tabs ul { overflow:hidden; margin:0; padding: 0;}
+    
+  .tabs li, 
+    .tabs a {float:left; list-style: none; color: #898989;}
+    
+  .tabs a {padding:15px 50px 40px 0; text-decoration:none;}
+    
+  .tabs a:hover, 
+    .tabs a:focus, 
+    .active a {color: #333;}
+    
+  .active a {  }
+
+li.active {background: url('https://www.westernsydney.edu.au/__data/assets/image/0007/372148/icn_sprite.png?v=0.12.6') 0 -1620px no-repeat;}
+
+.tab_content {background:#fff; left:-9999em; position:absolute;}
+.tab_content_active {position:static;}
+
+.tabs_content {overflow: auto;  margin-top: 30px;}
+  .tabs_content .scrollbar-handle-container {background: none;}
+  .tabs_content .col_padd {padding-top:0;}
+
+.tabs_content .items_date {display:none;}
+.tabs_content .tab_content_active .items_date {display:block;}
+
+.inActiveTab {left: -9999em; position: absolute;}
+
+.aside_cont_wrap {
+  border-bottom: 1px dashed #9D9D9D;
+    padding-bottom: 25px; 
+    position: relative;
+}
+  .aside_cont_wrap h2 {
+      color: #000000;
+        margin: 18px 0 5px;
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+    .aside_cont_wrap h4 {
+    color: #333333;
+    font-family: 'helvLght',helvetica,arial,sans-serif;
+    font-weight: lighter;
+    margin: 0;
+  }
+    .aside_cont_wrap img {
+      margin: 15px 0;
+    }
+    
+.info-boxes .aside_cont_wrap:last-child {border-bottom: none;padding-bottom: 25px;}
+
+.icn_pin {
+  background: url('https://www.westernsydney.edu.au/__data/assets/image/0006/372147/icn_campus.gif?v=0.12.6') no-repeat scroll left top transparent;
+  height: 71px;
+  left: 132px;
+  position: absolute;
+  top: 131px;
+  width: 36px;
+}
+  .ie7 .icn_pin, 
+  .ie8 .icn_pin {top: 160px;}
+    
+.col3 .rbox ul li.icn_pin_small {
+  background: url('https://www.westernsydney.edu.au/__data/assets/image/0003/381594/icn_campus_small.gif?v=0.11.6') no-repeat scroll 6px 5px transparent;
+  font-weight: normal;
+  padding: 4px 0 0 30px;
+}
+    
+.col3 .rbox ul li.icn_pin_small_alumni {
+    background: url('https://www.westernsydney.edu.au/__data/assets/image/0020/410564/globe-icon2.jpg?v=0.12.6') no-repeat scroll -2px -1px transparent;
+    font-weight: normal;
+    padding: 4px 0 0 30px;
+}
+    
+/*future students*/
+
+.col1 .promo_banner {
+  margin: 20px 0px 0px; 
+    width: 462px; 
+    height: 98px;
+}
+
+.future_grid .right{margin-right: 9px;}
+.future_grid_item {width: 144px; margin: 10px 15px 10px 0px; overflow:hidden; float: left;}
+  .future_grid_item img {margin: 5px 0px 0px;}
+  .future_grid_item .a__extra {float: right;}
+
+
+/* Level 1 News Listings */
+
+.side_nav__items li div.body_tagline {padding-left: 105px;}
+
+.news_listing {
+  list-style: none;
+    width: 250px;
+}
+
+#news .lst__items {
+  width: 456px;
+    padding: 20px 10px 10px;
+}
+
+.lst__items_first .overlay {
+  background-color: #FFFFFF;
+  height: 105px;
+  left: 0;
+  opacity: 0.75;
+    filter: alpha(opacity = 75);
+  padding: 10px;
+  position: absolute;
+  top: 312px;
+  width: 456px;
+    overflow: auto;
+}
+  .ie8 .lst__items_first .overlay {height: 101px;}
+    
+.lst__items_first .side_nav__date {
+  display: inline;
+}
+.lst__items_first .body_tagline {
+  font-weight: bold;
+}
+.lst__items_first .news_summary {
+  display: block;
+  padding-left: 105px;
+}
+  .lst__items_first .news_summary p {
+    font-size: 1.1em;
+        line-height: 1.3;
+  }
+.lst__items_first.no_thumbnail {
+  list-style: none;
+  border-bottom: 1px solid #DFE0E1;
+    float: left;
+    padding: 0 10px 10px;
+    width: 456px;
+}
+  .lst__items_first.no_thumbnail img {
+      display: none;
+    }
+    .lst__items_first.no_thumbnail span.overlay {
+    background: none repeat scroll 0 0 transparent;
+    height: inherit;
+    opacity: inherit;
+    padding: 0;
+    position: inherit;
+    top: 0;
+    width: 476px;
+  }
+  .lst__items_first.no_thumbnail .side_nav__date {
+      padding: 0 0 55px;
+    }
+  .lst__items_first.no_thumbnail .side_nav__date, 
+  .lst__items_first.no_thumbnail .body_tagline {
+    font-weight: inherit;
+  }
+  .lst__items_first.no_thumbnail .body_tagline, 
+    .lst__items_first.no_thumbnail .news_summary {
+    width: inherit;
+  }
+
+    
+/* inside page content */
+
+.med_tiles {
+    width:230px;
+    text-align:center;
+    min-height:120px;
+    height:auto;
+    vertical-align:middle;
+    padding:8px;
+    float:left;
+}
+.med_tiles img{display:block; margin:0 auto}
+.med_tiles span{display:block; margin:1em auto}
+
+#buttons-home  ul {
+  margin: 0; 
+    padding: 0; 
+    width: 498px;
+}
+  #buttons-home ul li {
+    background: none repeat scroll 0 0 transparent;
+    display: block;
+    float: left;
+    height: 69px;
+    list-style-type: none;
+    margin: 0 2px 3px 0;
+    padding: 0;
+    width: 164px;
+  }
+    #buttons-home ul li a {
+      border-bottom: none;
+    }
+
+.page ul.events_list li {
+  background: none;
+    font-size: 1em;
+    padding: 10px 0;
+}
+
+.event_details td:first-child {
+  width: 100px;
+    vertical-align: top;
+}
+  .event_details td p {
+    margin: 0;
+  }
+    
+.col2 img.left {
+  display: inline;
+  float: left;
+  margin: 6px 15px 10px 0;
+}
+.col2 img.right {
+  display: inline;
+  float: right;
+  margin: 6px 0 10px 15px;
+}
+    
+/* Events */
+
+/* BEGIN Add by CHORIKX - 20120805 */
+.events_section {
+ border-top: 4px solid #ccc;
+}
+  .events_section dl {
+    border-bottom: 1px solid #ccc;
+    padding: 13px 20px;
+    font-size: 1.2em;
+    margin: 0;
+    overflow: hidden;
+  }
+  .events_section dt {
+      font-weight: 700; 
+        float: left; 
+        width: 120px;
+    }
+  .events_section dd {
+      margin: 0 0 0 130px;
+    }
+/* Begin CHORIKX add 20141112 */
+/*!
+ * This stylesheet uses some elements from:
+ * Bootstrap v3.2.0 (http://getbootstrap.com)
+ * Copyright 2011-2014 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ */
+.a-z-media-list img {
+  vertical-align: middle;
+}
+.a-z-media-list .img-responsive {
+  display: block;
+  width: 100% \9;
+  max-width: 100%;
+  height: auto;
+}
+.a-z-media-list .img-rounded {
+  border-radius: 6px;
+}
+.a-z-media-list .img-thumbnail {
+  padding: 4px;
+  line-height: 1.42857143;
+  background-color: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  -webkit-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  display: inline-block;
+  width: 100% \9;
+  max-width: 100%;
+  height: auto;
+}
+.a-z-media-list ul.pagination {
+  display: inline-block;
+  padding-left: 0;
+  margin: 20px 0;
+  border-radius: 4px;
+}
+.a-z-media-list ul.pagination &gt; li {
+  display: inline;
+  background-image: none;
+  margin: 0;
+  padding: 0;
+}
+.a-z-media-list .pagination &gt; li &gt; a,
+.a-z-media-list .pagination &gt; li &gt; span {
+  position: relative;
+  float: left;
+  padding: 4px 8px;
+  line-height: 1.42857143;
+  text-decoration: none;
+  color: #428bca;
+  background-color: #ffffff;
+  background-image: none;
+  border: 1px solid #dddddd;
+  margin-left: -1px;
+  font-weight: bold;
+}
+@media (max-width: 979px) {
+  .a-z-media-list .pagination &gt; li &gt; a,
+  .a-z-media-list .pagination &gt; li &gt; span {
+    padding: 2px 4px;
+  }
+}
+.a-z-media-list .pagination &gt; li:first-child &gt; a,
+.a-z-media-list .pagination &gt; li:first-child &gt; span {
+  margin-left: 0;
+  border-bottom-left-radius: 4px;
+  border-top-left-radius: 4px;
+}
+.a-z-media-list .pagination &gt; li:last-child &gt; a,
+.a-z-media-list .pagination &gt; li:last-child &gt; span {
+  border-bottom-right-radius: 4px;
+  border-top-right-radius: 4px;
+}
+.a-z-media-list .pagination &gt; li &gt; a:hover,
+.a-z-media-list .pagination &gt; li &gt; span:hover,
+.a-z-media-list .pagination &gt; li &gt; a:focus,
+.a-z-media-list .pagination &gt; li &gt; span:focus {
+  color: #2a6496;
+  background-color: #eeeeee;
+  border-color: #dddddd;
+}
+.a-z-media-list .pagination &gt; .active &gt; a,
+.a-z-media-list .pagination &gt; .active &gt; span,
+.a-z-media-list .pagination &gt; .active &gt; a:hover,
+.a-z-media-list .pagination &gt; .active &gt; span:hover,
+.a-z-media-list .pagination &gt; .active &gt; a:focus,
+.a-z-media-list .pagination &gt; .active &gt; span:focus {
+  z-index: 2;
+  color: #ffffff;
+  background-color: #428bca;
+  border-color: #428bca;
+  cursor: default;
+}
+.a-z-media-list .pagination &gt; .disabled &gt; span,
+.a-z-media-list .pagination &gt; .disabled &gt; span:hover,
+.a-z-media-list .pagination &gt; .disabled &gt; span:focus,
+.a-z-media-list .pagination &gt; .disabled &gt; a,
+.a-z-media-list .pagination &gt; .disabled &gt; a:hover,
+.a-z-media-list .pagination &gt; .disabled &gt; a:focus {
+  color: #777777;
+  background-color: #ffffff;
+  border-color: #dddddd;
+  cursor: not-allowed;
+  font-weight: normal;
+}
+.a-z-media-list ul.media-list {
+  margin: 0;
+  padding: 0;
+}
+.a-z-media-list ul.media-list li {
+  margin: 0 20px 30px 0;
+  padding: 0;
+  display: inline-block;
+  list-style: none;
+  float: left;
+  background-image: none;
+  width: 150px;
+}
+.a-z-media-list ul.media-list li a:hover {
+  background-color: #efefef;
+}
+.a-z-media-list ul.media-list li a,
+.a-z-media-list ul.media-list li a:hover {
+  display: inline-block;
+  color: #3975C2;
+  width: 100%;
+  height: 280px;
+  padding: 0 5px;
+}
+.a-z-media-list ul.media-list li a img.img-thumbnail,
+.a-z-media-list ul.media-list li a:hover img.img-thumbnail {
+  width: 100%;
+  margin-left: -5px;
+}
+.a-z-media-list ul.media-list li a .title,
+.a-z-media-list ul.media-list li a:hover .title {
+  margin: 10px 0 10px;
+}
+.a-z-media-list ul.media-list li a .description,
+.a-z-media-list ul.media-list li a:hover .description {
+  color: #555;
+}
+/* END CHORIKX add */ 
+    
+    
+/* HELPERS
+------------------------------------------------------------------------------------------------------------*/
+
+.offpage { left:-9999em; position:absolute; top:-9999em }
+.placeholder { color:#a9a9a9 }
+.clear { clear:both }
+.clearer { clear:both; display:block; margin:0; padding:0; height:0; line-height:1px; font-size:1px }
+.selfclear { zoom:1 }
+.selfclear:after { content:'.'; display:block; height:0; clear:both; visibility:hidden }
+
+.no_border {border:0;}
+
+.left {float: left;}
+.right {float: right;}
+.clearleft {clear: left;}
+.clearright {clear: right;}
+
+.no_marg_padd {margin:0; padding:0}
+.no_pad_top {padding-top:0}
+  .inside-landing-2 .no_pad_top .col1 {padding-top: 58px;}  
+    .inside-landing-2 .no_pad_top .col3 {padding-top: 58px;}
+
+.no_pad_btm {padding-bottom:0}
+.no_marg_btm {margin-bottom:0}
+.no_marg_top {margin-top:0}
+
+.btm_push_small {margin-bottom: 15px;}
+.top_push_small {margin-top: 15px;}
+
+.left_push_big {margin-left: 30px;}
+
+.marg_top {margin-top:40px}
+.marg_left {margin-left:40px}
+
+.pad_top {padding-top: 25px;}
+.pad_btm {padding-bottom: 25px;}
+.pad_btm_small {padding-bottom: 15px;}
+.pad5 {padding: 5px;}
+.pad5left {padding-left: 5px;}
+.pad5top {padding-top: 5px;}
+
+.sm_pad_top {padding-top: 15px;}
+
+.posrel {position: relative;}
+
+.block {display: block}
+
+.border_btm {border-bottom: 1px dashed #9D9D9D;}
+.border_btm_light {border-bottom: 1px dashed #dfe0e1;}
+
+.oinw-text {
+  left: -9999px;
+  position: absolute;
+  top: -9999px;
+}
+
+/* Bootstrap Overrides */
+.rbox .dropdown {
+    width: 165px;
+}
+.dropdown &gt; a {
+    display: block;
+    background-color: #fff;
+    color: #5c5c5c;
+    font-weight: bold;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.rbox .dropdown .caret {
+    float: right;
+}
+.col3 .rbox ul.dropdown-menu {
+    padding: 5px 0px;
+}
+.col3 .rbox ul.dropdown-menu li {
+    background-image: none;
+    padding-left: 0px;
+}
+.col3 .rbox ul.dropdown-menu li a:link,
+.col3 .rbox ul.dropdown-menu li a:visited {
+    border-bottom: 0px none;
+    color: #5c5c5c;
+    padding: 3px 20px;
+}
+.col3 .rbox ul.dropdown-menu li a:hover,
+.col3 .rbox ul.dropdown-menu li a:focus {
+    color: #fff;
+}
+
+/* Slidorion Stylesheet */
+
+#slidorion {
+  width: 980px;           /* Set to slidorion width. Is equal to #slider + #accordion width */
+  height: 500px;          /* Set to slidorion height. Is equal to #slider and #accordion height */
+  position: relative;
+  left: 0;
+  margin-left: 15px;
+  background: #cbcbcb;
+  border-bottom: 5px solid #edefef;
+  z-index: 1;
+}
+
+#slider {
+  width: 980px;           /* Set to slider width */
+  height: 500px;          /* Set to slider height */
+  position: absolute;
+  float: left;
+  overflow: hidden;       /* Hides the animations */
+  z-index: 1;
+}
+  #slider &gt; div {
+    position:absolute;
+    width:100%;
+    height:100%;
+  }
+
+#accordion {
+  width: 225px;           /* Set to accordion width */
+  height: 500px;          /* Set to image height */
+  font-family: Verdana;
+  position: absolute;
+  z-index:999;
+  overflow: hidden;
+  float: left;
+  left: 755px;
+  background: #2B5C9B;
+  opacity: 0.94;
+    filter: alpha(opacity = 94);
+}
+  #accordion &gt; .link-header {
+    padding: 14px 20px 14px 36px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #d9d9d9;
+    background: #24211C;
+    margin-top:1px;
+    line-height: 1.3;
+    font-family:arial; /* Blurry font Chrome fix #14013010 */
+    letter-spacing:1px;
+  }
+    #accordion &gt; .link-header:first-child {
+      border-top:none;
+    }
+    #accordion &gt; .link-header:hover {
+      background: #36322a;
+      cursor: pointer;
+    }
+    #accordion &gt; .link-header.active {
+      border-bottom: none;
+      background: #676767 !important;
+      color: #fff;
+    }
+  #accordion &gt; .link-content {
+    height: 318px;
+    margin: 0;
+    padding: 16px 25px;
+    border: none;
+    background: #2b5c9b;
+    overflow: hidden;
+  }
+
+  #accordion &gt; .link-content strong{ /* Blurry font Chrome fix #14013010 */
+    font-family: arial; 
+    font-weight: normal;
+    letter-spacing: 0.4px;
+  }
+
+/* Giving to UWS Slideshow controls */
+
+#slideshow{
+    position:relative;
+}
+
+.control {
+    display:block;
+    width:43px;
+    height:310px;
+    text-indent:-10000px;
+    position:absolute;
+    cursor: pointer;
+    z-index: 100;
+}
+#leftControl {
+    background:transparent url(https://www.westernsydney.edu.au/__data/assets/image/0005/390164/left_arrow_off.png?v=0.12.6) no-repeat 0 0;
+  height: 43px;
+  left: 0;
+  margin-left: 0;
+  margin-top: 0;
+  top: 132px;
+  /*position: relative;*/
+}
+#leftControl:hover {
+    background:transparent url(https://www.westernsydney.edu.au/__data/assets/image/0020/390161/left_arrow_on.png?v=0.12.6) no-repeat 0 0;
+}
+#rightControl {
+    background:transparent url(https://www.westernsydney.edu.au/__data/assets/image/0004/390163/right_arrow_off.png?v=0.12.6) no-repeat 0 0;
+  height: 43px;
+  margin-right: 0;
+  margin-top: 0;
+  right: 0;
+  top: -222px;
+  position: relative;
+  float: right;
+}
+#rightControl:hover {
+    background:transparent url(https://www.westernsydney.edu.au/__data/assets/image/0003/390162/right_arrow_on.png?v=0.12.6) no-repeat 0 0;
+}
+/* Slick Carousel Overrides */
+.js-slick-carousel.slick-slider {
+    margin-bottom: 40px;
+}
+/* Enable z-index:
+ * https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Understanding_z_index/Adding_z-index
+ * https://developer.mozilla.org/en-US/docs/Web/CSS/position
+ */
+.js-slick-carousel .slick-slide img,
+.js-slick-carousel .slick-slide .caption {
+    position: relative;
+}
+.js-slick-carousel .slick-slide img {
+    width: 100%;
+}
+.js-slick-carousel .slick-slide .caption,
+.slick-slide a:link,
+.slick-slide a:visited,
+.slick-slide h2 {
+    color: #fff;
+}
+.slick-slide a:link,
+.slick-slide a:visited {
+    border-bottom: 0px none;
+}
+.col2 .slick-slide a img:hover {
+    opacity: 1;
+}
+.js-slick-carousel .slick-slide .caption {
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 10px;
+    margin-top: -10em;
+    height: 10em;
+}
+.slick-slide h2 {
+    text-transform: uppercase;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+.slick-slide p {
+    font-size: 1.1em;
+    margin-top: 0.5em;
+    margin-bottom: 0px;
+}
+.js-slick-carousel .slick-prev,
+.js-slick-carousel .slick-next {
+    top: 30%;
+    background-image: url('https://www.westernsydney.edu.au/__data/assets/image/0009/761427/slick-carousel-nav.png?v=0.10.4');
+    background-repeat: no-repeat;
+    width: 11px;
+    height: 28px;
+}
+.js-slick-carousel .slick-prev:before,
+.js-slick-carousel .slick-next:before {
+    content: '';
+}
+.js-slick-carousel .slick-prev {
+    left: 10px;
+    background-position: 0px 0px;
+}
+.js-slick-carousel .slick-prev:hover {
+    background-position: 0px -29px;
+}
+.js-slick-carousel .slick-next {
+    right: 10px;
+    background-position: -11px 0px;
+}
+.js-slick-carousel .slick-next:hover {
+    background-position: -11px -29px;
+}
+.js-slick-carousel .slick-dots {
+    bottom: -30px;
+}
+.inside-3-col .col2 .js-slick-carousel .slick-dots {
+    margin: 0px;
+}
+.inside-3-col .col2 .slick-dots li {
+    background-image: none;
+    padding: 0px;
+}
+.js-slick-carousel .slick-dots li button:before,
+.js-slick-carousel .slick-dots li.slick-active button:before {
+    opacity: 1;
+}
+.js-slick-carousel .slick-dots li button:before {
+    color: #8e9194;
+}
+.js-slick-carousel .slick-dots li.slick-active button:before {
+    color: #000;
+}
+
+/* Squiz Custom */
+#slidorion {
+    overflow: hidden;
+}
+#accordion {
+    overflow: visible;
+    filter: 100;
+}
+#accordion &gt; .link-content {
+    background: url(https://www.westernsydney.edu.au/__data/assets/image/0020/411491/carousel-lip.png?v=0.11.6) no-repeat left 18px;
+    margin-left: -23px;
+    padding-left: 48px;
+}
+#vaccordion {
+    margin-bottom: 2em;
+}
+
+/* School Landing Page: Clearfixes */
+.areas-of-study,
+.index {
+    *zoom: 1;
+}
+.areas-of-study:before,
+.areas-of-study:after,
+.index:before,
+.index:after {
+    content: '';
+    display: table;
+    line-height: 0;
+}
+.areas-of-study:after,
+.index:after {
+    clear: both;
+}
+
+/* School Landing Page: Floating Boxes */
+.area-of-study,
+.index-summary {
+    box-sizing: border-box;
+    float: left;
+    overflow: hidden;
+}
+
+/* School Landing Page: Areas of Study */
+.area-of-study {
+    position: relative;
+    background-color: #000;
+    margin-right: 2%;
+    margin-bottom: 2%;
+    width: 32%;
+}
+.ie8 .area-of-study {
+    margin-right: 1%;
+    margin-bottom: 1%;
+}
+.area-of-study:nth-of-type(3n) {
+    margin-right: 0px;
+}
+.area-of-study:nth-of-type(3n + 1) {
+    clear: both;
+}
+.area-of-study .description {
+    box-sizing: border-box;
+    overflow: hidden;
+    position: absolute;
+    bottom: -75px;
+    z-index: 1;
+    padding: 6px;
+    width: 100%;
+    transition: bottom 0.5s ease-in-out, opacity 0.3s ease-in-out;
+}
+.area-of-study h3,
+.area-of-study p {
+    color: #fff;
+}
+.area-of-study a:link,
+.area-of-study a:visited {
+    color: #fff;
+    border-bottom: 0px none;
+}
+.area-of-study h3 {
+    box-sizing: border-box;
+    overflow: hidden;
+    font-size: 1.1em;
+    line-height: 1.2em;
+    margin: 0px;
+    width: 100%;
+    height: 40px;
+}
+.area-of-study h3 a {
+    display: block;
+}
+.area-of-study p {
+    border-top: 1px solid #fff;
+    margin: 6px 0px;
+    width: 100%;
+    height: 50px;
+}
+.area-of-study .action {
+    box-sizing: border-box;
+    display: block;
+    overflow: hidden;
+    position: absolute;
+    bottom: -40px;
+    opacity: 0;
+    z-index: 3;
+    background-image: url('https://www.westernsydney.edu.au/__data/assets/image/0019/756001/area-of-study-arrow.png?v=0.8.6');
+    background-repeat: no-repeat;
+    background-position: 95% 40%;
+    font-size: 1.3em;
+    text-transform: uppercase;
+    padding: 6px;
+    width: 100%;
+    height: 40px;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+.area-of-study img {
+    float: left;
+    padding-bottom: 40px;
+    width: 100%;
+}
+.area-of-study img:hover,
+.col2 .area-of-study a img:hover {
+    opacity: 1;
+    filter: alpha(opacity = 100);
+}
+/* Display description on top of thumbnail.
+ */
+.area-of-study:hover {
+    cursor: pointer;
+}
+.area-of-study:hover .description {
+    bottom: 34px;
+}
+.area-of-study:hover h3 {
+    height: 30px;
+}
+.ie8 .area-of-study:hover h3 {
+    height: 32px;
+}
+.area-of-study:hover .action {
+    opacity: 1;
+    transform: translate(0px, -40px);
+    -webkit-transform: translate(0px, -40px);
+}
+.area-of-study:hover img,
+.area-of-study:hover img:hover,
+.col2 .area-of-study:hover a img:hover {
+    opacity: 0.5;
+    filter: alpha(opacity = 50);
+}
+
+/* School Landing Page: Child Page Index */
+.index-item {
+    float: left;
+    margin-right: 2%;
+    margin-bottom: 2%;
+    width: 49%;
+    height: 340px;
+}
+.ie8 .index-item {
+    margin-right: 1%;
+    margin-bottom: 1%;
+}
+.index-item:nth-of-type(2n) {
+    margin-right: 0px;
+}
+.index h2 {
+    font-size: 1.6em;
+}
+.index h2 a:link,
+.index h2 a:visited {
+    color: #5c5c5c;
+}
+.index h2 a:hover,
+.index h2 a:active {
+    color: #000;
+}
+.index-item img {
+    width: 100%;
+}
+/* Future Students: Generic Widgets */
+.future-students-teacher-list .action,
+.future-students-career-options .action {
+    display: block;
+    background-color: #edefef;
+    text-align: right;
+    padding: 10px;
+}
+.future-students-teacher-list .action:after,
+.future-students-career-options .action:after {
+    content: ' &gt;';
+}
+/* Future Students: Tabbed/Collapsible Panels */
+.ui-widget.future-students-panels {
+    background-color: transparent;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    padding: 0px;
+    border: 0px none;
+    border-radius: 0px;
+    margin-bottom: 2em;
+}
+.ui-widget.future-students-panels .ui-widget-header {
+    background-color: transparent;
+    background-image: none;
+    border-top: 0px none;
+    border-right: 0px none;
+    border-bottom-width: 3px;
+    border-bottom-style: solid;
+    border-left: 0px none;
+    border-radius: 0px;
+}
+.inside-3-col .col2 .ui-widget.future-students-panels ul.ui-widget-header {
+    margin: 0px;
+}
+.inside-3-col .col2 .ui-tabs.future-students-panels ul.ui-widget-header li {
+    background-image: none;
+    padding: 0px;
+}
+.future-students-panels .ui-widget-header .ui-state-default {
+    margin: 0px;
+    border: 0px none;
+    border-radius: 0px;
+}
+.future-students-panels.ui-tabs .ui-tabs-nav li a {
+    background-color: #edefef;
+    color: #949696;
+    font-size: 1.1em;
+    text-transform: uppercase;
+    padding: 9px 18px;
+    margin-right: 3px;
+    border-top: 3px solid #edefef;
+    border-bottom: 0px none;
+}
+.future-students-panels.ui-tabs .ui-tabs-nav li a:hover {
+    color: #444;
+}
+.future-students-panels.ui-tabs .ui-tabs-nav li:last-of-type a {
+    margin-right: 0px;
+}
+.panel-header {
+    display: none;
+}
+.ui-tabs.future-students-panels .ui-tabs-panel {
+    box-sizing: border-box;
+    border-right: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
+    border-left: 1px solid #aaa;
+}
+.ui-widget.ui-accordion.future-students-panels {
+    margin-bottom: 2em;
+}
+.future-students-panels.ui-accordion .panel-header {
+    display: block;
+}
+.future-students-panels.ui-accordion .ui-accordion-header {
+    box-sizing: border-box;
+    background: #688e39; /* Old browsers */
+    background: -moz-linear-gradient(top,  #990033 0%, #688e39 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#990033), color-stop(100%,#990033)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #990033 0%,#990033 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #990033 0%,#990033 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #990033 0%,#990033 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #990033 0%,#990033 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8cbe4f', endColorstr='#688e39',GradientType=0 ); /* IE6-9 */
+    color: #fff;
+    font-size: 1.4em;
+    line-height: 1.4em;
+    text-transform: uppercase;
+    padding: 10px 10px 10px 41px;
+    margin-top: 0px;
+    border-top: 1px solid #FFFFFF;
+    border-right: 0px none;
+    border-bottom: 0px none;
+    border-left: 0px none;
+    border-radius: 0px;
+    min-height: 41px;
+    font-family: "Gotham-Bold", "Open Sans", Arial;
+}
+.future-students-panels .ui-accordion-header .ui-icon {
+    background-position: 0px 0px;
+    width: 21px;
+    height: 21px;
+}
+.future-students-panels.ui-accordion .ui-accordion-header .ui-accordion-header-icon {
+    left: 10px;
+    margin-top: -12px;
+}
+.future-students-panels .ui-state-default.ui-accordion-header .ui-icon,
+.future-students-panels .ui-state-active.ui-accordion-header .ui-icon {
+    background-image: url('https://www.westernsydney.edu.au/__data/assets/image/0004/761431/accordion-controls-small.png?v=0.10.7');
+}
+.future-students-panels .ui-state-active.ui-accordion-header .ui-icon {
+    background-position: 0px -22px;
+}
+.future-students-panels.ui-accordion .ui-widget-content {
+    background-color: #edefef;
+    background-image: none;
+    padding: 10px;
+    border: 0px none;
+}
+.inside-3-col .col2 .future-students-panels.ui-accordion .ui-widget-content ul {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+.future-students-panels.ui-accordion table,
+.future-students-panels.ui-accordion td,
+.future-students-panels.ui-accordion th {
+    border-right: 0px none;
+    border-bottom: 0px none;
+    border-left: 0px none;
+    border-color: #cdcdcd;
+}
+.future-students-panels.ui-accordion table {
+    background-color: #fff;
+}
+.future-students-panels.ui-accordion td,
+.future-students-panels.ui-accordion th {
+    background-color: transparent;
+    padding: 10px;
+}
+
+/* Future Students: Careers */
+.future-students-careers {
+    *zoom: 1;
+    box-sizing: border-box;
+    background-color: #edefef;
+    padding: 10px;
+    margin-top: 1em;
+    margin-bottom: 2em;
+}
+.future-students-careers:before,
+.future-students-careers:after {
+    content: '';
+    display: table;
+    line-height: 0;
+}
+.future-students-careers:after {
+    clear: both;
+}
+.future-students-careers h2 {
+    margin-top: 10px;
+    font-size: 1.6em;
+    line-height: 1.4em;
+}
+.career-panel {
+    box-sizing: border-box;
+    float: left;
+    overflow: hidden;
+    margin-right: 8%;
+    width: 46%;
+}
+.ie8 .career-panel {
+    width: 48%;
+    margin-right: 2%;
+}
+.career-panel:nth-of-type(2n) {
+    margin-right: 0px;
+}
+.career-panel h3 {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.career-panel .action a {
+    display: block;
+    font-size: 1.1em;
+    text-align: center;
+    text-transform: uppercase;
+    padding: 16px 12px;
+    border-radius: 8px;
+}
+.career-panel .action a:link,
+.career-panel .action a:visited {
+    color: #fff;
+    border-bottom: 0px none;
+}
+.career-panel .action a:hover,
+.career-panel .action a:active {
+    color: #444;
+}
+/* Future Students: Teacher Profiles */
+.future-students-teacher-profiles {
+    margin-bottom: 2em;
+}
+.future-students-teacher-profiles .teacher-panel {
+    box-sizing: border-box;
+    position: relative;
+    background-color: #edefef;
+    padding: 10px 10px 0px;
+    min-height: 170px;
+}
+.teacher-panel h3,
+.teacher-panel p {
+    margin-right: 120px;
+}
+.teacher-panel h3 {
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.teacher-panel p {
+    margin-bottom: 0px;
+}
+.teacher-panel img {
+    position: absolute;
+    right: 10px;
+    top: 20px;
+    max-width: 100px;
+    max-height: 150px;
+}
+.future-students-teacher-profiles a:link,
+.future-students-teacher-profiles a:visited {
+    border-bottom: 0px none;
+}
+.future-students-teacher-profiles .action {
+    background-color: #edefef;
+    display: block;
+    padding: 10px;
+    text-align: right;
+}
+.future-students-teacher-profiles .action:after {
+    content: ' &gt;';
+}
+.future-students-teacher-list {
+    margin-bottom: 2em;
+}
+.future-students-teacher-list &gt; div {
+    *zoom: 1;
+    box-sizing: border-box;
+    background-color: #edefef;
+    padding: 10px;
+}
+.future-students-teacher-list &gt; div:before,
+.future-students-teacher-list &gt; div:after {
+    content: '';
+    display: table;
+    line-height: 0;
+}
+.future-students-teacher-list &gt; div:after {
+    clear: both;
+}
+.future-students-teacher-list &gt; div &gt; div {
+    box-sizing: border-box;
+    float: left;
+    overflow: hidden;
+    margin-right: 1%;
+    margin-bottom: 10px;
+    width: 33%;
+    height: 255px;
+}
+.ie8 .future-students-teacher-list &gt; div &gt; div {
+    width: 32%;
+}
+.future-students-teacher-list &gt; div &gt; div:nth-of-type(3n) {
+    margin-right: 0px;
+    width: 32%;
+}
+.future-students-teacher-list a,
+.future-students-teacher-list img,
+.future-students-teacher-list a span {
+    display: block;
+}
+.future-students-teacher-list a:link,
+.future-students-teacher-list a:visited {
+    border-bottom: 0px none;
+}
+.future-students-teacher-list img {
+    margin-bottom: 10px;
+}
+.future-students-teacher-list .teacher-name {
+    font-size: 1.1em;
+    font-weight: bold;
+}
+.future-students-teacher-list .teacher-org-unit {
+    color: #5c5c5c;
+}
+/* Future Students: Career Options */
+.future-students-career-options {
+    margin-bottom: 2em;
+}
+.future-students-career-options &gt; div {
+    box-sizing: border-box;
+    background-color: #edefef;
+    padding: 10px;
+}
+.future-students-career-options img {
+    display: block;
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+.future-students-career-options table,
+.future-students-career-options td,
+.future-students-career-options th {
+    border-right: 0px none;
+    border-bottom: 0px none;
+    border-left: 0px none;
+    border-color: #cdcdcd;
+}
+.future-students-career-options table {
+    clear: both;
+    background-color: #fff;
+}
+.future-students-career-options td,
+.future-students-career-options th {
+    background-color: transparent;
+    padding: 10px;
+}
+.future-students-career-options a:link,
+.future-students-career-options a:visited {
+    border: 0px none;
+}
+/* Future Students: Calls to Action */
+.future-student-actions {
+    *zoom: 1;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+.future-student-actions:before,
+.future-student-actions:after {
+    content: '';
+    display: table;
+    line-height: 0;
+}
+.future-student-actions:after {
+    clear: both;
+}
+.future-student-actions a,
+.future-student-actions button {
+    box-sizing: border-box;
+    display: block;
+    float: left;
+    background-color: #2d5e9c;
+    font-size: 1.3em;
+    line-height: normal;
+    text-align: center;
+    text-transform: uppercase;
+    padding: 18px;
+    margin-top: 1em;
+    margin-right: 2%;
+    margin-bottom: 1em;
+    width: 49%;
+}
+.ie8 .future-student-actions a,
+.ie8 .future-student-actions button {
+    margin-right: 1%;
+}
+.future-student-actions a:nth-child(2n),
+.future-student-actions button:nth-child(2n) {
+    margin-right: 0px;
+}
+.future-student-actions a:link,
+.future-student-actions a:visited,
+.future-student-actions button {
+    color: #fff;
+    border-bottom: 0px none;
+}
+.future-student-actions button {
+    border: 0px none;
+}
+.future-student-actions .urgent {
+    background-color: #d80909;
+    background-image: url('https://www.westernsydney.edu.au/__data/assets/image/0010/761428/call-to-action.png?v=0.9.8');
+    background-repeat: no-repeat;
+    background-position: 95% center;
+    padding-right: 38px;
+}
+/* YouTube */
+.video-wrapper {
+    overflow: hidden;
+    position: relative;
+    padding-top: 30px;
+    padding-bottom: 56.25%;
+    margin-bottom: 2em;
+    height: 0;
+}
+.video-wrapper iframe,
+.video-wrapper object,
+.video-wrapper embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Future Students: Default Palette */
+.link-panel,
+.slick-slide .caption,
+.area-of-study .action,
+.area-of-study img,
+.career-panel .action a {
+    background-color: #8cbe4f;
+}
+.ui-widget.future-students-panels .ui-widget-header {
+    border-bottom-color: #8cbe4f;
+}
+.future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a,
+.future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a:hover,
+.career-panel h3,
+.teacher-panel h3,
+.future-students-teacher-profiles a:link,
+.future-students-teacher-profiles a:visited,
+.future-students-teacher-list a:link,
+.future-students-teacher-list a:visited,
+.future-students-career-options a:link,
+.future-students-career-options a:visited {
+    color: #8cbe4f;
+}
+.future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a {
+    border-top-color: #8cbe4f;
+}
+
+/* Future Students: User-Defined Palette Overrides */
+.palette-beige-neutral .link-panel,
+.palette-beige-neutral .slide .caption,
+.palette-beige-neutral .area-of-study img,
+.palette-beige-neutral .area-of-study .action,
+.palette-beige-neutral .career-panel .action a {
+    background-color: #afaa6d;
+}
+.palette-beige-neutral .ui-widget.future-students-panels .ui-widget-header {
+    border-bottom-color: #afaa6d;
+}
+.palette-beige-neutral .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a,
+.palette-beige-neutral .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a:hover,
+.palette-beige-neutral .career-panel h3,
+.palette-beige-neutral .teacher-panel h3,
+.palette-beige-neutral .future-students-teacher-profiles a:link,
+.palette-beige-neutral .future-students-teacher-profiles a:visited,
+.palette-beige-neutral .future-students-teacher-list a:link,
+.palette-beige-neutral .future-students-teacher-list a:visited,
+.palette-beige-neutral .future-students-career-options a:link,
+.palette-beige-neutral .future-students-career-options a:visited {
+    color: #afaa6d;
+}
+.palette-beige-neutral .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a {
+    border-top-color: #afaa6d;
+}
+.palette-black .link-panel,
+.palette-black .slide .caption,
+.palette-black .area-of-study img,
+.palette-black .area-of-study .action,
+.palette-black .career-panel .action a {
+    background-color: #000;
+}
+.palette-black .ui-widget.future-students-panels .ui-widget-header {
+    border-bottom-color: #000;
+}
+.palette-black .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a,
+.palette-black .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a:hover,
+.palette-black .career-panel h3,
+.palette-black .teacher-panel h3,
+.palette-black .future-students-teacher-profiles a:link,
+.palette-black .future-students-teacher-profiles a:visited,
+.palette-black .future-students-teacher-list a:link,
+.palette-black .future-students-teacher-list a:visited,
+.palette-black .future-students-career-options a:link,
+.palette-black .future-students-career-options a:visited {
+    color: #000;
+}
+.palette-black .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a {
+    border-top-color: #000;
+}
+.palette-blue .link-panel,
+.palette-blue .slide .caption,
+.palette-blue .area-of-study img,
+.palette-blue .area-of-study .action,
+.palette-blue .career-panel .action a {
+    background-color: #25589d;
+}
+.palette-blue  .ui-widget.future-students-panels .ui-widget-header {
+    border-bottom-color: #25589d;
+}
+.palette-blue .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a,
+.palette-blue .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a:hover,
+.palette-blue .career-panel h3,
+.palette-blue .teacher-panel h3,
+.palette-blue .future-students-teacher-profiles a:link,
+.palette-blue .future-students-teacher-profiles a:visited,
+.palette-blue .future-students-teacher-list a:link,
+.palette-blue .future-students-teacher-list a:visited,
+.palette-blue .future-students-career-options a:link,
+.palette-blue .future-students-career-options a:visited {
+    color: #25589d;
+}
+.palette-blue  .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a {
+    border-top-color: #25589d;
+}
+.palette-blue-neutral .link-panel,
+.palette-blue-neutral .slide .caption,
+.palette-blue-neutral .area-of-study img,
+.palette-blue-neutral .area-of-study .action,
+.palette-blue-neutral .career-panel .action a {
+    background-color: #a1c4d0;
+}
+.palette-blue-neutral .ui-widget.future-students-panels .ui-widget-header {
+    border-bottom-color: #a1c4d0;
+}
+.palette-blue-neutral .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a,
+.palette-blue-neutral .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a:hover,
+.palette-blue-neutral .career-panel h3,
+.palette-blue-neutral .teacher-panel h3,
+.palette-blue-neutral .future-students-teacher-profiles a:link,
+.palette-blue-neutral .future-students-teacher-profiles a:visited,
+.palette-blue-neutral .future-students-teacher-list a:link,
+.palette-blue-neutral .future-students-teacher-list a:visited,
+.palette-blue-neutral .future-students-career-options a:link,
+.palette-blue-neutral .future-students-career-options a:visited {
+    color: #a1c4d0;
+}
+.palette-blue-neutral .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a {
+    border-top-color: #a1c4d0;
+}
+.palette-green-neutral .link-panel,
+.palette-green-neutral .slide .caption,
+.palette-green-neutral .area-of-study img,
+.palette-green-neutral .area-of-study .action,
+.palette-green-neutral .career-panel .action a {
+    background-color: #8ea74f;
+}
+.palette-green-neutral .ui-widget.future-students-panels .ui-widget-header {
+    border-bottom-color: #8ea74f;
+}
+.palette-green-neutral .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a,
+.palette-green-neutral .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a:hover,
+.palette-green-neutral .career-panel h3,
+.palette-green-neutral .teacher-panel h3,
+.palette-green-neutral .future-students-teacher-profiles a:link,
+.palette-green-neutral .future-students-teacher-profiles a:visited,
+.palette-green-neutral .future-students-teacher-list a:link,
+.palette-green-neutral .future-students-teacher-list a:visited,
+.palette-green-neutral .future-students-career-options a:link,
+.palette-green-neutral .future-students-career-options a:visited {
+    color: #8ea74f;
+}
+.palette-green-neutral .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a {
+    border-top-color: #8ea74f;
+}
+.palette-grey-neutral .link-panel,
+.palette-grey-neutral .slide .caption,
+.palette-grey-neutral .area-of-study img,
+.palette-grey-neutral .area-of-study .action,
+.palette-grey-neutral .career-panel .action a {
+    background-color: #676869;
+}
+.palette-grey-neutral .ui-widget.future-students-panels .ui-widget-header {
+    border-bottom-color: #676869;
+}
+.palette-grey-neutral .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a,
+.palette-grey-neutral .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a:hover,
+.palette-grey-neutral .career-panel h3,
+.palette-grey-neutral .teacher-panel h3,
+.palette-grey-neutral .future-students-teacher-profiles a:link,
+.palette-grey-neutral .future-students-teacher-profiles a:visited,
+.palette-grey-neutral .future-students-teacher-list a:link,
+.palette-grey-neutral .future-students-teacher-list a:visited,
+.palette-grey-neutral .future-students-career-options a:link,
+.palette-grey-neutral .future-students-career-options a:visited {
+    color: #676869;
+}
+.palette-grey-neutral .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a {
+    border-top-color: #676869;
+}
+.palette-orange .link-panel,
+.palette-orange .slide .caption,
+.palette-orange .area-of-study img,
+.palette-orange .area-of-study .action,
+.palette-orange .career-panel .action a {
+    background-color: #ff9a00;
+}
+.palette-orange .ui-widget.future-students-panels .ui-widget-header {
+    border-bottom-color: #ff9a00;
+}
+.palette-orange .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a,
+.palette-orange .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a:hover,
+.palette-orange .career-panel h3,
+.palette-orange .teacher-panel h3,
+.palette-orange .future-students-teacher-profiles a:link,
+.palette-orange .future-students-teacher-profiles a:visited,
+.palette-orange .future-students-teacher-list a:link,
+.palette-orange .future-students-teacher-list a:visited,
+.palette-orange .future-students-career-options a:link,
+.palette-orange .future-students-career-options a:visited {
+    color: #ff9a00;
+}
+.palette-orange .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a {
+    border-top-color: #ff9a00;
+}
+.palette-purple .link-panel,
+.palette-purple .slide .caption,
+.palette-purple .area-of-study img,
+.palette-purple .area-of-study .action,
+.palette-purple .career-panel .action a {
+    background-color: #4f4489;
+}
+.palette-purple .ui-widget.future-students-panels .ui-widget-header {
+    border-bottom-color: #4f4489;
+}
+.palette-purple .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a,
+.palette-purple .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a:hover,
+.palette-purple .career-panel h3,
+.palette-purple .teacher-panel h3,
+.palette-purple .future-students-teacher-profiles a:link,
+.palette-purple .future-students-teacher-profiles a:visited,
+.palette-purple .future-students-teacher-list a:link,
+.palette-purple .future-students-teacher-list a:visited,
+.palette-purple .future-students-career-options a:link,
+.palette-purple .future-students-career-options a:visited {
+    color: #4f4489;
+}
+.palette-purple .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a {
+    border-top-color: #4f4489;
+}
+.palette-purple-neutral .link-panel,
+.palette-purple-neutral .slide .caption,
+.palette-purple-neutral .area-of-study img,
+.palette-purple-neutral .area-of-study .action,
+.palette-purple-neutral .career-panel .action a {
+    background-color: #63598d;
+}
+.palette-purple-neutral .ui-widget.future-students-panels .ui-widget-header {
+    border-bottom-color: #63598d;
+}
+.palette-purple-neutral .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a,
+.palette-purple-neutral .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a:hover,
+.palette-purple-neutral .career-panel h3,
+.palette-purple-neutral .teacher-panel h3,
+.palette-purple-neutral .future-students-teacher-profiles a:link,
+.palette-purple-neutral .future-students-teacher-profiles a:visited,
+.palette-purple-neutral .future-students-teacher-list a:link,
+.palette-purple-neutral .future-students-teacher-list a:visited,
+.palette-purple-neutral .future-students-career-options a:link,
+.palette-purple-neutral .future-students-career-options a:visited {
+    color: #63598d;
+}
+.palette-purple-neutral .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a {
+    border-top-color: #63598d;
+}
+.palette-red .link-panel,
+.palette-red .slide .caption,
+.palette-red .area-of-study img,
+.palette-red .area-of-study .action,
+.palette-red .career-panel .action a {
+    background-color: #f02233;
+}
+.palette-red .ui-widget.future-students-panels .ui-widget-header {
+    border-bottom-color: #f02233;
+}
+.palette-red .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a,
+.palette-red .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a:hover,
+.palette-red .career-panel h3,
+.palette-red .teacher-panel h3,
+.palette-red .future-students-teacher-profiles a:link,
+.palette-red .future-students-teacher-profiles a:visited,
+.palette-red .future-students-teacher-list a:link,
+.palette-red .future-students-teacher-list a:visited,
+.palette-red .future-students-career-options a:link,
+.palette-red .future-students-career-options a:visited {
+    color: #f02233;
+}
+.palette-red .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a {
+    border-top-color: #f02233;
+}
+.palette-red-neutral .link-panel,
+.palette-red-neutral .slide .caption,
+.palette-red-neutral .area-of-study img,
+.palette-red-neutral .area-of-study .action,
+.palette-red-neutral .career-panel .action a {
+    background-color: #b53837;
+}
+.palette-red-neutral .ui-widget.future-students-panels .ui-widget-header {
+    border-bottom-color: #b53837;
+}
+.palette-red-neutral .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a,
+.palette-red-neutral .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a:hover,
+.palette-red-neutral .career-panel h3,
+.palette-red-neutral .teacher-panel h3,
+.palette-red-neutral .future-students-teacher-profiles a:link,
+.palette-red-neutral .future-students-teacher-profiles a:visited,
+.palette-red-neutral .future-students-teacher-list a:link,
+.palette-red-neutral .future-students-teacher-list a:visited,
+.palette-red-neutral .future-students-career-options a:link,
+.palette-red-neutral .future-students-career-options a:visited {
+    color: #b53837;
+}
+.palette-red-neutral .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a {
+    border-top-color: #b53837;
+}
+.palette-silver .link-panel,
+.palette-silver .slide .caption,
+.palette-silver .area-of-study img,
+.palette-silver .area-of-study .action,
+.palette-silver .career-panel .action a {
+    background-color: #8e9194;
+}
+.palette-silver .ui-widget.future-students-panels .ui-widget-header {
+    border-bottom-color: #8e9194;
+}
+.palette-silver .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a,
+.palette-silver .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a:hover,
+.palette-silver .career-panel h3,
+.palette-silver .teacher-panel h3,
+.palette-silver .future-students-teacher-profiles a:link,
+.palette-silver .future-students-teacher-profiles a:visited,
+.palette-silver .future-students-teacher-list a:link,
+.palette-silver .future-students-teacher-list a:visited,
+.palette-silver .future-students-career-options a:link,
+.palette-silver .future-students-career-options a:visited {
+    color: #8e9194;
+}
+.palette-silver .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a {
+    border-top-color: #8e9194;
+}
+.palette-tan-neutral .link-panel,
+.palette-tan-neutral .slide .caption,
+.palette-tan-neutral .area-of-study img,
+.palette-tan-neutral .area-of-study .action,
+.palette-tan-neutral .career-panel .action a {
+    background-color: #987857;
+}
+.palette-tan-neutral .ui-widget.future-students-panels .ui-widget-header {
+    border-bottom-color: #987857;
+}
+.palette-tan-neutral .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a,
+.palette-tan-neutral .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a:hover,
+.palette-tan-neutral .career-panel h3,
+.palette-tan-neutral .teacher-panel h3,
+.palette-tan-neutral .future-students-teacher-profiles a:link,
+.palette-tan-neutral .future-students-teacher-profiles a:visited,
+.palette-tan-neutral .future-students-teacher-list a:link,
+.palette-tan-neutral .future-students-teacher-list a:visited,
+.palette-tan-neutral .future-students-career-options a:link,
+.palette-tan-neutral .future-students-career-options a:visited {
+    color: #987857;
+}
+.palette-tan-neutral .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a {
+    border-top-color: #987857;
+}
+.palette-teal .link-panel,
+.palette-teal .slide .caption,
+.palette-teal .area-of-study img,
+.palette-teal .area-of-study .action,
+.palette-teal .career-panel .action a {
+    background-color: #00bab9;
+}
+.palette-teal .ui-widget.future-students-panels .ui-widget-header {
+    border-bottom-color: #00bab9;
+}
+.palette-teal .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a,
+.palette-teal .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a:hover,
+.palette-teal .career-panel h3,
+.palette-teal .teacher-panel h3,
+.palette-teal .future-students-teacher-profiles a:link,
+.palette-teal .future-students-teacher-profiles a:visited,
+.palette-teal .future-students-teacher-list a:link,
+.palette-teal .future-students-teacher-list a:visited,
+.palette-teal .future-students-career-options a:link,
+.palette-teal .future-students-career-options a:visited {
+    color: #00bab9;
+}
+.palette-teal .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a {
+    border-top-color: #00bab9;
+}
+.palette-teal-neutral .link-panel,
+.palette-teal-neutral .slide .caption,
+.palette-teal-neutral .area-of-study img,
+.palette-teal-neutral .area-of-study .action,
+.palette-teal-neutral .career-panel .action a {
+    background-color: #56a6af;
+}
+.palette-teal-neutral .ui-widget.future-students-panels .ui-widget-header {
+    border-bottom-color: #56a6af;
+}
+.palette-teal-neutral .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a,
+.palette-teal-neutral .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a:hover,
+.palette-teal-neutral .career-panel h3,
+.palette-teal-neutral .teacher-panel h3,
+.palette-teal-neutral .future-students-teacher-profiles a:link,
+.palette-teal-neutral .future-students-teacher-profiles a:visited,
+.palette-teal-neutral .future-students-teacher-list a:link,
+.palette-teal-neutral .future-students-teacher-list a:visited,
+.palette-teal-neutral .future-students-career-options a:link,
+.palette-teal-neutral .future-students-career-options a:visited {
+    color: #56a6af;
+}
+.palette-teal-neutral .future-students-panels.ui-tabs .ui-tabs-nav li.ui-tabs-active a {
+    border-top-color: #56a6af;
+}
+/* Specificity overrides for carousel slides */
+.slick-slide.palette-beige-neutral .caption {
+    background-color: #afaa6d;
+}
+.slick-slide.palette-black .caption {
+    background-color: #000;
+}
+.slick-slide.palette-blue .caption {
+    background-color: #25589d;
+}
+.slick-slide.palette-blue-neutral .caption {
+    background-color: #a1c4d0;
+}
+.slick-slide.palette-green .caption {
+    background-color: #8cbe4f;
+}
+.slick-slide.palette-green-neutral .caption {
+    background-color: #8ea74f;
+}
+.slick-slide.palette-grey-neutral .caption {
+    background-color: #676869;
+}
+.slick-slide.palette-orange .caption {
+    background-color: #ff9a00;
+}
+.slick-slide.palette-purple .caption {
+    background-color: #4f4489;
+}
+.slick-slide.palette-purple-neutral .caption {
+    background-color: #63598d;
+}
+.slick-slide.palette-red .caption {
+    background-color: #f02233;
+}
+.slick-slide.palette-red-neutral .caption {
+    background-color: #b53837;
+}
+.slick-slide.palette-silver .caption {
+    background-color: #8e9194;
+}
+.slick-slide.palette-tan-neutral .caption {
+    background-color: #987857;
+}
+.slick-slide.palette-teal .caption {
+    background-color: #00bab9;
+}
+.slick-slide.palette-teal-neutral .caption {
+    background-color: #56a6af;
+}
+
+/* Survey prompt dialog */
+#survey-prompt, 
+#urgent-notice {
+    display: none;
+}
+#cboxLoadedContent .survey-prompt-body,
+#cboxLoadedContent .urgent-notice-body {
+    box-sizing: border-box;
+    /* Same font size as .page-inner */
+    font-size: 1.2em;
+    padding: 0px 2em;
+}
+
+
+
+/* MOBILE DEVICES
+ -----------------------------------------------------------------------------------------------------------*/
+
+@media only screen
+and (max-device-width : 320px) {
+  .header_main .mobile {
+    display: block;
+    position: absolute; 
+    left: 200px;
+  }
+}
+
+/* FORM ERRORS */
+#wsu_form_errors ul li {
+        color: red;
+}
+
+
+
+
+
+
+
+
+/********************************* Search Page ************************************/
+.form-inline{
+  margin-top:10px;
+}
+.form-inline select{
+ visibility:hidden;
+}
+
+.form-inline button{   
+    background:url("https://logincms.westernsydney.edu.au/__data/assets/image/0003/925680/arrow-red.png?v=0.1.1") 95% 43% transparent no-repeat;
+    height:38px;
+    padding: 3px 20px 3px 0;
+    border: 2px solid #ed0033;
+    border-left: none;
+    width: 96px;
+    color: #ed0033;
+}
+
+/******** filter controls ********/
+#filter-items{
+  margin:0 0 5px 0;
+  padding:0;
+  list-style:none;
+  border-top: solid #EFEFEF ;
+  border-bottom: solid #EFEFEF ;
+}
+#filter-items .filter-item:before, #filter-items .sub-filter-item:before{
+  display:none;
+}
+#filter-items .filter-item{
+  display:inline-block;
+  padding:0;
+}
+#filter-items .filter-item a{
+  font-weight:bold;
+  border:none;
+  padding: 8px 15px;
+  display:inline-block;
+  color:#262223;
+  text-decoration:none;
+  border:3px solid transparent;
+}
+
+#filter-items .desk-item a:hover{
+  border-top: 3px solid #ed0033;
+  border-bottom:3px solid #ed0033;
+}
+ .current{
+  border-top: 2px solid #ed0033;
+  border-bottom:2px solid #ed0033;
+}
+
+.form-inline input{
+  margin-right: 10px;
+  width:400px;
+  height:40px;
+  border: solid rgb(194, 82, 82);
+  
+}
+#filter-items .more-filters{
+  display:none;
+}
+
+.arrow-down{
+    width: 0; 
+    height: 0; 
+    margin-left:5px;
+    display:inline-block;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 7px solid black;
+}
+/***** mobile view filter *****/
+#sub-filter-items{
+    display:none;
+    position:absolute;
+    right:5%;
+    width:200px;  
+    background:#fff;
+    -moz-box-shadow:    0px 0px  3px #ccc;
+    -webkit-box-shadow: 0px 0px  3px #ccc;
+    box-shadow:         0px 0px  3px #ccc;
+
+}
+#sub-filter-items .sub-filter-item{
+    text-align:left;
+    padding:12px 15px;
+}
+#sub-filter-items a{
+    font-weight:bold;
+    color:black;
+    border:none;
+}
+#sub-filter-items .sub-filter-item:hover{
+    background:#F1F1F1 ;
+}
+/******* Drop Down Menu for Popular Keywords ****/
+
+#popular-key-wrap{
+    display:none;
+    position:absolute;
+    background: rgb(247,241,241);
+    padding:10px 15px;
+    width:49%;
+    z-index:50;
+}
+#popular-key-wrap hr{
+    border:1px solid red;
+}
+#popular-key-wrap a{
+    border:none;
+}
+/*************** Staff Page *****************/
+.staff-info-wrap{
+   /*border:1px solid green;*/
+   width:600px;
+}
+.staff-info-box{
+   background:#E4E2E2;
+   padding:10px 15px;
+   overflow:hidden;
+}
+.staff-img{
+   width:100px;
+   height:150px; 
+   background:grey;
+   text-align:center;
+   float:left;
+}
+.img{
+  width:100%;
+}
+.staff-detail{
+  /*border:1px solid green;*/
+  float:left;
+  width:72%;
+  margin-left:20px;
+}
+.staff-detail span{
+  font-weight:bold;
+  color:#B5032A;
+}
+.staff-full-detail span{
+  margin-bottom:1em;
+  font-weight:bold;
+}
+.staff-full-detail p{
+  border-bottom:1px solid #E8E7E7;
+  padding-bottom:15px;
+}
+.staff-full-detail p:hover{
+  padding-left:15px;
+  border-left:2px solid red;
+}
+
+/***Mobile Search Button***/
+.form-inline .mb-button{
+ display:none;
+ border:none;
+ background:#EAE9E9;
+ margin-left:-109px;
+ vertical-align:top;
+ height: 42px;
+ font-weight:bold;
+
+}
+
+/***Recommended Link *********/
+.recommend-link-wrap{
+  padding: 0 0 0 15px;
+  border-left:3px solid red;
+}
+.recommend-link-wrap .search-results__h{
+  margin-bottom:3px;
+  color:black;
+  font-size:14px;
+}
+
+.recommend-link-wrap span{
+  color:#B7B6B3
+}
+
+/*************** Media Query *****************/
+@media (min-width: 750px){
+   #sub-filter-items{
+     display:none !important;
+   }
+}
+@media (max-width: 750px) {
+   .form-inline input{
+     width:98%;
+   } 
+   .form-inline button{
+     margin-top:10px;   
+   }
+   #filter-items .more-filters, .current{
+     width:48%;
+     text-align:center;
+   }
+   /****** filter buttons ********/
+   #filter-items .more-filters{
+     display:inline-block;
+   }
+   /*** desk item hidden ***/
+   #filter-items .desk-item {
+     display:none;
+   }
+   #popular-key-wrap{
+     width:87%;
+   }
+   /************ staff page ************/
+   .staff-info-wrap{
+      width:100%;
+   }
+   .form-inline .form-group{
+      position:relative;
+   }
+   .form-inline .mb-button{
+      display:block;
+      position:absolute;
+      top:-7px;
+      right:5px;
+   }
+   .form-inline .button{
+      display:none;
+   }
+   .recommend-link-wrap{
+     margin-top:10px;
+     margin-bottom:10px;
+   }
+}
+@media (max-width: 520px){
+   .staff-img{
+     float:none;
+     width:100%;
+     height: 250px;
+     margin 0 auto;
+   }
+   .staff-detail{
+     margin:10px 0 0 0;
+     float:none;
+     width:100%;  
+   }
+   .form-inline .mb-button{
+     right:2px;
+   }
+}
+
+.sq-form-question {border-top:1px solid #DFE0E1;padding:10px 10px 10px 30px; margin-top: 10px;}
+.sq-form-question-answer {float:right; width:45%;}
+.sq-form-question-answer &gt; ul &gt; li {display:block; float:none !important;}
+.sq-form-errors li, .sq-form-error {color: red !important;}
+.sq-form-question-note {display:block; position: absolute;}
+.sq-form-section-title {font-size: 2.1em; font-family: 'helvLght', helvetica, arial, sans-serif; font-weight: lighter; position:relative; top: 12px; }
+.sq-form-section {margin-top: 30px;}

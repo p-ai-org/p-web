@@ -1,0 +1,2618 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <title>
+   PeerJ
+  </title>
+  <meta content="Award-winning biological, medical and environmental sciences journal." name="description"/>
+  <link href="https://d2pdyyx74uypu5.cloudfront.net/" rel="dns-prefetch"/>
+  <link href="http://static.peerj.com/" rel="dns-prefetch"/>
+  <link href="https://doi.org" rel="dns-prefetch"/>
+  <script type="application/ld+json">
+   {
+	"@context": "http://schema.org",
+	"@type": "Corporation",
+	"name": "PeerJ",
+	"description": "PeerJ is an open access peer-reviewed scientific publisher covering research in the Biological, Medical, Computer, and Environmental Sciences. Indexed in PubMed, the Journal Citation Reports, Google Scholar, Scopus, and more.",
+	"logo": "https://d2pdyyx74uypu5.cloudfront.net/spread-the-word/resources/logos/bio/peerj-bio-logo-600x561px.png",
+	"url": "https://peerj.com/",
+	"sameAs": ["https://twitter.com/thePeerJ","https://www.linkedin.com/company/peerj/","https://www.facebook.com/thePeerJ/","https://www.youtube.com/peerj","https://en.wikipedia.org/wiki/PeerJ"],
+	"foundingDate": "2012",
+	"founder": [
+     {
+     "@type": "Person",
+     "name": "Jason Hoyt"
+     },
+     {
+     "@type": "Person",
+     "name": "Pete Binfield"
+     } ],
+	"address": {
+		"@type": "PostalAddress",
+		"addressCountry": "United States"
+	}
+}
+  </script>
+  <meta content="width=device-width,initial-scale=1" name="viewport"/>
+  <meta content="534542813234464" property="fb:app_id"/>
+  <link href="/css/9e5b4ed-832c9a1.css" media="screen" rel="stylesheet"/>
+  <!--[if lt IE 9]>
+    <link rel="stylesheet" href="/assets/css/ie8.css" media="screen">
+<![endif]-->
+  <!--[if lt IE 10]>
+    <link rel="stylesheet" href="/assets/css/ie9.css" media="screen">
+<![endif]-->
+  <link href="/css/d5ea777-dbc3daf.css" rel="stylesheet"/>
+  <script src="/js/36e5d51-2d7025c.js">
+  </script>
+  <script src="/assets/js/polyfills/includes.js">
+  </script>
+  <script src="/assets/js/polyfills/startsWith.js">
+  </script>
+  <!--[if lt IE 9]>
+<script src="/assets/js/html5shiv.js"></script>
+
+<script src="/assets/js/respond.js"></script>
+<script src="/assets/js/selectivizr.js"></script>
+<![endif]-->
+  <!--[if lt IE 8]>
+<script src="/assets/js/json2.js"></script>
+<![endif]-->
+  <script>
+   var PeerJ = {
+        Article: {},
+        User: {
+            anonymous: true        },
+        Publication: {},
+        Production: {},
+        Event: {},
+        Com: {},
+        Payment: {},
+        Annotation: {},
+        Search: {},
+        Home: {},
+        Subjects: {},
+        Advocacy: {},
+        Job: {},
+        ContentAlert: {},
+        Tools: {}
+    };
+  </script>
+  <script>
+   var campaign_keywords = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+    var kw = '';
+    var lastUtms = {};
+    var firstUtms = {};
+    var allUtms = {};
+
+    function campaignParams() {
+        var index;
+        for (index = 0; index < campaign_keywords.length; ++index) {
+            kw = getQueryParam(document.URL, campaign_keywords[index]);
+            if (kw.length) {
+                lastUtms[campaign_keywords[index] + '-last'] = kw;
+                firstUtms[campaign_keywords[index] + '-first'] = kw;
+                allUtms[campaign_keywords[index] + '-all'] = kw;
+            }
+        }
+    }
+
+    function updatePreregCookie(preregCookie, firstUtmKey) {
+        var utmVal = firstUtms[firstUtmKey];
+        if (utmVal) {
+            var existingPreregCampaign = $.cookie(preregCookie);
+            var appendPreregCampaign;
+            if (!existingPreregCampaign) {
+                appendPreregCampaign = utmVal;
+            } else {
+                appendPreregCampaign = existingPreregCampaign + ',' + utmVal;
+
+            }
+            $.cookie(preregCookie, appendPreregCampaign, {expires: 365, path: "/"});
+        }
+    }
+
+    function getQueryParam(url, param) {
+        // Expects a raw URL
+        param = param.replace(/[[]/, "\[").replace(/[]]/, "\]");
+        var regexS = "[\?&]" + param + "=([^&#]*)",
+                regex = new RegExp( regexS ),
+                results = regex.exec(url);
+        if (results === null || (results && typeof(results[1]) !== 'string' && results[1].length)) {
+            return '';
+        } else {
+            return decodeURIComponent(results[1]).replace(/\W/gi, ' ');
+        }
+    }
+
+    function articlePageEvent() {
+        var articleContainer = $('.publication-jsondata');
+        if (articleContainer.length) {
+            var data = articleContainer.data('publication-meta');
+
+            // Must be public
+            if (data.publicationSubjects.length) {
+
+                var eventName = 'Viewed-article';
+                var preprint = data.preprint;
+                if (preprint) {
+                    eventName = 'Viewed-preprint';
+                }
+
+                data['ip-hash'] = '9777386b5cae4d3e5fcf47b88cde4a8a';
+                mixpanel.track(eventName, data);
+            }
+        }
+    }
+
+    function sectionListViewEvent() {
+            }
+  </script>
+  <script>
+   // User agrees to terms on signup, so Mixpanel is OK
+        // On submit, update mixpanel distinct id
+        setTimeout(function () {
+            var regmixpanel = document.getElementById('fos_user_registration_form_mixpanelId');
+            if (regmixpanel) {
+                var distinctId = $.cookie('pj_mp_distinct');
+                if (!distinctId) {
+                    distinctId = mixpanel.get_distinct_id();
+                }
+                console.log(distinctId);
+                regmixpanel.value = distinctId;
+            }
+        }, 1500);
+
+        // If logged out then check if consented to analytics cookies (if applicable to country)
+        // Run through cookieConsent only
+        PeerJ.Com.Mixpanel = new function() {
+            this.leadView = function() {
+                mixpanel.init('776a79e14e8f05a81ca92536c83f08b4', {
+                    'secure_cookie': true,
+                    loaded: function (mixpanel) {
+                        setTimeout(function () {
+                            articlePageEvent();
+
+                            sectionListViewEvent();
+
+                            
+                            
+                                                    }, 1000);
+                    }
+                });
+            }
+        };
+
+        campaignParams();
+        updatePreregCookie('pj_prereg_campaign', 'utm_campaign-first');
+        updatePreregCookie('pj_prereg_content', 'utm_content-first');
+        updatePreregCookie('pj_prereg_term', 'utm_term-first');
+  </script>
+  <script>
+   (function(p,u,s,h,x){p.pushpad=p.pushpad||function(){(p.pushpad.q=p.pushpad.q||[]).push(arguments)};h=u.getElementsByTagName('head')[0];x=u.createElement('script');x.async=1;x.src=s;h.appendChild(x);})(window,document,'https://pushpad.xyz/pushpad.js');
+pushpad('init', 5977, {hostname: 'peerj.com'});
+  </script>
+  <link href="https://peerj.com/articles/osd.xml" rel="search" title="PeerJ" type="application/opensearchdescription+xml"/>
+  <script>
+   PeerJ.Com.GoogleTagManager = {
+            init: function(){
+
+                var tagManagerAccount = 'GTM-KGDWL2J';
+
+                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer',tagManagerAccount);
+
+            }
+        }
+  </script>
+  <script>
+   // Run through cookieConsent only
+        PeerJ.Com.GA = new function() {
+            this.disabletracking = function() {
+                window['ga-disable-' + 'UA-31208920-1'] = true;
+            };
+
+            this.runGA = function() {
+                                (function (i, s, o, g, r, a, m) {
+                    i['GoogleAnalyticsObject'] = r;
+                    i[r] = i[r] || function () {
+                        (i[r].q = i[r].q || []).push(arguments)
+                    }, i[r].l = 1 * new Date();
+                    a = s.createElement(o),
+                        m = s.getElementsByTagName(o)[0];
+                    a.async = 1;
+                    a.src = g;
+                    m.parentNode.insertBefore(a, m)
+                })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+                                ga('create', 'UA\u002D31208920\u002D1', 'auto');
+
+                // Removes last octet
+                ga('set', 'anonymizeIp', true);
+
+                
+                
+                                
+                                ga('require', 'displayfeatures');
+
+                                ga('send', 'pageview');
+
+                                                window.setTimeout(function () {
+                    ga('send', 'event', 'adjusted bounce rate', 'page visit 15 seconds or more');
+                }, 15000);
+                
+                                
+                                            }
+        };
+  </script>
+  <script src="/js/8548491-c87c438.js">
+  </script>
+  <link href="https://d2pdyyx74uypu5.cloudfront.net/images/favicon/peerj/apple-icon-57x57.png" rel="apple-touch-icon" sizes="57x57"/>
+  <link href="https://d2pdyyx74uypu5.cloudfront.net/images/favicon/peerj/apple-icon-60x60.png" rel="apple-touch-icon" sizes="60x60"/>
+  <link href="https://d2pdyyx74uypu5.cloudfront.net/images/favicon/peerj/apple-icon-72x72.png" rel="apple-touch-icon" sizes="72x72"/>
+  <link href="https://d2pdyyx74uypu5.cloudfront.net/images/favicon/peerj/apple-icon-76x76.png" rel="apple-touch-icon" sizes="76x76"/>
+  <link href="https://d2pdyyx74uypu5.cloudfront.net/images/favicon/peerj/apple-icon-114x114.png" rel="apple-touch-icon" sizes="114x114"/>
+  <link href="https://d2pdyyx74uypu5.cloudfront.net/images/favicon/peerj/apple-icon-120x120.png" rel="apple-touch-icon" sizes="120x120"/>
+  <link href="https://d2pdyyx74uypu5.cloudfront.net/images/favicon/peerj/apple-icon-144x144.png" rel="apple-touch-icon" sizes="144x144"/>
+  <link href="https://d2pdyyx74uypu5.cloudfront.net/images/favicon/peerj/apple-icon-152x152.png" rel="apple-touch-icon" sizes="152x152"/>
+  <link href="https://d2pdyyx74uypu5.cloudfront.net/images/favicon/peerj/apple-icon-180x180.png" rel="apple-touch-icon" sizes="180x180"/>
+  <link href="https://d2pdyyx74uypu5.cloudfront.net/images/favicon/peerj/android-icon-192x192.png" rel="icon" sizes="192x192" type="image/png"/>
+  <link href="https://d2pdyyx74uypu5.cloudfront.net/images/favicon/peerj/favicon.ico" rel="shortcut icon"/>
+  <link href="https://d2pdyyx74uypu5.cloudfront.net/images/favicon/peerj/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+  <link href="https://d2pdyyx74uypu5.cloudfront.net/images/favicon/peerj/favicon-96x96.png" rel="icon" sizes="96x96" type="image/png"/>
+  <link href="https://d2pdyyx74uypu5.cloudfront.net/images/favicon/peerj/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+  <link href="https://d2pdyyx74uypu5.cloudfront.net/images/favicon/peerj/manifest.json" rel="manifest"/>
+  <meta content="#ffffff" name="msapplication-TileColor"/>
+  <meta content="https://d2pdyyx74uypu5.cloudfront.net/images/favicon/peerj/ms-icon-144x144.png" name="msapplication-TileImage"/>
+  <meta content="https://d2pdyyx74uypu5.cloudfront.net/images/favicon/peerj/browserconfig.xml" name="msapplication-config"/>
+  <meta content="#ffffff" name="theme-color"/>
+ </head>
+ <body class="body-home">
+  <!-- FreshDesk variable (TODO: move elsewhere) -->
+  <nav class="navbar navbar-fixed-top navbar-inverse navbar-alpha" role="navigation">
+   <div class="navbar-inner">
+    <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+    <a class="btn btn-navbar pull-right" data-target=".nav-collapse" data-toggle="collapse">
+     <span class="icon-bar">
+     </span>
+     <span class="icon-bar">
+     </span>
+     <span class="icon-bar">
+     </span>
+    </a>
+    <!-- logo -->
+    <ul class="nav pull-left nav-sections nav-journal">
+     <li class="dropdown">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="/">
+       <span id="navJournalTitle">
+        PeerJ Journals
+       </span>
+       <b class="caret">
+       </b>
+      </a>
+      <ul class="dropdown-menu journal-list">
+       <li>
+        <a href="/">
+         PeerJ Publishing
+        </a>
+       </li>
+       <li class="dropdown-submenu">
+        <a href="https://peerj.com/life-environment/" tabindex="-1">
+         PeerJ – Life &amp; Environment
+        </a>
+        <ul class="dropdown-menu">
+         <li>
+          <a href="/sections/">
+           About the journal Sections
+          </a>
+         </li>
+         <li class="divider">
+         </li>
+         <li>
+          <a href="/sections/aquatic-biology/">
+           Aquatic Biology
+          </a>
+         </li>
+         <li>
+          <a href="/sections/biochemistry-biophysics-molecular-biology/">
+           Biochemistry, Biophysics and Molecular Biology
+          </a>
+         </li>
+         <li>
+          <a href="/sections/biodiversity-conservation/">
+           Biodiversity and Conservation
+          </a>
+         </li>
+         <li>
+          <a href="/sections/bioinformatics-genomics/">
+           Bioinformatics and Genomics
+          </a>
+         </li>
+         <li>
+          <a href="/sections/brain-cognition/">
+           Brain and Cognition
+          </a>
+         </li>
+         <li>
+          <a href="/sections/ecology/">
+           Ecology
+          </a>
+         </li>
+         <li>
+          <a href="/sections/environ-sci/">
+           Environmental Science
+          </a>
+         </li>
+         <li>
+          <a href="/sections/microbiology/">
+           Microbiology
+          </a>
+         </li>
+         <li>
+          <a href="/sections/paleontology-evolutionary-science/">
+           Paleontology and Evolutionary Science
+          </a>
+         </li>
+         <li>
+          <a href="/sections/plant-biology/">
+           Plant Biology
+          </a>
+         </li>
+         <li>
+          <a href="/sections/zoological-science/">
+           Zoological Science
+          </a>
+         </li>
+        </ul>
+       </li>
+       <li>
+        <a href="/computer-science/">
+         PeerJ Computer Science
+        </a>
+       </li>
+       <li>
+        <a href="/physical-chemistry/">
+         PeerJ Physical Chemistry
+        </a>
+       </li>
+       <li>
+        <a href="/organic-chemistry/">
+         PeerJ Organic Chemistry
+        </a>
+       </li>
+       <li>
+        <a href="/inorganic-chemistry/">
+         PeerJ Inorganic Chemistry
+        </a>
+       </li>
+       <li>
+        <a href="/analytical-chemistry/">
+         PeerJ Analytical Chemistry
+        </a>
+       </li>
+       <li>
+        <a href="/materials-science/">
+         PeerJ Materials Science
+        </a>
+       </li>
+       <li class="divider">
+       </li>
+       <li>
+        <a href="https://peerj.org/" target="_blank">
+         Visit PeerJ.org and get involved
+        </a>
+       </li>
+      </ul>
+     </li>
+    </ul>
+    <!-- mobile-only top nav items -->
+    <ul class="nav pull-left nav-about-phone hidden-desktop">
+     <li class="dropdown">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#" tabindex="-1">
+       About
+       <b class="caret">
+       </b>
+      </a>
+      <ul class="dropdown-menu">
+       <li id="about-overview">
+        <a href="/benefits/">
+         PeerJ Journals Overview
+        </a>
+       </li>
+       <li id="about-faq">
+        <a href="/about/FAQ/">
+         PeerJ Journals FAQ
+        </a>
+       </li>
+       <li id="about-what-publish">
+        <a href="/about/publications/">
+         What we publish
+        </a>
+       </li>
+       <li id="8yrs-publishing">
+        <a href="/benefits/peerj-timeline/">
+         8 Years publishing
+        </a>
+       </li>
+       <li class="divider">
+       </li>
+       <li class="dropdown-header" role="presentation">
+        Solutions for authors
+       </li>
+       <li id="about-reputation">
+        <a href="/benefits/reputation/">
+         Reputation
+        </a>
+       </li>
+       <li id="about-peer-review">
+        <a href="/benefits/peer-review-timeline/">
+         High quality peer review
+        </a>
+       </li>
+       <li id="about-speed">
+        <a href="/benefits/fast-publishing/">
+         Fast publishing
+        </a>
+       </li>
+       <li id="about-impact">
+        <a href="/benefits/indexing-and-impact-factor/">
+         Indexing and Impact Factor
+        </a>
+       </li>
+       <li id="about-readership">
+        <a href="/benefits/broad-audience/">
+         Global readership
+        </a>
+       </li>
+       <li id="about-features">
+        <a href="/benefits/peerj-feature-comparison/">
+         Feature comparison
+        </a>
+       </li>
+       <li id="about-cost">
+        <a href="/benefits/reduced-cost-publishing/">
+         Reduced cost publishing
+        </a>
+       </li>
+       <li id="about-feedback">
+        <a href="/benefits/feedback/">
+         Author feedback
+        </a>
+       </li>
+       <li id="about-ecr-benefits">
+        <a href="/benefits/early-career-researchers/">
+         Early career researcher benefits
+        </a>
+       </li>
+       <li id="about-senior-researcher-benefits">
+        <a href="/benefits/senior-researchers/">
+         Senior researcher benefits
+        </a>
+       </li>
+       <li id="about-open-review">
+        <a href="/benefits/review-history-and-peer-review/">
+         Open review (optional)
+        </a>
+       </li>
+       <li id="about-rebuttal">
+        <a href="/benefits/academic-rebuttal-letters/">
+         Rebuttal letters
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li>
+      <!-- checkout items -->
+     </li>
+     <li>
+      <!-- notifications -->
+     </li>
+    </ul>
+    <!-- sections -->
+    <ul class="nav pull-left nav-collapse nav-sections nav-sections-main collapse search-hide">
+     <li class="dropdown visible-desktop">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#" tabindex="-1">
+       About
+       <b class="caret">
+       </b>
+      </a>
+      <ul class="dropdown-menu">
+       <li id="about-overview">
+        <a href="/benefits/">
+         PeerJ Journals Overview
+        </a>
+       </li>
+       <li id="about-faq">
+        <a href="/about/FAQ/">
+         PeerJ Journals FAQ
+        </a>
+       </li>
+       <li id="about-what-publish">
+        <a href="/about/publications/">
+         What we publish
+        </a>
+       </li>
+       <li id="8yrs-publishing">
+        <a href="/benefits/peerj-timeline/">
+         8 Years publishing
+        </a>
+       </li>
+       <li class="divider">
+       </li>
+       <li class="dropdown-header" role="presentation">
+        Solutions for authors
+       </li>
+       <li id="about-reputation">
+        <a href="/benefits/reputation/">
+         Reputation
+        </a>
+       </li>
+       <li id="about-peer-review">
+        <a href="/benefits/peer-review-timeline/">
+         High quality peer review
+        </a>
+       </li>
+       <li id="about-speed">
+        <a href="/benefits/fast-publishing/">
+         Fast publishing
+        </a>
+       </li>
+       <li id="about-impact">
+        <a href="/benefits/indexing-and-impact-factor/">
+         Indexing and Impact Factor
+        </a>
+       </li>
+       <li id="about-readership">
+        <a href="/benefits/broad-audience/">
+         Global readership
+        </a>
+       </li>
+       <li id="about-features">
+        <a href="/benefits/peerj-feature-comparison/">
+         Feature comparison
+        </a>
+       </li>
+       <li id="about-cost">
+        <a href="/benefits/reduced-cost-publishing/">
+         Reduced cost publishing
+        </a>
+       </li>
+       <li id="about-feedback">
+        <a href="/benefits/feedback/">
+         Author feedback
+        </a>
+       </li>
+       <li id="about-ecr-benefits">
+        <a href="/benefits/early-career-researchers/">
+         Early career researcher benefits
+        </a>
+       </li>
+       <li id="about-senior-researcher-benefits">
+        <a href="/benefits/senior-researchers/">
+         Senior researcher benefits
+        </a>
+       </li>
+       <li id="about-open-review">
+        <a href="/benefits/review-history-and-peer-review/">
+         Open review (optional)
+        </a>
+       </li>
+       <li id="about-rebuttal">
+        <a href="/benefits/academic-rebuttal-letters/">
+         Rebuttal letters
+        </a>
+       </li>
+      </ul>
+     </li>
+     <!-- more -->
+     <li class="dropdown">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+       More
+       <b class="caret">
+       </b>
+      </a>
+      <ul aria-labelledby="dLabel" class="dropdown-menu" role="menu">
+       <li class="pj-bg--expertrxiv">
+        <a href="/expertrxiv">
+         <img src="https://d2pdyyx74uypu5.cloudfront.net/images/logos/expertRxiv-white.svg" style="width:64%;"/>
+        </a>
+       </li>
+       <li>
+        <a href="/expertrxiv">
+         Job listings and more
+        </a>
+       </li>
+       <li>
+        <a href="/expertrxiv/post">
+         Post a new job or collaboration
+        </a>
+       </li>
+       <li>
+        <a href="/questions/?faq=false">
+         Latest researcher questions
+        </a>
+       </li>
+       <li>
+        <a href="/ask/">
+         Post a research question
+        </a>
+       </li>
+       <li class="divider">
+       </li>
+       <li>
+        <a href="/subjects/">
+         Subjects
+        </a>
+       </li>
+       <li class="dropdown-submenu hidden-phone">
+        <a href="#" tabindex="-1">
+         Search articles
+        </a>
+        <ul class="dropdown-menu">
+         <li class="dropdown-header" role="presentation">
+          Peer-reviewed Journals
+         </li>
+         <li>
+          <a href="/articles/?journal=peerj" tabindex="-1">
+           PeerJ (Life, Biological, Environmental and Health Sciences)
+          </a>
+         </li>
+         <li>
+          <a href="/articles/?journal=cs" tabindex="-1">
+           PeerJ Computer Science
+          </a>
+         </li>
+         <li>
+          <a href="/articles/?journal=pchem" tabindex="-1">
+           PeerJ Physical Chemistry
+          </a>
+         </li>
+         <li>
+          <a href="/articles/?journal=ochem" tabindex="-1">
+           PeerJ Organic Chemistry
+          </a>
+         </li>
+         <li>
+          <a href="/articles/?journal=ichem" tabindex="-1">
+           PeerJ Inorganic Chemistry
+          </a>
+         </li>
+         <li>
+          <a href="/articles/?journal=achem" tabindex="-1">
+           PeerJ Analytical Chemistry
+          </a>
+         </li>
+         <li>
+          <a href="/articles/?journal=matsci" tabindex="-1">
+           PeerJ Materials Science
+          </a>
+         </li>
+         <li class="dropdown-header" role="presentation">
+          Preprints
+         </li>
+         <li>
+          <a href="/preprints/" tabindex="-1">
+           PeerJ Preprints
+          </a>
+         </li>
+        </ul>
+       </li>
+       <li class="dropdown-submenu hidden-phone">
+        <a href="#" tabindex="-1">
+         Table of contents
+        </a>
+        <ul class="dropdown-menu">
+         <li class="dropdown-header" role="presentation">
+          Table of Contents - current and archives
+         </li>
+         <li>
+          <a href="/medicine/" tabindex="-1">
+           PeerJ - Medicine articles
+          </a>
+         </li>
+         <li>
+          <a href="/biology/" tabindex="-1">
+           PeerJ - Biology &amp; Life science articles
+          </a>
+         </li>
+         <li>
+          <a href="/environment/" tabindex="-1">
+           PeerJ - Environmental Science articles
+          </a>
+         </li>
+         <li>
+          <a href="/general/" tabindex="-1">
+           PeerJ - General bio (stats, legal, policy, edu)
+          </a>
+         </li>
+         <li class="divider">
+         </li>
+         <li>
+          <a href="/cs/" tabindex="-1">
+           PeerJ Computer Science
+          </a>
+         </li>
+         <li class="divider">
+         </li>
+         <li>
+          <a href="/preprints-toc/" tabindex="-1">
+           PeerJ Preprints
+          </a>
+         </li>
+        </ul>
+       </li>
+       <li>
+        <a href="/academic-boards/advisors/">
+         Academic advisors
+        </a>
+       </li>
+       <li>
+        <a href="/reviewer-match/">
+         Volunteer to review
+        </a>
+       </li>
+       <li>
+        <a href="/collections/">
+         Collections
+        </a>
+       </li>
+       <li>
+        <a href="https://peerj.com/blog/">
+         Blog
+        </a>
+       </li>
+       <li>
+        <a href="/prepaid-publishing/">
+         Prepaid Publishing
+        </a>
+       </li>
+       <li>
+        <a href="/about/reviews/">
+         Reviews and awards
+        </a>
+       </li>
+       <li>
+        <a href="/spread-the-word/">
+         Spread the word
+        </a>
+       </li>
+       <li>
+        <a href="/about/">
+         Who are we?
+        </a>
+       </li>
+       <li>
+        <a href="/about/contact/">
+         Contact
+        </a>
+       </li>
+      </ul>
+     </li>
+    </ul>
+    <!-- search -->
+    <div class="nav nav-collapse collapse pull-right nav-search">
+     <form action="/search/" class="navbar-search">
+      <input class="search-query" data-autocomplete-url="/search/" name="q" placeholder="Search" type="search"/>
+      <!--<i class="icon-search"></i>-->
+     </form>
+    </div>
+    <ul class="nav pull-right nav-collapse collapse search-hide nav-utilities">
+     <!-- login desktop -->
+     <li>
+      <a href="/login/" id="front-page-login">
+       Login
+      </a>
+     </li>
+    </ul>
+    <ul class="nav pull-right search-hide nav-shifter">
+    </ul>
+    <!-- for authors, my manuscripts -->
+    <ul class="nav nav-center nav-collapse collapse search-hide pull-right">
+     <!-- for authors -->
+     <li class="dropdown nav-authors">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+       <i class="icon-info4 icon-large nav-icon icomoon">
+       </i>
+       <span class="visible-wide">
+        AUTHORS
+       </span>
+       <b class="caret">
+       </b>
+      </a>
+      <ul class="dropdown-menu">
+       <li>
+        <a href="/benefits/">
+         Peer Journals Overview
+        </a>
+       </li>
+       <li>
+        <a href="/about/author-instructions/">
+         Submission Guidelines
+        </a>
+       </li>
+       <li>
+        <a href="/subjects/">
+         Subject Areas
+        </a>
+       </li>
+       <li>
+        <a href="/academic-boards/">
+         Editorial Board
+        </a>
+       </li>
+       <li>
+        <a href="/about/editorial-criteria/">
+         Editorial Criteria
+        </a>
+       </li>
+       <li>
+        <a href="/pricing/">
+         Pricing
+        </a>
+       </li>
+       <li>
+        <a href="/help/">
+         Help Center
+        </a>
+       </li>
+       <li>
+        <a href="/about/FAQ/">
+         General FAQ
+        </a>
+       </li>
+       <li>
+        <a href="/computer-science/faq-cs/">
+         Computer Science FAQ
+        </a>
+       </li>
+       <li>
+        <a href="/about/aims-and-scope/">
+         Aims and Scope
+        </a>
+       </li>
+       <li>
+        <a href="/about/author-interviews/">
+         Author Interviews
+        </a>
+       </li>
+       <li>
+        <a href="/about/policies-and-procedures/">
+         Policies and Procedures
+        </a>
+       </li>
+       <!--<li><a href="#">Why PeerJ?</a></li>-->
+      </ul>
+     </li>
+     <!-- my manuscripts -->
+     <!-- note: dropdown classes used just to maintain display -->
+     <li class="nav-manuscripts dropdown">
+      <a class="dropdown-toggle" href="/new/">
+       <span>
+        SUBMIT ARTICLE
+       </span>
+      </a>
+     </li>
+    </ul>
+   </div>
+  </nav>
+  <div id="wrap">
+   <div id="nav-pad">
+   </div>
+   <div class="container">
+    <noscript class="js-disabled-warning">
+     <div class="alert alert-danger">
+      <i class="icon icon-warning-sign">
+      </i>
+      Javascript is disabled in your browser. Please
+      <a href="https://www.enable-javascript.com" target="_blank">
+       enable Javascript
+      </a>
+      to view PeerJ.
+     </div>
+    </noscript>
+    <!-- maintenance message -->
+    <!-- featured image -->
+    <div class="featured-image-container">
+     <img class="featured-image" src="https://d2pdyyx74uypu5.cloudfront.net/images/front/featured/magazine-bgs/bio-home-bg.jpg"/>
+    </div>
+    <div class="featured-image-info row-fluid">
+    </div>
+    <!-- subjects modal -->
+    <!-- search box -->
+    <form action="/articles/" class="form-inline home-search">
+     <div class="input-append">
+      <input class="span2 search-query" data-autocomplete-url="/articles/" name="q" placeholder="Search articles" type="text"/>
+      <button class="btn home-search-button" type="submit">
+       <i class="icon-search">
+       </i>
+      </button>
+     </div>
+     <div class="home-search-other-links text-center">
+     </div>
+    </form>
+    <div class="home-main row-fluid">
+     <!-- sidebar -->
+     <div class="home-sidebar">
+      <!-- brand -->
+      <div class="home-sidebar-section">
+       <div class="home-brand">
+        <a class="btn btn-cta btn-home-submit" href="/new/">
+         Submit article
+        </a>
+        <a class="home-impact-metrics-link" href="/benefits/#impact-factor">
+         View impact metrics
+        </a>
+        <p class="home-brand-description visible-desktop text-center">
+         <!--PeerJ publishes the world's scientific knowledge through open access licensing. -->
+         11,430
+         <a class="home-peer-review-articles-link" href="/articles/">
+          peer-reviewed articles
+         </a>
+         published since 2013.
+        </p>
+       </div>
+      </div>
+      <!-- stats new -->
+      <div class="home-sidebar-section home-stats-section hidden-desktop">
+       <div class="home-stats-wide clearfix">
+        <a class="home-wide-link-block home-value-indexed" href="/benefits/indexing-and-impact-factor/#indexing">
+         <div class="home-stat-wide">
+          <img class="home-stat-icon-wide" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/value-icons/home-circle-icon-indexed.png"/>
+          <div class="home-stat-details-wide">
+           <div class="home-stat-heading-wide">
+            Indexed
+           </div>
+           <div class="home-stat-tagline-wide">
+            Web of Science, Journal Citation Reports, PubMed, Scopus, Google Scholar, ++
+           </div>
+          </div>
+         </div>
+        </a>
+        <a class="home-wide-link-block home-value-edboard" href="/benefits/reputation/">
+         <div class="home-stat-wide">
+          <img class="home-stat-icon-wide" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/value-icons/home-circle-icon-prestigious.png"/>
+          <div class="home-stat-details-wide">
+           <div class="home-stat-heading-wide">
+            Prestigious
+            <br/>
+            Editorial Board
+           </div>
+           <div class="home-stat-tagline-wide">
+            Highly-qualified editors and advisors including 5 Nobel laureates
+           </div>
+          </div>
+         </div>
+        </a>
+        <a class="home-wide-link-block home-value-impact" href="/benefits/indexing-and-impact-factor/">
+         <div class="home-stat-wide">
+          <img class="home-stat-icon-wide" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/value-icons/home-circle-icon-high-impact.png"/>
+          <div class="home-stat-details-wide">
+           <div class="home-stat-heading-wide">
+            High-Impact Research
+           </div>
+           <div class="home-stat-tagline-wide">
+            From the world's top institutions and academics.
+            <strong>
+             Median citation rate of 5
+            </strong>
+           </div>
+          </div>
+         </div>
+        </a>
+        <a class="home-wide-link-block home-value-review" href="/benefits/#high-quality-peer-review">
+         <div class="home-stat-wide">
+          <img class="home-stat-icon-wide" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/value-icons/home-circle-icon-peer-review.png"/>
+          <div class="home-stat-details-wide">
+           <div class="home-stat-heading-wide">
+            Quality Peer Review
+           </div>
+           <div class="home-stat-tagline-wide">
+            Objective, in-depth reviewing based on methodological soundness
+           </div>
+          </div>
+         </div>
+        </a>
+        <a class="home-wide-link-block home-value-fast" href="/benefits/fast-publishing/">
+         <div class="home-stat-wide last">
+          <img class="home-stat-icon-wide" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/value-icons/home-circle-icon-fast.png"/>
+          <div class="home-stat-details-wide">
+           <div class="home-stat-heading-wide">
+            Publish fast, 24h Support
+           </div>
+           <div class="home-stat-tagline-wide">
+            30 Days to first decision (median) and quick hands-on author support
+           </div>
+          </div>
+         </div>
+        </a>
+       </div>
+      </div>
+      <!-- factsheet -->
+      <div class="home-sidebar-section home-factsheet-section visible-desktop">
+       <style>
+        .factsheet-image {
+        background: url('https://d2pdyyx74uypu5.cloudfront.net/images/about/author-instructions/peerj-factsheet-thumbnail.jpg');
+    }
+    .factsheet-container.small .factsheet-image {
+        background: url('https://d2pdyyx74uypu5.cloudfront.net/images/about/author-instructions/peerj-factsheet-thumbnail-small.jpg');
+    }
+       </style>
+       <div class="modal hide fade" data-keyboard="true" id="factsheet-download-modal" tabindex="-1">
+        <div class="modal-header">
+         <div class="modal-header-title">
+          <h3>
+           Download Factsheet
+          </h3>
+         </div>
+        </div>
+        <div class="modal-body">
+         <div class="row-fluid">
+          <div class="span12">
+           <p>
+            Select which journal factsheet to download:
+           </p>
+           <a class="btn btn-primary js-download-btn btn-block btn-large mb-2" data-format="PDF" href="https://d2pdyyx74uypu5.cloudfront.net/docs/peerj-life-journal-factsheet.pdf" target="_blank">
+            <i class="icon-cloud-download mr-2">
+            </i>
+            PeerJ Life &amp; Environment
+           </a>
+           <a class="btn btn-primary js-download-btn btn-block btn-large mb-2" data-format="PDF" href="https://d2pdyyx74uypu5.cloudfront.net/docs/peerj-cs-journal-factsheet.pdf" target="_blank">
+            <i class="icon-cloud-download mr-2">
+            </i>
+            PeerJ Computer Science
+           </a>
+           <a class="btn btn-primary js-download-btn btn-block btn-large mb-2" data-format="PDF" href="https://d2pdyyx74uypu5.cloudfront.net/docs/peerj-chemistry-journals-factsheet.pdf" target="_blank">
+            <i class="icon-cloud-download mr-2">
+            </i>
+            PeerJ Chemistry Journals
+           </a>
+          </div>
+         </div>
+        </div>
+        <div class="modal-footer">
+         <button class="btn pull-left" data-dismiss="modal" type="button">
+          Close
+         </button>
+        </div>
+       </div>
+       <script>
+        /* Close modal after btn click */
+    $( document ).ready(function() {
+        $('#factsheet-download-modal').appendTo("body");
+        $('.js-download-btn').click(function() {
+            $('#factsheet-download-modal').modal('hide');
+        });
+    });
+       </script>
+       <a class="factsheet hide-print clearfix" data-toggle="modal" href="#factsheet-download-modal">
+        <div class="factsheet-image">
+         <img class="factsheet-hover" src="https://d2pdyyx74uypu5.cloudfront.net/images/about/author-instructions/peerj-factsheet-thumbnail-hover.png"/>
+        </div>
+        <div class="factsheet-title">
+         PeerJ Factsheet
+        </div>
+        <div class="factsheet-subline">
+         A one-page PDF to help when considering journal options with co-authors
+        </div>
+       </a>
+       <a class="btn btn-cta btn-download-factsheet" data-toggle="modal" href="#factsheet-download-modal">
+        Download Factsheet
+       </a>
+      </div>
+      <!-- mission -->
+      <div class="home-sidebar-section home-mission-section text-center visible-desktop">
+       <div class="home-sidebar-heading">
+        Our Mission
+       </div>
+       <div class="home-mission">
+        Our mission is to give researchers the publishing tools and services they want with a unique and exciting experience.
+       </div>
+       <a class="btn btn-cta btn-view-mission" href="/about/beliefs/">
+        View mission
+       </a>
+      </div>
+      <!-- tweets -->
+      <div class="home-sidebar-section home-feedback-section visible-desktop">
+       <div class="boxout-quote">
+        <div class="quote-text">
+         I told my colleagues that PeerJ is a journal where they need to publish if they want their paper to be published quickly and with the strict peer review expected from a good journal.
+        </div>
+        <div class="quote-sub-line">
+         Sohath Vanegas,
+         <br/>
+         PeerJ Author
+        </div>
+        <img class="bg-quote-mark" src="https://d2pdyyx74uypu5.cloudfront.net/images/benefits/new/quotes/html/quotation-bg-grey-large.png"/>
+       </div>
+       <a class="btn btn-cta btn-view-author-feedback" href="/benefits/feedback/">
+        View author feedback
+       </a>
+       <link href="/css/86e00b3-940a3ae.css" rel="stylesheet"/>
+      </div>
+      <!-- tweets -->
+      <div class="home-sidebar-section home-twitter-section visible-desktop">
+       <div class="home-tweet">
+        <div>
+         <a class="home-twitter-link" href="https://twitter.com/thePeerJ">
+          <img class="home-twitter-icon" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/twitter.png"/>
+          @thePeerJ
+         </a>
+        </div>
+        <a class="twitter-timeline" data-chrome="nofooter noheader noborders transparent" data-link-color="#77f" data-theme="light" data-tweet-limit="1" data-widget-id="313290186018668544" href="https://twitter.com/thePeerJ/favorites">
+         @thePeerJ's favorite tweets
+        </a>
+       </div>
+       <!-- include Twitter JS -->
+       <script type="text/javascript">
+        // Run only if non-essential cookies have been allowed via consent or regional law (see cookie_consent.js)
+    PeerJ.Com.Social = new function() {
+        this.runTwitter = function() {
+            window.twttr = (function (d, s, id) {
+                var t, js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {
+                    return
+                }
+                js = d.createElement(s);
+                js.id = id;
+                js.src = "https://platform.twitter.com/widgets.js";
+                fjs.parentNode.insertBefore(js, fjs);
+                return window.twttr || (t = {
+                    _e: [], ready: function (f) {
+                        t._e.push(f)
+                    }
+                })
+            }(document, "script", "twitter-wjs"));
+        }
+    };
+       </script>
+      </div>
+      <!-- blog posts -->
+      <div class="home-sidebar-section home-blog-section visible-desktop">
+       <div class="home-blog">
+        <div class="home-blog-heading">
+         <img class="home-blog-heading-icon" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/blog.png"/>
+         <a class="home-blog-heading-title" href="https://peerj.com/blog/" target="_blank">
+          Blog
+         </a>
+        </div>
+        <div data-feed="/blog.json" id="home-blog-entry">
+        </div>
+       </div>
+      </div>
+      <link href="/css/86e00b3-940a3ae.css" rel="stylesheet"/>
+     </div>
+     <!-- articles -->
+     <!-- featured article -->
+     <div class="home-items-section">
+      <div class="home-featured-article">
+       <div class="home-section-heading">
+        <h2>
+         Our open access journals
+        </h2>
+       </div>
+      </div>
+     </div>
+     <!-- latest articles -->
+     <div class="home-items-section home-items-columns home-sections">
+      <div class="row-fluid" style="margin-bottom: 45px">
+       <div class="span2">
+        <img alt="PeerJ logo" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/logo.png"/>
+       </div>
+       <div class="span10">
+        <div class="journal-section-header">
+         <div class="journal-section-title">
+          <i>
+           PeerJ
+          </i>
+         </div>
+         <div class="journal-section-coverage">
+          Covering life, biology, medicine, and environmental sciences
+         </div>
+        </div>
+        <ul class="nav nav-pills journal-section-nav-pills">
+         <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+           <strong>
+            11 Sections
+           </strong>
+           <b class="caret">
+           </b>
+          </a>
+          <ul class="dropdown-menu">
+           <li>
+            <a href="/sections/aquatic-biology/">
+             Aquatic Biology
+            </a>
+           </li>
+           <li>
+            <a href="/sections/biochemistry-biophysics-molecular-biology/">
+             Biochemistry, Biophysics and Molecular Biology
+            </a>
+           </li>
+           <li>
+            <a href="/sections/biodiversity-conservation/">
+             Biodiversity and Conservation
+            </a>
+           </li>
+           <li>
+            <a href="/sections/bioinformatics-genomics/">
+             Bioinformatics and Genomics
+            </a>
+           </li>
+           <li>
+            <a href="/sections/brain-cognition/">
+             Brain and Cognition
+            </a>
+           </li>
+           <li>
+            <a href="/sections/ecology/">
+             Ecology
+            </a>
+           </li>
+           <li>
+            <a href="/sections/environ-sci/">
+             Environmental Science
+            </a>
+           </li>
+           <li>
+            <a href="/sections/microbiology/">
+             Microbiology
+            </a>
+           </li>
+           <li>
+            <a href="/sections/paleontology-evolutionary-science/">
+             Paleontology and Evolutionary Science
+            </a>
+           </li>
+           <li>
+            <a href="/sections/plant-biology/">
+             Plant Biology
+            </a>
+           </li>
+           <li>
+            <a href="/sections/zoological-science/">
+             Zoological Science
+            </a>
+           </li>
+          </ul>
+         </li>
+         <li>
+          <a href="/articles/?journal=peerj">
+           Articles
+          </a>
+         </li>
+         <li>
+          <a href="/editors/?journal=peerj">
+           Editorial Board
+          </a>
+         </li>
+         <li>
+          <a href="/about/author-instructions">
+           Author guidelines
+          </a>
+         </li>
+         <li>
+          <a href="/pricing/">
+           Fees
+          </a>
+         </li>
+        </ul>
+        <div class="lead-readability citation-percentile-headings">
+         <span class="citation-percentile-3yr" style="background: #eef9fb;">
+          3-year citation distribution
+         </span>
+         <span class="citation-percentile-first-decision">
+          30 Days to First Decision
+         </span>
+        </div>
+        <div style="background: #eef9fb; padding: 16px 8px;">
+         <div class="row-fluid">
+          <div class="span12">
+           <div class="row-fluid">
+            <div class="span3 pct-dist-quartile">
+             95th pct. – 20 cites
+            </div>
+            <div class="span7">
+             <div class="citation-percentile-bar">
+             </div>
+            </div>
+           </div>
+           <div class="row-fluid">
+            <div class="span3 pct-dist-quartile">
+             75th pct. – 9 cites
+            </div>
+            <div class="span7">
+             <div class="citation-percentile-bar" style="width:45%">
+             </div>
+            </div>
+           </div>
+           <div class="row-fluid">
+            <div class="span3 pct-dist-quartile" style="color: #4CAF50; font-weight: bold;">
+             Median – 5 cites
+            </div>
+            <div class="span7">
+             <div class="citation-percentile-bar median" style="width:25%">
+             </div>
+            </div>
+           </div>
+           <div class="row-fluid">
+            <div class="span3 pct-dist-quartile">
+             25th pct. – 2 cites
+            </div>
+            <div class="span6">
+             <div class="citation-percentile-bar" style="width:10%">
+             </div>
+            </div>
+           </div>
+           <div class="citation-percentile-help">
+            <div>
+             * 3-year distribution is calculated from articles published between 30 and 36 months ago.
+            </div>
+            <div>
+             * 2-year JCR Impact Factor is 2.38.
+             <a href="/benefits/indexing-and-impact-factor/">
+              Read about responsible usage of the Impact Factor.
+             </a>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="row-fluid" style="margin-bottom: 45px">
+       <div class="span2">
+        <img alt="Computer Science logo" src="/assets/images/landing-pages/peerj-cs-y-logo.svg"/>
+       </div>
+       <div class="span10">
+        <div class="journal-section-header">
+         <div class="journal-section-title">
+          <i>
+           PeerJ Computer Science
+          </i>
+         </div>
+         <div class="journal-section-coverage">
+          Covering all subject areas in computer science
+         </div>
+        </div>
+        <ul class="nav nav-pills journal-section-nav-pills">
+         <li>
+          <a href="/computer-science/">
+           <span class="icon-home">
+           </span>
+           <strong>
+            Journal home
+           </strong>
+          </a>
+         </li>
+         <li>
+          <a href="/articles/?journal=cs">
+           Articles
+          </a>
+         </li>
+         <li>
+          <a href="/editors/?journal=cs">
+           Editorial Board
+          </a>
+         </li>
+         <li>
+          <a href="/about/author-instructions/cs">
+           Author guidelines
+          </a>
+         </li>
+         <li>
+          <a href="/pricing/">
+           Fees
+          </a>
+         </li>
+        </ul>
+        <div class="lead-readability citation-percentile-headings">
+         <span class="citation-percentile-3yr" style="background: #fafbee;">
+          3-year citation distribution
+         </span>
+         <span class="citation-percentile-first-decision">
+          35 Days to First Decision
+         </span>
+        </div>
+        <div style="background: #fafbee; padding: 16px 8px;">
+         <div class="row-fluid">
+          <div class="span12">
+           <div class="row-fluid">
+            <div class="span3 pct-dist-quartile">
+             95th pct. – 21.6 cites
+            </div>
+            <div class="span7">
+             <div class="citation-percentile-bar">
+             </div>
+            </div>
+           </div>
+           <div class="row-fluid">
+            <div class="span3 pct-dist-quartile">
+             75th pct. – 3 cites
+            </div>
+            <div class="span7">
+             <div class="citation-percentile-bar" style="width:13.888888888889%">
+             </div>
+            </div>
+           </div>
+           <div class="row-fluid">
+            <div class="span3 pct-dist-quartile" style="color: #4CAF50; font-weight: bold;">
+             Median – 2 cites
+            </div>
+            <div class="span7">
+             <div class="citation-percentile-bar median" style="width:9.2592592592593%">
+             </div>
+            </div>
+           </div>
+           <div class="row-fluid">
+            <div class="span3 pct-dist-quartile">
+             25th pct. – 1 cite
+            </div>
+            <div class="span6">
+             <div class="citation-percentile-bar" style="width:4.6296296296296%">
+             </div>
+            </div>
+           </div>
+           <div class="citation-percentile-help">
+            <div>
+             * 3-year distribution is calculated from articles published between 30 and 36 months ago.
+            </div>
+            <div>
+             * 2-year JCR Impact Factor is 3.09.
+             <a href="/benefits/indexing-and-impact-factor/">
+              Read about responsible usage of the Impact Factor.
+             </a>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="row-fluid" style="margin-bottom: 20px">
+       <div class="span2">
+        <img alt="Chemistry" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/value-icons/home-circle-icon-indexed.png"/>
+       </div>
+       <div class="span10">
+        <div class="journal-section-header">
+         <div class="journal-section-title">
+          <i>
+           Chemistry
+          </i>
+         </div>
+         <div class="journal-section-coverage">
+          Five open access journals dedicated to advancing chemistry
+         </div>
+        </div>
+        <ul class="nav nav-pills journal-section-nav-pills">
+         <li>
+          <a href="/chemistry/">
+           <strong>
+            About
+           </strong>
+          </a>
+         </li>
+         <li>
+          <a href="/about/author-instructions/chemistry">
+           Author guidelines
+          </a>
+         </li>
+         <li>
+          <a href="/pricing/">
+           Fees
+          </a>
+         </li>
+        </ul>
+        <div class="row-fluid" style="margin-bottom: 15px;">
+         <div class="span4">
+          <a href="/chemistry/">
+           <img alt="pchem" src="https://d2pdyyx74uypu5.cloudfront.net/images/logos/logo-255x238-chem-pchem.png"/>
+          </a>
+          <div class="journal-section-chemistry-links">
+           <a href="/articles/?journal=pchem">
+            Articles
+           </a>
+           •
+           <a href="/editors/?journal=pchem">
+            Editors
+           </a>
+          </div>
+         </div>
+         <div class="span4">
+          <a href="/chemistry/">
+           <img alt="matsci" src="https://d2pdyyx74uypu5.cloudfront.net/images/logos/logo-255x238-chem-matsci.png"/>
+          </a>
+          <div class="journal-section-chemistry-links">
+           <a href="/articles/?journal=matsci">
+            Articles
+           </a>
+           •
+           <a href="/editors/?journal=matsci">
+            Editors
+           </a>
+          </div>
+         </div>
+         <div class="span4">
+          <a href="/chemistry/">
+           <img alt="achem" src="https://d2pdyyx74uypu5.cloudfront.net/images/logos/logo-255x238-chem-achem.png"/>
+          </a>
+          <div class="journal-section-chemistry-links">
+           <a href="/articles/?journal=achem">
+            Articles
+           </a>
+           •
+           <a href="/editors/?journal=achem">
+            Editors
+           </a>
+          </div>
+         </div>
+        </div>
+        <div class="row-fluid">
+         <div class="span4">
+          <a href="/chemistry/">
+           <img alt="ochem" src="https://d2pdyyx74uypu5.cloudfront.net/images/logos/logo-255x238-chem-ochem.png"/>
+          </a>
+          <div class="journal-section-chemistry-links">
+           <a href="/articles/?journal=ochem">
+            Articles
+           </a>
+           •
+           <a href="/editors/?journal=ochem">
+            Editors
+           </a>
+          </div>
+         </div>
+         <div class="span4">
+          <a href="/chemistry/">
+           <img alt="ichem" src="https://d2pdyyx74uypu5.cloudfront.net/images/logos/logo-255x238-chem-ichem.png"/>
+          </a>
+          <div class="journal-section-chemistry-links">
+           <a href="/articles/?journal=ichem">
+            Articles
+           </a>
+           •
+           <a href="/editors/?journal=ichem">
+            Editors
+           </a>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <!-- cited articles -->
+     <div class="home-items-section home-items-columns home-recently-cited">
+      <div class="home-section-heading">
+       <h2>
+        Recently cited
+       </h2>
+      </div>
+      <div class="home-articles home-items">
+       <div class="home-article home-item">
+        <a class="home-item-link" href="https://peerj.com/articles/7755/">
+         <div class="home-item-title">
+          Adapterama I: universal stubs and primers for 384 unique dual-indexed or 147,456 combinatorially-indexed Illumina libraries (iTru &amp; iNext)
+         </div>
+         <div class="home-item-subjects">
+          <span class="home-item-subject">
+           Bioinformatics
+          </span>
+          <span class="home-item-subject">
+           Genetics
+          </span>
+          <span class="home-item-subject">
+           Genomics
+          </span>
+          <span class="home-item-subject">
+           Public Health
+          </span>
+         </div>
+         <div class="home-item-counters">
+          <span class="home-item-citations">
+           <span class="home-item-counter">
+            49
+           </span>
+           citations
+          </span>
+          ·
+          <span class="home-item-counter">
+           5,234
+          </span>
+          views ·
+          <span class="home-item-counter">
+           928
+          </span>
+          downloads
+         </div>
+        </a>
+       </div>
+       <div class="home-article home-item">
+        <a class="home-item-link" href="https://peerj.com/articles/10196/">
+         <div class="home-item-title">
+          Upper-room ultraviolet air disinfection might help to reduce COVID-19 transmission in buildings: a feasibility study
+         </div>
+         <div class="home-item-subjects">
+          <span class="home-item-subject">
+           Microbiology
+          </span>
+          <span class="home-item-subject">
+           Virology
+          </span>
+          <span class="home-item-subject">
+           Infectious Diseases
+          </span>
+          <span class="home-item-subject">
+           Environmental Contamination and Remediation
+          </span>
+         </div>
+         <div class="home-item-counters">
+          <span class="home-item-citations">
+           <span class="home-item-counter">
+            6
+           </span>
+           citations
+          </span>
+          ·
+          <span class="home-item-counter">
+           3,975
+          </span>
+          views ·
+          <span class="home-item-counter">
+           2,036
+          </span>
+          downloads
+         </div>
+        </a>
+       </div>
+       <div class="home-article home-item">
+        <a class="home-item-link" href="https://peerj.com/articles/10234/">
+         <div class="home-item-title">
+          Positive selection within the genomes of SARS-CoV-2 and other Coronaviruses independent of impact on protein function
+         </div>
+         <div class="home-item-subjects">
+          <span class="home-item-subject">
+           Bioinformatics
+          </span>
+          <span class="home-item-subject">
+           Evolutionary Studies
+          </span>
+          <span class="home-item-subject">
+           Genomics
+          </span>
+          <span class="home-item-subject">
+           Virology
+          </span>
+         </div>
+         <div class="home-item-counters">
+          <span class="home-item-citations">
+           <span class="home-item-counter">
+            10
+           </span>
+           citations
+          </span>
+          ·
+          <span class="home-item-counter">
+           5,436
+          </span>
+          views ·
+          <span class="home-item-counter">
+           1,013
+          </span>
+          downloads
+         </div>
+        </a>
+       </div>
+       <div class="home-article home-item">
+        <a class="home-item-link" href="https://peerj.com/articles/7445/">
+         <div class="home-item-title">
+          <i>
+           Paenibacillus
+          </i>
+          strains with nitrogen fixation and multiple beneficial properties for promoting plant growth
+         </div>
+         <div class="home-item-subjects">
+          <span class="home-item-subject">
+           Agricultural Science
+          </span>
+          <span class="home-item-subject">
+           Microbiology
+          </span>
+         </div>
+         <div class="home-item-counters">
+          <span class="home-item-citations">
+           <span class="home-item-counter">
+            13
+           </span>
+           citations
+          </span>
+          ·
+          <span class="home-item-counter">
+           1,407
+          </span>
+          views ·
+          <span class="home-item-counter">
+           797
+          </span>
+          downloads
+         </div>
+        </a>
+       </div>
+       <div class="home-article home-item">
+        <a class="home-item-link" href="https://peerj.com/articles/8217/">
+         <div class="home-item-title">
+          Bacterial microbiota composition of
+          <i>
+           Ixodes ricinus
+          </i>
+          ticks: the role of environmental variation, tick characteristics and microbial interactions
+         </div>
+         <div class="home-item-subjects">
+          <span class="home-item-subject">
+           Biodiversity
+          </span>
+          <span class="home-item-subject">
+           Ecology
+          </span>
+          <span class="home-item-subject">
+           Microbiology
+          </span>
+          <span class="home-item-subject">
+           Parasitology
+          </span>
+         </div>
+         <div class="home-item-counters">
+          <span class="home-item-citations">
+           <span class="home-item-counter">
+            10
+           </span>
+           citations
+          </span>
+          ·
+          <span class="home-item-counter">
+           2,116
+          </span>
+          views ·
+          <span class="home-item-counter">
+           506
+          </span>
+          downloads
+         </div>
+        </a>
+       </div>
+       <div class="home-article home-item">
+        <a class="home-item-link" href="https://peerj.com/articles/8827/">
+         <div class="home-item-title">
+          Identification of a three-m6A related gene risk score model as a potential prognostic biomarker in clear cell renal cell carcinoma
+         </div>
+         <div class="home-item-subjects">
+          <span class="home-item-subject">
+           Bioinformatics
+          </span>
+          <span class="home-item-subject">
+           Oncology
+          </span>
+          <span class="home-item-subject">
+           Urology
+          </span>
+         </div>
+         <div class="home-item-counters">
+          <span class="home-item-citations">
+           <span class="home-item-counter">
+            10
+           </span>
+           citations
+          </span>
+          ·
+          <span class="home-item-counter">
+           1,192
+          </span>
+          views ·
+          <span class="home-item-counter">
+           442
+          </span>
+          downloads
+         </div>
+        </a>
+       </div>
+       <div class="home-article home-item">
+        <a class="home-item-link" href="https://peerj.com/articles/9965/">
+         <div class="home-item-title">
+          Potential COVID-19 papain-like protease PL
+          <sup>
+           pro
+          </sup>
+          inhibitors: repurposing FDA-approved drugs
+         </div>
+         <div class="home-item-subjects">
+          <span class="home-item-subject">
+           Bioinformatics
+          </span>
+          <span class="home-item-subject">
+           Biophysics
+          </span>
+          <span class="home-item-subject">
+           Computational Biology
+          </span>
+          <span class="home-item-subject">
+           Drugs and Devices
+          </span>
+          <span class="home-item-subject">
+           Infectious Diseases
+          </span>
+         </div>
+         <div class="home-item-counters">
+          <span class="home-item-citations">
+           <span class="home-item-counter">
+            7
+           </span>
+           citations
+          </span>
+          ·
+          <span class="home-item-counter">
+           1,373
+          </span>
+          views ·
+          <span class="home-item-counter">
+           370
+          </span>
+          downloads
+         </div>
+        </a>
+       </div>
+      </div>
+      <a class="btn home-items-more btn-more-recently-cited" href="/home/cited-articles/">
+       More recently cited
+       <i class="icon-arrow-down">
+       </i>
+      </a>
+     </div>
+     <div class="home-items-section home-header">
+      <div class="home-section-heading">
+       <h2>
+        More about PeerJ's journals
+       </h2>
+      </div>
+      <div class="row-fluid">
+       <div class="span12">
+        <div class="home-header-text">
+         If you value thoughtful, constructive, rigorous review and want to publish quickly, our
+         <a class="journal-benefits-link" href="/benefits/">
+          Journal Overview
+         </a>
+         will help you assess if PeerJ is the right publisher for your research team.
+         <br/>
+         <br/>
+        </div>
+        <div class="visible-desktop">
+         <div class="home-stats-wide clearfix">
+          <a class="home-wide-link-block home-value-indexed" href="/benefits/indexing-and-impact-factor/#indexing">
+           <div class="home-stat-wide">
+            <img class="home-stat-icon-wide" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/value-icons/home-circle-icon-indexed.png"/>
+            <div class="home-stat-details-wide">
+             <div class="home-stat-heading-wide">
+              Indexed
+             </div>
+             <div class="home-stat-tagline-wide">
+              Web of Science, Journal Citation Reports, PubMed, Scopus, Google Scholar, ++
+             </div>
+            </div>
+           </div>
+          </a>
+          <a class="home-wide-link-block home-value-edboard" href="/benefits/reputation/">
+           <div class="home-stat-wide">
+            <img class="home-stat-icon-wide" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/value-icons/home-circle-icon-prestigious.png"/>
+            <div class="home-stat-details-wide">
+             <div class="home-stat-heading-wide">
+              Prestigious
+              <br/>
+              Editorial Board
+             </div>
+             <div class="home-stat-tagline-wide">
+              Highly-qualified editors and advisors including 5 Nobel laureates
+             </div>
+            </div>
+           </div>
+          </a>
+          <a class="home-wide-link-block home-value-impact" href="/benefits/indexing-and-impact-factor/">
+           <div class="home-stat-wide">
+            <img class="home-stat-icon-wide" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/value-icons/home-circle-icon-high-impact.png"/>
+            <div class="home-stat-details-wide">
+             <div class="home-stat-heading-wide">
+              High-Impact Research
+             </div>
+             <div class="home-stat-tagline-wide">
+              From the world's top institutions and academics.
+              <strong>
+               Median citation rate of 5
+              </strong>
+             </div>
+            </div>
+           </div>
+          </a>
+          <a class="home-wide-link-block home-value-review" href="/benefits/#high-quality-peer-review">
+           <div class="home-stat-wide">
+            <img class="home-stat-icon-wide" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/value-icons/home-circle-icon-peer-review.png"/>
+            <div class="home-stat-details-wide">
+             <div class="home-stat-heading-wide">
+              Quality Peer Review
+             </div>
+             <div class="home-stat-tagline-wide">
+              Objective, in-depth reviewing based on methodological soundness
+             </div>
+            </div>
+           </div>
+          </a>
+          <a class="home-wide-link-block home-value-fast" href="/benefits/fast-publishing/">
+           <div class="home-stat-wide last">
+            <img class="home-stat-icon-wide" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/value-icons/home-circle-icon-fast.png"/>
+            <div class="home-stat-details-wide">
+             <div class="home-stat-heading-wide">
+              Publish fast, 24h Support
+             </div>
+             <div class="home-stat-tagline-wide">
+              30 Days to first decision (median) and quick hands-on author support
+             </div>
+            </div>
+           </div>
+          </a>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <!-- editors and advisors -->
+     <div class="home-items-section home-items-columns home-editors-advisors">
+      <div class="home-section-heading">
+       <h2>
+        Editors and advisors
+       </h2>
+      </div>
+      <p class="home-section-introtext">
+       Advisors and Academic Editors at PeerJ are experienced researchers who are experts in their respective fields.
+    As a general rule, Academic Editors must be at Principal Investigator level or above and have published 25 or more peer-reviewed journal articles. Editors are vetted before being appointed, and their decisions are overseen for consistency.
+      </p>
+      <div class="row-fluid home-edboard">
+       <a class="home-ae-url" href="/user/1492/" itemscope="" itemtype="http://schema.org/Person">
+        <div class="span4 home-advisor-block">
+         <div class="home-edboard-image" itemprop="image">
+          <img alt="Annamaria Vezzani" src="https://d2pdyyx74uypu5.cloudfront.net/images/ae/e_annamaria_vezzani.jpg"/>
+         </div>
+         <div class="home-edboard-info">
+          <div class="home-edboard-name" itemprop="name">
+           Annamaria Vezzani
+          </div>
+          <div class="home-edboard-meta">
+           <span class="home-edboard-meta-item">
+            Mario Negri Institute for Pharnacological Research
+           </span>
+          </div>
+         </div>
+        </div>
+       </a>
+       <a class="home-ae-url" href="/user/1901/" itemscope="" itemtype="http://schema.org/Person">
+        <div class="span4 home-advisor-block">
+         <div class="home-edboard-image" itemprop="image">
+          <img alt="Annalisa Pastore" src="https://s3.amazonaws.com/peerj_prod_upload/images/profile/a%2Fn%2FEAEt38ldwp5DRkjAwrqkeS4DVq2BBgix5omOiDGhHm4%3D%2Fi80_59d58ed3e62466.16394159.jpeg"/>
+         </div>
+         <div class="home-edboard-info">
+          <div class="home-edboard-name" itemprop="name">
+           Annalisa Pastore
+          </div>
+          <div class="home-edboard-meta">
+           <span class="home-edboard-meta-item">
+            King's College London
+           </span>
+          </div>
+         </div>
+        </div>
+       </a>
+       <a class="home-ae-url" href="/user/91628/" itemscope="" itemtype="http://schema.org/Person">
+        <div class="span4 home-advisor-block">
+         <div class="home-edboard-image" itemprop="image">
+          <img alt="Christof Jäger" src="https://s3.amazonaws.com/peerj_prod_upload/images/profile/c%2Fh%2FLvrHa1IMOU-RN-R9KXNWaAsC_n5t-Gi5ILl5ccmuLXA%3D%2Fi80_5c1ce332c93653.44051165.jpeg"/>
+         </div>
+         <div class="home-edboard-info">
+          <div class="home-edboard-name" itemprop="name">
+           Christof Jäger
+          </div>
+          <div class="home-edboard-meta">
+           <span class="home-edboard-meta-item">
+            University of Nottingham
+           </span>
+          </div>
+         </div>
+        </div>
+       </a>
+       <a class="home-ae-url" href="/user/972/" itemscope="" itemtype="http://schema.org/Person">
+        <div class="span4 home-advisor-block">
+         <div class="home-edboard-image" itemprop="image">
+          <img alt="Maria Tretiakova" src="https://d2pdyyx74uypu5.cloudfront.net/images/ae/e_maria_tretiakova.jpg"/>
+         </div>
+         <div class="home-edboard-info">
+          <div class="home-edboard-name" itemprop="name">
+           Maria Tretiakova
+          </div>
+          <div class="home-edboard-meta">
+           <span class="home-edboard-meta-item">
+            University of Washington
+           </span>
+          </div>
+         </div>
+        </div>
+       </a>
+       <a class="home-ae-url" href="/user/120636/" itemscope="" itemtype="http://schema.org/Person">
+        <div class="span4 home-advisor-block">
+         <div class="home-edboard-image" itemprop="image">
+          <img alt="Jeffrey Stuart" src="https://s3.amazonaws.com/peerj_prod_upload/images/profile/j%2Fe%2F-w0dVit2zOhLh78Z-jFJhg%3D%3D%2Fi80_5df146e4a78718.41938456.jpeg"/>
+         </div>
+         <div class="home-edboard-info">
+          <div class="home-edboard-name" itemprop="name">
+           Jeffrey Stuart
+          </div>
+          <div class="home-edboard-meta">
+           <span class="home-edboard-meta-item">
+            Brock University
+           </span>
+          </div>
+         </div>
+        </div>
+       </a>
+       <a class="home-ae-url" href="/user/1500/" itemscope="" itemtype="http://schema.org/Person">
+        <div class="span4 home-advisor-block">
+         <div class="home-edboard-image" itemprop="image">
+          <img alt="Pamela Ronald" src="https://d2pdyyx74uypu5.cloudfront.net/images/ae/e_pamela_ronald.jpg"/>
+         </div>
+         <div class="home-edboard-info">
+          <div class="home-edboard-name" itemprop="name">
+           Pamela Ronald
+          </div>
+          <div class="home-edboard-meta">
+           <span class="home-edboard-meta-item">
+            The University of California, Davis
+           </span>
+          </div>
+         </div>
+         <div class="home-edboard-advisor-badge">
+          Advisor
+         </div>
+        </div>
+       </a>
+       <a class="home-ae-url" href="/user/22322/" itemscope="" itemtype="http://schema.org/Person">
+        <div class="span4 home-advisor-block">
+         <div class="home-edboard-image" itemprop="image">
+          <img alt="Anne Marie Kuijpers-Jagtman" src="https://s3.amazonaws.com/peerj_prod_upload/images/profile/a%2Fn%2FjQG4fsFkeci591I5MBdQvg%3D%3D%2Fi80_5c43470d76c936.33783097.jpeg"/>
+         </div>
+         <div class="home-edboard-info">
+          <div class="home-edboard-name" itemprop="name">
+           Anne Marie Kuijpers-Jagtman
+          </div>
+          <div class="home-edboard-meta">
+           <span class="home-edboard-meta-item">
+            University of Groningen
+           </span>
+          </div>
+         </div>
+        </div>
+       </a>
+       <a class="home-ae-url" href="/user/983/" itemscope="" itemtype="http://schema.org/Person">
+        <div class="span4 home-advisor-block">
+         <div class="home-edboard-image" itemprop="image">
+          <img alt="Dominique Lison" src="https://d2pdyyx74uypu5.cloudfront.net/images/ae/e_Dominique_Lison.jpg"/>
+         </div>
+         <div class="home-edboard-info">
+          <div class="home-edboard-name" itemprop="name">
+           Dominique Lison
+          </div>
+          <div class="home-edboard-meta">
+           <span class="home-edboard-meta-item">
+            Catholic University of Louvain
+           </span>
+          </div>
+         </div>
+        </div>
+       </a>
+       <a class="home-ae-url" href="/user/1411/" itemscope="" itemtype="http://schema.org/Person">
+        <div class="span4 home-advisor-block">
+         <div class="home-edboard-image" itemprop="image">
+          <img alt="Karl Friston" src="https://d2pdyyx74uypu5.cloudfront.net/images/ae/e_karl_friston.jpg"/>
+         </div>
+         <div class="home-edboard-info">
+          <div class="home-edboard-name" itemprop="name">
+           Karl Friston
+          </div>
+          <div class="home-edboard-meta">
+           <span class="home-edboard-meta-item">
+            University College London
+           </span>
+          </div>
+         </div>
+         <div class="home-edboard-advisor-badge">
+          Advisor
+         </div>
+        </div>
+       </a>
+       <a class="home-ae-url" href="/user/3687/" itemscope="" itemtype="http://schema.org/Person">
+        <div class="span4 home-advisor-block">
+         <div class="home-edboard-image" itemprop="image">
+          <img alt="Simon Baron-Cohen" src="https://s3.amazonaws.com/peerj_prod_upload/images/profile/s%2Fi%2Fv2Zf3PMpMNhNEmAKUD2yvXfywRN4zYEK2AwZxuEDk%3D%2Fi80_533a1c634b5604.94438758.jpeg"/>
+         </div>
+         <div class="home-edboard-info">
+          <div class="home-edboard-name" itemprop="name">
+           Simon Baron-Cohen
+          </div>
+          <div class="home-edboard-meta">
+           <span class="home-edboard-meta-item">
+            Cambridge University
+           </span>
+          </div>
+         </div>
+        </div>
+       </a>
+       <a class="home-ae-url" href="/user/93622/" itemscope="" itemtype="http://schema.org/Person">
+        <div class="span4 home-advisor-block">
+         <div class="home-edboard-image" itemprop="image">
+          <img alt="Gianluca Tettamanti" src="https://s3.amazonaws.com/peerj_prod_upload/images/profile/g%2Fi%2FH70nGlrsTHMlFzh9CrPwUg%3D%3D%2Fi80_5c5b6363540079.65466838.jpeg"/>
+         </div>
+         <div class="home-edboard-info">
+          <div class="home-edboard-name" itemprop="name">
+           Gianluca Tettamanti
+          </div>
+          <div class="home-edboard-meta">
+           <span class="home-edboard-meta-item">
+            University of Insubria
+           </span>
+          </div>
+         </div>
+        </div>
+       </a>
+      </div>
+      <a class="btn home-more btn-ed-board" href="/academic-boards/editors/">
+       Full editorial board
+      </a>
+     </div>
+     <!-- member institutions -->
+     <div class="home-items-section home-items-columns home-member-institutions">
+      <div class="home-section-heading">
+       <h2>
+        Member institutions
+       </h2>
+      </div>
+      <p class="home-section-introtext">
+       151 institutions have a prepaid publishing arrangement with us, helping reduce publishing costs and making it easier for their researchers to publish Open Access.
+      </p>
+      <div class="clearfix">
+       <div class="institution-logo-row">
+        <div class="institution-container">
+         <img class="institution-logo" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/institutions/logo-cambridge.png"/>
+         <div class="institution-name">
+          University of Cambridge
+         </div>
+        </div>
+        <div class="institution-container">
+         <img class="institution-logo" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/institutions/logo-stanford.png"/>
+         <div class="institution-name">
+          Stanford University
+         </div>
+        </div>
+        <div class="institution-container">
+         <img class="institution-logo" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/institutions/logo-tudelft.png"/>
+         <div class="institution-name">
+          Delft University of Technology
+         </div>
+        </div>
+       </div>
+       <div class="institution-logo-row">
+        <div class="institution-container">
+         <img class="institution-logo" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/institutions/logo-penn.png"/>
+         <div class="institution-name">
+          University of Pennsylvania
+         </div>
+        </div>
+        <div class="institution-container">
+         <img class="institution-logo" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/institutions/logo-ucl.png"/>
+         <div class="institution-name">
+          University College London
+         </div>
+        </div>
+        <div class="institution-container">
+         <img class="institution-logo" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/institutions/logo-berkely.png"/>
+         <div class="institution-name">
+          University of California, Berkeley
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="btns-institution">
+       <a class="btn home-more btn-find-your-institutions" href="/institutions/">
+        Find your institution
+       </a>
+       <a class="btn home-more btn-institution-signup" href="/pricing/institutions/">
+        Institution signup
+       </a>
+      </div>
+     </div>
+     <!-- member societies -->
+     <div class="home-items-section home-items-columns home-">
+      <div class="home-section-heading">
+       <h2>
+        Partner societies
+       </h2>
+      </div>
+      <p class="home-section-introtext society">
+       PeerJ works with major conferences and societies through sponsorships and curated collections to highlight
+        societal member and conference delegate work. Collections are available for in-depth peer-reviewed research articles as well as conference abstracts.
+      </p>
+      <div class="clearfix">
+       <div class="society-logo-row">
+        <div class="society-container">
+         <img class="society-logo" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/societies/logo-wcmb.png"/>
+         <div class="society-name">
+          WCMB World Congress on Marine Biodiversity
+         </div>
+        </div>
+        <div class="society-container">
+         <img class="society-logo" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/societies/logo-smbe.png"/>
+         <div class="society-name">
+          Society for Molecular Biology and Evolution
+         </div>
+        </div>
+        <div class="society-container">
+         <img class="society-logo" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/societies/logo-incob.png"/>
+         <div class="society-name">
+          International Conference on Bioinformatics
+         </div>
+        </div>
+       </div>
+       <div class="society-logo-row">
+        <div class="society-container">
+         <img class="society-logo" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/societies/logo-gcb.png"/>
+         <div class="society-name">
+          German Conference on Bioinformatics
+         </div>
+        </div>
+        <div class="society-container">
+         <img class="society-logo" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/societies/logo-amlc.png"/>
+         <div class="society-name">
+          Association of Marine Laboratories of the Caribbean
+         </div>
+        </div>
+        <div class="society-container">
+         <img class="society-logo" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/societies/logo-svpca.png"/>
+         <div class="society-name">
+          Symposium of Vertebrate Palaeontology and Comparative Anatomy
+         </div>
+        </div>
+       </div>
+      </div>
+      <a class="btn home-more btn-view-collections" href="/collections/">
+       View collections
+      </a>
+     </div>
+     <!-- collections -->
+    </div>
+   </div>
+   <div id="push">
+   </div>
+  </div>
+  <footer id="footer">
+   <div class="foot">
+    <div class="container">
+     <div class="row-fluid">
+      <div class="span2">
+       <div class="footer-section">
+        <div class="footer-section-header">
+         About Us
+        </div>
+        <div>
+         <a href="/benefits/peerj-timeline/">
+          8 years publishing
+         </a>
+        </div>
+        <div>
+         <a href="/about/">
+          Who are we?
+         </a>
+        </div>
+        <div>
+         <a href="/about/beliefs/">
+          What we believe
+         </a>
+        </div>
+        <div>
+         <a href="/about/publications/">
+          Our publications
+         </a>
+        </div>
+        <div>
+         <a href="/benefits/">
+          Benefits for authors
+         </a>
+        </div>
+        <div>
+         <a href="/about/partnerships/">
+          Partnerships
+         </a>
+        </div>
+        <div>
+         <a href="/about/endorsements/">
+          Endorsements
+         </a>
+        </div>
+        <div>
+         <i class="icon-trophy">
+         </i>
+         <a href="/about/reviews/">
+          Reviews + awards
+         </a>
+        </div>
+       </div>
+      </div>
+      <div class="span2">
+       <div class="footer-section">
+        <div class="footer-section-header">
+         Academic Boards
+        </div>
+        <div>
+         <a href="/academic-boards/advisors/">
+          Advisors
+         </a>
+        </div>
+        <div>
+         <a href="/academic-boards/editors/">
+          Editors
+         </a>
+        </div>
+        <div>
+         <a href="/academic-boards/subjects/">
+          Subject areas
+         </a>
+        </div>
+       </div>
+       <div class="footer-section">
+        <div class="footer-section-header">
+         Submission Guides
+        </div>
+        <div>
+         <a href="/about/aims-and-scope/">
+          Aims &amp; scope
+         </a>
+        </div>
+        <div>
+         <a href="/about/author-instructions/">
+          Instructions for authors
+         </a>
+        </div>
+        <div>
+         <a href="/about/policies-and-procedures/">
+          Policies &amp; procedures
+         </a>
+        </div>
+        <div>
+         <a href="/about/editorial-criteria/">
+          Editorial criteria
+         </a>
+        </div>
+        <div>
+         <a href="/about/aims-and-scope/cs">
+          <i>
+           PeerJ CS
+          </i>
+          instructions
+         </a>
+        </div>
+       </div>
+      </div>
+      <div class="span2">
+       <div class="footer-section">
+        <div class="footer-section-header">
+         Resources
+        </div>
+        <div>
+         <a href="/about/FAQ/">
+          FAQ
+         </a>
+        </div>
+        <div>
+         <a href="/about/careers/">
+          Careers
+         </a>
+        </div>
+        <div>
+         <a href="/about/press/">
+          Press room
+         </a>
+        </div>
+        <div>
+         <a href="/about/terms/">
+          Terms of Use
+         </a>
+        </div>
+        <div>
+         <a href="/about/privacy/">
+          Privacy policy
+         </a>
+        </div>
+        <div>
+         <a href="/about/contact/">
+          Contact us
+         </a>
+        </div>
+       </div>
+       <div class="footer-section">
+        <div class="footer-section-header">
+         Follow us
+        </div>
+        <div>
+         <a data-toggle="tooltip" href="http://twitter.com/thePeerJ/" title="Follow on Twitter">
+          Twitter
+         </a>
+        </div>
+        <div>
+         <a data-toggle="tooltip" href="http://facebook.com/thePeerJ/" title="Follow on Facebook">
+          Facebook
+         </a>
+        </div>
+        <div>
+         <a data-toggle="tooltip" href="http://www.linkedin.com/company/peerj" title="Follow on LinkedIn">
+          LinkedIn
+         </a>
+        </div>
+        <div>
+         <a data-toggle="tooltip" href="https://www.instagram.com/thepeerj" title="Follow on Instagram">
+          Instagram
+         </a>
+        </div>
+        <div>
+         <a data-toggle="tooltip" href="http://www.pinterest.com/thepeerj/boards/" title="Follow on Pinterest">
+          Pinterest
+         </a>
+        </div>
+       </div>
+      </div>
+      <div class="span3">
+       <div class="footer-section">
+        <div class="footer-section-header">
+         Article feeds
+         <i class="icon-rss">
+         </i>
+        </div>
+        <div>
+         <dl>
+          <dt>
+           PeerJ:
+          </dt>
+          <dd>
+           <a href="/articles/index.atom" rel="alternate" title="PeerJ Bio articles (Atom)" type="application/atom+xml">
+            Atom
+           </a>
+           |
+           <a href="/articles/index.rss1" rel="alternate" title="PeerJ Bio articles (RSS 1.0)" type="application/rss+xml">
+            RSS 1.0
+           </a>
+           |
+           <a href="/articles/index.rss2" rel="alternate" title="PeerJ Bio articles (RSS 2.0)" type="application/rss+xml">
+            RSS 2.0
+           </a>
+           |
+           <a href="/articles/index.json" rel="alternate" title="PeerJ Bio articles (JSON)" type="application/json">
+            JSON
+           </a>
+          </dd>
+          <dt>
+           PeerJ Computer Science:
+          </dt>
+          <dd>
+           <a href="/articles/index.atom?journal=cs" rel="alternate" title="PeerJ CS articles (Atom)" type="application/atom+xml">
+            Atom
+           </a>
+           |
+           <a href="/articles/index.rss1?journal=cs" rel="alternate" title="PeerJ CS articles (RSS 1.0)" type="application/rss+xml">
+            RSS 1.0
+           </a>
+           |
+           <a href="/articles/index.rss2?journal=cs" rel="alternate" title="PeerJ CS articles (RSS 2.0)" type="application/rss+xml">
+            RSS 2.0
+           </a>
+           |
+           <a href="/articles/index.json?journal=cs" rel="alternate" title="PeerJ CS articles (JSON)" type="application/json">
+            JSON
+           </a>
+          </dd>
+         </dl>
+        </div>
+       </div>
+       <div class="footer-section-header">
+        Archives
+       </div>
+       <div>
+        <a href="/archives/" rel="archives">
+         PeerJ – Life and Environment
+        </a>
+       </div>
+       <div>
+        <a href="/archives/?journal=cs" rel="archives">
+         PeerJ Computer Science
+        </a>
+       </div>
+      </div>
+      <div class="span3">
+       <div class="footer-section footer-supported">
+        <a href="https://peerj.com/blog/post/91251985913/exciting-times-peerj-secures-next-round-of-funding-led-by-sage-and-oreilly/">
+         <div class="footer-supported-header">
+          Supported by
+         </div>
+         <div class="footer-supported-logos">
+          <img alt="O'Reilly logo" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/oreilly.png"/>
+          &amp;
+          <img alt="SAGE logo" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/sage.png"/>
+         </div>
+        </a>
+        <a href="https://www.usenix.org" target="_blank">
+         <div class="footer-partnerships-header">
+          <em>
+           PeerJ Computer Science
+          </em>
+          in Partnership with
+         </div>
+         <div class="footer-partnerships-logos">
+          <img alt="USENIX Logo" src="https://d2pdyyx74uypu5.cloudfront.net/images/home/logo-usenix-grey-footer.png"/>
+         </div>
+        </a>
+       </div>
+      </div>
+     </div>
+     <div class="row" style="margin-top:10px;font-size:12px">
+      <div class="span12" style="color:#888">
+       <div>
+        <span style="margin-right:7px">
+         ©2012-2021 PeerJ, Inc | Public user content licensed
+         <a href="http://creativecommons.org/licenses/by/4.0/">
+          CC BY 4.0
+         </a>
+         unless otherwise specified.
+        </span>
+       </div>
+       <div>
+        <span style="margin-right:7px">
+         <span style="font-style:italic">
+          PeerJ
+         </span>
+         ISSN: 2167-8359
+        </span>
+        <span style="margin-right:7px">
+         <span style="font-style:italic">
+          PeerJ Comput. Sci.
+         </span>
+         ISSN: 2376-5992
+        </span>
+        <span>
+         <span style="font-style:italic">
+          PeerJ Preprints
+         </span>
+         ISSN: 2167-9843
+        </span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </footer>
+  <div data-async-alerts="/alerts/" id="alerts">
+  </div>
+  <script src="/js/8d39319-896778a.js">
+  </script>
+  <script src="/js/9d7cad1-4e9f9eb.js">
+  </script>
+  <div id="content-alert-container">
+  </div>
+  <div id="toast-container">
+  </div>
+  <script>
+   $(PeerJ.Home.Banner.init);
+  </script>
+ </body>
+</html>

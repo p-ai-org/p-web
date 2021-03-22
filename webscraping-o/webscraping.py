@@ -8,7 +8,11 @@ from bs4 import BeautifulSoup
 import requests
 from urllib.parse import urljoin
 
-a_file = open("./websitelist.txt")
+#number of website html's we want
+numfiles = 10000
+
+#a_file = open("./websitelist.txt")
+a_file = open("majestic_million.txt")
 file_contents = a_file.read()
 contents_split = file_contents.splitlines()
 
@@ -19,16 +23,20 @@ for w in contents_split:
     updatelist.append("https://www." + w)
     # updatelist.append(w);
     title.append(w.split('.')[0])
-print(updatelist)
-print(title)
+#print(updatelist)
+#print(title)
 
+counter = 0
 for k in range(len(updatelist)): 
+    #only want 10000 websites
+    if counter > numfiles: break
     w = updatelist[k]
-    print(w)
+    #print(w)
     #grab the soup output for each website
     try: # need to open with try
-        r = requests.get(w,timeout=3)
+        r = requests.get(w,timeout=1)
         soup = BeautifulSoup(r.content, features="lxml")
+        counter += 1
     except:
         #display faulty websites
         #print(w);
@@ -36,6 +44,7 @@ for k in range(len(updatelist)):
     
     #check where we are in program
     print(k)
+
     #make it more readable
     html = soup.prettify()
     
@@ -72,7 +81,7 @@ for k in range(len(updatelist)):
         
         # try to open the cssurl from css_files
         try: # need to open with try
-            css_r = requests.get(cssurl,timeout=3)
+            css_r = requests.get(cssurl,timeout=1)
             soup = BeautifulSoup(css_r.content, features="lxml")
         except:
             continue
@@ -90,7 +99,7 @@ for k in range(len(updatelist)):
                 except Exception:
                     1+1
                     
-        print(csspath)
+        #print(csspath)
     
         
         

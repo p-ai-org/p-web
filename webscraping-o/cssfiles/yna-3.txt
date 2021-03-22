@@ -1,0 +1,1780 @@
+@charset "utf-8";
+/*************************************************
+프로젝트명 : 연합뉴스 국문 PC 홈페이지 (★ 2019)
+commnet : layout.css
+*************************************************/
+
+/* =============== ##공통 (common) ======================== */
+html,body{height:auto;}
+body{font-weight:normal;font-family:'맑은 고딕','Malgun Gothic',AppleSDGothicNeo-Regular,Arial,Helvetica,sans-serif;letter-spacing:-1px;}
+h1,h2,h3,h4,h5,h6{font-weight:normal;font-family:'맑은 고딕','Malgun Gothic',AppleSDGothicNeo-Regular,Arial,Helvetica,sans-serif;}
+p,li,dt,dd,span,strong,em,b,input,button,select,textarea,label,a{font-weight:normal;font-family:'맑은 고딕','Malgun Gothic',AppleSDGothicNeo-Regular,Arial,Helvetica,sans-serif;}
+a{display:inline-block;vertical-align:top;}
+
+
+/* =============== ##레이아웃 (layout) ======================== */
+
+body:not(.body-popup-win){min-width:1130px;}
+body.page-main,
+body.body-wide1300{min-width:1320px;}
+
+/* ---- header (common) ---- */
+
+/* .wrap-header$$ &gt; header$$ 형태로 번호 매칭해서 작업
+ * 하위로 header$$ 가 없으면 번호 사용 안 함
+ * .wrap-header01 : (공통)최상단 마케팅광고, 티커 영역
+ * .wrap-header02 : 메인용 내비게이션
+ * .wrap-header03 : 그 외 내비게이션
+ * .wrap-header21 : 픽스드 내비게이션
+ * .wrap-header51 : 생방송 라이브 티커
+ * default - 1100 모드 / body-wide - 1300 모드 */
+[class*='wrap-header']{position:relative;width:100%;}
+[class*='wrap-header'] [class*='header']{position:relative;}
+[class*='wrap-header'] .search-zone{display:none;position:absolute;z-index:-1;}
+
+/* z-index 공통 정보
+ * 100 : [class*='wrap-header'] 공통 헤더
+ * 200 : .wrap-header21 픽스드 헤더
+ * 90 : .mask-type01 마스크 (딤드) */
+[class*='wrap-header']{z-index:100;}
+
+/* header01 : 속보티커, 긴급티커, 마케팅 광고
+ * .wrap-header01 &gt; .header01 + nav-type02 */
+.wrap-header01{background:#213989;}
+.header01{width:1100px;height:90px;margin:0 auto;color:#fff;}
+.header01 .ticker-area{height:100%;padding:0 258px;}
+.header01 [class*='bnr-mktg-top']{position:absolute;top:13px;}
+.header01 [class*='bnr-mktg-top'] .con{min-height:63px;background:#eee;}
+.header01 .bnr-mktg-top01{left:0;}
+.header01 .bnr-mktg-top02{right:0;}
+.header01 .ticker-type01{top:30px;}
+.header01 .ticker-type02{position:absolute;top:30px;z-index:100;}
+
+/* header02 : 로고, 내비게이션, 검색, 기타 링크
+ * .wrap-header02 &gt; .header02 + .nav-type01 */
+.wrap-header02{top:0;background:#fff;}
+.wrap-header02 .nav-type01{}
+.wrap-header02 .search-zone{top:97px;}
+.header02{z-index:20;width:1100px;height:97px;margin:0 auto;}
+.header02 .logo-yna01{position:relative;top:14px;left:-6px;}
+.header02 .lang-zone{top:41px;margin-left:24px;}
+.header02 .today-zone{top:41px;}
+.header02 .weather-zone{top:37px;}
+.header02 .utility-zone{position:absolute;right:0;top:43px;}
+
+/* 1300 모드 */
+[class*='body-wide'] .header01,
+[class*='body-wide'] .header02{width:1300px;}
+[class*='body-wide'] .header02 .lang-zone{top:46px;left:24px;}
+[class*='body-wide'] .header02 .today-zone{top:45px;}
+[class*='body-wide'] .header02 .weather-zone{top:41px;}
+.body-urgent .ticker-type02{display:block;}
+
+/* header03 : 클래스 사용 안 함 (섹션 서브, 리스트, 본문)
+ * .wrap-header03 &gt; .nav-type02
+ * .wrap-header03 &gt; .nav-type02.style01 */
+.wrap-header03{top:0;}
+.wrap-header03 .search-zone{top:55px;}
+
+/* header21 : 클래스 사용 안 함 (픽스드 내비게이션)
+ * .wrap-header21 &gt; .nav-type11 */
+.wrap-header21{position:fixed;top:0;z-index:100;
+-webkit-transform:translate3d(0,-65px,0);
+transform:translate3d(0,-65px,0);
+-webkit-transition:-webkit-transform 0.2s ease-in-out;
+transition:-webkit-transform 0.2s ease-in-out;
+transition:transform 0.2s ease-in-out;
+transition:transform 0.2s ease-in-out, -webkit-transform 0.2s ease-in-out;}
+.wrap-header21.disabled{position:static;transform:inherit;transition:inherit;}
+/* top:-63px; */
+body.body-sticky .wrap-header21{-webkit-transform:translate3d(0,0,0);
+transform:translate3d(0,0,0);}
+body.body-static .wrap-header21 .tooltip-type01 .tlp-content.show{display:none;}
+
+/* wrap-header51 : 생방송 라이브 티커
+ * header51 : 사용안함 */
+
+
+/* ---- 언어선택 (common) ---- */
+/* default - 1100 모드 / body-wide - 1300 모드 */
+.lang-zone{display:inline-block;position:relative;width:98px;}
+.lang-zone .txt-pick{overflow:visible;display:inline-block;position:relative;z-index:0;box-sizing:border-box;width:100%;height:23px;border:none;background-color:transparent;}
+.lang-zone .txt-pick span{position:relative;padding:0 28px 0 0;font-weight:bold;font-size:13px;letter-spacing:-1px;}
+.lang-zone .txt-pick span:after{content:'';display:block;clear:both;position:absolute;top:9px;right:0;width:9px;height:7px;background:url(../img/sprites_default01.png?v=20200526_0950) -200px -200px no-repeat;
+-webkit-transition:transform 0.3s ease-out;
+transition:transform 0.3s ease-out;}
+
+.lang-zone .lang-list{overflow:hidden;position:absolute;top:24px;left:0;z-index:10;width:100%;height:0;padding:0;background:#000;
+-webkit-transition:height 0.2s linear;
+transition:height 0.2s linear;}
+.lang-zone .lang-list&gt;li{}
+.lang-zone .lang-list&gt;li&gt;a{display:inline-block;padding:0 12px;font-weight:normal;color:#fff;font-size:11px;line-height:24px;letter-spacing:0;}
+.lang-zone .lang-list&gt;li.ar&gt;a{font-size:13px;}
+.lang-zone:hover .txt-pick span:after{top:8px;transform:rotate(-180deg);}
+.lang-zone:hover .lang-list{display:block;height:152px;padding:4px 0;}
+.lang-zone .lang-list&gt;li&gt;a:hover{font-weight:bold;}
+
+/* 1300 모드 */
+[class*='body-wide'] .lang-zone{width:304px;margin:0;letter-spacing:0;}
+[class*='body-wide'] .lang-zone .txt-pick{display:none;}
+[class*='body-wide'] .lang-zone .lang-list,
+[class*='body-wide'] .lang-zone:hover .lang-list{display:inline-block !important;top:0;width:auto;height:auto;background:transparent;padding:0;}
+[class*='body-wide'] .lang-zone .lang-list&gt;li{display:inline-block;margin-right:2px;text-align:center;}
+[class*='body-wide'] .lang-zone .lang-list&gt;li&gt;a{padding:0 4px;color:#000;}
+[class*='body-wide'] .lang-zone .lang-list&gt;li.fr{margin-right:0 !;}
+/* hover 시 bold가 되어 리스트가 움직이는 걸 방지 */
+[class*='body-wide'] .lang-zone .lang-list .en{width:45px;}
+[class*='body-wide'] .lang-zone .lang-list .zh{width:31px;}
+[class*='body-wide'] .lang-zone .lang-list .ja{width:42px;}
+[class*='body-wide'] .lang-zone .lang-list .ar{width:33px;}
+[class*='body-wide'] .lang-zone .lang-list .es{width:47px;}
+[class*='body-wide'] .lang-zone .lang-list .fr{width:48px;}
+
+
+/* ---- 오늘 시간/날씨 (common) ---- */
+/* 오늘 시간 */
+.today-zone{position:relative;top:41px;margin:0 9px 0 26px;font-weight:bold;font-size:12px;line-height:24px;letter-spacing:0;}
+.today-zone strong,
+.today-zone em{font:inherit;}
+.today-zone .txt-week{margin-top:-2px;}
+
+/* 오늘 날씨 */
+.weather-zone{overflow:hidden;display:inline-block;position:relative;width:190px;}
+.weather-zone .btn-more-weather{display:block;position:absolute;top:3px;left:0;z-index:1;width:100%;text-indent:-9999px;}
+.weather-list01{height:28px;font-size:0;}
+.weather-list01 .li{font-weight:bold;font-size:12px;line-height:28px;color:#000;}
+.weather-list01 .li span,
+.weather-list01 .li em,
+.weather-list01 .li strong{font:inherit;}
+.weather-list01 .main-weather-img{float:none;}
+.weather-list01 .txt-city{}
+.weather-list01 .txt-temp{margin-left:2px;}
+.weather-list01 .txt-dust{margin-left:8px;}
+.weather-list01 .state01{color:#1273ff;} /* 좋음 */
+.weather-list01 .state02{color:#00cc33;} /* 보통 */
+.weather-list01 .state03{color:#ff7d00;} /* 나쁨 */
+.weather-list01 .state04{color:#ff3000;} /* 매우나쁨 */
+
+
+/* ---- 검색 (common) ---- */
+/* .search-zone.active : 검색창 열림
+ * .search-zone.key-back : 검색어를 다 삭제했을 때 */
+.search-zone{position:relative;width:100%;background:#f7f7f7;border-top:1px solid #e0e0e0;}
+.search-zone fieldset{position:relative;width:1100px;height:87px;margin:13px auto 0;  /* background:aquamarine; */}
+
+.search-type01{position:relative;font-size:0;}
+.search-type01 .txt-label01{display:inline-block;width:68px;font-weight:bold;font-size:16px;line-height:50px;}
+.search-type01 .input01{display:inline-block;box-sizing:border-box;width:994px;height:50px;padding:0 72px 0 20px;border:1px solid #000;outline:0;background:#fff;font-size:16px;}
+
+/* ie clear 버튼 제거 */
+.search-type01 .input01::-ms-clear,
+.search-type01 .input01::-ms-reveal{display:none;width:0;height:0;}
+.msie9 .search-type01:after{content:'';display:block;clear:both;position:absolute;top:1px;right:124px;width:48px;height:48px;background:#fff;}
+
+.search-type01 .btn-srch-list{position:absolute;top:0;right:41px;width:50px;height:50px;}
+.search-type01 .btn-srch-enter{position:absolute;top:0;right:0;width:38px;height:50px;}
+.search-type01 .btn-srch-enter .ico-type01-srch01:before{left:100%;margin:-10px 0 0 -17px}
+
+.search-auto{display:none;position:absolute;left:68px;box-sizing:border-box;width:994px;border:1px solid #000;background:#fff;}
+.search-auto .list-search{}
+.search-auto .btns{height:37px;background:#e0e0e0;text-align:right;}
+.search-auto .btn-srch-auto{margin:4px 20px 0 0;}
+.none-search{min-height:94px;padding:0 20px;font-size:14px;line-height:37px;color:#000;}
+.none-search p{padding-top:28px;}
+.none-search.hide{display:none;}
+
+/* 자동완성 버튼 */
+.btn-srch-auto{overflow:visible;display:inline-block;position:relative;z-index:0;box-sizing:border-box;margin:0;padding:0;border:0;background:none;vertical-align:top;}
+.btn-srch-auto span{font-weight:bold;font-size:12px;line-height:30px;color:#000;}
+
+/* 검색 활성화 모드 */
+.search-zone.active{display:block;z-index:30;}
+.search-zone.open-list .search-auto{display:block;border-top:1px solid #e1e1e1;}
+.search-zone.open-list .search-type01 .input01{border-bottom:none;}
+
+/* ---- 검색/로그인,로그아웃 ---- */
+.utility-zone{height:0;font-size:0;line-height:1;}
+.utility-zone [class*='btn-type02'] + [class*='btn-type02']{margin-left:20px;}
+.utility-zone .btn-type02.modify01{margin-left:10px;}
+.utility-zone:hover [class*='btn-type02']:not(:hover){opacity:0.3;}
+
+
+/* ---- navigation (common) ---- */
+/* 내비게이션
+ * nav-type01:before : 1depth 아래 1px 보더
+ * nav-type01:after : width 100% 회색배경
+ * default - 1100 모드 / body-wide - 1300 모드 */
+[class*='nav-type']{overflow:hidden;position:relative;z-index:10;width:100%;height:56px;background:#fff;}
+[class*='nav-type']:before,
+[class*='nav-type']:after{content:'';display:block;position:absolute;top:55px;left:0;width:100%;}
+[class*='nav-type']:before{height:1px;background:#ebebeb;z-index:1;}
+[class*='nav-type']:after{height:0;background:#f7f7f7;
+-webkit-transition:height 0.2s linear;
+transition:height 0.2s linear;}
+
+/* 1댑스 : nav-depth01
+ * nav-depth01 .li&gt;a:before : 활성화바
+ * nav-depth01 .li&gt;a:after : hover 시 A영역 확장
+ * nav-depth01 .li : padding 속성 사용해야 연속 hover시 문제없음 */
+.nav-depth01{height:100%;font-size:0;white-space:nowrap;}
+.nav-depth01 .li{display:inline-block;position:static;white-space:normal;}
+.nav-depth01 .li&gt;a{position:relative;padding:5px 8px;font-weight:bold;font-size:13px;line-height:24px;color:#666;}
+
+/* 1댑스 리스트 : 활성화바, A영역 확장 */
+.nav-depth01 .li&gt;a:before{content:'';display:block;position:absolute;bottom:-12px;left:50%;width:0;height:3px;background:#3061ff;
+-webkit-transform:translateX(-50%);
+transform:translateX(-50%);
+-webkit-transition:width 0.15s ease-in-out;
+transition:width 0.15s ease-in-out;}
+.nav-depth01 .li&gt;a:after{content:'';display:none;position:relative;width:100%;height:12px;}
+
+/* 2댑스 리스트 : nav-depth02 */
+.nav-depth02{display:inline-block;margin:8px 0 0;} /* margin:13px 0 0; */
+.nav-depth02&gt;dt{display:inline-block;margin-right:25px;}
+.nav-depth02&gt;dd{display:inline-block;}
+.nav-depth02&gt;dd+dd{margin-left:17px;}
+.nav-depth02 a{padding:5px;font-weight:bold;}
+.nav-depth02&gt;dt&gt;a,
+.nav-depth02&gt;dt&gt;span{font-size:20px;color:#213989;}
+.nav-depth02&gt;dd&gt;a{font-size:13px;color:#000;}
+.nav-depth02 a:hover,
+.nav-depth02&gt;dd.active a{color:#3061ff;}
+
+/* 댑스 리스트 : A영역 확보값만큼 첫 줄 정렬 */
+.nav-depth01{} /* margin-left:-8px; */
+.nav-depth02{margin-left:-5px;}
+[class*='nav-type'] .list-text01{margin-left:-13px;}
+
+/* 내비게이션 하위 영역
+ * 2댑스 리스트, 키워드리스트를 감싸는 요소 */
+[class*='depth-box']{display:none;position:absolute;top:46px;left:0;z-index:1;box-sizing:border-box;width:100%;}
+/* .depth-box01{height:108px;}
+.depth-box02{height:70px;} */
+[class*='depth-box'] .list-text01{margin-top:5px;} /* margin-top:10px; */
+.depth-box02&gt;.list-text01{margin-top:10px;} /* margin-top:18px; */
+
+/* 활성화 상태 active */
+.nav-depth01 .li.active&gt;a,
+.nav-depth01 .li&gt;a:focus,
+.nav-depth01 .li&gt;a:hover{color:#000;}
+
+.nav-depth01 .li.active&gt;a:before,
+.nav-depth01 .li&gt;a:focus:before,
+.nav-depth01 .li&gt;a:hover:before{width:100%;bottom:0 !important;}
+
+.nav-depth01 .li.active&gt;a:after,
+.nav-depth01 .li&gt;a:focus:after,
+.nav-depth01 .li&gt;a:hover:after{display:block;}
+
+.nav-depth01 .li.active [class*='depth-box'],
+[class*='depth-box'].active,
+[class*='depth-box'].current{display:block;}
+
+
+[class*='nav-type']{
+-webkit-transition:height 0.2s linear;
+transition:height 0.2s linear;}
+/* [class*='nav-type'].open01{height:164px;}
+[class*='nav-type'].open02{height:126px;}
+[class*='nav-type'].open01:after{display:block;height:109px;}
+[class*='nav-type'].open02:after{display:block;height:71px;} */
+[class*='nav-type'].open01{height:145px;}
+[class*='nav-type'].open02{height:107px;}
+[class*='nav-type'].open01:after{display:block;height:90px;}
+[class*='nav-type'].open02:after{display:block;height:52px;}
+
+/* 스타일 컨트롤 - nav-type01
+ * 2020-03-03 로코나대응 safe 강조 처리 (수용자권익의견) */
+.nav-type01 .aera{position:relative;top:9px;width:1100px;height:46px;margin:0 auto;}
+/* .nav-type01 .nav-depth01 .li+li{padding-left:8px;} */
+.nav-type01 .nav-depth01 .li{padding-left:8px;}
+.nav-type01 .nav-depth01 .li.latest{padding-left:0;}
+.nav-type01 .nav-depth01 .li&gt;a{font-weight:bold;font-size:14px;color:#000;}
+.nav-type01 .nav-depth01 .li.safe{margin-left:52px;}
+.nav-type01 .nav-depth01 .li.active&gt;a{color:#000;}
+.nav-type01 .nav-depth01 .li.jebo&gt;a{color:#3061ff;}
+.nav-type01 .nav-depth01 .li.safe&gt;a{color:#ff6600;}
+.nav-type01 .nav-depth01 .li.safe&gt;a:before{background:#ff6600;}
+.nav-type01 .nav-depth02&gt;dt{display:none;margin-right:0;}
+
+/* 1300 모드 - nav-type01 */
+[class*='body-wide'] .nav-type01 .aera{width:1300px;}
+/* [class*='body-wide'] .nav-type01 .nav-depth01 .li+li{padding-left:17px;} */
+[class*='body-wide'] .nav-type01 .nav-depth01 .li{padding-left:17px;}
+[class*='body-wide'] .nav-type01 .nav-depth01 .li.latest{padding-left:0;}
+[class*='body-wide'] .nav-type01 .nav-depth01 .li.safe{margin-left:110px;}
+
+/* 재난포털 재난시(태풍) 추가 대응 (상황 종료시 제거)
+ * 2020-08-24 : 바비
+ * 2020-09-05 : 하이선  */
+/* .nav-type01 .nav-depth01 .li.safe{margin-left:22px;}
+.nav-type01 .nav-depth01 .li.safe+.safe{margin-left:0px;}
+[class*='body-wide'] .nav-type01 .nav-depth01 .li.safe{margin-left:62px;}
+[class*='body-wide'] .nav-type01 .nav-depth01 .li.safe+.safe{margin:0px;} */
+
+/* 내비게이션 하위 영역의 섹션별 위치 */
+.nav-type01 .culture [class*='depth-box']{padding-left:263px;}
+.nav-type01 .life [class*='depth-box']{padding-left:315px;}
+.nav-type01 .ent [class*='depth-box']{padding-left:416px;}
+.nav-type01 .sports [class*='depth-box']{padding-left:471px;}
+.nav-type01 .opinion [class*='depth-box']{padding-left:588px;}
+.nav-type01 .people [class*='depth-box']{padding-left:587px;}
+.nav-type01 .visual [class*='depth-box']{padding-left:668px;}
+[class*='body-wide'] .nav-type01 [class*='depth-box']{width:1300px;padding:0 100px;}
+[class*='body-wide'] .nav-type01 .culture [class*='depth-box']{padding:0 0 0 332px;}
+[class*='body-wide'] .nav-type01 .life [class*='depth-box']{padding:0 0 0 408px;}
+[class*='body-wide'] .nav-type01 .ent [class*='depth-box']{padding:0 0 0 504px;}
+[class*='body-wide'] .nav-type01 .sports [class*='depth-box']{padding:0 0 0 572px;}
+[class*='body-wide'] .nav-type01 .opinion [class*='depth-box']{padding:0 0 0 708px;}
+[class*='body-wide'] .nav-type01 .people [class*='depth-box']{padding:0 0 0 703px;}
+[class*='body-wide'] .nav-type01 .visual [class*='depth-box']{padding:0 0 0 792px;}
+[class*='body-wide'] .nav-type01 .jebo [class*='depth-box']{padding:0 0 0 1140px;} /* (임시) */
+
+/* 스타일 컨트롤 - nav-type02
+ * nav-type02 : 공통 (서브)
+ * nav-type02.style01 : 테마 */
+.nav-type02 .aera{position:relative;top:9px;width:1100px;height:46px;margin:0 auto;}
+.nav-type02 [class*='logo-yna']{overflow:visible;position:relative;top:-6px;left:-5px;}
+.nav-type02 .logo-yna02:before{content:'';display:block;clear:both;position:absolute;top:12px;right:-15px;width:1px;height:21px;background:#e5e5e5;}
+.nav-type02 .utility-zone{position:absolute;top:4px;right:0;}
+.nav-type02 .gnb-menu{overflow:hidden;position:absolute;top:0;left:160px;width:666px;height:46px;} /* left:168px */
+.nav-type02 .gnb-menu [class*='bx-']{height:46px !important;}
+.nav-type02 .nav-depth01{width:100%;}
+/* .nav-type02 .nav-depth01 .li+li{padding-left:4px;} */
+.nav-type02 .nav-depth01 .li{padding-left:4px;}
+.nav-type02 .nav-depth01 .li.latest{padding-left:0;}
+.nav-type02 .nav-depth01 .li.jebo a{color:#3061ff;}
+.nav-type02 .nav-depth02&gt;dd&gt;a{font-size:14px;}
+.nav-type02 .industry .nav-depth02&gt;dd+dd{margin-left:13px;}
+.nav-type02 .gnb-content{position:relative;}
+.nav-type02 [class*='depth-box']{top:0px;}
+.nav-type02 [class*='btn-dir']{display:inline-block;position:absolute;top:0;z-index:10;width:34px;height:46px;background:#fff;
+-webkit-transition:z-index 0.01s linear;
+transition:z-index 0.01s linear;}
+.nav-type02 [class*='btn-dir'] .ir-txt{margin:-13px 0 0 -6px;opacity:1;
+-webkit-transition:opacity 0.2s ease-in-out 0.05s;
+transition:opacity 0.2s ease-in-out 0.05s;}
+.nav-type02 [class*='btn-dir'].disabled{z-index:-1;
+-webkit-transition:z-index 0.01s linear 0.3s;
+transition:z-index 0.01s linear 0.3s;}
+.nav-type02 [class*='btn-dir'].disabled .ir-txt{opacity:0;
+-webkit-transition:opacity 0.2s ease-in-out;
+transition:opacity 0.2s ease-in-out;}
+.nav-type02 .btn-dir02-prev,
+.nav-type02 .btn-dir03-prev{left:2px;}
+.nav-type02 .btn-dir02-next,
+.nav-type02 .btn-dir03-next{right:-8px;} /* right:0 */
+
+/* 스타일 컨트롤 - nav-type02 테마 */
+.nav-type02.style01{background:#102039;}
+.nav-type02.style01[class*='nav-type']:before{display:none;}
+.nav-type02.style01 .nav-depth01 .li&gt;a{color:#fff;}
+.nav-type02.style01 .nav-depth01 .li.jebo a{color:#fff;}
+.nav-type02.style01 .nav-depth01 .li.active&gt;a{color:#c2e5ff;text-decoration:underline;}
+.nav-type02.style01 .nav-depth01 .li&gt;a:before{display:none !important;}
+.nav-type02.style01 [class*='btn-dir']{background:#102039;}
+/* .btn-nav-prev02{border:1px solid green !important;}
+.btn-nav-next02{border:1px solid red !important;} */
+
+/* 1300 모드 - nav-type02 */
+[class*='body-wide'] .nav-type02 .aera{width:1300px;}
+[class*='body-wide'] .nav-type02 .gnb-menu{width:966px;}
+[class*='body-wide'] .nav-type02 .gnb-content{width:1100px;margin:0 auto;}
+[class*='body-wide'] .nav-type02 .nav-depth01{transform:translate3d(0, 0, 0) !important;}
+[class*='body-wide'] .nav-type02 .nav-depth01 .li.safe{margin-left:54px;}
+[class*='body-wide'].body-login .nav-type02 .nav-depth01 .li.safe{margin-left:0;}
+[class*='body-wide'] .nav-type02 [class*='btn-dir']{display:none;}
+
+/* 스타일 컨트롤 - nav-type11
+ * nav-type11 : 메인, 서브 픽스드 메뉴
+ * fixed-navigation01 : 본문 이외
+ * fixed-navigation02 : 본문 */
+.nav-type11{overflow:visible;width:100%;height:61px;background:#fff;border-bottom:2px solid #102039;
+-webkit-transition:none;
+transition:none;}
+.nav-type11:before,
+.nav-type11:after{display:none;}
+.nav-type11 .aera{position:relative;top:13px;width:1100px;height:48px;margin:0 auto;}
+.nav-type11 [class*='logo-yna']{overflow:visible;position:absolute;top:-6px;left:-5px;}
+.nav-type11 .zone{overflow:hidden;position:absolute;top:0;left:151px;height:48px;}
+.nav-type11 .option-box{position:absolute;top:-2px;right:0;}
+.nav-type11 .option-box&gt;div,
+.nav-type11 .option-box&gt;.btn-type01,
+.nav-type11 .option-box&gt;.btn-type07{margin-left:4px;}
+.nav-type11 .option-box&gt;div:first-child,
+.nav-type11 .option-box&gt;.btn-type01:first-child,
+.nav-type11 .option-box&gt;.btn-type07:first-child{margin-left:0;}
+.nav-type11 .gnb-menu{width:899px;}
+.nav-type11 .gnb-menu [class*='btn-dir']{display:none;}
+/* .nav-type11 .nav-depth01 .li+li{padding:0 0 0 3px;} */
+.nav-type11 .nav-depth01 .li{padding:0 0 0 3px;}
+.nav-type11 .nav-depth01 .li.latest{padding-left:0;}
+.nav-type11 .nav-depth01 .li&gt;a{color:#000;}
+.nav-type11 .nav-depth01 .li&gt;a:before{bottom:-14px;}
+.nav-type11 .nav-depth01 .li&gt;a:after{height:14px;}
+.nav-type11 .tit-wrap{overflow:hidden;display:inline-block;position:relative;width:675px;text-align:center;}
+.nav-type11 .tit-news{overflow:hidden;display:block;font-weight:bold;font-size:16px;line-height:40px;text-overflow:ellipsis;white-space:nowrap;}
+.nav-type11 .tlp-share01 .tlp-content{top:51px;right:0;}
+
+/* 1500 모드 - nav-type11 */
+[class*='body-wide1500'] .nav-type11 .gnb-menu{width:100%;text-align:center;}
+[class*='body-wide1500'] .nav-type11 .aera{width:100%;}
+[class*='body-wide1500'] .nav-type11 [class*='logo-yna']{left:60px;}
+[class*='body-wide1500'] .nav-type11 .zone{position:relative;top:auto;left:auto;width:1100px;margin:0 auto;}
+[class*='body-wide1500'] .nav-type11 .option-box{right:60px;}
+[class*='body-wide1500'] .nav-type11 .nav-depth01{display:inline-block;text-align:left;vertical-align:top;}
+[class*='body-wide1500'] .nav-type11 .nav-depth01 .li&gt;a{font-weight:bold;font-size:14px;color:#000;}
+[class*='body-wide1500'] .nav-type11 .nav-depth01 .li.safe{margin-left:64px;}
+[class*='body-wide1500'] .nav-type11 .tit-news{font-size:20px;}
+/* 1500 모드 - nav-type11 (본문) */
+[class*='body-wide1500'] .nav-type11.fixed-navigation02 .aera{width:100%;box-sizing:border-box;padding:0 380px 0 260px;}
+[class*='body-wide1500'] .nav-type11.fixed-navigation02 .zone{width:100%;margin:0;text-align:center;}
+
+/* .nav-type11.style01 : 서브 픽스드/테마 메뉴 */
+.nav-type11.style01{background:#102039;}
+.nav-type11.style01[class*='nav-type']:before{display:none;}
+.nav-type11.style01 .nav-depth01 .li&gt;a{color:#fff;}
+.nav-type11.style01 .nav-depth01 .li.active&gt;a{color:#c2e5ff;text-decoration:underline;}
+.nav-type11.style01 .nav-depth01 .li&gt;a:before{display:none !important;}
+.nav-type11.style01 [class*='btn-dir']{background:#102039;}
+
+
+/* ---- container (common) ---- */
+.wrap-container{position:relative;min-height:100%;}
+.container{}
+.container:after{content:'';visibility:hidden;display:block;clear:both;height:0;font-size:0;line-height:0;}
+
+/* 레이아웃 단 유형
+ * 본문에는 스크롤 좌우 고정 기능 들어감 */
+.content01{float:left;position:relative;width:718px;} /* Left */
+.content02{float:right;position:relative;width:300px;} /* Right */
+.content03{clear:both;position:relative;width:100%;background:#fff;} /* Center */
+.content03:after{content:'';visibility:hidden;display:block;clear:both;height:0;font-size:0;line-height:0;}
+.section01{float:left;width:719px;} /* Left */
+.section02{float:right;width:300px;} /* Right */
+
+/* 레이아웃 단 넓이 : 1100
+ * .content03 + .width1100 */
+.width1100{width:1100px;margin:0 auto;}
+
+/* 레이아웃 단 가운데 라인 */
+.line01{background:url(../img/bg_dot01_layout.gif) 759px 0 repeat-y;}
+
+/* 레이아웃 단 가로 라인 */
+.border-h01{border-top:1px solid #e5e5e5;}
+
+
+/* 메인페이지 전용 레이아웃
+ * content51 : 812 / 248
+ * content52 : 480 / 242 / 300
+ * content53 : 460 / 600 (282 / 282) */
+
+ /* 공통스타일 */
+.row-section:after{content:'';visibility:hidden;display:block;clear:both;height:0;font-size:0;line-height:0;}
+.content51,
+.content52,
+.content53{position:relative;width:1100px;margin:0 auto;}
+.content51:after,
+.content52:after,
+.content53:after{content:'';visibility:hidden;display:block;clear:both;height:0;font-size:0;line-height:0;}
+/* 내부콘텐츠 배치 */
+.content51 .section01{float:left;width:812px;}
+.content51 .section02{float:right;width:248px;}
+.content52 .section01{float:left;width:480px;}
+.content52 .section02{float:left;width:242px;margin-left:39px;}
+.content52 .section03{float:right;width:300px;}
+.content53 .section01{float:left;width:460px;}
+.content53 .section02{float:right;width:600px;}
+.content53 .section02 [class*='row-module']:after{content:'';visibility:hidden;display:block;clear:both;height:0;font-size:0;line-height:0;}
+.content53 .section02 .row-module01 .corner{float:left;width:276px;}
+.content53 .section02 .row-module01 .corner+.corner{float:right;width:290px;}
+.content53 .section02 .row-module02 .corner{float:left;width:282px;}
+.content53 .section02 .row-module02 .corner+.corner{float:right;}
+
+/* 세로 라인 */
+.content51.line01{background-position-x:831px}
+
+/*  섹션 리스트 */
+/* .body-news-list .container{margin-top:35px;} */
+
+/* 뉴스 본문, 신화통신 동적본문 */
+.body-view-news .container,
+.body-xinhuanet-view .container{width:1100px;margin:37px auto 0;}
+.body-view-news .container .content01.scroll-article-zone01,
+.body-xinhuanet-view .container .content01.scroll-article-zone01{margin-top:0;}
+
+/* 좌우 레이아웃 단 라인 연결 연장 */
+/* .body-news-sub .content03.line01,
+.body-news-list .content03.line01,
+.body-view-news .container.line01{padding-bottom:50px;} */
+
+
+/* ---- footer (common) ---- */
+.wrap-footer{position:relative;border-top:2px solid #102039;background:#fff;}
+.wrap-footer [class*='footer-']{position:relative;z-index:1;width:1100px;margin:0 auto;}
+.wrap-footer:before,
+.wrap-footer:after{content:'';display:block;position:absolute;width:100%;}
+.wrap-footer:before{top:66px;height:1px;background:#e5e5e5;}
+.wrap-footer:after{bottom:0;height:180px;background:#102039;}
+.body-viewport .wrap-footer:after{height:252px;}
+
+
+/* 푸터 유튜브 채널, SNS */
+.footer-menu01{}
+.footer-menu01 .channel-list{position:relative;top:11px;font-size:0;}
+.footer-menu01 .channel-list .tit{margin-right:20px;font-weight:bold;font-size:13px;line-height:48px;color:#000;}
+.footer-menu01 .channel-list [class*='btn-type']{margin-right:38px;}
+.footer-menu01 .sns-list{position:absolute;right:-5px;top:20px;height:0;font-size:0;line-height:1;}
+.footer-menu01 .sns-list .tit{margin-right:12px;font-weight:bold;font-size:13px;line-height:30px;color:#000;}
+.footer-menu01 .sns-list .fb{margin-right:27px;}
+.footer-menu01 .sns-list .tw{margin-right:31px;}
+.footer-menu01 .sns-list:hover [class*='btn-type']:not(:hover){opacity:0.3;}
+.footer-menu01 .sns-list .tit:hover~[class*='btn-type']{opacity:1.0;}
+
+/* 푸터 사이트맵 */
+.menu-wrap01{padding:37px 0 50px;font-size:0.1px;}
+.menu-wrap01:after{content:'';visibility:hidden;display:block;clear:both;height:0;font-size:0;line-height:0;}
+.menu-wrap01 [class*='area']{overflow:hidden;float:left;width:50%;margin-left:-4px;vertical-align:top;}
+.menu-wrap01 .list01{clear:both;height:32px;margin:0 0 25px -4px;font-size:0.1px;}
+.menu-wrap01 .list02{margin-bottom:14px;}
+.menu-wrap01 .area01&gt;.list02:nth-child(5) dd{letter-spacing:0;} /* 외국어 */
+.menu-wrap01 .txt-partner{position:absolute;right:-4px;bottom:10px;padding:4px;font-weight:bold;font-size:12px;line-height:24px;color:#000;text-decoration:underline;}
+.menu-wrap01 .txt-partner:focus,
+.menu-wrap01 .txt-partner:hover{color:#3061ff;}
+
+/* 푸터 링크, 저작권, 주소 */
+.footer-site{height:180px;font-size:12px;color:#c2e5ff;text-align:center;}
+.footer-site .list-text13{padding-top:36px;}
+.footer-site .txt01{margin-top:11px;line-height:18px;}
+.footer-site .txt01 span{position:relative;margin-right:10px;padding-left:10px;}
+.footer-site .txt01 span:first-child:before{display:none;}
+.footer-site .txt01 span:before{content:'';display:block;clear:both;position:absolute;top:5px;left:0;width:1px;height:11px;background:#c2e5ff;}
+.footer-site .txt02{margin-top:19px;line-height:18px;}
+.footer-site .txt02 span+span{margin-left:20px;}
+.footer-site .txt02 span:first-child{letter-spacing:0;}
+.footer-site .btns-wrap03{display:none;margin-top:24px;} /* 모바일버전 버튼 */
+
+/* 뷰포트 모드 : #mobile */
+.body-viewport .footer-site{height:252px;}
+.body-viewport .footer-site .btns-wrap03{display:block;}
+
+/* 1300 모드 */
+[class*='body-wide'] .wrap-footer [class*='footer-']{width:1300px;}
+[class*='body-wide'] .menu-wrap01{padding:37px 0 50px;}
+[class*='body-wide'] .menu-wrap01 [class*='area']{display:inline-block;float:none;text-align:justify;}
+[class*='body-wide'] .menu-wrap01 [class*='area']:after{content:'';display:inline-block;width:100%;height:0;}
+[class*='body-wide'] .menu-wrap01 .area01{width:49%;}
+[class*='body-wide'] .menu-wrap01 .area02{width:49%;margin-left:2%;}
+[class*='body-wide'] .menu-wrap01 .list02{display:inline-block;min-width:100px;margin-bottom:0;}
+[class*='body-wide'] .menu-wrap01 .area02 .list02:last-child{width:68px;min-width:auto;margin:0 -4px 0 0;}
+[class*='body-wide'] .menu-wrap01 .txt-partner{bottom:12px;}
+
+
+/* =============== ##팝업 (popup) ======================== */
+
+/* ---- 윈도우팝업 단독형 ---- */
+/* 프린트 팝업 */
+.popup-print{}
+.popup-print .pop-header,
+.popup-print .pop-footer{background-color:#102039;}
+.popup-print .pop-header{box-sizing:border-box;width:100%;height:61px;padding:0 20px;}
+.popup-print .pop-header .logo-yna03{margin:7px 0 0 -5px;}
+.popup-print .pop-header .btns{position:absolute;top:15px;right:20px;height:35px;}
+.popup-print .pop-header .btns button+button{margin-left:15px;}
+.popup-print .pop-content{padding:0 20px 50px;min-height:300px;}
+.popup-print .title-article01{margin-top:27px;}
+.popup-print .pop-footer{box-sizing:border-box;width:100%;min-height:100px;padding:23px 20px 0;}
+.popup-print .pop-footer p{font-size:14px;line-height:22px;color:#fff;}
+.popup-print .pop-footer .txt01{margin-bottom:6px;color:#e12121;}
+/* 소재 공통 */
+.popup-print .comp-box{width:718px;margin:0 auto;}
+/* 영상 소재 */
+.popup-print .video-zone .img-con{display:block;}
+.popup-print .video-zone .img-con img{visibility: visible;opacity:1;}
+/* 영상 스킨 */
+.popup-print .vjs-default-skin.vid-skin03:hover .vjs-big-play-button,
+.popup-print .vjs-default-skin.vid-skin03 .vjs-big-play-button:focus{background:rgba(0,0,0,0);}
+.popup-print .vjs-default-skin.vid-skin03:hover .vjs-big-play-button:before,
+.popup-print .vjs-default-skin.vid-skin03 .vjs-big-play-button:focus:before{opacity: 0.5;
+-webkit-transform:scale(0.85);
+-ms-transform:scale(0.85);
+transform:scale(0.85);}
+
+/* ---- 레이어팝업 단독형 ---- */
+/* popup-ticker-latest : 속보팝업
+ * default - 1100 모드 / body-wide - 1300 모드 */
+/* popup-ticker-latest : 속보팝업 */
+/* .popup-ticker-latest{position:absolute;top:90px;left:50%;z-index:1000;width:100%;margin-left:-50%;background:#f7f7f7;}
+.popup-ticker-latest .pop-content{position:relative;box-sizing:border-box;width:1100px;margin:0 auto;padding:10px 279px;}
+.popup-ticker-latest .pop-content&gt;div{width:100%;}
+.popup-ticker-latest .slide-area{overflow:hidden;position:relative;}
+.popup-ticker-latest .slide-area .list{width:100%;}
+.popup-ticker-latest .slide-area .list li{width:100%;}
+.popup-ticker-latest .fixed-area .tit-news,
+.popup-ticker-latest .fixed-area .txt-time{font-weight:bold;color:#213989;}
+.popup-ticker-latest [class*='btn-dir01']{opacity:1;position:absolute;top:50%;z-index:1;margin-top:-15px;
+-webkit-transition:opacity 0.3s ease-out;
+transition:opacity 0.3s ease-out;}
+.popup-ticker-latest .btn-dir01-prev{left:50%;margin-left:-336px;}
+.popup-ticker-latest .btn-dir01-next{right:50%;margin-right:-336px;}
+[class*='body-wide'] .popup-ticker-latest .pop-content{width:1300px;padding:12px 369px 12px 296px;}
+[class*='body-wide'] .popup-ticker-latest .btn-dir01-prev{margin-left:-430px;}
+[class*='body-wide'] .popup-ticker-latest .btn-dir01-next{margin-right:-358px;}
+.popup-ticker-latest.hide{display:none;}
+.popup-ticker-latest.hide [class*='btn-dir01']{opacity:0;} */
+
+/* slick.js */
+.popup-ticker-latest{position:absolute;top:90px;left:50%;z-index:1000;width:100%;margin-left:-50%;background:#f7f7f7;}
+.popup-ticker-latest .pop-content{position:relative;box-sizing:border-box;width:1100px;margin:0 auto;padding:10px 279px;}
+.popup-ticker-latest .pop-content&gt;div{width:100%;}
+.popup-ticker-latest .slide-area{overflow:visible;position:relative;}
+.popup-ticker-latest .slide-area .list{width:100%;}
+.popup-ticker-latest .slide-area .list li{width:100%;}
+.popup-ticker-latest .fixed-area .tit-news,
+.popup-ticker-latest .fixed-area .txt-time{font-weight:bold;color:#213989;}
+
+.popup-ticker-latest .slick-arrow{opacity:1;position:absolute;top:50%;z-index:1;margin-top:3px;
+-webkit-transition:opacity 0.3s ease-out;
+transition:opacity 0.3s ease-out;}
+.popup-ticker-latest .slick-arrow.btn-dir01-prev{left:-76px;}
+.popup-ticker-latest .slick-arrow.btn-dir01-next{right:-76px;}
+
+[class*='body-wide'] .popup-ticker-latest .pop-content{width:1300px;padding:12px 369px 12px 296px;}
+.popup-ticker-latest .slick-slide{width:542px;}
+[class*='body-wide'] .popup-ticker-latest .slick-slide{width:635px;}
+
+.popup-ticker-latest.hide{display:none;}
+.popup-ticker-latest.hide .slick-arrow{opacity:0;}
+
+/* =============== ##소재 ======================== */
+
+/* ----- 본문 글자 크기 조정 ----- */
+/* article-font1 : 폰트 1단계 14px
+ * article-font2 : 폰트 2단계 15px
+ * article-font3 : 폰트 3단계 16px
+ * article-font4 : 폰트 4단계 17px (기본)
+ * article-font5 : 폰트 5단계 18px
+ * article-font6 : 폰트 6단계 19px
+ * article-font7 : 폰트 7단계 20px */
+
+.article-font1 .story-news&gt;p,
+.article-font1 .story-news&gt;span,
+.article-font1 .story-news .tit-sub .tit,
+.article-font1 .story-news .txt-hyper,
+.article-font1 .story-news .txt-openurl{font-size:14px;}
+
+.article-font2 .story-news&gt;p,
+.article-font2 .story-news&gt;span,
+.article-font2 .story-news .tit-sub .tit,
+.article-font2 .story-news .txt-hyper,
+.article-font2 .story-news .txt-openurl{font-size:15px;}
+
+.article-font3 .story-news&gt;p,
+.article-font3 .story-news&gt;span,
+.article-font3 .story-news .tit-sub .tit,
+.article-font3 .story-news .txt-hyper,
+.article-font3 .story-news .txt-openurl{font-size:16px;}
+
+.article-font4 .story-news&gt;p,
+.article-font4 .story-news&gt;span,
+.article-font4 .story-news .tit-sub .tit,
+.article-font4 .story-news .txt-hyper,
+.article-font4 .story-news .txt-openurl{font-size:17px;}
+
+.article-font5 .story-news&gt;p,
+.article-font5 .story-news&gt;span,
+.article-font5 .story-news .tit-sub .tit,
+.article-font5 .story-news .txt-hyper,
+.article-font5 .story-news .txt-openurl{font-size:18px;}
+
+.article-font6 .story-news&gt;p,
+.article-font6 .story-news&gt;span,
+.article-font6 .story-news .tit-sub .tit,
+.article-font6 .story-news .txt-hyper,
+.article-font6 .story-news .txt-openurl{font-size:19px;}
+
+.article-font7 .story-news&gt;p,
+.article-font7 .story-news&gt;span,
+.article-font7 .story-news .tit-sub .tit,
+.article-font7 .story-news .txt-hyper,
+.article-font7 .story-news .txt-openurl{font-size:20px;}
+
+
+/* =============== ##기사본문 레이아웃 ======================== */
+
+/* 기사본문 스크롤 */
+.scroll-article-zone01,
+.scroll-article-zone02{}
+.scroller01,
+.scroller02{background:#fff;}
+[class*='scroller-wrap'] [class*='scroller']:after{content:'';display:block;width:100%;height:200px;}
+
+.nav-path01{font-size:0;}
+.nav-path01 li{display:inline-block;position:relative;}
+.nav-path01 li&gt;a,
+.nav-path01 li&gt;span{padding:4px;font-size:14px;line-height:22px;color:#3061ff;}
+.nav-path01 li&gt;a:hover{text-decoration:underline;}
+.nav-path01 li+li{margin:0 0 0 6px;padding:0 0 0 6px;}
+.nav-path01 li+li:before{content:'';display:block;clear:both;position:absolute;top:11px;left:0;width:1px;height:12px;background:#3061ff;}
+.nav-path01 li.current&gt;a,
+.nav-path01 li.current&gt;span{font-weight:bold;}
+
+.update-time{display:inline-block;box-sizing:border-box;height:30px;padding:5px 20px 5px 0;font-size:13px;line-height:20px;color:#666;letter-spacing:0;vertical-align:bottom;}
+.update-time .txt{position:relative;margin:0 5px 0 0;padding:0 7px 0 0;letter-spacing:-1px;}
+.update-time .txt:before{content:'';display:block;clear:both;position:absolute;top:5px;right:0;width:1px;height:12px;background:#666;}
+
+.link-site{font-size:0;}
+.link-site,
+.link-site&gt;li{display:inline-block;vertical-align:top;}
+.link-site&gt;li+li{margin-left:10px;}
+.link-site a{height:30px;box-sizing:border-box;padding:5px 13px 0 13px;color:#000;font-size:12px;line-height:20px;letter-spacing:0;border-radius:15px;}
+.link-site .ar a{padding-top:3px;}
+.link-site .active a,
+.link-site a:hover{color:#fff;background-color:#000;}
+
+/* 본문 제목 - 글기사, 프린트팝업 */
+.title-article01{position:relative;width:100%;padding-bottom:13px;border-bottom:1px solid #e5e5e5;}
+.title-article01 .nav-path01{margin:0 0 8px;}
+.title-article01&gt;.tit{margin-bottom:30px;font-weight:bold;font-size:36px;line-height:46px;letter-spacing:-3px;}
+.title-article01 .update-time,
+.title-article01 .link-site,
+.title-article01 .ico-type02-view01{position:relative;top:0;vertical-align:bottom;}
+.title-article01 .option-box{position:absolute;right:20px;bottom:13px;font-size:0;z-index:1;}
+.title-article01 .option-box&gt;div,
+.title-article01 .option-box&gt;.btn-type01{margin-left:15px;vertical-align:top;}
+.title-article01 .option-box&gt;div:first-child,
+.title-article01 .option-box&gt;.btn-type01:first-child{margin-left:0;}
+
+/* 본문 제목 - 포토 */
+/* .title-article02{} */
+
+/* 본문 제목 - 영상 */
+/* .title-article03{} */
+
+/* 글기사 본문 */
+.article-wrap01{}
+/* .article-wrap01 .content03{padding-top:37px;} */
+.article-wrap01 .story-news{margin-bottom:33px;}
+.article-wrap01 .map-zone .iframe-con{padding-top:403px;}
+.article-wrap01 .keyword-zone{margin-bottom:35px;}
+
+/* 채널 본문 */
+.article-wrap02{}
+
+.article-wrap02 .title-article01 .option-box&gt;div,
+.article-wrap02 .title-article01 .option-box&gt;.btn-type07{margin-left:15px;vertical-align:top;}
+.article-wrap02 .title-article01 .option-box&gt;div:first-child,
+.article-wrap02 .title-article01 .option-box&gt;.btn-type07:first-child{margin-left:0;}
+
+/* 삭제 기사 본문 (ISRV-709) */
+.article-deleted{margin-top:0 !important;}
+.article-deleted .title-article01,
+.article-deleted .story-news{display:none;}
+.box-deleted{width:100%;margin:145px auto 100px !important;padding-top:114px;text-align:center;}
+.box-deleted:before{content:'';display:block;clear:both;position:absolute;top:0;left:50%;width:95px;height:84px;background: url(../img/sprites_default01.png?v=20200526_0950) -200px -500px no-repeat;margin:0 0 0 -47.5px;}
+.box-deleted .tit-sub{display:block;position:relative;margin-bottom:52px;font-weight:normal;font-size:30px;line-height:1;color:#000;text-align:center;}
+.box-deleted p{font-size:16px;line-height:26px;color:#454545;}
+.box-deleted p+p{margin-top:6px;}
+
+/* 배너 코드 위치 */
+
+/* =============== ##컨트롤 (Body Class - Control) ======================== */
+
+/* ---- ##공통 ---- */
+
+/* 공통여백 */
+.container&gt;[class*='content']+[class*='content']{margin-top:35px;}
+body:not(.page-main) .container&gt;[class*='content']:last-child{padding-bottom:100px;}
+[class*='box-type']{margin-top:35px;}
+[class*='box-type'] [class*='paging-type01']{margin-top:35px;}
+[class*='tab-content'] [class*='box-type'],
+.title-page02+[class*='box-type'],
+.container&gt;[class*='content']&gt;[class*='box-type']:first-child,
+.section01&gt;[class*='box-type']:first-child,
+.section02&gt;[class*='box-type']:first-child{margin-top:0;}
+
+/* [섹션 메인] 공통 */
+.content03.border-h01{padding-top:35px;} /* 밑줄 */
+.content03:not(.width1100)+.content03.width1100.border-h01{margin-top:0;border-top:none;}/*전국메인*/
+
+/* [섹션] 주요뉴스/최신뉴스 목록 */
+.content03.border-h01 .list-type038 .list&gt;li:first-child .img-con,
+.content03.border-h01 .list-type038 .list&gt;li:first-child .news-con,
+.content03.border-h01 .list-type038 .list&gt;li:first-child [class*='info-box']{padding-top:0;}
+
+/* [섹션 리스트] 공통 */
+.body-news-list .container{margin-top:0;}
+.body-news-list .container&gt;.content03:first-child{padding-top:35px;}
+
+/* ---- 콘텐츠 개별 박스 ---- */
+
+/* 섹션톱기사 */
+[class*='top-sub-news']{padding:0 0 35px;border-bottom: 1px solid #ebebeb;}
+
+/* 섹션톱기사 : 정치, 경제, 산업, 사회, 전국, 세계, 문화 사용 */
+.top-sub-news01{margin:35px 0 35px;}
+
+/* 섹션톱기사 : 스포츠, 연예 */
+.top-sub-news02{margin:35px 0 35px;}
+
+/* (임시)섹션톱 변경(정치, 경제, 산업, 사회, 세계, 문화) : 2020-10-06 */
+.top-sub-news03{margin:35px 0 7px;padding:0;border:0;}
+
+/* 주요뉴스01 - 섹션 공통 */
+.box-major01{}
+.box-major01 .list-type038 .list{border:none;}
+
+/* 주요포토 - 섹션 공통 */
+.box-photo-juyo01 .list-type074 .img-con .img{height:170px;}
+
+/* 주요뉴스02 - 라이프 / 문화 / 오피니언 */
+.box-major02{padding-bottom:35px;border-bottom:1px solid #e5e5e5;}
+
+/* 최신기사 - 리스트 */
+.box-latest01{}
+.box-latest01 .list-type038 .list{border:none;}
+
+/* 최신기사 - 반론보도문(2020-04-08 이동규) */
+.box-corrected01{}
+.box-corrected01 .list-type038 .list{border:none;}
+.box-corrected01+.box-latest01{margin-top:0;}
+
+/* 이슈돋보기 - 코너 */
+.box-issue01{}
+.box-issue01 .info-list01&gt;li+li{margin-left:21px;}
+
+/* 이슈 타임라인 */
+/* .box-issue-time01{padding-top:28px;} */
+.box-issue-time01 .list-type112 .bx-wrapper{padding-top:0;}
+.box-issue-time01 .list-type112 .bx-pager{top:-26px;}
+
+/* 세계 메인 - 특파원 르포 */
+.box-repo-news01{padding-bottom:35px;border-bottom:1px solid #e5e5e5;}
+
+/* 세계 중국 - 신화망 주요뉴스 */
+.box-xinhuawang01 .title-con01{position:relative;padding-top:28px;padding-right:90px;}
+.box-xinhuawang01 .title-con01 .title-type06{position:absolute;right:0;top:0;}
+
+/* 전국 리스트 하단 - 지역별 최신포토 */
+.box-local-photo01{margin-top:70px;}
+
+/* 전국 지방지 계약사 - 최신기사 하단 */
+.box-local-contractor{padding:20px 0;border-top:1px solid #e5e5e5;border-bottom:1px solid #e5e5e5;}
+
+/* 전국 지역지 계약사 - 우측 상단(위치변경) : 2020-11-19 */
+.box-local-contractor02 .title-type01 .tit{padding:6px 0 5px 34px;}
+.box-local-contractor02 .ico-label-partner01{position:absolute;top:3px;left:0;}
+.box-local-contractor02 .list-text32{margin:3px 0 0;border-top:2px solid #000;border-bottom:2px solid #000;}
+
+/* [서브] 에디터스픽(영상+뉴스) */
+.box-editors-video01+.box-editors-news01{margin-top:15px;}
+.box-editors-video01 .slick-pager02 li:not(.slick-active) button:before{background:#d9d9d9;}
+
+/* [서브] 섹션주요 더보기 버튼 (all 페이지 연결) */
+.box-major01 .btn-more-major{width:314px;margin-top:20px;}
+
+/* [본문] 본문 내 광고 (MEPS-17031) */
+body&gt;.article-ad-box{display:none;}
+
+/* ---- ##메인(Main) ---- */
+.page-main .container{padding:35px 0 20px;}
+.top-main-news01 .news-type01{padding-bottom:35px;border-bottom:1px solid #e5e5e5;}
+.top-main-news01 .news-type01.style01{padding-bottom:0;border-bottom:none;}
+.main-major-wrap{margin:6px 0 40px;}
+.main-major-wrap .tab-type04{position:absolute;left:-97px;top:25px;}
+.main-major-wrap [class*='box-type']{margin-top:0;}
+.main-hotnews01{margin-top:0;}
+.main-live.box-type{margin:40px 0 !important;}
+.main-most-reply01{padding-bottom:15px;border-bottom:1px solid #e5e5e5;}
+.main-sports01{margin-top:25px;padding-bottom:25px;border-bottom:1px solid #e5e5e5;}
+.main-ent01{margin-top:25px;padding-bottom:25px;border-bottom:1px solid #e5e5e5;}
+.main-opinion01{margin-top:25px;}
+/* .main-opinion02{margin-top:25px;}
+.main-viewpoint01{margin-top:25px;} */
+.main-local-paper01{margin-top:30px;}
+.main-photogallery01 .title-type01{padding-bottom:2px;margin-bottom:-2px;}
+.main-most-news01{padding-bottom:13px;border-bottom:1px solid #e5e5e5;}
+.main-most-news01 .box-type{margin-top:0;}
+.main-gov-economy01{margin-top:25px;padding-bottom:21px;border-bottom:1px solid #e5e5e5;}
+.main-hng01{margin-top:25px;}
+.main-graphic01{margin-top:25px;}
+.main-foreign01 .tab-type01 .tab{letter-spacing:0;}
+.main-audio01{display:none;}
+html.webkit .main-audio01{display:block;}
+/* 메인 톱기사 영역 */
+.main-content01{position:relative;}
+.page-main .col-module{position:relative;}
+
+/* 이 시각 주요뉴스, 섹션별 주요뉴스
+ * 6개만 노출 */
+.main-major-time01 .list&gt;li{display:none;}
+.main-major-time01 .list&gt;li:nth-child(1),
+.main-major-time01 .list&gt;li:nth-child(2),
+.main-major-time01 .list&gt;li:nth-child(3),
+.main-major-time01 .list&gt;li:nth-child(4),
+.main-major-time01 .list&gt;li:nth-child(5),
+.main-major-time01 .list&gt;li:nth-child(6){display:block;}
+.main-major-news01 .list{display:none;}
+.main-major-news01 .list:nth-child(1),
+.main-major-news01 .list:nth-child(2),
+.main-major-news01 .list:nth-child(3),
+.main-major-news01 .list:nth-child(4),
+.main-major-news01 .list:nth-child(5),
+.main-major-news01 .list:nth-child(6){display:block;}
+
+.main-most-news01 .title-type01{z-index:1;}
+
+/* 메인 Y스페셜(배너형) */
+.main-yspecial02{}
+.main-yspecial02 .list-type076 .item-box01{height:inherit;}
+
+/* ---- ##경제 ---- */
+/* 섹션메인 */
+.body-news-sub[class*='page-economy'] .content03+.content03.line01.border-h01{padding-top:35px;margin-top:0;border-top:0;}
+
+
+/* ---- ##전국 ---- */
+/* 섹션메인 */
+/* 섹션톱 수정, 여백 조정 */
+.body-news-sub[class*='page-local'] .top-sub-news01{margin-bottom:0;}
+.body-news-sub[class*='page-local'] .content03+.content03.line01.border-h01{padding-top:35px;margin-top:0;border-top:0;}
+
+/* 지방지 계약사 */
+.box-local-contractor{margin-top:100px;}
+
+/* 지방지 계약사 개별 조정 */
+/* 부산 */
+.body-news-list.page-local-bu .list-text31 .list&gt;li{width:24%;}
+.body-news-list.page-local-bu .list-text31 .list&gt;li:nth-child(4n+3){width:21.999%;}
+.body-news-list.page-local-bu .list-text31 .list&gt;li:nth-child(4n){width:30%;}
+/* 울산 */
+.body-news-list.page-local-ul .list-text31 .list&gt;li{width:24%;}
+.body-news-list.page-local-ul .list-text31 .list&gt;li:nth-child(4n+3){width:21.999%;}
+.body-news-list.page-local-ul .list-text31 .list&gt;li:nth-child(4n){width:30%;}
+/* 경남 */
+.body-news-list.page-local-gn .list-text31 .list&gt;li{width:24%;}
+.body-news-list.page-local-gn .list-text31 .list&gt;li:nth-child(4n+3){width:21.999%;}
+.body-news-list.page-local-gn .list-text31 .list&gt;li:nth-child(4n){width:30%;}
+
+/* ---- ##세계 ---- */
+
+/* 섹션톱 수정, 여백 조정 */
+.body-news-sub[class*='page-intrnal'] .top-sub-news01{margin-bottom:0;}
+/* 특파원 주재지 */
+.body-news-list.page-intrnal-crsp .content03.line01.border-h01{margin-top:0;}
+
+/* (임시) @@@@ 신화통신 작업 중
+ * 서비스 적용시 제거 코드 */
+[class*='page-intrnal'] .row-module01 .title-type06,
+[class*='page-intrnal'] .box-type02 .txt-type08,
+[class*='page-intrnal'] .box-type02 [class*='btns-wrap']{display:none;}
+.body-news-list.page-intrnal-china .row-module01 .box-type02 .txt-type08,
+.body-news-list.page-intrnal-china .row-module01 .box-type02 [class*='btns-wrap'],
+.body-news-list.page-intrnal-china .box-xinhuawang02 .txt-type08,
+.body-news-list.page-intrnal-china .box-xinhuawang02 [class*='btns-wrap']{display:block;}
+
+/* 중국 리스트 */
+.body-news-list.page-intrnal-china .row-module01 .corner{display:inline-block;font-size:0;width:325px;}
+.body-news-list.page-intrnal-china .row-module01 .corner + .corner{margin-left:64px;}
+.body-news-list.page-intrnal-china .row-module01 .list-type040 .list{min-height:286px;}
+/* 신화통신 동적본문 */
+.body-xinhuanet-view .tlp-share01{display:none !important;}
+
+/* ---- ##문화 ---- */
+.box-publication01{padding-bottom:35px;border-bottom:1px solid #e5e5e5;}
+
+/* ---- ##라이프 ---- */
+/* 섹션메인 */
+.body-news-sub[class*='page-life'] .box-travel01{padding:35px 0;border-bottom:1px solid #e5e5e5;}
+.body-news-sub[class*='page-life'] .box-imazine{padding-bottom:35px;border-bottom:1px solid #e5e5e5;}
+.body-news-sub[class*='page-life'] .section02 .aside-bnr21 + .box-life-young{margin-top:20px;}
+
+/* ---- ##연예 ---- */
+/* 섹션메인 */
+.body-news-sub[class*='page-ent']{background:url(../img/bg_ent_top_pattern01.gif) 50% 145px no-repeat;}
+.body-news-sub[class*='page-ent']:not(.popup-mode) .nav-type02{background:none;}
+.body-news-sub[class*='page-ent'] .nav-type02:before,
+.body-news-sub[class*='page-ent'] .nav-type02:after{display:none;}
+/*.body-news-sub[class*='page-ent'] .top-sub-news02{padding-bottom:0;border-bottom:none;}*/
+
+/* ---- ##스포츠 ---- */
+/* 섹션메인 */
+.body-news-sub[class*='page-sports']{background:url(../img/bg_sports_top_pattern01.gif) 50% 145px no-repeat;}
+.body-news-sub[class*='page-sports']:not(.popup-mode) .nav-type02{background:none;}
+.body-news-sub[class*='page-sports'] .nav-type02:before,
+.body-news-sub[class*='page-sports'] .nav-type02:after{display:none;}
+/*.body-news-sub[class*='page-sports'] .top-sub-news02{padding-bottom:0;border-bottom:none;}*/
+
+/* ---- ##오피니언 ---- */
+.page-opinion .box-major02 .img-con .img,
+.page-opinion .list-type038 .img-con .img{background-size:contain !important;}
+.body-news-sub[class*='page-opinion'] .box-opinion01{padding-top:35px;}
+.body-news-list[class*='page-opinion'] .content03.line01{margin-top:0;padding-top:35px;}
+
+/* 쥬요신문 톱뉴스/사설 */
+.page-opinion-paper .box-latest01 .lead{display:none;}
+
+/* ---- ##사람들 ---- */
+.page-people .list-type038 .img-con .img{background-size:contain !important;}
+.body-news-sub[class*='page-people'] .box-poeple01{padding:35px 0;border-bottom:1px solid #e5e5e5;}
+.body-news-list[class*='page-people'] .txt-type05+.box-latest01{margin-top:0;}
+
+/* ---- ##테마별 공통 ---- */
+[class*='body-theme-'] .container&gt;[class*='content']+[class*='content']{margin-top:0;}
+.body-theme-list{}
+.box-nav-theme01{width:1100px;margin:0 auto 73px;}
+.box-nav-theme01 .list-text14{margin:10px 0 0;}
+
+/* ---- ##테마별 &gt; 핫뉴스 ---- */
+.box-hotnews-list01{margin-top:0;}
+
+/* ---- ##테마별 &gt; 톱뉴스 ---- */
+.box-topnews-list01{margin-top:50px;}
+.box-topnews-list01 .list-type039{min-height:723px;}
+
+/* ---- ##테마별 &gt; 주요뉴스 ---- */
+.box-juyonews-list01{margin-top:50px;}
+.box-juyonews-list01 .list-type039{min-height:723px;}
+
+/* ---- ##테마별 &gt; 긴급뉴스 ---- */
+.box-urgent-list01{margin-top:50px;}
+.box-urgent-list01 .list-type039{min-height:723px;}
+
+/* ---- ##테마별 &gt; 많이본뉴스 ---- */
+[class*='page-most-viewed']{}
+[class*='page-most-viewed'] [class*='tab-detail']{width:1100px;margin:35px auto 0;padding-bottom:32px;}
+[class*='page-most-viewed'] [class*='tab-detail'] .txt-type07{position:absolute;right:0;bottom:0;}
+.period-zone{position:relative;margin:41px 0 0;z-index:1;}
+.box-mostviewed-list01 .list-type104{width:1100px;margin:0 auto;}
+.box-mostviewed-list01 .none{padding:50px 0;font-size:16px;text-align:center;}
+
+/* ---- ##테마별 &gt; 단독기사 ---- */
+.box-exclusive-list01{margin-top:0;}
+
+/* ---- ##이슈돋보기 ---- */
+.box-nav-issue01{width:1100px;margin:0 auto 35px;}
+.box-nav-issue01 .list-text14{margin:10px 0 0;}
+
+/* 이슈돋보기 메인 : 이슈톱 하단 추천이슈 기본 숨김
+ * 영상 1건, 포토 1건, 그래픽 1건 총합이 3건일 때만 보인다. */
+.top-sub-issue01 .list-type070{display:none;}
+.top-sub-issue01 .list-type070.show{display:block;}
+
+/* 이슈돋보기 메인 : 최신 이슈 4~9  */
+.box-issue-list01 .list&gt;li[data-cid]{display:none;}
+.box-issue-list01 .list&gt;li[data-cid]:nth-child(4),
+.box-issue-list01 .list&gt;li[data-cid]:nth-child(5),
+.box-issue-list01 .list&gt;li[data-cid]:nth-child(6),
+.box-issue-list01 .list&gt;li[data-cid]:nth-child(7),
+.box-issue-list01 .list&gt;li[data-cid]:nth-child(8),
+.box-issue-list01 .list&gt;li[data-cid]:nth-child(9){display:block;}
+
+/* 단일 기사/영상/사진/그래픽 */
+.body-issue-view .box-issue-news .list{border-top:none;}
+.body-issue-view .box-issue-video,
+.body-issue-view .box-issue-photo,
+.body-issue-view .box-issue-news,
+.body-issue-view .box-issue-graphic{padding-top:20px;}
+/* 페이징 이전/다음 숨김 처리 2020-02-27 */
+.body-issue-view .box-issue-news .paging .prev,
+.body-issue-view .box-issue-news .paging .next{display:none;}
+
+/* 이슈본문 썸네일비율변경 : 이동규(2020-04-24) */
+.body-IIS20200424000001365 .list-type038 .img-con .img{background-position:center !important;background-size:contain !important;}
+.body-IIS20200424000001365 .tab-type01{display:none;}
+.body-IIS20200424000001365 .box-issue-news{padding-top:0;}
+
+/* 이슈본문 기사/사진 건수탭 가림처리, 여백조정 : 이동규(2020-04-29) */
+.body-IIS20200429000001365 .tab-type01,
+.body-IIS20200529000001365 .tab-type01{display:none;}
+
+.body-IIS20200429000001365 .box-issue-news,
+.body-IIS20200529000001365 .box-issue-news{padding-top:0;}
+
+/* ---- ##기자별 리스트 ---- */
+.body-news-sub.page-reporter .container&gt;[class*='content']+[class*='content']{margin-top:0;}
+.page-reporter{}
+
+/* 기자 키워드 목록 */
+.box-reporter-keyword{width:100%;padding:15px 0 20px;background:#f7f7f7;}
+.box-reporter-keyword .title-con13,
+.box-reporter-keyword .list-text01.style03{width:1100px;margin-right:auto;margin-left:auto;}
+.box-reporter-keyword .title-con13{padding:0 0 20px 10px;}
+/* 기자 키워드 결과 */
+.box-reporter-result{padding-top:50px;margin:0 0 10px;}
+.box-reporter-result .title-con08{text-align:center;}
+.box-reporter-result .right{position:absolute;right:0;bottom:0;text-align:right;}
+/* 기자 리스트 */
+.box-reporter-news{margin-top:0;}
+.box-reporter-news .list-type038 .list{border-top:none;}
+.box-reporter-result + .box-reporter-news .list-type038 .list{border-top:1px solid #000;}
+
+/* ---- ##채널 ---- */
+[class*='body-ytb-']:before{content:"";display:block;clear:both;position:absolute;top:56px;left:0;width:100%;height:220px;background:#102039;}
+[class*='body-ytb-'] .container&gt;[class*='content']+[class*='content']{margin-top:0;}
+[class*='body-ytb-'] .visual-type01{margin-top:22px;}
+.visual-type01.view{padding-bottom:18px;border:none;}
+.visual-type01.view .title-con06{padding-bottom:0;border:none;}
+
+.body-ytb-list{}
+.page-channel{}
+
+.box-ytb-list01{margin-top:50px !important;}
+.box-ytb-list01 .list-type072 .img-con .img{background-position-y:-32px !important;}
+.box-ytb-list01 .paging-type01{margin-top:70px;}
+
+.subscribe-zone{margin:30px 0 60px;}
+.subscribe-zone .txt-type02{}
+.subscribe-zone .txt-type02.hide{display:none;}
+
+.article-wrap02 .iframe-con{position:relative;width:1100px;height:619px;margin-bottom:28px;}
+.article-wrap02 .iframe-ytb{position:absolute;top:0;left:0;width:100%;height:100%;}
+.article-wrap02 .ico-type02-view01{padding:5px 0 5px 25px;line-height:20px;}
+
+
+/* ---- ##뷰포트 모드 (#mobile) ---- */
+/* .body-viewport{} */
+
+
+/* ---- ##에러 (ASIS) ---- */
+.page-error{}
+.page-error .wrap-container{min-height:auto;padding-top:80px;}
+.box-error{width:770px;margin:0 auto;padding-top:114px;}
+.box-error:before{content:'';display:block;clear:both;position:absolute;top:0;left:50%;width:95px;height:84px;background: url(../img/sprites_default01.png?v=20200526_0950) -200px -500px no-repeat;margin:0 0 0 -47.5px;}
+.box-error .tit-sub{display:block;position:relative;margin-bottom:52px;font-weight:normal;font-size:30px;line-height:1;color:#000;text-align:center;}
+.box-error p{font-size:16px;line-height:26px;color:#454545;}
+.box-error p+p{margin-top:6px;}
+.box-error .btns-wrap03{width:158px;margin:52px auto 0;}
+
+
+/* ---- ##윈도우 팝업 ---- */
+.body-popup-win{}
+@media print{
+	body.body-popup-win{-webkit-print-color-adjust:exact !important;}
+}
+
+
+
+/* =============== guide ======================== */
+.guide-browser{position:fixed;bottom:0;right:0;box-sizing:border-box;width:50%;height:auto;padding:10px;font-size:14px;line-height:16px;color:#fff;background:rgba(0,0,0,.5);z-index:9000;text-align:left;}
+.guide-browser .btn-close-browser{position:absolute;right:0;top:0;padding:2px;background:#000;border:none;color:#fff;}
+
+
+/* =============== ##ASIS 작업 ======================== */
+/* ASIS 작업 현황
+ - 날씨 (008200000000)
+ - 보도자료 (008700000000)
+ - 사이트맵 (008800000000) */
+
+/* =============== ##날씨 (ASIS - 008200000000) ======================== */
+.page-weather{font-size:12px;line-height:1.5;}
+
+/* 페이지 공통 */
+.page-weather .yna-weather div:empty,
+.page-weather .yna-weather p:empty,
+.page-weather .yna-weather span:empty{font-size:0;line-height:0;}
+.page-weather .yna-weather strong{font-weight:bold;}
+.page-weather .yna-weather .weather-public-area th{text-align:center;}
+.page-weather .yna-weather .weather-public-area th,
+.page-weather .yna-weather .weather-public-area td{vertical-align:middle;}
+
+/* weatherCont 없음 */
+.page-weather .yna-weather .weatherCont{opacity:0;filter:alpha(opacity=0);}
+.page-weather .weatherCont{margin-top:30px;}
+.page-weather .weatherCont{width:100%;overflow:hidden;}
+
+/** 임시 로더 */
+.page-weather .loaderBox{display:none;background-color:#fff;opacity:0.95;position:fixed;top:0;left:0;width:100%;height:100%;z-index:99999999;}
+.page-weather .loaderBox .logger{position:absolute;top:0; left:0;padding:50px;width:calc(100% - 100px); height:auto;font-size:14px;}
+.page-weather .loaderBox .logger li{margin-bottom:10px; letter-spacing:1px; border-bottom:1px dotted #333;}
+.page-weather .loaderBox .logger li .warnColorRed{color:red;}
+.page-weather .loaderBox .logger li .warnColorGreen{color:green;}
+
+/* 헤더날씨 */
+.page-weather .link-wrap .today-weather{height:35px !important;position:absolute !important;top:63px !important;padding-left:0 !important;overflow:hidden;}
+.page-weather .link-wrap .today-weather .main-top-weather{height:45px !important;padding-left:0;}
+.page-weather .link-wrap .today-weather .date{margin-top:13px;}
+.page-weather .weather-cont{width:976px;margin:60px auto 0 auto;padding-bottom:20px !important;}
+
+.page-weather .main-temperature{padding-top:3px;letter-spacing:0;font-size:12px;color:#555;}
+.page-weather .main-temperature span{/*color:#f84d31;*/}
+.page-weather .main-weather-air{float:left;clear:both;line-height:10px;letter-spacing:0;}
+.page-weather .main-weather-air span{color:#6177da;}
+.page-weather .weather-left-area{width:590px;float:left;}
+.page-weather .weather-right-area{width:340px;float:right;}
+.page-weather .top-weather-wrap{}
+.page-weather .top-weather-box{height:26px;border-bottom:2px solid #767676;padding-bottom:10px;}
+.page-weather .top-weather-box h3{float:left;font-size:13px;padding-right:10px;border-right:1px solid #ccc;margin-right:10px;height:15px;margin-top:8px;line-height:13px;font-weight:normal;color:#333;}
+.page-weather .top-weather-box span{font-size:12px;color:#575757;letter-spacing:0;float:left;line-height:30px;}
+.page-weather .location-weather-area{float:right;height:30px;padding-left:30px;line-height:30px;margin-bottom:15px;}
+.page-weather .location-weather-area .location-weather-area{float:right;}
+.page-weather .location-weather-area span{background:url(//r.yna.co.kr/www/home_n/v01/img/ico_weather.png) no-repeat -8px -7px;width:19px;height:19px;margin-right:5px;cursor:pointer;margin-top:7px;-webkit-transition:-webkit-transform 0.5s;}
+.page-weather .location-weather-area span:hover{
+-webkit-transition:all 0.5s ease-in-out;
+-webkit-transform:rotate(360deg);
+-moz-transition:all 0.5s ease-in-out;
+-moz-transform:rotate(360deg);
+-o-transition:all 0.5s ease-in-out;
+-o-transform:rotate(360deg);
+transition:all 0.5s ease-in-out;
+transform:rotate(360deg);
+-ms-transform:rotate(360deg);}
+.page-weather .location-weather-area p{float:left;font-size:13px;color:#666;margin-right:12px;}
+.page-weather .weather-today-location{width:120px;float:left;margin-right:10px;position:relative;}
+.page-weather .location-select-city{width:150px;}
+.page-weather .yhn-select-arrow{overflow:hidden;width:30px;height:26px;position:absolute;top:4px;right:1px;background:#fff url(//r.yna.co.kr/www/home_n/v01/img/ico_weather.png) no-repeat -197px -3px;z-index:2;cursor:pointer;}
+.page-weather .location-weather-area select{height:28px;width:100%;margin-right:5px;border:1px solid #e3e7e9;border-radius:2px;padding-left:5px;line-height:28px;}
+.page-weather .location-weather-area button.btn-location-move{font-size:12px;padding:0 10px;background:#f4f6f9;height:28px;line-height:26px;border:1px solid #d7d7d7;border-radius:2px;color:#728694;}
+.page-weather .bott-weather-box{width:100%;overflow:hidden;padding:10px 0;}
+.page-weather .weather-detail-info{width:280px;overflow:hidden;padding:15px 0; float:left;}
+.page-weather .weather-today-info{float:right;width:130px;}
+.page-weather .weather-title{font-size:15px;color:#666;margin-top:10px;}
+.page-weather .weather-temperature{overflow:hidden;display:inline;height:30px;padding:0;font-size:48px;letter-spacing:-2px;}
+.page-weather .weather-temperature span{font-size:24px;vertical-align:top;display:inline-block;padding-top:8px;}
+.page-weather .weather-temperature-info p{margin-top:0;}
+.page-weather .weather-temperature-info p:nth-child(1){font-size:14px;letter-spacing:0;}
+.page-weather .weather-temperature-info p:nth-child(1) span:nth-child(1){color:red;}
+.page-weather .weather-temperature-info p:nth-child(1) span:nth-child(2){color:#228cff;}
+/* .page-weather .weather-temperature-info p:nth-child(2){font-size:13px;color:#767676;} */
+.yna-weather .weather-temperature-info p:nth-child(2){font-size:0;}
+.yna-weather .weather-temperature-info p:nth-child(2) span:not(:empty){font-size:13px;color:#767676;}
+.page-weather .rwhs-area{width:100%;overflow:hidden;}
+.page-weather .rwhs-area li{float:left;font-size:12px;height:23px;color:#575757;padding-top:3px;letter-spacing:0;}
+.page-weather .rwhs-area li span{font-weight:bold;letter-spacing:0;color:#000;padding-left:5px;}
+.page-weather .rwhs-area li.precip{width:42%;}
+.page-weather .rwhs-area li.wind{width:58%;}
+.page-weather .rwhs-area li.humidity{width:42%;}
+.page-weather .rwhs-area li.sunrise{width:58%;}
+.page-weather .air-info-area{float:right;width:310px;padding:10px 0;}
+.page-weather .air-info{border-bottom:1px solid #ddd;overflow:hidden;padding-bottom:10px;margin-bottom:20px;}
+.page-weather .air-info li{width:52%;float:left;padding:5px 0;}
+.page-weather .air-info li:nth-child(even){width:48%;}
+.page-weather .air-info li h4{font-size:12px;font-weight:normal;margin-bottom:5px;width:55px;letter-spacing:-1px;margin-right:5px; color:#575757; float:left;}
+.page-weather .air-info li p.air-lv{width:20px;float:left;margin-top:5px;margin-right:5px;}
+.page-weather .air-info li p.air-lv1{width:10px;height:10px;border-radius:15px;background:#3399cc;}
+.page-weather .air-info li p.air-lv2{width:10px;height:10px;border-radius:15px;background:#33cc66;}
+.page-weather .air-info li p.air-lv3{width:10px;height:10px;border-radius:15px;background:#f9912f;}
+.page-weather .air-info li p.air-lv4{width:10px;height:10px;border-radius:15px;background:#f56767;}
+.page-weather .air-info li p{letter-spacing:-0.5px;}
+.page-weather .air-info li:nth-child(even) h4{width:40px;}
+.page-weather .air-lv-txt01{color:#3399cc;}
+.page-weather .air-lv-txt02{color:#33cc66;}
+.page-weather .air-lv-txt03{color:#f9912f;}
+.page-weather .air-lv-txt04{color:#f56767;}
+
+/* 기상특보 */
+.page-weather .weather-breaking-news{border-top:1px solid #ddd;border-bottom:1px solid #ddd;padding:10px 0;overflow:hidden;margin-bottom:30px;cursor:pointer;}
+.page-weather .w-break-news{float:left;width:580px;padding-left:10px;height:26px;line-height:26px;}
+.page-weather .w-break-news .breaknews-title{background:#DA245F;float:left;border-radius:2px;color:#fff;font-size:13px;width:70px;height:26px;line-height:26px;text-align:center;margin-right:10px;}
+.page-weather .breaknews{font-size:13px;color:#666;float:left;text-overflow:ellipsis;white-space:nowrap;word-wrap:normal;overflow:hidden;width:480px;}
+.page-weather .breaknews strong{width:310px;display:block;overflow:hidden;float:left;margin-right:15px;text-overflow:ellipsis;white-space:nowrap;word-wrap:normal;}
+.page-weather .breaknews a{color:#000;}
+.page-weather .breaknews a:hover{text-decoration:underline;}
+.page-weather .w-breaknews-more{background:url(//r.yna.co.kr/www/home_n/v01/img/ico_weather.png) no-repeat -175px  -7px;width:19px;height:19px;display:block;float:right;cursor:pointer;margin-top:3px;-webkit-transition:-webkit-transform 0.5s;}
+.page-weather .w-breaknews-more:hover{width:19px;height:19px;
+-webkit-transition:all 0.5s ease-in-out;
+-webkit-transform:rotate(360deg);
+-moz-transition:all 0.5s ease-in-out;
+-moz-transform:rotate(360deg);
+-o-transition:all 0.5s ease-in-out;
+-o-transform:rotate(360deg);
+-ms-transform:rotate(360deg);
+transition:all 0.5s ease-in-out;
+transform:rotate(360deg);}
+
+/* 주간날씨 */
+.page-weather .weekly-area{overflow:hidden;}
+.page-weather .weekly-area h3{font-weight:normal;padding-bottom:8px;font-size:13px;color:#333;}
+.page-weather .weekly-area ul{border-bottom:1px solid #ddd;overflow:hidden;border-top:2px solid #767676;}
+.page-weather .weekly-area ul li{width:97px;float:left;text-align:center;border-right:1px solid #ddd;height:130px;padding:5px 0;}
+.page-weather .weekly-area ul li:first-child{width:98px;}
+.page-weather .weekly-area ul li:last-child{border-right:0 none;}
+.page-weather .weekly-area ul li p.day{font-size:13px;}
+.page-weather .weekly-area ul li p.day span{font-size:14px;color:#728694;}
+.page-weather .w-text{font-size:13px;color:#333;margin-top:2px;letter-spacing:0;}
+.page-weather .temperature{letter-spacing:0;font-size:12px;color:#ddd;}
+.page-weather .temperature span{color:#777;}
+.page-weather .temperature span:first-child{color:#000;margin-right:2px;}
+.page-weather .temperature span:last-child{margin-left:2px;color:#999;}
+
+/* 3시간예보 */
+.page-weather .forecast-life-area{margin-top:20px;overflow:hidden;}
+.page-weather .forecast-life-area h3{font-size:13px;color:#000;border-bottom:2px solid #666;padding-bottom:5px;font-weight:normal;}
+.page-weather .forecast-time-area{width:100%;position:relative; overflow:hidden;}
+.page-weather .forecast-table{width:100%;border-left:1px solid #ddd;border-bottom:1px solid #ddd;border-top:2px solid #767676;}
+.page-weather .forecast-table th{background:#f4f6f9;letter-spacing:0;font-weight:normal;color:#575757;height:34px;line-height:34px;border-right:1px solid #ddd;}
+.page-weather .forecast-table th span{color:#728694;}
+.page-weather .forecast-table td{text-align:center;border-right:1px solid #ddd;border-top:1px solid #ddd;font-size:11px;padding:8px 0 3px 0;color:#575757;letter-spacing:0;}
+.page-weather .forecast-table td.forecast-graph-area{width:293px;height:80px;padding:7px 0;}
+.page-weather .forecast-category{width:72px;float:left;background:#fafafa; height:259px;}
+.page-weather .forecast-category p{background:#FAFAFA;border-bottom:1px solid #ddd;font-weight:normal;width:72px;text-align:center;}
+.page-weather .forecast-category p:nth-child(1){height:30px;line-height:30px;}
+.page-weather .forecast-category p:nth-child(2){height:151px;line-height:151px;}
+.page-weather .forecast-category p:nth-child(3){height:28px;line-height:28px;}
+.page-weather .forecast-category p:nth-child(4){height:52px;line-height:52px;}
+.page-weather .yna-threeTime-body{width:518px; float:left;background:#fff; height:290px;}
+.page-weather .forecast-time-table{height:260px;}
+.page-weather .forecast-time-table td{text-align:center;border-bottom:1px solid #ddd;padding:5px 0;color:#666;width:64px;border-left:1px solid #ddd;}
+.page-weather .forecast-time-table td:nth-child(6){border-right:0 none;}
+.page-weather .forecast-time-table tr:nth-child(4) td{color:#999;}
+.page-weather .forecast-th{background:#fafafa;color:#000;}
+.page-weather .forecast-time-table tr:nth-child(1){height:20px;}
+.page-weather .forecast-time-table tr:nth-child(1) td{height:20px;}
+.page-weather .forecast-time-table tr:nth-child(2){height:39px;}
+.page-weather .forecast-time-table tr:nth-child(3){position:relative; height:100px;}
+.page-weather .forecast-time-table tr:nth-child(4) td{position:relative;}
+.page-weather .forecast-time-table tr:nth-child(5){height:20px;}
+#threeTimeZone{position:absolute;top:0px;left:2px;width:516px;height:90px;position:relative;}
+.page-weather .forecast-tbl-left{width:calc(100% - 72px);float:right;}
+.page-weather .time-now{width:64px;height:261px;position:absolute;top:25px;left:264px;border:1px solid #389CD7;}
+
+/* 생활지수 */
+.page-weather .life-area{width:100%;margin-top:30px;padding-bottom:15px;overflow:hidden;border-bottom:1px solid #ddd;}
+.page-weather .life-area h3{font-size:13px;color:#000;border-bottom:2px solid #666;padding-bottom:5px;font-weight:normal;}
+.page-weather .life-list li{width:88px;float:left;text-align:center;padding:0 5px;}
+.page-weather .life-list li .life-list{width:50px;height:40px;margin:12px auto 5px auto;background:url(//r.yna.co.kr/www/home_n/v01/img/ico_weather.png) no-repeat 0 0;}
+.page-weather .life-list li .life-list01{background-position:5px -30px;}
+.page-weather .life-list li .life-list02{background-position:-49px -30px;}
+.page-weather .life-list li .life-list03{background-position:-113px -30px;}
+.page-weather .life-list li .life-list04{background-position:-172px -30px;}
+.page-weather .life-list li .life-list05{background-position:-226px -30px;}
+.page-weather .life-list li .life-list06{background-position:-275px -30px;}
+.page-weather .life-value{color:#728694;margin-bottom:3px;}
+.page-weather .life-value span{display:block;font-size:16px;font-weight:bold;color:#999;}
+.page-weather .life-value span.high-value{color:#000;}
+.page-weather .life-txt{color:#666;text-align:center;}
+
+/* 날씨 탭6 */
+.page-weather .weather-tab-area{margin-top:50px;}
+.page-weather .weather-tab{overflow:hidden;}
+.page-weather .weather-tab li{float:left;width:25%;text-align:center;font-size:13px;}
+.page-weather .weather-tab li:nth-child(6){width:99px;}
+.page-weather .weather-tab li a{padding:10px 0;display:block;background:#4b90eb;color:#fff;}
+.page-weather .weather-tab li a.weather-tab-on{color:#fff;background:#356ccf;font-weight:bold;}
+.page-weather .weather-tab li a:hover{text-decoration:none;}
+
+/* 탭1_월간날씨 */
+.page-weather .city-select-area{float:right;}
+.page-weather .weather-public-area .location-weather-area{overflow:hidden;padding:8px 0;border-bottom:1px solid #ddd;width:100%;float:right;}
+.page-weather .month-list{width:100%;overflow:hidden;border-top:1px solid #ddd;border-left:1px solid #ddd;margin-bottom:15px;}
+.page-weather .month-list li{width:117px;float:left;border-right:1px solid #ddd;height:148px;text-align:center;border-bottom:1px solid #ddd;}
+.page-weather .month-list li .day{height:30px;line-height:30px;background:#fafafa;border-bottom:1px solid #ddd;letter-spacing:0;}
+.page-weather .month-list li .w-img{margin-top:10px;margin-bottom:2px;}
+.page-weather .weather-month h3{font-size:13px;color:#333;font-weight:bold;padding-bottom:3px;}
+.page-weather .weather-month span{font-size:12px;color:#575757;letter-spacing:0;}
+.page-weather .weather-i{margin-top:10px;font-size:15px;color:#000;margin:70px 0;}
+.page-weather .weather-i a:hover{text-decoration:none;}
+
+/* 날씨확률 */
+.page-weather .weather-probability{margin-top:30px;}
+.page-weather .weather-probability h3{font-size:13px;color:#333;font-weight:bold;padding-bottom:6px;}
+.page-weather .probability-table{border:1px solid #ddd;border-top:2px solid #767676;width:100%;}
+.page-weather .probability-table th{background:#f4f6f9;height:34px;font-weight:normal;color:#575757;border-right:1px solid #ddd;}
+.page-weather .probability-table td{border-top:1px solid #ddd;padding:10px;border-right:1px solid #ddd;color:#575757;width:88px;}
+.page-weather .probability-table td:nth-child(1){width:85px;text-align:center;letter-spacing:0;}
+.page-weather .probability-table td:nth-child(2){width:77px;text-align:center;letter-spacing:0;}
+.page-weather .probability-table td:nth-child(3){text-align:center;letter-spacing:0;width:80px;}
+.page-weather .probability-table td:nth-child(4){width:267px;text-align:justify;}
+.page-weather .probability-table td p{color:#000;font-size:14px;}
+.page-weather .probability-table td:nth-child(1) p{color:#2556a7;font-size:14px;font-weight:bold;}
+
+/* 탭2_세계날씨 */
+.page-weather .weather-world-area{overflow:hidden;width:100%;}
+.page-weather .weather-world-area h4{font-size:13px;color:#666;font-weight:normal;padding-bottom:8px;margin-top:20px;}
+.page-weather .weather-world-area h4 span{color:#356ccf;}
+.page-weather .weather-world-area ul{border-left:1px solid #ccc;border-right:0 none;overflow:hidden;margin-bottom:20px;}
+.page-weather .weather-world-area ul.world-list:last-child{margin-bottom:0;}
+.page-weather .weather-world-area ul li{width:97px;float:left;text-align:center;border-top:1px solid #ccc;border-bottom:1px solid #ccc;border-right:1px solid #ccc;height:135px;padding:8px 0 5px 0;font-size:12px;letter-spacing:-0.5px;}
+.page-weather .weather-world-area ul li:first-child{width:98px;}
+.page-weather .weather-world-area ul li p.w-city{font-weight:bold;color:#575757}
+.page-weather .weather-world-area ul li p.w-nation{color:#575757;font-size:11px;}
+
+/* 탭3_기상특보 */
+.page-weather .weather-condition{padding-top:30px;}
+.page-weather .weather-condition h3{font-size:13px;color:#000;font-weight:normal;padding-bottom:8px;border-bottom:2px solid #767676;}
+.page-weather .special-weather-table,.special-weather-table02{margin-bottom:30px;}
+.page-weather .special-weather-table th,.special-weather-table02 th{padding:8px 0;border-bottom:1px solid #ddd;background:#f4f6f9;font-weight:normal;border-right:1px solid #ddd;}
+.page-weather .special-weather-table td,.special-weather-table02 td{padding:10px 8px;border-bottom:1px solid #ddd;color:#666;letter-spacing:-0.6px;border-right:1px solid #ddd;}
+.page-weather .special-weather-table td:nth-child(1){text-align:center;width:90px;padding:5px 15px;border-right:1px solid #ddd;}
+.page-weather .special-weather-table td:nth-child(2){width:156px;text-align:left;}
+.page-weather .special-weather-table td a.special-weather-on{color:#2556a7;}
+.page-weather .special-weather-table td:nth-child(2) a.special-weather-on{text-decoration:underline;}
+.page-weather .special-weather-table td:nth-child(3){width:320px;text-align:justify;}
+.page-weather .special-weather-table th:nth-child(3),.special-weather-table td:nth-child(3),.special-weather-table02 td{border-right:0 none;}
+.page-weather .special-weather-table td a:hover{color:#2556a7;}
+.page-weather .special-weather-table td a{color:#666;}
+.page-weather .weather-condition-on{background:#f4f9fc;}
+.page-weather .special-weather-table02 th{width:140px;}
+.page-weather .special-weather-table02 td{width:450px;text-align:justify;}
+
+/* 탭4_태풍정보 */
+.page-weather .weather-typhoon-info{padding-top:30px;}
+.page-weather .weather-typhoon-info h3{font-size:18px;color:#2556a7;padding-bottom:8px;font-weight:bold;}
+.page-weather .typhoon-map{border:2px solid #ddd;}
+.page-weather .typhoon-map img{width:586px;}
+.page-weather .typhoon-rank{margin-bottom:30px;}
+.page-weather .typhoon-rank th{border-bottom:1px solid #ddd;border-right:1px solid #ddd;padding:8px 0;}
+.page-weather .typhoon-rank td{border-bottom:1px solid #ddd;border-right:1px solid #ddd;text-align:center;padding:8px 0;color:#666;}
+.page-weather .typhoon-rank th:nth-child(1){background:#f4f6f9;width:130px;}
+.page-weather .typhoon-rank th:nth-child(2){background:#00ffff;width:92px;}
+.page-weather .typhoon-rank th:nth-child(3){background:#00ff00;width:92px;}
+.page-weather .typhoon-rank th:nth-child(4){background:#ffff00;width:106px;}
+.page-weather .typhoon-rank th:nth-child(5){background:#ff0000;color:#fff;width:85px;}
+.page-weather .typhoon-rank th:nth-child(6){background:#800080;color:#fff;border-right:0 none;width:85px;}
+.page-weather .typhoon-rank td:nth-child(5){border-right:0 none;}
+.page-weather .typhoon-detail-info{border-top:1px solid #ddd;}
+.page-weather .typhoon-detail-info th{background:#f4f6f9;padding:8px 0;border-right:1px solid #ddd;border-bottom:1px solid #ddd;font-weight:normal;width:140px;}
+.page-weather .typhoon-detail-info td{padding:8px 10px;border-bottom:1px solid #ddd;color:#666;letter-spacing:0;width:450px;}
+
+/* 탭5_고속도로 */
+.page-weather .weather-highway-detail{width:100%;overflow:hidden;}
+.page-weather .weather-highway-detail h4{font-size:13px;color:#333;font-weight:normal;padding-bottom:8px;border-bottom:2px solid #575757;}
+.page-weather .weather-highway-detail h4 span{color:#2556a7;}
+.page-weather .weather-highway-detail .week-city-weather .weekly-list{margin:15px 0;border-left:1px solid #ddd;overflow:hidden;}
+.page-weather .weather-highway-detail .week-city-weather .weekly-list li{float:left;width:120px;text-align:Center;padding:3px 5px;border-left:0 none;}
+.page-weather .weather-highway-detail .week-city-weather .weekly-list li p.day{font-size:13px;}
+.page-weather .weather-highway-detail .rwhs-area li.rainfall{width:100%;}
+.page-weather .weather-highway-detail .weekly-area ul{border-top:0 none;}
+.page-weather .weather-highway-detail .weekly-area ul li{border-left:0 none;}
+.page-weather .highway-forecast{margin-bottom:30px;}
+.page-weather .highway-forecast-table{}
+.page-weather .highway-forecast-table th{padding:5px 0;font-weight:normal;border-bottom:1px solid #ddd;border-right:1px solid #ddd;}
+.page-weather .highway-forecast-table td{border-bottom:1px solid #ddd;padding:0 0 8px 0;text-align:center;border-right:1px solid #ddd;width:98px;}
+.page-weather .highway-forecast-table th:nth-child(3),.highway-forecast-table td:nth-child(6){border-right:0 none;}
+.page-weather .highway-forecast-table th .date{color:#575757;font-size:13px;}
+.page-weather .highway-forecast-table th .date span{color:#728694;}
+.page-weather .highway-forecast-table td p.am-pm{width:100%;border-bottom:1px solid #ddd;padding:5px 0;background:#fafafa;color:#666;}
+.page-weather .highway-forecast-table td p.temperature{font-size:14px;color:#000;padding:0;margin:0;}
+.page-weather .highway-forecast-table td p.w-text{margin-top:0;}
+.page-weather .highway-forecast-table td p.rainfall-probability{font-size:12px;color:#666;letter-spacing:-0.5px;}
+
+/* 탭6_레저/스포츠 */
+.page-weather .leisure-tab{border-bottom:1px solid #ddd;width:590px;padding:15px 0 5px 0;overflow:hidden;margin-bottom:10px;}
+.page-weather .leisure-tab li{float:left;text-align:center;width:53px;margin:0 10px;}
+.page-weather .leisure-tab li a{color:#999;}
+.page-weather .leisure-tab li a p{width:50px;height:50px;background:url(//r.yna.co.kr/www/home_n/v01/img/ico_weather.png) no-repeat 0 0;margin:0 auto;}
+.page-weather .leisure-tab li.climb a p{background-position:0 -114px;}
+.page-weather .leisure-tab li.fishing a p{background-position:-63px -114px;}
+.page-weather .leisure-tab li.golf a p{background-position:-123px -114px;}
+.page-weather .leisure-tab li.ski a p{background-position:-185px -114px;}
+.page-weather .leisure-tab li.baseball a p{background-position:-245px -114px;}
+.page-weather .leisure-tab li.soccer a p{background-position:-306px -114px;}
+.page-weather .leisure-tab li.beach a p{background-position:-367px -114px;}
+.page-weather .leisure-tab li.park a p{background-position:-429px -114px;}
+.page-weather .leisure-tab li a:hover{text-decoration:none;}
+.page-weather .leisure-tab li a.leisure-tab-on p{width:50px;height:50px;background:url(//r.yna.co.kr/www/home_n/v01/img/ico_weather.png) no-repeat 0 0;margin:0 auto;}
+.page-weather .leisure-tab li.climb a.leisure-tab-on p{background-position:0 -171px;}
+.page-weather .leisure-tab li.fishing a.leisure-tab-on p{background-position:-63px -171px;}
+.page-weather .leisure-tab li.golf a.leisure-tab-on p{background-position:-123px -171px;}
+.page-weather .leisure-tab li.ski a.leisure-tab-on p{background-position:-185px -169px;}
+.page-weather .leisure-tab li.baseball a.leisure-tab-on p{background-position:-245px -171px;}
+.page-weather .leisure-tab li.soccer a.leisure-tab-on p{background-position:-306px -171px;}
+.page-weather .leisure-tab li.beach a.leisure-tab-on p{background-position:-367px -171px;}
+.page-weather .leisure-tab li.park a.leisure-tab-on p{background-position:-429px -171px;}
+.page-weather .display-none{display:none;}
+.page-weather .display-block{display:block;}
+
+/* 오른쪽 컨텐츠 */
+/* 전국날씨 */
+.page-weather .aside-city-area{border:1px solid #ddd;}
+.page-weather .day-tab{height:40px;border-bottom:1px solid #ddd;}
+.page-weather .day-tab li{float:left;width:33.3%;height:38px;text-align:center;line-height:38px;}
+.page-weather .day-tab li a{display:block;color:#728694;}
+.page-weather .day-tab li a:hover{text-decoration:none;}
+.page-weather .day-tab li.day-tab-on{border-bottom:2px solid #379bd6;}
+.page-weather .country-map{width:338px;height:419px;position:relative;}
+.page-weather .city-tab-contents{background:url(//r.yna.co.kr/www/home_n/v01/img/map_country.jpg) no-repeat 0 0;width:338px;height:419px;}
+.page-weather .ampm-tab{overflow:hidden;width:74px;position:absolute;left:255px;top:10px;z-index:9;}
+.page-weather .ampm-tab li{float:left;width:36px;height:22px;text-align:center;line-height:22px;background:#fff;}
+.page-weather .ampm-tab li a{display:block;color:#888;}
+.page-weather .ampm-tab li.day-tab-on{background:#389dd3;color:#fff;}
+.page-weather .ampm-tab li.day-tab-on a{color:#fff;}
+.page-weather .ampm-tab li a:hover{text-decoration:none;}
+.page-weather .country-map{}
+.page-weather .public-city-list{width:338px;height:386px;position:relative;clear:both;}
+.page-weather .public-city-list ul li{border:1px solid #ddd;background:#fff;width:50px;height:auto;text-align:center;}
+.page-weather .public-city-list ul li.seoul{position:absolute;top:65px;left:80px;}
+.page-weather .public-city-list ul li.chuncheon{position:absolute;top:55px;left:138px;}
+.page-weather .public-city-list ul li.gangneung{position:absolute;top:58px;left:196px;}
+.page-weather .public-city-list ul li.daejeon{position:absolute;top:162px;left:70px;}
+.page-weather .public-city-list ul li.cheongju{position:absolute;top:145px;left:138px;}
+.page-weather .public-city-list ul li.daegu{position:absolute;top:161px;left:204px;}
+.page-weather .public-city-list ul li.gwangju{position:absolute;top:248px;left:74px;}
+.page-weather .public-city-list ul li.jeonju{position:absolute;top:227px;left:140px;}
+.page-weather .public-city-list ul li.busan{position:absolute;top:240px;left:214px;}
+.page-weather .public-city-list ul li.jeju{position:absolute;top:335px;left:41px;}
+.page-weather .public-city-list ul li.ulleungdokdo{position:absolute;top:75px;left:266px;}
+.page-weather .city-name{font-size:11px;}
+.page-weather .city-temperature{font-weight:bold;font-size:12px;letter-spacing:0;}
+.page-weather .w-time-standard{float:right;margin-top:10px;margin-right:10px;color:#666;letter-spacing:0;}
+.page-weather .w-time-standard:before{content:"";display:none;margin-right:3px;float:left;width:16px;height:16px;background:url(//r.yna.co.kr/www/home_n/v01/img/icon_reload.png) no-repeat 0 0;}
+
+/* 관심지역 날씨 */
+.page-weather .aside-attention-city{border-bottom:1px solid #ddd;margin-top:30px;}
+.page-weather .aside-attention-city h5{color:#5d93d4;font-size:13px;font-weight:normal;padding-bottom:8px;border-bottom:1px solid #ddd;}
+.page-weather .ac-temperature{width:90px;float:left;padding-left:5px;}
+.page-weather .ac-detail-temperature{font-size:40px;}
+.page-weather .ac-detail-temperature span{font-size:20px;vertical-align:top;display:inline-block;padding-top:8px;}
+.page-weather .attention-city-info .rwhs-area{width:160px;float:right;margin-bottom:8px;padding-left:5px;}
+.page-weather .attention-city-info .rwhs-area li{float:none;width:100%;}
+.page-weather .attention-city-info .ac-weather{width:80px;height:106px;clear:both;float:left;text-align:center;}
+.page-weather .attention-city-info .ac-weather span{color:#666;}
+.page-weather .attention-coutry-area .location-weather-area{padding-top:10px;}
+.page-weather .attention-weekly-weather{padding:10px 0;overflow:hidden;width:340px;border-top:2px dotted #ddd;}
+.page-weather .attention-weekly-weather li{float:left;width:25%;text-align:center;letter-spacing:0;}
+.page-weather .attention-weekly-weather li p.aw-day{font-size:12px;color:#666;margin-bottom:5px;letter-spacing:0;}
+.page-weather .attention-weekly-weather li p.aw-temperature{color:#999;}
+.page-weather .attention-weekly-weather li p.aw-temperature span:first-child{color:#000;}
+
+/* 날씨뉴스 */
+.page-weather .aside-news{margin-top:30px;}
+.page-weather .aside-news h5{color:#5d93d4;font-size:13px;font-weight:normal;padding-bottom:8px;border-bottom:1px solid #ddd;}
+.page-weather .aside-news-list li{padding:13px 0;border-bottom:1px solid #ddd;}
+.page-weather .aside-news-list .tit-news{margin-bottom:8px;font-weight:bold;font-size:14px;color:#333;letter-spacing:-0.5px;text-align:justify;}
+.page-weather .aside-news-list .tit-news:hover{text-decoration:underline;}
+.page-weather .aside-news-list .tit-news+span{display:block;font-size:12px;color:#666;letter-spacing:0;}
+.page-weather .aside-news-list .date{font-size:12px;color:#666;letter-spacing:0;}
+
+/* 날씨영상 */
+.page-weather .aside-video{margin-top:30px;}
+.page-weather .aside-video h5{color:#5d93d4;font-size:13px;font-weight:normal;padding-bottom:8px;border-bottom:1px solid #ddd;}
+.page-weather .aside-video ul{padding:20px 0;}
+.page-weather .aside-video ul li{width:160px;height:175px;font-size:13px;font-weight:bold;margin:0 10px 15px 0;float:left;}
+.page-weather .aside-video ul li:nth-child(odd){float:left;}
+.page-weather .aside-video ul li:nth-child(even){float:right;margin-right:0;}
+.page-weather .aside-video .tit-news{overflow:hidden;max-height:36px;margin-bottom:5px;text-align:justify;font-weight:bold;color:#333;letter-spacing:-0.5px;line-height:18px;}
+.page-weather .aside-video .tit-news:hover{text-decoration:underline;}
+.page-weather .aside-video .img{width:160px;height:95px;margin-bottom:5px;}
+.page-weather .aside-video .date{font-size:12px;color:#666;font-weight:normal;letter-spacing:0;}
+
+
+/* =============== ##보도자료 (ASIS - 008700000000) ======================== */
+/******* 보도자료 (2014년 이전 소스) *******/
+/* //img.yonhapnews.co.kr/basic/svc/14_images/css/news_old.css */
+
+[class*='page-bodo'] .wrap-container{background:#eee;}
+[class*='page-bodo'] .container{padding:30px 0;font-size:12px;line-height:1.5;font-family:돋움, dotum, Arial, AppleGothic, Sans-serif;letter-spacing:-0.5px;}
+
+[class*='page-bodo'] .container h1,[class*='page-bodo'] .container h2,[class*='page-bodo'] .container h3,
+[class*='page-bodo'] .container h4,[class*='page-bodo'] .container h5,[class*='page-bodo'] .container h6,
+[class*='page-bodo'] .container p,[class*='page-bodo'] .container li,[class*='page-bodo'] .container dt,[class*='page-bodo'] .container dd,
+[class*='page-bodo'] .container span,[class*='page-bodo'] .container strong,[class*='page-bodo'] .container em,[class*='page-bodo'] .container b,
+[class*='page-bodo'] .container input,[class*='page-bodo'] .container button,[class*='page-bodo'] .container select,
+[class*='page-bodo'] .container textarea,[class*='page-bodo'] .container label,
+[class*='page-bodo'] .container a{font-family:돋움, dotum, Arial, AppleGothic, Sans-serif;}
+[class*='page-bodo'] .container button{overflow:visible;background:none;border:0;vertical-align:middle;cursor:pointer;}
+
+/* inline_style.css */
+[class*='page-bodo'] div.float_top20{float:left;width:100%;margin-top:20px;}
+[class*='page-bodo'] div.bor_bottom0{padding-bottom:20px; border-top:0px;}
+[class*='page-bodo'] div.font_height10{height:10px; font:0}
+[class*='page-bodo'] td.paddi_top1{padding-top:1px;}
+[class*='page-bodo'] td.paddi_left4{padding-left:4px;padding-bottom:1px;}
+[class*='page-bodo'] td.paddi_left2{padding-left:2px;}
+[class*='page-bodo'] div.flo_margin20{float:left;margin:20px 0}
+
+[class*='page-bodo'] figcaption.top_100{top:100%;}
+[class*='page-bodo'] div.font_none{float:none;width:100%;margin-left:20px;}
+[class*='page-bodo'] div.padd_bottom20{padding-bottom:20px; border-top:0px;}
+[class*='page-bodo'] div.hei_font0{height:10px; font:0;}
+[class*='page-bodo'] td.padd_top1{padding-top:1px;}
+[class*='page-bodo'] td.padd_left4{padding-left:4px;padding-bottom:1px;}
+[class*='page-bodo'] input.width_110{width:110px;}
+[class*='page-bodo'] td.padd_left2{padding-left:2px;}
+[class*='page-bodo'] div.flo_left{float:left;margin:20px 0;}
+
+[class*='page-bodo'] #main_container{position:relative;width:976px;min-height:878px;margin:0 auto;padding-bottom:0 !important;background:url(http://img.yonhapnews.co.kr/basic/svc/09_images/0807_sub_back_01.gif) repeat-y;}
+[class*='page-bodo'] #main_container:after{content:"";visibility:hidden;display:block;clear:both;height:0;font-size:0;line-height:0;}
+
+/* 좌측 메뉴 */
+[class*='page-bodo'] #news_left{position:absolute;left:0px;top:20px;width:100px;padding:0 20px;z-index:10;}
+/* 가운데 콘텐츠 */
+[class*='page-bodo'] #news_contents{margin-left:140px;_margin-left:-120px;width:561px;padding:20px 0 40px;font-size:12px;text-align:left;}
+/* 우측 콘텐츠 */
+[class*='page-bodo'] #news_right{position:absolute;right:0px;top:0px;width:266px;}
+[class*='page-bodo'] #main_right{width:234px;padding:0 16px 0 16px;margin-top:20px;margin-bottom:30px;_margin-bottom:10px;}
+
+/* 보도자료 리스트 타이틀 */
+[class*='page-bodo'] .subNavi{}
+[class*='page-bodo'] .subNavi.all{padding-bottom:0 !important;}
+
+/* 보도자료 리스트 탭 */
+[class*='page-bodo'] #divSubCodeOuter{margin:0 0 14px;padding:0 5px 8px;border:1px solid #e6e6e6;border-radius:5px;}
+[class*='page-bodo'] #divSubCodeOuter img,
+[class*='page-bodo'] #divSubCodeOuter .my_tbtop img,
+[class*='page-bodo'] #divSubCodeOuter .my_tbbottom img,
+[class*='page-bodo'] #divSubCodeOuter .my_tbside img{display:none;}
+[class*='page-bodo'] #htbSubCode table td{text-align:left}
+[class*='page-bodo'] #htbSubCode table td img{display:inline !important;vertical-align:middle;margin-top:0;}
+[class*='page-bodo'] #divNavi{width:570px;font-size:12px;}
+[class*='page-bodo'] #subLeftmiddlewide{width:550px;font-size:12px;}
+[class*='page-bodo'] #subLeftmiddlewide&gt;div{width:100% !important;}
+[class*='page-bodo'] #subLeftmiddlewide table{width:544px !important;}
+[class*='page-bodo'] #subLeftmiddlewide table td{font-size:12px;vertical-align:top;}
+[class*='page-bodo'] #subLeftmiddlewide .icon-type01{padding-left:10px;background:url(http://img.yonhapnews.co.kr/basic/home/bullArrow01.gif) no-repeat 0 50%;}
+[class*='page-bodo'] #subLeftmiddlewide table td img{vertical-align:middle;}
+
+/* 보도자료 기사리스트  */
+[class*='page-bodo'] .press-list td{position:relative;}
+[class*='page-bodo'] .press-list td a{display:inline-block;padding:0 0 0 14px;line-height:20px;}
+[class*='page-bodo'] .press-list [src*='bullArrow01.gif']{position:absolute;top:5px;left:0;}
+
+[class*='page-bodo'] #hspanEndTemplate{display:block;}
+[class*='page-bodo'] #subLeftmiddlewide .news_title{font-size: 26px !important;font-family:'Malgun Gothic',맑은고딕;color: #000;  letter-spacing: -1px;line-height:1.2;}
+[class*='page-bodo'] #subLeftmiddlewide #articleBody{}
+[class*='page-bodo'] #subLeftmiddlewide #articleBody table{width:100% !important;}
+[class*='page-bodo'] #subLeftmiddlewide #articleBody table td{text-align:center}
+[class*='page-bodo'] #subLeftmiddlewide #articleBody{font-size:13px;line-height:1.5;letter-spacing:-0.8px;}
+[class*='page-bodo'] .article-img{text-align:center;}
+[class*='page-bodo'] .line18{padding:17px 0;}
+[class*='page-bodo'] .right a{width:15px !important;}
+[class*='page-bodo'] .article-body .article-img .img-info strong{color:#323232;}
+
+/* 보도자료 본문 옵션 설정 */
+[class*='page-bodo'] .option-box{}
+[class*='page-bodo'] .option-box .opt-con{font-size:11px;color:#8c8c8c;text-align:right;}
+
+/* 보도자료 배포 배너 */
+[class*='page-bodo'] .bnr-bodo-deploy{margin-top:20px;}
+
+/* 보도자료 검색 입력 */
+[class*='page-bodo'] #txtPressQuery{box-sizing:border-box;width:128px;height:20px;vertical-align:top;padding:0;margin:0;border:1px solid #a9a9a9;}
+
+/* 보도자료 검색 결과 */
+[class*='page-bodo'] .result-table{width:100%;}
+[class*='page-bodo'] .result-table .col01{width:80%;}
+[class*='page-bodo'] .result-table .col02{width:20%;}
+[class*='page-bodo'] .result-table td{height:25px;}
+[class*='page-bodo'] .result-table .result-tit a{overflow:hidden;display:block;}
+[class*='page-bodo'] .result-table .result-tit b{font-weight:bold !important;}
+[class*='page-bodo'] .result-table .date{font-size:11px;color:#8c8c8c}
+[class*='page-bodo'] table td.page{border-top:1px solid #ddd}
+[class*='page-bodo'] table td.page table{margin:30px 0 20px;}
+
+/* 보도자료 우측 배너 */
+[class*='page-bodo'] .bnr-bodo-box{float:left;margin:20px 0;}
+[class*='page-bodo'] .bnr-bodo-box a{display:block;margin:7px 0 0;}
+
+[class*='page-bodo'] .section-area{margin:0 18px 35px 19px;}
+[class*='page-bodo'] .cts_ban{margin:30px 0 0;text-align:center;}
+[class*='page-bodo'] .list_clrline.list_clrline_bm{clear:both;padding-bottom:20px;margin-bottom:20px;border-bottom:1px solid #ddd}
+
+/* 익스 하위 대응 */
+[class*='page-bodo']{_text-align:center;}/* ie5 하위 가운데 정렬 */
+[class*='page-bodo'] .contents{padding-bottom:0 !important;}
+
+/* ie8,9 에서 공백문제 */
+.msie8 [class*='page-bodo'] #divNavi,
+.msie9 [class*='page-bodo'] #divNavi{margin-top:20px;}
+.msie8 [class*='page-bodo'] #news_contents,
+.msie9 [class*='page-bodo'] #news_contents{/*padding:0;*/}
+.msie8 [class*='page-bodo'] .contents &gt; .contents-box,
+.msie9 [class*='page-bodo'] .contents &gt; .contents-box{margin-bottom:0;border:none;}
+
+
+/* =============== ##사이트맵 (ASIS - 008800000000) ======================== */
+/* 사이트맵 메인(/sitemap/index) : page-sitemap
+/* 그 외 : page-sitemap-list */
+[class*='page-sitemap']{width:100%;height:100%;font-weight:normal;color:#000;letter-spacing:-1px;}
+[class*='page-sitemap'] .content03{width:976px;margin:60px auto;padding-bottom:20px !important;}
+
+/* title-page 기본 (/sitemap/index)
+ * title-page01 : 월별리스트 페이지 사용
+ * title-page02 : 일별 기사리스트 페이지 사용 */
+[class*='page-sitemap'] [class*='title-page']{display:block;position:relative;margin-bottom:42px;}
+[class*='page-sitemap'] [class*='title-page'] .tit{display:inline-block;font-size:24px;line-height:28px;color:#000;letter-spacing:-1px;vertical-align:middle;}
+[class*='page-sitemap'] [class*='title-page'] .tit a{color:#000;}
+[class*='page-sitemap'] [class*='title-page'] .tit a:hover{text-decoration:none;color:#000;}
+[class*='page-sitemap'] .title-page01,
+[class*='page-sitemap'] .title-page02{display:inline-block;}
+
+/* title-con01 : 밑줄 */
+[class*='page-sitemap'] .title-con01{clear:both;width:100%;padding-bottom:12px;border-bottom:1px solid #5d5d5d;}
+[class*='page-sitemap'] .title-con01 .tit{font-size:18px;line-height:22px;}
+/* title-con02 : 일별 리스트 */
+[class*='page-sitemap'] .title-con02{padding:20px 0 5px;}
+[class*='page-sitemap'] .title-con02 .tit{font-weight:bold;font-size:16px;line-height:20px;color:#000;}
+/* title-con03 : 월별 리스트 */
+[class*='page-sitemap'] .title-con03{padding:10px 0 6px;}
+[class*='page-sitemap'] .title-con03 .tit{font-weight:bold;font-size:16px;line-height:20px;color:#000;}
+
+/* 월별,일별 리스트 브레드크럼 */
+.page-sitemap-list .root{display:inline-block;letter-spacing:0;vertical-align:middle;}
+.page-sitemap-list .root .txt,
+.page-sitemap-list .root .txt a{position:relative;font-size:14px;margin-left:15px;padding-left:16px;}
+.page-sitemap-list .root .txt:after,
+.page-sitemap-list .root&gt;a:after{content:"";display:block;clear:both;position:absolute;left:0;top:7px;width:1px;height:13px;background-color:#eee;}
+.page-sitemap-list .root .txt a{padding:0 5px;}
+.page-sitemap-list .root .txt em{font-weight:normal;color:#6b6b6b;}
+.page-sitemap-list .root .on{font-weight:bold;color:#000;}
+.page-sitemap-list .root .on em{font-weight:bold;color:#000;}
+.page-sitemap-list .root .date&gt;a,
+.page-sitemap-list .root .date&gt;span,
+.page-sitemap-list .root .date&gt;strong{display:none;}
+.page-sitemap-list .root .date&gt;.on{display:inline-block;}
+
+/* 사이트맵 링크 리스트 - 사용 안함 */
+[class*='page-sitemap'] .link-zone01{}
+[class*='page-sitemap'] .link-zone01 .title-con{margin-bottom:14px;border:none;}
+[class*='page-sitemap'] .link-zone01 .aera{overflow:hidden;margin-left:-20px;}
+[class*='page-sitemap'] .link-zone01 .box{overflow:hidden;margin-bottom:30px;}
+[class*='page-sitemap'] .link-zone01 .item-con{float:left;width:145px;margin:0 0 0 20px;border-right:1px solid #e8e8e8;letter-spacing:0;}
+[class*='page-sitemap'] .link-zone01 .item-con .tit{display:block;margin-bottom:5px;font-size:14px;color:#000;}
+[class*='page-sitemap'] .link-zone01 .item-con .list{}
+[class*='page-sitemap'] .link-zone01 .item-con li{line-height:14px;}
+[class*='page-sitemap'] .link-zone01 .item-con li a{display:inline-block;min-width:34px;padding:4px;font-size:14px;color:#000;}
+[class*='page-sitemap'] .link-zone01 .item-con:nth-child(6n){border-right:none;}
+
+/* 사이트맵 메인 링크 리스트 */
+[class*='page-sitemap'] .link-zone02&gt;li{border-bottom:1px solid #e8e8e8;font-size:0.1px;}
+[class*='page-sitemap'] .link-zone02&gt;li a{display:inline-block;padding:0 4px;font-size:14px;line-height:inherit;color:#000;}
+[class*='page-sitemap'] .link-zone02&gt;li .tit{display:inline-block;margin-right:11px;line-height:47px;vertical-align:top;}
+[class*='page-sitemap'] .link-zone02&gt;li .tit a,
+[class*='page-sitemap'] .link-zone02&gt;li .tit span{display:block;padding:0 4px;font-weight:bold;font-size:14px;line-height:inherit;}
+[class*='page-sitemap'] .link-zone02&gt;li .area{display:inline-block;margin:9px 0;font-size:0.1px;vertical-align:top;}
+[class*='page-sitemap'] .link-zone02 .list{}
+[class*='page-sitemap'] .link-zone02 .list li,
+[class*='page-sitemap'] .link-zone02 .list dd,
+[class*='page-sitemap'] .link-zone02 .list p{display:inline-block;line-height:28px;}
+[class*='page-sitemap'] .link-zone02 .list .bar{position:relative;margin-right:6px;padding-right:10px;}
+[class*='page-sitemap'] .link-zone02 .list .bar:after{content:"";display:block;clear:both;position:absolute;top:10px;right:0;width:2px;height:13px;background-color:#d6d6d6;}
+[class*='page-sitemap'] .link-zone02&gt;li:last-child{border-bottom:none;}
+[class*='page-sitemap'] .link-zone02&gt;li.space01{border:none;}
+[class*='page-sitemap'] .link-zone02&gt;li.space02{margin-top:-16px;}
+[class*='page-sitemap'] .link-zone02&gt;li.item01 .area{width:885px;}
+
+/* 월별 리스트 */
+[class*='page-sitemap'] .link-zone03{overflow:hidden;}
+[class*='page-sitemap'] .link-zone03 .list{margin:0 0 0 -74px;}
+[class*='page-sitemap'] .link-zone03 .list:after{content:"";visibility:hidden;display:block;clear:both;height:0;font-size:0;line-height:0;}
+[class*='page-sitemap'] .link-zone03 .list&gt;li{float:left;width:55px;margin:0 0 10px 70px;line-height:28px;text-align:left;}
+[class*='page-sitemap'] .link-zone03 .list&gt;li a{display:block;padding:0 4px;font-size:14px;line-height:inherit;color:#000;}
+[class*='page-sitemap'] .link-zone03 .list .bar{position:relative;margin-right:6px;padding-right:10px;}
+[class*='page-sitemap'] .link-zone03 .list .bar:after{content:"";display:block;clear:both;position:absolute;top:10px;right:0;width:2px;height:13px;background-color:#d6d6d6;}
+
+/* 일별 기사 리스트 */
+[class*='page-sitemap'] .link-zone04{margin:10px 0 100px;}
+[class*='page-sitemap'] .link-zone04 .list{margin-top:6px;}
+[class*='page-sitemap'] .link-zone04 .list li{margin-bottom:4px;}
+[class*='page-sitemap'] .link-zone04 .list li a{padding:4px 0;font-size:14px;line-height:18px;color:#000;}
+[class*='page-sitemap'] .link-zone04 .list li a:hover{text-decoration:underline;color:#000;}
+
+/* (박스) 지난기사 - 사이트맵 메인 */
+[class*='page-sitemap'] .link-build01{overflow:hidden;margin-bottom:45px;}
+[class*='page-sitemap'] .link-build01 .title-con01{padding-bottom:17px;}
+[class*='page-sitemap'] .link-build01 .link-zone02&gt;li{border-bottom:0;}
+[class*='page-sitemap'] .link-build01 .link-zone02&gt;li .tit{min-width:35px;margin-right:5px;font-size:14px;line-height:40px;}
+[class*='page-sitemap'] .link-build01 .link-zone02&gt;li .list a,
+[class*='page-sitemap'] .link-build01 .link-zone02&gt;li .list span{padding:0 3px;font-size:14px;}
+[class*='page-sitemap'] .link-build01 .link-zone02&gt;li .list a{color:#000;}
+[class*='page-sitemap'] .link-build01 .link-zone02&gt;li .list span{color:#929292;}
+[class*='page-sitemap'] .link-build01 .link-zone02 .list li,
+[class*='page-sitemap'] .link-build01 .link-zone02 .list dd,
+[class*='page-sitemap'] .link-build01 .link-zone02 .list p{display:inline-block;line-height:22px;margin-left:12px;}
+
+/* (박스) 지난기사 - 월별 리스트 */
+[class*='page-sitemap'] .link-build02 .link-zone03{margin-top:10px;}
+
+/* (박스) 뉴스 리스트 - 사이트맵 메인 */
+[class*='page-sitemap'] .site-build01{border-bottom:none;}
+[class*='page-sitemap'] .site-build01 .title-con01{padding-bottom:17px;}

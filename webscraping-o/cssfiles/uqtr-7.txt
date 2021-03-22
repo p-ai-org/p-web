@@ -1,0 +1,970 @@
+/* Framework U20 - Outils JavaScript */
+
+/* Liste des outils
+  - Swiper Slider
+  - Menu list - DropList
+  - Accordeon
+  - Lecteur RSS
+  - Modaal
+ */
+
+
+/* --- Swiper Slider --- */
+.swiper-button-next:active,
+.swiper-button-prev:active {
+  box-shadow: none;
+  outline: none;
+}
+.swiper-button-next:focus,
+.swiper-button-next:focus:not(:focus-visible),
+.swiper-button-prev:focus,
+.swiper-button-prev:focus:not(:focus-visible) {
+  outline: none;
+}
+.swiper-button-next:focus-visible,
+.swiper-button-prev:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--contour-focus);
+}
+
+
+
+/* --- Drop List --- */
+.u20-dropList {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 10px;
+  text-align: left;
+}
+.u20-dropList .list-wrapper {
+  position: relative;
+}
+.u20-dropList button.list-btn {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 12px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  -webkit-transition: color 120ms ease-out, box-shadow 120ms ease-out, background 120ms ease-out;
+          transition: color 120ms ease-out, box-shadow 120ms ease-out, background 120ms ease-out;
+  text-decoration: none;
+  color: var(--dropdown-button);
+  border: 1px solid var(--contour);
+  border-radius: 4px;
+  background-color: var(--blancpale);
+  box-shadow: none;
+}
+.u20-dropList button.list-btn:hover {
+  outline: none;
+  border-color: var(--contour-hover);
+  background-color: var(--blanc);
+  box-shadow: 0 12px 12px -4px rgba(0, 0, 0, .05);
+}
+.u20-dropList button.list-btn:active {
+  background-color: var(--blanc);
+  box-shadow: none;
+}
+.u20-dropList button.list-btn:focus,
+.u20-dropList button.list-btn:focus:not(:focus-visible) {
+  outline: none;
+}
+.u20-dropList button.list-btn:focus-visible {
+  border-radius: 4px;
+  border: 1px solid transparent;
+  box-shadow: inset 0 0 0 2px var(--contour-focus);
+}
+
+/* Btn Fleche vs X */
+.u20-dropList button.list-btn::before,
+.u20-dropList button.list-btn::after {
+  position: absolute;
+  top: 50%;
+  display: inline-block;
+  width: 7px;
+  height: 2px;
+  content: "";
+  -webkit-transition: width 200ms ease-out, transform 200ms ease-out;
+          transition: width 200ms ease-out, transform 200ms ease-out;
+  -webkit-transform-origin: 50% 50%;
+          transform-origin: 50% 50%;
+  background-color: var(--icone);
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+}
+.u20-dropList button.list-btn::before {
+  right: 20px;
+  transform: rotate(45deg);
+}
+.u20-dropList button.list-btn::after {
+  right: 17px;
+  transform: rotate(-45deg);
+}
+
+/* Btn Is On */
+.u20-dropList button.list-btn.btn-is-on {
+  color: var(--noir);
+  outline: none;
+  border: 1px solid var(--contour);
+  border-bottom-color: transparent;
+  border-radius: 4px 4px 0 0;
+  background-color: var(--blanc);
+  box-shadow: none;
+}
+.u20-dropList button.list-btn.btn-is-on::before,
+.u20-dropList button.list-btn.btn-is-on::after {
+  width: 10px;
+}
+.u20-dropList button.list-btn.btn-is-on::before {
+  -webkit-transform: translateX(3px) rotate(-45deg);
+          transform: translateX(3px) rotate(-45deg);
+}
+.u20-dropList button.list-btn.btn-is-on::after {
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+}
+
+/* List Items */
+.u20-dropList .list-items {
+  display: none;
+  position: absolute;
+  top: calc(100% - 2px);
+  width: 100%;
+  -webkit-transform-origin: top center;
+          transform-origin: top center;
+  -webkit-animation: dropListIn 120ms linear both;
+          animation: dropListIn 120ms linear both;
+  border: 1px solid var(--contour);
+  border-top-color: transparent;
+  border-radius: 0 0 4px 4px;
+  background-color: var(--blanc);
+  box-shadow: 0 25px 45px -10px rgba(62, 61, 132, .1);
+  z-index: 2;
+}
+.u20-dropList .list-items ul {
+  padding: 10px 12px 20px;
+  margin: 0;
+  list-style: none;
+}
+/* Fade In DropList Items */
+.u20-dropList .list-items ul li a {
+  display: block;
+  padding: 5px 0;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.3666rem;
+  font-weight: 500;
+  -webkit-animation: fadeIn 120ms ease 100ms both;
+          animation: fadeIn 120ms ease 100ms both;
+  text-decoration: none;
+  color: var(--texte);
+}
+.u20-dropList .list-items ul li a:hover {
+  text-decoration: underline;
+  color: var(--noir);
+}
+
+
+
+
+
+/* --- DropList - CONNEXION --- */
+
+/* BOUTON */
+.u20-dropList.connexion button.list-btn {
+  width: 144px;
+  height: 47px;
+  padding: 0;
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1em;
+  border: 1px solid var(--grispale);
+  border-radius: 3px;
+  background-color: var(--blancpale);
+  box-shadow: none;
+}
+.u20-dropList.connexion button.list-btn:hover {
+  color: var(--noir);
+  outline: none;
+  border: 1px solid var(--contour);
+  background-color: var(--blanc);
+  box-shadow: 1px 6px 10px 0 rgba(0, 0, 0, .04), -5px -2px 10px 0 #fff;
+}
+.u20-dropList.connexion button.list-btn:active {
+  background-color: var(--blancpale);
+  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, .08), inset -2px -1px 4px #fff;
+}
+.u20-dropList.connexion button.list-btn:focus,
+.u20-dropList.connexion button.list-btn:focus:not(:focus-visible) {
+  outline: none;
+}
+.u20-dropList.connexion button.list-btn:focus-visible {
+  border-radius: 3px;
+  border: 1px solid transparent;
+  box-shadow: inset 0 0 0 2px var(--contour-focus);
+}
+.u20-dropList.connexion button.list-btn img {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  -webkit-transform: translate(16px, 11px);
+          transform: translate(16px, 11px);
+  width: 24px;
+  height: 24px;
+  -webkit-transition: transform 120ms ease-out, opacity 100ms linear;
+          transition: transform 120ms ease-out, opacity 100ms linear;
+  opacity: 1;
+}
+.u20-dropList.connexion button.list-btn span {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  -webkit-transition: transform 300ms cubic-bezier(0, 1, .5, 1);
+          transition: transform 300ms cubic-bezier(0, 1, .5, 1);
+  -webkit-transform: translate(44px, -50%);
+          transform: translate(44px, -50%);
+}
+/* Cache la fleche par defaut */
+.u20-dropList.connexion button.list-btn::after,
+.u20-dropList.connexion button.list-btn::before {
+  display: none;
+}
+
+
+/* BOUTON Connexion - IS ON */
+.u20-dropList.connexion button.list-btn.btn-is-on {
+  color: var(--noir);
+  outline: none;
+  border: 1px solid var(--contour);
+  border-bottom-color: transparent;
+  border-radius: 4px 4px 0 0;
+  background-color: var(--blanc);
+  box-shadow: none;
+  z-index: 3;
+}
+.u20-dropList.connexion button.list-btn.btn-is-on::after,
+.u20-dropList.connexion button.list-btn.btn-is-on::before {
+  display: inherit;
+}
+.u20-dropList.connexion button.list-btn.btn-is-on img {
+  -webkit-transform: translate(6px, 11px);
+          transform: translate(6px, 11px);
+  opacity: 0;
+}
+.u20-dropList.connexion button.list-btn.btn-is-on span {
+  -webkit-transform: translate(14px, -50%);
+          transform: translate(14px, -50%);
+}
+
+
+
+/* Connexion - Liste a puce */
+.u20-dropList.connexion .list-items ul {
+  padding: 0;
+}
+.u20-dropList.connexion .list-items ul li a {
+  display: flex;
+  align-items: center;
+  margin: 0 5px;
+  padding: 6px 8px;
+  font-size: 1.24rem;
+  font-weight: 500;
+  line-height: 1.2em;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  color: var(--texte-fonce);
+  border-radius: 3px;
+}
+.u20-dropList.connexion .list-items ul li a:hover {
+  color: var(--noir);
+  background-color: var(--blancgris);
+}
+.u20-dropList.connexion .list-items ul li a img {
+  margin-right: 8px;
+}
+/* Separateur */
+.u20-dropList.connexion .list-items ul li.cnx-sep {
+  height: 1px;
+  margin: 6px 0;
+  background-color: var(--grispale2);
+}
+
+/* Mot de passe oublie - Visiteur portail */
+.u20-dropList.connexion .list-items ul li a.mdpReset {
+  display: block;
+  width: 100%;
+  margin: 0;
+  margin-top: 8px;
+  padding: 10px 5px 10px 13px;
+  font-size: 1.16rem;
+  font-weight: 600;
+  border-radius: 0;
+  border-top: 1px solid var(--grispale2);
+}
+
+
+
+/* --- Connexion - IS ON --- */
+.u20-dropList.connexion .list-items {
+  width: 144px;
+  box-shadow: 0 25px 45px -10px rgb(35 35 51 / 30%);
+}
+
+/* Liste animee */
+.u20-dropList.connexion .list-items ul li:nth-child(1),
+.u20-dropList.connexion .list-items ul li:nth-child(2),
+.u20-dropList.connexion .list-items ul li:nth-child(3),
+/* 4 = separateur */
+.u20-dropList.connexion .list-items ul li:nth-child(5),
+.u20-dropList.connexion .list-items ul li:nth-child(6) {
+  -webkit-animation: list-slide-in 200ms ease-out both;
+          animation: list-slide-in 200ms ease-out both;
+}
+.u20-dropList.connexion .list-items ul li:nth-child(1) {
+  animation-delay: 0ms;
+}
+.u20-dropList.connexion .list-items ul li:nth-child(2) {
+  animation-delay: 30ms;
+}
+.u20-dropList.connexion .list-items ul li:nth-child(3) {
+  animation-delay: 60ms;
+}
+/* 4 = separateur */
+.u20-dropList.connexion .list-items ul li:nth-child(5) {
+  animation-delay: 90ms;
+}
+.u20-dropList.connexion .list-items ul li:nth-child(6) {
+  animation-delay: 120ms;
+}
+@keyframes list-slide-in {
+  0% {
+    -webkit-transform: translateX(20px);
+            transform: translateX(20px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+
+
+/* --- Animations Droplist --- */
+
+/* fadeIn */
+@-webkit-keyframes fadeIn {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes fadeIn {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+/* dropListIn */
+@-webkit-keyframes dropListIn {
+  0% {
+    z-index: 2;
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1.05, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0.96);
+            transform: matrix3d(1, 0, 0, 0, 0, 1.05, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0.96);
+  }
+
+  100% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+  }
+}
+@keyframes dropListIn {
+  0% {
+    z-index: 2;
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1.05, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0.96);
+            transform: matrix3d(1, 0, 0, 0, 0, 1.05, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0.96);
+  }
+
+  100% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+  }
+}
+
+
+
+/* Modaal - Autres Acces - Structure */
+.modal-droite .modaal-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 280px;
+  min-height: 101vh;
+  background: #fff;
+  box-shadow: 0 15px 25px -10px rgb(46 50 70 / 50%);
+  animation: swipeRight 500ms linear both;
+}
+@keyframes swipeRight {
+  0% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 260, 0, 0, 1); }
+  3.2% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 188.424, 0, 0, 1); }
+  6.31% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 119.787, 0, 0, 1); }
+  9.41% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 75.97, 0, 0, 1); }
+  12.51% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 48.064, 0, 0, 1); }
+  18.82% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 18.812, 0, 0, 1); }
+  25.03% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 7.395, 0, 0, 1); }
+  37.54% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1.087, 0, 0, 1); }
+  50.05% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0.151, 0, 0, 1); }
+  100% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); } 
+}
+
+/* Modaal container mobile */
+@media all and (max-width: 480px) {
+  .modal-droite .modaal-container {
+    left: 0;
+    width: 100%;
+    animation: fadeIn 240ms linear both;
+  }
+}
+
+.modal-droite .modaal-content-container {
+  padding: 20px;
+}
+
+/* Bouton close */
+.modal-droite .modaal-close {
+  right: 10px;
+  top: 10px;
+}
+.modal-droite .modaal-close:hover {
+  outline: 0;
+  background-color: var(--grispale2);
+}
+/* Bouton close - Couleur du X */
+.modal-droite .modaal-close::after,
+.modal-droite .modaal-close::before {
+  background: var(--vert);
+}
+.modal-droite .modaal-close:focus::after,
+.modal-droite .modaal-close:focus::before,
+.modal-droite .modaal-close:hover::after,
+.modal-droite .modaal-close:hover::before {
+  background: var(--vert-pale);
+}
+
+.modal-droite .contenu-autres-acces h2 {
+  margin-top: 0;
+  font-weight: 700;
+  font-size: 2.4rem;
+  color: var(--texte);
+}
+.modal-droite .contenu-autres-acces h3 {
+  margin: 3px 0;
+  line-height: 24px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+}
+.modal-droite .contenu-autres-acces .visiteur p {
+  display: block;
+  margin: 0 0 12px 0;
+  padding: 0 0 0 11px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+.modal-droite .contenu-autres-acces ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px 0;
+}
+.modal-droite .contenu-autres-acces ul li a {
+  display: block;
+  margin: 0;
+  padding: 6px;
+  text-decoration: none;
+  line-height: 16px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  color: var(--noir);
+  border-radius: 3px;
+}
+.modal-droite .contenu-autres-acces ul li a:hover {
+  color: var(--lien);
+  background-color: var(--grispale2);
+}
+.modal-droite .contenu-autres-acces ul li a.gestion {
+  padding: 5px 6px;
+  font-size: 1.3rem;
+}
+.modal-droite .contenu-autres-acces ul li a.gestion:hover {
+  text-decoration: underline;
+  color: var(--noir);
+  background-color: transparent;
+}
+.modal-droite .contenu-autres-acces ul li a span.descripton {
+  display: block;
+  padding-left: 28px;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--texte-fonce);
+}
+.modal-droite .contenu-autres-acces hr {
+  margin: 0 0 12px;
+}
+
+/* Icones */
+.modal-droite .contenu-autres-acces ul li a::before {
+  display: inline-block;
+  content: "";
+  width: 16px;
+  height: 16px;
+  margin-right: 11px;
+  vertical-align: top;
+  background-size: 16px;
+  background-repeat: no-repeat;
+}
+
+/* Bouton probleme acces */
+a.btn.autres-acces {
+  margin-top: 14px;
+  padding: 8px 10px;
+  font-size: 1.2rem;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  border-radius: 3px;
+  text-transform: uppercase;
+  border: 2px solid var(--contour);
+  background-color: var(--blanc);
+}
+a.btn.autres-acces:hover {
+  border: 2px solid var(--vert-pale);
+  background-color: var(--grispale2);
+}
+/* Etudiant */
+.modal-droite .contenu-autres-acces ul li a.po::before {
+  background-image: url(/u20-ico/ico-connexion-etudiant.svg);
+}
+.modal-droite .contenu-autres-acces ul li a.mc::before {
+  background-image: url(/u20-ico/ico-connexion-cours.svg);
+}
+.modal-droite .contenu-autres-acces ul li a.ce::before {
+  background-image: url(/u20-ico/ico-connexion-carte.svg);
+}
+
+/* Employe */
+.modal-droite .contenu-autres-acces ul li a.pe::before {
+  background-image: url(/u20-ico/ico-connexion-employe.svg);
+}
+.modal-droite .contenu-autres-acces ul li a.sa::before {
+  background-image: url(/u20-ico/ico-connexion-safirh.svg);
+}
+.modal-droite .contenu-autres-acces ul li a.pp::before {
+  background-image: url(/u20-ico/ico-connexion-etudiant.svg);
+}
+.modal-droite .contenu-autres-acces ul li a.ei::before {
+  background-image: url(/u20-ico/ico-connexion-employe-inactif.svg);
+}
+.modal-droite .contenu-autres-acces ul li a.aa::before {
+  background-image: url(/u20-ico/ico-connexion-activation.svg);
+}
+
+/* Visiteur */
+.modal-droite .contenu-autres-acces ul li a.vi::before {
+  background-image: url(/u20-ico/ico-connexion-cours.svg);
+}
+
+/* Diplome */
+.modal-droite .contenu-autres-acces ul li a.di::before {
+  background-image: url(/u20-ico/ico-connexion-diplome.svg);
+}
+.modal-droite .contenu-autres-acces ul li a.mi::before {
+  background-image: url(/u20-ico/ico-connexion-diplome-coordonnees.svg);
+}
+.modal-droite .contenu-autres-acces ul li a.ch::before {
+  background-image: url(/u20-ico/ico-connexion-office365.svg);
+}
+
+/* Mot de passe oublie */
+.modal-droite .contenu-autres-acces ul li a.ou::before {
+  background-image: url(/u20-ico/ico-connexion-oublie.svg);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* --- Accordeon --- */
+.u20-accordeon button::-moz-focus-inner {
+  border: 0;
+}
+.u20-accordeon {
+  position: relative;
+
+  display: block;
+  width: 100%;
+  border-radius: 0 16px 0 0;
+  background-color: var(--blanc);
+  -webkit-box-shadow: 0 15px 40px -1px rgba(61,67,79,.08);
+          box-shadow: 0 15px 40px -1px rgba(61,67,79,.08);
+}
+.u20-accordeon &gt; h3 {
+  margin: 0;
+}
+.u20-accordeon &gt; h3:first-child button {
+  border-top: none;
+}
+.u20-accordeon button.u20-accordeon-btn {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 24px;
+  text-align: left;
+  border-top: 1px solid var(--blancgris);
+  border-left: 5px solid transparent;
+  background-image: url(/u20-ico/ico-accordeon-ferme.svg);
+  background-repeat: no-repeat;
+  background-position: right 24px center;
+  background-size: 18px 18px;
+}
+.u20-accordeon button.u20-accordeon-btn:hover {
+  outline: none;
+}
+.u20-accordeon button.u20-accordeon-btn:focus {
+  color: var(--vert-pale);
+}
+.u20-accordeon button.u20-accordeon-btn[aria-expanded="true"] {
+  color: var(--vert-fonce);
+  border-left: 5px solid var(--vert-pale);
+  outline: none;
+  background-image: url(/u20-ico/ico-accordeon-ouvert.svg);
+}
+.u20-accordeon button.u20-accordeon-btn .u20-accordeon-title {
+  display: block;
+  font-family: "Montserrat",sans-serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  -webkit-transition: color 200ms ease;
+          transition: color 200ms ease;
+  pointer-events: none;
+}
+.u20-accordeon button.u20-accordeon-btn:hover .u20-accordeon-title {
+  color: var(--vert-pale);
+}
+
+/* Accordeon Contenu */
+.u20-accordeon .u20-accordeon-content {
+  display: block;
+  padding: 0 54px 24px 24px;
+  margin-top: -2px;
+  border-left: 5px solid var(--vert-pale);
+  -webkit-box-shadow: 0 20px 27px 0 rgba(61,67,79,.05);
+          box-shadow: 0 20px 27px 0 rgba(61,67,79,.05);
+}
+.u20-accordeon .u20-accordeon-content div {
+  -webkit-animation: fadeIn 500ms;
+          animation: fadeIn 500ms;
+}
+.u20-accordeon .u20-accordeon-content p {
+  margin: 1rem 0;
+}
+.u20-accordeon .u20-accordeon-content h3,
+.u20-accordeon .u20-accordeon-content h4 {
+  margin: .5rem 0 .2rem 0;
+}
+.u20-accordeon .u20-accordeon-content h3 span,
+.u20-accordeon .u20-accordeon-content h4 span {
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+.u20-accordeon .u20-accordeon-content a {
+  font-weight: 600;
+}
+.u20-accordeon .u20-accordeon-content ul {
+  padding: 0 26px 0;
+  margin: 4px 0 8px;
+
+  list-style-image: url(/u20-ico/puce-cercle-gris.svg);
+}
+.u20-accordeon .u20-accordeon-content *:first-child {
+  margin-top: 0;
+}
+.u20-accordeon .u20-accordeon-content[hidden] {
+  display: none;
+}
+
+
+/* --- Accordeon PLUS --- */
+.u20-accordeon.accordeon-plus {
+  border-radius: 0;
+  background-color: transparent;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+.u20-accordeon.accordeon-plus button.u20-accordeon-btn {
+  padding: 12px 40px 10px 0;
+  border: 0;
+  border-bottom: 1px solid var(--grispale);
+  background-image: url(/u20-ico/ico-btn-plus-moins-grisfonce-a.svg);
+  background-position: right center;
+}
+.u20-accordeon.accordeon-plus button.u20-accordeon-btn[aria-expanded="true"] {
+  border: 0;
+  background-image: url(/u20-ico/ico-btn-plus-moins-grisfonce-b.svg);
+}
+/* Accordeon PLUS - Contenu */
+.u20-accordeon.accordeon-plus .u20-accordeon-content {
+  padding: 16px 40px 20px 0;
+  border: 0;
+  border-bottom: 1px solid var(--grispale);
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+
+/* Accordeon - Mobile */
+@media all and (max-width: 768px) {
+  .u20-accordeon.accordeon-plus .u20-accordeon-content {
+      padding: 10px 0;
+  }
+}
+
+
+
+
+
+
+ /* --- U20 Bloc RSS --- */
+.u20-bloc.bloc-rss {
+  min-height: 520px;
+  padding: 80px 0 60px;
+  background: var(--degrade-blanc-gris);
+}
+/* Bouton voir toutes les actualites */
+.u20-bloc.bloc-rss .u20-btn-actualites {
+  display: block;
+  margin-bottom: 30px;
+  clear: both;
+  text-align: right;
+}
+.u20-bloc.bloc-rss .u20-btn-actualites a.btn span {
+  font-size: 2.4rem;
+  font-weight: 600;
+  letter-spacing: .01em;
+  text-transform: uppercase;
+  color: var(--texte);
+}
+.u20-bloc.bloc-rss .u20-btn-actualites a.btn:hover span {
+  color: var(--noir);
+}
+.u20-bloc.bloc-rss .u20-rss {
+  max-width: 100%;
+  margin: 0 auto;
+}
+.u20-bloc.bloc-rss .u20-rss-wrapper {
+  display: flex;
+  justify-content: space-around;
+}
+.u20-bloc.bloc-rss .u20-rss-item {
+  position: relative;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  margin: 0 10px;
+  -webkit-transition: transform 300ms cubic-bezier(.2, .8, .2, 1), background-color 100ms ease, box-shadow 240ms ease;
+          transition: transform 300ms cubic-bezier(.2, .8, .2, 1), background-color 100ms ease, box-shadow 240ms ease;
+  border-radius: 2px 10px 2px 10px;
+  background-color: var(--blancpale);
+  -webkit-box-shadow: 0 2px 6px -2px rgba(0, 0, 0, .1);
+          box-shadow: 0 2px 6px -2px rgba(0, 0, 0, .1);
+}
+.u20-bloc.bloc-rss .u20-rss-item:hover {
+  -webkit-transform: translateY(-2px);
+          transform: translateY(-2px);
+  background-color: var(--blanc);
+  -webkit-box-shadow: 0 10px 30px -2px rgba(48, 48, 71, .1);
+          box-shadow: 0 10px 30px -2px rgba(48, 48, 71, .1);
+}
+.u20-bloc.bloc-rss .u20-rss-item:active {
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
+  -webkit-box-shadow: 0 2px 6px -2px rgba(0, 0, 0, .1);
+          box-shadow: 0 2px 6px -2px rgba(0, 0, 0, .1);
+  -webkit-transition: 60ms ease;
+          transition: 60ms ease;
+}
+.u20-bloc.bloc-rss .u20-rss-item:first-child {
+  margin-left: 0;
+}
+.u20-bloc.bloc-rss .u20-rss-item:last-child {
+  margin-right: 0;
+}
+/* Lien - Pour accessibilite avec le fuckus */
+.u20-bloc.bloc-rss .u20-rss-item a {
+  display: block;
+  overflow: hidden;
+  width: 100%;
+  min-height: 100%;
+  text-decoration: none;
+  border-radius: 2px 10px 2px 10px;
+  -webkit-box-shadow: 0 0 0 0 var(--contour-focus);
+          box-shadow: 0 0 0 0 var(--contour-focus);
+  -webkit-transition: box-shadow 140ms ease;
+          transition: box-shadow 140ms ease;
+}
+.u20-bloc.bloc-rss .u20-rss-item:active a {
+  -webkit-box-shadow: 0 0 0 0 rgba(255,255,255,0) !important;
+          box-shadow: 0 0 0 0 rgba(255,255,255,0) !important;
+}
+.u20-bloc.bloc-rss .u20-rss-item a:focus {
+  outline: none;
+  -webkit-box-shadow: 0 0 0 4px var(--contour-focus);
+          box-shadow: 0 0 0 4px var(--contour-focus);
+}
+
+/* Image */
+.u20-bloc.bloc-rss .u20-rss-image img {
+  height: auto;
+}
+/* Image Hover */
+.u20-bloc.bloc-rss .u20-rss-image {
+  overflow: hidden;
+  -webkit-transition: transform 300ms ease;
+          transition: transform 300ms ease;
+  -webkit-transform: scale(1);
+          transform: scale(1);
+  -webkit-transform-origin: center bottom;
+          transform-origin: center bottom;
+}
+.u20-bloc.bloc-rss .u20-rss-item:hover .u20-rss-image {
+  -webkit-transform: scale(1.02);
+          transform: scale(1.02);
+}
+.u20-bloc.bloc-rss .u20-rss-image::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 4px;
+  left: 0;
+  width: 100%;
+  content: "";
+  -webkit-transition: background 300ms ease;
+          transition: background 300ms ease;
+  background-color: rgba(45, 45, 50, .1);
+}
+.u20-bloc.bloc-rss .u20-rss-item:hover .u20-rss-image::before {
+  background-color: rgba(0, 0, 0, 0);
+}
+/* Bloc de texte */
+.u20-bloc.bloc-rss .u20-rss-text {
+  position: relative;
+  display: block;
+  padding: 30px 20px 12px 20px;
+}
+/* Logo Neo */
+.u20-bloc.bloc-rss .u20-rss-logo-neo {
+  position: absolute;
+  top: -26px;
+  left: 50%;
+  display: block;
+  width: 40px;
+  height: 40px;
+  -webkit-transition: transform 800ms cubic-bezier(.2, .8, .2, 1), box-shadow 200ms ease;
+          transition: transform 800ms cubic-bezier(.2, .8, .2, 1), box-shadow 200ms ease;
+  -webkit-transform: translate(-50%, 4px);
+          transform: translate(-50%, 4px);
+  border-radius: 50px;
+  background-color: var(--blancpale);
+  background-image: url(../u20-ico/social/ico-footer-neo.svg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 28px 28px;
+  -webkit-box-shadow: 0 0 0 0 rgba(48, 48, 71, .15);
+          box-shadow: 0 0 0 0 rgba(48, 48, 71, .15);
+}
+.u20-bloc.bloc-rss .u20-rss-item:hover .u20-rss-logo-neo {
+  -webkit-transform: translate(-50%, -2px);
+          transform: translate(-50%, -2px);
+  background-image: url(../u20-ico/social/ico-footer-neo-rgb.svg);
+  -webkit-box-shadow: 0 8px 20px -2px rgba(48, 48, 71, .1);
+          box-shadow: 0 8px 10px -2px rgba(48, 48, 71, .1);
+}
+.u20-bloc.bloc-rss .u20-rss-date {
+  display:block;
+  padding-bottom:10px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.21rem;
+  font-weight: 600;
+  letter-spacing: .0666rem;
+  text-transform: uppercase;
+  color: var(--texte-pale);
+}
+.u20-bloc.bloc-rss .u20-rss-item h3.u20-rss-title {
+  margin: 10px 0 20px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -.015em;
+  color: var(--texte-fonce);
+}
+.u20-bloc.bloc-rss .u20-rss-item:hover h3.u20-rss-title {
+  color: var(--noir);
+}
+/* U20 Bloc RSS - Mobile */
+@media all and (min-width: 1024px) and (max-width: 1280px) {
+  .u20-bloc.bloc-rss .u20-rss {
+    padding: 0 20px;
+  }
+  .u20-bloc.bloc-rss .u20-btn-actualites {
+    margin-right: 20px;
+  }
+}
+@media all and (max-width: 1024px) {
+  .u20-bloc.bloc-rss .u20-rss {
+    width: 100%;
+  }
+  .u20-bloc.bloc-rss .u20-rss-wrapper {
+    flex-wrap: wrap;
+  }
+  .u20-bloc.bloc-rss .u20-rss-item,
+  .u20-bloc.bloc-rss .u20-rss-item:first-child,
+  .u20-bloc.bloc-rss .u20-rss-item:last-child {
+    width: 100%;
+    margin: 10px 0;
+  }
+}
+@media all and (max-width: 768px) {
+  .u20-bloc.bloc-rss {
+    padding: 20px 10px;
+  }
+  .u20-bloc.bloc-rss .u20-btn-actualites {
+    margin: 30px 0 20px;
+  }
+}
+@media all and (max-width: 480px) {
+  .u20-bloc.bloc-rss .u20-btn-actualites a.btn span {
+    font-size: 1.7rem;
+    line-height: 1.6rem;
+  }
+}
+
+
+
+/* Modaal - Couleur du X */
+.modaal-close:focus::after,
+.modaal-close:focus::before,
+.modaal-close:hover::after,
+.modaal-close:hover::before {
+  background: var(--vert) !important;
+}

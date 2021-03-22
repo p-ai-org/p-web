@@ -1,0 +1,620 @@
+/**
+ * Swiper 4.5.1
+ * Most modern mobile touch slider and framework with hardware accelerated transitions
+ * http://www.idangero.us/swiper/
+ *
+ * Copyright 2014-2019 Vladimir Kharlampidi
+ *
+ * Released under the MIT License
+ *
+ * Released on: September 13, 2019
+ */
+.swiper-container {
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  overflow: hidden;
+  list-style: none;
+  padding: 0;
+  /* Fix of Webkit flickering */
+  z-index: 1;
+}
+.swiper-container-no-flexbox .swiper-slide {
+  float: left;
+}
+.swiper-container-vertical &gt; .swiper-wrapper {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+.swiper-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-transition-property: -webkit-transform;
+  transition-property: -webkit-transform;
+  -o-transition-property: transform;
+  transition-property: transform;
+  transition-property: transform, -webkit-transform;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+}
+.swiper-container-android .swiper-slide,
+.swiper-wrapper {
+  -webkit-transform: translate3d(0px, 0, 0);
+  transform: translate3d(0px, 0, 0);
+}
+.swiper-container-multirow &gt; .swiper-wrapper {
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+.swiper-container-free-mode &gt; .swiper-wrapper {
+  -webkit-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+  margin: 0 auto;
+}
+.swiper-slide {
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  -webkit-transition-property: -webkit-transform;
+  transition-property: -webkit-transform;
+  -o-transition-property: transform;
+  transition-property: transform;
+  transition-property: transform, -webkit-transform;
+}
+.swiper-slide-invisible-blank {
+  visibility: hidden;
+}
+/* Auto Height */
+.swiper-container-autoheight,
+.swiper-container-autoheight .swiper-slide {
+  height: auto;
+}
+.swiper-container-autoheight .swiper-wrapper {
+  -webkit-box-align: start;
+  -webkit-align-items: flex-start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+  -webkit-transition-property: height, -webkit-transform;
+  transition-property: height, -webkit-transform;
+  -o-transition-property: transform, height;
+  transition-property: transform, height;
+  transition-property: transform, height, -webkit-transform;
+}
+/* 3D Effects */
+.swiper-container-3d {
+  -webkit-perspective: 1200px;
+  perspective: 1200px;
+}
+.swiper-container-3d .swiper-wrapper,
+.swiper-container-3d .swiper-slide,
+.swiper-container-3d .swiper-slide-shadow-left,
+.swiper-container-3d .swiper-slide-shadow-right,
+.swiper-container-3d .swiper-slide-shadow-top,
+.swiper-container-3d .swiper-slide-shadow-bottom,
+.swiper-container-3d .swiper-cube-shadow {
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+.swiper-container-3d .swiper-slide-shadow-left,
+.swiper-container-3d .swiper-slide-shadow-right,
+.swiper-container-3d .swiper-slide-shadow-top,
+.swiper-container-3d .swiper-slide-shadow-bottom {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+.swiper-container-3d .swiper-slide-shadow-left {
+  background-image: -webkit-gradient(linear, right top, left top, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0)));
+  background-image: -webkit-linear-gradient(right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+  background-image: -o-linear-gradient(right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+  background-image: linear-gradient(to left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+}
+.swiper-container-3d .swiper-slide-shadow-right {
+  background-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0)));
+  background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+  background-image: -o-linear-gradient(left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+}
+.swiper-container-3d .swiper-slide-shadow-top {
+  background-image: -webkit-gradient(linear, left bottom, left top, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0)));
+  background-image: -webkit-linear-gradient(bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+  background-image: -o-linear-gradient(bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+}
+.swiper-container-3d .swiper-slide-shadow-bottom {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0)));
+  background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+  background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+}
+/* IE10 Windows Phone 8 Fixes */
+.swiper-container-wp8-horizontal,
+.swiper-container-wp8-horizontal &gt; .swiper-wrapper {
+  -ms-touch-action: pan-y;
+  touch-action: pan-y;
+}
+.swiper-container-wp8-vertical,
+.swiper-container-wp8-vertical &gt; .swiper-wrapper {
+  -ms-touch-action: pan-x;
+  touch-action: pan-x;
+}
+.swiper-button-prev,
+.swiper-button-next {
+  position: absolute;
+  top: 50%;
+  width: 27px;
+  height: 44px;
+  margin-top: -22px;
+  z-index: 10;
+  cursor: pointer;
+  background-size: 27px 44px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.swiper-button-prev.swiper-button-disabled,
+.swiper-button-next.swiper-button-disabled {
+  opacity: 0.35;
+  cursor: auto;
+  pointer-events: none;
+}
+.swiper-button-prev,
+.swiper-container-rtl .swiper-button-next {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M0%2C22L22%2C0l2.1%2C2.1L4.2%2C22l19.9%2C19.9L22%2C44L0%2C22L0%2C22L0%2C22z'%20fill%3D'%23007aff'%2F%3E%3C%2Fsvg%3E");
+  left: 10px;
+  right: auto;
+}
+.swiper-button-next,
+.swiper-container-rtl .swiper-button-prev {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M27%2C22L27%2C22L5%2C44l-2.1-2.1L22.8%2C22L2.9%2C2.1L5%2C0L27%2C22L27%2C22z'%20fill%3D'%23007aff'%2F%3E%3C%2Fsvg%3E");
+  right: 10px;
+  left: auto;
+}
+.swiper-button-prev.swiper-button-white,
+.swiper-container-rtl .swiper-button-next.swiper-button-white {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M0%2C22L22%2C0l2.1%2C2.1L4.2%2C22l19.9%2C19.9L22%2C44L0%2C22L0%2C22L0%2C22z'%20fill%3D'%23ffffff'%2F%3E%3C%2Fsvg%3E");
+}
+.swiper-button-next.swiper-button-white,
+.swiper-container-rtl .swiper-button-prev.swiper-button-white {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M27%2C22L27%2C22L5%2C44l-2.1-2.1L22.8%2C22L2.9%2C2.1L5%2C0L27%2C22L27%2C22z'%20fill%3D'%23ffffff'%2F%3E%3C%2Fsvg%3E");
+}
+.swiper-button-prev.swiper-button-black,
+.swiper-container-rtl .swiper-button-next.swiper-button-black {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M0%2C22L22%2C0l2.1%2C2.1L4.2%2C22l19.9%2C19.9L22%2C44L0%2C22L0%2C22L0%2C22z'%20fill%3D'%23000000'%2F%3E%3C%2Fsvg%3E");
+}
+.swiper-button-next.swiper-button-black,
+.swiper-container-rtl .swiper-button-prev.swiper-button-black {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M27%2C22L27%2C22L5%2C44l-2.1-2.1L22.8%2C22L2.9%2C2.1L5%2C0L27%2C22L27%2C22z'%20fill%3D'%23000000'%2F%3E%3C%2Fsvg%3E");
+}
+.swiper-button-lock {
+  display: none;
+}
+.swiper-pagination {
+  position: absolute;
+  text-align: center;
+  -webkit-transition: 300ms opacity;
+  -o-transition: 300ms opacity;
+  transition: 300ms opacity;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  z-index: 10;
+}
+.swiper-pagination.swiper-pagination-hidden {
+  opacity: 0;
+}
+/* Common Styles */
+.swiper-pagination-fraction,
+.swiper-pagination-custom,
+.swiper-container-horizontal &gt; .swiper-pagination-bullets {
+  bottom: 10px;
+  left: 0;
+  width: 100%;
+}
+/* Bullets */
+.swiper-pagination-bullets-dynamic {
+  overflow: hidden;
+  font-size: 0;
+}
+.swiper-pagination-bullets-dynamic .swiper-pagination-bullet {
+  -webkit-transform: scale(0.33);
+  -ms-transform: scale(0.33);
+  transform: scale(0.33);
+  position: relative;
+}
+.swiper-pagination-bullets-dynamic .swiper-pagination-bullet-active {
+  -webkit-transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1);
+}
+.swiper-pagination-bullets-dynamic .swiper-pagination-bullet-active-main {
+  -webkit-transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1);
+}
+.swiper-pagination-bullets-dynamic .swiper-pagination-bullet-active-prev {
+  -webkit-transform: scale(0.66);
+  -ms-transform: scale(0.66);
+  transform: scale(0.66);
+}
+.swiper-pagination-bullets-dynamic .swiper-pagination-bullet-active-prev-prev {
+  -webkit-transform: scale(0.33);
+  -ms-transform: scale(0.33);
+  transform: scale(0.33);
+}
+.swiper-pagination-bullets-dynamic .swiper-pagination-bullet-active-next {
+  -webkit-transform: scale(0.66);
+  -ms-transform: scale(0.66);
+  transform: scale(0.66);
+}
+.swiper-pagination-bullets-dynamic .swiper-pagination-bullet-active-next-next {
+  -webkit-transform: scale(0.33);
+  -ms-transform: scale(0.33);
+  transform: scale(0.33);
+}
+.swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  display: inline-block;
+  border-radius: 100%;
+  background: #000;
+  opacity: 0.2;
+}
+button.swiper-pagination-bullet {
+  border: none;
+  margin: 0;
+  padding: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+.swiper-pagination-clickable .swiper-pagination-bullet {
+  cursor: pointer;
+}
+.swiper-pagination-bullet-active {
+  opacity: 1;
+  background: #007aff;
+}
+.swiper-container-vertical &gt; .swiper-pagination-bullets {
+  right: 10px;
+  top: 50%;
+  -webkit-transform: translate3d(0px, -50%, 0);
+  transform: translate3d(0px, -50%, 0);
+}
+.swiper-container-vertical &gt; .swiper-pagination-bullets .swiper-pagination-bullet {
+  margin: 6px 0;
+  display: block;
+}
+.swiper-container-vertical &gt; .swiper-pagination-bullets.swiper-pagination-bullets-dynamic {
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  width: 8px;
+}
+.swiper-container-vertical &gt; .swiper-pagination-bullets.swiper-pagination-bullets-dynamic .swiper-pagination-bullet {
+  display: inline-block;
+  -webkit-transition: 200ms top, 200ms -webkit-transform;
+  transition: 200ms top, 200ms -webkit-transform;
+  -o-transition: 200ms transform, 200ms top;
+  transition: 200ms transform, 200ms top;
+  transition: 200ms transform, 200ms top, 200ms -webkit-transform;
+}
+.swiper-container-horizontal &gt; .swiper-pagination-bullets .swiper-pagination-bullet {
+  margin: 0 4px;
+}
+.swiper-container-horizontal &gt; .swiper-pagination-bullets.swiper-pagination-bullets-dynamic {
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+.swiper-container-horizontal &gt; .swiper-pagination-bullets.swiper-pagination-bullets-dynamic .swiper-pagination-bullet {
+  -webkit-transition: 200ms left, 200ms -webkit-transform;
+  transition: 200ms left, 200ms -webkit-transform;
+  -o-transition: 200ms transform, 200ms left;
+  transition: 200ms transform, 200ms left;
+  transition: 200ms transform, 200ms left, 200ms -webkit-transform;
+}
+.swiper-container-horizontal.swiper-container-rtl &gt; .swiper-pagination-bullets-dynamic .swiper-pagination-bullet {
+  -webkit-transition: 200ms right, 200ms -webkit-transform;
+  transition: 200ms right, 200ms -webkit-transform;
+  -o-transition: 200ms transform, 200ms right;
+  transition: 200ms transform, 200ms right;
+  transition: 200ms transform, 200ms right, 200ms -webkit-transform;
+}
+/* Progress */
+.swiper-pagination-progressbar {
+  background: rgba(0, 0, 0, 0.25);
+  position: absolute;
+}
+.swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
+  background: #007aff;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-transform: scale(0);
+  -ms-transform: scale(0);
+  transform: scale(0);
+  -webkit-transform-origin: left top;
+  -ms-transform-origin: left top;
+  transform-origin: left top;
+}
+.swiper-container-rtl .swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
+  -webkit-transform-origin: right top;
+  -ms-transform-origin: right top;
+  transform-origin: right top;
+}
+.swiper-container-horizontal &gt; .swiper-pagination-progressbar,
+.swiper-container-vertical &gt; .swiper-pagination-progressbar.swiper-pagination-progressbar-opposite {
+  width: 100%;
+  height: 4px;
+  left: 0;
+  top: 0;
+}
+.swiper-container-vertical &gt; .swiper-pagination-progressbar,
+.swiper-container-horizontal &gt; .swiper-pagination-progressbar.swiper-pagination-progressbar-opposite {
+  width: 4px;
+  height: 100%;
+  left: 0;
+  top: 0;
+}
+.swiper-pagination-white .swiper-pagination-bullet-active {
+  background: #ffffff;
+}
+.swiper-pagination-progressbar.swiper-pagination-white {
+  background: rgba(255, 255, 255, 0.25);
+}
+.swiper-pagination-progressbar.swiper-pagination-white .swiper-pagination-progressbar-fill {
+  background: #ffffff;
+}
+.swiper-pagination-black .swiper-pagination-bullet-active {
+  background: #000000;
+}
+.swiper-pagination-progressbar.swiper-pagination-black {
+  background: rgba(0, 0, 0, 0.25);
+}
+.swiper-pagination-progressbar.swiper-pagination-black .swiper-pagination-progressbar-fill {
+  background: #000000;
+}
+.swiper-pagination-lock {
+  display: none;
+}
+/* Scrollbar */
+.swiper-scrollbar {
+  border-radius: 10px;
+  position: relative;
+  -ms-touch-action: none;
+  background: rgba(0, 0, 0, 0.1);
+}
+.swiper-container-horizontal &gt; .swiper-scrollbar {
+  position: absolute;
+  left: 1%;
+  bottom: 3px;
+  z-index: 50;
+  height: 5px;
+  width: 98%;
+}
+.swiper-container-vertical &gt; .swiper-scrollbar {
+  position: absolute;
+  right: 3px;
+  top: 1%;
+  z-index: 50;
+  width: 5px;
+  height: 98%;
+}
+.swiper-scrollbar-drag {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  left: 0;
+  top: 0;
+}
+.swiper-scrollbar-cursor-drag {
+  cursor: move;
+}
+.swiper-scrollbar-lock {
+  display: none;
+}
+.swiper-zoom-container {
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-align: center;
+}
+.swiper-zoom-container &gt; img,
+.swiper-zoom-container &gt; svg,
+.swiper-zoom-container &gt; canvas {
+  max-width: 100%;
+  max-height: 100%;
+  -o-object-fit: contain;
+  object-fit: contain;
+}
+.swiper-slide-zoomed {
+  cursor: move;
+}
+/* Preloader */
+.swiper-lazy-preloader {
+  width: 42px;
+  height: 42px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -21px;
+  margin-top: -21px;
+  z-index: 10;
+  -webkit-transform-origin: 50%;
+  -ms-transform-origin: 50%;
+  transform-origin: 50%;
+  -webkit-animation: swiper-preloader-spin 1s steps(12, end) infinite;
+  animation: swiper-preloader-spin 1s steps(12, end) infinite;
+}
+.swiper-lazy-preloader:after {
+  display: block;
+  content: '';
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D'0%200%20120%20120'%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20xmlns%3Axlink%3D'http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink'%3E%3Cdefs%3E%3Cline%20id%3D'l'%20x1%3D'60'%20x2%3D'60'%20y1%3D'7'%20y2%3D'27'%20stroke%3D'%236c6c6c'%20stroke-width%3D'11'%20stroke-linecap%3D'round'%2F%3E%3C%2Fdefs%3E%3Cg%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(30%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(60%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(90%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(120%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(150%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.37'%20transform%3D'rotate(180%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.46'%20transform%3D'rotate(210%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.56'%20transform%3D'rotate(240%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.66'%20transform%3D'rotate(270%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.75'%20transform%3D'rotate(300%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.85'%20transform%3D'rotate(330%2060%2C60)'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+  background-position: 50%;
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+.swiper-lazy-preloader-white:after {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D'0%200%20120%20120'%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20xmlns%3Axlink%3D'http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink'%3E%3Cdefs%3E%3Cline%20id%3D'l'%20x1%3D'60'%20x2%3D'60'%20y1%3D'7'%20y2%3D'27'%20stroke%3D'%23fff'%20stroke-width%3D'11'%20stroke-linecap%3D'round'%2F%3E%3C%2Fdefs%3E%3Cg%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(30%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(60%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(90%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(120%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(150%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.37'%20transform%3D'rotate(180%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.46'%20transform%3D'rotate(210%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.56'%20transform%3D'rotate(240%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.66'%20transform%3D'rotate(270%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.75'%20transform%3D'rotate(300%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.85'%20transform%3D'rotate(330%2060%2C60)'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+}
+@-webkit-keyframes swiper-preloader-spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes swiper-preloader-spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+/* a11y */
+.swiper-container .swiper-notification {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  opacity: 0;
+  z-index: -1000;
+}
+.swiper-container-fade.swiper-container-free-mode .swiper-slide {
+  -webkit-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.swiper-container-fade .swiper-slide {
+  pointer-events: none;
+  -webkit-transition-property: opacity;
+  -o-transition-property: opacity;
+  transition-property: opacity;
+}
+.swiper-container-fade .swiper-slide .swiper-slide {
+  pointer-events: none;
+}
+.swiper-container-fade .swiper-slide-active,
+.swiper-container-fade .swiper-slide-active .swiper-slide-active {
+  pointer-events: auto;
+}
+.swiper-container-cube {
+  overflow: visible;
+}
+.swiper-container-cube .swiper-slide {
+  pointer-events: none;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  z-index: 1;
+  visibility: hidden;
+  -webkit-transform-origin: 0 0;
+  -ms-transform-origin: 0 0;
+  transform-origin: 0 0;
+  width: 100%;
+  height: 100%;
+}
+.swiper-container-cube .swiper-slide .swiper-slide {
+  pointer-events: none;
+}
+.swiper-container-cube.swiper-container-rtl .swiper-slide {
+  -webkit-transform-origin: 100% 0;
+  -ms-transform-origin: 100% 0;
+  transform-origin: 100% 0;
+}
+.swiper-container-cube .swiper-slide-active,
+.swiper-container-cube .swiper-slide-active .swiper-slide-active {
+  pointer-events: auto;
+}
+.swiper-container-cube .swiper-slide-active,
+.swiper-container-cube .swiper-slide-next,
+.swiper-container-cube .swiper-slide-prev,
+.swiper-container-cube .swiper-slide-next + .swiper-slide {
+  pointer-events: auto;
+  visibility: visible;
+}
+.swiper-container-cube .swiper-slide-shadow-top,
+.swiper-container-cube .swiper-slide-shadow-bottom,
+.swiper-container-cube .swiper-slide-shadow-left,
+.swiper-container-cube .swiper-slide-shadow-right {
+  z-index: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+.swiper-container-cube .swiper-cube-shadow {
+  position: absolute;
+  left: 0;
+  bottom: 0px;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: 0.6;
+  -webkit-filter: blur(50px);
+  filter: blur(50px);
+  z-index: 0;
+}
+.swiper-container-flip {
+  overflow: visible;
+}
+.swiper-container-flip .swiper-slide {
+  pointer-events: none;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  z-index: 1;
+}
+.swiper-container-flip .swiper-slide .swiper-slide {
+  pointer-events: none;
+}
+.swiper-container-flip .swiper-slide-active,
+.swiper-container-flip .swiper-slide-active .swiper-slide-active {
+  pointer-events: auto;
+}
+.swiper-container-flip .swiper-slide-shadow-top,
+.swiper-container-flip .swiper-slide-shadow-bottom,
+.swiper-container-flip .swiper-slide-shadow-left,
+.swiper-container-flip .swiper-slide-shadow-right {
+  z-index: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+.swiper-container-coverflow .swiper-wrapper {
+  /* Windows 8 IE 10 fix */
+  -ms-perspective: 1200px;
+}
+.template-compose .tile-container{position:relative}.template-compose .tile-container .edit-tile-link{position:absolute;top:0;top:0;left:0;left:0}#tiles-list #audiogallery img{overflow:hidden;-webkit-box-sizing:border-box;box-sizing:border-box;width:32px;height:32px;padding-left:32px;background:url(++resource++brasil.gov.tiles/img/tile-audiogallery.png) no-repeat center center}#tiles-list #audio img{overflow:hidden;-webkit-box-sizing:border-box;box-sizing:border-box;width:32px;height:32px;padding-left:32px;background:url(++resource++brasil.gov.tiles/img/tile-audio.png) no-repeat center center}#tiles-list #nitf img{overflow:hidden;-webkit-box-sizing:border-box;box-sizing:border-box;width:32px;height:32px;padding-left:32px;background:url(++resource++brasil.gov.tiles/img/tile-article.png) no-repeat center center}#tiles-list #videogallery img{overflow:hidden;-webkit-box-sizing:border-box;box-sizing:border-box;width:32px;height:32px;padding-left:32px;background:url(++resource++brasil.gov.tiles/img/tile-mediagallery.png) no-repeat center center}#tiles-list #video img{overflow:hidden;-webkit-box-sizing:border-box;box-sizing:border-box;width:32px;height:32px;padding-left:32px;background:url(++resource++brasil.gov.tiles/img/tile-media.png) no-repeat center center}#tiles-list #standaloneheader img{overflow:hidden;-webkit-box-sizing:border-box;box-sizing:border-box;width:32px;height:32px;padding-left:32px;background:url(++resource++brasil.gov.tiles/img/tile-header.png) no-repeat center center}#tiles-list #agenda img{overflow:hidden;-webkit-box-sizing:border-box;box-sizing:border-box;width:32px;height:32px;padding-left:32px;background:url(++resource++brasil.gov.tiles/img/tile-agenda.png) no-repeat center center}#tiles-list #albuns img{overflow:hidden;-webkit-box-sizing:border-box;box-sizing:border-box;width:32px;height:32px;padding-left:32px;background:url(++resource++brasil.gov.tiles/img/tile-albuns.png) no-repeat center center}.album-tile{border:1px solid #D5D5D5;border-radius:5px;background-color:#EDEFF1}.album-tile .no-albums{display:table-cell;height:80px;padding:10px;vertical-align:middle}#content .album-tile img{border-top:1px solid #505050;border-bottom:1px solid #505050;border-radius:0}.tile .gallery-title,.tile .album-title{font-family:'open_sansbold', Arial, Helvetica, sans-serif;color:#454545}.tile .gallery-title{font-size:1.25em;margin:14px 12px 23px 12px;padding:0}.width-16 .tile .album-title,.width-16 .tile .album-description{width:420px !important;min-height:1px}.width-16 .tile .album-title,.width-16 .tile .album-description{overflow:hidden;max-height:2.8em}.width-10 .tile .album-title{overflow:hidden;max-height:2.8em}.width-10 .tile .album-description{overflow:hidden;min-width:468px;max-height:2.8em}.width-5 .tile .album-title,.width-5 .tile .album-description{overflow:hidden;max-height:5.8em !important}.mobile .tile .album-title,.mobile .tile .album-description{overflow:hidden;max-height:5.8em !important}.tile .album-title,.tile .album-description{font-size:1.05em;display:block;min-width:208px;max-width:468px;margin:10px;padding:0}.tile .album-title{display:block;margin:10px}.tile .album-description{font-style:italic;float:left;overflow:hidden;margin:0 10px 5px}.mobile .album-tile .album-description,.mobile .album-tile .album-title{width:90% !important;min-width:90% !important}.album-tile .player{position:relative}.album-tile .cycle-hover{position:absolute;z-index:100;top:0;float:left;overflow:hidden;width:100%}.album-tile .cycle-hover:hover .cycle-prev,.album-tile .cycle-hover:hover .cycle-next{display:block}.album-tile .cycle-hover .cycle-prev,.album-tile .cycle-hover .cycle-next{position:absolute;z-index:100;top:50%;display:none;overflow:hidden;width:42px;height:40px;margin-top:-20px;white-space:nowrap;text-indent:100%;background:url(++resource++brasil.gov.tiles/img/icons-setas.png)}#content .album-tile .thumb-itens{width:129px;height:85px;margin:7px;border:1px solid #D5D5D5 !important;border-radius:0}.album-tile .thumb-itens .table-align{display:table-cell;height:87px;vertical-align:middle}.album-tile .thumb-itens img{width:128px;height:85px;border:none !important;border-radius:0}.album-tile .cycle-hover .cycle-prev{left:20px}.album-tile .cycle-hover .cycle-next{right:20px;background-position:-43px 0}.album-tile .cycle-carrossel{position:absolute !important;height:101px;margin:0 36px !important}.album-tile .carousel{position:relative;height:101px;margin:10px 5px 10px;border:1px solid #D5D5D5;background:#FFF}.album-tile .cycle-nagivation .cycle-prev,.album-tile .cycle-nagivation .cycle-next{position:absolute;top:50%;display:block;overflow:hidden;width:22px;height:22px;margin-top:-11px;white-space:nowrap;text-indent:100%;background:url(++resource++brasil.gov.tiles/img/icons-setas-min.png)}.album-tile .cycle-nagivation .cycle-prev{left:7px}.album-tile .cycle-nagivation .cycle-next{right:7px;background-position:22px 0}.album-tile .open-album,.album-tile .download-album{font-size:.8em;line-height:2.5em;display:block;float:left;overflow:hidden;width:112px;margin-left:10px;text-align:left;text-transform:uppercase;color:#335277 !important}.album-tile .open-album{margin-right:20px}.album-tile .download-album{width:149px}.album-tile .icon-camera,.album-tile .icon-download{display:block;float:right;overflow:hidden;width:22px;height:22px;white-space:nowrap;background-image:url(++resource++brasil.gov.tiles/img/icon-camera-download.png)}.album-tile .icon-camera{background-position:0 0}.album-tile .icon-download{background-position:-36px 0}.mobile .album-tile .footer{width:95%}.album-tile .footer{font-size:.8em;overflow:hidden;padding:10px 7px;text-align:right;text-transform:uppercase;border-top:1px solid #D5D5D5}.album-tile .footer a{float:right;color:#335277 !important}.album-tile .footer a:after{display:block;float:right;width:14px;height:14px;margin-left:7px;content:'';background:url(++resource++brasil.gov.tiles/img/footer-arrow.png) no-repeat scroll right center transparent}body.contraste .album-tile{background:#000 !important}body.contraste .album-tile .album-title{color:#FFF !important}body.contraste .album-tile .carousel{border:1px solid #FFF;background:#000}body.contraste .album-tile .footer a:after{width:20px;height:20px;background:url(++resource++brasil.gov.tiles/img/seta_branca.png) no-repeat transparent !important}.audio-tile .title{font-family:'open_sansbold', Arial, Helvetica, sans-serif;font-size:15px;font-weight:normal;margin-bottom:15px}div.jp-audio,div.jp-audio-stream{font-family:Verdana, Arial, sans-serif;font-size:1.25em;line-height:1.6;color:#666;border:1px solid #E0E0E0;border-radius:5px 5px 5px 5px;background-color:#EEE;-webkit-box-shadow:0 0 5px 1px #CCC;box-shadow:0 0 5px 1px #CCC}div.jp-audio{width:100%;margin-bottom:5px}div.jp-audio-stream{width:182px}div.jp-interface{position:relative;width:100%;background-color:#EDEEF2}div.jp-audio div.jp-type-single div.jp-interface,div.jp-audio-stream div.jp-type-single div.jp-interface{height:48px}div.jp-controls-holder{position:relative;top:-8px;clear:both;overflow:hidden;width:440px;margin:0 auto}div.jp-interface ul.jp-controls{position:absolute;overflow:hidden;width:100%;margin:0;padding:0;list-style-type:none}div.jp-audio ul.jp-controls{margin:0 !important;padding:10px 0}div.jp-audio-stream ul.jp-controls{width:142px;padding:20px 20px 0 20px}div.jp-interface ul.jp-controls li{display:inline !important;float:left}div.jp-interface ul.jp-controls a{display:block;overflow:hidden;text-indent:-9999px}a.jp-play,a.jp-pause{position:relative;left:10px;width:23px;height:23px}a.jp-play{background:url(++resource++brasil.gov.tiles/img/jplayer.blue.monday.png) 0 0 no-repeat}a.jp-play:hover{background:url(++resource++brasil.gov.tiles/img/jplayer.blue.monday.png) -41px 0 no-repeat}a.jp-pause{display:none;background:url(++resource++brasil.gov.tiles/img/jplayer.blue.monday.png) 0 -42px no-repeat}a.jp-pause:hover{background:url(++resource++brasil.gov.tiles/img/jplayer.blue.monday.png) -41px -42px no-repeat}a.jp-previous,a.jp-next{width:28px;height:28px;margin-top:6px}a.jp-previous{background:url(++resource++brasil.gov.tiles/img/jplayer.blue.monday.png) 0 -112px no-repeat}a.jp-previous:hover{background:url(++resource++brasil.gov.tiles/img/jplayer.blue.monday.png) -29px -112px no-repeat}a.jp-next{background:url(++resource++brasil.gov.tiles/img/jplayer.blue.monday.png) 0 -141px no-repeat}a.jp-next:hover{background:url(++resource++brasil.gov.tiles/img/jplayer.blue.monday.png) -29px -141px no-repeat}div.jp-progress{overflow:hidden;background-color:#DDD}div.jp-audio div.jp-progress{position:relative;top:15px;display:block;clear:both;height:15px}div.jp-audio div.jp-type-single div.jp-progress{width:100%}.jp-progress-time-wrapper{display:block;height:50px;padding-right:45px;padding-left:45px}div.jp-seek-bar{width:0;height:100%;cursor:pointer;background:url(++resource++brasil.gov.tiles/img/jplayer.blue.monday.png) 0 -202px repeat-x}div.jp-play-bar{width:0;height:100%;background:url(++resource++brasil.gov.tiles/img/jplayer.blue.monday.png) 0 -218px repeat-x}div.jp-seeking-bg{background:url(++resource++brasil.gov.tiles/img/jplayer.blue.monday.seeking.gif)}a.jp-mute,a.jp-unmute{position:absolute;top:15px;right:15px;width:18px;height:15px;margin-top:0;vertical-align:middle}div.jp-audio div.jp-type-single a.jp-mute,div.jp-audio div.jp-type-single a.jp-unmute{margin-left:210px}div.jp-audio-stream div.jp-type-single a.jp-mute,div.jp-audio-stream div.jp-type-single a.jp-unmute{margin-left:10px}a.jp-mute{background:url(++resource++brasil.gov.tiles/img/jplayer.blue.monday.png) 0 -186px no-repeat}a.jp-mute:hover{background:url(++resource++brasil.gov.tiles/img/jplayer.blue.monday.png) -19px -186px no-repeat}a.jp-unmute{display:none;background:url(++resource++brasil.gov.tiles/img/jplayer.blue.monday.png) -60px -170px no-repeat}a.jp-unmute:hover{background:url(++resource++brasil.gov.tiles/img/jplayer.blue.monday.png) -79px -170px no-repeat}div.jp-volume-bar{position:absolute;overflow:hidden;width:35px;height:5px;cursor:pointer;background:url(++resource++brasil.gov.tiles/img/jplayer.blue.monday.png) 0 -250px repeat-x}div.jp-audio div.jp-volume-bar{top:37px;right:5px}div.jp-audio-stream div.jp-volume-bar{top:37px;left:92px}div.jp-volume-bar-value{width:0;height:5px;background:url(++resource++brasil.gov.tiles/img/jplayer.blue.monday.png) 0 -256px repeat-x}div.jp-audio div.jp-time-holder{font-size:10px;line-height:15px;position:relative;top:15px;display:block;clear:both;height:15px;text-align:right}div.jp-audio div.jp-type-single div.jp-time-holder{width:100%}.jp-current-time{font-size:10px;font-style:oblique;width:60px}.jp-duration{font-size:10px;font-style:oblique;width:60px;text-align:right}span.jp-artist{font-size:.8em;color:#666}div.jp-jplayer{width:0;height:0;background-color:#000}div.jp-jplayer audio{width:0;height:0}ul.jp-toggles{overflow:hidden;margin:0 auto;padding:0;list-style-type:none}div.jp-audio .jp-type-single ul.jp-toggles{width:25px}ul.jp-toggles li{display:block;float:right}ul.jp-toggles li a{line-height:100%;display:block;width:25px;height:18px;text-indent:-9999px}a.jp-full-screen{margin-left:20px;background:url(++resource++brasil.gov.tiles/img/jplayer.blue.monday.png) 0 -310px no-repeat}a.jp-full-screen:hover{background:url(++resource++brasil.gov.tiles/img/jplayer.blue.monday.png) -30px -310px no-repeat}a.jp-restore-screen{margin-left:20px;background:url(++resource++brasil.gov.tiles/img/jplayer.blue.monday.png) -60px -310px no-repeat}a.jp-restore-screen:hover{background:url(++resource++brasil.gov.tiles/img/jplayer.blue.monday.png) -90px -310px no-repeat}a.jp-shuffle{margin-left:5px;background:url(++resource++brasil.gov.tiles/img/jplayer.blue.monday.png) 0 -270px no-repeat}a.jp-shuffle:hover{background:url(++resource++brasil.gov.tiles/img/jplayer.blue.monday.png) -30px -270px no-repeat}a.jp-shuffle-off{margin-left:5px;background:url(++resource++brasil.gov.tiles/img/jplayer.blue.monday.png) -60px -270px no-repeat}a.jp-shuffle-off:hover{background:url(++resource++brasil.gov.tiles/img/jplayer.blue.monday.png) -90px -270px no-repeat}.jp-no-solution{font-size:.8em;display:none;padding:5px;color:#000;border:2px solid #009BE3;background-color:#EEE}.jp-no-solution a{color:#000}.jp-no-solution span{font-size:1em;font-weight:bold;display:block;text-align:center}#content .audiogallery-tile .selected{display:none}.audiogallery-tile{margin-bottom:20px;border:1px solid #D4D4D6;background-color:#EEEFF1}.audiogallery-title-container .gallery-tile{font-family:'open_sansbold', Arial, Helvetica, sans-serif;font-weight:normal;padding:10px 15px 10px 10px;color:#454545;border-bottom:1px solid #D4D4D6}.audiogallery-player-container{padding:10px 15px;border-bottom:1px dotted #D4D4D6}.audiogallery-player-container .audiogallery-item-title{padding-top:10px}#content .audiogallery-items-container ul{margin:0}#content .audiogallery-items-container li{padding:10px 15px;list-style:none outside none;border-bottom:1px dotted #D4D4D6}#content .audiogallery-items-container .audiogallery-item{font-family:'open_sansbold', Arial, Helvetica, sans-serif;font-weight:normal;display:block;padding-left:20px;background:url(++resource++brasil.gov.tiles/img/sound-icon.png) no-repeat scroll left 0 transparent}.audiogallery-footer-container{padding:5px 15px;text-align:right}.audiogallery-footer-container .audiogallery-footer-link{font-size:.916em;line-height:14px;display:inline-block;margin-bottom:6px;padding-right:25px;text-transform:uppercase;background:url(++resource++brasil.gov.tiles/img/footer-arrow.png) no-repeat scroll right 0 transparent}.banner-tile{float:left}.banner-tile img{margin:0}div[data-tile*='collective.cover.banner']{overflow:hidden}#content .banner-tile .copyright,#content .newsImageContainer .copyright,#content .mediacarousel .rights{font-family:Arial, Helvetica, sans-serif;font-size:.9em;font-style:italic;line-height:2em;float:right;margin:0 .8em 0 0;color:#000}.banner-tile .copyright+a,.newsImageContainer .copyright+a{display:block;clear:both}#featured-content .banner-tile{float:none}.brasil-videocarousel-tile{display:block}.brasil-videocarousel-tile .swiper-video{position:relative;width:28%;margin:0 0}.brasil-videocarousel-tile .swiper-video img{max-width:100%;height:auto}.brasil-videocarousel-tile .swiper-video .imag:after{font-weight:700;line-height:40px;position:absolute;top:36%;left:45%;width:40px;height:40px;content:'\25B6';text-align:center;color:#FFF;border-radius:30px;background-color:#222}.brasil-videocarousel-tile .tile-header{text-align:center}.brasil-videocarousel-tile .tile-header p{opacity:.5;color:#333}.brasil-videocarousel-tile .carousel-thumbs{-webkit-box-sizing:border-box;box-sizing:border-box;width:100% !important;padding:0 0 30px 0}.brasil-videocarousel-tile .swiper-container{height:100%}.brasil-videocarousel-tile .swiper-slide{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:space-evenly;-ms-flex-pack:space-evenly;justify-content:space-evenly}.brasil-videocarousel-tile .switch-carousel li{display:inline-block !important;margin:0 25px;padding:10px;cursor:pointer;text-transform:uppercase}.brasil-videocarousel-tile .switch-carousel li.active{border-bottom:5px solid #333}.brasil-videocarousel-tile .switch-carousel ul{margin:0 0 20px 0;text-align:center;border-bottom:1px solid #CCC}.brasil-videocarousel-tile .swiper-button-white,.brasil-videocarousel-tile .swiper-button-white.disabled{width:30px;height:30px;padding:0;border-radius:47px;background-color:#37120D;background-size:30%}.brasil-videocarousel-tile .swiper-pagination-bullet{width:30px;border-radius:0}.brasil-videocarousel-tile .swiper-pagination-bullet-active{background:#FF6D26}.brasil-videocarousel-tile .swiper-button-next,.brasil-videocarousel-tile .swiper-button-prev{top:38%}.video-player{position:fixed;z-index:999;top:0;right:0;bottom:0;left:0;display:-webkit-box;display:-ms-flexbox;display:flex;background:rgba(0,0,0,0.75);align-items:center;-webkit-box-align:center;-webkit-box-pack:center;-ms-flex-align:center;-ms-flex-pack:center;justify-content:center}.video-player iframe{width:1140px !important;max-width:100%}div[data-tile*='collective.cover.embed']{overflow:hidden;max-width:766px;max-height:574px}div[data-tile*='collective.cover.embed'] .samba-player{position:relative;overflow:hidden;width:100% !important;height:0;height:100% !important;padding-top:30px;padding-bottom:56.25%}div[data-tile*='collective.cover.embed'] .samba-player iframe,div[data-tile*='collective.cover.embed'] .samba-player object,div[data-tile*='collective.cover.embed'] .samba-player embed{position:absolute;top:0;left:0;width:100%;height:100%}.outstanding-header{position:relative}.outstanding-link{right:0;display:inline-block;float:right}#content .poll-tile{border:1px solid #D4D5D7;border-radius:.5em .5em 0 0;background-color:#EEEFF1}#content .poll-tile .poll-tile-header{padding:1.7em 1em;border-bottom:1px solid #D4D5D7;border-radius:.5em .5em 0 0;background-color:#F8F9F9}#content .poll-tile .poll-tile-header&gt;h3{font-size:1em;color:#365073}#content .poll-tile .tile-content-wrapper&gt;.poll-graph&gt;p{font-weight:bold;padding:1em 1em 0 1em}#content .poll-tile .tile-content-wrapper&gt;.poll-graph&gt;.poll-data{padding:0 1em}#content .poll-tile .tile-content-wrapper&gt;.poll-spinner{padding:0}#content .poll-tile .tile-content-wrapper form label{font-weight:normal;display:inline-block}#content .poll-tile .tile-content-wrapper form input[type=radio]{float:left;clear:both;margin:1em 0 1em 1em}#content .poll-tile .tile-content-wrapper form input[type=radio]+span{line-height:3.3em;display:block;margin-left:2.8em;color:#335277}#content .poll-tile .tile-content-wrapper form input[type=submit]{font-family:'open_sansbold', Arial, Helvetica, sans-serif;font-size:1.1em;width:100%;margin-top:1em;padding:.8em 0 .8em 3em;text-align:left;text-transform:uppercase;color:#FFF;border:none;background:#456183 url(++resource++brasil.gov.tiles/img/readmorewhiteblue.png) no-repeat 1em center}#content .poll-tile .poll-form&gt;.toggle-result,#content .poll-tile .total-votes{font-size:.8em;display:block;padding:1em;padding-top:1em;text-align:right;text-transform:uppercase}.video-tile{max-width:766px;max-height:575px}.video-container{position:relative;overflow:hidden;height:0;padding-top:30px;padding-bottom:56.25%}.video-container iframe,.video-container object,.video-container embed{position:absolute;top:0;left:0;width:100%;height:100%}.video-container+a{line-height:2em;clear:both}#content .tile .tile-description{line-height:16px}#content #tile-configure.modal{top:10% !important}.videogallery-tile{color:#FFF;border-radius:5px 5px 5px 5px;background-color:#072D6C}#content .videogallery-tile .gallery-tile{font-family:'open_sansregular', Arial, Helvetica, sans-serif;font-size:22px;font-weight:normal;margin:0;padding:15px;text-transform:uppercase;color:#FFF;border-bottom:1px solid #2E5493}.videogallery-tile .player-metadata{padding:10px 0}.player-metadata .title{font-weight:bold;padding-bottom:10px;color:#CDE1FA}.subtitle{font-family:'open_sansbold', Arial, Helvetica, sans-serif;font-size:11px;font-weight:normal;text-transform:uppercase;color:#667CAE}.videogallery-tile .description{font-family:Arial, Helvetica, sans-serif;color:#D1E1FF}.videogallery-tile .gallery-footer{font-size:.916em;padding:15px;text-align:right;text-transform:uppercase;border-top:1px dotted #305492;border-radius:0 0 5px 5px;background-color:#062458}.videogallery-tile .gallery-footer a{line-height:20px;display:inline-block;height:20px;padding-right:25px;color:#D1E2FF !important;background:url(++resource++brasil.gov.tiles/img/footer-arrow_jpg.png) no-repeat scroll right 0 transparent}#content .gallery-footer a:hover{text-decoration:underline;color:#D1E2FF !important}.videogallery-tile .selected{display:none}.gallery-element-link{float:left;overflow:hidden;width:80px;height:60px;margin:0 5% 5% 0;text-align:center}#content .gallery-element-link img{border-radius:0 0 0 0}.galery-items-wrapper{margin:0}.gallery-element-wrapper{padding:15px 15px}.gallery-element{float:left;width:100%;border-bottom:1px dotted #305492}.gallery-element-metadata{overflow:hidden;height:60px}.gallery-element-metadata .description{display:none}#content .gallery-element-metadata .title{font-family:Arial, Helvetica, sans-serif;font-size:12px;color:#D1E1FF}.player-holder iframe{width:100%;height:auto}.width-8 .videogallery-tile .gallery-footer,.width-10 .videogallery-tile .gallery-footer{border-top:none}.width-8 .gallery-element,.width-10 .gallery-element,.gallery-2-columns .gallery-element{width:50%}.width-8 .gallery-element-wrapper,.width-10 .gallery-element-wrapper,.gallery-2-columns .gallery-element-wrapper{border-left:1px dotted #305491}.width-8 .player-video,.width-10 .player-video,.gallery-2-columns .player-video{float:left;width:50%;margin-right:5%}.width-8 .player-holder,.width-10 .player-holder,.gallery-2-columns .player-holder{padding:4%}.width-8 .player-metadata,.width-10 .player-metadata,.gallery-2-columns .player-metadata{padding:0;border-bottom:medium none}.width-5 .gallery-3-columns .player-metadata,.width-5 .gallery-3-columns .player-holder iframe{width:90%;padding:2% 5%}.width-5 .gallery-2-columns .player-video,.width-5 .gallery-2-columns .gallery-element{width:100%}.width-8 .galery-items,.width-10 .galery-items,.width-5 .galery-items,.gallery-2-columns .galery-items{border-top:1px solid #305492}.width-16 .gallery-3-columns .player-holder,.width-15 .gallery-3-columns .player-holder{width:60%;padding:2.5% 2.5% 0;border-right:1px dotted #305492}.width-16 .gallery-3-columns .galery-items{width:34%}.width-15 .gallery-3-columns .galery-items{width:34%}.width-15 .gallery-element.last{border-bottom:none !important}.width-16 .gallery-element.last{border-bottom:none !important}.gallery-3-columns .player-holder{float:left}.gallery-3-columns .galery-items{float:left;margin:0}.gallery-3-columns .player-metadata{border-bottom:medium none}.gallery-3-columns .player-metadata .title{border-bottom:medium none;border-bottom:medium none}.gallery-3-columns .galery-items-wrapper{border-left:1px solid #305492}@media only screen and (min-width: 768px) and (max-width: 960px){.width-8 .gallery-element-metadata,.width-10 .gallery-element-metadata{height:70px !important}}@media only screen and (max-width: 768px){.galery-items{border-top:1px solid #305492}.width-8 .gallery-element,.width-10 .gallery-element{width:100% !important}.width-8 .player-video,.width-10 .player-video{width:100% !important;margin:0 0 5% 0 !important}.player-holder{padding:4%;border-bottom:none !important}}#content .brasil-quote-tile a,#content .brasil-quote-tile a:link,#content .brasil-quote-tile a:visited,#content .brasil-quote-tile a:hover{color:#FFF !important}.brasil-quote-tile{position:relative;display:-webkit-box;display:-ms-flexbox;display:flex;height:334px}.brasil-quote-tile .quote-article:before{position:absolute;z-index:-1;top:0;right:0;left:0;display:block;height:334px;content:'.';text-indent:-3000px;opacity:.8;background-color:transparent;background-image:-o-linear-gradient(transparent, #000);background-image:-webkit-gradient(linear, left top, left bottom, from(transparent), to(#000));background-image:linear-gradient(transparent, #000)}.brasil-quote-tile .quote-article{position:relative;display:-webkit-box;display:-ms-flexbox;display:flex;width:50%}.brasil-quote-tile .quote-article .quote-article-content{-ms-flex-item-align:end;align-self:flex-end}.brasil-quote-tile .quote-article img{position:absolute;z-index:-2;top:0;width:100%;height:100%;-o-object-fit:cover;object-fit:cover}.brasil-quote-tile .quote-article .tile-subtitle{line-height:.875rem;display:inline-block;margin:0 115px 0 30px;padding:5px 10px;color:#FFF}.brasil-quote-tile .quote-article h2{font-size:1.75rem;font-weight:800;margin:5px 115px 50px 30px;color:#FFF}.brasil-quote-tile .quote-article .tile-subtitle:before{display:none}.brasil-quote-tile .quote:before{font-size:160px;position:absolute;z-index:-1;top:41%;left:-40px;content:'\2666'}.brasil-quote-tile .quote{font-weight:500;position:relative;width:50%;padding:90px 30px 0 40px;color:#FFF;background-image:url(++resource++brasil.gov.tiles/img/quote.png);background-repeat:no-repeat}.brasil-quote-tile .quote .quote-text{font-size:1.75rem;font-weight:800;line-height:1.25}.brasil-quote-tile .quote .quote-rights{display:-webkit-box;display:-ms-flexbox;display:flex;margin-top:10px}.brasil-quote-tile .quote .quote-rights:before{line-height:1px;display:inline-block;width:30px;height:1px;margin-top:11px;margin-right:5px;content:' ';white-space:nowrap;opacity:.5;border-bottom:1px solid #FFF}.brasil-quote-tile .quote .quote-left{display:none}.brasil-quote-tile.quote-blue .quote,.brasil-quote-tile.quote-blue .tile-subtitle{background-color:#06ACFF}.brasil-quote-tile.quote-blue .quote:before{color:#06ACFF}.brasil-quote-tile.quote-green .quote,.brasil-quote-tile.quote-green .tile-subtitle{background-color:#53CFD0}.brasil-quote-tile.quote-green .quote:before{color:#53CFD0}.potd-tile,.brasil-photogallery-tile{position:relative}.potd-tile .image-container,.brasil-photogallery-tile .image-container{display:inline-block}.potd-tile .image-container img,.brasil-photogallery-tile .image-container img{padding:0 !important;margin:0 !important}.potd-tile .text-body,.brasil-photogallery-tile .text-body{top:40%;position:absolute;margin-left:30px;color:#fff;width:35%}.potd-tile .text-body h2,.brasil-photogallery-tile .text-body h2{color:#fff !important;font-size:2.25rem;margin-bottom:0}.potd-tile .text-body p,.brasil-photogallery-tile .text-body p{color:#fff;font-size:1.375rem !important}.potd-tile .zoom-icon,.brasil-photogallery-tile .zoom-icon{background-image:url(++resource++brasil.gov.tiles/img/image-zoom.png);background-repeat:no-repeat;width:29px;height:29px;text-indent:-5000px;border-bottom:none !important}.potd-tile .download-icon,.brasil-photogallery-tile .download-icon{background-image:url(++resource++brasil.gov.tiles/img/image-download.png);background-repeat:no-repeat;width:29px;height:29px;text-indent:-5000px;border-bottom:none !important}.potd-tile .bottom-bar,.brasil-photogallery-tile .bottom-bar{position:relative;background:#ccc;top:91%;padding:15px 0;width:100%;background:rgba(0,0,0,0.5);margin-top:-58px;display:-webkit-box;display:-ms-flexbox;display:flex}.potd-tile .bottom-bar .tile-credits,.brasil-photogallery-tile .bottom-bar .tile-credits{font-size:0.875rem;font-weight:800;margin-left:30px;color:#fff;-webkit-box-flex:1;-ms-flex:1 auto;flex:1 auto}.potd-tile .bottom-bar .tile-credits:before,.brasil-photogallery-tile .bottom-bar .tile-credits:before{content:"foto: "}.potd-tile .bottom-bar a,.brasil-photogallery-tile .bottom-bar a{margin-right:30px;color:#fff !important}#image-overlay{padding:10%;-webkit-box-sizing:border-box;box-sizing:border-box;max-width:100%;width:100%;margin:0;position:fixed;top:0;right:0;bottom:0;left:0;display:-webkit-box;display:-ms-flexbox;display:flex;background:rgba(0,0,0,0.75);-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}#image-overlay img{width:auto;height:80vh}#image-overlay .pb-image{-webkit-box-shadow:none;box-shadow:none;border:none}.brasil-photogallery-tile .gallery-title{text-align:center}.brasil-photogallery-tile .container-bar{position:relative;background:#ccc;top:91%;padding:15px 0;width:100%;background:rgba(0,0,0,0.5);margin-top:-63px;height:30px}.brasil-photogallery-tile .container-bar .text-bottom .credits,.brasil-photogallery-tile .container-bar .text-bottom .description{margin-bottom:0 !important;line-height:1.2em !important;margin-left:30px;color:#fff;font-size:0.875rem !important}.brasil-photogallery-tile .container-bar .text-bottom .credits{font-weight:800}.brasil-photogallery-tile .container-bar .links-bottom .zoom-icon,.brasil-photogallery-tile .container-bar .links-bottom .download-icon{top:15px;position:absolute;right:0;margin-right:30px}.brasil-photogallery-tile .container-bar .links-bottom .download-icon{margin-right:80px}.brasil-photogallery-tile .swiper-button-prev.swiper-button-white,.brasil-photogallery-tile .swiper-container-rtl .swiper-button-next.swiper-button-white,.brasil-photogallery-tile .swiper-button-next.swiper-button-white,.brasil-photogallery-tile .swiper-container-rtl .swiper-button-prev.swiper-button-white{background-color:rgba(0,0,0,0.5);border-radius:47px;padding:0px;width:48px;height:48px;background-size:30%}#content .brasil-navigation-tile{position:relative;width:1090px;max-width:100%}#content .brasil-navigation-tile .navigation-row{overflow:auto;border-bottom:solid .5px #EEE}#content .brasil-navigation-tile .navigation-title{float:left;font-size:2.25rem !important}#content .brasil-navigation-tile .navigation-items{display:-webkit-box;display:-ms-flexbox;display:flex;float:right;margin-top:20px}#content .brasil-navigation-tile .navigation-items&gt;li{margin:0 0 0 20px;padding:0;font-size:1.125rem;list-style-type:none}#content .brasil-navigation-tile .navigation-items&gt;li:hover a{text-shadow:1px 0px 0px black;color:#000 !important}#content .brasil-navigation-tile .navigation-more&gt;a{position:relative;display:block;overflow:hidden;width:20px;height:20px;white-space:nowrap;text-indent:101%;border-radius:100%;background:#000}#content .brasil-navigation-tile .navigation-more&gt;a::before{font-weight:bold;position:absolute;top:55%;left:-10px;display:block;content:'+';-webkit-transform:translate(-50%, -50%);-ms-transform:translate(-50%, -50%);transform:translate(-50%, -50%);color:#fff}#content .brasil-navigation-tile .navigation-more.open&gt;a::before{-webkit-transform:translate(-42%, -80%) rotate(45deg);-ms-transform:translate(-42%, -80%) rotate(45deg);transform:translate(-42%, -80%) rotate(45deg);color:#069CFF;top:23%;left:-5px}#content .brasil-navigation-tile .navigation-more-items{position:absolute;z-index:2;top:57px;right:0;display:none;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;background:#F6F6F6}#content .brasil-navigation-tile .navigation-more-items.open{display:-webkit-box;display:-ms-flexbox;display:flex}#content .brasil-navigation-tile .navigation-more-items&gt;li{margin:0;padding:3px 20px;list-style-type:none}#content .brasil-navigation-tile .navigation-more-items&gt;li:hover{background:#EEE}#content .brasil-navigation-tile .navigation-more-items&gt;li:hover a{text-shadow:1px 0px 0px black;color:#000 !important}.brasil-groupcarousel-tile{display:block}.brasil-groupcarousel-tile .tile-header{text-align:center}.brasil-groupcarousel-tile .tile-header p{color:#333;opacity:.5}.brasil-groupcarousel-tile .tile-header h2{font-size:2.25rem !important}.brasil-groupcarousel-tile .carousel-thumbs{width:1060px !important;-webkit-box-sizing:border-box;box-sizing:border-box;padding:0 0 30px 0}.brasil-groupcarousel-tile .swiper-slide{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:space-evenly;-ms-flex-pack:space-evenly;justify-content:space-evenly}.brasil-groupcarousel-tile .carousel-item{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;width:20%;text-align:center;padding-top:30px}.brasil-groupcarousel-tile .carousel-item img{float:none !important;margin:0}.brasil-groupcarousel-tile h2{display:table;height:75px;width:100%;font-size:1.55rem}.brasil-groupcarousel-tile h2 a{display:table-cell;vertical-align:middle}.brasil-groupcarousel-tile p{color:#979797}.brasil-groupcarousel-tile .carousel-item:hover{background:#f9f9f9;background-image:url(++resource++brasil.gov.tiles/img/icon-carosel.png);background-repeat:no-repeat;background-position:top right}.brasil-groupcarousel-tile .switch-carousel li{cursor:pointer;display:inline-block !important;padding:10px;margin:0 25px;text-transform:uppercase}.brasil-groupcarousel-tile .switch-carousel li.active{border-bottom:5px solid #333}.brasil-groupcarousel-tile .switch-carousel ul{text-align:center;border-bottom:1px solid #ccc;margin:0 0 20px 0}.brasil-groupcarousel-tile .swiper-button-black,.brasil-groupcarousel-tile .swiper-button-black.disabled{color:#222 !important;opacity:1}.brasil-groupcarousel-tile .swiper-pagination-bullet{border-radius:0;width:30px}.brasil-groupcarousel-tile .swiper-pagination-bullet-active{background:#333}.brasil-groupcarousel-tile .swiper-button-next,.brasil-groupcarousel-tile .swiper-button-prev{height:25px}.brasil-groupcarousel-tile .swiper-button-next.swiper-button-disabled,.brasil-groupcarousel-tile .swiper-button-prev.swiper-button-disabled{opacity:0}.linha-recuada .brasil-highlightscarousel-tile .carousel-thumbs-container{-webkit-transform:translateY(-65px);-ms-transform:translateY(-65px);transform:translateY(-65px)}.linha-recuada .brasil-highlightscarousel-tile .carousel-global-information .carousel-title{margin:40px 0 15px 0}.linha-recuada .brasil-highlightscarousel-tile .carousel-global-information .carousel-description{border-bottom:1px solid #fff;margin:20px auto;padding:20px 0 45px 0}.brasil-highlightscarousel-tile{width:100%}.brasil-highlightscarousel-tile .swiper-container{width:100%;max-width:100%;margin-left:auto;margin-right:auto}.brasil-highlightscarousel-tile .swiper-slide{width:100% !important;background-size:cover;background-position:center}.brasil-highlightscarousel-tile .carousel-thumbs-container{position:relative;z-index:2;width:1060px !important;max-width:100%;margin:-150px auto 0 auto;-webkit-box-sizing:border-box;box-sizing:border-box}.brasil-highlightscarousel-tile .carousel-thumbs{width:963px !important;-webkit-box-sizing:border-box;box-sizing:border-box;display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex-pack:distribute;justify-content:space-around}.brasil-highlightscarousel-tile .swiper-wrapper{width:auto}.brasil-highlightscarousel-tile .carousel-thumbs .swiper-slide{width:170px !important;height:130px;margin-right:30px;overflow:hidden;cursor:pointer}.brasil-highlightscarousel-tile .carousel-thumbs .swiper-slide:last-child{margin-right:0}.brasil-highlightscarousel-tile .carousel-thumbs .swiper-slide.swiper-slide-active{width:154px !important;height:118px;border:6px solid #fff}.brasil-highlightscarousel-tile .carousel-thumbs .carousel-image{height:130px !important;-o-object-fit:cover;object-fit:cover}.brasil-highlightscarousel-tile .carousel-global-information{position:absolute;z-index:2;width:100%;text-align:center;color:#fff;margin:0 auto;padding:10px 0;font-size:1.2rem}.brasil-highlightscarousel-tile .carousel-global-information .carousel-title{color:#fff;font-size:2.25rem;font-family:Raleway, sans-serif;font-weight:bold}.brasil-highlightscarousel-tile .carousel-global-information .carousel-description{width:1150px;max-width:100%;font-size:1.125rem}.brasil-highlightscarousel-tile .carousel-image{width:100%}.brasil-highlightscarousel-tile .carousel-information{position:absolute;top:30%;left:70%;right:10%;color:#fff}.brasil-highlightscarousel-tile .carousel-subtitle{font-size:0.875rem;color:rgba(255,255,255,0.6)}.brasil-highlightscarousel-tile .carousel-title{margin:5px 0;padding:0;font-size:1,75rem;font-weight:900;color:#fff !important;line-height:2.4rem}.brasil-highlightscarousel-tile .carousel-more{background:#fff;border-radius:20px;padding:10px 40px;margin-top:25px;display:inline-block;text-transform:uppercase;font-size:0.875rem}.brasil-highlightscarousel-tile .carousel-more:hover{color:inherit !important}.brasil-highlightscarousel-tile .thumb-title{color:#fff;position:absolute;top:0;left:0;right:0;bottom:0;font-weight:bold;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;height:130px;text-transform:uppercase;text-align:center}.template-compose #content .brasil-highlightscarousel-tile .carousel-thumbs .crop-warning{text-align:center;color:#981818;text-shadow:2px 2px 1px #bfbfbf, 2px -2px 1px #bfbfbf, -2px 2px 1px #bfbfbf, -2px -2px 1px #bfbfbf;font-weight:bold}.template-compose #content .brasil-highlightscarousel-tile .carousel-thumbs .swiper-slide{position:relative}.template-compose #content .brasil-highlightscarousel-tile .carousel-thumbs .crop{position:absolute;top:0;right:0;display:block;width:24px;height:24px}.template-compose #content .brasil-highlightscarousel-tile .carousel-thumbs .crop:link,.template-compose #content .brasil-highlightscarousel-tile .carousel-thumbs .crop:visited{color:#fff}#formfield-brasil-carht-more_link,#formfield-brasil-carht-more_link_text{display:none}@media (max-width: 1024px){.brasil-highlightscarousel-tile .carousel-global-information .carousel-title{margin:21px 0 15px}.brasil-highlightscarousel-tile .carousel-global-information .carousel-description{margin:20px auto;padding:0px 0 25px}.brasil-highlightscarousel-tile .carousel-information{top:27%;left:70%;right:4%}.brasil-highlightscarousel-tile .carousel-thumbs-container{-webkit-transform:translateY(-25px);-ms-transform:translateY(-25px);transform:translateY(-25px);width:930px !important}.brasil-highlightscarousel-tile .carousel-thumbs{width:843px !important}}@media (max-width: 768px){.brasil-highlightscarousel-tile .carousel-global-information .carousel-title{margin:8px 0 5px}.brasil-highlightscarousel-tile .carousel-global-information .carousel-description{margin:13px auto;padding:0 0 12px}.brasil-highlightscarousel-tile .carousel-information{top:25%;left:65%;right:2%}.brasil-highlightscarousel-tile .carousel-thumbs-container{width:768px !important;margin:0;-webkit-transform:translateY(0);-ms-transform:translateY(0);transform:translateY(0)}.brasil-highlightscarousel-tile .carousel-thumbs{width:675px !important}.brasil-highlightscarousel-tile .swiper-button-next,.brasil-highlightscarousel-tile .swiper-button-prev{-webkit-filter:invert(100%);filter:invert(100%)}}@media (max-width: 425px){.brasil-highlightscarousel-tile .carousel-global-information{position:static;-webkit-filter:invert(100%);filter:invert(100%)}.brasil-highlightscarousel-tile .carousel-global-information .carousel-description{display:none}.brasil-highlightscarousel-tile img.carousel-image{float:none;margin-bottom:0}.brasil-highlightscarousel-tile .carousel-information{position:relative;top:0;left:0;right:0;bottom:0}.brasil-highlightscarousel-tile .carousel-information .carousel-subtitle,.brasil-highlightscarousel-tile .carousel-information .carousel-title,.brasil-highlightscarousel-tile .carousel-information .carousel-description{-webkit-filter:invert(100%);filter:invert(100%);margin:0}.brasil-highlightscarousel-tile .carousel-information .carousel-more{position:absolute;top:0;left:0;right:0;bottom:0;opacity:0}.brasil-highlightscarousel-tile .carousel-thumbs-container{display:none}}#content .cover-richtext-tile .share,#content .nitf-basic-tile .share{position:absolute;right:0;bottom:0;display:-webkit-box;display:-ms-flexbox;display:flex;height:29px;margin:0 10px 0 0;list-style:none}#content .cover-richtext-tile .share-item,#content .nitf-basic-tile .share-item{width:20px}#content .cover-richtext-tile .share-item,#content .cover-richtext-tile .share-item&gt;a,#content .nitf-basic-tile .share-item,#content .nitf-basic-tile .share-item&gt;a{display:none}#content .cover-richtext-tile .share-item&gt;a,#content .nitf-basic-tile .share-item&gt;a{overflow:hidden;border-bottom:0;-webkit-transform:scale(0.6);-ms-transform:scale(0.6);transform:scale(0.6);white-space:nowrap;text-indent:-3000px;-webkit-filter:invert(100%);filter:invert(100%)}#content .cover-richtext-tile .share-open,#content .cover-richtext-tile .share-open&gt;a,#content .cover-richtext-tile .share-pinned,#content .cover-richtext-tile .share-pinned&gt;a,#content .nitf-basic-tile .share-open,#content .nitf-basic-tile .share-open&gt;a,#content .nitf-basic-tile .share-pinned,#content .nitf-basic-tile .share-pinned&gt;a{display:block}#content .cover-richtext-tile .share-fb&gt;a,#content .nitf-basic-tile .share-fb&gt;a{background-image:url(++resource++brasil.gov.tiles/img/sprite.png);background-position:0px 0px;width:29px;height:29px}#content .cover-richtext-tile .share-twitter&gt;a,#content .nitf-basic-tile .share-twitter&gt;a{background-image:url(++resource++brasil.gov.tiles/img/sprite.png);background-position:-58px 0px;width:29px;height:29px}#content .cover-richtext-tile .share-linkedin&gt;a,#content .nitf-basic-tile .share-linkedin&gt;a{background-image:url(++resource++brasil.gov.tiles/img/sprite.png);background-position:-29px -29px;width:29px;height:29px}#content .cover-richtext-tile .share-gplus&gt;a,#content .nitf-basic-tile .share-gplus&gt;a{background-image:url(++resource++brasil.gov.tiles/img/sprite.png);background-position:-29px 0px;width:29px;height:29px}#content .cover-richtext-tile .share-link&gt;a,#content .nitf-basic-tile .share-link&gt;a{background-image:url(++resource++brasil.gov.tiles/img/sprite.png);background-position:0px -29px;width:29px;height:29px}#content .cover-richtext-tile .share-more&gt;a,#content .nitf-basic-tile .share-more&gt;a{font-weight:bold;width:20px;border-bottom:0;padding-left:6px;text-align:center}#content .cover-richtext-tile .share-more&gt;a:link,#content .cover-richtext-tile .share-more&gt;a:visited,#content .cover-richtext-tile .share-more&gt;a:hover,#content .nitf-basic-tile .share-more&gt;a:link,#content .nitf-basic-tile .share-more&gt;a:visited,#content .nitf-basic-tile .share-more&gt;a:hover{color:#FFF !important}#content .cover-richtext-tile .share-more.share-open&gt;a,#content .nitf-basic-tile .share-more.share-open&gt;a{font-size:14px;font-weight:normal;-webkit-transform:translateY(4px);-ms-transform:translateY(4px);transform:translateY(4px)}#content .cover-richtext-tile .share{-webkit-transform:translate(-10px, -11px);-ms-transform:translate(-10px, -11px);transform:translate(-10px, -11px)}#content .nitf-basic-tile .share-more&gt;a{-webkit-transform:translateY(-1px);-ms-transform:translateY(-1px);transform:translateY(-1px)}#content .box-branco .cover-richtext-tile .share,#content .box-branco .nitf-basic-tile .share{-webkit-filter:invert(100%);filter:invert(100%)}.tile img{max-width:100%;height:auto}.formControls input.searchButton{display:none}.searchSection label{cursor:pointer}.centered{text-align:center}.centered img{display:none}fieldset#add-on-list{display:none}form.inline-form{display:inline}

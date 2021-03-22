@@ -1,0 +1,1321 @@
+/*
+ * Mapplic - Custom Interactive Map Plugin by @sekler
+ * Version 6.0.2
+ * https://www.mapplic.com/
+ */
+
+/* STYLES */
+.mapplic-element {
+	position: relative;
+	overflow: hidden;
+	font-size: 0;
+	height: 420px;
+}
+
+.mapplic-element input,
+.mapplic-element button,
+.mapplic-element a,
+.mapplic-element a:active {
+	outline: none;
+	box-shadow: none;
+	text-decoration: none !important;
+}
+
+.mapplic-element a:focus {
+	outline: none;
+}
+
+.mapplic-element &gt; * {
+	opacity: 1;
+	transition: opacity 0.4s;
+}
+
+.mapplic-element.mapplic-loading &gt; * {
+	opacity: 0;
+}
+
+.mapplic-element strong {
+	color: #333;
+}
+
+/* Preloader &amp; Error */
+.mapplic-element.mapplic-loading { background: url(images/loader.gif) no-repeat center; }
+.mapplic-element.mapplic-error { background: url(images/error-icon.png) no-repeat center; }
+
+/* Map container */
+.mapplic-container {
+	display: inline-block;
+	position: relative;
+	width: 70%;
+	height: 100%;
+}
+
+.mapplic-map {
+	transform-origin: 0 0;
+}
+
+/* Map layer */
+.mapplic-layer { visibility: hidden; }
+.mapplic-visible.mapplic-layer { visibility: visible; }
+.mapplic-layer img {
+	width: 100%;
+}
+
+.mapplic-map .mapplic-map-image {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+/* IE Fix END */
+
+.mapplic-map.mapplic-zoomable .mapplic-map-image {
+	cursor: url(images/openhand.cur), default;
+}
+
+.mapplic-map.mapplic-zoomable.mapplic-dragging .mapplic-map-image {
+	cursor: url(images/closedhand.cur), move;
+}
+
+/* Marker types */
+.mapplic-pin {
+	background-color: #fb7575;
+	background-image: none;
+	background-position: center;
+	background-repeat: no-repeat;
+	border-radius: 6px;
+	box-shadow: 0 -2px 0 rgba(0, 0, 0, 0.1) inset;
+	box-sizing: border-box;
+	font-size: 0;
+	width: 12px;
+	height: 12px;
+	margin-left: -6px;
+	margin-top: -6px;
+	position: absolute;
+	transform-origin: 50% 50%;
+
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.mapplic-pin:before {
+	box-sizing: content-box !important;
+}
+
+.mapplic-pin.hide {
+	display: none;
+}
+
+.mapplic-pin.mapplic-active {
+	display: block !important;
+}
+
+.mapplic-pin.pin-classic {
+	background-color: #f23543;
+	background-image: none;
+	border-color: #f23543;
+	border-radius: 10px;
+	line-height: 22px !important;
+	width: 20px;
+	height: 20px;
+	margin-top: -22px;
+	margin-left: -10px;
+	transform-origin: 50% 140%;
+}
+
+.mapplic-pin.pin-classic:before {
+	border-style: solid;
+	border-width: 9px 8px 0 8px;
+	border-color: inherit;
+	border-right-color: transparent;
+	border-bottom-color: transparent;
+	border-left-color: transparent;
+	content: '';
+	display: block;
+	position: absolute;
+	top: 16px;
+	left: 2px;
+}
+
+.mapplic-pin.pin-marker {
+	background-color: #fdca2a;
+	background-image: none;
+	border-color: #fdca2a;
+	border-radius: 8px;
+	width: 16px;
+	height: 16px;
+	margin-top: -8px;
+	margin-left: -8px;
+	transform-origin: 50% 50%;
+}
+
+.mapplic-pin.pin-marker:before {
+	border-color: inherit;
+	border-style: solid;
+	border-width: 6px;
+	border-radius: 16px;
+	content: '';
+	display: block;
+	opacity: 0.2;
+	width: 16px;
+	height: 16px;
+	position: absolute;
+	left: -6px;
+	top: -6px;
+}
+
+.mapplic-pin.pin-disk {
+	background-color: white !important;
+	background-image: none;
+	border-color: #f19819;
+	border-radius: 8px;
+	color: #333 !important;
+	width: 16px;
+	height: 16px;
+	margin-top: -8px;
+	margin-left: -8px;
+	transform-origin: 50% 50%;
+}
+
+.mapplic-pin.pin-disk:before {
+	border-color: inherit;
+	border-style: solid;
+	border-width: 3px;
+	border-radius: 16px;
+	content: '';
+	display: block;
+	width: 16px;
+	height: 16px;
+	position: absolute;
+	left: -3px;
+	top: -3px;
+}
+
+.mapplic-pin.pin-ribbon {
+	background-color: #46b450;
+	background-image: none;
+	border-color: #46b450;
+	border-radius: 2px 2px 2px 0;
+	height: 16px;
+	min-width: 10px;
+	width: auto;
+	padding: 0 3px;
+	margin-left: -8px;
+	margin-top: -20px;
+	transform-origin: 8px 20px;
+}
+
+.mapplic-pin.pin-ribbon:after {
+	border-style: solid;
+	border-width: 0 8px 4px 0;
+	border-color: transparent rgba(0, 0, 0, 0.5) transparent transparent;
+	content: '';
+	display: block;
+	position: absolute;
+	top: 16px;
+	left: 0px;
+}
+
+.mapplic-pin.pin-ribbon:before {
+	border-style: solid;
+	border-width: 0 8px 4px 0;
+	border-color: inherit;
+	border-top-color: transparent;
+	border-bottom-color: transparent;
+	border-left-color: transparent;
+	content: '';
+	display: block;
+	position: absolute;
+	top: 16px;
+	left: 0px;
+}
+
+.mapplic-pin.pin-dot {
+	background-color: transparent !important;
+	background-image: none;
+	border-color: #29afa1;
+	color: #333 !important;
+	height: 16px;
+	min-width: 10px;
+	width: auto;
+	padding: 0 3px;
+	margin-left: 4px;
+	margin-top: -8px;
+	transform-origin: -4px 8px;
+}
+
+.mapplic-pin.pin-dot:before {
+	border-color: inherit;
+	border-style: solid;
+	border-width: 3px;
+	border-radius: 12px;
+	content: '';
+	display: block;
+	width: 0px;
+	height: 0px;
+	position: absolute;
+	top: 5px;
+	left: -7px;
+}
+
+.mapplic-pin.pin-image {
+	background-size: 32px;
+	border: 2px solid #fff;
+	border-radius: 50%;
+	box-sizing: border-box;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+	font-size: 0 !important;
+	width: 32px;
+	height: 32px;
+	margin-top: -16px;
+	margin-left: -16px;
+	transform-origin: 50%;
+}
+
+.mapplic-pin.pin-icon {
+	background-size: 16px;
+	background-color: transparent;
+	border: none;
+	border-radius: 0;
+	font-size: 0 !important;
+	width: 16px;
+	height: 16px;
+	margin-top: -8px;
+	margin-left: -8px;
+	transform-origin: 50%;
+}
+
+.mapplic-pin.pin-circle {
+	background: none !important;
+	border: 2px solid #fb7575;
+	width: 8px;
+	height: 8px;
+	margin-left: -6px;
+	margin-top: -6px;
+	transform-origin: 50% 50%;
+}
+
+.mapplic-pin.pin-transparent {
+	background-image: none;
+	background-color: #795ecd;
+	border-radius: 10px;
+	width: 20px;
+	height: 20px;
+	margin-left: -10px;
+	margin-top: -10px;
+	opacity: 0.5 !important;
+	transform-origin: 50% 50%;
+}
+
+.mapplic-pin.pin-label {
+	color: #fff;
+	font-size: 10px;
+	font-weight: 600;
+	text-align: center;
+	text-decoration: none;
+	line-height: 16px;
+}
+
+.mapplic-pin.pin-label:visited {
+	color: #fff;
+}
+
+.mapplic-pin.pin-md {
+	border-radius: 50%;
+	margin-left: -10px;
+	margin-top: -10px;
+	line-height: 20px;
+	width: 20px;
+	height: 20px;
+}
+
+.mapplic-pin.pin-lg {
+	border-radius: 50%;
+	margin-left: -15px;
+	margin-top: -15px;
+	line-height: 30px;
+	width: 30px;
+	height: 30px;
+}
+
+.mapplic-pin.pin-pulse:before {
+	content: '';
+	border: 2px solid #888;
+	border-radius: 30px;
+	height: inherit;
+	width: inherit;
+	top: -2px;
+	left: -2px;
+	position: absolute;
+	animation: pulsate 1.8s ease-out;
+	animation-iteration-count: infinite;
+	animation-delay: 1s;
+	opacity: 0;
+	box-sizing: content-box;
+}
+
+@-webkit-keyframes pulsate {
+	0% {-webkit-transform: scale(1, 1); opacity: 0.0;}
+	25% {opacity: 0.5; }
+	50% {-webkit-transform: scale(1.6, 1.6); opacity: 0.0;}
+}
+
+/* Minimap */
+.mapplic-minimap {
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	position: absolute;
+	margin: 12px;
+	bottom: 0;
+	left: 0;
+	opacity: 0.5;
+	overflow: hidden;
+	transition: opacity 0.4s;
+
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.mapplic-minimap-layer { line-height: 0; }
+.mapplic-minimap img { width: 100%; }
+
+.mapplic-minimap-overlay {
+	background-color: rgba(0, 0, 0, 0.4);
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+}
+
+.mapplic-minimap .mapplic-minimap-active {
+	position: absolute;
+	opacity: 1;
+	top: 0;
+	left: 0;
+}
+
+.mapplic-minimap-background {
+	width: 140px !important;
+	-webkit-filter: blur(2px);
+}
+
+/* UI Buttons */
+.mapplic-button {
+	background-color: #fff;
+	background-repeat: no-repeat;
+	background-position: center;
+	border: none !important;
+	cursor: pointer;
+	width: 28px;
+	height: 28px;
+	transition: background-color 0.2s;
+	position: relative;
+}
+
+.mapplic-container &gt; .mapplic-button {
+	box-shadow: 0 0 12px rgba(0, 0, 0, 0.06);
+	position: absolute;
+	margin: 12px;
+}
+
+.mapplic-icon {
+	box-sizing: content-box;
+	fill: #222;
+	width: 16px;
+	height: 16px;
+	margin: 6px;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+/* Clear Button */
+.mapplic-clear-button {
+	background-size: 16px 16px;
+	display: none;
+	bottom: 69px;
+	right: 0;
+}
+
+/* Zoom Buttons */
+.mapplic-zoom-buttons {
+	box-shadow: 0 0 12px rgba(0, 0, 0, 0.06);
+	margin: 12px;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+}
+
+.mapplic-zoom-buttons button {
+	display: block;
+}
+
+.mapplic-zoom-buttons .mapplic-disabled {
+	background-color: #eee;
+	cursor: default;
+}
+
+button.mapplic-zoomin-button {
+	background-size: 10px 10px;
+	border-bottom: 1px solid #eee;
+}
+
+button.mapplic-zoomout-button {
+	background-size: 10px 10px;
+}
+
+/* Fullscreen */
+.mapplic-fullscreen {
+	background-color: rgba(248, 248, 248, 0.95);
+	position: fixed !important;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100% !important;
+	margin: 0 !important;
+	max-width: 100% !important;
+	max-height: 100% !important;
+	z-index: 99980;
+}
+
+.mapplic-fullscreen-button {
+	background-size: 14px 14px;
+	top: 0;
+	left: 0;
+}
+
+.mapplic-fullscreen-button .mapplic-icon-fullscreen-exit,
+.mapplic-fullscreen .mapplic-fullscreen-button .mapplic-icon-fullscreen { display: none; }
+.mapplic-fullscreen .mapplic-fullscreen-button .mapplic-icon-fullscreen-exit { display: block; }
+
+.mapplic-fullscreen .mapplic-container { width: 80%; }
+.mapplic-fullscreen .mapplic-sidebar { width: 20%; }
+
+/* Levels */
+.mapplic-levels {
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.04);
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 12px;
+	overflow: hidden;
+}
+
+.mapplic-levels &gt; * {
+	display: block;
+	box-sizing: border-box;
+}
+
+.mapplic-levels-select {
+	background-color: #fff;
+	border: none;
+	border-radius: 0;
+	color: #2f3435;
+	margin: 0;
+	padding: 10px 8px;
+	margin-right: 20px;
+	font-size: 13px;
+	font-weight: 600;
+	outline: none;
+	-webkit-appearance: none;
+}
+
+.mapplic-levels button {
+	background-color: #fff;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 8px 4px;
+	border: none;
+	cursor: pointer;
+	height: 50%;
+	width: 20px;
+	position: absolute;
+	right: 0;
+}
+
+.mapplic-levels .mapplic-levels-down { bottom: 0; }
+
+.mapplic-levels .mapplic-icon {
+	width: 8px;
+	height: 4px;
+	margin: 0;
+	margin-left: -4px;
+	margin-top: -2px;
+	left: 50%;
+	top: 50%;
+}
+
+.mapplic-levels .mapplic-disabled {
+	background-color: #eee;
+	cursor: default;
+}
+
+/* Sidebar */
+.mapplic-sidebar {
+	width: 30%;
+	height: 100%;
+	padding: 92px 0 12px 12px;
+	position: relative;
+	box-sizing: border-box;
+	pointer-events: none;
+}
+
+.mapplic-sidebar &gt; * {
+	pointer-events: auto;
+}
+
+.mapplic-container {
+	float: right;
+}
+
+/* Right sidebar */
+.mapplic-sidebar-right .mapplic-container { float: left; }
+.mapplic-sidebar-right .mapplic-sidebar {
+	float: right;
+	padding: 92px 12px 12px 0;
+}
+
+/* Search */
+.mapplic-filter {
+	background-color: #fff;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+	box-sizing: border-box;
+	margin: 0;
+	overflow: hidden;
+	margin-top: -80px;
+	padding: 16px 20px;
+	position: relative;
+	width: 100%;
+	z-index: 1;
+}
+
+.mapplic-filter &gt; .mapplic-icon {
+	margin-left: 20px;
+	margin-top: 16px;
+}
+
+.mapplic-search-input {
+	background: none !important;
+	border: none !important;
+	box-shadow: none !important;
+	box-sizing: border-box;
+	border-radius: 0;
+	font-size: 20px !important;
+	font-family: inherit;
+	line-height: 20px;
+	width: 100%;
+	height: 48px !important;
+	margin: 0 !important;
+	padding: 24px 24px 4px 0 !important;
+}
+
+.mapplic-search-input:focus {
+	outline: none !important;
+}
+
+.mapplic-search-input::placeholder {
+	opacity: 0.5;
+	font-weight: 400;
+}
+
+.mapplic-search-input::-ms-clear { display: none; width:0; height:0; }
+
+.mapplic-search-clear {
+	background-size: 8px 8px;
+	background-repeat: no-repeat;
+	background-color: transparent;
+	background-position: center;
+	box-shadow: none;
+	border: none;
+	cursor: pointer;
+	display: none;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	top: 32px;
+	right: 8px;
+	width: 34px;
+	height: 34px;
+}
+
+.mapplic-icon.mapplic-icon-cross {
+	width: 8px;
+	height: 8px;
+	padding: 8px;
+}
+
+/* Search Disabled */
+.mapplic-sidebar-nosearch { padding-top: 56px; }
+.mapplic-sidebar-nosearch .mapplic-filter {
+	margin-top: -44px;
+	height: 44px;
+}
+
+/* Tags */
+.mapplic-filter-tags {
+	text-align: right;
+	position: absolute;
+	top: 14px;
+	right: 16px;
+	white-space: nowrap;
+	max-width: 100%;
+	overflow: hidden;
+}
+
+.mapplic-tag {
+	background-color: #2f3434;
+	border-radius: 12px;
+	color: #fff;
+	cursor: pointer;
+	font-size: 11px;
+	font-weight: 600;
+	margin-left: 4px;
+	padding: 1px 6px 2px 8px;
+	display: inline-block;
+}
+
+.mapplic-tag &gt; span {
+	background-image: url(images/cross-light.svg);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 6px 6px;
+	display: inline-block;
+	margin-left: 6px;
+	margin-bottom: 1px;
+	width: 6px;
+	height: 6px;
+	opacity: 0.5;
+	transition: opacity 0.2s;
+}
+
+.mapplic-tag:hover &gt; span {
+	transform: scale(1.2);
+	opacity: 1.0;
+}
+
+/* Sidebar list */
+.mapplic-list-container {
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+	box-sizing: border-box;
+	height: auto;
+	max-height: 100%;
+	overflow-y: auto;
+	position: relative;
+	-webkit-overflow-scrolling: touch;
+}
+
+.mapplic-list-container:before {
+	display: block;
+	content: '';
+	background-color: #fff;
+	width: 100%;
+	height: 10px;
+	position: absolute;
+	z-index: 100;
+}
+
+.mapplic-list {
+	list-style: none;
+	padding: 0;
+	padding-bottom: 10px;
+	margin: 0;
+	overflow-y: auto;
+	height: 100%;
+}
+
+.mapplic-list-container ol {
+	border-color: #eee;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.mapplic-list-expandable {
+	background-color: #fff;
+	padding: 10px 0;
+}
+
+.mapplic-list-container li {
+	margin: 0 !important;
+}
+
+.mapplic-list-category &gt; a {
+	background-color: #fff;
+	border-radius: 4px;
+	box-sizing: border-box;
+	color: #2f3434 !important;
+	display: block;
+	margin: 6px 10px;
+	margin-bottom: 0;
+	padding: 10px;
+	text-decoration: none;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	transition: background-color 0.2s;
+}
+
+.mapplic-list-category &gt; a:hover {
+	background-color: #f8f8f8;
+}
+
+.mapplic-list-category h4 {
+	display: inline-block;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 22px;
+	margin: 0;
+}
+
+.mapplic-list-category h4.mapplic-margin {
+	margin-top: 9px;
+}
+
+.mapplic-about {
+	color: #aaa;
+	display: block;
+	font-weight: normal;
+	font-size: 13px;
+	line-height: 16px;
+}
+
+/* Thumbnail */
+.mapplic-list-category .mapplic-thumbnail {
+	background-color: #aaa;
+	border-radius: 50%;
+	width: 40px;
+	height: 40px;
+}
+
+.mapplic-list-category .mapplic-thumbnail-placeholder {
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 25px;
+}
+
+.mapplic-thumbnail {
+	border-radius: 0px;
+	box-shadow: none !important;
+	margin-right: 10px;
+	float: left;
+	width: 50px;
+	height: 50px;
+	object-fit: cover;
+}
+
+.mapplic-thumbnail-placeholder {
+	background-color: #eee;
+	box-sizing: border-box;
+	color: #fff;
+	font-size: 24px;
+	font-weight: 500;
+	line-height: 34px;
+	padding: 8px 4px;
+	width: 50px;
+	height: 50px;
+	text-align: center;
+}
+
+.mapplic-list-category &gt; a .mapplic-list-count {
+	color: #aaa;
+	font-size: 12px;
+	font-weight: normal;
+	margin-left: 4px;
+	opacity: 0.5;
+}
+
+/* List location */
+.mapplic-list-location {
+	border-color: #aaa;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+.mapplic-list-location[data-location=init] {
+	display: none !important;
+}
+
+.mapplic-list-location &gt; a {
+	background-color: #fff;
+	border-left: 2px solid transparent;
+	display: block;
+	font-size: 14px;
+	padding: 10px 20px 10px 18px;
+	text-decoration: none;
+	transition: border, background-color 0.1s;
+}
+
+.mapplic-list-location &gt; a:after {
+	content: '';
+	display:block;
+	clear:both;
+}
+
+.mapplic-list-location &gt; a:hover,
+.mapplic-list-location &gt; a:focus,
+.mapplic-list-location.mapplic-focus &gt; a {
+	background-color: #fafafa;
+}
+
+.mapplic-list-location.mapplic-active &gt; a {
+	background-color: #fafafa;
+	border-color: inherit;
+}
+
+.mapplic-list-location h4 {
+	color: #2f3435;
+	font-size: 16px;
+	font-weight: normal;
+	line-height: 18px;
+	margin: 4px 0 !important;
+	padding: 0;
+	clear: none;
+}
+
+/* Tooltip */
+.mapplic-tooltip {
+	display: none;
+	position: absolute;
+	transform-origin: 0 0;
+	padding-bottom: 30px;
+	pointer-events: none;
+}
+
+.mapplic-tooltip:after {
+	content: '';
+	border-color: #fff transparent transparent transparent !important;
+	border-style: solid;
+	border-width: 8px 7px 0 7px;
+	width: 0;
+	height: 0;
+	position: absolute;
+	top: 0;
+	margin-left: -7px;
+	margin-top: -33px; /* SHIFT */
+}
+
+.mapplic-tooltip-wrap {
+	background-color: #fff;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+	max-width: 300px;
+	min-width: 120px;
+	pointer-events: auto;
+	transform: translate(-50%, -100%);
+	margin-top: -32px; /* SHIFT */
+
+	transition: transform 0.1s;
+}
+
+.mapplic-tooltip-bottom .mapplic-tooltip-wrap {
+	transform: translate(-50%, 0);
+	margin-top: 17px; /* SHIFT */
+}
+
+.mapplic-tooltip-bottom.mapplic-tooltip:after {
+	border-color: transparent transparent #fff transparent !important;
+	border-width: 0 7px 8px 7px;
+	margin-top: 10px;
+}
+
+.mapplic-tooltip-body {
+	padding: 16px;
+}
+
+.mapplic-tooltip-body::after {
+	content: '';
+	clear: both;
+	display: table;
+}
+
+.mapplic-tooltip img {
+	max-width: 100%;
+}
+
+.mapplic-tooltip-title {
+	color: #333;
+	display: inline-block;
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 20px;
+	margin: 0 12px 0 0 !important;
+}
+.mapplic-hovertip,
+.mapplic-hovertip &gt; .mapplic-tooltip-wrap {
+	pointer-events: none;
+}
+
+.mapplic-hovertip &gt; .mapplic-tooltip-wrap {
+	min-width: 20px;
+	padding: 6px 14px;
+}
+
+.mapplic-hovertip .mapplic-tooltip-title {
+	margin: 0 !important;
+	font-size: 16px;
+	line-height: 24px;
+	text-align: center;
+}
+
+.mapplic-tooltip-content {
+	margin-top: 10px;
+	margin-bottom: 6px;
+	max-height: 160px;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+.mapplic-tooltip .mapplic-thumbnail {
+	border-radius: 50% !important;
+	width: 48px;
+	height: 48px;
+	margin-right: 12px;
+}
+
+.mapplic-tooltip-description,
+.mapplic-tooltip p {
+	font-size: 13px;
+	line-height: 20px;
+	margin: 0;
+}
+
+.mapplic-tooltip p {
+	margin-top: 0;
+	margin-bottom: 6px !important;
+}
+
+.mapplic-tooltip-description p:last-child {
+	margin: 0;
+}
+
+.mapplic-popup-link {
+	background-color: #888;
+	border-radius: 4px;
+	box-shadow: 0 0 6px rgba(0, 0, 0, 0.1) !important;
+	color: #fff !important;
+	font-size: 14px;
+	font-weight: 600;
+	display: inline-block;
+	float: right;
+	margin-top: 4px;
+	padding: 4px 8px;
+	text-decoration: none;
+	transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.mapplic-popup-link:hover {
+	background-color: #666;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
+}
+
+.mapplic-tooltip-close {
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 8px 8px;
+	border: none;
+	cursor: pointer;
+	position: absolute;
+	right: 36px;
+	top: 0;
+	padding: 0;
+	margin: 0;
+	opacity: 0.6;
+	transition: opacity 0.2s;
+}
+
+.mapplic-tooltip-close:hover {
+	opacity: 1.0;
+}
+
+.mapplic-tooltip-close .mapplic-icon {
+	background-color: #fff;
+	border-radius: 50%;
+}
+
+/* Lightbox */
+.mapplic-lightbox-title {
+	color: #333;
+	font-weight: bold;
+	margin-top: 0;
+	margin-bottom: 20px;
+}
+
+.mapplic-lightbox {
+	background-color: #fff;
+	position: relative;
+	padding: 20px;
+	width: auto;
+	max-width: 500px;
+	margin: 20px auto;
+}
+
+.mapplic-lightbox:after {
+	content: '';
+	display: block;
+	clear: both;
+}
+
+.mapplic-popup-image {
+	outline: none;
+}
+
+.mfp-bg { z-index: 99981 !important; }
+.mfp-wrap { z-index: 99982 !important; }
+.mfp-content { z-index: 99983 !important; }
+
+/* Lightbox animation */
+.mfp-fade.mfp-bg {
+	opacity: 0;
+	-webkit-transition: all 0.15s ease-out;
+	-moz-transition: all 0.15s ease-out;
+	transition: all 0.15s ease-out;
+}
+
+.mfp-fade.mfp-bg.mfp-ready { opacity: 0.8; }
+.mfp-fade.mfp-bg.mfp-removing { opacity: 0; }
+
+.mfp-fade.mfp-wrap .mfp-content {
+	opacity: 0;
+	-webkit-transition: all 0.15s ease-out;
+	-moz-transition: all 0.15s ease-out;
+	transition: all 0.15s ease-out;
+}
+
+.mfp-fade.mfp-wrap.mfp-ready .mfp-content { opacity: 1; }
+.mfp-fade.mfp-wrap.mfp-removing .mfp-content { opacity: 0; }
+
+/* Toggle */
+.mapplic-toggle {
+	display: block;
+	cursor: pointer;
+	font-size: 14px;
+	position: relative;
+	margin: 6px 0;
+	min-width: 20px;
+	min-height: 20px;
+}
+
+.mapplic-toggle &gt; .mapplic-toggle-circle {
+	background-color: #aaa;
+	border-radius: 50%;
+	position: absolute;
+	left: 1px;
+	top: 1px;
+	width: 18px;
+	height: 18px;
+	transform-origin: center;
+	transform: scale(0);
+	transition: 0.2s;
+}
+
+.mapplic-toggle:before {
+	background-color: #fff;
+	border: 1px solid #e4e4e4;
+	border-radius: 50%;
+	box-sizing: content-box;
+	content: '';
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 18px;
+	height: 18px;
+}
+
+.mapplic-toggle &gt; input { display: none; }
+.mapplic-toggle &gt; input:checked + span {
+	transform: scale(0.7);
+}
+
+.mapplic-list-category { position: relative; }
+.mapplic-list-category .mapplic-toggle {
+	position: absolute;
+	right: 20px;
+	top: 50%;
+	margin-top: -10px;
+	box-sizing: border-box;
+}
+
+/* Legend */
+.mapplic-legend {
+	background-color: rgba(255,255,255, 0.9);
+	margin: 12px;
+	padding: 0 8px;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+}
+
+.mapplic-legend-label {
+	display: block;
+	font-size: 14px;
+	font-weight: normal;
+	margin: 6px 0;
+	padding-left: 28px;
+	white-space: nowrap;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-ms-user-select: none;
+}
+
+.mapplic-legend-key {
+	background-color: #aaa;
+	border: 2px solid #fff;
+	border-radius: 50%;
+	box-sizing: content-box;
+	display: inline-block;
+	height: 16px;
+	width: 16px;
+	position: absolute;
+	left: 8px;
+}
+
+/* Reveal */
+.mapplic-revealed {
+	visibility: visible !important;
+}
+
+/* Portrait mode */
+.mapplic-portrait .mapplic-container,
+.mapplic-portrait .mapplic-sidebar {
+	width: 100% !important;
+}
+
+.mapplic-portrait .mapplic-sidebar {
+	padding: 92px 12px 12px 12px !important;
+}
+
+.mapplic-portrait .mapplic-tooltip {
+	max-width: 240px;
+}
+
+.mapplic-portrait .mapplic-minimap-background {
+	width: 100px !important;
+}
+
+.mapplic-portrait.mapplic-element {
+	height: auto !important;
+}
+
+.mapplic-portrait .mapplic-list-container {
+	max-height: 600px;
+}
+
+/* Map */
+.mapplic-map svg {
+	width: 100%;
+	height: 100%;
+}
+
+.mapplic-element svg a {
+	cursor: pointer;
+}
+
+.mapplic-clickable:not(g),
+g.mapplic-clickable &gt; * {
+	cursor: pointer;
+	-webkit-transition: opacity 0.2s;
+	-moz-transition: opacity 0.2s;
+	transition: opacity 0.2s;
+}
+
+.mapplic-map-image *[id^=MNOINT],
+.mapplic-map-image *[id^=nopointer] {
+	pointer-events: none;
+}
+
+[id^=landmarks] .mapplic-clickable {
+	cursor: pointer;
+}
+
+/* Developer tools */
+.mapplic-coordinates {
+	background-color: rgba(255, 255, 255, 0.9);
+	color: #333;
+	position: absolute;
+	margin: 10px;
+	margin-left: -80px;
+	padding: 4px 6px;
+	font-size: 14px;
+	top: 0;
+	left: 50%;
+	pointer-events: none;
+}
+
+/* SKINS */
+/* mapplic-booking */
+.mapplic-booking .mapplic-active,
+.mapplic-booking .mapplic-active &gt; * {
+	fill: #A8D865;
+}
+
+.mapplic-booking .unavailable,
+.mapplic-booking .unavailable &gt; * {
+	fill: #F7B332;
+	opacity: 1;
+	cursor: default;
+}
+
+/* INTERACTIVE ELEMENTS */
+/* clickable elements */
+.mapplic-clickable:not(g),
+g.mapplic-clickable &gt; * {
+	transition: fill 0.2s;
+}
+
+/* hovered elements */
+.mapplic-highlight:not(g),
+g.mapplic-highlight &gt; *,
+.mapplic-clickable:not(g):hover,
+g.mapplic-clickable:hover &gt; * {
+
+}
+
+/* active elements */
+.mapplic-active:not(g),
+g.mapplic-active &gt; * {
+
+}
+
+/* Default Style */
+.defaultstyle.mapplic-clickable:not(g), g.defaultstyle.mapplic-clickable &gt; * {
+	fill: #70899C;
+}
+
+.defaultstyle.mapplic-highlight:not(g), g.defaultstyle.mapplic-highlight &gt; *, .defaultstyle.mapplic-clickable:not(g):hover, g.defaultstyle.mapplic-clickable:hover &gt; * {
+	fill: #596D7E;
+}
+
+.defaultstyle.mapplic-active:not(g), g.defaultstyle.mapplic-active &gt; * {
+	fill: #4D5E6D !important;
+}
+
+/* Highlight */
+.mapplic-filtered .mapplic-pin { opacity: 0.4 !important; }
+.mapplic-filtered .mapplic-pin.mapplic-highlight {
+	display: block !important;
+	opacity: 1 !important;
+}
+.mapplic-filtered svg [id^=landmark] &gt; * { opacity: 0.4 !important; }
+.mapplic-filtered .mapplic-clickable.mapplic-highlight { opacity: 1 !important; }
+
+/* CUSTOM STYLES */
+.mapplic-image,
+.mapplic-tooltip-wrap { max-width: 300px !important; } /* tooltip width */
+.mapplic-tooltip-content { max-height: 160px; } /* tooltip height*/
+
+/* example custom pin */
+.mapplic-pin.my-new-pin { /* replace 'my-new-pin' with the name of your pin */
+	background-image: url(images/my-new-pin.png); /* define the path to image file */
+	background-size: 20px 30px;
+	width: 20px;
+	height: 30px;
+	margin-left: -10px; /* negative margins are used for */
+	margin-top: -15px; /* defining the pin's origin */
+}

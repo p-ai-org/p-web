@@ -1,0 +1,106 @@
+/*
+ * jQuery UI Datepicker 1.8.16
+ *
+ * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Datepicker#theming
+ */
+
+/* estilos para desactivar los dados por jquery-ui-1.8.14.autocomplete.css */
+
+#ui-datepicker-div .ui-helper-clearfix:after {  clear: both; content: "."; display: block; height: 0; visibility: hidden;}
+#ui-datepicker-div .ui-helper-clearfix { display: inline-block;}
+#ui-datepicker-div .ui-helper-clearfix { display: block;}
+#ui-datepicker-div .ui-state-disabled { cursor: default !important;}
+#ui-datepicker-div .ui-icon { background-repeat: no-repeat; display: block; overflow: hidden; text-indent: -99999px;}
+#ui-datepicker-div .ui-widget { font-family: Verdana,Arial,sans-serif; font-size: inherit;}
+#ui-datepicker-div.ui-widget-content { background: none; border: 0; color: #222222;}
+#ui-datepicker-div .ui-widget-content a { color: #222222;}
+#ui-datepicker-div .ui-widget-header { background: none; border: 0; color: inherit; font-weight: inherit;}
+#ui-datepicker-div .ui-widget-header a { color: #222222;}
+#ui-datepicker-div .ui-state-default, #ui-datepicker-div .ui-widget-content .ui-state-default, #ui-datepicker-div .ui-widget-header .ui-state-default { background: none; border: 0; color: #087021; font-weight: bold;}
+#ui-datepicker-div .ui-state-hover, #ui-datepicker-div .ui-widget-content .ui-state-hover, #ui-datepicker-div .ui-widget-header .ui-state-hover, #ui-datepicker-div .ui-state-focus, #ui-datepicker-div .ui-widget-content #ui-datepicker-div .ui-state-focus, #ui-datepicker-div .ui-widget-header .ui-state-focus {    background: none; border: 0; color: #087021; font-weight: bold;}
+#ui-datepicker-div .ui-state-highlight, #ui-datepicker-div .ui-widget-content .ui-state-highlight, #ui-datepicker-div .ui-widget-header .ui-state-highlight { background: none; border: 0; color: inherit; }
+#ui-datepicker-div .ui-state-disabled, .ui-widget-content .ui-state-disabled, .ui-widget-header .ui-state-disabled { background-image: none; opacity: 1;}
+#ui-datepicker-div.ui-corner-all, #ui-datepicker-div.ui-corner-top, #ui-datepicker-div.ui-corner-left, #ui-datepicker-div.ui-corner-tl, #ui-datepicker-div .ui-corner-all, #ui-datepicker-div .ui-corner-top, #ui-datepicker-div .ui-corner-left, #ui-datepicker-div .ui-corner-tl { border-top-left-radius: 0;}
+#ui-datepicker-div.ui-corner-all, #ui-datepicker-div.ui-corner-top, #ui-datepicker-div.ui-corner-right, #ui-datepicker-div.ui-corner-tr, #ui-datepicker-div .ui-corner-all, #ui-datepicker-div .ui-corner-top, #ui-datepicker-div .ui-corner-right, #ui-datepicker-div .ui-corner-tr { border-top-right-radius: 0;}
+#ui-datepicker-div.ui-corner-all, #ui-datepicker-div.ui-corner-bottom, #ui-datepicker-div.ui-corner-left, #ui-datepicker-div.ui-corner-bl, #ui-datepicker-div .ui-corner-all, #ui-datepicker-div .ui-corner-bottom, #ui-datepicker-div .ui-corner-left, #ui-datepicker-div .ui-corner-bl { border-bottom-left-radius: 0;}
+#ui-datepicker-div.ui-corner-all, #ui-datepicker-div.ui-corner-bottom, #ui-datepicker-div.ui-corner-right, #ui-datepicker-div.ui-corner-br, #ui-datepicker-div .ui-corner-all, #ui-datepicker-div .ui-corner-bottom, #ui-datepicker-div .ui-corner-right, #ui-datepicker-div .ui-corner-br { border-bottom-right-radius: 0;}
+#ui-datepicker-div .ui-datepicker-header{ background-color: #ececec;}
+#ui-datepicker-div  .ui-state-hover .ui-icon{ color: #222222;  font-weight: normal;}
+
+/* fin: estilos para desactivar los dados por jquery-ui-1.8.14.autocomplete.css */
+
+.ui-datepicker { width: 18em; padding: .2em .2em 0; display: none; font-size:1.1em; z-index:99999 !important;}
+.ui-datepicker .ui-datepicker-header { position:relative; padding:.3em 0;font-size:1.2em; background:none repeat scroll 0 0 #ECECEC; }
+.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next { position:absolute; top: 2px; width: 1.8em; height: 1.8em; line-height:1.8em; }
+.ui-datepicker .ui-datepicker-prev { left:2px; }
+.ui-datepicker .ui-datepicker-next { right:7px; }
+.ui-datepicker .ui-datepicker-prev span, .ui-datepicker .ui-datepicker-next span { display: block; cursor:pointer;}
+.ui-datepicker .ui-datepicker-title { margin: 0 2.3em; line-height: 1.8em; text-align: center; color:#087021; }
+.ui-datepicker .ui-datepicker-title select { font-size:1em; margin:1px 0; }
+.ui-datepicker select.ui-datepicker-month-year {width: 100%;}
+.ui-datepicker select.ui-datepicker-month, 
+.ui-datepicker select.ui-datepicker-year { width: 49%;}
+.ui-datepicker table {width: 100%; font-size: .9em; border-collapse: collapse; margin:0 0 .4em; }
+.ui-datepicker th { padding: .4em .3em; text-align: center; font-weight: bold; border-bottom: 2px solid #DADADA; background:url("https://www.juntadeandalucia.es/themes/images/calendario_th.jpg") repeat-x scroll 0 0 #F1F1F1;  }
+.ui-datepicker td { border: solid 1px #DBDBDB; padding: 1px; background:none repeat scroll 0 0 #F3F3F3; line-height:1.8em; }
+.ui-datepicker td span, .ui-datepicker td a { display: block; padding: .5em; text-align: right; text-decoration: none;color:#087021; font-weight:bold; }
+.ui-datepicker .ui-datepicker-buttonpane { background-image: none; margin: .7em 0 0 0; padding:0 .2em; border-left: 0; border-right: 0; border-bottom: 0; }
+.ui-datepicker .ui-datepicker-buttonpane button { float: right; margin: .5em .2em .4em; cursor: pointer; padding: .2em .6em .3em .6em; width:auto; overflow:visible; }
+.ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current { float:left; }
+
+/* with multiple calendars */
+.ui-datepicker.ui-datepicker-multi { width:auto; }
+.ui-datepicker-multi .ui-datepicker-group { float:left; }
+.ui-datepicker-multi .ui-datepicker-group table { width:95%; margin:0 auto .4em; }
+.ui-datepicker-multi-2 .ui-datepicker-group { width:50%; }
+.ui-datepicker-multi-3 .ui-datepicker-group { width:33.3%; }
+.ui-datepicker-multi-4 .ui-datepicker-group { width:25%; }
+.ui-datepicker-multi .ui-datepicker-group-last .ui-datepicker-header { border-left-width:0; }
+.ui-datepicker-multi .ui-datepicker-group-middle .ui-datepicker-header { border-left-width:0; }
+.ui-datepicker-multi .ui-datepicker-buttonpane { clear:left; }
+.ui-datepicker-row-break { clear:both; width:100%; font-size:0em; }
+
+/* RTL support */
+.ui-datepicker-rtl { direction: rtl; }
+.ui-datepicker-rtl .ui-datepicker-prev { right: 2px; left: auto; }
+.ui-datepicker-rtl .ui-datepicker-next { left: 2px; right: auto; }
+.ui-datepicker-rtl .ui-datepicker-prev:hover { right: 1px; left: auto; }
+.ui-datepicker-rtl .ui-datepicker-next:hover { left: 1px; right: auto; }
+.ui-datepicker-rtl .ui-datepicker-buttonpane { clear:right; }
+.ui-datepicker-rtl .ui-datepicker-buttonpane button { float: left; }
+.ui-datepicker-rtl .ui-datepicker-buttonpane button.ui-datepicker-current { float:right; }
+.ui-datepicker-rtl .ui-datepicker-group { float:right; }
+.ui-datepicker-rtl .ui-datepicker-group-last .ui-datepicker-header { border-right-width:0; border-left-width:1px; }
+.ui-datepicker-rtl .ui-datepicker-group-middle .ui-datepicker-header { border-right-width:0; border-left-width:1px; }
+
+td.ui-datepicker-today{background:url("https://www.juntadeandalucia.es/themes/images/calendario_hoy.jpg") repeat scroll 0 0 #166A39 !important;}
+.ui-datepicker-today a{color:#fff !important;}
+.ui-datepicker-week-end a{color:#9D4444 !important;}
+.ui-datepicker-trigger{margin:2px; cursor:pointer;}
+
+
+/* IE6 IFRAME FIX (taken from datepicker 1.5.3 */
+.ui-datepicker-cover {
+    display: none; /*sorry for IE5*/
+    display/**/: block; /*sorry for IE5*/
+    position: absolute; /*must have*/
+    z-index: -1; /*must have*/
+    filter: mask(); /*must have*/
+    top: -4px; /*must have*/
+    left: -4px; /*must have*/
+    width: 200px; /*must have*/
+    height: 200px; /*must have*/
+}
+
+#ui-datepicker-div.ui-corner-all{ border: 0 !important;}
+#ui-datepicker-div .ui-icon {
+    background-repeat: no-repeat;
+    display: block;
+    overflow: visible;
+   
+    text-indent: 0 ;
+}

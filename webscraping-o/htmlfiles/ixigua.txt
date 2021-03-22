@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh">
+ <head>
+  <meta charset="utf-8"/>
+  <link href="//sf1-dycdn-tos.pstatp.com/obj/eden-cn/lpqpflo/ixigua_favicon.ico" rel="shortcut icon"/>
+ </head>
+ <body>
+  <script>
+   var startTime = Date.now()
+  </script>
+  <script src="https://i.snssdk.com/slardar/sdk.js?bid=xigua_video_web_pc">
+  </script>
+  <script src="https://unpkg.pstatp.com/byted-ucenter/ttwid-js/1.0.1/dist/index.umd.production.js">
+  </script>
+  <script>
+   var retryTimes = 0
+                var maxRetryTimes = 2
+                var instance = null
+
+                try {
+                    window.Slardar('config', {
+                        sampleRate: 1,
+                        bid: 'xigua_video_web_pc',
+                        pid: 'ttwid'
+                    })
+                    window.Slardar('emit', 'counter', {
+                        name: 'ttwid-pv',
+                        value: 1
+                    })
+                    init()
+                } catch (err) {
+                    ttwidInitError()
+                    reloadPage()
+                }
+                function insertParamAndReload(key, value) {
+                    var kvp = document.location.search ? document.location.search.substr(1).split('&') : [];
+                    var i = 0;
+                    // 替换已有的
+                    for (; i < kvp.length; i++) {
+                        if (new RegExp('^' + key + '=').test(kvp[i])) {
+                            var pair = kvp[i].split('=');
+                            pair[1] = value;
+                            kvp[i] = pair.join('=');
+                            break;
+                        }
+                    }
+                    // 新增
+                    if (i >= kvp.length) {
+                        kvp[kvp.length] = [key, value].join('=');
+                    }
+                    var params = kvp.join('&');
+                    document.location.search = params;
+                }
+                function init() {
+                    if (!instance) {
+                        instance = new window.TTWidInstance({
+                            region: undefined,
+                            aid: 1768,
+                            needFid: false,
+                            service: window.location.host,
+                            migrate_info: {"ticket":"","source":"node"},
+                            cbUrlProtocol: window.location.protocol.slice(0, -1)
+                        })
+                    }
+                    instance.registerUnionWebId({}, function(registerError, cbResponse){
+                        var callbackError = !cbResponse || cbResponse.status_code !== 0
+                        if (registerError || callbackError) {
+                            if (retryTimes < maxRetryTimes) {
+                                retryTimes ++
+                                init()
+                                return
+                            }
+                            ttwidRegisterError()
+                        }
+                        window.Slardar('emit', 'counter', {
+                            name: 'ttwid-success',
+                            value: 1
+                        })
+                        reloadPage()
+                    })
+                }
+                function reloadPage() {
+                    setRealReferrer()
+                    reportDuration()
+                    insertParamAndReload('wid_try','1')
+                }
+                // 记录正确的referrer, 优先取风控中间页记录的值
+                function setRealReferrer() {
+                    var __AC_REFERER = '__ac_referer'
+                    var acReferrer = window.sessionStorage.getItem(__AC_REFERER)
+                    var realReferrer = acReferrer != null ? acReferrer : document.referrer
+                    window.sessionStorage.setItem(__AC_REFERER, realReferrer)
+                }
+                function setTmpCookie() {
+                    var maxAge = 60 * 60 * 24
+                    document.cookie = 'ttwid_date=1; max-age=' + maxAge
+                }
+                function ttwidInitError() {
+                    setTmpCookie()
+                    window.Slardar('emit', 'counter', {
+                        name: 'ttwidInit-error',
+                        value: 1
+                    })
+                }
+                function ttwidRegisterError() {
+                    setTmpCookie()
+                    window.Slardar('emit', 'counter', {
+                        name: 'ttwidRegister-error',
+                        value: 1
+                    })
+                }
+                function reportDuration() {
+                    window.Slardar('emit', 'timer', {
+                        name: 'ttwid-duration',
+                        value: Date.now() - startTime
+                    })
+                }
+  </script>
+ </body>
+</html>

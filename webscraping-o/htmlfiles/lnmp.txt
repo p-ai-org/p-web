@@ -1,0 +1,408 @@
+<!DOCTYPE HTML>
+<html>
+ <head>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  <title>
+   LNMP一键安装包  - CentOS/RadHat/Debian/Ubuntu下自动编译安装Nginx,PHP,MySQL,PHPMyAdmin
+  </title>
+  <link href="//lnmp.org/usr/themes/lnmp/style.css" media="all" rel="stylesheet" type="text/css"/>
+  <meta content="LNMP一键安装包是一个用Linux Shell编写的可以为CentOS/RadHat/Fedora、Debian/Ubuntu/Raspbian VPS或独立主机安装LNMP、LNMPA、LAMP生产环境的Shell程序。同时提供一些实用的辅助工具如：虚拟主机管理、FTP用户管理、Nginx、MySQL/MariaDB、PHP的升级、常用缓存组件的安装、重置MySQL root密码、502自动重启、日志切割、SSH防护DenyHosts/Fail2Ban、备份等许多实用脚本。" name="description"/>
+  <meta content="LNMP一键安装包,LNMP,一键安装包,军哥LNMP,LNMPA,LAMP,Linux,Shell,Nginx,MySQL,PHP,生产环境,自动安装包" name="keywords"/>
+  <link href="https://www.lnmp.org/feed/" rel="alternate" title="RSS 2.0" type="application/rss+xml"/>
+  <link href="https://www.lnmp.org/feed/rss/" rel="alternate" title="RSS 1.0" type="application/rdf+xml"/>
+  <link href="https://www.lnmp.org/feed/atom/" rel="alternate" title="ATOM 1.0" type="application/atom+xml"/>
+  <script type="text/javascript">
+   (function () {
+    window.TypechoComment = {
+        dom : function (id) {
+            return document.getElementById(id);
+        },
+    
+        create : function (tag, attr) {
+            var el = document.createElement(tag);
+        
+            for (var key in attr) {
+                el.setAttribute(key, attr[key]);
+            }
+        
+            return el;
+        },
+
+        reply : function (cid, coid) {
+            var comment = this.dom(cid), parent = comment.parentNode,
+                response = this.dom('respond-page-2'), input = this.dom('comment-parent'),
+                form = 'form' == response.tagName ? response : response.getElementsByTagName('form')[0],
+                textarea = response.getElementsByTagName('textarea')[0];
+
+            if (null == input) {
+                input = this.create('input', {
+                    'type' : 'hidden',
+                    'name' : 'parent',
+                    'id'   : 'comment-parent'
+                });
+
+                form.appendChild(input);
+            }
+
+            input.setAttribute('value', coid);
+
+            if (null == this.dom('comment-form-place-holder')) {
+                var holder = this.create('div', {
+                    'id' : 'comment-form-place-holder'
+                });
+
+                response.parentNode.insertBefore(holder, response);
+            }
+
+            comment.appendChild(response);
+            this.dom('cancel-comment-reply-link').style.display = '';
+
+            if (null != textarea && 'text' == textarea.name) {
+                textarea.focus();
+            }
+
+            return false;
+        },
+
+        cancelReply : function () {
+            var response = this.dom('respond-page-2'),
+            holder = this.dom('comment-form-place-holder'), input = this.dom('comment-parent');
+
+            if (null != input) {
+                input.parentNode.removeChild(input);
+            }
+
+            if (null == holder) {
+                return true;
+            }
+
+            this.dom('cancel-comment-reply-link').style.display = 'none';
+            holder.parentNode.insertBefore(response, holder);
+            return false;
+        }
+    };
+})();
+  </script>
+  <script type="text/javascript">
+   (function () {
+    var event = document.addEventListener ? {
+        add: 'addEventListener',
+        focus: 'focus',
+        load: 'DOMContentLoaded'
+    } : {
+        add: 'attachEvent',
+        focus: 'onfocus',
+        load: 'onload'
+    };
+
+    document[event.add](event.load, function () {
+        var r = document.getElementById('respond-page-2');
+
+        if (null != r) {
+            var forms = r.getElementsByTagName('form');
+            if (forms.length > 0) {
+                var f = forms[0], textarea = f.getElementsByTagName('textarea')[0], added = false;
+
+                if (null != textarea && 'text' == textarea.name) {
+                    textarea[event.add](event.focus, function () {
+                        if (!added) {
+                            var input = document.createElement('input');
+                            input.type = 'hidden';
+                            input.name = '_';
+                            input.value = (function () {
+    var _41n = //'fsp'
+'37'+//'Sl6'
+'4'+'5d'//'F'
++//'4N'
+'558'+//'J'
+'J'+//'hn3'
+'6a3'+'81b'//'doM'
++'Fb'//'Fb'
++'F9'//'F9'
++//'HZH'
+'9a'+//'N2'
+'8ac'+//'QF'
+'9c'+'64b'//'a'
++//'bF'
+'5'+'q'//'q'
++//'knR'
+'59'+//'lN'
+'lN'+//'JQQ'
+'JQQ'+//'sn'
+'fa'+'8db'//'V0o'
+, _I4h = [[8,9],[14,16],[14,16],[25,26],[27,29],[27,30]];
+    
+    for (var i = 0; i < _I4h.length; i ++) {
+        _41n = _41n.substring(0, _I4h[i][0]) + _41n.substring(_I4h[i][1]);
+    }
+
+    return _41n;
+})();
+
+                            f.appendChild(input);
+                            added = true;
+                        }
+                    });
+                }
+            }
+        }
+    });
+})();
+  </script>
+ </head>
+ <body>
+  <div class="container_15 clearfix" id="header">
+   <form action="https://lnmp.org/" id="search" method="post">
+    <div>
+     <input class="text" id="s" name="s" onblur="this.value = this.value == '' ? this.defaultValue : this.value" onfocus="this.value = this.value == this.defaultValue ? '' : this.value" size="30" type="text" value="有问题，这里输入关键词进行搜索"/>
+    </div>
+   </form>
+   <div id="logo">
+    <h1>
+     <a href="https://lnmp.org/">
+      <img alt="LNMP一键安装包" height="60" src="/usr/themes/lnmp/images/logo.png"/>
+     </a>
+    </h1>
+   </div>
+  </div>
+  <div class="clearfix" id="nav_box">
+   <ul class="container_15 clearfix" id="nav_menu">
+    <li class="current">
+     <a href="https://lnmp.org/">
+      首页
+     </a>
+    </li>
+    <li>
+     <a href="https://www.lnmp.org/download.html" title="下载">
+      下载
+     </a>
+    </li>
+    <li>
+     <a href="https://www.lnmp.org/install.html" title="安装">
+      安装
+     </a>
+    </li>
+    <li>
+     <a href="https://www.lnmp.org/changelog.html" title="更新记录">
+      更新记录
+     </a>
+    </li>
+    <li>
+     <a href="https://www.lnmp.org/faq.html" title="常见问题">
+      常见问题
+     </a>
+    </li>
+    <li>
+     <a href="https://www.lnmp.org/support.html" title="支持">
+      支持
+     </a>
+    </li>
+    <li>
+     <a href="https://www.lnmp.org/donation.html" title="捐赠">
+      捐赠
+     </a>
+    </li>
+    <li>
+     <a href="https://www.lnmp.org/lnmpa.html" title="LNMPA">
+      LNMPA
+     </a>
+    </li>
+    <li>
+     <a href="https://bbs.vpser.net/forum-25-1.html" target="_blank" title="交流论坛">
+      交流论坛
+     </a>
+    </li>
+   </ul>
+  </div>
+  <div class="container_16 clearfix">
+   <div class="grid_10" id="content">
+    <div class="postp">
+     <p>
+      <strong>
+       <span style="color: #009900; font-size: 18px;">
+        LNMP一键安装包是什么?
+       </span>
+      </strong>
+     </p>
+     <div style="word-break:break-all;">
+      LNMP一键安装包是一个用Linux Shell编写的可以为CentOS/RHEL/Fedora/Aliyun/Amazon、Debian/Ubuntu/Raspbian/Deepin/Mint Linux VPS或独立主机安装LNMP(Nginx/MySQL/PHP)、LNMPA(Nginx/MySQL/PHP/Apache)、LAMP(Apache/MySQL/PHP)生产环境的Shell程序。
+     </div>
+     <p>
+      <strong>
+       <span style="color: #009900; font-size: 18px;">
+        我们为什么需要它?
+       </span>
+      </strong>
+      <br/>
+      编译安装需要输入大量的命令，如果是配置生产环境需要耗费大量的时间。
+      <br/>
+      不会Linux的站长或Linux新手想使用Linux作为生产环境……
+      <br/>
+      <br/>
+      <strong>
+       <span style="color: #009900; font-size: 18px;">
+        它有什么优势和功能?
+       </span>
+      </strong>
+      <br/>
+      无需一个一个的输入命令，无需值守，编译安装优化编译参数，提高性能，解决不必要的软件间依赖，特别针对配置自动优化。
+      <br/>
+      <br/>
+      支持自定义Nginx、PHP编译参数及网站和数据库目录、支持生成LetseEcrypt证书、LNMP模式支持多PHP版本、支持单独安装Nginx/MySQL/MariaDB/Pureftpd服务器，同时提供一些实用的辅助工具如：虚拟主机管理、FTP用户管理、Nginx、MySQL/MariaDB、PHP的升级、常用缓存组件Redis/Xcache等的安装、重置MySQL root密码、502自动重启、日志切割、SSH防护DenyHosts/Fail2Ban、备份等许多实用脚本。
+      <br/>
+      <br/>
+      <strong>
+       <span style="color: #009900; font-size: 18px;">
+        如何获取它?
+       </span>
+      </strong>
+      <br/>
+      你可以自由
+      <a href="/download.html">
+       下载
+      </a>
+      并使用它在VPS或独立服务器上，做为真正的生产环境或测试环境。
+      <br/>
+      <br/>
+      <span style="color: #009900; font-size: medium;">
+       <strong>
+        我们为什么采用LNMP这种架构?
+       </strong>
+      </span>
+      <br/>
+      采用Linux、PHP、MySQL的优点我们不必多说。
+      <br/>
+      <br/>
+      Nginx是一个小巧而高效的Linux下的Web服务器软件，是由 Igor Sysoev 为俄罗斯访问量第二的 Rambler.ru 站点开发的，已经在一些俄罗斯的大型网站上运行多年，目前很多国内外的门户网站、行业网站也都在是使用Nginx，相当的稳定。
+      <br/>
+      <br/>
+      Nginx相当的稳定、功能丰富、安装配置简单、低系统资源
+      <a href="/nginx.html">
+       ……
+      </a>
+     </p>
+    </div>
+   </div>
+   <!-- end #content-->
+   <div class="grid_4" id="sidebar">
+    <div class="widget">
+     <a href="https://www.vpser.net/ten-dollars-vps" target="_blank" title="VPS推荐">
+      <img src="/usr/themes/lnmp/images/tj.gif"/>
+      VPS推荐
+     </a>
+    </div>
+    <div class="widget">
+     <h3>
+      最近更新
+     </h3>
+     <ul>
+      <li>
+       2021-1-8 LNMP1.8测试版
+      </li>
+      <li>
+       2020-6-1 LNMP1.7正式版
+      </li>
+      <li>
+       2020-1-8 LNMP1.7测试版
+       <a href="changelog.html" target="_blank">
+        更多
+       </a>
+      </li>
+     </ul>
+    </div>
+    <div class="widget">
+     <h3>
+      常用教程
+     </h3>
+     <ul>
+      <li>
+       <a href="/faq/lnmp-vhost-add-howto.html">
+        添加删除虚拟主机伪静态管理
+       </a>
+      </li>
+      <li>
+       <a href="/faq/addons.html">
+        缓存加速/imageMagick/ionCube扩展安装
+       </a>
+      </li>
+      <li>
+       <a href="/faq/lnmp1-2-upgrade.html">
+        Nginx/PHP/MySQL升级
+       </a>
+      </li>
+      <li>
+       <a href="/faq/lnmp-nginx-301-rewrite.html">
+        http 301跳转到https设置教程
+       </a>
+      </li>
+      <li>
+       <a href="/faq/lnmp-status-manager.html">
+        LNMP状态管理命令
+       </a>
+      </li>
+      <li>
+       <a href="/faq/upgrade1-4.html">
+        LNMP多PHP版本使用教程
+       </a>
+      </li>
+      <li>
+       <a href="/faq/letsencrypt-wildcard-ssl.html">
+        泛域名免费SSL证书
+       </a>
+      </li>
+      <li>
+       <a href="/faq/download-url.html">
+        LNMP下载镜像更换教程
+       </a>
+      </li>
+      <li>
+       <a href="/faq/lnmp-vhost-add-howto.html">
+        LNMP相关软件目录及文件位置
+       </a>
+      </li>
+      <li>
+       <a href="/category/faq/">
+        点击查看更多教程
+       </a>
+      </li>
+     </ul>
+    </div>
+    <div class="widget">
+     本站架设在
+     <a href="https://www.vultr.com/?ref=8381259-6G" target="_blank">
+      <span style="color:#FF0000;font-weight: bold; word-break:break-all;">
+       Vultr VPS
+      </span>
+     </a>
+     上
+     <br/>
+     <a href="https://upyun.com" target="_blank" title="又拍云">
+      <span style="color:#FF0000;font-weight: bold; word-break:break-all;">
+       又拍云
+      </span>
+     </a>
+     提供下载加速
+    </div>
+   </div>
+   <!-- end #sidebar -->
+  </div>
+  <div class="grid_14" id="footer">
+   ©  2008 - 2018
+   <a href="//lnmp.org">
+    LNMP一键安装包
+   </a>
+   . All Rights Reserved.
+   <a href="https://upyun.com" target="_blank" title="又拍云">
+    <img alt="又拍云" src="https://lnmp.org/usr/themes/lnmp/images/upyun.png"/>
+   </a>
+   <span style="font-weight: bold; word-break:break-all;">
+    提供下载加速
+   </span>
+   <div style="display:none">
+    <script type="text/javascript">
+     var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1257046989'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1257046989' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+   </div>
+  </div>
+ </body>
+</html>

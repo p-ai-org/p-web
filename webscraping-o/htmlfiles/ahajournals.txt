@@ -1,0 +1,3078 @@
+<!DOCTYPE html>
+<html class="pb-page" data-request-id="c9d7ac0e-9771-4644-845b-f66bc60fe6cf" lang="en">
+ <head data-pb-dropzone="head">
+  <meta content=";website:website:aha-site;wgroup:string:AHA Publication Websites;page:string:Home Page" name="pbContext"/>
+  <title>
+   Home | AHA/ASA Journals
+  </title>
+  <meta charset="utf-8"/>
+  <meta content="noarchive" name="robots"/>
+  <meta name="pb-robots-disabled"/>
+  <meta content="" property="og:url"/>
+  <meta content="width=device-width,initial-scale=1,maximum-scale=1, user-scalable=0" name="viewport"/>
+  <link href="/wro/k2ep~article-metrics-phase2.css" rel="stylesheet" type="text/css"/>
+  <link href="/wro/k2ep~product.css" rel="stylesheet" type="text/css"/>
+  <link href="/products/aha/releasedAssets/css/build-8e754e240b692ad23906.css" rel="stylesheet"/>
+  <link href="/products/aha/releasedAssets/css/print-8e754e240b692ad23906.css" media="print" rel="stylesheet"/>
+  <link href="/pb-assets/styles/aha-custom-ux3-1569352387923.css" rel="stylesheet" type="text/css"/>
+  <style>
+   .header--second-row .logo__container .header__logo .journal-logo{
+    display: block;
+    width: 100%;
+}
+@media (max-width:1439px) and (min-width:1024px) {
+.header--second-row .logo__container .header__logo .journal-logo img {
+    max-height: 60px;
+}
+} 
+
+.announcements-container .slideShow .owl-stage-outer .owl-item span {
+    display: inline;
+}
+.announcements-container .slideShow .owl-nav .owl-prev, .announcements-container .slideShow .owl-nav .owl-next{
+    left: auto;
+}
+.announcements-container .slideShow {
+    min-height: auto;
+}
+  </style>
+  <script async="" src="//assets.adobedtm.com/a357ca7c6780/6540413ece9b/launch-4f9f22e74f05.min.js">
+  </script>
+  <script type="application/ld+json">
+   {"@context":"https://schema.org","@type":"WebSite","url":"https://www.ahajournals.org","potentialAction":{"@type":"SearchAction","target":"https://www.ahajournals.org/action/doSearch?AllField={search_term}&amp;searchLoggingType=google","query-input":"required name=search_term"}}
+  </script>
+  <link href="https://www.ahajournals.org/" rel="canonical"/>
+  <!-- loading Javascript for using the persistence Service -->
+  <script src="//unpkg.com/@theidentityselector/thiss-ds">
+  </script>
+  <script type="text/javascript">
+   var SeamlessAccessService = {
+            spUrl: "/action/ssostart",
+            returnURL: window.location.href,
+            my_context: 'seamlessaccess.org',
+            timeout: 5000,
+
+            getWAYFLessUrl: function (entityId) {
+                return this.spUrl + "?idp=" + encodeURIComponent(entityId)
+                    + "&redirectUri=" + encodeURIComponent(this.returnURL);
+            },
+            retrieveEntity: function (ms) {
+                var self = this;
+                var persistService = new thiss.PersistenceService('https://service.seamlessaccess.org/ps/');
+
+                if(ms == undefined || ms === ''){
+                    ms = this.timeout;
+                }
+
+                return new Promise(function (resolve, reject) {
+                    persistService.entities(self.my_context)
+                        .then(function (res) {
+                            // get the results
+                            var results = res.data;
+                            return resolve(results);
+                        }, function (err) {
+                            // failed
+                            reject('retrieve entity error: ' + err);
+                        });
+                        // Set up the timeout
+                        setTimeout(function() {
+                            reject('Promise timed out ' + ms + ' ms');
+                        }, ms);
+                });
+            },
+            updateEntity: function (entitydata) {
+                var self = this;
+                var persistService =  new thiss.PersistenceService('https://service.seamlessaccess.org/ps/');
+
+                var jsonObj = {};
+                try {
+                    //try to parse it, if it is a json string
+                    jsonObj = JSON.parse(entitydata.val());
+                } catch (e) {
+                    jsonObj = entitydata;
+                }
+                return new Promise(function (resolve, reject) {
+                    persistService.update(self.my_context, jsonObj)
+                        .then(function (res) {
+                            // Process the results
+                            var ssoInstitutions = res.data;
+                            return resolve(ssoInstitutions);
+                        }, function (err) {
+                            // failed
+                            console.log('failed to update the local storage duo to: ' + err);
+                            reject(err);
+                        });
+                })
+            },
+            removeEntity: function (entityId) {
+                var self = this;
+                var persistService =  new thiss.PersistenceService('https://service.seamlessaccess.org/ps/');
+
+                return new Promise(function (resolve) {
+                    persistService.remove(self.my_context, entityId)
+                        .then(function (res) {
+                            return resolve(res);
+                        }, function (err) {
+                            // failed
+                            console.log('failed to remove from local storage duo to: ' + err);
+                        });
+                })
+            },
+            getAccessibleEntityStatus: function (doi, entityId) {
+                return new Promise(function (resolve) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/action/seamlessAccess',
+                        accept: {
+                            text: "application/json"
+                        },
+                        data: {doi: doi, entityid: entityId}
+
+                    }).done(function (status) {
+                        return resolve(status);
+                    });
+                });
+            },
+            getEntitiesWithAllInfo: function (doi) {
+                let self = this,
+                    arrayOfPromises = [];
+                return new Promise(function (resolve, reject) {
+                    self.retrieveEntity().then(function (res) {
+                        let allSsoInstitutions = res;
+                        for (i = 0; i < allSsoInstitutions.length; i++) {
+                            let ssoInstitution = allSsoInstitutions[i];
+                            arrayOfPromises.push(new Promise(function (resolve) {
+                                self.getAccessibleEntityStatus(doi, ssoInstitution.entity.entityID)
+                                    .then(function (entityStatus) {
+                                        resolve({
+                                            entityID: ssoInstitution.entity.entityID,
+                                            entityTitle: ssoInstitution.entity.title,
+                                            entityStatusObj: entityStatus,
+                                            entitySsoUrl: self.getWAYFLessUrl(ssoInstitution.entity.entityID)
+                                        });
+                                    }, function (err) {
+                                        console.log('failed to get the entity status: ' + err);
+                                    });
+                            }));
+                        }
+                        Promise.all(arrayOfPromises)
+                            .then(function (finalResponse) {
+                                resolve(finalResponse);
+                            });
+
+                    }).catch(function (err) {
+                        reject(err);
+                    })
+                });
+            }
+        };
+
+        window.addEventListener('load', function () {
+            document.querySelectorAll(".sso-institution").forEach(function (institution) {
+                var entityId = institution.getAttribute('data-entityid');
+                var entityName = institution.getAttribute('data-name');
+                var entitydata = {
+                    entityID: entityId,
+                    title: entityName
+                };
+                institution.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    var self = this;
+                    SeamlessAccessService.updateEntity(entitydata).then(function (res) {
+                        console.log(res);
+                        window.location.href = self.href;
+                    });
+                });
+            });
+        });
+  </script>
+  <script>
+   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+    Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-1267237-25', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <script src="//s3.amazonaws.com/cdn.heart.org/googleanalytics/ga-custom.js" type="text/javascript">
+  </script>
+ </head>
+ <body class="pb-ui">
+  <script>
+   var digitalData = digitalData || {};
+    digitalData = {"page":{"pageInfo":{"pageName":"Home | AHA/ASA Journals","domainName":"www.ahajournals.org","pageURL":"https%3A%2F%2Faha%2Ftemplates%2Fjsp%2Fpb2%2FrenderPage.jsp","destinationQueryString":"","pageTitle":"Home | AHA/ASA Journals"},"category":{"subCategory1":"Home Page"},"attributes":{"businessUnit":"HLRP","contentType":"JR","languange":"English","division":"Health"},"download":{},"socialshare":{}},"user":{},"content":{"productInfo":{}},"satelliteTrack":[]};
+  </script>
+  <script type="text/javascript">
+   if(false) {
+        document.getElementById("skipNavigationLink").onclick =function skipElement () {
+            var element = document.getElementById('');
+            if(element == null || element == undefined) {
+                element = document.getElementsByClassName('').item(0);
+            }
+            element.setAttribute('tabindex','0');
+            element.focus();
+
+        }
+
+    }
+  </script>
+  <div data-ng-non-bindable="" id="pb-page-content">
+   <div data-pb-dropzone="main" data-pb-dropzone-name="Main">
+    <header class="header base">
+     <!-- This is made by PB. Here it is duplicated...-->
+     <!--header.header.base-->
+     <div class="container header--advertisment hidden-xs hidden-sm hidden-md">
+      <div class="row">
+       <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+        <div class="pb-ad">
+         <div>
+          <a href="/action/clickThrough?id=501120&amp;url=%2Fadvertising-disclaimer&amp;loc=%2F&amp;placeholderId=1015&amp;productId=501016" style="font-size: 10px; color: #7b7b7b; text-transform: uppercase;" target="_blank" title="ad disclaimer">
+           Advertisement
+          </a>
+         </div>
+         <script async="async" src="https://www.googletagservices.com/tag/js/gpt.js">
+         </script>
+         <script>
+          var gptadslots = [];
+  var googletag = googletag || {cmd:[]};
+         </script>
+         <script>
+          googletag.cmd.push(function() {
+    var mapping1 = googletag.sizeMapping()
+                            .addSize([0, 0], [[300, 50]])
+                            .addSize([730, 0], [[728, 90]])
+		.build();
+
+gptadslots.push(googletag.defineSlot('/15726702761/Desktop/ahajournals', [[728,90],[300,50]], 'div-gpt-ad-1529604360245-0') .defineSizeMapping(mapping1) .addService(googletag.pubads()));
+googletag.pubads().enableSingleRequest();
+googletag.enableServices();
+  });
+         </script>
+         <div id="div-gpt-ad-1529604360245-0">
+          <script>
+           googletag.cmd.push(function() { googletag.display('div-gpt-ad-1529604360245-0'); });
+          </script>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="container-fluid header--first-row">
+      <div class="container">
+       <ul class="rlist--inline navbar--top--links pull-left">
+        <li>
+         <a href="http://professional.heart.org/professional/registration/volunteerForm.jsp" target="blank" title="Science Volunteer">
+          Science Volunteer
+         </a>
+        </li>
+        <li>
+         <a href="http://www.heart.org/HEARTORG/Conditions/911-Warnings-Signs-of-a-Heart-Attack_UCM_305346_SubHomePage.jsp" target="_blank" title="Warning Signs">
+          Warning signs
+         </a>
+        </li>
+       </ul>
+       <ul class="rlist--inline pull-right">
+        <li>
+         <div class="quick-search">
+          <form action="/action/doSearch" method="get" name="defaultQuickSearch" title="Quick Search">
+           <div class="input-group option-0">
+            <input class="autocomplete" data-auto-complete-max-chars="32" data-auto-complete-max-words="7" data-contributors-conf="3" data-history-items-conf="3" data-publication-titles-conf="4" data-topics-conf="3" name="AllField" placeholder="Search" title="Search field" type="search" value=""/>
+           </div>
+           <button class="btn quick-search__button icon-search" title="Search" type="submit">
+            <span class="sr-only">
+             Search
+            </span>
+            <span>
+             Search
+            </span>
+           </button>
+          </form>
+          <div class="quick-search quick-search-advanced-link" data-widget-def="UX3HTMLWidget" data-widget-id="43687dec-e1fd-421d-bb4d-2420822fe3b6">
+           <a href="/search/advanced">
+            Advanced Search
+           </a>
+          </div>
+         </div>
+        </li>
+        <li class="buttons">
+         <a class="btn btn--danger" href="https://www2.heart.org/site/SPageNavigator/donatenow_heart.html?s_src=20U2W1UEMG&amp;s_subsrc=ahajournals_top_donate_button" target="_blank" title="donate">
+          Donate
+         </a>
+        </li>
+       </ul>
+      </div>
+     </div>
+     <div class="container-fluid header--second-row">
+      <div class="container hidden-xs hidden-sm hidden-md">
+       <div class="pull-left logo__container">
+        <div class="header__logo">
+         <a class="journal-logo" href="/" title="AHA/ASA Journals home page">
+          <img alt="AHA/ASA Journals logo" src="/pb-assets/images/logos/aha-asa-journals-main-logo-1528766973090.svg" title="AHA/ASA Journalslogo"/>
+         </a>
+        </div>
+       </div>
+       <div class="pull-right actions__container">
+        <div class="header__quick-menu">
+         <p class="username__placeholder">
+          Hello
+    
+    Guest!
+         </p>
+         <ul class="rlist--inline">
+          <li>
+           <div class="pb-dropzone formDropZone" data-pb-dropzone="preLoginBarLinksDropZone">
+            <a class="btn btn-outline my__alert__btn" href="/action/showPreferences?menuTab=Alerts" title="My alerts">
+             MY ALERTS
+            </a>
+           </div>
+          </li>
+          <li class="sso_action_button">
+           <a class="btn btn-outline my__alert__btn show-login" href="/action/ssostart?idp=https://ahasso.heart.org&amp;redirectUri=%2F">
+            SIGN IN
+           </a>
+          </li>
+          <li>
+           <div class="pb-dropzone formDropZone" data-pb-dropzone="postLoginBarLinksDropZone">
+            <a class="btn btn-outline join__btn" href="http://professional.heart.org/professional/membership/membership-tiers.jsp" target="blank" title="Join AHA">
+             JOIN
+            </a>
+           </div>
+          </li>
+         </ul>
+         <div class="popup login-popup hidden">
+          <a class="close" href="#">
+           <i class="icon-close_thin">
+           </i>
+          </a>
+          <div class="content">
+           <h2>
+            Login to your account
+           </h2>
+           <div class="login-form">
+            <form action="/action/doLogin" method="post">
+             <input name="id" type="hidden" value="afb30c65-16c7-48c2-a29d-0490ff094f7a"/>
+             <input name="redirectUri" type="hidden" value="/"/>
+             <input name="loginUri" type="hidden" value=""/>
+             <input name="popup" type="hidden" value="true"/>
+             <div class="input-group">
+              <div class="label">
+               <label for="login">
+                Email
+               </label>
+              </div>
+              <input class="login" id="login" name="login" placeholder="" size="15" type="text" value=""/>
+              <div class="actions">
+              </div>
+             </div>
+             <div class="input-group">
+              <div class="label">
+               <label for="password">
+                Password
+               </label>
+              </div>
+              <input autocomplete="off" class="password" id="password" name="password" placeholder="" type="password" value=""/>
+              <span class="password-eye-icon icon-eye hidden">
+              </span>
+              <div class="actions">
+               <a class="link show-request-reset-password pop-up" href="/action/requestResetPassword">
+                Forgot password?
+               </a>
+              </div>
+             </div>
+             <div class="remember">
+              <div class="keepMeLogin">
+               <label for="afb30c65-16c7-48c2-a29d-0490ff094f7a-remember">
+                <span class="label">
+                 Keep me logged in
+                </span>
+               </label>
+              </div>
+              <div class="switch small-switch">
+               <input class="cmn-toggle cmn-toggle-round-flat" id="afb30c65-16c7-48c2-a29d-0490ff094f7a-remember" name="remember" type="checkbox" value="true"/>
+               <label class="tgl-btn" for="afb30c65-16c7-48c2-a29d-0490ff094f7a-remember">
+               </label>
+              </div>
+             </div>
+             <div class="submit">
+              <input class="button submit primary" name="loginSubmit" type="submit" value="Login"/>
+             </div>
+            </form>
+           </div>
+          </div>
+         </div>
+         <ul class="rlist--inline">
+          <li>
+           <a class="btn submit__article__btn" href="/all-submission-sites" title="Submit your article">
+            Submit your article
+           </a>
+          </li>
+          <li class="pull-right">
+           <ul class="rlist--inline share__links">
+            <li>
+             <a class="addthis_button_facebook" href="https://www.facebook.com/AmericanHeart" target="_blank">
+              <i aria-hidden="true" class="icon-facebook">
+              </i>
+             </a>
+            </li>
+            <li>
+             <a class="addthis_button_twitter" href="https://twitter.com/American_Heart" target="_blank">
+              <i aria-hidden="true" class="icon-twitter">
+              </i>
+             </a>
+            </li>
+           </ul>
+          </li>
+         </ul>
+        </div>
+       </div>
+      </div>
+      <div class="container hidden-lg">
+       <div class="pull-left logo__container col-xs-9">
+        <a href="https://www.heart.org/HEARTORG" title="AHA Logo">
+         <img alt="AHA Logo" id="" src="/pb-assets/images/logos/aha-header-mobile-logo-1526324261473.png"/>
+        </a>
+       </div>
+       <div class="pull-right actions__container col-xs-3 hidden-sm hidden-md">
+        <div class="quick-search">
+         <form action="/action/doSearch" method="get" name="defaultQuickSearch" title="Quick Search">
+          <div class="input-group option-0">
+           <input class="autocomplete" data-auto-complete-max-chars="32" data-auto-complete-max-words="7" data-contributors-conf="3" data-history-items-conf="3" data-publication-titles-conf="3" data-topics-conf="3" name="AllField" placeholder="Enter words / phrases / DOI / ISBN / keywords / authors / etc" title="Search field" type="search" value=""/>
+          </div>
+          <button class="btn quick-search__button icon-search" title="Search" type="submit">
+           <span class="sr-only">
+            Search
+           </span>
+           <span>
+            Search
+           </span>
+          </button>
+         </form>
+         <div class="pb-dropzone" data-pb-dropzone="TestDropZone" title="TestDropZone">
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="container hidden-lg">
+       <div class="quicklinks_mobile_area transplant" data-class-names="header__journal__logo__mobile" data-direction="from" data-remove="false" data-target="header .header--second-row .header__logo&gt;a:last-child" data-toggle="transplant" data-transplant="self">
+       </div>
+      </div>
+     </div>
+     <div class="primary-bg-color text-onDark drawer__nav">
+      <a class="sr-only-focusable" href="#afterNav-wpd">
+       Skip main navigation
+      </a>
+      <div class="main-nav">
+       <a class="main-nav__toggle__controller" data-target="main-menu" data-toggle="nav" href="#main-menu">
+        <i class="icon-menu2">
+         <span class="sr-only">
+          Close Drawer Menu
+         </span>
+        </i>
+        <i class="icon-close_thin">
+         <span class="sr-only">
+          Open Drawer Menu
+         </span>
+        </i>
+       </a>
+       <nav class="drawer__nav container gutterless hidden-md hidden-sm hidden-xs" data-ctrl-res="screen-md" id="main-menu" role="navigation">
+        <a class="menu-header hidden-lg" data-redirect-to="/" href="#">
+         Home
+        </a>
+        <ul class="menubar rlist--inline" id="menubar" role="menubar">
+         <li aria-haspopup="true" aria-label="AHA Journals" class="dropdown menu-parent" id="menu-item-main-menu-0" role="menuitem">
+          <a class="dropdown__toggle" data-toggle="dropdown" href="#" id="main-menu-1">
+           <span>
+            AHA Journals
+           </span>
+           <i aria-hidden="true" class="icon-arrow_r pull-right hidden-lg">
+           </i>
+           <i aria-hidden="true" class="icon-section_arrow_d pull-right hidden-md hidden-sm hidden-xs">
+           </i>
+          </a>
+          <ul aria-labelledby="main-menu-1" class="rlist dropdown__menu" role="menu">
+           <li aria-label="AHA Journals Home" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/">
+             <span>
+              AHA Journals Home
+             </span>
+            </a>
+           </li>
+           <li aria-haspopup="true" aria-label="Arteriosclerosis, Thrombosis, and Vascular Biology (ATVB)" class="dropdown menu-parent" role="menuitem" tabindex="-1">
+            <a class="dropdown__toggle" data-toggle="dropdown" href="#" id="main-menu-2">
+             <span>
+              Arteriosclerosis, Thrombosis, and Vascular Biology (ATVB)
+             </span>
+             <i aria-hidden="true" class="icon-arrow_r pull-right hidden-lg">
+             </i>
+             <i aria-hidden="true" class="icon-section_arrow_d pull-right hidden-md hidden-sm hidden-xs">
+             </i>
+            </a>
+            <ul aria-labelledby="main-menu-2" class="rlist dropdown__menu" role="menu">
+             <li aria-label="Journal Home" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/journal/atvb">
+               <span>
+                Journal Home
+               </span>
+              </a>
+             </li>
+             <li aria-label="Current Issue" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/toc/atvb/current">
+               <span>
+                Current Issue
+               </span>
+              </a>
+             </li>
+             <li aria-label="See All Issues" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/loi/atvb">
+               <span>
+                See All Issues
+               </span>
+              </a>
+             </li>
+            </ul>
+           </li>
+           <li aria-haspopup="true" aria-label="Circulation" class="dropdown menu-parent" role="menuitem" tabindex="-1">
+            <a class="dropdown__toggle" data-toggle="dropdown" href="#" id="main-menu-3">
+             <span>
+              Circulation
+             </span>
+             <i aria-hidden="true" class="icon-arrow_r pull-right hidden-lg">
+             </i>
+             <i aria-hidden="true" class="icon-section_arrow_d pull-right hidden-md hidden-sm hidden-xs">
+             </i>
+            </a>
+            <ul aria-labelledby="main-menu-3" class="rlist dropdown__menu" role="menu">
+             <li aria-label="Journal Home" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/journal/circ">
+               <span>
+                Journal Home
+               </span>
+              </a>
+             </li>
+             <li aria-label="Current Issue" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/toc/circ/current">
+               <span>
+                Current Issue
+               </span>
+              </a>
+             </li>
+             <li aria-label="See All Issues" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/loi/circ">
+               <span>
+                See All Issues
+               </span>
+              </a>
+             </li>
+            </ul>
+           </li>
+           <li aria-haspopup="true" aria-label="Circ: Arrhythmia and Electrophysiology" class="dropdown menu-parent" role="menuitem" tabindex="-1">
+            <a class="dropdown__toggle" data-toggle="dropdown" href="#" id="main-menu-4">
+             <span>
+              Circ: Arrhythmia and Electrophysiology
+             </span>
+             <i aria-hidden="true" class="icon-arrow_r pull-right hidden-lg">
+             </i>
+             <i aria-hidden="true" class="icon-section_arrow_d pull-right hidden-md hidden-sm hidden-xs">
+             </i>
+            </a>
+            <ul aria-labelledby="main-menu-4" class="rlist dropdown__menu" role="menu">
+             <li aria-label="Journal Home" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/journal/circep">
+               <span>
+                Journal Home
+               </span>
+              </a>
+             </li>
+             <li aria-label="Current Issue" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/toc/circep/current">
+               <span>
+                Current Issue
+               </span>
+              </a>
+             </li>
+             <li aria-label="See All Issues" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/loi/circep">
+               <span>
+                See All Issues
+               </span>
+              </a>
+             </li>
+            </ul>
+           </li>
+           <li aria-haspopup="true" aria-label="Circ: Genomic and Precision Medicine" class="dropdown menu-parent" role="menuitem" tabindex="-1">
+            <a class="dropdown__toggle" data-toggle="dropdown" href="#" id="main-menu-5">
+             <span>
+              Circ: Genomic and Precision Medicine
+             </span>
+             <i aria-hidden="true" class="icon-arrow_r pull-right hidden-lg">
+             </i>
+             <i aria-hidden="true" class="icon-section_arrow_d pull-right hidden-md hidden-sm hidden-xs">
+             </i>
+            </a>
+            <ul aria-labelledby="main-menu-5" class="rlist dropdown__menu" role="menu">
+             <li aria-label="Journal Home" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/journal/circgen">
+               <span>
+                Journal Home
+               </span>
+              </a>
+             </li>
+             <li aria-label="Current Issue" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/toc/circgen/current">
+               <span>
+                Current Issue
+               </span>
+              </a>
+             </li>
+             <li aria-label="See All Issues" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/loi/circgen">
+               <span>
+                See All Issues
+               </span>
+              </a>
+             </li>
+            </ul>
+           </li>
+           <li aria-haspopup="true" aria-label="Circ: Cardiovascular Imaging" class="dropdown menu-parent" role="menuitem" tabindex="-1">
+            <a class="dropdown__toggle" data-toggle="dropdown" href="#" id="main-menu-6">
+             <span>
+              Circ: Cardiovascular Imaging
+             </span>
+             <i aria-hidden="true" class="icon-arrow_r pull-right hidden-lg">
+             </i>
+             <i aria-hidden="true" class="icon-section_arrow_d pull-right hidden-md hidden-sm hidden-xs">
+             </i>
+            </a>
+            <ul aria-labelledby="main-menu-6" class="rlist dropdown__menu" role="menu">
+             <li aria-label="Journal Home" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/journal/circimaging">
+               <span>
+                Journal Home
+               </span>
+              </a>
+             </li>
+             <li aria-label="Current Issue" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/toc/circimaging/current">
+               <span>
+                Current Issue
+               </span>
+              </a>
+             </li>
+             <li aria-label="See All Issues" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/loi/circimaging">
+               <span>
+                See All Issues
+               </span>
+              </a>
+             </li>
+            </ul>
+           </li>
+           <li aria-haspopup="true" aria-label="Circ: Cardiovascular Interventions" class="dropdown menu-parent" role="menuitem" tabindex="-1">
+            <a class="dropdown__toggle" data-toggle="dropdown" href="#" id="main-menu-7">
+             <span>
+              Circ: Cardiovascular Interventions
+             </span>
+             <i aria-hidden="true" class="icon-arrow_r pull-right hidden-lg">
+             </i>
+             <i aria-hidden="true" class="icon-section_arrow_d pull-right hidden-md hidden-sm hidden-xs">
+             </i>
+            </a>
+            <ul aria-labelledby="main-menu-7" class="rlist dropdown__menu" role="menu">
+             <li aria-label="Journal Home" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/journal/circinterventions">
+               <span>
+                Journal Home
+               </span>
+              </a>
+             </li>
+             <li aria-label="Current Issue" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/toc/circinterventions/current">
+               <span>
+                Current Issue
+               </span>
+              </a>
+             </li>
+             <li aria-label="See All Issues" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/loi/circinterventions">
+               <span>
+                See All Issues
+               </span>
+              </a>
+             </li>
+            </ul>
+           </li>
+           <li aria-haspopup="true" aria-label="Circ: Cardiovascular Quality &amp; Outcomes" class="dropdown menu-parent" role="menuitem" tabindex="-1">
+            <a class="dropdown__toggle" data-toggle="dropdown" href="#" id="main-menu-8">
+             <span>
+              Circ: Cardiovascular Quality &amp; Outcomes
+             </span>
+             <i aria-hidden="true" class="icon-arrow_r pull-right hidden-lg">
+             </i>
+             <i aria-hidden="true" class="icon-section_arrow_d pull-right hidden-md hidden-sm hidden-xs">
+             </i>
+            </a>
+            <ul aria-labelledby="main-menu-8" class="rlist dropdown__menu" role="menu">
+             <li aria-label="Journal Home" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/journal/circoutcomes">
+               <span>
+                Journal Home
+               </span>
+              </a>
+             </li>
+             <li aria-label="Current Issue" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/toc/circoutcomes/current">
+               <span>
+                Current Issue
+               </span>
+              </a>
+             </li>
+             <li aria-label="See All Issues" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/loi/circoutcomes">
+               <span>
+                See All Issues
+               </span>
+              </a>
+             </li>
+            </ul>
+           </li>
+           <li aria-haspopup="true" aria-label="Circ: Heart Failure" class="dropdown menu-parent" role="menuitem" tabindex="-1">
+            <a class="dropdown__toggle" data-toggle="dropdown" href="#" id="main-menu-9">
+             <span>
+              Circ: Heart Failure
+             </span>
+             <i aria-hidden="true" class="icon-arrow_r pull-right hidden-lg">
+             </i>
+             <i aria-hidden="true" class="icon-section_arrow_d pull-right hidden-md hidden-sm hidden-xs">
+             </i>
+            </a>
+            <ul aria-labelledby="main-menu-9" class="rlist dropdown__menu" role="menu">
+             <li aria-label="Journal Home" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/journal/circheartfailure">
+               <span>
+                Journal Home
+               </span>
+              </a>
+             </li>
+             <li aria-label="Current Issue" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/toc/circheartfailure/current">
+               <span>
+                Current Issue
+               </span>
+              </a>
+             </li>
+             <li aria-label="See All Issues" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/loi/circheartfailure">
+               <span>
+                See All Issues
+               </span>
+              </a>
+             </li>
+            </ul>
+           </li>
+           <li aria-haspopup="true" aria-label="Circulation Research" class="dropdown menu-parent" role="menuitem" tabindex="-1">
+            <a class="dropdown__toggle" data-toggle="dropdown" href="#" id="main-menu-10">
+             <span>
+              Circulation Research
+             </span>
+             <i aria-hidden="true" class="icon-arrow_r pull-right hidden-lg">
+             </i>
+             <i aria-hidden="true" class="icon-section_arrow_d pull-right hidden-md hidden-sm hidden-xs">
+             </i>
+            </a>
+            <ul aria-labelledby="main-menu-10" class="rlist dropdown__menu" role="menu">
+             <li aria-label="Journal Home" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/journal/res">
+               <span>
+                Journal Home
+               </span>
+              </a>
+             </li>
+             <li aria-label="Current Issue" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/toc/res/current">
+               <span>
+                Current Issue
+               </span>
+              </a>
+             </li>
+             <li aria-label="See All Issues" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/loi/res">
+               <span>
+                See All Issues
+               </span>
+              </a>
+             </li>
+            </ul>
+           </li>
+           <li aria-haspopup="true" aria-label="Hypertension" class="dropdown menu-parent" role="menuitem" tabindex="-1">
+            <a class="dropdown__toggle" data-toggle="dropdown" href="#" id="main-menu-11">
+             <span>
+              Hypertension
+             </span>
+             <i aria-hidden="true" class="icon-arrow_r pull-right hidden-lg">
+             </i>
+             <i aria-hidden="true" class="icon-section_arrow_d pull-right hidden-md hidden-sm hidden-xs">
+             </i>
+            </a>
+            <ul aria-labelledby="main-menu-11" class="rlist dropdown__menu" role="menu">
+             <li aria-label="Journal Home" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/journal/hyp">
+               <span>
+                Journal Home
+               </span>
+              </a>
+             </li>
+             <li aria-label="Current Issue" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/toc/hyp/current">
+               <span>
+                Current Issue
+               </span>
+              </a>
+             </li>
+             <li aria-label="See All Issues" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/loi/hyp">
+               <span>
+                See All Issues
+               </span>
+              </a>
+             </li>
+            </ul>
+           </li>
+           <li aria-haspopup="true" aria-label="Stroke" class="dropdown menu-parent" role="menuitem" tabindex="-1">
+            <a class="dropdown__toggle" data-toggle="dropdown" href="#" id="main-menu-12">
+             <span>
+              Stroke
+             </span>
+             <i aria-hidden="true" class="icon-arrow_r pull-right hidden-lg">
+             </i>
+             <i aria-hidden="true" class="icon-section_arrow_d pull-right hidden-md hidden-sm hidden-xs">
+             </i>
+            </a>
+            <ul aria-labelledby="main-menu-12" class="rlist dropdown__menu" role="menu">
+             <li aria-label="Journal Home" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/journal/str">
+               <span>
+                Journal Home
+               </span>
+              </a>
+             </li>
+             <li aria-label="Current Issue" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/toc/str/current">
+               <span>
+                Current Issue
+               </span>
+              </a>
+             </li>
+             <li aria-label="See All Issues" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/loi/str">
+               <span>
+                See All Issues
+               </span>
+              </a>
+             </li>
+            </ul>
+           </li>
+           <li aria-haspopup="true" aria-label="Journal of the American Heart Association (JAHA)" class="dropdown menu-parent" role="menuitem" tabindex="-1">
+            <a class="dropdown__toggle" data-toggle="dropdown" href="#" id="main-menu-13">
+             <span>
+              Journal of the American Heart Association (JAHA)
+             </span>
+             <i aria-hidden="true" class="icon-arrow_r pull-right hidden-lg">
+             </i>
+             <i aria-hidden="true" class="icon-section_arrow_d pull-right hidden-md hidden-sm hidden-xs">
+             </i>
+            </a>
+            <ul aria-labelledby="main-menu-13" class="rlist dropdown__menu" role="menu">
+             <li aria-label="Journal Home" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/journal/jaha">
+               <span>
+                Journal Home
+               </span>
+              </a>
+             </li>
+             <li aria-label="Current Issue" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/toc/jaha/current">
+               <span>
+                Current Issue
+               </span>
+              </a>
+             </li>
+             <li aria-label="See All Issues" class="menu-item" role="menuitem" tabindex="-1">
+              <a href="/loi/jaha">
+               <span>
+                See All Issues
+               </span>
+              </a>
+             </li>
+            </ul>
+           </li>
+          </ul>
+         </li>
+         <li aria-haspopup="true" aria-label="Information" class="dropdown menu-parent" id="menu-item-main-menu-1" role="menuitem">
+          <a class="dropdown__toggle" data-toggle="dropdown" href="#" id="main-menu-14">
+           <span>
+            Information
+           </span>
+           <i aria-hidden="true" class="icon-arrow_r pull-right hidden-lg">
+           </i>
+           <i aria-hidden="true" class="icon-section_arrow_d pull-right hidden-md hidden-sm hidden-xs">
+           </i>
+          </a>
+          <ul aria-labelledby="main-menu-14" class="rlist dropdown__menu" role="menu">
+           <li aria-label="Customer Service and Ordering Information" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/custserv">
+             <span>
+              Customer Service and Ordering Information
+             </span>
+            </a>
+           </li>
+           <li aria-label="AHA Journals RSS Feeds" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/feeds.jsp">
+             <span>
+              AHA Journals RSS Feeds
+             </span>
+            </a>
+           </li>
+           <li aria-label="AHA Journals Alerts" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/action/showPreferences?menuTab=Alerts">
+             <span>
+              AHA Journals Alerts
+             </span>
+            </a>
+           </li>
+           <li aria-label="For International Users" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/international-users">
+             <span>
+              For International Users
+             </span>
+            </a>
+           </li>
+          </ul>
+         </li>
+         <li aria-haspopup="true" aria-label="Subscriptions" class="dropdown menu-parent" id="menu-item-main-menu-2" role="menuitem">
+          <a class="dropdown__toggle" data-toggle="dropdown" href="#" id="main-menu-15">
+           <span>
+            Subscriptions
+           </span>
+           <i aria-hidden="true" class="icon-arrow_r pull-right hidden-lg">
+           </i>
+           <i aria-hidden="true" class="icon-section_arrow_d pull-right hidden-md hidden-sm hidden-xs">
+           </i>
+          </a>
+          <ul aria-labelledby="main-menu-15" class="rlist dropdown__menu" role="menu">
+           <li aria-label="Subscriptions" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/subscription-information">
+             <span>
+              Subscriptions
+             </span>
+            </a>
+           </li>
+           <li aria-label="Institutions/Librarians FAQ" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/custserv/institutionalFAQ">
+             <span>
+              Institutions/Librarians FAQ
+             </span>
+            </a>
+           </li>
+           <li aria-label="Subscriber Help" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/custserv/help">
+             <span>
+              Subscriber Help
+             </span>
+            </a>
+           </li>
+          </ul>
+         </li>
+         <li aria-haspopup="true" aria-label="For Authors &amp; Reviewers" class="dropdown menu-parent" id="menu-item-main-menu-3" role="menuitem">
+          <a class="dropdown__toggle" data-toggle="dropdown" href="#" id="main-menu-16">
+           <span>
+            For Authors &amp; Reviewers
+           </span>
+           <i aria-hidden="true" class="icon-arrow_r pull-right hidden-lg">
+           </i>
+           <i aria-hidden="true" class="icon-section_arrow_d pull-right hidden-md hidden-sm hidden-xs">
+           </i>
+          </a>
+          <ul aria-labelledby="main-menu-16" class="rlist dropdown__menu" role="menu">
+           <li aria-label="AHA Journals Submission Sites" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/all-submission-sites">
+             <span>
+              AHA Journals Submission Sites
+             </span>
+            </a>
+           </li>
+           <li aria-label="Submission Requirements" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/submission-requirements">
+             <span>
+              Submission Requirements
+             </span>
+            </a>
+           </li>
+           <li aria-label="Figure Guidelines" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/figure-guidelines">
+             <span>
+              Figure Guidelines
+             </span>
+            </a>
+           </li>
+           <li aria-label="Open Access Information" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/open-access-information">
+             <span>
+              Open Access Information
+             </span>
+            </a>
+           </li>
+           <li aria-label="Permissions and Rights FAQ" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/permissions-rights">
+             <span>
+              Permissions and Rights FAQ
+             </span>
+            </a>
+           </li>
+           <li aria-label="Subject Terms" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/journal-subject-terms">
+             <span>
+              Subject Terms
+             </span>
+            </a>
+           </li>
+           <li aria-label="Journal Metrics" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/metrics">
+             <span>
+              Journal Metrics
+             </span>
+            </a>
+           </li>
+           <li aria-label="Altmetrics" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/altmetric">
+             <span>
+              Altmetrics
+             </span>
+            </a>
+           </li>
+          </ul>
+         </li>
+         <li aria-haspopup="true" aria-label="Policies" class="dropdown menu-parent" id="menu-item-main-menu-4" role="menuitem">
+          <a class="dropdown__toggle" data-toggle="dropdown" href="#" id="main-menu-17">
+           <span>
+            Policies
+           </span>
+           <i aria-hidden="true" class="icon-arrow_r pull-right hidden-lg">
+           </i>
+           <i aria-hidden="true" class="icon-section_arrow_d pull-right hidden-md hidden-sm hidden-xs">
+           </i>
+          </a>
+          <ul aria-labelledby="main-menu-17" class="rlist dropdown__menu" role="menu">
+           <li aria-label="Research Guidelines" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/research-guidelines">
+             <span>
+              Research Guidelines
+             </span>
+            </a>
+           </li>
+           <li aria-label="TOP Guidelines for Authors" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/TOP-guidelines">
+             <span>
+              TOP Guidelines for Authors
+             </span>
+            </a>
+           </li>
+           <li aria-label="Prior Publication Policy" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/prior-publication-policy">
+             <span>
+              Prior Publication Policy
+             </span>
+            </a>
+           </li>
+           <li aria-label="Public Access Policy" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/public-access-policy">
+             <span>
+              Public Access Policy
+             </span>
+            </a>
+           </li>
+           <li aria-label="Embargo Policy" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/embargo">
+             <span>
+              Embargo Policy
+             </span>
+            </a>
+           </li>
+           <li aria-label="Conflict of Interest Policy (PDF)" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/pb-assets/AHAJournalCOIProcedures-1590603341523.pdf" target="_blank">
+             <span>
+              Conflict of Interest Policy (PDF)
+             </span>
+             <i aria-hidden="true" class="icon-download-sitation">
+             </i>
+            </a>
+           </li>
+           <li aria-label="Ethical Conduct Policy (PDF)" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/pb-assets/Ethical ConductPolicyApril2017finalWeb-1519231412760.pdf" target="_blank">
+             <span>
+              Ethical Conduct Policy (PDF)
+             </span>
+             <i aria-hidden="true" class="icon-download-sitation">
+             </i>
+            </a>
+           </li>
+          </ul>
+         </li>
+         <li aria-haspopup="true" aria-label="News &amp; Events" class="dropdown menu-parent" id="menu-item-main-menu-5" role="menuitem">
+          <a class="dropdown__toggle" data-toggle="dropdown" href="#" id="main-menu-18">
+           <span>
+            News &amp; Events
+           </span>
+           <i aria-hidden="true" class="icon-arrow_r pull-right hidden-lg">
+           </i>
+           <i aria-hidden="true" class="icon-section_arrow_d pull-right hidden-md hidden-sm hidden-xs">
+           </i>
+          </a>
+          <ul aria-labelledby="main-menu-18" class="rlist dropdown__menu" role="menu">
+           <li aria-label="Professional Heart Daily" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="https://professional.heart.org/en" target="_blank">
+             <span>
+              Professional Heart Daily
+             </span>
+             <i aria-hidden="true" class="icon-download-sitation">
+             </i>
+            </a>
+           </li>
+           <li aria-label="AHA Newsroom" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="https://newsroom.heart.org/" target="_blank">
+             <span>
+              AHA Newsroom
+             </span>
+             <i aria-hidden="true" class="icon-download-sitation">
+             </i>
+            </a>
+           </li>
+           <li aria-label="Announcements" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/announcements">
+             <span>
+              Announcements
+             </span>
+            </a>
+           </li>
+           <li aria-label="AHA Journals @ Meetings" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/meetings">
+             <span>
+              AHA Journals @ Meetings
+             </span>
+            </a>
+           </li>
+          </ul>
+         </li>
+         <li aria-haspopup="true" aria-label="Resources" class="dropdown menu-parent" id="menu-item-main-menu-6" role="menuitem">
+          <a class="dropdown__toggle" data-toggle="dropdown" href="#" id="main-menu-19">
+           <span>
+            Resources
+           </span>
+           <i aria-hidden="true" class="icon-arrow_r pull-right hidden-lg">
+           </i>
+           <i aria-hidden="true" class="icon-section_arrow_d pull-right hidden-md hidden-sm hidden-xs">
+           </i>
+          </a>
+          <ul aria-labelledby="main-menu-19" class="rlist dropdown__menu" role="menu">
+           <li aria-label="AHA Guidelines and Statements" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="https://professional.heart.org/en/guidelines-and-statements" target="_blank">
+             <span>
+              AHA Guidelines and Statements
+             </span>
+             <i aria-hidden="true" class="icon-download-sitation">
+             </i>
+            </a>
+           </li>
+           <li aria-label="AHA Journals CME" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/cme" target="_blank">
+             <span>
+              AHA Journals CME
+             </span>
+             <i aria-hidden="true" class="icon-download-sitation">
+             </i>
+            </a>
+           </li>
+           <li aria-label="Heart Disease and Stroke Statistics" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/statupdate">
+             <span>
+              Heart Disease and Stroke Statistics
+             </span>
+            </a>
+           </li>
+           <li aria-label="Trend Watch" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/trend-watch">
+             <span>
+              Trend Watch
+             </span>
+            </a>
+           </li>
+           <li aria-label="Social Media" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/socialmedia">
+             <span>
+              Social Media
+             </span>
+            </a>
+           </li>
+           <li aria-label="AHA Journals Podcast Network" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/podcasts">
+             <span>
+              AHA Journals Podcast Network
+             </span>
+            </a>
+           </li>
+           <li aria-label="Early Career Resources" class="menu-item" role="menuitem" tabindex="-1">
+            <a href="/early-career">
+             <span>
+              Early Career Resources
+             </span>
+            </a>
+           </li>
+          </ul>
+         </li>
+         <li aria-haspopup="true" class="hidden-lg hidden-xlg" role="menuitem" tabindex="-1">
+          <div class="quicklinks_mobile_area transplant" data-class-names="header__quick-menu" data-direction="from" data-remove="false" data-target="header .header__quick-menu&gt; p ,header .header__quick-menu&gt;ul" data-toggle="transplant" data-transplant="self" id="quicklinks_mobile_area">
+          </div>
+         </li>
+        </ul>
+       </nav>
+       <span id="afterNav-wpd" tabindex="-1">
+       </span>
+      </div>
+      <div class="header__dropzone">
+      </div>
+      <div class="cookiePolicy-popup">
+       <div class="container">
+        <span class="cookiePolicy-popup__content">
+         <div class="banner">
+          <p class="message">
+           This site uses cookies. By continuing to browse this site you are agreeing to our use of cookies.
+          </p>
+          <p>
+           <a href="https://journals.lww.com/_layouts/15/oaks.journals/privacy.aspx">
+            Click here for more information.
+           </a>
+          </p>
+         </div>
+        </span>
+        <a aria-label="Agree to cookie policy and close message" class="cookiePolicy-popup__close close" href="#">
+         ×
+        </a>
+       </div>
+      </div>
+     </div>
+    </header>
+    <div class="container announcements-container hidden-xs">
+     <div class="row announcements" data-widget-def="ux3-layout-widget" data-widget-id="2b612200-a966-4127-9c7b-32513a4d1eb1">
+      <div class="col-sm-3 col-md-2 col-lg-2">
+       <button class="btn btn--danger btn--announcements" title="Announcements">
+        Announcements
+       </button>
+      </div>
+      <div class="col-sm-9 col-md-10 col-lg-10">
+       <div class="slideShow" data-widget-def="UX3SlideShow" data-widget-id="5521a10c-cfe2-4cfa-b82c-1e5478736de1">
+        <div class="slideShow">
+         <a class="sr-only-focusable" href="#afterSlideshow-ryo">
+          Skip slideshow
+         </a>
+         <div class="owl-carousel" data-animation="slide" data-arrow="true" data-autoheight="false" data-autoplay="true" data-controls="false" data-go-to-slide="Go to slide:" data-indicators="false" data-items="1" data-label="Slideshow" data-loop="true" data-next-slide="Go to next slide" data-pause-slide="Pause slideshow" data-play-slide="Play slideshow" data-prev-slide="Go to previous slide" data-responsive="" data-slideby="1" data-speed="2500" data-stagepadding="0">
+          <div class="slide-item">
+           <div class="custom-page slide-item" data-widget-def="UX3HTMLWidget" data-widget-id="229898e4-0ed9-4d34-a6a5-8105d2872132">
+            <span class="announcment-text">
+             <a href="/socialmedia">
+              AHA Journals on Social Media
+             </a>
+            </span>
+           </div>
+          </div>
+          <div class="slide-item">
+           <div class="custom-page slide-item" data-widget-def="UX3HTMLWidget" data-widget-id="409c278d-51d5-42e1-979b-5ff29c43d0aa">
+            <span class="announcment-text">
+             <a href="https://professional.heart.org/en/meetings/international-stroke-conference">
+              International Stroke Conference 2021
+             </a>
+            </span>
+            <span class="announcement-date">
+             March 17–19, 2021 | Virtual Event
+            </span>
+           </div>
+          </div>
+          <div class="slide-item">
+           <div class="custom-page slide-item" data-widget-def="UX3HTMLWidget" data-widget-id="78d1d315-f5b4-41dc-b25e-c494b73133b0">
+            <span class="announcment-text">
+             <a href="/podcasts">
+              AHA Journals Podcast Network
+             </a>
+            </span>
+           </div>
+          </div>
+         </div>
+         <span id="afterSlideshow-ryo" tabindex="-1">
+         </span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+    <main class="content">
+     <div class="container">
+      <div class="row">
+       <div class="col-xs-12 col-lg-9">
+        <div class="col-xs-12">
+         <div class="row has-image has-thumbnails-viewer">
+          <div class="col-xs-12 col-md-8">
+           <div class="slideShow">
+            <div class="owl-carousel" data-animation="none" data-arrow="true" data-autoplay="false" data-controls="false" data-go-to-slide="Go to slide:" data-indicators="false" data-items="1" data-next-slide="Go to next slide" data-pause-slide="Pause slideshow" data-play-slide="Play slideshow" data-prev-slide="Go to previous slide" data-responsive="" data-speed="2500">
+             <div class="slide-item">
+              <a href="/toc/str/52/Suppl_1" title="Browse ISC 2021 Abstracts">
+               <img alt="Browse ISC 2021 Abstracts" id="" src="/pb-assets/slideshows/home-top-slideshow/ISC-abstracts-Stroke-logo-2019-1548856644680.jpg"/>
+              </a>
+              <span class="text">
+               <a href="/toc/str/52/Suppl_1">
+                Browse ISC 2021 Abstracts
+               </a>
+              </span>
+             </div>
+             <div class="slide-item">
+              <a href="/doi/10.1161/CIR.0000000000000950" title="Heart Disease and Stroke Statistics—2021 Update">
+               <img alt="Heart Disease and Stroke Statistics—2021 Update" id="" src="/pb-assets/slideshows/circ-home-top/2310x1165_AHAStats_generic-1611689350437.jpg"/>
+              </a>
+              <span class="text">
+               <a href="/doi/10.1161/CIR.0000000000000950">
+                Heart Disease and Stroke Statistics
+               </a>
+              </span>
+             </div>
+             <div class="slide-item">
+              <a href="/coronavirus" title="corona virus">
+               <img alt="corona virus" id="" src="/pb-assets/AHAPortfolio/coronavirusSlide-1584462781757.jpg"/>
+              </a>
+              <span class="text">
+               <a href="/coronavirus">
+                Coronavirus Resources
+               </a>
+              </span>
+             </div>
+             <div class="slide-item">
+              <a href="/coronavirus" title="Coronavirus Resources">
+               <img alt="Coronavirus Resources" id="" src="/pb-assets/AHAPortfolio/coronavirusSlide-1584462781757.jpg"/>
+              </a>
+              <span class="text">
+               <a href="/coronavirus">
+                Coronavirus Resources
+               </a>
+              </span>
+             </div>
+             <div class="slide-item">
+              <a href="/doi/10.1161/CIR.0000000000000923" title="AHA/ACC Guideline for the Management of Patients with Valvular Heart Disease">
+               <img alt="AHA/ACC Guideline for the Management of Patients with Valvular Heart Disease" id="" src="/pb-assets/AHAPortfolio/2020_AHA-ACC Guideline_Valvular Heart Disease_Slide_port-1608233538.jpg"/>
+              </a>
+              <span class="text">
+               <a href="/doi/10.1161/CIR.0000000000000923">
+                Guideline for the Management of Patients with VHD
+               </a>
+              </span>
+             </div>
+            </div>
+           </div>
+          </div>
+          <div class="hidden visible-lg col-md-4">
+           <div class="slider-thumbnail-viewer">
+           </div>
+          </div>
+         </div>
+        </div>
+        <div class="col-xs-12">
+         <div class="card--dark">
+          <div class="row flex--desktop flex--tablet flex--align--middle">
+           <div class="col-xs-12 col-sm-8">
+            <h2 class="m-0">
+             Not a Member?
+            </h2>
+            Learn the benefits of becoming an AHA/ASA Professional Member and join.
+           </div>
+           <div class="col-xs-12 col-sm-4">
+            <a class="btn btn-sm btn--inverse" href="https://professional.heart.org/professional/membership/membership-tiers.jsp">
+             JOIN
+            </a>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div class="col-xs-12 col-sm-7 col-md-8">
+         <h2 class="">
+          Featured Articles
+         </h2>
+         <ul class="rlist lot">
+          <li class="grid-item">
+           <div class="creative-work">
+            <p class="creative-work__date">
+             March 12, 2021
+            </p>
+            <a href="/doi/full/10.1161/CIRCHEARTFAILURE.120.007421" title="Renal Sympathetic Denervation in Patients With Heart Failure With Preserved Ejection Fraction">
+             <h5 class="creative-work__title">
+              Renal Sympathetic Denervation in Patients With Heart Failure With Preserved Ejection Fraction
+             </h5>
+            </a>
+            <ul class="meta__authors rlist--inline loa mobile-authors" title="list of authors">
+             <a href="/action/doSearch?ContribAuthorRaw=Kresoja%2C+Karl-Patrik" title="Kresoja">
+              Kresoja et al.
+             </a>
+            </ul>
+            <div class="journal">
+             Circulation: Heart Failure
+            </div>
+           </div>
+          </li>
+          <li class="grid-item">
+           <div class="creative-work">
+            <p class="creative-work__date">
+             March 12, 2021
+            </p>
+            <a href="/doi/full/10.1161/CIRCIMAGING.120.011774" title="Molecular Mechanisms of Adenosine Stress T1 Mapping">
+             <h5 class="creative-work__title">
+              Molecular Mechanisms of Adenosine Stress T1 Mapping
+             </h5>
+            </a>
+            <ul class="meta__authors rlist--inline loa mobile-authors" title="list of authors">
+             <a href="/action/doSearch?ContribAuthorRaw=Shah%2C+Soham+A" title="Shah">
+              Shah et al.
+             </a>
+            </ul>
+            <div class="journal">
+             Circulation: Cardiovascular Imaging
+            </div>
+           </div>
+          </li>
+          <li class="grid-item">
+           <div class="creative-work">
+            <p class="creative-work__date">
+             March 9, 2021
+            </p>
+            <a href="/doi/full/10.1161/CIRCINTERVENTIONS.120.010207" title="Treatment of Varicose Veins Affects the Incidences of Venous Thromboembolism and Peripheral Artery Disease">
+             <h5 class="creative-work__title">
+              Treatment of Varicose Veins Affects the Incidences of Venous Thromboembolism and Peripheral Artery Disease
+             </h5>
+            </a>
+            <ul class="meta__authors rlist--inline loa mobile-authors" title="list of authors">
+             <a href="/action/doSearch?ContribAuthorRaw=Chang%2C+Shyue-Luen" title="Chang">
+              Chang et al.
+             </a>
+            </ul>
+            <div class="journal">
+             Circulation: Cardiovascular Interventions
+            </div>
+           </div>
+          </li>
+          <li class="grid-item">
+           <div class="creative-work">
+            <p class="creative-work__date">
+             March 8, 2021
+            </p>
+            <a href="/doi/full/10.1161/CIRCHEARTFAILURE.120.007347" title="Synergistic Impact of Systolic Blood Pressure and Perfusion Status on Mortality in Acute Heart Failure">
+             <h5 class="creative-work__title">
+              Synergistic Impact of Systolic Blood Pressure and Perfusion Status on Mortality in Acute Heart Failure
+             </h5>
+            </a>
+            <ul class="meta__authors rlist--inline loa mobile-authors" title="list of authors">
+             <a href="/action/doSearch?ContribAuthorRaw=Rossello%2C+Xavier" title="Rossello">
+              Rossello et al.
+             </a>
+             <a href="/action/doSearch?ContribAuthorRaw=Fuentes%2C+Marta" title="Fuentes">
+              Fuentes et al.
+             </a>
+            </ul>
+            <div class="journal">
+             Circulation: Heart Failure
+            </div>
+           </div>
+          </li>
+          <li class="grid-item">
+           <div class="creative-work">
+            <p class="creative-work__date">
+             March 3, 2021
+            </p>
+            <a href="/doi/full/10.1161/CIRCOUTCOMES.119.006461" title="Development of the Elective Outpatient Percutaneous Coronary Intervention Episode&amp;#x2013;Based Cost Measure">
+             <h5 class="creative-work__title">
+              Development of the Elective Outpatient Percutaneous Coronary Intervention Episode–Based Cost Measure
+             </h5>
+            </a>
+            <ul class="meta__authors rlist--inline loa mobile-authors" title="list of authors">
+             <a href="/action/doSearch?ContribAuthorRaw=Sandhu%2C+Alexander+T" title="Sandhu">
+              Sandhu et al.
+             </a>
+            </ul>
+            <div class="journal">
+             Circulation: Cardiovascular Quality and Outcomes
+            </div>
+           </div>
+          </li>
+          <li class="grid-item">
+           <div class="creative-work">
+            <p class="creative-work__date">
+             March 2, 2021
+            </p>
+            <a href="/doi/full/10.1161/CIRCIMAGING.120.012072" title="Global Left Ventricular Myocardial Work Efficiency and Long-Term Prognosis in Patients After ST-Segment&amp;#x2013;Elevation Myocardial Infarction">
+             <h5 class="creative-work__title">
+              Global Left Ventricular Myocardial Work Efficiency and Long-Term Prognosis in Patients After ST-Segment–Elevation Myocardial Infarction
+             </h5>
+            </a>
+            <ul class="meta__authors rlist--inline loa mobile-authors" title="list of authors">
+             <a href="/action/doSearch?ContribAuthorRaw=Lustosa%2C+Rodolfo+P" title="Lustosa">
+              Lustosa et al.
+             </a>
+            </ul>
+            <div class="journal">
+             Circulation: Cardiovascular Imaging
+            </div>
+           </div>
+          </li>
+         </ul>
+         <a class="btn btn-sm btn--primary mb-3" href="/topic/featured/featured-article">
+          See all
+         </a>
+        </div>
+        <div class="col-xs-12 col-sm-5 col-md-4">
+         <div class="card call_for_papers" data-widget-def="UX3HTMLWidget" data-widget-id="ffcedb3a-8ed2-43f1-8fe1-74421e9b59f4">
+          <h2 class="">
+           Call for Submissions
+          </h2>
+          <ul class="rlist">
+           <li>
+            <p>
+             <a href="https://circinterventions-submit.aha-journals.org/cgi-bin/main.plex" style="color:#c5161d;" target="_blank">
+              <em>
+               Circulation: Cardiovascular Interventions
+              </em>
+              <br/>
+              Theme issue on interventional imaging
+             </a>
+            </p>
+            <strong>
+             Deadline May 22, 2021
+            </strong>
+           </li>
+           <li>
+            <p>
+             <a href="/all-submission-sites" style="color:#c5161d;" target="_blank">
+              Submit to AHA Journals
+             </a>
+            </p>
+           </li>
+          </ul>
+         </div>
+         <div class="center" data-widget-def="ux3-general-image" data-widget-id="ef2b254a-756b-4968-9d81-6e0f115571e7">
+          <a href="/null-hypothesis" title="AHA Journals Null Hypothesis Collection">
+           <img alt="AHA Journals Null Hypothesis Collection" id="" src="/pb-assets/AHAPortfolio/Collections/NullCollection_300x250-1604940222667.png"/>
+          </a>
+         </div>
+         <div class="custom-page card border" data-widget-def="UX3HTMLWidget" data-widget-id="17b78bf3-272d-490f-9008-7597047b05aa">
+          <h3 style="text-align: center;">
+           <strong>
+            <a href="/socialmedia">
+             AHA/ASA Journals
+             <br/>
+             Social Media
+            </a>
+           </strong>
+          </h3>
+         </div>
+        </div>
+       </div>
+       <div class="col-xs-12 col-md-6 col-lg-3">
+        <div class="col-md-4 col-lg-12 pb-3 hidden-xs hidden-sm ad-disclaimer" data-widget-def="literatumAd" data-widget-id="fafdf1ec-3d26-4d21-a6fa-192ab47a1fd6">
+         <div class="pb-ad">
+          <div>
+           <a href="/action/clickThrough?id=501121&amp;url=%2Fadvertising-disclaimer&amp;loc=%2F&amp;placeholderId=1016&amp;productId=501016" style="font-size: 10px; color: #7b7b7b; text-transform: uppercase;" target="_blank" title="ad disclaimer">
+            Advertisement
+           </a>
+          </div>
+          <script async="async" src="https://www.googletagservices.com/tag/js/gpt.js">
+          </script>
+          <script>
+           var gptadslots = [];
+  var googletag = googletag || {cmd:[]};
+          </script>
+          <script>
+           googletag.cmd.push(function() {
+    var mapping1 = googletag.sizeMapping()
+                            .addSize([0, 0], [[300, 50]])
+                            .addSize([730, 0], [[728, 90]])
+		.build();
+
+gptadslots.push(googletag.defineSlot('/15726702761/Desktop/ahajournals', [[300,250]], 'div-gpt-ad-1529604360245-1') .addService(googletag.pubads()));
+googletag.pubads().enableSingleRequest();
+googletag.enableServices();
+  });
+          </script>
+          <div id="div-gpt-ad-1529604360245-1">
+           <script>
+            googletag.cmd.push(function() { googletag.display('div-gpt-ad-1529604360245-1'); });
+           </script>
+          </div>
+         </div>
+        </div>
+        <div class="center" data-widget-def="ux3-general-image" data-widget-id="4410eb2e-d2a4-4d7b-a311-e43056b09dcc">
+         <a href="/early-career" title="AHA Journal Early Career">
+          <img alt="AHA Journal Early Career" id="" src="/pb-assets/AHAPortfolio/Marketing/AHAEarlyCareer/0-Q149_AHA_EarlyCareer_250x250_FINAL-1597153803220.jpg"/>
+         </a>
+        </div>
+        <div class="custom-page card border" data-widget-def="UX3HTMLWidget" data-widget-id="8052d0ba-199c-472e-a2fb-5c941b532c4b">
+         <h2 class="">
+          Professional Heart Daily
+         </h2>
+         <p>
+          Your resource for the AHA’s
+          <a href="https://professional.heart.org/en/partners">
+           <strong>
+            Professional Membership
+           </strong>
+          </a>
+          ,
+          <strong>
+           <a href="https://professional.heart.org/en/partners/scientific-councils">
+            Scientific Councils
+           </a>
+          </strong>
+          ,
+          <a href="https://professional.heart.org/en/education">
+           <strong>
+            Education
+           </strong>
+          </a>
+          ,
+          <strong>
+           <a href="https://professional.heart.org/en/meetings">
+            Meetings
+           </a>
+          </strong>
+          , and
+          <a href="https://professional.heart.org/en/research-programs">
+           <strong>
+            Research programs
+           </strong>
+          </a>
+          , including the latest
+          <strong>
+           <a href="https://professional.heart.org/en/science-news">
+            Science News
+           </a>
+          </strong>
+          .
+         </p>
+        </div>
+        <div class="center" data-widget-def="ux3-general-image" data-widget-id="fcb1afe6-bcae-4d47-8ce5-973b4d9456e4">
+         <a href="/meetings" title="AHA Journals @ Meetings">
+          <img alt="AHA Journals @ Meetings" id="" src="/pb-assets/AHAPortfolio/Marketing/AHAMeetings/0-Q149_AHA_Meetings_250x250_V2_FINAL-1597153798540.jpg"/>
+         </a>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="container">
+      <div class="row">
+       <div class="col-xs-12">
+        <h2 class="">
+         Current Issues
+        </h2>
+        <div class="row has-covers">
+         <div class="col-xs-12 is-gallery">
+          <div class="slideShow">
+           <div class="owl-carousel" data-animation="slide" data-arrow="true" data-autoplay="false" data-controls="false" data-go-to-slide="Go to slide:" data-indicators="false" data-items="1" data-next-slide="Go to next slide" data-pause-slide="Pause slideshow" data-play-slide="Play slideshow" data-prev-slide="Go to previous slide" data-responsive="" data-speed="2500">
+            <div class="slide-item">
+             <ul class="rlist loc">
+              <li class="grid-item cover-image">
+               <div class="cover-image__image">
+                <a href="/toc/atvb/41/3" title="Go to Arteriosclerosis, Thrombosis, and Vascular Biology homepage">
+                 <img alt="Go to Arteriosclerosis, Thrombosis, and Vascular Biology homepage" src="/cms/asset/b2a5e7d5-2d8a-4924-8e72-4c9117ea6d17/atvb.2021.41.issue-3.largecover.jpg"/>
+                </a>
+               </div>
+               <div class="cover-image__details card m-0">
+                <h2>
+                 Arteriosclerosis, Thrombosis, and Vascular Biology
+                </h2>
+                <a class="btn btn-sm btn-primary" href="/toc/atvb/41/3">
+                 Current issue
+                </a>
+               </div>
+              </li>
+             </ul>
+            </div>
+            <div class="slide-item">
+             <ul class="rlist loc">
+              <li class="grid-item cover-image">
+               <div class="cover-image__image">
+                <a href="/toc/circ/143/11" title="Go to Circulation homepage">
+                 <img alt="Go to Circulation homepage" src="/cms/asset/17dee08e-f4c4-4725-9900-9d2d59f62a7d/circ.2021.143.issue-11.largecover.jpg"/>
+                </a>
+               </div>
+               <div class="cover-image__details card m-0">
+                <h2>
+                 Circulation
+                </h2>
+                <a class="btn btn-sm btn-primary" href="/toc/circ/143/11">
+                 Current issue
+                </a>
+               </div>
+              </li>
+             </ul>
+            </div>
+            <div class="slide-item">
+             <ul class="rlist loc">
+              <li class="grid-item cover-image">
+               <div class="cover-image__image">
+                <a href="/toc/circep/14/3" title="Go to Circulation: Arrhythmia and Electrophysiology homepage">
+                 <img alt="Go to Circulation: Arrhythmia and Electrophysiology homepage" src="/cms/asset/510a6413-b953-4da8-9075-faf748d06176/circep.2021.14.issue-3.largecover.jpg"/>
+                </a>
+               </div>
+               <div class="cover-image__details card m-0">
+                <h2>
+                 Circulation: Arrhythmia and Electrophysiology
+                </h2>
+                <a class="btn btn-sm btn-primary" href="/toc/circep/14/3">
+                 Current issue
+                </a>
+               </div>
+              </li>
+             </ul>
+            </div>
+            <div class="slide-item">
+             <ul class="rlist loc">
+              <li class="grid-item cover-image">
+               <div class="cover-image__image">
+                <a href="/toc/circgen/14/1" title="Go to Circulation: Genomic and Precision Medicine homepage">
+                 <img alt="Go to Circulation: Genomic and Precision Medicine homepage" src="/cms/asset/db024577-8b45-40e0-a92a-9b6a2fcf820c/circgen.2021.14.issue-1.largecover.jpg"/>
+                </a>
+               </div>
+               <div class="cover-image__details card m-0">
+                <h2>
+                 Circulation: Genomic and Precision Medicine
+                </h2>
+                <a class="btn btn-sm btn-primary" href="/toc/circgen/14/1">
+                 Current issue
+                </a>
+               </div>
+              </li>
+             </ul>
+            </div>
+            <div class="slide-item">
+             <ul class="rlist loc">
+              <li class="grid-item cover-image">
+               <div class="cover-image__image">
+                <a href="/toc/circimaging/14/3" title="Go to Circulation: Cardiovascular Imaging homepage">
+                 <img alt="Go to Circulation: Cardiovascular Imaging homepage" src="/cms/asset/02002ff6-73b0-460a-a357-235dfc310f0c/circimaging.2021.14.issue-3.largecover.jpg"/>
+                </a>
+               </div>
+               <div class="cover-image__details card m-0">
+                <h2>
+                 Circulation: Cardiovascular Imaging
+                </h2>
+                <a class="btn btn-sm btn-primary" href="/toc/circimaging/14/3">
+                 Current issue
+                </a>
+               </div>
+              </li>
+             </ul>
+            </div>
+            <div class="slide-item">
+             <ul class="rlist loc">
+              <li class="grid-item cover-image">
+               <div class="cover-image__image">
+                <a href="/toc/circinterventions/14/3" title="Go to Circulation: Cardiovascular Interventions homepage">
+                 <img alt="Go to Circulation: Cardiovascular Interventions homepage" src="/cms/asset/a78719f4-6deb-4e2e-9396-bb1378542cad/circinterventions.2021.14.issue-3.largecover.jpg"/>
+                </a>
+               </div>
+               <div class="cover-image__details card m-0">
+                <h2>
+                 Circulation: Cardiovascular Interventions
+                </h2>
+                <a class="btn btn-sm btn-primary" href="/toc/circinterventions/14/3">
+                 Current issue
+                </a>
+               </div>
+              </li>
+             </ul>
+            </div>
+            <div class="slide-item">
+             <ul class="rlist loc">
+              <li class="grid-item cover-image">
+               <div class="cover-image__image">
+                <a href="/toc/circoutcomes/14/3" title="Go to Circulation: Cardiovascular Quality and Outcomes homepage">
+                 <img alt="Go to Circulation: Cardiovascular Quality and Outcomes homepage" src="/cms/asset/48a5e1e7-6dab-420a-b991-d33cfc2c6a72/circoutcomes.2021.14.issue-3.largecover.jpg"/>
+                </a>
+               </div>
+               <div class="cover-image__details card m-0">
+                <h2>
+                 Circulation: Cardiovascular Quality and Outcomes
+                </h2>
+                <a class="btn btn-sm btn-primary" href="/toc/circoutcomes/14/3">
+                 Current issue
+                </a>
+               </div>
+              </li>
+             </ul>
+            </div>
+            <div class="slide-item">
+             <ul class="rlist loc">
+              <li class="grid-item cover-image">
+               <div class="cover-image__image">
+                <a href="/toc/circheartfailure/14/3" title="Go to Circulation: Heart Failure homepage">
+                 <img alt="Go to Circulation: Heart Failure homepage" src="/cms/asset/438f098c-c5d5-4e3a-8ffb-b93cac3a8785/circheartfailure.2021.14.issue-3.largecover.jpg"/>
+                </a>
+               </div>
+               <div class="cover-image__details card m-0">
+                <h2>
+                 Circulation: Heart Failure
+                </h2>
+                <a class="btn btn-sm btn-primary" href="/toc/circheartfailure/14/3">
+                 Current issue
+                </a>
+               </div>
+              </li>
+             </ul>
+            </div>
+            <div class="slide-item">
+             <ul class="rlist loc">
+              <li class="grid-item cover-image">
+               <div class="cover-image__image">
+                <a href="/toc/res/128/6" title="Go to Circulation Research homepage">
+                 <img alt="Go to Circulation Research homepage" src="/cms/asset/29175f46-c453-4b9a-b0f6-e77c6689400b/res.2021.128.issue-6.largecover.jpg"/>
+                </a>
+               </div>
+               <div class="cover-image__details card m-0">
+                <h2>
+                 Circulation Research
+                </h2>
+                <a class="btn btn-sm btn-primary" href="/toc/res/128/6">
+                 Current issue
+                </a>
+               </div>
+              </li>
+             </ul>
+            </div>
+            <div class="slide-item">
+             <ul class="rlist loc">
+              <li class="grid-item cover-image">
+               <div class="cover-image__image">
+                <a href="/toc/hyp/77/4" title="Go to Hypertension homepage">
+                 <img alt="Go to Hypertension homepage" src="/cms/asset/70818caf-cc92-49f9-b6dc-03135fbf8106/hyp.2021.77.issue-4.largecover.jpg"/>
+                </a>
+               </div>
+               <div class="cover-image__details card m-0">
+                <h2>
+                 Hypertension
+                </h2>
+                <a class="btn btn-sm btn-primary" href="/toc/hyp/77/4">
+                 Current issue
+                </a>
+               </div>
+              </li>
+             </ul>
+            </div>
+            <div class="slide-item">
+             <ul class="rlist loc">
+              <li class="grid-item cover-image">
+               <div class="cover-image__image">
+                <a href="/toc/str/52/3" title="Go to Stroke homepage">
+                 <img alt="Go to Stroke homepage" src="/cms/asset/308005e7-009b-494e-85c2-fbbba276e539/str.2021.52.issue-3.largecover.jpg"/>
+                </a>
+               </div>
+               <div class="cover-image__details card m-0">
+                <h2>
+                 Stroke
+                </h2>
+                <a class="btn btn-sm btn-primary" href="/toc/str/52/3">
+                 Current issue
+                </a>
+               </div>
+              </li>
+             </ul>
+            </div>
+            <div class="slide-item">
+             <ul class="rlist loc">
+              <li class="grid-item cover-image">
+               <div class="cover-image__image">
+                <a href="/toc/jaha/10/6" title="Go to Journal of the American Heart Association homepage">
+                 <img alt="Go to Journal of the American Heart Association homepage" src="/cms/asset/f49076f7-6c52-49bb-be74-be1d13620a43/jah3.v10.6.cover.jpg"/>
+                </a>
+               </div>
+               <div class="cover-image__details card m-0">
+                <h2>
+                 Journal of the American Heart Association
+                </h2>
+                <a class="btn btn-sm btn-primary" href="/toc/jaha/10/6">
+                 Current issue
+                </a>
+               </div>
+              </li>
+             </ul>
+            </div>
+           </div>
+           <div class="card--dark">
+            <h3 class="m-0">
+             STAY UP TO DATE
+            </h3>
+            <p>
+             <strong>
+              MANAGE AHA JOURNAL ALERTS
+             </strong>
+            </p>
+            <a class="btn btn-sm btn--inverse mt-3" href="/action/showPreferences?menuTab=Alerts">
+             Manage
+            </a>
+           </div>
+          </div>
+          <div class="gallery-items owl-dots-reflection" data-dot-item="li.cover-image">
+           <ul class="rlist grid-sm-4 listing__covers__holder">
+           </ul>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="card m-0 grid-xs-1 grid-sm-1 grid-md-3 grid-lg-3 grid-xlg-3" data-widget-def="ux3-layout-widget" data-widget-id="4916a6d9-cef4-4724-ad9c-694f42fdd16f">
+      <div class="container">
+       <div class="row">
+        <div class="col-xs-12 col-lg-12 pt-3 gutterless">
+         <h2 class="">
+          Multimedia
+         </h2>
+         <div class="thumbnails-teaser card clearfix">
+          <div class="viewport-slider" data-slider-vport="screen-xs">
+           <div class="slideShow">
+            <div class="owl-carousel" data-animation="slide" data-arrow="false" data-autoplay="false" data-controls="false" data-go-to-slide="Go to slide:" data-indicators="true" data-items="1" data-next-slide="Go to next slide" data-pause-slide="Pause slideshow" data-play-slide="Play slideshow" data-prev-slide="Go to previous slide" data-responsive="" data-speed="2500">
+             <div class="grid-item">
+              <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" frameborder="0" height="440" src="https://www.youtube.com/embed/dkduCMLS1Qc?controls=0" width="440">
+              </iframe>
+             </div>
+             <div class="grid-item">
+              <a href="https://player.fm/series/2391161" title="Circulation on the Run Podcast">
+               <img alt="Circulation on the Run Podcast" id="" src="/pb-assets/AHAPortfolio/Podcasts/CircRUN-2019-1576087509783.jpg"/>
+              </a>
+             </div>
+             <div class="grid-item">
+              <a href="https://circresearch.libsyn.com/" title="Discover CircRes">
+               <img alt="Discover CircRes" id="" src="/pb-assets/AHAPortfolio/Podcasts/DiscoverCircRes-2019-1576087508580.jpg"/>
+              </a>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="container">
+      <div class="row">
+       <div class="col-xs-12 col-sm-7 col-md-4 col-lg-6 pt-3">
+        <h2 class="">
+         What's Happening at AHA/ASA
+        </h2>
+        <h4 class="border-bottom">
+         Events for March 2021
+        </h4>
+        <div>
+         <ul class="rlist lot">
+          <li class="grid-item">
+           <div class="creative-work">
+            <div class="delayLoad">
+             <p class="creative-work__date">
+              March 17–19, 2021 | Virtual Event
+             </p>
+             <a href="https://professional.heart.org/en/meetings/international-stroke-conference" target="_blank" title="International Stroke Conference">
+              <h5 class="creative-work__title">
+               International Stroke Conference
+              </h5>
+             </a>
+            </div>
+           </div>
+          </li>
+         </ul>
+        </div>
+        <h4 class="border-bottom">
+         Events for May 2021
+        </h4>
+        <div>
+         <ul class="rlist lot">
+          <li class="grid-item">
+           <div class="creative-work">
+            <div class="delayLoad">
+             <p class="creative-work__date">
+              May 15–16, 2021 | TBA
+             </p>
+             <a href="https://professional.heart.org/en/meetings/quality-of-care-and-outcomes-research" target="_blank" title="QCOR Sessions 2021">
+              <h5 class="creative-work__title">
+               QCOR Sessions 2021
+              </h5>
+             </a>
+            </div>
+           </div>
+          </li>
+         </ul>
+        </div>
+       </div>
+       <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 pt-3">
+        <h2>
+         Latest Tweets
+        </h2>
+        <div class="timeline-Body customisable-border">
+         <div class="timeline-Viewport">
+          <a class="twitter-timeline twitter-timeline-rendered" data-chrome="nofooter noheader" data-height="400" data-theme="light" dnt="true" href="https://twitter.com/American_Heart">
+          </a>
+          <script async="" charset="utf-8" src="//platform.twitter.com/widgets.js">
+          </script>
+         </div>
+        </div>
+       </div>
+       <div class="col-xs-12 col-sm-12 col-md-4 col-lg-3 pt-3">
+        <div class="col-md-12 col-lg-12 pb-3 hidden-xs hidden-sm ad-disclaimer" data-widget-def="literatumAd" data-widget-id="515bdfb4-1778-438d-a668-a36c771ce7e9">
+         <div class="pb-ad">
+          <div>
+           <a href="/action/clickThrough?id=501122&amp;url=%2Fadvertising-disclaimer&amp;loc=%2F&amp;placeholderId=1017&amp;productId=501016" style="font-size: 10px; color: #7b7b7b; text-transform: uppercase;" target="_blank" title="ad disclaimer">
+            Advertisement
+           </a>
+          </div>
+          <script async="async" src="https://www.googletagservices.com/tag/js/gpt.js">
+          </script>
+          <script>
+           var gptadslots = [];
+  var googletag = googletag || {cmd:[]};
+          </script>
+          <script>
+           googletag.cmd.push(function() {
+    var mapping1 = googletag.sizeMapping()
+                            .addSize([0, 0], [[300, 50]])
+                            .addSize([730, 0], [[728, 90]])
+		.build();
+
+gptadslots.push(googletag.defineSlot('/15726702761/Desktop/ahajournals', [[300,250]], 'div-gpt-ad-1529604360245-2') .addService(googletag.pubads()));
+googletag.pubads().enableSingleRequest();
+googletag.enableServices();
+  });
+          </script>
+          <div id="div-gpt-ad-1529604360245-2">
+           <script>
+            googletag.cmd.push(function() { googletag.display('div-gpt-ad-1529604360245-2'); });
+           </script>
+          </div>
+         </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-12 col-lg-12" data-widget-def="UX3HTMLWidget" data-widget-id="6700457d-b2d4-4200-8c38-fd0fd4e694a0">
+         <h3 class="">
+          Connect
+         </h3>
+         <div class="row">
+          <ul class="rlist grid-xs-2">
+           <li class="grid-item my-2">
+            <a class="inline-icon" href="https://www.facebook.com/AmericanHeart" target="_blank" title="Facebook">
+             <i aria-hidden="true" class="icon-facebook-square">
+             </i>
+             Facebook
+            </a>
+           </li>
+           <li class="grid-item my-2">
+            <a class="inline-icon" href="https://www.twitter.com/American_Heart" target="_blank" title="Twitter">
+             <i aria-hidden="true" class="icon-twitter-square">
+             </i>
+             Twitter
+            </a>
+           </li>
+           <li class="grid-item my-2">
+            <a class="inline-icon" href="https://www.youtube.com/user/americanheartassoc" target="_blank" title="YouTube">
+             <i aria-hidden="true" class="icon-youtube4">
+             </i>
+             YouTube
+            </a>
+           </li>
+           <li class="grid-item my-2">
+            <a class="inline-icon" href="https://www.ahajournals.org/feeds.jsp" target="_blank" title="RSS">
+             <i aria-hidden="true" class="icon-Rss">
+             </i>
+             RSS
+            </a>
+           </li>
+          </ul>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </main>
+    <footer>
+     <div class="footer-top">
+      <div class="container">
+       <div class="row first-row-content">
+        <div class="col-sm-12 col-md-4 col-lg-3 footer-brand-name">
+         <h3 class="brand-name">
+          AHA / ASA Journals
+         </h3>
+        </div>
+        <div class="col-sm-12 col-md-8 col-lg-9 footer-quick-links-list hidden-xs hidden-sm">
+         <h5 class="section_title">
+          AHA Journals
+         </h5>
+         <ul class="rlist">
+          <div class="row">
+           <li class="col-sm-12 col-md-6 col-lg-4">
+            <a href="/journal/atvb" title="Arteriosclerosis, Thrombosis, and Vascular Biology (ATVB)">
+             Arteriosclerosis, Thrombosis, and Vascular Biology (ATVB)
+            </a>
+           </li>
+           <li class="col-sm-12 col-md-6 col-lg-4">
+            <a href="/journal/circimaging" title="Circ: Cardiovascular Imaging">
+             Circ: Cardiovascular Imaging
+            </a>
+           </li>
+           <li class="col-sm-12 col-md-6 col-lg-4">
+            <a href="/journal/res" title="Circulation Research">
+             Circulation Research
+            </a>
+           </li>
+           <li class="col-sm-12 col-md-6 col-lg-4">
+            <a href="/journal/circ" title="Circulation">
+             Circulation
+            </a>
+           </li>
+           <li class="col-sm-12 col-md-6 col-lg-4">
+            <a href="/journal/circinterventions" title="Circ: Cardiovascular Interventions">
+             Circ: Cardiovascular Interventions
+            </a>
+           </li>
+           <li class="col-sm-12 col-md-6 col-lg-4">
+            <a href="/journal/hyp" title="Hypertension">
+             Hypertension
+            </a>
+           </li>
+           <li class="col-sm-12 col-md-6 col-lg-4">
+            <a href="/journal/circep" title="Circ: Arrhythmia and Electrophysiology">
+             Circ: Arrhythmia and Electrophysiology
+            </a>
+           </li>
+           <li class="col-sm-12 col-md-6 col-lg-4">
+            <a href="/journal/circoutcomes" title="Circ: Cardiovascular Quality &amp; Outcomes">
+             Circ: Cardiovascular Quality &amp; Outcomes
+            </a>
+           </li>
+           <li class="col-sm-12 col-md-6 col-lg-4">
+            <a href="/journal/str" title="Stroke">
+             Stroke
+            </a>
+           </li>
+           <li class="col-sm-12 col-md-6 col-lg-4">
+            <a href="/journal/circgen" title="Circ: Genomic and Precision Medicine">
+             Circ: Genomic and Precision Medicine
+            </a>
+           </li>
+           <li class="col-sm-12 col-md-6 col-lg-4">
+            <a href="/journal/circheartfailure" title="Circ: Heart Failure">
+             Circ: Heart Failure
+            </a>
+           </li>
+           <li class="col-sm-12 col-md-6 col-lg-4">
+            <a href="/journal/jaha" title="Journal of the American Heart Association">
+             Journal of the American Heart Association
+            </a>
+           </li>
+          </div>
+         </ul>
+        </div>
+        <div class="col-xs-12 col-sm-12 accordion hidden-lg">
+         <a aria-controls="journals" aria-expanded="false" class="accordion__control" href="#">
+          <h5 class="section_title">
+           AHA Journals
+           <i aria-hidden="true" class="icon-section_arrow_d pull-right">
+           </i>
+          </h5>
+         </a>
+         <div class="accordion__content" id="journals" style="display: none;">
+          <ul class="rlist">
+           <li>
+            <a href="/journal/atvb" title="Arteriosclerosis, Thrombosis, and Vascular Biology (ATVB)">
+             Arteriosclerosis, Thrombosis, and Vascular Biology (ATVB)
+            </a>
+           </li>
+           <li>
+            <a href="/journal/circ" title="Circulation">
+             Circulation
+            </a>
+           </li>
+           <li>
+            <a href="/journal/circep" title="Circ: Arrhythmia and Electrophysiology">
+             Circ: Arrhythmia and Electrophysiology
+            </a>
+           </li>
+           <li>
+            <a href="/journal/circgen" title="Circ: Genomic and Precision Medicine">
+             Circ: Genomic and Precision Medicine
+            </a>
+           </li>
+           <li>
+            <a href="/journal/circimaging" title="Circ: Cardiovascular Imaging">
+             Circ: Cardiovascular Imaging
+            </a>
+           </li>
+           <li>
+            <a href="/journal/circinterventions" title="Circ: Cardiovascular Interventions">
+             Circ: Cardiovascular Interventions
+            </a>
+           </li>
+           <li>
+            <a href="/journal/circoutcomes" title="Circ: Cardiovascular Quality &amp; Outcomes">
+             Circ: Cardiovascular Quality &amp; Outcomes
+            </a>
+           </li>
+           <li>
+            <a href="/journal/circheartfailure" title="Circ: Heart Failure">
+             Circ: Heart Failure
+            </a>
+           </li>
+           <li>
+            <a href="/journal/res" title="Circulation Research">
+             Circulation Research
+            </a>
+           </li>
+           <li>
+            <a href="/journal/hyp" title="Hypertension">
+             Hypertension
+            </a>
+           </li>
+           <li>
+            <a href="/journal/str" title="Stroke">
+             Stroke
+            </a>
+           </li>
+           <li>
+            <a href="/journal/jaha" title="Journal of the American Heart Association">
+             Journal of the American Heart Association
+            </a>
+           </li>
+          </ul>
+         </div>
+        </div>
+       </div>
+       <div class="row second-row-content">
+        <div class="col-md-4 col-lg-2 footer-quick-links-list hidden-xs hidden-sm">
+         <h5 class="section_title">
+          Information
+         </h5>
+         <ul class="rlist">
+          <li>
+           <a href="/custserv" title="Customer service and ordering information">
+            Customer Service and Ordering Information
+           </a>
+          </li>
+          <li>
+           <a href="/feeds.jsp" title="AHA Journals RSS Feed">
+            AHA Journals RSS Feed
+           </a>
+          </li>
+          <li>
+           <a href="/action/showPreferences?menuTab=Alerts" title="AHA Journals Alerts">
+            AHA Journals Alerts
+           </a>
+          </li>
+          <li>
+           <a href="/international-users" title="For International users">
+            For International Users
+           </a>
+          </li>
+         </ul>
+        </div>
+        <div class="col-xs-12 col-sm-12 accordion hidden-lg">
+         <a aria-controls="Information" aria-expanded="false" class="accordion__control" href="#">
+          <h5 class="section_title">
+           Information
+           <i aria-hidden="true" class="icon-section_arrow_d pull-right">
+           </i>
+          </h5>
+         </a>
+         <div class="accordion__content" id="Information" style="display: none;">
+          <ul class="rlist">
+           <li>
+            <a href="/about" title="About the AHA/ASA">
+             About the AHA/ASA
+            </a>
+           </li>
+           <li>
+            <a href="/custserv" title="Customer service and ordering information">
+             Customer Service and Ordering Information
+            </a>
+           </li>
+           <li>
+            <a href="/feeds.jsp" title="AHA Journals RSS Feed">
+             AHA Journals RSS Feed
+            </a>
+           </li>
+           <li>
+            <a href="/action/showPreferences?menuTab=Alerts" title="AHA Journals Alerts">
+             AHA Journals Alerts
+            </a>
+           </li>
+           <li>
+            <a href="/international-users" title="For International Users">
+             For International Users
+            </a>
+           </li>
+          </ul>
+         </div>
+        </div>
+        <div class="col-md-4 col-lg-2 footer-quick-links-list hidden-xs hidden-sm">
+         <h5 class="section_title">
+          Subscriptions
+         </h5>
+         <ul class="rlist">
+          <li>
+           <a href="/subscription-information" title="Subscriptions">
+            Subscriptions
+           </a>
+          </li>
+          <li>
+           <a href="/custserv/institutionalFAQ" title="Institutions/Librarians FAQ">
+            Institutions/Librarians FAQ
+           </a>
+          </li>
+          <li>
+           <a href="/custserv/help" title="Subscriber Help">
+            Subscriber Help
+           </a>
+          </li>
+         </ul>
+        </div>
+        <div class="col-xs-12 col-sm-12 accordion hidden-lg">
+         <a aria-controls="Subscriptions" aria-expanded="false" class="accordion__control" href="#">
+          <h5 class="section_title">
+           Subscriptions
+           <i aria-hidden="true" class="icon-section_arrow_d pull-right">
+           </i>
+          </h5>
+         </a>
+         <div class="accordion__content" id="Subscriptions" style="display: none;">
+          <ul class="rlist">
+           <li>
+            <a href="/subscription-information" title="Subscriptions">
+             Subscriptions
+            </a>
+           </li>
+           <li>
+            <a href="/custserv/institutionalFAQ" title="Institutions/Librarians FAQ">
+             Institutions/Librarians FAQ
+            </a>
+           </li>
+           <li>
+            <a href="/custserv/help" title="Subscriber Help">
+             Subscriber Help
+            </a>
+           </li>
+          </ul>
+         </div>
+        </div>
+        <div class="col-md-4 col-lg-2 footer-quick-links-list hidden-xs hidden-sm">
+         <h5 class="section_title">
+          For
+                    Authors &amp; Reviewers
+         </h5>
+         <ul class="rlist">
+          <li>
+           <a href="/all-submission-sites" title="Journal Submission sites">
+            AHA Journals Submission Sites
+           </a>
+          </li>
+          <li>
+           <a href="/submission-requirements" title="Submission Requirements">
+            Submission Requirements
+           </a>
+          </li>
+          <li>
+           <a href="/figure-guidelines" title="Figure Guidelines">
+            Figure Guidelines
+           </a>
+          </li>
+          <li>
+           <a href="/open-access-information" title="Open Access information">
+            Open Access Information
+           </a>
+          </li>
+          <li>
+           <a href="/permissions-rights" title="Permissions and Rights FAQ">
+            Permissions and Rights FAQ
+           </a>
+          </li>
+          <li>
+           <a href="/journal-subject-terms" title="Subject Terms">
+            Subject Terms
+           </a>
+          </li>
+          <li>
+           <a href="/metrics" title="Journal Metrics">
+            Journal Metrics
+           </a>
+          </li>
+          <li>
+           <a href="/altmetric" title="Altmetrics">
+            Altmetrics
+           </a>
+          </li>
+         </ul>
+        </div>
+        <div class="col-xs-12 col-sm-12 accordion hidden-lg">
+         <a aria-controls="For-Authors" aria-expanded="false" class="accordion__control" href="#">
+          <h5 class="section_title">
+           For Authors &amp; Reviewers
+           <i aria-hidden="true" class="icon-section_arrow_d pull-right">
+           </i>
+          </h5>
+         </a>
+         <div class="accordion__content" id="For-Authors" style="display: none;">
+          <ul class="rlist">
+           <li>
+            <a href="/all-submission-sites" title="Journal Submission sites">
+             AHA Journals Submission Sites
+            </a>
+           </li>
+           <li>
+            <a href="/submission-requirements" title="Submission Requirements">
+             Submission Requirements
+            </a>
+           </li>
+           <li>
+            <a href="/figure-guidelines" title="Figure Guidelines">
+             Figure Guidelines
+            </a>
+           </li>
+           <li>
+            <a href="/open-access-information" title="Open Access information">
+             Open Access Information
+            </a>
+           </li>
+           <li>
+            <a href="/permissions-rights" title="Permissions and Rights FAQ">
+             Permissions and Rights FAQ
+            </a>
+           </li>
+           <li>
+            <a href="/journal-subject-terms" title="Subject Terms">
+             Subject Terms
+            </a>
+           </li>
+           <li>
+            <a href="/metrics" title="Journal Metrics">
+             Journal Metrics
+            </a>
+           </li>
+           <li>
+            <a href="/altmetric" title="Altmetrics">
+             Altmetrics
+            </a>
+           </li>
+          </ul>
+         </div>
+        </div>
+        <div class="col-md-4 col-lg-2 footer-quick-links-list hidden-xs hidden-sm">
+         <h5 class="section_title">
+          Policies
+         </h5>
+         <ul class="rlist">
+          <li>
+           <a href="/research-guidelines" title="Research Guidelines">
+            Research Guidelines
+           </a>
+          </li>
+          <li>
+           <a href="/TOP-guidelines" title="TOP Guidelines">
+            TOP Guidelines for Authors
+           </a>
+          </li>
+          <li>
+           <a href="/prior-publication-policy" title="Prior publication policy">
+            Prior Publication Policy
+           </a>
+          </li>
+          <li>
+           <a href="/public-access-policy" title="Public access policy">
+            Public Access Policy
+           </a>
+          </li>
+          <li>
+           <a href="/embargo" title="Embargo policy">
+            Embargo Policy
+           </a>
+          </li>
+          <li>
+           <a href="/pb-assets/AHAJournalCOIProcedures-1590603341523.pdf" target="_blank" title="Conflict of interest policy (PDF)">
+            Conflict of Interest Policy (PDF)
+           </a>
+          </li>
+          <li>
+           <a href="/pb-assets/Ethical ConductPolicyApril2017finalWeb-1519231412760.pdf" target="_blank" title="Ethical conduct policy (PDF)">
+            Ethical Conduct Policy (PDF)
+           </a>
+          </li>
+         </ul>
+        </div>
+        <div class="col-xs-12 col-sm-12 accordion hidden-lg">
+         <a aria-controls="Policies" aria-expanded="false" class="accordion__control" href="#">
+          <h5 class="section_title">
+           Policies
+           <i aria-hidden="true" class="icon-section_arrow_d pull-right">
+           </i>
+          </h5>
+         </a>
+         <div class="accordion__content" id="Policies" style="display: none;">
+          <ul class="rlist">
+           <li>
+            <a href="/research-guidelines" title="Research Guidelines">
+             Research Guidelines
+            </a>
+           </li>
+           <li>
+            <a href="/TOP-guidelines" title="TOP Guidelines">
+             TOP Guidelines for Authors
+            </a>
+           </li>
+           <li>
+            <a href="/prior-publication-policy" title="Prior publication policy">
+             Prior Publication Policy
+            </a>
+           </li>
+           <li>
+            <a href="/public-access-policy" title="Public access policy">
+             Public Access Policy
+            </a>
+           </li>
+           <li>
+            <a href="/embargo" title="Embargo policy">
+             Embargo Policy
+            </a>
+           </li>
+           <li>
+            <a href="/pb-assets/AHAJournalCOIProcedures-1590603341523.pdf" target="_blank" title="Conflict of interest policy (PDF)">
+             Conflict of Interest Policy (PDF)
+            </a>
+           </li>
+           <li>
+            <a href="/pb-assets/Ethical ConductPolicyApril2017finalWeb-1519231412760.pdf" target="_blank" title="Ethical conduct policy (PDF)">
+             Ethical Conduct Policy (PDF)
+            </a>
+           </li>
+          </ul>
+         </div>
+        </div>
+        <div class="col-md-4 col-lg-2 footer-quick-links-list hidden-xs hidden-sm">
+         <h5 class="section_title">
+          News &amp; Events
+         </h5>
+         <ul class="rlist">
+          <li>
+           <a href="https://professional.heart.org/en" target="_blank" title="Professional heart daily">
+            Professional Heart Daily
+           </a>
+          </li>
+          <li>
+           <a href="http://newsroom.heart.org/" target="_blank" title="AHA Newsroom">
+            AHA Newsroom
+           </a>
+          </li>
+          <li>
+           <a href="/announcements" title="Announcements">
+            Announcements
+           </a>
+          </li>
+          <li>
+           <a href="/meetings" title="AHA Journals @ Meetings">
+            AHA Journals @ Meetings
+           </a>
+          </li>
+         </ul>
+        </div>
+        <div class="col-xs-12 col-sm-12 accordion hidden-lg">
+         <a aria-controls="News" aria-expanded="false" class="accordion__control" href="#">
+          <h5 class="section_title">
+           News &amp; Events
+           <i aria-hidden="true" class="icon-section_arrow_d pull-right">
+           </i>
+          </h5>
+         </a>
+         <div class="accordion__content" id="News" style="display: none;">
+          <ul class="rlist">
+           <li>
+            <a href="https://professional.heart.org/en" target="_blank" title="Professional heart daily">
+             Professional Heart Daily
+            </a>
+           </li>
+           <li>
+            <a href="http://newsroom.heart.org/" target="_blank" title="AHA Newsroom">
+             AHA Newsroom
+            </a>
+           </li>
+           <li>
+            <a href="/announcements" title="Announcements">
+             Announcements
+            </a>
+           </li>
+           <li>
+            <a href="/meetings" title="AHA Journals @ Meetings">
+             Announcements
+            </a>
+           </li>
+          </ul>
+         </div>
+        </div>
+        <div class="col-md-4 col-lg-2 footer-quick-links-list hidden-xs hidden-sm">
+         <h5 class="section_title">
+          Resources
+         </h5>
+         <ul class="rlist">
+          <li>
+           <a href="https://professional.heart.org/en/guidelines-and-statements" target="_blank" title="AHA Guidelines and Statements">
+            AHA Guidelines and Statements
+           </a>
+          </li>
+          <li>
+           <a href="/cme" target="_blank" title="AHA Journals CME">
+            AHA Journals CME
+           </a>
+          </li>
+          <li>
+           <a href="/statupdate" title="Heart Disease and Stroke Statistics">
+            Heart Disease and Stroke Statistics
+           </a>
+          </li>
+          <li>
+           <a href="/trend-watch" title="Trend Watch">
+            Trend Watch
+           </a>
+          </li>
+          <li>
+           <a href="/socialmedia" title="Social Media">
+            Social Media
+           </a>
+          </li>
+          <li>
+           <a href="/podcasts" title="AHA Journals Podcast Network">
+            AHA Journals Podcast Network
+           </a>
+          </li>
+          <li>
+           <a href="/early-career" title="Early Career Resources">
+            Early Career Resources
+           </a>
+          </li>
+         </ul>
+        </div>
+        <div class="col-xs-12 col-sm-12 accordion hidden-lg">
+         <a aria-controls="Resources" aria-expanded="false" class="accordion__control" href="#">
+          <h5 class="section_title">
+           Resources
+           <i aria-hidden="true" class="icon-section_arrow_d pull-right">
+           </i>
+          </h5>
+         </a>
+         <div class="accordion__content" id="Resources" style="display: none;">
+          <ul class="rlist">
+           <li>
+            <a href="https://professional.heart.org/en/guidelines-and-statements" target="_blank" title="AHA Guidelines and Statements">
+             AHA Guidelines and Statements
+            </a>
+           </li>
+           <li>
+            <a href="https://cme.ahajournals.org/s/catalog" target="_blank" title="AHA Journals CME">
+             AHA Journals CME
+            </a>
+           </li>
+           <li>
+            <a href="/statupdate" title="Heart Disease and Stroke Statistics">
+             Heart Disease and Stroke Statistics
+            </a>
+           </li>
+           <li>
+            <a href="/trend-watch" title="Trend Watch">
+             Trend Watch
+            </a>
+           </li>
+           <li>
+            <a href="/socialmedia" title="Social Media">
+             Social Media
+            </a>
+           </li>
+           <li>
+            <a href="/podcasts" title="AHA Journals Podcast Network">
+             AHA Journals Podcast Network
+            </a>
+           </li>
+           <li>
+            <a href="/early-career" title="Early Career Resources">
+             Early Career Resources
+            </a>
+           </li>
+          </ul>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="footer-bottom">
+      <div class="container">
+       <div class="row first-row-content">
+        <div class="col-xs-12 col-sm-12 col-md-2 address-details">
+         <div class="footer__logo">
+          <a href="https://www.heart.org/HEARTORG" target="_blank" title="AHA/ASA logo">
+           <img alt="logo" src="/pb-assets/images/logos/AHA_Full-1565026204067.svg"/>
+          </a>
+         </div>
+         <p>
+          <strong>
+           National Center
+           <br/>
+          </strong>
+          7272 Greenville Ave.
+          <br/>
+          Dallas, TX 75231
+          <br/>
+          <strong>
+           Customer Service
+           <br/>
+          </strong>
+          1-800-AHA-USA-1
+          <br/>
+          1-800-242-8721
+          <br/>
+          <a href="http://www.heart.org/HEARTORG/localization/chooseState.jsp" target="_blank" title="Local Info">
+           Local Info
+           <br/>
+          </a>
+          <a href="http://www.heart.org/HEARTORG/General/Contact-Us_UCM_308813_Article.jsp#.V0iRafkrJpg" target="_blank" title="Contact Us">
+           Contact Us
+          </a>
+         </p>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-2">
+         <h5>
+          ABOUT US
+         </h5>
+         <ul class="rlist">
+          <li>
+           <a href="https://www.heart.org/en/about-us" target="_blank" title="About the AHA/ASA">
+            About the AHA/ASA
+            <i aria-hidden="true" class="icon-arrow_r pull-right">
+            </i>
+           </a>
+          </li>
+          <li>
+           <a href="https://www.heart.org/-/media/files/about-us/annual-report/annual-report.pdf?la=en&amp;hash=BB711B0B592E12248C58C25DDC0DCE7C713BC386" target="_blank" title="2016-17 Annual Report">
+            2016-17 Annual Report
+            <i aria-hidden="true" class="icon-arrow_r pull-right">
+            </i>
+           </a>
+          </li>
+          <li>
+           <a href="https://www.heart.org/en/about-us/aha-financial-information" target="_blank" title="AHA Financial Information">
+            AHA Financial Information
+            <i aria-hidden="true" class="icon-arrow_r pull-right">
+            </i>
+           </a>
+          </li>
+          <li>
+           <a href="http://careers.heart.org/" target="_blank" title="Careers">
+            Careers
+            <i aria-hidden="true" class="icon-arrow_r pull-right">
+            </i>
+           </a>
+          </li>
+          <li>
+           <a href="http://www.shopheart.org/?a=16-1213-AHA-Heart-Bottom-Nav&amp;utm_source=website&amp;utm_campaign=bottom-nav&amp;utm_medium=referral&amp;utm_content=16-1213-AHA-Heart-Bottom-Nav" target="_blank" title="SHOP">
+            SHOP
+            <i aria-hidden="true" class="icon-arrow_r pull-right">
+            </i>
+           </a>
+          </li>
+          <li>
+           <a href="https://www.heart.org/en/news" target="_blank" title="Latest Heart and Stroke News">
+            Latest Heart and Stroke News
+            <i aria-hidden="true" class="icon-arrow_r pull-right">
+            </i>
+           </a>
+          </li>
+          <li>
+           <a href="http://newsroom.heart.org/" target="_blank" title="AHA/ASA Media Newsroom">
+            AHA/ASA Media Newsroom
+            <i aria-hidden="true" class="icon-arrow_r pull-right">
+            </i>
+           </a>
+          </li>
+          <li>
+           <a href="https://www.heart.org/en/about-us/international-programs" target="_blank" title="Global Programs">
+            Global Programs
+            <i aria-hidden="true" class="icon-arrow_r pull-right">
+            </i>
+           </a>
+          </li>
+         </ul>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-2">
+         <h5>
+          OUR SITES
+         </h5>
+         <ul class="rlist">
+          <li>
+           <a href="https://www.heart.org/en" target="_blank" title="American Heart Association">
+            American Heart Association
+            <i aria-hidden="true" class="icon-arrow_r pull-right">
+            </i>
+           </a>
+          </li>
+          <li>
+           <a href="https://www.strokeassociation.org" target="_blank" title="American Stroke Association">
+            American Stroke Association
+            <i aria-hidden="true" class="icon-arrow_r pull-right">
+            </i>
+           </a>
+          </li>
+          <li>
+           <a href="https://professional.heart.org/en" target="_blank" title="Professional Heart Daily">
+            Professional Heart Daily
+            <i aria-hidden="true" class="icon-arrow_r pull-right">
+            </i>
+           </a>
+          </li>
+          <li>
+           <a href="https://www.heart.org/en/about-us/aha-asa-website-directory" target="_blank" title="More Sites">
+            More Sites
+            <i aria-hidden="true" class="icon-arrow_r pull-right">
+            </i>
+           </a>
+          </li>
+         </ul>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-2">
+         <h5>
+          TAKE ACTION
+         </h5>
+         <ul class="rlist">
+          <li>
+           <a href="http://www.yourethecure.org/" target="_blank" title="Advocate">
+            Advocate
+            <i aria-hidden="true" class="icon-arrow_r pull-right">
+            </i>
+           </a>
+          </li>
+          <li>
+           <a href="https://www2.heart.org/site/SPageNavigator/donatenow_heart.html?s_src=20U2W1UEMG&amp;s_subsrc=ahajournals_footer_donatenow" target="_blank" title="Donate">
+            Donate
+            <i aria-hidden="true" class="icon-arrow_r pull-right">
+            </i>
+           </a>
+          </li>
+          <li>
+           <a href="https://www.heart.org/en/get-involved/ways-to-give/wills-trusts-annuities" target="_blank" title="Planned Giving">
+            Planned Giving
+            <i aria-hidden="true" class="icon-arrow_r pull-right">
+            </i>
+           </a>
+          </li>
+          <li>
+           <a href="https://www.heart.org/HEARTORG/volunteer/volunteerForm.jsp" target="_blank" title="Volunteer">
+            Volunteer
+            <i aria-hidden="true" class="icon-arrow_r pull-right">
+            </i>
+           </a>
+          </li>
+         </ul>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-2">
+         <h5>
+          ONLINE COMMUNITIES
+         </h5>
+         <ul class="rlist">
+          <li>
+           <a href="http://myafibexperience.org" target="_blank" title="AFib Support">
+            AFib Support
+            <i aria-hidden="true" class="icon-arrow_r pull-right">
+            </i>
+           </a>
+          </li>
+          <li>
+           <a href="http://gardencommunity.heart.org" target="_blank" title="Garden Community">
+            Garden Community
+            <i aria-hidden="true" class="icon-arrow_r pull-right">
+            </i>
+           </a>
+          </li>
+          <li>
+           <a href="http://supportnetwork.heart.org" target="_blank" title="Patient Support Network">
+            Patient Support Network
+            <i aria-hidden="true" class="icon-arrow_r pull-right">
+            </i>
+           </a>
+          </li>
+         </ul>
+        </div>
+       </div>
+       <div class="row second-row-content follow-us-section">
+        <div class="col-xs-12">
+         <div class="contact">
+          <nav class="contact__nav follow__us__nav">
+           Follow Us:
+           <ul class="rlist--inline">
+            <li>
+             <a href="http://www.twitter.com/American_Heart" target="_blank" title="Follow AHA on Twitter">
+              <i aria-hidden="true" class="icon-twitter">
+              </i>
+             </a>
+            </li>
+            <li>
+             <a href="http://www.facebook.com/AmericanHeart" target="_blank" title="Follow AHA on Facebook">
+              <i aria-hidden="true" class="icon-facebook">
+              </i>
+             </a>
+            </li>
+            <li>
+             <a href="http://www.instagram.com/american_heart" target="_blank" title="Follow AHA on Instagram">
+              <i aria-hidden="true" class="icon-instagram">
+              </i>
+             </a>
+            </li>
+            <li>
+             <a href="http://www.pinterest.com/americanheart" target="_blank" title="Follow AHA on Pinterest">
+              <i aria-hidden="true" class="icon-pinterest">
+              </i>
+             </a>
+            </li>
+            <li>
+             <a href="http://www.youtube.com/user/americanheartassoc" target="_blank" title="Follow AHA on YouTube">
+              <i aria-hidden="true" class="icon-youtube4">
+              </i>
+             </a>
+            </li>
+            <li>
+             <a href="http://www.heart.org/HEARTORG/General/RSSFeed-page-datafile_UCM_003860_RSSFeed.jsp" target="_blank" title="Follow us on RSS">
+              <i aria-hidden="true" class="icon-Rss">
+              </i>
+             </a>
+            </li>
+           </ul>
+          </nav>
+         </div>
+        </div>
+       </div>
+       <div class="row third-row-content copywrites-section">
+        <div class="col-xs-12 col-sm-7 col-md-8 col-lg-9 pull-left">
+         <div class="footer_navigation_bottom">
+          <ul class="rlist--inline separator">
+           <li>
+            <a href="https://www.heart.org/en/about-us/statements-and-policies/privacy-statement" target="_blank" title="Read more on privacy policy">
+             Privacy Policy
+            </a>
+           </li>
+           <li>
+            <a href="http://copyright.heart.org/" target="_blank" title="Read more on copyright">
+             Copyright
+            </a>
+           </li>
+           <li>
+            <a href="https://www.heart.org/en/about-us/statements-and-policies/ethics-policy" target="_blank" title="Read more on ethics policy">
+             Ethics Policy
+            </a>
+           </li>
+           <li>
+            <a href="https://www.heart.org/en/about-us/statements-and-policies/conflict-of-interest-policy" target="_blank" title="Read more on conflict of interest policy">
+             Conflict of Interest Policy
+            </a>
+           </li>
+           <li>
+            <a _blank="" href="https://www.heart.org/en/about-us/statements-and-policies/linking-policy" title="Read more on linking policy target=">
+             Linking Policy
+            </a>
+           </li>
+           <li>
+            <a href="https://www.heart.org/en/about-us/diversity-inclusion" target="_blank" title="Read more on diversity">
+             Diversity
+            </a>
+           </li>
+           <li>
+            <a href="http://careers.heart.org" target="_blank" title="Read more on careers">
+             Careers
+            </a>
+           </li>
+           <li>
+            <a href="https://www.heart.org/en/about-us/procurement-services/procurement-services-department" title="Read more on suppliers &amp; providers">
+             Suppliers &amp; Providers
+            </a>
+           </li>
+           <li>
+            <a href="https://www.heart.org/en/about-us/statements-and-policies/accessibility-statement" title="Read more on accessibility statement">
+             Accessibility Statement
+            </a>
+           </li>
+           <li>
+            <a href="https://www.heart.org/en/about-us/statements-and-policies/state-fundraising-notices" title="Read more on State Fundraising Notices">
+             State Fundraising Notices
+            </a>
+           </li>
+          </ul>
+         </div>
+         <div class="footer_copywrites">
+          <div class="copyright">
+           ©  American Heart Association, Inc. All rights reserved. Unauthorized
+                            use prohibited. The American Heart Association is qualified 501(c)(3) tax-exempt
+                            organization.
+           <br/>
+           *Red Dress ™ DHHS, Go Red ™; AHA; National Wear Red Day ® is registered
+                            trademark.
+          </div>
+         </div>
+        </div>
+        <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 pull-right certifications">
+         <a href="http://www.nationalhealthcouncil.org/pages/standards.php" target="_blank">
+          <img alt="NHC Optimized" src="/pb-assets/images/nhc_optimized-1521474117567.png"/>
+         </a>
+         <a href="http://charityreports.bbb.org/public/seal.aspx?ID=379302003" target="_blank">
+          <img alt="BBB" src="/pb-assets/images/bbb_100px-1521474184830.png"/>
+         </a>
+         <a href="https://ssl.comodo.com/" target="_blank">
+          <img alt="Comodo Secure" src="/pb-assets/images/comodo_secure-1521474184937.png"/>
+         </a>
+        </div>
+       </div>
+      </div>
+     </div>
+    </footer>
+    <!-- Bot analytics test -->
+    <script async="" data-cfasync="false" src="https://api.b2c.com/api/init-260u9k3l7hxtcferh76.js">
+    </script>
+    <noscript>
+     <img src="https://api.b2c.com/api/noscript-260u9k3l7hxtcferh76.gif"/>
+    </noscript>
+    <script type="text/javascript">
+    </script>
+    <div class="cookiePolicy-popup">
+     <div class="container">
+      <span class="cookiePolicy-popup__content">
+       <div class="banner">
+        <p class="message">
+         This site uses cookies. By continuing to browse this site you are agreeing to our use of cookies.
+        </p>
+        <p>
+         <a href="https://journals.lww.com/_layouts/15/oaks.journals/privacy.aspx">
+          Click here for more information.
+         </a>
+        </p>
+       </div>
+      </span>
+      <a aria-label="Agree to cookie policy and close message" class="cookiePolicy-popup__close close" href="#">
+       ×
+      </a>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script src="/products/aha/releasedAssets/js/build.lazyload.bundle-2a694411d80d0c8df056.js">
+  </script>
+  <script src="/products/aha/releasedAssets/js/main.bundle-0f2b01a03fe01aaa7a2d.js">
+  </script>
+  <script src="/wro/k2ep~article-metrics-phase2.js" type="text/javascript">
+  </script>
+  <script src="/wro/k2ep~product.js" type="text/javascript">
+  </script>
+  <script async="" src="//hermes-src.redlink.com/agent/hermes.js?userRHKey=O03lJzKUgr" type="text/javascript">
+  </script>
+ </body>
+</html>
