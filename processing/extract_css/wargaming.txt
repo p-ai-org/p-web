@@ -1,0 +1,265 @@
+
+   @keyframes wg-loader-inner-circle {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+        @keyframes wg-loader-outer-circle {
+            0% {
+                transform: scale(0);
+            }
+            50% {
+                transform: scale(1.3);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        @keyframes wg-loader-arrow-left {
+            from {
+                transform: rotateZ(-70grad) translate(-100px, 172px);
+            }
+            to {
+                transform: rotateZ(-1grad) translate(32px, 32px);
+            }
+        }
+        @keyframes wg-loader-arrow-right {
+            from {
+                transform: rotateZ(70grad) translate(0px,172px);
+            }
+            to {
+                transform: rotateZ(0)  translate(32px,32px);
+            }
+        }
+        @keyframes wg-loader-progress {
+            0% {
+                stroke-dasharray: 0, 365;
+            }
+            100% {
+                stroke-dasharray: 55, 365;
+            }
+        }
+
+        @keyframes wg-loader-progress-end {
+            0% {
+                stroke-width: 1px;
+                opacity: 1;
+            }
+            50% {
+                stroke-width: 5px;
+                opacity: 1;
+            }
+            100% {
+                stroke-width: 5px;
+                opacity: 0;
+            }
+        }
+        @keyframes wg-loader {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+        .wg-loader {
+            fill: white;
+            /*animation: wg-loader 0.3s;
+            animation-delay: 2s;
+            animation-fill-mode: both;
+            animation-timing-function: ease-in-out;*/
+
+        }
+
+        .wg-loader__circle_inner {
+            animation: wg-loader-inner-circle 0.5s;
+            transform-origin: center;
+            animation-delay: 0.8s;
+            animation-fill-mode: both;
+            animation-timing-function: ease-in-out;
+        }
+
+        .wg-loader__circle_outer {
+            animation: wg-loader-outer-circle 1s;
+            transform-origin: center;
+            animation-timing-function: ease-in-out;
+            animation-delay: 0.3s;
+            animation-fill-mode: both;
+        }
+
+        .wg-loader__arrow_right {
+            animation: wg-loader-arrow-right 0.55s;
+            animation-timing-function: ease-in-out;
+            transform: rotateZ(0)  translate(32px,32px);
+            transform-origin: center;
+            animation-delay: 1.3s;
+            animation-fill-mode: both;
+        }
+
+        .wg-loader__arrow_left {
+            animation: wg-loader-arrow-left 0.5s;
+
+            animation-timing-function: ease-in-out;
+            transform-origin: center;
+            animation-delay: 1.3s;
+            animation-fill-mode: both;
+        }
+        .wg-loader__circle_progress {
+            fill: transparent;
+            stroke : red;
+            stroke-width: 1px;
+            animation: wg-loader-progress 1.5s;
+            animation-fill-mode: both;
+            animation-delay: 1.85s;
+            transition: all 0.3s;
+            stroke-dasharray: 0, 365;
+            transform: rotate(-90deg);
+            transform-origin: center;
+            opacity: 0;
+        }
+
+        body {
+            background: #262626;
+        }
+
+        .loader-wrapper {
+            position: fixed;
+            left:0;
+            right: 0;
+            top:0;
+            bottom: 0;
+            background: #262626;
+            z-index: 99999;
+            transition: all 0.3s;
+            opacity: 1;
+        }
+
+        .loader-wrapper .loader-container {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            /*margin: -133px;*/
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .loader-wrapper.start .loader-container {
+            opacity: 1;
+        }
+
+        .ready ~ .loader-wrapper:not(.start) .loader-container {
+            opacity: 0;
+            transition: none;
+        }
+
+        .ready ~ .loader-wrapper.start .loader-container {
+            opacity: 0;
+            transition-delay: 1s;
+        }
+
+        .loader-wrapper.start  {
+            opacity: 1;
+        }
+
+        .loader-wrapper.start .wg-loader__circle_progress {
+            opacity: 1;
+            transition-delay: 1.55s;
+        }
+
+        .error ~ .loader-wrapper.start .wg-loader__circle_progress {
+            opacity: 0;
+            transition-delay: 0s;
+        }
+
+
+        .loader-wrapper .error-block {
+            max-width: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-width 0.3s;
+            transition-delay: 0.3s;
+            font-family: Roboto Condensed,Arial Narrow,Arial,Helvetica CY,Helvetica,sans-serif;
+        }
+
+        @media all and (min-width: 720px) {
+            .error ~ .loader-wrapper .error-block {
+                max-width: 450px;
+                max-height: none;
+            }
+
+            .loader-wrapper svg {
+                transition: width 0.3s, height 0.3s;
+            }
+
+            .error ~ .loader-wrapper svg {
+                height: 15vw;
+                width: 15vw;
+            }
+        }
+
+        @media all and (max-width: 719px){
+            .loader-wrapper svg {
+                width: 160px;
+                height: 160px;
+            }
+
+            .loader-wrapper .loader-container {
+                flex-wrap: wrap;
+                justify-content: center;
+                width: 90%;
+            }
+
+            .loader-wrapper .error-block {
+                transition: max-height 0.3s;
+            }
+
+            .error ~ .loader-wrapper .error-block {
+                max-width: none;
+                max-height: 450px;
+            }
+        }
+
+        @media all and (min-width: 720px) {
+            .loader-wrapper .error-block__wrapper {
+                min-width: 390px;
+                padding-left: 50px;
+                border-left: 2px solid white;
+            }
+        }
+
+        @media all and (max-width: 719px) {
+            .loader-wrapper .error-block__wrapper {
+                padding-top: 20px;
+                border-top: 2px solid white;
+            }
+        }
+
+        .loader-wrapper .error-block h1 {
+            text-transform: uppercase;
+            margin-top: 0;
+        }
+
+        .ready ~ .loader-wrapper,
+        .ready ~ .loader-wrapper.start {
+            opacity: 0;
+            transition-delay: 1s;
+            pointer-events: none;
+        }
+        .ready ~ .loader-wrapper .wg-loader__circle_progress {
+            animation : wg-loader-progress-end 1s;
+            animation-fill-mode: both;
+        }
+
+        #errorBlockRetry {
+            color: #df1b1a;
+            text-transform: uppercase;
+            text-decoration: none;
+            font-weight: bold;
+        }
+  

@@ -56,6 +56,7 @@ def allFile():
 allFile();
 
 # Single File Testing
+
 # oneDestLoc = os.path.realpath(os.path.join(os.path.dirname(__file__), 'mod_htmlfiles'))
 # oneSourceLoc = os.path.join(os.path.realpath(os.path.join(os.path.dirname(__file__), '../webscraping-o/htmlfiles')), 'cnn.txt')
 # styleDestLoc = os.path.realpath(os.path.join(os.path.dirname(__file__), 'extract_css'))

@@ -107,10 +107,9 @@ def script_removed(soup):
 def content_removed(soup):
     '''
     anonymize text content
+    only if is string within tags (doesn't effect attributes of tags)
     '''
     for tags in soup.find_all(string=True):
         tags.extract()
 
     return soup
-
-
