@@ -6,6 +6,7 @@ author: Aaron
 
 from bs4 import BeautifulSoup
 import re #only for match the names
+import os
 
 
 def tag_removed(soup, cur_classes, class_counter, id_counter, cur_ids):
@@ -45,7 +46,9 @@ def tag_removed(soup, cur_classes, class_counter, id_counter, cur_ids):
                     tag.attrs[attr_type] = new_id_name
                     id_counter += 1
             # aria tags to replace 
-                #aria-labeledby is reference to ID so replace with ID
+
+
+            # aria-labeledby is reference to ID so replace with ID
             elif re.search("aria-labelledby", attr_type) is not None or re.search("aria-describedby", attr_type) is not None:
                 if attr_values in cur_ids:
                     tag.attrs[attr_type] = cur_ids[attr_values]
@@ -54,20 +57,43 @@ def tag_removed(soup, cur_classes, class_counter, id_counter, cur_ids):
                     cur_ids[attr_values] = new_id_name
                     tag.attrs[attr_type] = new_id_name
                     id_counter += 1
+            
+            # aria-label has unique names so replace with empty
             elif re.search("aria-label", attr_type) is not None:
                 tag.attrs[attr_type] = ""
+
             # other Aria-* tags and their value should be kept
             elif re.search("aria", attr_type) is not None:
                 continue
+
             # exclude tags that has reoccuring values, all else replace with empty string
             elif attr_type not in ['align','type','rel','role','width','height','allowtransparency']:
                 tag.attrs[attr_type] = ""
+
         # to replace data- attributes with just data-
         new_attrs = {re.sub('data-([^\s]+)', 'data-', key): tag.attrs[key] for key in tag.attrs}
         tag.attrs = new_attrs
 
     return soup
 
+def style_extract(soup, styleDestLoc, basename):
+    '''
+    saves style to a new folder
+    '''
+    styleContent = ''
+    haveStyles = False
+    for tag in soup.findAll('style'):
+        haveStyles = True
+        styleContent += tag.string
+
+    if haveStyles: 
+        with open(os.path.join(styleDestLoc, f"./{basename}"), 'w') as f_out:
+            try: 
+                f_out.write(styleContent)
+            except Exception as e:
+                print('During style file writing:', e)
+
+    return soup
 
 def script_removed(soup):
     '''
