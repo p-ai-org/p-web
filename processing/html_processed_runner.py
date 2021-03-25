@@ -2,7 +2,6 @@
 Created on March 13 2021
 
 author: Aaron
-Notes: Performance on processing the 1K+ in the webscraping took under 3-5 minutes
 '''
 
 from bs4 import BeautifulSoup
@@ -25,10 +24,13 @@ def perFile(sourceFile, destLoc, basename):
     cur_classes = {
         #'orgName': 'newName' 
         }
+    cur_ids = {
+        # 'orgName' : 'newName
+    }
     class_counter = 1
     id_counter = 1
 
-    soup = tag_removed(soup, cur_classes, class_counter, id_counter)
+    soup = tag_removed(soup, cur_classes, class_counter, id_counter, cur_ids)
     soup = script_removed(soup)
     soup = content_removed(soup)
 
@@ -49,4 +51,9 @@ def allFile():
     os.scandir().close()
 
 
-allFile();
+# allFile();
+
+# Single File Testing
+oneDestLoc = os.path.realpath(os.path.join(os.path.dirname(__file__), 'mod_htmlfiles'))
+oneSourceLoc = os.path.join(os.path.realpath(os.path.join(os.path.dirname(__file__), '../webscraping-o/htmlfiles')), 'academic.txt')
+perFile(oneSourceLoc, oneDestLoc, 'academic.txt')
