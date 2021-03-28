@@ -46,19 +46,18 @@ suffixes.remove(">")
 # suffixes.remove('"')
 suffix_search = (util.compile_suffix_regex(suffixes).search)
 
-# * infixes_finditer, non-whitespace separators: \n =" \t
-infixes = nlp.Defaults.infixes + [r"\n"] +  [r'="'] +  [r"\t"]
-print(infixes)
-infix_finditer = (util.compile_infix_regex(infixes).finditer)
+# * infixes_finditer, non-whitespace separators: \n ="
+infix_re = re.compile('(  )+|(=")')
+
 
 # * token_match, always stay together
-token_match = re.compile("[A-z]+\/[A-z]+ || [A-z]+-[A-z]+").search
+token_match = re.compile("[A-z]+\/[A-z]+|[A-z]+-[A-z]+|""").search
 
 def custom_tokenizer(nlp):
     return Tokenizer(nlp.vocab, rules=special_cases,
                                 prefix_search=prefix_search,
                                 suffix_search=suffix_search,
-                                infix_finditer=infix_finditer,
+                                infix_finditer=infix_re.finditer,
                                 token_match=token_match)
 
 nlp.tokenizer = custom_tokenizer(nlp)
