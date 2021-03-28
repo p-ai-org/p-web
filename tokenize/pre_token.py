@@ -24,7 +24,7 @@ with open(sourceFile, 'r', encoding="ISO-8859-1") as f:
 # print(target_html)
 
 
-nlp = spacy.load("en_core_web_sm")
+nlp = spacy.load("en_core_web_sm", disable=["tok2vec","tagger", "attribute_ruler", "lemmatizer"])
 
 
 # * Ditioncary of Special Cases: none
@@ -61,9 +61,11 @@ def custom_tokenizer(nlp):
 
 nlp.tokenizer = custom_tokenizer(nlp)
 doc = nlp(target_html)
-output = str([t.text for t in doc])
 
-
+# * remove \n from output
+outputList = [t.text for t in doc]
+outputList = list(filter(lambda a: re.search('\n', a) is None, outputList))
+output = str(outputList)
 
 with open(os.path.join('./tokenize', f"./{os.path.basename(sourceFile)}"), 'w') as f_out:
         try: 
