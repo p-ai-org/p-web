@@ -43,15 +43,16 @@ suffixes.remove('>')
 suffix_search = (util.compile_suffix_regex(suffixes).search)
 
 # * infixes_finditer, non-whitespace separators: r"\n" r"\t" (raw strings instead of regex) 
-infix_re = nlp.Defaults.infixes + [r'''\n\t''']
+infixes = nlp.Defaults.infixes + [r'''\n\t''']
+infix_finditer = (util.compile_infix_regex(infixes).finditer)
 
 def custom_tokenizer(nlp):
     return Tokenizer(nlp.vocab, rules=special_cases,
                                 prefix_search=prefix_search,
                                 suffix_search=suffix_search,
-                                infix_finditer=infix_re.finditer)
+                                infix_finditer=infix_finditer)
 
-# nlp.tokenizer = custom_tokenizer(nlp)
+nlp.tokenizer = custom_tokenizer(nlp)
 doc = nlp(target_html)
 output = str([t.text for t in doc])
 
