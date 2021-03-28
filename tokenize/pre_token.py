@@ -42,16 +42,17 @@ prefix_search = (util.compile_prefix_regex(prefixes).search)
 # * suffix_search, succeeding punctuation: >
 suffixes = nlp.Defaults.suffixes
 suffixes = list(suffixes)
+suffixes = suffixes + [r'=""']
 suffixes.remove(">")
 # suffixes.remove('"')
 suffix_search = (util.compile_suffix_regex(suffixes).search)
 
 # * infixes_finditer, non-whitespace separators: \n ="
-infix_re = re.compile('(  )+|(=")')
+infix_re = re.compile('\n')
 
 
 # * token_match, always stay together
-token_match = re.compile("[A-z]+\/[A-z]+|[A-z]+-[A-z]+|""").search
+token_match = re.compile('[A-z]+\/[A-z]+|[A-z]+-[A-z]+').search
 
 def custom_tokenizer(nlp):
     return Tokenizer(nlp.vocab, rules=special_cases,
