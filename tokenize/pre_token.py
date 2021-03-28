@@ -33,24 +33,32 @@ special_cases = {}
 # * prefix_search, preceding punctuation: <
 prefixes = nlp.Defaults.prefixes
 prefixes = list(prefixes)
-prefixes.remove('<')
+prefixes.remove("<")
+# prefixes.remove('"')
+prefixes.remove('—')
+prefixes.remove('–')
 prefix_search = (util.compile_prefix_regex(prefixes).search)
 
 # * suffix_search, succeeding punctuation: >
 suffixes = nlp.Defaults.suffixes
 suffixes = list(suffixes)
-suffixes.remove('>')
+suffixes.remove(">")
+# suffixes.remove('"')
 suffix_search = (util.compile_suffix_regex(suffixes).search)
 
-# * infixes_finditer, non-whitespace separators: r"\n" r"\t" (raw strings instead of regex) 
-infixes = nlp.Defaults.infixes + [r'''\n\t''']
+# * infixes_finditer, non-whitespace separators: r"\n" (raw strings instead of regex) 
+infixes = nlp.Defaults.infixes + [r'''\n'''] + [r'="'] + [r'''\t''']
 infix_finditer = (util.compile_infix_regex(infixes).finditer)
+
+# * token_match, always stay together
+token_match = re.compile("[A-z]+\/[A-z]+ || [A-z]+-[A-z]+").search
 
 def custom_tokenizer(nlp):
     return Tokenizer(nlp.vocab, rules=special_cases,
                                 prefix_search=prefix_search,
                                 suffix_search=suffix_search,
-                                infix_finditer=infix_finditer)
+                                infix_finditer=infix_finditer,
+                                token_match=token_match)
 
 nlp.tokenizer = custom_tokenizer(nlp)
 doc = nlp(target_html)
