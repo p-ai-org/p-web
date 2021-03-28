@@ -47,7 +47,7 @@ suffixes.remove('"')
 suffix_search = (util.compile_suffix_regex(suffixes).search)
 
 # * infixes_finditer, non-whitespace separators: \n ="
-infix_re = re.compile('\n|=""')
+infix_re = re.compile('\n|=""|="')
 
 
 # * token_match, always stay together
