@@ -1,44 +1,54 @@
 '''
+Fitting spaCy to pre-tokenize html https://spacy.io/usage/linguistic-features#native-tokenizers
 
-tried spaCy and it seems to have very strong features for languages like prefixes etc., some learning curve for me thus far
-so maybe might work better if use regexp etc. 
-'''
-import re
-
-
-example_html = """<body class="Class_1"><nav class="Class_2 Class_3 Class_4 Class_5 Class_6"></nav></body>"""
-
-temp = re.sub('><', '> <', example_html)
-result = temp.split(' ')
-print(result)
-
-
-#failed tries: 
-
+Author: Aaron
 '''
 import spacy
-from spacy.symbols import ORTH
-#need to run python -m spacy download en_core_web_trf on first install
+from spacy.tokenizer import Tokenizer
 
-nlp = spacy.load("en_core_web_trf")
+import os
+import re
 
-# sample_html = """<body class="Class_1"><nav class="Class_2 Class_3 Class_4 Class_5 Class_6"></nav></body>"""
+sourceFile = os.path.join(os.path.realpath(os.path.join(os.path.dirname(__file__), '../processing/mod_htmlfiles')), 'modified_cnn.txt')
 
-sample_html = """Hello, <i>world</i> !"""
-infixes = nlp.Defaults.infixes + [r'(<)']
-nlp.tokenizer.infix_finditer = spacy.util.compile_infix_regex(infixes).finditer
-nlp.tokenizer.add_special_case(f"<i>", [{ORTH: f"<i>"}])    
-nlp.tokenizer.add_special_case(f"</i>", [{ORTH: f"</i>"}])    
+with open(sourceFile, 'r', encoding="ISO-8859-1") as f:
+    try:
+        target_html = f.read() 
+    except Exception as e:
+        print('During file reading, this error occurred:', e)
 
-doc = nlp.tokenizer.explain(sample_html)
-print(doc)
-# print([e.text for e in doc])
-'''
+# target_html = re.sub(r"\n", "", target_html)
+# print(target_html)
 
 
-'''
-from nltk.tokenize import MWETokenizer
-mwtokenizer = nltk.MWETokenizer(separator='')
-mwtokenizer.add_mwe((' ', '>'))
-mwtokenizer.tokenize(tokens)
-'''
+
+# * Ditioncary of Special Cases: none
+special_cases = {}
+
+# * prefix_search, preceding punctuation: <
+prefix_re = re.compile("<")
+
+# * suffix_search, succeeding punctuation: >
+suffix_re = re.compile(">")
+
+# * infixes_finditer, non-whitespace separators: r"\n" r"\t" (raw strings instead of regex) 
+infix_re = re.compile(r'''\n\t''')
+
+def custom_tokenizer(nlp):
+    return Tokenizer(nlp.vocab, rules=special_cases,
+                                prefix_search=prefix_re.search,
+                                suffix_search=suffix_re.search,
+                                infix_finditer=infix_re.finditer)
+
+nlp = spacy.load("en_core_web_sm")
+# nlp.tokenizer = custom_tokenizer(nlp)
+doc = nlp(target_html)
+output = str([t.text for t in doc])
+
+
+
+with open(os.path.join('./tokenize', f"./{os.path.basename(sourceFile)}"), 'w') as f_out:
+        try: 
+            f_out.write(output)
+        except Exception as e:
+            print('During style file writing:', e)

@@ -1,5 +1,5 @@
 '''
-Created on March 2 2021
+Functions to remove and edit specified attributes of scraped html files
 
 author: Aaron
 '''
@@ -23,9 +23,14 @@ def tag_removed(soup, cur_classes, class_counter, id_counter, cur_ids):
     allowtransparency
     allowfullscreen
     aria-* !!!! Except aria-labeledby and aria-describedby which need to replace with ID and aria-label which is custom text (so replace with "" )
+
+    not yet run on files:
+    focusable
+    
     '''
     for tag in soup.findAll(True):
         for attr_type, attr_values in tag.attrs.items():
+            
             # class subbed with placeholder
             if attr_type == 'class':
                 for i, class_name in enumerate(attr_values):
@@ -45,8 +50,8 @@ def tag_removed(soup, cur_classes, class_counter, id_counter, cur_ids):
                     cur_ids[attr_values] = new_id_name
                     tag.attrs[attr_type] = new_id_name
                     id_counter += 1
+            
             # aria tags to replace 
-
 
             # aria-labeledby is reference to ID so replace with ID
             elif re.search("aria-labelledby", attr_type) is not None or re.search("aria-describedby", attr_type) is not None:
@@ -67,7 +72,7 @@ def tag_removed(soup, cur_classes, class_counter, id_counter, cur_ids):
                 continue
 
             # exclude tags that has reoccuring values, all else replace with empty string
-            elif attr_type not in ['align','type','rel','role','width','height','allowtransparency']:
+            elif attr_type not in ['align','type','rel','role','width','height','allowtransparency', 'focusable']:
                 tag.attrs[attr_type] = ""
 
         # to replace data- attributes with just data-
@@ -97,7 +102,7 @@ def style_extract(soup, styleDestLoc, basename):
 
 def script_removed(soup):
     '''
-    empties script tags; ie. remove embedded javascript while still keeping the <script> 
+    empty script tags; ie. remove embedded javascript while still keeping the <script> 
     '''
     for tag in soup.findAll('script'):
         tag.clear()
