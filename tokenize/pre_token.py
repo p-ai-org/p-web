@@ -12,18 +12,6 @@ from spacy import util
 import os
 import re
 
-sourceFile = os.path.join(os.path.realpath(os.path.join(os.path.dirname(__file__), '../processing/mod_htmlfiles')), 'modified_cnn.txt')
-
-with open(sourceFile, 'r', encoding="ISO-8859-1") as f:
-    try:
-        target_html = f.read() 
-    except Exception as e:
-        print('During file reading, this error occurred:', e)
-
-# target_html = re.sub(r"\n", "", target_html)
-# print(target_html)
-
-
 nlp = spacy.load("en_core_web_sm", disable=["tok2vec","tagger", "attribute_ruler", "lemmatizer"])
 
 
@@ -60,15 +48,37 @@ def custom_tokenizer(nlp):
                                 infix_finditer=infix_re.finditer)
 
 nlp.tokenizer = custom_tokenizer(nlp)
-doc = nlp(target_html)
 
-# * remove \n from output
-outputList = [t.text for t in doc]
-outputList = list(filter(lambda a: re.search('\n', a) is None, outputList))
-output = str(outputList)
 
-with open(os.path.join('./tokenize', f"./{os.path.basename(sourceFile)}"), 'w') as f_out:
-        try: 
-            f_out.write(output)
+
+
+# import time
+# start_time = time.time()
+# perFile()
+# print("--- %s seconds ---" % (time.time() - start_time))
+
+
+def perFile(): 
+    sourceFile = os.path.join(os.path.realpath(os.path.join(os.path.dirname(__file__), '../processing/mod_htmlfiles')), 'modified_cnn.txt')
+
+    with open(sourceFile, 'r', encoding="ISO-8859-1") as f:
+        try:
+            target_html = f.read() 
         except Exception as e:
-            print('During style file writing:', e)
+            print('During file reading, this error occurred:', e)
+    
+    doc = nlp(target_html)
+    # output = str([t.text for t in doc])
+
+    # * remove \n from output
+    outputList = [t.text for t in doc]
+    outputList = list(filter(lambda a: re.search('\n', a) is None, outputList))
+    output = str(outputList)
+
+    with open(os.path.join('./tokenize', f"./{os.path.basename(sourceFile)}"), 'w') as f_out:
+            try: 
+                f_out.write(output)
+            except Exception as e:
+                print('During style file writing:', e)
+
+perFile()
