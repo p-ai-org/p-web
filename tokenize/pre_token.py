@@ -46,8 +46,9 @@ suffixes.remove(">")
 # suffixes.remove('"')
 suffix_search = (util.compile_suffix_regex(suffixes).search)
 
-# * infixes_finditer, non-whitespace separators: r"\n" (raw strings instead of regex) 
-infixes = nlp.Defaults.infixes + [r'''\n'''] + [r'="'] + [r'''\t''']
+# * infixes_finditer, non-whitespace separators: \n =" \t
+infixes = nlp.Defaults.infixes + [r"\n"] +  [r'="'] +  [r"\t"]
+print(infixes)
 infix_finditer = (util.compile_infix_regex(infixes).finditer)
 
 # * token_match, always stay together
