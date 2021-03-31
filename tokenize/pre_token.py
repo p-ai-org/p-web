@@ -50,16 +50,7 @@ def custom_tokenizer(nlp):
 nlp.tokenizer = custom_tokenizer(nlp)
 
 
-
-
-# import time
-# start_time = time.time()
-# perFile()
-# print("--- %s seconds ---" % (time.time() - start_time))
-
-
-def perFile(): 
-    sourceFile = os.path.join(os.path.realpath(os.path.join(os.path.dirname(__file__), '../processing/mod_htmlfiles')), 'modified_cnn.txt')
+def perFile(sourceFile): 
 
     with open(sourceFile, 'r', encoding="ISO-8859-1") as f:
         try:
@@ -75,10 +66,23 @@ def perFile():
     outputList = list(filter(lambda a: re.search('\n', a) is None, outputList))
     output = str(outputList)
 
-    with open(os.path.join('./tokenize', f"./{os.path.basename(sourceFile)}"), 'w') as f_out:
+    with open(os.path.join('./tokenize/pre-tokenized', f"./{os.path.basename(sourceFile)}"), 'w') as f_out:
             try: 
                 f_out.write(output)
             except Exception as e:
                 print('During style file writing:', e)
 
-perFile()
+
+def allFile():
+    sourceLoc = os.path.realpath(os.path.join(os.path.dirname(__file__), '../processing/mod_htmlfiles'))
+
+    for file in os.scandir(sourceLoc):
+        sourceFile = os.path.join(sourceLoc, file.name);
+        perFile(sourceFile)
+    os.scandir().close()
+
+allFile()
+# One file
+# testLoc = os.path.realpath(os.path.join(os.path.dirname(__file__), '../processing/mod_htmlfiles/modified_cnn.txt'))
+# perFile(testLoc)
+
