@@ -8,9 +8,9 @@ Created on Wed Apr  7 20:58:55 2021
 import glob
 
 
-read_files = glob.glob("./smaller_sample/*.txt")
+read_files = glob.glob("./gpt-2/smaller_sample/*.txt")
 
-with open("result.txt", "w", encoding="utf8") as outfile:
+with open("./gpt-2/result.txt", "w", encoding="utf8") as outfile:
     for f in read_files:
         with open(f, "r") as infile:
             try:
