@@ -22,15 +22,15 @@ def complete(pre, maxlength, classes):
     output = gpt2.generate(sess, include_prefix=True, prefix=pre, length=maxlength, model_name = modelpath, return_as_list=True)[0]
     html = pre + output
     soup = BeautifulSoup(html)
-    if len(classes) > 0 and soup.find("div") is not None:
-        for ele in soup.find("div"):
+    if len(classes) > 0 and soup.findAll("div") is not None:
+        for ele in soup.findAll("div"):
             ele['class'] = random.choice(classes)
     processed = soup.prettify()
     return(processed)
 
-textbox = st.text_area('Start your HTML:', '', height=200, max_chars=256)
+textbox = st.text_area('Start your HTML:', '', height=200, max_chars=512)
 classes = st.text_area('Classes (optional, separated by commas):', '', height=50, max_chars = 128)
-slider = st.slider('Max text length (in tokens)', 1, 128)
+slider = st.slider('Max text length (in tokens)', 1, 1024)
 button = st.button('Generate')
 
 sess = gpt2.start_tf_sess()
